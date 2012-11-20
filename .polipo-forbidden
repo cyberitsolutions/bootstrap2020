@@ -32,5 +32,5 @@
 ### NOTE: the script below also demonstrates how to sort an list of
 ### FQDNs right-to-left, i.e. most significant part first.
 
-# hostrev () ( IFS=.; while read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)) do new+=("${fqdn[a]}"); done; printf %s\\n "${new[*]}"; done )
+# hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
 # printf '%s ' 127.254.254.254 blacklisted.invalid $(curl -sL http://easylist.adblockplus.org/easyprivacy.txt http://easylist.adblockplus.org/easylist_noelemhide.txt | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev)
