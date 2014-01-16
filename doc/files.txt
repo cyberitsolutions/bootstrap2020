@@ -1,0 +1,36 @@
+There are several ways we can get files into the SOE,
+with different bonuses and maluses:
+
+1. bootstrap does printf >foo or >>foo, or sed -i foo.
+
+   + concise for short files
+   + can see all at a glance
+   - comments more painful
+   - long/complex formats painful & no markup
+
+   + write to now-gone dir, or edit now-missing file,
+     will error rather than silently continuing
+
+2. filesystem.dir overlay that contains the files.
+
+   + can easily diff upstream w/overlay
+   + editor can syntax highlight XML &c
+   - can't sed -i, only replace completely
+   - spread out over sparse tree - hard to see
+   - logically connected files may be distant
+   - owner/group/mode is painful to guarantee
+
+3. build a separate deb (from separate repo).
+
+   + can have arch-specific files (binaries)
+   + can express Depends clearly
+   + can see at a glance where a conffile came from
+   - replacing another deb's files is v. ugly
+   - separate repo & deb is a LOT more work
+
+Conclusion:
+
+ - none of these are perfect
+ - use method 1 for v. short arch-indep files
+ - use method 2 for v. long  arch-indep files
+ - use method 3 for arch-dep binaries

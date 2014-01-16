@@ -1,0 +1,40 @@
+Doing a simple "make oldconfig" is untenable.
+I just tried that again (from inmate 3.5 to 3.12) and it
+ - turned on bad things without asking
+ - didn't boot ("mount: Protocol not supported" in ramdisk)
+
+Here's my strategy for how we should generate inmate kernels, moving forward.
+
+   Build staff chroot w/wheezy bpo kernel (currently 3.12).
+   Chroot into it.
+   Add deb-src and apt-get build-dep & source the bpo kernel.
+   Copy /boot/config-<bpo version> to .config -- this is our starting base.
+   Turn options on/off (with scripts/config -e/-d) to get what we want.
+   rm .version
+   make silentoldconfig (reports errors; normalizes .config)
+   make -j4 deb-pkg     (build the actual .deb)
+   Copy build script, .config and .deb to /srv/apt/prisonpc-desktop/
+
+Making a script (instead of .config) the canonical format means
+
+ + we can have comments
+ + we can specify the source kernel and .config
+ + we can add greps (after silentoldconfig) to double-check that bad
+   options are off, and good options are on.
+
+ - It's currently about one-third the size of a pure .config.
+   That's a LOT of boring CONFIG_xxx lines.
+
+ - It's more effort.
+   (Though I think we're much more likely to get a good result.)
+
+ - New kernels add new drivers, which debian's config will enable.
+   We will need to catch & blacklist these.
+
+Should we start from "make defconfig" instead?
+More things to enable, but maybe fewer changes overall.
+
+
+The start of this is in client/kernel/manual-disable.sh &
+README-inmate-kernel in the wheezy branch, but it's not in a usable
+state ATM.

@@ -1,0 +1,63 @@
+GNOME3 replaced gconf with dconf.
+This is more fiddly to lock down.
+Brain dump from Jun 2013 follows.
+--twb, May 2014
+
+Ref. https://live.gnome.org/dconf/SystemAdministrators
+Lay stuff out like below, install dconf-tools, run "dconf update", remove dconf-tools.
+FIXME: locking is not tested yet.
+
+    # find -ls
+    drwxr-xr-x   3 root     root         4096 Jun  7 14:01 /etc
+    drwxr-xr-x   4 root     root         4096 Jun  7 14:01 /etc/dconf
+    drwxr-xr-x   3 root     root         4096 Jun  7 14:02 /etc/dconf/db
+    drwxr-xr-x   3 root     root         4096 Jun  7 15:58 /etc/dconf/db/prisonpc.d
+    drwxr-xr-x   2 root     root         4096 Jun  7 15:58 /etc/dconf/db/prisonpc.d/locks
+    -rw-r--r--   1 root     root          991 Jun  7 14:46 /etc/dconf/db/prisonpc.d/locks/foo
+    -rw-r--r--   1 root     root          836 Jun  7 15:46 /etc/dconf/db/prisonpc.d/foo
+    drwxr-xr-x   2 root     root         4096 Jun  7 13:57 /etc/dconf/profile
+    -rw-r--r--   1 root     root           32 Jun  7 13:58 /etc/dconf/profile/user
+
+    # find -type f -exec grep ^[^#] {} +
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/gnome/desktop/lockdown/disable-command-line
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/gnome/desktop/lockdown/disable-user-switching
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/gnome/desktop/lockdown/disable-lock-screen
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/enabled
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/prompt-enabled
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/icon-visiblity
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/view-only
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/network-interface
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/use-alternative-port
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/alternative-port
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/require-encryption
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/authentication-methods
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/vnc-password
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/mailto
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/lock-screen-on-disconnect
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/disable-background
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/use-upnp
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/disable-xdamage
+    /etc/dconf/db/prisonpc.d/locks/foo:/org/desktop/gnome/remote-access/notify-on-connect
+    /etc/dconf/db/prisonpc.d/foo:[org/gnome/desktop/lockdown]
+    /etc/dconf/db/prisonpc.d/foo:disable-command-line=true
+    /etc/dconf/db/prisonpc.d/foo:disable-user-switching=true
+    /etc/dconf/db/prisonpc.d/foo:disable-lock-screen=true
+    /etc/dconf/db/prisonpc.d/foo:[desktop/gnome/remote-access]
+    /etc/dconf/db/prisonpc.d/foo:enabled=true
+    /etc/dconf/db/prisonpc.d/foo:prompt-enabled=false
+    /etc/dconf/db/prisonpc.d/foo:icon-visibility=0
+    /etc/dconf/db/prisonpc.d/foo:view-only=false
+    /etc/dconf/db/prisonpc.d/foo:network-interface=''
+    /etc/dconf/db/prisonpc.d/foo:use-alternative-port=false
+    /etc/dconf/db/prisonpc.d/foo:alternative-port=5900
+    /etc/dconf/db/prisonpc.d/foo:require-encryption=true
+    /etc/dconf/db/prisonpc.d/foo:authentication-methods=['none']
+    /etc/dconf/db/prisonpc.d/foo:mailto=''
+    /etc/dconf/db/prisonpc.d/foo:lock-screen-on-disconnect=false
+    /etc/dconf/db/prisonpc.d/foo:disable-background=false
+    /etc/dconf/db/prisonpc.d/foo:use-upnp=false
+    /etc/dconf/db/prisonpc.d/foo:disable-xdamage=false
+    /etc/dconf/db/prisonpc.d/foo:notify-on-connect=false
+    /etc/dconf/db/prisonpc.d/foo:/org/gnome/desktop/interface/enable-animations=false
+    /etc/dconf/profile/user:user-db:user
+    /etc/dconf/profile/user:system-db:prisonpc
