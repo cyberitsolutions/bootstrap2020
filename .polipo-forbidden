@@ -8,8 +8,8 @@
 # sed -n s/^##//p .polipo-forbidden | sh
 #
 ## {
-##   curl -sL http://easylist.adblockplus.org/easyprivacy.txt
-##   curl -sL http://easylist.adblockplus.org/easylist_noelemhide.txt
+##   curl -sSL http://easylist.adblockplus.org/easyprivacy.txt
+##   curl -sSL http://easylist.adblockplus.org/easylist_noelemhide.txt
 ## } |
 ##				   # Ref. http://adblockplus.org/en/filters
 ## sed 's/^\[/# &/' |	           # leading [ means section (comment)
@@ -33,4 +33,4 @@
 ### FQDNs right-to-left, i.e. most significant part first.
 
 # hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
-# printf '%s ' 127.254.254.254 blacklisted.invalid $(curl -sL http://easylist.adblockplus.org/easyprivacy.txt http://easylist.adblockplus.org/easylist_noelemhide.txt | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev)
+# printf '%s ' 127.254.254.254 blacklisted.invalid $(curl -sSL http://easylist.adblockplus.org/easyprivacy.txt http://easylist.adblockplus.org/easylist_noelemhide.txt | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev)
