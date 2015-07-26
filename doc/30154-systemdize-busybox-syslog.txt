@@ -1,0 +1,58 @@
+Short version: we have to use rsyslogd now.
+
+
+Central Logging (syslog)
+==========================
+
+These are the facts:
+
+* Debian always ships busybox (for the ramdisk, but it's available in userland).
+* Debian includes syslogd there.
+* In wheezy, we did::
+
+    apt-get install busybox-syslogd
+    echo SYSLOG_OPTS='"-C8192 -LRlogserv"' >/etc/default/busybox-syslogd
+
+  This means that it stores the last 8MB of logs in RAM,
+  and forwards all logs to the host "logserv".
+
+  We like this because MORE CODE = MORE BAD.
+
+  It's footprint is roughly this::
+
+    USER  PID %CPU %MEM   VSZ   RSS TTY STAT START   TIME COMMAND
+    root 2943  0.0  0.2 19260 10320 ?   Ss   Jul15   0:01 /sbin/syslogd -C8192 -LRlogserv
+
+
+* In jessie, systemd is the default.
+  We are scared to replace it.
+
+* systemd takes over local logging by default (journald).
+  We are scared to disable that.
+
+* journald can't send syslog-protocol UDP datagrams (RFC 5426),
+  so *for that one thing* we need a syslogd.
+
+
+
+* busybox syslogd is configured at COMPILE TIME to use AF_UNIX to /dev/log.
+  This cannot be changed at runtime.
+
+* systemd creates /dev/log -> /run/systemd/journal/dev-log (NB: *NOT* /syslog).
+  Apparently the expected process is:
+
+  * userland programs (e.g. logger) write to /dev/log.
+  * systemd reads from /dev/log.
+  * systemd writes to /run/systemd/journal/syslog.
+  * "real" syslog reads from /run/systemd/journal/syslog.
+
+
+* HISTORICAL: Early on, I had a problem where rsyslog was starting
+  before the network was up, or before "logserv" would resolve.
+  I tried to work around this with::
+
+      >>$t/lib/systemd/system/rsyslog.service printf %s\\n [Unit] After='network.service nss-lookup.target'
+
+  but it never worked, because I typo'd the path (not shown here).
+  By the time I understood what I did wrong, the symptom was gone.
+  (Probably because I stopped trying to use systemd-networkd.)

@@ -1,0 +1,14 @@
+OpenSSH package includes *BOTH* socket-based and ahead-of-time systemd units.
+
+If we start SSH ahead of time,
+
+ - ssh-keygen slows down "booting" (but not the actual GUI login).
+ - ssh-keygen runs early on, so its entropy is less random.
+
+If we start SSH via socket,
+
+ - ssh-keygen stdout/stderr is lost.
+ - if the rootfs is gone, ssh might not start at all.
+   (This shouldn't happen in production, but routinely happens during development.)
+
+mattcen & I (twb) agreed to go with the latter.

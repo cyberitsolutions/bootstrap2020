@@ -1,0 +1,50 @@
+NEW NOTES (2016Q1) (#30645)
+===========================
+
+See https://bugs.debian.org/814758
+
+1. power button didn't work on servers;
+2. as a workaround, we used acpid;
+3. acpid fails about 48% of the time at AMC; but
+4. (1) was due to systemd silently failing due to lack of dbus.
+5. If we install dbus everywhere (including servers!), we can remove acpid.
+
+The older analysis below is *NOT CORRECT*.
+
+
+OLD NOTES (2015Q3) (#30133)
+===========================
+
+systemd-logind.service.8 says:
+
+    systemd-logind is a system service that manages user logins.
+    It is responsible for:
+
+    * Handling of power/sleep hardware keys
+    * [...]
+
+That means we don't need to install acpi-support-base (powerbtn.sh) just to
+make the case's power button trigger a clean shutdown.
+Fantastic!  Except...
+
+                     **SYSTEMD IS FULL OF LIES**
+
+Apparently systemd-logind ignores power button events until a "seat" appears::
+
+    systemd-logind[404]: New seat seat0.
+    systemd-logind[404]: Watching system buttons on /dev/input/event1 (Power Button)
+
+This means that:
+
+* the power button does not work on headless servers.
+* the power button does nothing on GUI desktops *UNTIL YOU LOG IN*.
+* the power button does not work on CLI desktops, *EVEN AFTER LOGGING IN*,
+  because logind doesn't consider a /dev/tty1 to be a "seat".
+
+So we MUST continue to install acpi-support-base on servers,
+and we SHOULD continue to install acpi-support-base on desktops.
+
+
+PS: in Wheezy we also used acpid to handle the case mute button.
+In Jessie (after ir-keytable) this is handled by assuming case volume
+keys will generate XF86MediaXXX key-press events for XFWM4 to catch.

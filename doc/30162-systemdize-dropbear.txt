@@ -1,0 +1,103 @@
+Short version: we still can't use dropbear on desktop SOEs.
+
+
+This is how you switch to dropbear:
+
+* change openssh-server to dropbear in the ps=() install list
+* change openssh-server to dropbear in the dpkg-statoverride list.
+* disable it in the ramdisk (prior to last ramdisk rebuild)::
+
+    xs=(/usr/share/initramfs-tools/scripts/init-premount/dropbear
+        /usr/share/initramfs-tools/scripts/init-premount/devpts
+        /usr/share/initramfs-tools/scripts/init-bottom/dropbear
+        /usr/share/initramfs-tools/conf-hooks.d/dropbear)
+    >$t/etc/dpkg/dpkg.cfg.d/10no-ssh-in-rd  printf 'path-exclude %s\n' "${xs[@]}"
+
+* start it nicely in "daemon mode" (more reliable)::
+
+    # FIXME: dropbear has no equivalent of "AllowGroups root" or "MaxStartups". --twb, Apr 2015
+    # NB: KillMode=process prevents systemd from killing your existing connection when you restart SSH.
+    >$t/etc/systemd/system/dropbear.service cat <<EOF
+    [Unit]
+    [Service]
+    KillMode=process
+    ExecStart=/usr/sbin/dropbear -F -s -R -W 1048576
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+    chroot $t systemctl enable dropbear
+
+* OR start it nicely in "socket mode" (less load)::
+
+    >$t/etc/systemd/system/dropbear.socket  cat <<EOF
+    [Unit]
+    [Socket]
+    ListenStream=22
+    Accept=yes
+
+    [Install
+    WantedBy=sockets.target
+    EOF
+
+    >$t/etc/systemd/system/dropbear@.service cat <<EOF
+    [Unit]
+    [Service]
+    ExecStart=/usr/sbin/dropbear -i -F -s -R -W 1048576
+    StandardInput=socket
+    StandardError=journal
+    EOF
+
+    chroot $t systemctl enable dropbear@.service dropbear.socket
+    chroot $t systemctl mask dropbear.service    # disable the sysvinit version
+
+
+
+SHOW STOPPER
+------------
+
+Dropbear on Debian doesn't use PAM and therefore uses a hard-coded,
+incorrect, PATH, preventing us from running 'shutdown' on desktops.
+
+strace indicates dropbear isn't reading anything we can patch,
+like /etc/profile
+
+Options
+-------
+
+* Compile Debian's Dropbear with PAM support
+
+  Requires maintaining our own package
+
+* Patch Dropbear's hard-coded PATH to include {/usr,}/sbin iff UID==0
+
+  Requires maintaining our own package
+
+* Switch back to OpenSSH, and write/steal a systemd unit to generate SSH
+  keys on boot
+
+  This will mean keys get generated earlier when there's less entropy
+
+* patch server to pass ssh command on stdin instead of CLI -- yukky
+  because allocates a tty
+
+  i.e.    ssh host shutdown
+  becomes echo shutdown | ssh host
+
+  server change --> breaks backcompat
+
+* change root's login shell to a bash wrapper that fixes path
+
+* patch command="PATH=...; $SSH_ORIGINAL_COMMAND" onto the
+  authorized_keys line used by the server (needn't do it for personal
+  keys)
+
+* follow systemd's advice and put *everything* in /usr/bin, /sbin &c
+  are symlinks only.  Bound to break stuff & currently we expect to
+  have >1 version of shutdown that loads depending on $PATH.
+
+* patch server to pass full path to shutdown & root-notify-send, &
+  hope they don't need /sbin for anything (or patch them as well)
+
+* assume server only calls shutdown & root-notify-send & put them in
+  /bin or /usr/bin & have them fix $PATH if necessary
