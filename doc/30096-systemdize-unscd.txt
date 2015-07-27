@@ -1,0 +1,57 @@
+I cannot lock down unscd like this::
+
+    sed -i /server-user/d /etc/nscd.conf      # tell unscd not to drop privs, because systemd will
+
+    [Service] ExecStart='nscd -d' RuntimeDirectory=nscd User=unscd
+
+...because unscd binds to *TWO* sockets:
+
+    /run/nscd/socket
+    /run/.nscd_socket
+
+The latter hasn't been used by glibc for OVER A DECADE::
+
+    $ git clone --bare git://repo.or.cz/glibc.git
+    $ cd glibc.git
+    $ git log -p HEAD -Gnscd_socket -- nscd
+    commit 520ec96
+    Author: Ulrich Drepper <drepper@redhat.com>
+    Date:   12 years ago
+
+        Update.
+
+            * inet/rcmd.c: Provide better error message in case of unknown
+            host.  Remove USE_IN_LIBIO.
+
+            * nscd/nscd.init: Updated version, more conforming with current
+            init file standards.
+
+            * nscd/nscd-client.h (_PATH_NSCDPID): Move the file into
+            /var/run/nscd directory.
+            (_PATH_NSCDSOCKET): Likewise.
+
+            * test-skeleton.c (timeout_handler): Fix error message.
+
+    diff --git a/nscd/nscd-client.h b/nscd/nscd-client.h
+    index be3bc2f..c0cf14b 100644
+    --- a/nscd/nscd-client.h
+    +++ b/nscd/nscd-client.h
+    @@ -32 +32 @@
+    -#define _PATH_NSCDPID   "/var/run/nscd.pid"
+    +#define _PATH_NSCDPID   "/var/run/nscd/nscd.pid"
+    @@ -35 +35 @@
+    -#define _PATH_NSCDSOCKET "/var/run/.nscd_socket"
+    +#define _PATH_NSCDSOCKET "/var/run/nscd/socket"
+
+
+Is it worth removing support for .nscd_socket ?
+
+#systemd said:
+
+    "If you're using glibc, why don't you just use the REGULAR glibc nscd?"
+
+I said
+
+     "Because every time I've used it, it has caused heisenbugs and solved no problems.
+     Also #openldap STRONGLY recommends against it because they said it caches the wrong things.
+     After I switched to unscd, I never saw a problem again, and it reduces traffic to slapd by at least an order of magnitude."

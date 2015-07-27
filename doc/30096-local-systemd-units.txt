@@ -1,0 +1,104 @@
+Critical Gotchas in Systemd
+===========================
+
+NOTE: written for Debian 8 Jessie, systemd v215.
+
+0. systemctl enable & disable *only* apply/remove the [Install] stanza.
+   That is, they mostly just add/delete foo.target.wants/bar.service.
+
+   If there is no stanza, or you typo the job name, it *silently succeeds*.
+
+   Even if it worked, the job is likely to be started in some other way.
+   For example, acpid.service will be started because /etc/acpid/events/* exists.
+
+   To prevent a service from *ever* starting, use "systemctl mask".
+
+   This just creates a symlink /etc/systemd/system/foo.service -> /dev/null.
+
+   NB: systemd is too stupid to canonicalize symlinks;
+   it just checks them against a fixed list that people have used in the real world.
+   Symlink to /dev/null works even if /dev/null doesn't exist.
+   Symlink to //dev//null or /dev/./null DOES NOT WORK.
+   Making it a device node itself DOES NOT WORK.
+
+   UPDATE: as at v232, if foo.service lacks [Install] and bar.service has [Install],
+
+   • "systemctl enable foo" will print a warning, but not exit non-zero.
+   • "systemctl enable foo bar" will still not even print a warning.
+
+1. WHAT is started (Wants=) & WHEN it is started (After=) are **completely orthogonal**.
+   If you say only Wants/WantedBy/Conflicts/Requires, the job will start immediately.
+   If you say only After/Before, the job will not start at all.
+   In general, you need *both* Wants & After.
+
+   Implicitly jobs have "DefaultDependencies" which tells them to not
+   to start until the basic system is up, and to stop during shutdown.
+   This means simple jobs can avoid After.
+   This means you must DefaultDependencies=no to start early (e.g. firewall).
+
+
+2. After= has **NO EFFECT** on Type=simple jobs.
+
+   This is because After waits until the job is READY=1,
+   which in Type=simple is *as soon as the job starts*.
+
+   To start foo after bar is actually up,
+   either set bar to Type=forking (and hope it's listening when it forks),
+   or patch bar to understand systemd & use Type=notify.
+
+
+3. Jobs in /etc/init.d/foo get *automatically* turned into systemd units at runtime;
+   they end up in /run/systemd/generator.
+
+   Because Debian 8 (Jessie) isn't fully assimilated into the systemd borg,
+   it has lots of basic jobs that are done natively by *both* systemd and sysvinit.
+   For example, fscking filesystemd or mounting a tmpfs on /tmp.
+
+   To prevent systemd from importing the sysvinit job (that it already subsumed),
+   Debian's systemd includes symlinks to /dev/null for a bunch of the sysvinit jobs.
+
+   This can be very confusing when you're trying to work out which
+   script is actually DOING THE WORK.
+
+
+4. RuntimeDirectory does not imply WorkingDirectory.
+   The former just *CREATES* (and removes) the dir.
+   By default WorkingDirectory=/ still.
+   To set them both to the same place you need e.g.
+     RuntimeDirectory=fuck WorkingDirectory=/run/fuck
+
+
+As Applied to Boostrap Repo
+===========================
+
+The reason all examples use [Install] WantedBy=foo.target is because
+they expect the distro & the end user to be different people --- the
+distro *allows* the job to be enabled/disabled; the end user decides
+whether to enable or disable the job.
+
+Because we are de facto both parties,
+we can skip this and get simpler config.
+
+This is called a "static" unit, and systemd does it all over the place for its own units.
+
+Before::
+
+    >$t/lib/systemd/system/e-s-c.service    printf %s\\n [Service] Type=oneshot ExecStart=/usr/local/sbin/ethernet-speed-check User=nobody  [Install] WantedBy=multi-user.target
+    >$t/lib/systemd/system/zramon.service   printf %s\\n [Service] Type=oneshot ExecStart=/usr/local/sbin/zramon                            [Install] WantedBy=multi-user.target
+    chroot $t systemctl enable e-s-c zramon
+
+After::
+
+    >$t/lib/systemd/system/e-s-c.service    printf %s\\n [Service] Type=oneshot ExecStart=/usr/local/sbin/ethernet-speed-check User=nobody
+    >$t/lib/systemd/system/zramon.service   printf %s\\n [Service] Type=oneshot ExecStart=/usr/local/sbin/zramon
+    >>$t/lib/systemd/*/multi-user.target    printf %s\\n [Unit] Wants={e-s-c,zramon}.service
+
+Since it doesn't matter WHO wants the firewall unit (so long as
+SOMEONE does), we can save a line by doing this::
+
+    >>$t/lib/systemd/system/multi-user.target    printf %s\\n [Unit] Wants={e-s-c,zramon,firewall}.service
+
+instead of this::
+
+    >>$t/lib/systemd/system/multi-user.target    printf %s\\n [Unit] Wants={e-s-c,zramon}.service
+    >>$t/lib/systemd/system/sysinit.target       printf %s\\n [Unit] Wants=firewall.service
