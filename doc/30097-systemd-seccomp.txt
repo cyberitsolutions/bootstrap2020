@@ -1,0 +1,22 @@
+I'd like to do this::
+
+    >$t/etc/systemd/system.conf printf '%s\n' '[Manager]' SystemCallArchitectures=native
+
+but it's not available, because Jessie's systemd is compiled without SECCOMP support::
+
+    root@het:~# systemd --version
+    systemd 215
+    +PAM +AUDIT +SELINUX +IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ -SECCOMP -APPARMOR
+
+In theory, this would be a defense-in-depth layer against inmates
+smuggling in pre-compiled IA32 binaries (since for us, "native" means x86-64).
+
+In practice it doesn't matter much, because we compile the inmate
+kernel without CONFIG_IA32_EMULATION.
+
+This is fixed in Debian as at systemd=220-7:
+
+    http://metadata.ftp-master.debian.org/changelogs//main/s/systemd/systemd_228-2_changelog
+
+When we have such a version (i.e. during stretch upgrade),
+re-examine this feature.
