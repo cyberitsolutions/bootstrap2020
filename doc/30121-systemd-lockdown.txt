@@ -1,0 +1,72 @@
+### FIXME: systemd designers are total cunts.
+# <twb> systemd.exec(5) says things like ProtectSystem= should be used for "all long-running services"
+# <twb> It's a pain to add it to all but a few of my units.
+# <twb> Is there a way to say "systemd, turn this on for everything!" and then only have to add ProtectSystem=false to a few units?
+# <ScottKevill> twb: The only global defaults you can set are these, AFAIK: http://www.freedesktop.org/software/systemd/man/systemd-system.conf.html
+# <ohsix> twb: no
+# <ohsix> it needs to be done on a case by case basis
+# <ohsix> you might look into selinux or one of the MAC things and the default rules if you want stuff
+# <twb> That is also happening
+# <twb> But if the de facto best practice is "just use selinux and don't bother locking down systemd" then why does systemd even have these settings and recommend people use them
+# <Kamilion> twb: because redhat likes selinux and canonical likes apparmor. ;)
+# <Kamilion> and There Can Be Only One
+# <twb> Kamilion: systemd supports both of those
+# <Kamilion> "why does it have these settings"
+# <Kamilion> that's why
+
+# FIXME: systemd lockdown.  Let's try starting out with a REALLY REALLY BIG hammer.
+# FIXME: this edits .service files but not .socket, .mount, and .swap.
+# chroot $t find -O3 / -xdev -type f -path '/*/systemd/system/*.service' -not -name xdm.service -exec sed -rsi '$a[Service]\nProtectSystem=full\nProtectHome=1\n' {} +
+# chroot $t find -O3 / -xdev -type f -path '/*/systemd/system/*.service' -exec sed -rsi '$a[Service]\nPrivateTmp=1\n' {} +
+# chroot $t find -O3 / -xdev -type f -path '/*/systemd/system/*.service' -not -name lirc.service -exec sed -rsi '$a[Service]\n=PrivateDevices=1\n' {} +
+
+14:07 <twb> if I boot off NFS, and I have a service with PrivateNetwork=1, is this expected?
+14:07 <twb> Sep 28 14:06:58 het systemd[1158]: Failed at step NETWORK spawning /usr/sbin/nscd: Invalid argument
+14:07 <twb> ...because it sounds like saying "this service can't access the network" is effectively also saying "and therefore the root filesystem is also inaccessible"
+14:10 <twb> Removing PrivateNetwork=1 certainly fixes that "Invalid argument".
+
+OK so what about we do something like this:
+
+    find .../systemd/ -name '*.service' ...append [Service] BeSafeSometimes=1 BeUnsafeOtherTimes=0
+    find .../systemd/ -name '*.service' ...append [Timer]   BeSafeSometimes=1
+
+And then have a whitelist that we append AGAIN:
+
+    find .../systemd/ -name waffle.service ...append [Service] BeSafeSometimes=0   # Can't make waffles in safe mode.
+
+This is icky enough to need a helper function, I think.
+
+
+
+amend_unit() {
+    cmd=(chroot "$t" find -O3 /lib/systemd/system /etc/systemd/systemd -type f '(' -false)
+    for i
+    do  case $i in
+            (--) break;;
+            (*)  cmd+=(-o -name "$i")
+                 shift;;
+        esac
+    done
+    cmd+=(')' -exec sh -c 'printf %s\\n >>"$0" "$@"' {} "$@" ';')
+
+    "${cmd[@]}"
+}
+
+# DEFAULT POLICY: DENY ALL
+# ------------------------
+# From systemd.exec(5)...
+amend_unit '*.service' -- [Service] NoNewPrivileges=1 ProtectSystem=1 ProtectHome=1 PrivateTmp=1 PrivateNetwork=1 PrivateDevices=1
+amend_unit '*.timer'   -- [Timer]   NoNewPrivileges=1 ProtectSystem=1 ProtectHome=1 PrivateTmp=1 PrivateNetwork=1 PrivateDevices=1
+amend_unit '*.mount'   -- [Mount]   NoNewPrivileges=1 ProtectSystem=1 ProtectHome=1 PrivateTmp=1 PrivateNetwork=1 PrivateDevices=1
+amend_unit '*.swap'    -- [Swap]    NoNewPrivileges=1 ProtectSystem=1 ProtectHome=1 PrivateTmp=1 PrivateNetwork=1 PrivateDevices=1
+# From systemd.resource_control(5)...
+amend_unit '*.slice'   -- [Slice]   CPUAccounting=1 MemoryAccounting=1 BlockIOAccounting=1 DevicePolicy=closed
+amend_unit '*.scope'   -- [Scope]   CPUAccounting=1 MemoryAccounting=1 BlockIOAccounting=1 DevicePolicy=closed
+amend_unit '*.service' -- [Service] CPUAccounting=1 MemoryAccounting=1 BlockIOAccounting=1 DevicePolicy=closed
+amend_unit '*.socket'  -- [Socket]  CPUAccounting=1 MemoryAccounting=1 BlockIOAccounting=1 DevicePolicy=closed
+amend_unit '*.mount'   -- [Mount]   CPUAccounting=1 MemoryAccounting=1 BlockIOAccounting=1 DevicePolicy=closed
+amend_unit '*.swap'    -- [Swap]    CPUAccounting=1 MemoryAccounting=1 BlockIOAccounting=1 DevicePolicy=closed
+
+# GRANT ONLY NEEDED PRIVILEGES
+# ----------------------------
+amend_unit xdm.service -- [Service] ProtectHome=0 PrivateDevices=0 DeviceAllow='/dev/fb0 rw'

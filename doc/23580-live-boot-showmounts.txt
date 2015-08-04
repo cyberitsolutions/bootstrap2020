@@ -1,0 +1,76 @@
+Notes about wrangling the shitty live-boot code;
+mostly in aid of profiling & debugging.
+
+
+
+>$t/etc/kernel-img.conf                 echo link_in_boot=yes
+>$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=xz
+chroot $t apt-get install live-boot
+>$t/lib/live/boot/0000-prisonpc         echo NOFSTAB=true NONETWORKING=true NOPERSISTENCE=true # Revert live-boot f587cb9
+sed -i 's/ipconfig/& -i PrisonPC/'                      $t/lib/live/boot/9990-networking.sh    # DHCP vendor class (#23221)
+sed -i '\|mount -t tmpfs tmpfs /live/overlay|d'         $t/lib/live/boot/9990-overlay.sh       # don't mount /live/overlay *TWICE*
+
+######################################################################
+
+# DEBUGGING: add timing statements to functions in the live environment
+cp -a $t/lib/live/boot $t/lib/live/boot.orig
+sed -ri '/^[[:alnum:]]/ { N; s/^([[:alnum:]_]+).*\{$/&  >\&2 date +%s__\1/; }'  $t/lib/live/boot/*
+
+######################################################################
+
+sed -i '/support for Syslinux IPAPPEND parameter/ a grep -nH ^ /sys/class/net/eth0/carrier' $t/lib/live/boot/9990-networking.sh
+# sed -i '/support for Syslinux IPAPPEND parameter/ a ip link set eth0 up'                $t/lib/live/boot/9990-networking.sh
+# sed -i '/support for Syslinux IPAPPEND parameter/ a grep -nH ^ /sys/class/net/eth0/carrier' $t/lib/live/boot/9990-networking.sh
+
+sed -i 's/^[[:space:]]*ipconfig/time &/'  $t/lib/live/boot/9990-networking.sh
+
+# live-boot phase takes approximately 10s:
+# ??? Some time between the kernel starting and live-boot starting?
+# +2s in Select_eth_device waiting for carrier=1 after ipconfig -c none -d eth0 -t 1.
+# +3s in do_netsetup during ipconfig -i PrisonPC -t 15 eth0
+# +2s between "maybe_break init" and journald claiming that logging started.
+#     --> does this 2s count as "kernel" in systemd-analyze plot???
+#
+# Can we avoid the 2s in Select_eth_device?
+#
+# UPDATE: the code below seems to just push the carrier delay down into the DHCP stage:
+#
+#   root@het:~# grep ^144 /var/log/live/boot.log
+#   1442467384__Cmdline_old
+#   1442467384__Debug
+#   1442467384__Read_only
+#   1442467384__Device_from_bootif
+#   1442467384__do_netmount
+#   1442467384__do_netsetup
+#   1442467391__do_nfsmount
+#   1442467391__Verify_checksums
+#   1442467391__get_mac
+#   1442467391__mount_images_in_directory
+#   1442467391__is_live_path
+#   1442467391__setup_unionfs
+#   1442467391__get_backing_device
+#   1442467391__setup_loop
+#   1442467391__sys2dev
+#   1442467391__do_union
+#   1442467391__Fstab
+#   1442467391__Netbase
+#   1442467391__Swap
+#
+>$t/lib/live/boot/9990-select-eth-device.sh echo 'Select_eth_device () { Device_from_bootif; echo DEVICE=$DEVICE >>/conf/param.conf; }' # NOOP!
+
+######################################################################
+
+
+# FIXME: apart from being hinkey, this "feature"  makes thunar show an extra, unusable, xGB filesystem in the sidebar.
+# It also makes switch_root whinge on the console (hidden behind plymouth) just before systemd starts.
+# I'm leaving it off again until I have a second opinion.
+#sed -i '/for _MOUNT/{N;s/do/& break/}'                $t/lib/live/boot/9990-main.sh          # Revert live-boot e182c1d ("SHOWMOUNTS")
+# Forcing a lazy umount "hides" the rootfs components from /proc/mounts after switch_root.
+# FIXME: this *hard codes* the list; it also omits filesystem.squashfs &c loopback mounts.
+# UPDATE: after umounting /live/medium, the login screen comes up, but logging in results in an incomplete system.
+#sed -i '\|umount /live/overlay|c umount -l /live/overlay /live/medium' $t/lib/live/boot/9990-overlay.sh
+
+## UPDATE: THIS WORKS!
+sed -i '1aset -x' $t/lib/live/boot/9990-main.sh   # DEBUGGING -- DOES THIS MAKE UMOUNT COMMANDS APPEAR IN BOOT.LOG?
+sed -rsi 's%[12]?>[[:space:]]*/dev/null%%g' $t/lib/live/boot/* # DEBUGGING -- STOP SUPPRESSING ERROR OUTPUT
+# #sed -i '/for _MOUNT/i cp /boot.log "$rootmnt"/FUCKOFF' $t/lib/live/boot/9990-main.sh # DOUBLEPLUS DEBUGGING

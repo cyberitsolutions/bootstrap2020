@@ -1,0 +1,44 @@
+FIXME: this needs more testing.
+Especially: does it make things faster?
+Also: how much does it affect the SOE size?
+
+Firstly, don't disable/mask systemd-readahead-collect.service.
+Build the SOE and boot it once.
+
+This creates /.readahead in the running system.
+Copy that file to overlay/.readahead.
+This will be read by systemd-readahead-replay.service.
+
+NB: *DO NOT LOG INTO SSH OR XDM* for 1min after boot,
+or it will affect the results.
+
+**ALSO** we can instruct mksquashfs to pack the early-boot into the
+start of the disk.  To do this:
+
+On the running system with /.readahead, run this::
+
+    /lib/systemd/systemd-readahead analyze | sed -rn 's/$/\t-100/;s|^[^:]+:./||p' >sort.readahead
+
+Copy that file to overlay/sort.readhead
+
+Add it to mksquashfs excludes.
+
+Pass mksquashfs -sort $t/sort.readahead.
+
+The format mksquashfs wants appears to be
+
+    path   priority
+
+Where path is *relative to the sort file*???
+
+
+FIXME: we should have a second .readahead to tell mksquashfs to put
+all the early *login* stuff (e.g. xfdesktop4) into the second "block"
+of the disk.
+
+
+## NB: if you reenable this [systemd-readahead-replay] and copy /.readahead into site.dir, boot will be faster?
+## Also recompile the squashfs with -sort readahead.sort, which is made by
+## cut -d: -f2- overlay/.readahead | sed 's/$/\t-100/' >readahead.sort
+## W/O READAHEAD: Startup finished in 11.014s (kernel) + 10.051s (userspace) = 21.065s
+## W/  READAHEAD: Startup finished in 11.502s (kernel) + 10.087s (userspace) = 21.590s

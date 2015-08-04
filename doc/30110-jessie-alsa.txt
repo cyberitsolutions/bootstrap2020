@@ -1,0 +1,529 @@
+By default Debian 8 ships at least three ways to initialize a sound
+card's mixer levels (or save/restore them to disk across reboots).
+
+These notes are about me trying to understand which (if any) are
+relevant to our diskless, stateless system, and to gain confidence
+that a random new sound card will still get "sensible" mixer levels
+when booting a Debian 8 live SOE.
+
+
+
+Trent W. Buck via allocPSA wrote:
+> This is not fixed.
+>
+> Mike Abrahall via allocPSA wrote:
+>>> Task: 30110 confirm soundcard etc. have sane levels on boot
+>>> Does e.g. the sound card get reset to "sensible" levels at boot time?
+>> Yes, 69%
+>
+> I cannot reproduce this on het.
+>
+> 17:45 <twb> So apparently my sound card at boot is Master=41% Headphone=100% Speaker=100% and everything else =0%
+>
+> If I deliberately set the mixer levels to other values,
+> then reboot, it is back to Master=41%, Headphone/Speaker=100%, rest=0%.
+>
+> See attached.
+>
+>>> By what process?
+>> I did a bit of investigation and couldn't figure this out... I figure it's not worth much investigation because it works.
+>
+> AFAICT *NOTHING* resets it to a sensible value, except the hardware itself.
+
+OK so GUESS WHAT?
+This is a Debianism. [0]
+It is silently disabled under systemd. [1]
+Here is a proof-of-concept fix. [2]
+
+PS: #systemd as unhelpful as usual. [3]
+
+PS: debian/NOTES says this:
+
+| Setting default mixer levels
+| ----------------------------
+| Mandriva takes an interesting approch to resetting mixer levels.
+|     http://cvs.mandriva.com/cgi-bin/cvsweb.cgi/soft/sound-scripts/
+| Its reset_sound script does:
+|     * alsactl store to file
+|     * process file with perl script alsa_default.pl
+|     * alsactl restore from file
+| We should consider taking this code which APPEARS TO BE MUCH
+| SMARTER than our sanify_levels_on_card().
+
+[0]
+
+    twb@frey$ dgit clone alsa-utils jessie
+    twb@frey$ cd *
+    twb@frey[alsa-utils]$ git grep sanify_levels
+    debian/NOTES:smarter than our sanify_levels_on_card().
+    debian/S37alsa-utils-udeb:sanify_levels all
+    debian/changelog:      executed everytime (sanify_levels() is only executed if there is no
+    debian/init:            sanify_levels "$TARGET_CARD" || EXITSTATUS=1
+    debian/init:    sanify_levels "$TARGET_CARD"
+    debian/utils.sh:sanify_levels_on_card()
+    debian/utils.sh:sanify_levels()
+    debian/utils.sh:                        sanify_levels_on_card "$CARD" || TTSDML_RETURNSTATUS=1
+    debian/utils.sh:                sanify_levels_on_card "$1" || TTSDML_RETURNSTATUS=1
+
+[1]
+
+    (bootstrap)root@zygon:/# find / -xdev -type f -exec grep -nH sanify_levels {} +
+    /etc/init.d/alsa-utils:170:             sanify_levels "$TARGET_CARD" || EXITSTATUS=1
+    /etc/init.d/alsa-utils:201:     sanify_levels "$TARGET_CARD"
+    /usr/share/alsa/utils.sh:54:sanify_levels_on_card()
+    /usr/share/alsa/utils.sh:136:sanify_levels()
+    /usr/share/alsa/utils.sh:142:                   sanify_levels_on_card "$CARD" || TTSDML_RETURNSTATUS=1
+    /usr/share/alsa/utils.sh:146:           sanify_levels_on_card "$1" || TTSDML_RETURNSTATUS=1
+
+    (bootstrap)root@zygon:/# ls -ld /lib/systemd/system/alsa-utils.service
+    lrwxrwxrwx 1 root root 9 Jan  1  2000 /lib/systemd/system/alsa-utils.service -> /dev/null
+
+    (bootstrap)root@zygon:/# dpkg -S /lib/systemd/system/alsa-utils.service
+    alsa-utils: /lib/systemd/system/alsa-utils.service
+
+[2]
+
+    root@het:~# amixer contents >before
+    root@het:~# . /usr/share/alsa/utils.sh
+    root@het:~# sanify_levels 0        # The magic number "0" is the card number.
+    root@het:~# amixer contents >after
+
+    root@het:~# diff -u before after
+    --- before      2015-09-16 18:41:00.481313135 +1000
+    +++ after       2015-09-16 18:41:10.705070318 +1000
+    @@ -15,14 +15,14 @@
+       : values=on
+     numid=14,iface=MIXER,name='Master Playback Volume'
+       ; type=INTEGER,access=rw---R--,values=1,min=0,max=87,step=0
+    -  : values=60
+    +  : values=70
+       | dBscale-min=-65.25dB,step=0.75dB,mute=0
+     numid=2,iface=MIXER,name='Headphone Playback Switch'
+       ; type=BOOLEAN,access=rw------,values=2
+       : values=on,on
+     numid=1,iface=MIXER,name='Headphone Playback Volume'
+       ; type=INTEGER,access=rw---R--,values=2,min=0,max=87,step=0
+    -  : values=87,87
+    +  : values=61,61
+       | dBscale-min=-65.25dB,step=0.75dB,mute=0
+     numid=13,iface=MIXER,name='Mic Boost Volume'
+       ; type=INTEGER,access=rw---R--,values=2,min=0,max=3,step=0
+    @@ -70,7 +70,7 @@
+       : values=on,on
+     numid=3,iface=MIXER,name='Speaker Playback Volume'
+       ; type=INTEGER,access=rw---R--,values=2,min=0,max=87,step=0
+    -  : values=87,87
+    +  : values=70,70
+       | dBscale-min=-65.25dB,step=0.75dB,mute=0
+     numid=23,iface=PCM,name='Capture Channel Map'
+       ; type=INTEGER,access=r----R--,values=2,min=0,max=36,step=0
+
+
+[3]
+
+    JOIN irc://irc.oftc.net/#debian
+    16:53 <twb> Which part of alsa is responsible for setting the mixer levels to a *sensible* volume, when the system is booted for the first time?  That is, /var/lib/alsa/asound.state does not exist.
+    16:54 <twb> grep Exec /lib/systemd/system/alsa-* ==> <confusing>
+    16:55 <twb> There's an "alsactl init" but AFAICT nothing ever calls it... which seems kinda suspicious
+    16:56 <jm_> maybe the default is muted?
+    16:56 <twb> My use case is diskless kiosks, so they can't save mixer levels at shutdown and I don't want to trust the hardware's defaults
+    17:19 <twb> I think I should just strip out all these systemd units and write one that just says Type=oneshot ExecStart=/sbin/alsactl init
+    [...]
+    17:45 <twb> So apparently my sound card at boot is Master=41% Headphone=100% Speaker=100% and everything else =0%
+    17:45 <twb> That is... suboptimal
+    17:45 <twb> alsactl init doesn't change it, either
+    17:47 <twb> http://sprunge.us/ZZWQ
+
+        root@het:~# alsactl init; echo $?
+        alsactl: sysfs_init:48: sysfs path '/sys' is invalid
+
+        Found hardware: "HDA-Intel" "Realtek ALC662 rev3" "HDA:10ec0662,10ec0662,00100300" "0x10ec" "0x0662"
+        Hardware is initialized using a generic method
+        99
+
+    [...]
+    18:06 <twb> So it turns out if I unmute the internal Mic channel, I can hear it two rooms away.  >cough< sorry $coworkers
+    [...]
+    18:19 <twb> Aha!  alsactl init *requires* /sys/kernel/uevent_helper
+    18:19 <twb> Which doesn't exist for me.
+    18:20 <jm_> cat /sys/kernel/uevent_helper shows just \n for me
+    18:20 <twb> File doesn't exist at all for me
+    18:20 <twb> alsactl is using it as a check before it starts work
+    18:21 <twb> Basically it's saying "that doesn't exist, so clearly /sys is broken and I might as well give up"
+
+    JOIN irc://irc.freenode.net/#systemd
+    18:29 <twb> I'm trying to work out what /sys/kernel/uevent_helper is and why I don't have it, and why alsactl init thinks it's a good heuristic for "is /sys working?"
+    18:30 <ohsix> lewl @ having to check
+    18:30 <ohsix> uevent_helper is dead
+    18:31 <twb> Yeah I had a feeling it was thrown away last time udev reinvented itself
+    18:31 <twb> http://sprunge.us/VLPR?c
+
+        static int sysfs_init(void)
+        {
+                const char *env;
+                char sysfs_test[PATH_SIZE];
+
+                env = getenv("SYSFS_PATH");
+                if (env) {
+                        strlcpy(sysfs_path, env, sizeof(sysfs_path));
+                        remove_trailing_chars(sysfs_path, '/');
+                } else
+                        strlcpy(sysfs_path, "/sys", sizeof(sysfs_path));
+                dbg("sysfs_path='%s'", sysfs_path);
+
+                strlcpy(sysfs_test, sysfs_path, sizeof(sysfs_test));
+                strlcat(sysfs_test, "/kernel/uevent_helper", sizeof(sysfs_test));
+                if (access(sysfs_test, F_OK)) {
+                        error("sysfs path '%s' is invalid\n", sysfs_path);
+                        return -errno;
+                }
+
+                INIT_LIST_HEAD(&attr_list);
+                return 0;
+        }
+
+    18:31 <ohsix> it was a way to run a program to respond to sysfs/kobj uevents
+    18:31 <twb> AFAICT that (part of "alsactl init") is checking if it exists before it tries to do any actual work
+    18:32 <twb> My actual end goal is to set mixer levels to "sensible" values, since I don't have mixer state from last boot (it's diskless) and I don't trust the hardware to do it
+*** 18:33 <ohsix> there is no such thing
+*** 18:33 <ohsix> or the hardware would do it, or the driver
+*** 18:34 <ohsix> with something like PA you can at least set a reference level based on the dB information on the controls ... but it still doesn't mean anything
+    18:34 <twb> Well this code definitely existing in /etc/init.d/ a couple of debian releases back
+    18:34 <twb> It was along the lines of "if it looks like a microphone channel, turn it to 0% & mute it, otherwise unmute it and set it to 80%"
+    18:35 <twb> Right now, at boot, I get Master=41% Headphones=100% Speaker=100% everything else =0%, but I can't see where that happens
+    18:36 <twb> plan B is to just go "fuck it, that's near enough", but I'm a bit worried that the next generation of hardware will boot with dumber defaults
+    18:38 <twb> Aha!  /usr/share/alsa/utils.sh:54:sanify_levels_on_card()
+    18:39 <twb> That's a debianism and it appears to be silently disabled when systemd is used
+    18:42 <Earnestly> ;/
+    18:45 <ohsix> uevent_helper is still there ... maybe hidden behind an option, nothing has changed since 2011
+    18:47 <twb> ohsix: OK.  It's not there for me, but that's probably just because I turned it off in .config
+    18:47 <twb> (was gonna check that but got distracted)
+    18:47 <michich> CONFIG_UEVENT_HELPER
+    18:48 <ohsix> woo netlink
+    18:48 <ohsix> twb: i thought it actually went away, git log -S took that long to get to something
+    18:49 <twb> heh
+
+
+
+
+
+
+
+
+
+irc://irc.freenode.net/#alsa
+
+15:42 <twb> Suppose I plug in a sound card that the OS has never seen before (or: I boot a live CD).  The mixer levels can't come from persistent state in /var/lib/alsa/ or whatever.  So: where do they come from?
+15:43 <twb> In Debian 7, there was explicit Debian-specific code sanify_levels().  In Debian 8, that code is bypassed under systemd.  It's not clear if that's a mistake, or if someone has explicitly said something like "since kernel 2.6.<whatever> the kernel takes care of this for us, and it does a better job."
+15:43 <twb> That's what I'm trying to determine right now.
+15:44 <twb> Right now, my test machine gets more-or-less sane mixer levels in a live CD.  But I don't know if that's just because I got a good driver, or good hardware.
+15:45 <twb> I'm concerned that in a year I'll put my live CD in a new computer and its mixer levels will default to 100% unmuted Mic or something
+15:52 <int_80h> /JOIN #alsa
+
+    Using a method I found in linux-3.16/Documentation/sound/alsa/HD-Audio.txt
+
+    root@het:~# reboot -f
+    [...]
+
+    root@het:~# amixer >x
+    root@het:~# echo 1 >/sys/class/sound/hdaudioC0D2/reconfig
+    root@het:~# amixer | diff -u x -
+    --- x   2015-09-30 16:57:50.826842294 +1000
+    +++ -   2015-09-30 16:58:13.748897345 +1000
+    @@ -2,7 +2,7 @@
+       Capabilities: pvolume pvolume-joined pswitch pswitch-joined
+       Playback channels: Mono
+       Limits: Playback 0 - 87
+    -  Mono: Playback 60 [69%] [-20.25dB] [on]
+    +  Mono: Playback 0 [0%] [-65.25dB] [off]
+     Simple mixer control 'Headphone',0
+       Capabilities: pvolume pswitch
+       Playback channels: Front Left - Front Right
+    @@ -42,8 +42,8 @@
+       Capabilities: cvolume cswitch
+       Capture channels: Front Left - Front Right
+       Limits: Capture 0 - 63
+    -  Front Left: Capture 39 [62%] [12.00dB] [on]
+    -  Front Right: Capture 39 [62%] [12.00dB] [on]
+    +  Front Left: Capture 0 [0%] [-17.25dB] [off]
+    +  Front Right: Capture 0 [0%] [-17.25dB] [off]
+     Simple mixer control 'Auto-Mute Mode',0
+       Capabilities: enum
+       Items: 'Disabled' 'Enabled'
+
+16:58 <twb> Well *THIS* is interesting -- resetting the card changes the mixer levels, even after a clean, diskless boot: http://sprunge.us/SXec
+16:59 <int_80h> isn't that an obvious behavior or am i missing something
+17:00 <int_80h> what do you expect reconfig to do in absence of stored configs
+17:00 <twb> if there were NEVER stored settings, why would the have changed in the first place, so reset changes them BACK
+17:01 <twb> That means either I've misunderstood, or I actually do have some part of userland that's "fixing" the mixer levels.
+17:02 <int_80h> ok but liveCDs still have some defaults and configs
+17:02 <int_80h> which may differ from driver-provided defaults
+17:03 <twb> I'm building the live CD and I can't see where it's happening
+17:03 <int_80h> ok well that's a more interesting topic
+17:03 <twb> http://sprunge.us/SeEM was my question, from just before you arrived
+17:04 <int_80h> ah ok
+17:06 <int_80h> i would be surprised if they really did turn off sanify_levels without an alternative. debian still does try to do sane user things
+17:07 <twb> Unless of course sanify_levels is obsolete now because the kernel does it - but AFAICT that's not the case
+17:07 <twb> If I run sanify_levels by hand, it changes the mixer levels -- so it's either not running under systemd, or something else is changing it AGAIN
+17:07 <int_80h> if the kernel did it, i imagine the mechanism would be something akin to reconfigure, and you wouldn't have this discrepancy
+17:08 <twb> Right
+17:08 <int_80h> lol probably you're right that sanify_levels isn't being run, but what is the replacement. i dont have any debian 8 handy to help you out
+17:08 <int_80h> but i'd bet there's something
+17:09 <twb> Nod.
+17:10 <twb> Part of the reason it's confusing is the alsa-utils systemd integration (on Debian) provides *TWO* competing ways to restore mixer levels from the disk
+17:10 <twb> I'll need to reread them; it looked to me like they all said "if <state file> exists, run <restore state file> (otherwise do nothing)"
+
+
+
+
+    root@het:~# amixer
+    Simple mixer control 'Master',0
+      Capabilities: pvolume pvolume-joined pswitch pswitch-joined
+      Playback channels: Mono
+      Limits: Playback 0 - 87
+      Mono: Playback 60 [69%] [-20.25dB] [on]
+    Simple mixer control 'Headphone',0
+      Capabilities: pvolume pswitch
+      Playback channels: Front Left - Front Right
+      Limits: Playback 0 - 87
+      Mono:
+      Front Left: Playback 87 [100%] [0.00dB] [on]
+      Front Right: Playback 87 [100%] [0.00dB] [on]
+    Simple mixer control 'Speaker',0
+      Capabilities: pvolume pswitch
+      Playback channels: Front Left - Front Right
+      Limits: Playback 0 - 87
+      Mono:
+      Front Left: Playback 87 [100%] [0.00dB] [on]
+      Front Right: Playback 87 [100%] [0.00dB] [on]
+    Simple mixer control 'Mic',0
+      Capabilities: pvolume pswitch
+      Playback channels: Front Left - Front Right
+      Limits: Playback 0 - 31
+      Mono:
+      Front Left: Playback 0 [0%] [-34.50dB] [off]
+      Front Right: Playback 0 [0%] [-34.50dB] [off]
+    Simple mixer control 'Mic Boost',0
+      Capabilities: volume
+      Playback channels: Front Left - Front Right
+      Capture channels: Front Left - Front Right
+      Limits: 0 - 3
+      Front Left: 0 [0%] [0.00dB]
+      Front Right: 0 [0%] [0.00dB]
+    Simple mixer control 'Beep',0
+      Capabilities: pvolume pswitch
+      Playback channels: Front Left - Front Right
+      Limits: Playback 0 - 31
+      Mono:
+      Front Left: Playback 0 [0%] [-34.50dB] [off]
+      Front Right: Playback 0 [0%] [-34.50dB] [off]
+    Simple mixer control 'Capture',0
+      Capabilities: cvolume cswitch
+      Capture channels: Front Left - Front Right
+      Limits: Capture 0 - 63
+      Front Left: Capture 39 [62%] [12.00dB] [on]
+      Front Right: Capture 39 [62%] [12.00dB] [on]
+    Simple mixer control 'Auto-Mute Mode',0
+      Capabilities: enum
+      Items: 'Disabled' 'Enabled'
+      Item0: 'Enabled'
+    Simple mixer control 'Internal Mic',0
+      Capabilities: pvolume pswitch
+      Playback channels: Front Left - Front Right
+      Limits: Playback 0 - 31
+      Mono:
+      Front Left: Playback 0 [0%] [-34.50dB] [off]
+      Front Right: Playback 0 [0%] [-34.50dB] [off]
+    Simple mixer control 'Internal Mic Boost',0
+      Capabilities: volume
+      Playback channels: Front Left - Front Right
+      Capture channels: Front Left - Front Right
+      Limits: 0 - 3
+      Front Left: 0 [0%] [0.00dB]
+      Front Right: 0 [0%] [0.00dB]
+
+
+    root@het:~# amixer >x
+    root@het:~# . /usr/share/alsa/utils.sh
+    root@het:~# sanify_levels 0   # 0 = card0
+    root@het:~# amixer | diff -U4 x -
+    --- x   2015-09-30 17:31:20.047933924 +1000
+    +++ -   2015-09-30 17:33:49.006993531 +1000
+    @@ -1,23 +1,23 @@
+     Simple mixer control 'Master',0
+       Capabilities: pvolume pvolume-joined pswitch pswitch-joined
+       Playback channels: Mono
+       Limits: Playback 0 - 87
+    -  Mono: Playback 60 [69%] [-20.25dB] [on]
+    +  Mono: Playback 70 [80%] [-12.75dB] [on]
+     Simple mixer control 'Headphone',0
+       Capabilities: pvolume pswitch
+       Playback channels: Front Left - Front Right
+       Limits: Playback 0 - 87
+       Mono:
+    -  Front Left: Playback 87 [100%] [0.00dB] [on]
+    -  Front Right: Playback 87 [100%] [0.00dB] [on]
+    +  Front Left: Playback 61 [70%] [-19.50dB] [on]
+    +  Front Right: Playback 61 [70%] [-19.50dB] [on]
+     Simple mixer control 'Speaker',0
+       Capabilities: pvolume pswitch
+       Playback channels: Front Left - Front Right
+       Limits: Playback 0 - 87
+       Mono:
+    -  Front Left: Playback 87 [100%] [0.00dB] [on]
+    -  Front Right: Playback 87 [100%] [0.00dB] [on]
+    +  Front Left: Playback 70 [80%] [-12.75dB] [on]
+    +  Front Right: Playback 70 [80%] [-12.75dB] [on]
+     Simple mixer control 'Mic',0
+       Capabilities: pvolume pswitch
+       Playback channels: Front Left - Front Right
+       Limits: Playback 0 - 31
+
+
+
+So what **IS** setting the sound levels, if it's not sanify_levels?
+
+    root@het:~# find /*/systemd/system/ -name '*alsa*' -exec ls --color -hld {} +
+    -rw-r--r-- 1 root root 476 Jul  8  2014 /lib/systemd/system/alsa-restore.service
+    -rw-r--r-- 1 root root 526 Jul  8  2014 /lib/systemd/system/alsa-state.service
+    -rw-r--r-- 1 root root 373 Jul  8  2014 /lib/systemd/system/alsa-store.service
+    lrwxrwxrwx 1 root root   9 Jul  8  2014 /lib/systemd/system/alsa-utils.service -> /dev/null
+    lrwxrwxrwx 1 root root  23 Jul  8  2014 /lib/systemd/system/basic.target.wants/alsa-restore.service -> ../alsa-restore.service
+    lrwxrwxrwx 1 root root  21 Jul  8  2014 /lib/systemd/system/basic.target.wants/alsa-state.service -> ../alsa-state.service
+    lrwxrwxrwx 1 root root  21 Jul  8  2014 /lib/systemd/system/shutdown.target.wants/alsa-store.service -> ../alsa-store.service
+
+    root@het:~# grep -vE '^[[:space:]]*(#|$)' /lib/systemd/system/alsa-{restore,state,store}.service
+    /lib/systemd/system/alsa-restore.service:[Unit]
+    /lib/systemd/system/alsa-restore.service:Description=Restore Sound Card State
+    /lib/systemd/system/alsa-restore.service:ConditionPathExists=!/etc/alsa/state-daemon.conf
+    /lib/systemd/system/alsa-restore.service:ConditionPathExists=/var/lib/alsa/asound.state
+    /lib/systemd/system/alsa-restore.service:DefaultDependencies=no
+    /lib/systemd/system/alsa-restore.service:After=alsa-state.service
+    /lib/systemd/system/alsa-restore.service:Before=shutdown.target
+    /lib/systemd/system/alsa-restore.service:Conflicts=shutdown.target
+    /lib/systemd/system/alsa-restore.service:[Service]
+    /lib/systemd/system/alsa-restore.service:Type=oneshot
+    /lib/systemd/system/alsa-restore.service:ExecStart=-/usr/sbin/alsactl -E HOME=/var/run/alsa restore
+
+    /lib/systemd/system/alsa-state.service:[Unit]
+    /lib/systemd/system/alsa-state.service:Description=Manage Sound Card State (restore and store)
+    /lib/systemd/system/alsa-state.service:ConditionPathExists=/etc/alsa/state-daemon.conf
+    /lib/systemd/system/alsa-state.service:DefaultDependencies=no
+    /lib/systemd/system/alsa-state.service:After=sysinit.target
+    /lib/systemd/system/alsa-state.service:Before=shutdown.target
+    /lib/systemd/system/alsa-state.service:Conflicts=shutdown.target
+    /lib/systemd/system/alsa-state.service:[Service]
+    /lib/systemd/system/alsa-state.service:Type=simple
+    /lib/systemd/system/alsa-state.service:ExecStart=-/usr/sbin/alsactl -E HOME=/var/run/alsa -s -n 19 -c rdaemon
+    /lib/systemd/system/alsa-state.service:ExecStop=-/usr/sbin/alsactl -E HOME=/var/run/alsa -s kill save_and_quit
+
+    /lib/systemd/system/alsa-store.service:[Unit]
+    /lib/systemd/system/alsa-store.service:Description=Store Sound Card State
+    /lib/systemd/system/alsa-store.service:ConditionPathExists=!/etc/alsa/state-daemon.conf
+    /lib/systemd/system/alsa-store.service:DefaultDependencies=no
+    /lib/systemd/system/alsa-store.service:Before=shutdown.target
+    /lib/systemd/system/alsa-store.service:[Service]
+    /lib/systemd/system/alsa-store.service:Type=oneshot
+    /lib/systemd/system/alsa-store.service:ExecStart=/usr/sbin/alsactl -E HOME=/var/run/alsa store
+
+    root@het:~# find /var/lib/alsa -ls
+      1559    0 drwxr-xr-x   2 root     root            3 Jul  8  2014 /var/lib/alsa
+    root@het:~# find /etc/alsa -ls
+    find: `/etc/alsa': No such file or directory
+
+Since NEITHER of those state files exist,
+neither alsa-restore.service nor alsa-state.service should have any effect!
+
+Similarly there are udev rules::
+
+    root@het:~# grep -r -e snd -e alsa /*/udev/rules.d
+    /lib/udev/rules.d/50-udev-default.rules:  OPTIONS+="static_node=snd/seq", OPTIONS+="static_node=snd/timer"
+    /lib/udev/rules.d/60-persistent-alsa.rules:ACTION=="remove", GOTO="persistent_alsa_end"
+    /lib/udev/rules.d/60-persistent-alsa.rules:SUBSYSTEM!="sound", GOTO="persistent_alsa_end"
+    /lib/udev/rules.d/60-persistent-alsa.rules:KERNEL!="controlC[0-9]*", GOTO="persistent_alsa_end"
+    /lib/udev/rules.d/60-persistent-alsa.rules:ENV{ID_SERIAL}=="?*", ENV{ID_USB_INTERFACE_NUM}=="?*", SYMLINK+="snd/by-id/$env{ID_BUS}-$env{ID_SERIAL}-$env{ID_USB_INTERFACE_NUM}"
+    /lib/udev/rules.d/60-persistent-alsa.rules:ENV{ID_SERIAL}=="?*", ENV{ID_USB_INTERFACE_NUM}=="", SYMLINK+="snd/by-id/$env{ID_BUS}-$env{ID_SERIAL}"
+    /lib/udev/rules.d/60-persistent-alsa.rules:ENV{ID_PATH}=="?*", SYMLINK+="snd/by-path/$env{ID_PATH}"
+    /lib/udev/rules.d/60-persistent-alsa.rules:LABEL="persistent_alsa_end"
+
+    /lib/udev/rules.d/90-alsa-restore.rules:ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", KERNELS!="card*", TEST=="/usr/sbin", TEST=="/usr/share/alsa", GOTO="alsa_restore_go"
+    /lib/udev/rules.d/90-alsa-restore.rules:GOTO="alsa_restore_end"
+    /lib/udev/rules.d/90-alsa-restore.rules:LABEL="alsa_restore_go"
+    /lib/udev/rules.d/90-alsa-restore.rules:TEST!="/etc/alsa/state-daemon.conf", RUN+="/usr/sbin/alsactl -E HOME=/var/run/alsa restore $attr{device/number}"
+    /lib/udev/rules.d/90-alsa-restore.rules:TEST=="/etc/alsa/state-daemon.conf", RUN+="/usr/sbin/alsactl -E HOME=/var/run/alsa nrestore $attr{device/number}"
+    /lib/udev/rules.d/90-alsa-restore.rules:LABEL="alsa_restore_end"
+
+But that runs alsactl (n)restore iff /etc/alsa/state-daemon.conf exists.
+OH WAIT, it runs alsa restore iff it *doesn't* exist.
+
+So let's test that now::
+
+    root@het:~# reboot -f
+    [...]
+
+    root@het:~# amixer >x
+    root@het:~# echo 1 >/sys/class/sound/hdaudioC0D2/reconfig    # force it to be different
+    root@het:~# amixer >y
+
+    root@het:~# /usr/sbin/alsactl -E HOME=/var/run/alsa restore 0   # pretend to be udev
+    /usr/sbin/alsactl: load_state:1677: Cannot open /var/lib/alsa/asound.state for reading: No such file or directory
+    /usr/sbin/alsactl: sysfs_init:48: sysfs path '/sys' is invalid
+
+    Found hardware: "HDA-Intel" "Realtek ALC662 rev3" "HDA:10ec0662,10ec0662,00100300" "0x10ec" "0x0662"
+    Hardware is initialized using a generic method
+
+    root@het:~# amixer >z
+    root@het:~# diff x z
+
+EXACTLY THE SAME, so that is what is changing the levels from the kernel/hardware default.
+
+And this is where the config lives::
+
+    root@het:~# rm -r /usr/share/alsa/init/
+    root@het:~# /usr/sbin/alsactl -E HOME=/var/run/alsa --file /dev/null restore 0
+    No state is present for card PCH
+    /usr/sbin/alsactl: sysfs_init:48: sysfs path '/sys' is invalid
+
+    /usr/sbin/alsactl: parse:1670: Unable to open file '/usr/share/alsa/init/00main': No such file or directory
+    No state is present for card PCH
+
+17:49 <twb> it's a bit suspicious when udev runs that, its output isn't making it into journald
+17:50 <twb> Oh yes, I remember now -- the /sys thing is because it's looking for a hotplug file that has been gone from the kernel for years.
+17:51 <twb> http://sprunge.us/UYQU <-- notes from last week
+17:51 <twb> I saw those errors, and I just ASSUMED that means alsactl restore had not actually changed the mixer levels.  DERP.
+17:53 <debianuser> twb: "My actual end goal is to set mixer levels to "sensible" values, since I don't have mixer state from last boot (it's diskless) and I don't trust the hardware to do it"   -- if you create your livecds yourself (I do) you can put asound.state with preconfigured values. Or patch heuristics in /usr/share/alsa/init/ :)
+17:54 <twb> debianuser: I can only set asound.state if I know what the hardware will be.  Currently I have ~3 generations of hardware, plus any the customers are plugging in without telling me
+17:55 <twb> But yeah, I can do it in /usr/share/alsa/init/ now I realize that's definitely where the defaults are coming from
+17:59 <debianuser> If you'll come up with some nice patches - send them to alsa-devel mailing list, maybe devs will include them in the next alsa-lib release. :)
+18:00 <twb> The only problem was I couldn't understand what parts of alsa were being used
+18:00 <twb> Well, also checking for /sys/uevent_helper is apparently wrong
+18:02 <debianuser> Why is that? I think it's still used for embedded systems, using busybox mdev...
+18:04 <twb> Ah then #systemd's opinion is biased :-)
+18:04 <debianuser> It's actually a nice idea - you don't have too many uevents once the system is booted, so why spending your RAM for a constantly running udev daemon, if kernel can spawn one for you when its needed?
+18:05 <twb> AIUI because I compiled out uevent_helper, alsactl restore gets confused and thinks /sys isn't there
+
+    disable=(
+        [...]
+        # → Device Drivers → Generic Driver Options
+        # FIXME: still needed in Debian 7.
+        # UPDATE: in Debian 8, systemd v215:README says to disable these.
+        uevent_helper fw_loader_user_helper
+
+    [...]
+    for i in "${disable[@]}"; do all+=(-d "$i"); done
+
+    [...]
+    scripts/config "${all[@]}"
+
+    [...]
+    make deb-pkg
+
+
+18:06 <twb> http://sprunge.us/SeiX  I disabled it because the systemd readme explicitly told me to
+18:07 <twb> I should probably just report that as a bug and stop caring
+18:13 <debianuser> systemd has a tendency to declare obsolete everything not invented by it, and make usage of alternatives harder...
+18:14 <twb> You don't need to convince me they're crazy :-)
+18:14 <twb> I'm only touching it because Debian tech-ctte made it the default and I expected adopting it to be easier than forcing debootstrap to install sysvinit
+18:14 <twb> (TL;DR: it wasn't.)
+18:15 <twb> But unless alsactl actually *uses* event_helper, I don't think that's a sensible thing to check for
+18:16 <debianuser> I'm not sure if they're crazy... Maybe they just afraid that alternatives are actually better or easier to use so they're trying to hide that by making life harder for alternatives... ;)

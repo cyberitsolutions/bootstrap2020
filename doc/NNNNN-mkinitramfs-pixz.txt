@@ -1,0 +1,283 @@
+Compressing The Ramdisk
+=======================
+
+:Date: Dec 2015
+:References:
+  https://www.kernel.org/doc/Documentation/xz.txt
+  https://bugs.debian.org/592519 (COMPRESS can't take options)
+  https://bugs.debian.org/808291 (pxz ignores -Ccrc32)
+
+
+Background
+==========
+We use xz/LZMA2 (not gzip/DEFLATE) because the desktops are powerful
+enough to still decompress efficiently, and the smaller size means
+TFTP download completes quicker. ::
+
+    bootstrap:60:chroot $t apt-get install initramfs-tools xz-utils
+    bootstrap:62:>$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=xz
+
+    build-inmate-kernel:enable=( ... rd_xz ... )
+    build-inmate-kernel:disable=( ... rd_{gzip,bzip2,lzma,lzo,lz4} ... )
+
+
+The Problem
+===========
+I observed that hugo (8GB RAM, 2 cores) took 30min to build an SOE,
+where zygon (10GB RAM, 4 cores) took 10min to build the same SOE.
+
+I noticed the ramdisk was taking a prodigiously long time.
+
+In a typical desktop SOE, the ramdisk is rebuilt *SIX TIMES*.
+Each one takes around 26 seconds on zygon,
+i.e. this step constitutes around ONE-QUARTER OF THE TOTAL BUILD TIME.
+
+Three of the six happen during a single apt-get install,
+because even though dpkg "triggers" are supposed to avoid re-doing such a costly job,
+we install so many packages (634 packages, 366 MB download, 1,360 MB unpacked)
+that dpkg "batches" them into smaller groups,
+& the triggers run per group, not per apt-get invocation.
+
+BTW, mkinitramfs recently went from "xz -8" to "xz [-6]".
+
+* Can we speed up prod boots using -9e?
+* Can we speed up dev builds using -1?
+* Can we speed up dev builds using pxz/pixz (use all cores)?
+
+NB: we already speed up dev builds by patching in the use of
+proxy.cyber.com.au to download the flash binary, which saves 50 to 90
+seconds per build.
+
+NB: we cannot simply do COMPRESS=gzip to speed up dev builds,
+because we disable CONFIG_RD_GZIP support in inmate kernels.
+
+
+The Solution
+============
+
+Can we speed up prod boots using -9e?
+-------------------------------------
+In theory we just do this::
+
+    - >$t/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz
+    + >$t/etc/initramfs-tools/conf.d/xz echo COMPRESS=\'xz -1Ccrc32\'    # fast
+    + >$t/etc/initramfs-tools/conf.d/xz echo COMPRESS=\'xz -9Ccrc32\'    # small
+
+Due to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=592519#20
+we need a wrapper to pass arguments::
+
+    - >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=xz
+    + >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=/tmp/592519
+    + >$t/tmp/592519                          echo exec xz -9eCcrc32 && chmod +x $t/tmp/592519
+
+Can we speed up dev builds using -1?
+------------------------------------
+Then during development builds, just do::
+
+      git checkout prisonpc-desktop
+    + sed -i s/-9e/-0/ bootstrap
+      ./bootstrap
+
+
+Can we speed up dev builds using pxz/pixz (use all cores)?
+----------------------------------------------------------
+We prefer pxz over pixz because:
+
+* pxz runs faster;
+* pxz is smaller;
+* pxz is ONLY the compressor; inmates can't unxz.
+* pixz includes weird tar stuff.
+
+Further, the kernel *MUST* have CRC32:
+
+* pxz accepts -Ccrc32.
+* pixz has no equivalent.
+
+So we get this::
+
+    - chroot $t apt-get install initramfs-tools xz-utils
+    + chroot $t apt-get install initramfs-tools pxz
+
+    - >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=xz
+    + >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=/tmp/592519
+    + >$t/tmp/592519                          echo exec pxz -9eCcrc32 && chmod +x $t/tmp/592519
+
+Due to https://bugs.debian.org/808291,
+pxz actually ignores -Ccrc32 and produces CRC64.
+This means pxz ramdisks *DO NOT WORK*.
+
+Contrariwise, pixz defaults to CRC32, so::
+
+    - chroot $t apt-get install initramfs-tools xz-utils
+    + chroot $t apt-get install initramfs-tools pixz
+
+    - >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=xz
+    + >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=/tmp/592519
+    + >$t/tmp/592519                          echo exec pixz -9et && chmod +x $t/tmp/592519
+
+
+
+Is It Worth It?
+===============
+
+Can we speed up prod boots using xz -9e?
+----------------------------------------
+The command I used was::
+
+    time curl -s --tftp-blksize 1408 tftp://prisonpc/FILE | DECOMPRESS >/dev/null
+
+NB: due to using bash's *builtin* time, this is the time for both
+download and decompress steps, which run in parallel.
+
+Testing download + decompression time on het (H81):
+
+=====  =====  ======
+Time   Size   Type
+=====  =====  ======
+51.6s  91MiB  cat
+16.2s  33MiB  gzip
+15.8s  28MiB  xz -1
+14.7s  26MiB  xz -2
+13.3s  24MiB  xz -3
+12.9s  23MiB  xz -4
+12.5s  23MiB  xz -5
+12.7s  23MiB  xz
+12.6s  23MiB  xz -6
+12.5s  22MiB  xz -7
+12.6s  22MiB  xz -8
+12.2s  22MiB  xz -9
+=====  =====  ======
+
+A full boot takes around 60s, so
+
+* xz    is 6%   faster than gzip.
+* xz -9 is 0.8% faster than xz.
+* xz -1 is 0.7% faster than gzip.
+
+In other words, with respect to boot speed,
+
+* Using xz    instead of gzip is     worth while (just).
+* Using xz -1 instead of gzip is NOT worth while.
+* Using xz -9 instead of   xz is NOT worth while.
+
+
+Can we speed up dev builds using -1?
+------------------------------------
+See next question.
+
+
+Can we speed up dev builds using pxz/pixz (use all cores)?
+----------------------------------------------------------
+Since a desktop SOE compiles the ramdisk about five times,
+I tested doing update-initramfs five times.
+
+The command I used was::
+
+    apt-get install time xz-utils pixz pxz
+    >$t/etc/initramfs-tools/conf.d/xz       echo COMPRESS=/tmp/592519  # https://bugs.debian.org/592519
+    >$t/tmp/592519                          echo exec CANTHAPPEN && chmod +x $t/tmp/592519
+
+    for i in {pxz,xz}' -'{1,,9e}Ccrc32 'pixz -t'{1,,9e};
+    do echo $i;
+       echo exec $i >/tmp/592519;
+       command time -f %E update-initramfs -u -k3.16.7-ckt11inmate{,,,,} |& tail -1;
+       du -h /boot/initrd.img-3.16.7-ckt11inmate | cut -d$'\t' -f1;
+    done | tac | paste -sd'  \n'
+
+Testing update-initramfs on branch "prisonpc-desktop-amc" on hugo (2 cores, 8GB RAM):
+
+=====  =======  =======
+Size   Time     Command
+=====  =======  =======
+54MiB  0:04.72  cat
+18MiB  0:08.65  pxz  -0  -Ccrc32
+17MiB  0:09.71  pxz  -1  -Ccrc32
+18MiB  0:11.12  pixz -0  -t
+18MiB  0:11.46  xz   -0  -Ccrc32
+17MiB  0:14.13  pixz -1  -t
+17MiB  0:14.81  xz   -1  -Ccrc32
+15MiB  0:30.13  pxz      -Ccrc32
+15MiB  0:46.46  pixz     -t
+15MiB  0:48.09  xz       -Ccrc32
+14MiB  0:52.95  pxz  -9e -Ccrc32
+14MiB  1:03.90  xz   -9e -Ccrc32
+14MiB  1:03.91  pixz -9e -t
+=====  =======  =======
+
+Testing update-initramfs on branch "prisonpc-desktop-amc" on zygon (4 cores, 10GB RAM):
+
+=====  =======  =======
+Size   Time     Command
+=====  =======  =======
+54MiB  0:03.78  cat
+17MiB  0:05.73  pxz  -1  -Ccrc32
+17MiB  0:08.19  pixz -1  -t
+17MiB  0:08.69  xz   -1  -Ccrc32
+15MiB  0:15.81  pxz      -Ccrc32
+15MiB  0:25.73  pixz     -t
+15MiB  0:27.03  xz       -Ccrc32
+14MiB  0:30.35  pxz  -9e -Ccrc32
+14MiB  0:35.00  pixz -9e -t
+14MiB  0:35.13  xz   -9e -Ccrc32
+=====  =======  =======
+
+So the implications are:
+
+* pxz -1  is about 35% faster than xz -1.
+* pxz     is about 40% faster than xz.
+* pxz -9e is about 15% faster than xz -9e.
+* pixz is *not* significantly faster than xz, with any options.
+* xz -1 is about 70% faster than xz -6.
+
+Assuming a build time of ~20min for prisonpc-desktop-amc on zygon,
+
+* Using pxz -1 instead of xz makes each build 1.8% faster.
+* Using  xz -1 instead of xz makes each build 1.5% faster.
+
+BOTE calculation for hugo is same magnitude:
+
+* save 1min of 30min build = 3.3%
+* save 1min of 45min build = 2.2%
+
+THEORY:
+With -9, each pxz thread gets a ~200MiB chunk to compress.
+We have <200MiB, so pxz -9 is effectively single-threaded.
+With -1, the chunks are smaller so we benefit from zygon's 4 cores.
+
+
+Overall Build Time
+------------------
+On zygon, stock prisonpc-desktop branch (thus, xz -6)::
+
+    2.1M    live/boot/vmlinuz
+    15M     live/boot/initrd.img
+    312M    live/boot/filesystem.squashfs
+    328M    total
+
+    real    9m11.121s
+    user    19m24.064s
+    sys     0m56.928s
+
+On zygon, prisonpc-desktop branch w/ pixz -9et::
+
+    2.1M    live/boot/vmlinuz
+    14M     live/boot/initrd.img
+    312M    live/boot/filesystem.squashfs
+    328M    total
+
+    real    9m14.007s
+    user    19m27.568s
+    sys     0m56.640s
+
+On zygon, prisonpc-desktop branch w/ pixz -0t::
+
+    2.1M    live/boot/vmlinuz
+    17M     live/boot/initrd.img
+    312M    live/boot/filesystem.squashfs
+    330M    total
+
+    real    8m48.502s
+    user    19m2.040s
+    sys     0m58.300s
+
+The prisonpc-desktop branch builds the ramdisk *THREE TIMES* per build.

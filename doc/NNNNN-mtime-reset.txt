@@ -1,0 +1,17 @@
+Doing this shortly before mksquashfs makes it *MUCH* easier to see
+which files are modified at boot time:
+
+    chroot $t find / -xdev -exec touch -hd2000-01-01 {} +
+
+It also makes it harder for inmates to learn that e.g. libfoo.so is
+older than that vulnerability that came out in 2012.
+
+
+Unfortunately it also somehow invalidates fontconfig's metadata cache,
+causing it to download all fonts at boot time, to display xdm & aup.
+
+This means an extra ~80MiB is downloaded every boot,
+which is a significant proportion of the overall download footprint.
+
+Therefore I am not enabling it in production,
+just documenting it here for debugging.
