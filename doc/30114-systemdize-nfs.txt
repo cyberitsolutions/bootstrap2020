@@ -1,0 +1,80 @@
+.. IMPORTANT::
+
+   The rootfs will JUST WORK,
+   because /usr/lib/klibc/bin/nfsmount mounts the rootfs,
+   and it hard-codes the ports (no rpcbind) and doesn't lock (no rpc.statd).
+
+   This is about problems mounting /home & /srv.
+   For those we WANT locking and we NEED quota querying. (FIXME: right?)
+
+
+
+
+THE PROBLEM
+====================
+
+Using stock jessie configuration, rpcbind isn't started at boot::
+
+    systemd[1]: Job rpcbind.service/start deleted to break ordering cycle starting with basic.target/start
+
+This is:
+
+    https://bugs.debian.org/748074
+
+NFS packages in Debian Jessie use sysv jobs.
+NFS packages in Ubuntu Wily use backported systemd units, from NFS git.
+
+    http://git.linux-nfs.org/?p=steved/nfs-utils.git;a=tree;f=systemd
+
+rpcbind upstream doesn't include any init code at all.
+rpcbind 0.2.3+ uses sd_notify.
+
+    git://linux-nfs.org/~steved/rpcbind   (no HTTP version)
+    https://projects.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/rpcbind
+    http://patches.ubuntu.com/r/rpcbind/rpcbind_0.2.1-6ubuntu3.patch
+
+
+
+MINIMAL FIX
+====================
+
+We're using NFSv3 because it's what we know.
+We'll consider NFSv4 after upgrading the server from lucid to jessie.
+
+For an NFSv3 client mount with locking, we need rpcbind & rpc.statd.
+We do NOT need:
+
+* rpc_pipefs  (for v4 & krb)
+* rpc.idmapd  (for v4)
+* rpc.gssd    (for krb)
+* rpc.rquotad (for server)
+
+If we do not start rpc.statd explicitly,
+nfsmount(8nfs-utils) will run /usr/sbin/start-statd which is essentially::
+
+    exec rpc.statd --no-notify     # in Debian, or
+
+    systemctl rpc.statd start ||   # in Ubuntu & git
+    exec rpc.statd --no-notify
+
+The rpcbind process *MUST* be accepting connections before we try to mount.
+That means Type=single is *NOT SUFFICIENT* because rpcbind doesn't do sd_notify (fixed in 0.2.3).
+
+Instead we *MUST* either use rpcbind.socket or Type=forking.
+(The latter works because systemd waits until the fork happens to consider rpcbind "ready",
+and rpcbind finishes binding before it forks.)
+
+We *MUST* also tell systemd that NFS mounts need to start & wait for rpcbind.
+
+Does "systemctl add-wants" in newer versions of systemd do something like this?
+
+    ln -s ../rpcbind.service /etc/systemd/system/srv-share.mount.wants/
+
+
+WE DO NOT NEED RPCBIND -W (WARMSTART)
+----------------------------------------
+
+14:15 <twb> Does anybody understand what /run/rpcbind/*.xdr _do_ ?
+14:16 <twb> AFAICT they're only used for rpcbind -w "warm start", which serializes rpcbind's internal state for when you restart rpcbind
+14:18 <twb> Yeah they are.  So if I don't care about restarting rpcbind separately from a full reboot, it doesn't matter to me AT ALL.
+14:18 <twb> During shutdown rpcbind will whinge that it couldn't create the files, but they're in a tmpfs anyways
