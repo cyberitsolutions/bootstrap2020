@@ -1,0 +1,123 @@
+lirc in debian is too old to support socket activation.
+
+PLEASE PLEASE PLEASE can we upgrade it --- or abandon it?
+
+ATTEMPT #1:
+
+    >$t/etc/systemd/system/lirc.service     printf %s\\n [Service] ExecStart='/usr/sbin/lircd -n' {RuntimeDirectory,User}=lirc [Unit] ConditionPathExists=/dev/lirc0
+    >$t/etc/systemd/system/lirc.socket      printf %s\\n [Socket] ListenStream=/run/lirc/lircd SocketUser=lirc
+    >>$t/lib/systemd/*/sockets.target       printf %s\\n [Unit] Wants=lirc.socket
+
+    # This is slightly less awful than using User=daemon.
+    # We don't just use "--ingroup video" because lircd needs access to /dev/lirc0,
+    # but we don't want inmates to have write access to /dev/fb0 &c.
+    chroot $t adduser --system --home /nonexistent --no-create-home --group lirc
+    chroot $t adduser lirc video
+
+FAILED #1:
+
+    lircd 0.9.0 wants to create /run/lirc/lircd.pid, but /run/lirc is root:root 755.
+
+ATTEMPT #2:
+
+    >$t/etc/systemd/system/lirc.service     printf %s\\n [Service] ExecStart='/usr/sbin/lircd -n' {RuntimeDirectory,User}=lirc [Unit] ConditionPathExists=/dev/lirc0
+    >>$t/lib/systemd/*/multi-user.target    printf %s\\n [Unit] Wants=lirc.service
+
+    # This is slightly less awful than using User=daemon.
+    chroot $t adduser --system --home /nonexistent --no-create-home --group lirc
+    >$t/lib/udev/rules.d/51-lirc.rules     printf 'KERNEL=="lirc[0-9]*", GROUP="lirc"'
+
+FAILED #2:
+
+    lircd 0.9.0 starts, but when you try to connect to it:
+
+    root@het:~# adduser p lirc                  # simulate granting the user access at XDM login time
+
+    root@het:~# su p -s /usr/bin/python -c 'import pylirc; pylirc.init("UPMC"); print pylirc.nextcode(); pylirc.exit()'
+    Sep 24 17:46:12 het lircd[4549]: lircd-0.9.0-pre1[4549]: accepted new client on /var/run/lirc/lircd
+    Sep 24 17:46:12 het lircd-0.9.0-pre1[4549]: accepted new client on /var/run/lirc/lircd
+    Sep 24 17:46:12 het lircd-0.9.0-pre1[4549]: could not get file information for /dev/lirc
+    Sep 24 17:46:12 het lircd-0.9.0-pre1[4549]: default_init(): No such file or directory
+    Sep 24 17:46:12 het lircd-0.9.0-pre1[4549]: Failed to initialize hardware
+    Sep 24 17:46:12 het lircd-0.9.0-pre1[4549]: removed client
+
+    root@het:~# find /dev/lirc* /run/lirc -ls
+      1967    0 crw-rw----   1 root     lirc              Sep 24 16:39 /dev/lirc0
+     42027    0 drwxr-xr-x   2 lirc     lirc           80 Sep 24 17:38 /run/lirc
+     42031    0 srw-rw-rw-   1 lirc     lirc            0 Sep 24 17:38 /run/lirc/lircd
+     42029    4 -rw-r--r--   1 lirc     lirc            5 Sep 24 17:38 /run/lirc/lircd.pid
+
+    We know pylirc doesn't need /dev/lirc,
+    because of attempt (0).
+
+
+ATTEMPT #0 (first attempt, but horribly insecure):
+
+    >$t/etc/systemd/system/lirc.service     printf %s\\n [Service] Type=forking ExecStart=/usr/sbin/lircd   [Unit] After=systemd-tmpfiles-setup.service ConditionPathExists=/dev/lirc0
+    >$t/etc/tmpfiles.d/lirc.conf            echo d /run/lirc 700
+    >>$t/lib/systemd/*/multi-user.target    printf %s\\n [Unit] Wants=lirc.service
+
+FAILED #0:
+
+    The end user process (upmc) needs write access to /run/lirc/lircd socket.
+    The permissions on /run/lirc/ are too strict for that.
+
+    root@het:~# chmod 700 /run/lirc/
+    root@het:~# su nobody -s /usr/bin/python -c 'import pylirc; pylirc.init("UPMC"); print pylirc.nextcode(); pylirc.exit()'
+    UPMC: could not connect to socket
+    UPMC: Permission denied
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+    RuntimeError: Unable to initialize lirc!
+    root@het:~# chmod 755 /run/lirc/
+    root@het:~# su nobody -s /usr/bin/python -c 'import pylirc; pylirc.init("UPMC"); print pylirc.nextcode(); pylirc.exit()'
+    None
+
+DO NOT START UNLESS WE HAVE TO
+========================================
+
+## FIXME: ADDING THE FOLLOWING DID NOT WORK RELIABLY: [Unit] ConditionPathExists=/dev/lirc0
+## INSTEAD, CREATE A LIRC RULE TO MAKE /dev/lirc0 A SYSTEMD .DEVICE UNIT.
+###>$t/lib/systemd/system/lirc.service     printf %s\\n [Service]              ExecStart='/usr/sbin/lircd -n' RuntimeDirectory=lirc
+# lircd 0.9.0~pre1 is a GAPING SECURITY HOLE, so don't start it unless there's an IR receiver.
+# Like the upstream version of this file, we DO NOT SUPPORT multiple receivers.
+>$t/lib/systemd/system/lirc.service     printf %s\\n [Service]              ExecStart='/usr/sbin/lircd -n' RuntimeDirectory=lirc
+>$t/lib/udev/rules.d/85-lirc.rules      printf 'SUBSYSTEM=="lirc", KERNEL=="lirc0", TAG+="systemd", ENV{SYSTEMD_WANTS}+="lirc.service"'
+
+
+DO NOT HARD-CODE LIRC0?
+========================================
+
+# lircd 0.9.0~pre1 is a GAPING SECURITY HOLE, so don't start it unless there's an IR receiver.
+# Like the upstream version of this file, we DO NOT SUPPORT multiple receivers.
+## FIXME: by default lircd listens /dev/lirc NOT /dev/lirc0.  Why doesn't the alias get created?
+## FIXME: when I unplug the IR, lircd should stop.  THIS IS NOT THE CASE.  src/core/device.c DOES NOT SUPPORT anything like ENV{SYSTEMD_REQUIRES}.
+>$t/lib/systemd/system/lirc.service     printf %s\\n [Service] ExecStart='/usr/sbin/lircd -n -d /dev/lirc0' RuntimeDirectory=lirc
+>$t/lib/udev/rules.d/85-lirc.rules      printf 'SUBSYSTEM=="lirc", KERNEL=="lirc0", SYMLINK+="lirc", OPTIONS+="link_priority=-100", TAG+="systemd", ENV{SYSTEMD_WANTS}+="lirc.service"'
+
+#udev
+13:03 <twb> http://sprunge.us/JBTN   Why is this creating /dev/lirc0 but not /dev/lirc ?
+13:04 <twb> AFAICT I'm doing it exactly the same way as SUBSYSTEM=="rtc", KERNEL=="rtc0", SYMLINK+="rtc", OPTIONS+="link_priority=-100"
+13:04 <twb> Hm, maybe I *must* set link_priority?
+13:05 <twb> (I have lots of other existing upstream rules that set SYMLINK without setting link_priority.)
+13:07 <twb> I give up for now, I'll just hard-code lircd to talk to /dev/lirc0 instead of its /dev/lirc default.
+
+#systemd
+12:02 <twb> Also: how do I tell systemd to *stop* frobozzd@sda.service when /dev/sda is unplugged?
+12:03 <twb> (Maybe that is SYSTEMD_REQUIRES instead of SYSTEMD_WANTS
+12:50 <twb> Grr! Unplugging the device doesn't stop the associated daemon
+12:54 <twb> Fucking thing.  You can have Wants or Requires, but in udev you can't have SYSTEMD_REQUIRES, only SYSTEMD_WANTS.
+12:55 <twb> I can clearly see it in src/core/device.c
+12:55 <twb> Doing ACTION=="remove", ..., RUN+="systemctl stop frobozzd.service" is awful
+13:22 <twb> systemd.unit.5 mentions using BindsTo= to automatically stop a .service when its related .device disappears, but I can't exactly add BindsTo=sys-devices-pci0000:00-0000:00:14.0-usb3-3\x2d2-3\x2d2:1.0-rc-rc0-lirc0.device
+13:29 <twb> Maybe I could do that if I added ENV{SYSTEMD_ALIAS}=lirc0.device
+13:30 <twb> Make that ENV{SYSTEMD_ALIAS}="/dev/lirc0"
+13:34 <twb> Yeah I can see something like that happening for rfkill:
+13:34 <twb> archlinux-systemd-FINAL/usr/lib/systemd/system/systemd-rfkill@.service:BindsTo=sys-subsystem-rfkill-devices-%i.device
+13:34 <twb> archlinux-systemd-FINAL/usr/lib/udev/rules.d/99-systemd.rules:SUBSYSTEM=="rfkill", TAG+="systemd", IMPORT{builtin}="path_id", ENV{SYSTEMD_ALIAS}+="/sys/subsystem/rfkill/devices/%k", ENV{SYSTEMD_WANTS}+="systemd-rfkill@$name.service"
+13:35 <twb> (Strictly speaking I should be dealing with >1 lirc device, but I can't be arsed handling with teaching liblircclient0 to try connecting to multiple sockets.)
+
+
+11:59 <twb> Unrelated question: suppose I have frobozzd@.service which runs one instance per inserted disk.  How do I tell the udev integration to start frobozzd@<instance> instead of a general frobozzd ?
+11:59 <twb> Is it just ENV{SYSTEMD_WANTS}+="frobozzd@$NAME.service"
+(UPDATE: it is)
