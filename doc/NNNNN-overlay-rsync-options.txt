@@ -1,0 +1,139 @@
+Short version: when we stopped running daemons *as root*,
+we realized our rsync of overlay/ was not DWIMming.
+It looks like the least-wrong option set is:
+
+    rsync -ai --no-{o,g,p} --executability --inplace
+
+
+
+OK so -- presumably because it might include a password -- /etc/nslcd.conf defaults to rw-r----- root:nslcd.
+When our rsync -rli runs, it changes it to root:root, and then this:
+
+    >$t/lib/systemd/system/nslcd.service printf %s\\n [Service] ExecStart='/usr/sbin/nslcd -n' {RuntimeDirectory,User}=nslcd
+
+yields:
+
+    nslcd: cannot open config file (/etc/nslcd.conf): Permission denied
+
+So either we need to fix how we're calling rsync (so it doesn't always write root:root),
+or we need to make it world-readable.  (Or chgrp afterward.)
+
+I think the fix is to change rsync to this:
+
+    rsync -ai --no-super
+
+Hm, this test says no:
+
+    # rm -f x y z; echo x >x; echo y >y; chmod 640 y; chown -h nobody: y; ls -hld x y; rsync -ai --no-super x y; rsync -ai --no-super x z; ls -hld x y z
+    -rw-r--r-- 1 root   root    2 Sep 28 15:00 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 15:00 y
+    .f...p.g... x
+    >f+++++++++ x
+    -rw-r--r-- 1 root   root 2 Sep 28 15:00 x
+    -rw-r--r-- 1 nobody root 2 Sep 28 15:00 y
+    -rw-r--r-- 1 root   root 2 Sep 28 15:00 z
+
+This looks OK tho:
+
+    root@zygon:/tmp# rm -f x y z; echo x >x; echo y >y; chmod 640 y; chown -h nobody: y; ls -hld x y; rsync -ai --no-{o,g,p} x y; rsync -ai --no-{o,g,p} x z; ls -hld x y z
+    -rw-r--r-- 1 root   root    2 Sep 28 15:01 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 15:01 y
+    >f+++++++++ x
+    -rw-r--r-- 1 root   root    2 Sep 28 15:01 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 15:01 y
+    -rw-r--r-- 1 root   root    2 Sep 28 15:01 z
+
+Can I use --chmod to copy the X bit without copying any other bits?
+Since git only preserves X and not the rest,
+and it matters for /usr/local/bin/ & stuff.
+
+This doesn't add execute bit to files that already existed,
+but I think it's as good as I'm going to get:
+
+    root@zygon:/tmp# rm -f x y z; echo x >x; echo y >y; chmod 2750 x; chmod 640 y; chown -h nobody: y; ls -hld x y; rsync -ai --no-{o,g,p} x y; rsync -ai --no-{o,g,p} x z; ls --color -hld x y z   -rwxr-s--- 1 root   root    2 Sep 28 16:45 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 16:45 y
+    >f+++++++++ x
+    -rwxr-s--- 1 root   root    2 Sep 28 16:45 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 16:45 y
+    -rwxr-x--- 1 root   root    2 Sep 28 16:45 z
+
+FIXME: what about --executability?
+
+Yes, that seems best:
+
+    # rm -f x y z; echo x >x; echo y >y; chmod 2750 x; chmod 640 y; chown -h nobody: y; ls -hld x y; rsync -ai --no-{o,g,p} --executability x y; rsync -ai --no-{o,g,p} x z; ls --color -hld x y z
+    -rwxr-s--- 1 root   root    2 Sep 28 17:12 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 17:12 y
+    .f...p..... x
+    >f+++++++++ x
+    -rwxr-s--- 1 root   root    2 Sep 28 17:12 x
+    -rwxr-x--- 1 nobody nogroup 2 Sep 28 17:12 y
+    -rwxr-x--- 1 root   root    2 Sep 28 17:12 z
+
+
+    # rm -f x y z; echo x >x; echo y >y; chmod 2755 x; chmod 640 y; chown -h nobody: y; ls -hld x y; rsync -ai --no-{o,g,p} --executability x y; rsync -ai --no-{o,g,p} x z; ls --color -hld x y z
+    -rwxr-sr-x 1 root   root    2 Sep 28 17:13 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 17:13 y
+    .f...p..... x
+    >f+++++++++ x
+    -rwxr-sr-x 1 root   root    2 Sep 28 17:13 x
+    -rwxr-x--- 1 nobody nogroup 2 Sep 28 17:13 y
+    -rwxr-xr-x 1 root   root    2 Sep 28 17:13 z
+
+    # rm -f x y z; echo x >x; echo y >y; chmod 700 x; chmod 640 y; chown -h nobody: y; ls -hld x y; rsync -ai --no-{o,g,p} --executability x y; rsync -ai --no-{o,g,p} x z; ls --color -hld x y z
+    -rwx------ 1 root   root    2 Sep 28 17:14 x
+    -rw-r----- 1 nobody nogroup 2 Sep 28 17:14 y
+    .f...p..... x
+    >f+++++++++ x
+    -rwx------ 1 root   root    2 Sep 28 17:14 x
+    -rwxr-x--- 1 nobody nogroup 2 Sep 28 17:14 y
+    -rwx------ 1 root   root    2 Sep 28 17:14 z
+
+AAAAARGH it's still not working!
+
+    root@zygon:~# chroot /tmp/bootstrap/live ls -l /etc/nslcd.conf
+    -rw-r----- 1 root nslcd 682 Sep 29 11:29 /etc/nslcd.conf
+    root@zygon:~# rsync -ai --no-{o,g,p} --executability /root/twb-bootstrap/overlay/ /tmp/bootstrap/live/
+    .d..t...... etc/
+    >f.st...... etc/nslcd.conf
+    .d..t...... usr/share/
+    root@zygon:~# chroot /tmp/bootstrap/live ls -l /etc/nslcd.conf
+    -rw-r----- 1 root root 383 Sep  9 12:22 /etc/nslcd.conf
+
+And it turns out to be because the earlier test was still broken --- because x and y were created in the same second, their mtimes were the same.
+And "x" and "y" are the same size, so the contents isn't rewritten.
+
+    root@zygon:~# rm -f x y z; echo x >x; echo yy >y; chmod 700 x; chmod 640 y; chgrp -h nogroup y; ls -hld x y; rsync -ai --no-{o,g,p} --executability x y; rsync -ai --no-{o,g,p} x z; ls --color -hld x y z
+    -rwx------ 1 root root    2 Sep 29 11:41 x
+    -rw-r----- 1 root nogroup 3 Sep 29 11:41 y
+    >f.s.p..... x
+    >f+++++++++ x
+    -rwx------ 1 root root 2 Sep 29 11:41 x
+    -rwxr-x--- 1 root root 2 Sep 29 11:41 y
+    -rwx------ 1 root root 2 Sep 29 11:41 z
+
+    root@zygon:~# rm -f x y z; echo x >x; echo y >y; chmod 700 x; chmod 640 y; chgrp -h nogroup y; ls -hld x y; rsync -ai --no-{o,g,p} --executability x y; rsync -ai --no-{o,g,p} x z; ls --color -hld x y z
+    -rwx------ 1 root root    2 Sep 29 11:41 x
+    -rw-r----- 1 root nogroup 2 Sep 29 11:41 y
+    .f...p..... x
+    >f+++++++++ x
+    -rwx------ 1 root root    2 Sep 29 11:41 x
+    -rwxr-x--- 1 root nogroup 2 Sep 29 11:41 y
+    -rwx------ 1 root root    2 Sep 29 11:41 z
+
+So I think there's just no way to make this work after all.  SIIIIIIGH.
+
+
+OH NO.  NO NO NO NO NO.  I AM SOOOOOO BAD.
+
+This works because it writes OVER the existing file,
+instead of creating a new one and moving it over the top.
+
+    root@zygon:~# rm -f x y z; echo x >x; echo yy >y; chmod 700 x; chmod 640 y; chgrp -h nogroup y; ls -hld x y; rsync -ai --no-{o,g,p,super} --inplace --executability x y; rsync -ai --no-{o,g,p,super} x z; ls --color -hld x y z
+    -rwx------ 1 root root    2 Sep 29 11:42 x
+    -rw-r----- 1 root nogroup 3 Sep 29 11:42 y
+    >f.s.p..... x
+    >f+++++++++ x
+    -rwx------ 1 root root    2 Sep 29 11:42 x
+    -rwxr-x--- 1 root nogroup 2 Sep 29 11:42 y
+    -rwx------ 1 root root    2 Sep 29 11:42 z
