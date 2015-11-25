@@ -1,0 +1,343 @@
+History of Render Safe Procedures for Dangerous Upstream Systemd Units
+======================================================================
+
+By default, Debian 8 includes a bunch of systemd stuff we don't want.
+This document chronicles my attempts to deal with that.
+
+It's here so that I can remove it from the *code* history,
+where it is confusing, misleading, and dissonant.
+
+
+27 July 2015
+------------
+The obvious primary target is the gettys (was was /etc/inittab).
+We don't want inmates having access to a REPL,
+because experimenting is much easier/faster with a REPL.
+
+Starting from this sysvinit lockdown::
+
+    sed -i /getty/d             $t/etc/inittab  # Disable console access
+    sed -i 's/sulogin/halt -f/' $t/etc/inittab  # Disable emergency shell
+
+I tried forcing a reboot whenever some services were started::
+
+    for i in console-getty.service console-shell.service container-getty@.service
+    do  install -dm700 $t/etc/systemd/system/"$i".d
+        >$t/etc/systemd/system/"$i".d/fuck-off.conf printf %s\\n [Service] ExecStart='/sbin/poweroff -f'
+    done
+
+This didn't work; I don't remember why.
+
+
+30 Jul 2015 - 13 Aug 2015
+-------------------------
+After reading some more systemd documentation,
+I tried using disable & mask::
+
+    chroot $t systemctl disable getty@tty
+    chroot $t systemctl mask    getty-static getty.target
+
+I was confused by the complete lack of output from "mask".
+
+
+.. WARNING:: if you don't specify the "unit type" (.foo suffix)
+             systemctl assumes you meant .service.
+             For concision here I've omitted .service initially,
+             though originally I didn't realize this until 11 Nov 2015.
+
+This approach seemed to be working,
+so I started adding more rules to it::
+
+    xs=(
+        console-getty
+        console-shell
+        container-getty@
+        emergency
+        getty-static
+        rescue
+        serial-getty@
+        getty@tty1
+        getty@
+    )
+    chroot $t systemctl disable "${xs[@]}"
+    chroot $t systemctl mask    "${xs[@]}"
+
+I extended the list to add more entries::
+
+    xs+=(sys-kernel-debug.mount
+         dev-mqueue.mount            # FIXME: test
+         #dev-shm.mount              # UPDATE: DOES NOT WORK
+         proc-sys-fs-binfmt_misc.automount
+         sys-kernel-config.mount
+         systemd-readahead-collect)
+
+Since "systemctl disable" just runs the [Install] section in reverse,
+i.e. deleting symlinks like this::
+
+    /lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer -> ../systemd-tmpfiles-clean.timer
+
+I determined it was useless.
+I stopped doing it, and ONLY did "systemctl mask"::
+
+    xs=(...)
+    chroot $t systemctl mask "${xs[@]}"
+
+I extended the list further::
+
+    # Xorg depends on keyboard-configuration because it uses the settings in /etc/default/keyboard.
+    # It DOES NOT use these two scripts, which just run "setupcon --save" and "setupcon -k".
+    # Since setupcon ("kbd" package) isn't installed on desktop SOEs, they're NOOPs.
+    xs+=(keyboard-setup console-setup)
+
+
+19 Aug 2015
+-----------
+When you log in, if you pass through libpam_systemd.so,
+two things happen:
+
+* /run/user/<UID> is set up as your XDG_RUNTIME_DIR,
+  similar to libpam_tmpdir.so
+
+* A "user" instance of systemd is started,
+  similar to how dbus has a "system dbus" and a "session dbus".
+
+The systemd instance is a separate process (not PID 1),
+running as your user (not root).  It reads from /*/systemd/user/,
+but it *also* reads from ~/.config/systemd/.
+
+This lets inmates schedule jobs, at least while they're logged in,
+similar to cron.  Since we already block cron, it seems like a good
+idea to block this too.
+
+.. WARNING:: OTOH, we *DON'T* block XDG's autostart dir,
+             which we use to start e.g. quota-reminder.
+             FIXME: reconsider that?
+
+By RTFS, I found out I can stop this by extending the list::
+
+    # Don't run a second user-owned systemd process for each inmate. (#30091)
+    xs+=(user@)         # SECURITY ISSUE!
+
+
+19 Aug 2015
+-----------
+Using "ersatz" packages to override dpkg dependencies,
+I remove some stuff like cron (& its associated unit).
+
+
+21 Aug 2015 - 24 Aug 2015
+-------------------------
+A udev .rules file can be masked in the same way as a systemd unit::
+
+    /etc/udev/rules.d/foo.rules -> /dev/null
+    # ...masks the entire file...
+    /lib/udev/rules.d/foo.rules
+
+There is no "systemctl mask" equivalent, so I start doing his by hand::
+
+    >$t/etc/udev/rules.d/69-libmtp.rules    echo '#OFF'             # Suppress libmtp9 w/o libmtp-runtime spam. (#30098)
+    >$t/etc/udev/rules.d/70-uaccess.rules   echo '#OFF'             # SECURITY ISSUE! (#30098) (FIXME: untested)
+    >$t/etc/udev/rules.d/71-seat.rules      echo '#OFF'             # Locks session when police jiggler inserted
+    >$t/etc/udev/rules.d/73-seat-late.rules echo '#OFF'             # Handles "seat" tagging
+    >$t/etc/udev/rules.d/75-persistent-net-generator.rules  echo '#OFF'      # premature optimization
+    >$t/etc/udev/rules.d/80-networking.rules  echo '#OFF'           # ifupdown not used (#30095)
+    >$t/etc/udev/rules.d/85-lirc.rules      echo '#OFF'             # breaks systemdized lirc
+
+.. WARNING:: when fred logs in (& passes through libpam_systemd.so),
+             logind will add an acl to all devices with udev tag "uaccess",
+             like ``acl user:fred:+rw``.
+
+             This gave inmates full, direct write access to optical discs.
+             So I remove it & continue to rely on "adduser fred cdrom" in Xsetup,
+             which just uses the POSIX DAC.
+
+I extend the list further::
+
+    xs+=(
+      # Don't run VMs!
+      systemd-machined
+      # FIXME: Harmless, but masking them might speed up boot?
+      systemd-backlight@
+      systemd-fsck@
+      systemd-random-seed       # Across reboot, preserve entropy
+      systemd-suspend
+      systemd-rfkill@           # Across reboot, preserve rfkill state
+      systemd-quotacheck        # Runs "quotacheck -anug".
+      )
+
+
+11 Sep 2015 - 14 Sep 2015
+-------------------------
+I realize that since I'm just writing new files,
+an upstream file rename, or a typo in my code,
+will *SILENTLY enable a unit or rule* without aborting the build.
+
+(This issue also affects "systemctl mask".)
+
+Instead of "masking" files by creating more files,
+I can create a cleaner and clearer system by simply deleting the original files from the SOE.
+
+This does have one downside:
+if I delete foo.service but not bar.wants/foo.service,
+systemd will complain to syslog.
+This is harmless -- but annoying -- so I delete the .wants as well.
+
+So instead of the "#OFF" lines, add these to mksquashfs exclusions::
+
+    exclusions=(
+      [...]
+      ######################################################################
+      ## Bad Things in systemd.
+      ## Making a typo in "systemctl mask foo.service" isn't an error,
+      ## so this is EXACTLY as safe as doing it "the systemd way",
+      ## and makes the built system less confusing.
+      ######################################################################
+      # SECURITY ISSUE! Seriously, do not EVER provide a tty.
+      '^etc$/^systemd$/^system$/^getty.target.wants$/^getty@tty1.service$'
+      '^lib$/^systemd$/^system-generators$/^systemd-getty-generator$'
+      '^lib$/^systemd$/^system$/^console-getty.service$'
+      '^lib$/^systemd$/^system$/^debug-shell.service$'
+      '^lib$/^systemd$/^system$/^console-shell.service$'
+      '^lib$/^systemd$/^system$/^container-getty@.service$'
+      '^lib$/^systemd$/^system$/^getty-static.service$'
+      '^lib$/^systemd$/^system$/^getty.target$'
+      '^lib$/^systemd$/^system$/^getty.target.wants$'
+      '^lib$/^systemd$/^system$/^getty.target.wants$/^getty-static.service$'
+      '^lib$/^systemd$/^system$/^getty@.service$'
+      '^lib$/^systemd$/^system$/^.*.wants$/^getty.target$'
+      '^lib$/^systemd$/^system$/^serial-getty@.service$'
+      '^lib$/^systemd$/^system$/^emergency.target$'
+      '^lib$/^systemd$/^system$/^emergency.service$'
+      '^lib$/^systemd$/^system$/^rescue.service$'
+      '^lib$/^systemd$/^system$/^rescue.target.wants$/^systemd-update-utmp-runlevel.service$'
+      '^lib$/^systemd$/^system$/^rescue.target$'
+      '^lib$/^systemd$/^system$/^rescue.target.wants$'
+      '^lib$/^systemd$/^system$/^autovt@.service$'
+      # SECURITY ISSUE! Don't run a second user-owned systemd process for each inmate. (#30091)
+      '^lib$/^systemd$/^system$/^user@.service$'
+      # Don't run VMs!
+      '^lib$/^systemd$/^systemd-machined$'
+      '^lib$/^systemd$/^system$/^systemd-machined.service$'
+      # SECURITY ISSUE! Remove all the "crypt" parts of systemd.
+      '^lib$/^systemd$/^systemd-cryptsetup$'
+      '^lib$/^systemd$/^system$/^cryptdisks.service$'
+      '^lib$/^systemd$/^system$/^cryptdisks-early.service$'
+      '^lib$/^systemd$/^system$/^cryptsetup.target$'
+      '^lib$/^systemd$/^system$/^cryptsetup-pre.target$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^cryptsetup.target$'
+      '^lib$/^systemd$/^system-generators$/^systemd-cryptsetup-generator$'
+      # Don't mount things we don't need.
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^dev-mqueue.mount$'
+      '^lib$/^systemd$/^system$/^dev-mqueue.mount$'
+      '^lib$/^systemd$/^system$/^sys-kernel-debug.mount$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^sys-kernel-debug.mount$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^sys-kernel-config.mount$'
+      '^lib$/^systemd$/^system$/^sys-kernel-config.mount$'
+      '^lib$/^systemd$/^system$/^proc-sys-fs-binfmt_misc.automount$'
+      '^lib$/^systemd$/^system$/^proc-sys-fs-binfmt_misc.mount$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^proc-sys-fs-binfmt_misc.automount$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^systemd-binfmt.service$'
+      '^lib$/^systemd$/^system$/^systemd-binfmt.service$'
+      # FIXME: Harmless, but excluding them MIGHT speed up boot?
+      '^lib$/^systemd$/^system$/^systemd-backlight@.service$'
+      '^lib$/^systemd$/^systemd-backlight$'
+      '^lib$/^systemd$/^system$/^systemd-fsck-root.service$'
+      '^lib$/^systemd$/^system$/^systemd-fsck@.service$'
+      '^lib$/^systemd$/^systemd-fsck$'
+      '^lib$/^systemd$/^systemd-random-seed$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^systemd-random-seed.service$'
+      '^lib$/^systemd$/^system$/^systemd-random-seed.service$'
+      '^lib$/^systemd$/^system$/^suspend.target$'
+      '^lib$/^systemd$/^system$/^systemd-suspend.service$'
+      '^lib$/^systemd$/^systemd-rfkill$'
+      '^lib$/^systemd$/^system$/^systemd-rfkill@.service$'
+      '^lib$/^systemd$/^system$/^systemd-quotacheck.service$'
+      '^lib$/^systemd$/^systemd-quotacheck$'
+      '^sbin$/^quotacheck$'
+      # Xorg depends on keyboard-configuration because it uses the settings in /etc/default/keyboard.
+      # It DOES NOT use these two scripts, which just run "setupcon --save" and "setupcon -k".
+      # Since setupcon ("kbd" package) isn't installed on desktop SOEs, they're NOOPs.
+      '^etc$/^init.d$/^console-setup$'
+      '^etc$/^init.d$/^keyboard-setup$'
+      # NB: if you reenable this and copy /.readahead into site.dir, boot will be faster?
+      # Also recompile the squashfs with -sort readahead.sort, which is made by
+      # cut -d: -f2- overlay/.readahead | sed 's/$/\t-100/' >readahead.sort
+      '^lib$/^systemd$/^system$/^systemd-readahead-collect.service$'
+      '^lib$/^systemd$/^system$/^systemd-readahead-done.service$'
+      '^lib$/^systemd$/^system$/^systemd-readahead-done.timer$'
+      '^lib$/^systemd$/^system$/^systemd-readahead-drop.service$'
+      '^lib$/^systemd$/^system$/^systemd-readahead-replay.service$'
+      '^lib$/^systemd$/^systemd-readahead$'
+      # MISCELLANEOUS OTHER BITS
+      '^bin$/^(chacl|getfacl|setfacl)$'                           # systemd Depends: acl, but only uses it at install time.
+      '^bin$/^loginctl$'
+      '^bin$/^machinectl$'
+      '^bin$/^systemd-ask-password$'
+      '^bin$/^systemd-tty-ask-password-agent$'
+      '^etc$/^pam.d$/^systemd-user$'
+      '^etc$/^init.d$/^quotarpc$'
+      '^lib$/^systemd$/^system$/^quota.service$'
+      '^lib$/^systemd$/^system$/^quotaon.service$'
+      '^etc$/^init.d$/^nfs-common$'
+      '^etc$/^systemd$/^system$/^sysinit.target.wants$/^quota.service$'
+      '^etc$/^rc..d$/^[SK][0-9][0-9]quotarpc$'
+      '^lib$/^systemd$/^system$/^quotarpc.service$'
+      '^etc$/^systemd$/^system$/^multi-user.target.wants$/^quotarpc.service$'
+      '^lib$/^systemd$/^system$/^systemd-ask-password-plymouth.path$'
+      '^lib$/^systemd$/^system$/^systemd-ask-password-plymouth.service$'
+      '^lib$/^systemd$/^system$/^systemd-ask-password-wall.path$'
+      '^lib$/^systemd$/^system$/^systemd-ask-password-console.service$'
+      '^lib$/^systemd$/^system$/^systemd-ask-password-console.path$'
+      '^lib$/^systemd$/^system$/^systemd-ask-password-wall.service$'
+      '^lib$/^systemd$/^system$/^sysinit.target.wants$/^systemd-ask-password-console.path$'
+      '^lib$/^systemd$/^system$/^multi-user.target.wants$/^systemd-ask-password-wall.path$'
+      '^bin$/^systemd-ask-password$'
+      '^bin$/^systemd-tty-ask-password-agent$'
+      # sysvinit compat bits
+      '^etc$/^init.d$'
+      '^etc$/^rc[0-6S].d$'
+      '^etc$/^insserv.*$'
+      '^etc$/^default$/^(halt|nfs-common|prayer|quota|rsyslog|ssh|stunnel4)$'
+      ## FIXME: add these?    /lib/init
+      ## UPDATE: still need /etc/default/locale
+      # udev bits
+      '^lib$/^udev$/^rules.d$/^..-gnupg.rules$'                    # harmless but scary-looking
+      '^lib$/^udev$/^rules.d$/^..-libmtp.rules$'                   # Suppress libmtp9 w/o libmtp-runtime spam. (#30098)
+      '^lib$/^udev$/^rules.d$/^..-lirc.rules$'                     # breaks systemdized lirc
+      '^lib$/^udev$/^rules.d$/^..-networking.rules$'               # ifupdown not used (#30095)
+      '^lib$/^udev$/^(dsl-modem|net).agent$'                       # ifupdown not used (#30095)
+      '^lib$/^udev$/^rules.d$/^..-persistent-net-generator.rules$' # premature optimization
+      '^lib$/^udev$/^rules.d$/^..-seat-late.rules$'                # Handles "seat" tagging
+      '^lib$/^udev$/^rules.d$/^..-seat.rules$'                     # Locks session when police jiggler inserted
+      '^lib$/^udev$/^rules.d$/^..-uaccess.rules$'                  # SECURITY ISSUE! (#30098) (FIXME: untested)
+      [...] )
+    mksquashfs ... -regex -e "${exclusions[@]}"
+
+This also lets me exclude non-unit files,
+like helper programs.
+
+
+21 Sep 2015
+-----------
+Since the exclusions=() list now constitues over half of the bootstrap script,
+move the whole thing into a separate file::
+
+    mksquashfs ... -regex -ef "$OLDPWD/mksquashfs.exclusions"
+
+Because the "it's huge" only applies to the desktop SOEs,
+actually leave the original, short list where it is::
+
+    exclusions=( [short list...] )
+    mksquashfs ... -regex -e "${exclusions[@]}" -ef "$OLDPWD/mksquashfs.exclusions"
+
+
+28 Sep 2015 - Now
+-----------------
+Further refine the exclusion list.
+(Not bothering to copy-and-paste here.)
+
+
+Dec 2015
+--------
+delete-bad-files replaces mksquashfs.exclusions.
+See NNNNN-mksquashfs-exclude-vs-bash-glob.txt for details.
