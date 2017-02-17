@@ -35,4 +35,15 @@
 # hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
 # printf '%s ' 127.254.254.254 blacklisted.invalid $(curl -sSL http://easylist.adblockplus.org/easyprivacy.txt http://easylist.adblockplus.org/easylist_noelemhide.txt | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev)
 
+
+# UPDATED VERSION FEB 2017
+# FIREFOX COULD NOT HANDLE HAVING MILLIONS OF ENTRIES ON ONE LINE IN /ETC/HOSTS,
+# AND AS A SIDE EFFECT ALSO DISABLED *ALL DNS* HOSTNAME RESOLUTION.
+
+# hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
+# for URL in https://easylist.to/easylist/{easyprivacy,easylist,fanboy-annoyance}.txt; do echo "## FROM $URL $(date -I)"; curl -sSfL "$URL" | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev | sed 's/^/127.254.254.254 blacklisted.invalid    /'; done
+
+
+
+
 # FIXME: integrate this list?  http://adaway.org/hosts.txt
