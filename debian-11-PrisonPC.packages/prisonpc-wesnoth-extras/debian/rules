@@ -1,0 +1,88 @@
+#!/usr/bin/make -f
+d := debian/prisonpc-wesnoth-1.12-addons/usr/share/games/wesnoth/1.12/data/add-ons/
+e := debian/prisonpc-wesnoth-1.12-addons/usr/share/games/wesnoth/1.12/images/misc/
+%:
+	dh $@
+override_dh_auto_install:
+	# Save about 0.5% space by losslessly re-encoding the images.
+	du -sch $d | grep total$
+	find $d -iname '*.png'  -execdir pngcrush -q {} _ \; -execdir mv _ {} \; -printf .
+	find $d -iname '*.jpg'  -execdir jpegoptim -q {} + -printf .
+	find $d -iname '*.jpeg' -execdir jpegoptim -q {} + -printf .
+	hardlink -pot $d
+	du -sch $d | grep total$
+	## Avoid duplicate copies of GPL licenses. —twb, Dec 2016
+	## The file sizes are slightly different because
+	##  1. literal tabs vs. spaces; and
+	##  2. "LGPL" expanding to "Library" vs. "Lesser".
+	find $d -name COPYING.txt -size 18011c -exec ln -nsfv /usr/share/common-licenses/GPL-2 {} ';'
+	find $d -name COPYING.txt -size 18047c -exec ln -nsfv /usr/share/common-licenses/GPL-2 {} ';'  # "For_Power" only
+	## Specific bugfix for a typo in this addon.
+	find $d -path '*/Liberating_Alduin/scenarios/05_Realization.cfg' -exec sed -rsi 's/Goblin Knight\. Dark Adept/Goblin Knight, Dark Adept/' {} +
+	## "ellipse" images are the star/circle underlays below special units (e.g. leader unit).
+	## The ellipse image names are generated programmatically from several boolean properties of a unit.
+	## If a campaign sets too many of these properties at once, the generated filename doesn't exist!
+	## As a workaround, make symlinks from known-missing images to ones that DO exist.
+	mkdir -p $e
+	ln -s ellipse-leader-bottom.png        $e/ellipse-hero-leader-bottom.png
+	ln -s ellipse-leader-top.png           $e/ellipse-hero-leader-top.png
+	ln -s ellipse-nozoc-top.png            $e/ellipse-noczoc-nozoc-top.png
+	ln -s ellipse-nozoc-bottom.png         $e/ellipse-noczoc-nozoc-bottom.png
+	ln -s ellipse-nozoc-leader-top.png     $e/ellipse-noczoc-leader-nozoc-top.png
+	ln -s ellipse-nozoc-leader-bottom.png  $e/ellipse-noczoc-leader-nozoc-bottom.png
+	## The translations files are about 10% of the total size, so fuck it, delete them.
+	rm -rf $d/*/translations
+$d:
+	mkdir -p $@
+$d/%: $d
+## THIS WORKS, BUT IS _VERY_ SLOW AND CANNOT BE CACHED BY SQUID!
+##	/usr/share/games/wesnoth/1.12/data/tools/wesnoth_addon_manager --campaigns-dir $(@D) --download $(@F)
+##	/usr/share/games/wesnoth/1.12/data/tools/wesnoth_addon_manager --campaigns-dir $(@D) --download $(@F)
+## THIS WORKS, AND IS MUCH FASTER.
+## Using wget (not curl) only because buildroot adds proxy to /root/.wgetrc by default.
+	wget -O- http://files.wesnoth.org/addons/1.12/$(@F).tar.bz2 | tar -C $(@D) -jxv
+override_dh_auto_install: $d/A_Beastly_Tale
+override_dh_auto_install: $d/A_Group_in_a_War
+override_dh_auto_install: $d/A_Northern_Village
+override_dh_auto_install: $d/A_Rough_Life
+override_dh_auto_install: $d/A_Vision_Blinded
+override_dh_auto_install: $d/A_Walk_In_The_Woods
+override_dh_auto_install: $d/Add_s_Army
+override_dh_auto_install: $d/Affably_Evil
+override_dh_auto_install: $d/An_Innocent_Man
+override_dh_auto_install: $d/An_Undead_Incursion
+override_dh_auto_install: $d/Birth_of_a_Lich
+override_dh_auto_install: $d/Children_of_Dragons
+override_dh_auto_install: $d/Desert_Traders
+override_dh_auto_install: $d/DruidSiege
+override_dh_auto_install: $d/Dwarven_Fortress
+override_dh_auto_install: $d/Elves_Banding_For_War
+override_dh_auto_install: $d/For_Power
+override_dh_auto_install: $d/Galis_Contract
+override_dh_auto_install: $d/Galuldur
+override_dh_auto_install: $d/Ghostly_Calls
+override_dh_auto_install: $d/Girl_unDead
+override_dh_auto_install: $d/Grnk
+override_dh_auto_install: $d/Hunters_of_the_East
+override_dh_auto_install: $d/Imperial_Era
+override_dh_auto_install: $d/Legend_of_the_Invincibles
+override_dh_auto_install: $d/Liberating_Alduin
+override_dh_auto_install: $d/Missing_Scepter
+override_dh_auto_install: $d/Only_Death_Behind
+override_dh_auto_install: $d/Ooze_Mini_Campaign
+override_dh_auto_install: $d/Rally_For_Roanic
+override_dh_auto_install: $d/Roar_of_the_Woses
+override_dh_auto_install: $d/Saving_Elensefar
+override_dh_auto_install: $d/Story_of_Wose
+override_dh_auto_install: $d/Tale_of_Vaniyera
+override_dh_auto_install: $d/Talentless_Mage
+override_dh_auto_install: $d/The_Beautiful_Child
+override_dh_auto_install: $d/The_Dark_Alliance
+override_dh_auto_install: $d/The_Final_Exam
+override_dh_auto_install: $d/The_Flight_of_Drakes
+override_dh_auto_install: $d/The_Goblin_Rebellion
+override_dh_auto_install: $d/The_Rising_Underworld
+override_dh_auto_install: $d/The_Three_Elves
+override_dh_auto_install: $d/Unite_the_Clans
+override_dh_auto_install: $d/White_Troll
+override_dh_auto_install: $d/Zombies_Introduction

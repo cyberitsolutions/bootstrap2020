@@ -1,0 +1,9 @@
+#!/bin/sh
+# Wesnoth looks in $HOME (not /usr) for addons.
+# Make sure there's a symlink from ‹where it looks› to ‹where they are›.
+# —twb, Oct 2017 (#31556)
+mkdir -p ~/.local/share/wesnoth/1.12/data
+[ ! -d   ~/.local/share/wesnoth/1.12/data/add-ons ] ||
+rmdir    ~/.local/share/wesnoth/1.12/data/add-ons
+ln -nsfT /usr/share/games/wesnoth/1.12/data/add-ons \
+         ~/.local/share/wesnoth/1.12/data/add-ons

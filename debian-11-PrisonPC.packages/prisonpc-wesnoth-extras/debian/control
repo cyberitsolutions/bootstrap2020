@@ -1,0 +1,18 @@
+Source: prisonpc-wesnoth-1.12-addons
+Section: games
+Priority: optional
+Standards-Version: 3.9.6
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Build-Depends:
+ debhelper (>= 10~),
+##SLOW METHOD## wesnoth-1.12-tools
+ wget, ca-certificates
+
+Package: prisonpc-wesnoth-1.12-addons
+Depends: ${misc:Depends},
+ python3
+Enhances: wesnoth-1.12
+Architecture: all
+Description: Wesnoth addons
+ There are a bunch of third-party addons at https://addons.wesnoth.org/.
+ This package provides them pre-downloaded.

@@ -1,0 +1,2 @@
+debian/wesnoth-1.12-addon-fix          usr/bin/
+debian/wesnoth-1.12-addon-fix.desktop  etc/xdg/autostart/
