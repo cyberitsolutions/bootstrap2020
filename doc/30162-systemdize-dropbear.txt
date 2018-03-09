@@ -101,3 +101,93 @@ Options
 
 * assume server only calls shutdown & root-notify-send & put them in
   /bin or /usr/bin & have them fix $PATH if necessary
+
+----------------------------------------------------------------------
+
+
+2018 / Debian 9 Update
+======================
+
+* dropbear binaries, init scripts, and initrd integration are now packaged separately.
+
+  * to get the first two, install "dropbear-run".
+  * to get the first alone, install "dropbear-bin".
+
+* even /sbin isn't in $PATH! --- this is worse than I misremembered. ::
+
+    $ ssh tweak,bentham-wing-e4 'whoami; echo $PATH'
+    root
+    /usr/bin:/bin
+
+* These work::
+
+    $ ssh -oUserKnownHostsFile=/dev/null -M -fNL 5901:127.1:5900 tweak,bentham-wing-e4
+    2018-03-09T14:17:53.236294+11:00 bentham-wing-e4 dropbear[503]: Child connection from 10.128.0.1:57954
+    2018-03-09T14:17:53.256988+11:00 bentham-wing-e4 dropbear[503]: Generated hostkey /etc/dropbear/dropbear_ecdsa_host_key, fingerprint is md5 0e:43:7f:c9:83:14:2c:57:9b:5a:df:1d:75:5c:53:2b
+    2018-03-09T14:17:53.388997+11:00 bentham-wing-e4 dropbear[503]: Pubkey auth succeeded for 'root' with key md5 4d:cd:2c:5b:9f:a5:d1:cd:f6:f1:2f:30:f8:74:8b:47 from 10.128.0.1:57954
+
+    $ ssh tweak,bentham-wing-e4 /usr/local/sbin/root-notify-send <<< 'I WILL GET YOU MY PRETTY AND YOUR LITTLE DOG TOO'
+    2018-03-09T14:21:34.581955+11:00 bentham-wing-e4 su[815]: Successful su for p123 by root
+    2018-03-09T14:21:34.582158+11:00 bentham-wing-e4 su[815]: + ??? root:p123
+    2018-03-09T14:21:34.582317+11:00 bentham-wing-e4 su[815]: pam_unix(su:session): session opened for user p123 by (uid=0)
+    2018-03-09T14:21:34.822866+11:00 bentham-wing-e4 su[815]: pam_unix(su:session): session closed for user p123
+
+* This creates a popup (PATH= is needed because shutdown calls root-notify-send).
+  It also claims to have queued the shutdown, which you can see from other open terminals.
+
+    $ ssh tweak,bentham-wing-e4 env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin bash -x /usr/local/sbin/shutdown -h +10
+
+* So to adopt dropbear without regressions, I need to
+
+  * on server, patch ppcadm to use /sbin/shutdown.
+  * on desktop SOEs, dpkg-divert --rename /sbin/shutdown.
+  * on desktop SOEs, install our shutdown wrapper to /sbin/shutdown.
+  * on desktop SOEs, install root-notify-send to /bin or /usr/bin.
+  * If HCC or Marngoneet ever new SOEs without upgrading their server, install notified-shutdown and client-notify.sh to /bin or /usr/bin.
+
+  Since the first item can't be done in lockstep with the other changes, an interim workaround is
+
+  * on ALL SOEs, symlink /bin/shutdown -> /sbin/shutdown
+
+* PS: there is an even simpler/safer sshd called tinyssh, but it is currently only available in beta release on buster (Debian 10).
+
+    /join #openssh
+    13:50 <twb> Hey I noticed that Debian 10 has a new SSH server called "tinysshd".  https://mojzis.com/software/tinyssh/  https://tinyssh.org/
+    13:50 <twb> Anybody have an opinion on it?
+    13:50 <BasketCase> are you running an embedded system?
+    13:51 <twb> not strictly speaking, no
+    13:51 <BasketCase> because it looks like something you use when you are running from a floppy
+    13:51 <twb> My smallest systems use about 128MB of nonvolatile storage
+    13:52 <twb> not counting LEDE stuff
+    13:52 <BasketCase> otoh, it seems like it uses modern tech as opposed to dropbear
+    13:52 <twb> It doesn't even implement RSA or challenge-response auth at all
+    13:53 <BasketCase> I only know what is on https://mojzis.com/software/tinyssh/ and I think it might be a great replacement for dropbear
+    13:53 <twb> what crypto library does dropbear use?
+    13:53 <twb> Note that dropbear includes an SSH client, which this doesn't
+    13:53 <BasketCase> dropbear is RSA and DSA
+    13:53 <twb> No I mean does it use openssl or what
+    13:54 <twb> dropbear in debian does at least ECDSA as well FYI
+    13:54 <BasketCase> ECDSA is shit
+    13:54 <BasketCase> I turn it off
+    13:55 <twb> Fair enough
+    13:56 <BasketCase> I am not a dropbear expert but when I look at the dependency chain in Gentoo portage I don't see any crypto stuff so I guess it is self contained
+    13:57 <twb> wikipedia indicates they have embedded copies from some third party
+    13:57 <twb> dropbear homepage says something about LibTomCrypt
+    13:57 <BasketCase> that sounds vague
+    13:58 <twb> tinysshd appears to use "nacl" which is *not* the chrome plugin thing, but an unrelated crypto library from djb
+    13:58 <BasketCase> neither should even be considered for non-embedded use
+    13:58 <BasketCase> if it is from DJB it would support ed25519 not ecdsa
+    13:59 <twb> *tinysshd* (not dropbear) uses nacl
+    14:00 <twb> Oh actually no, it "has its own crypto library compatible with nacl" and "can be compiled using nacl"
+    14:01 <BasketCase> I don't claim to know anything about nacl.  This is the first time I have heard of it.
+    14:02 <twb> me too
+    14:02 <twb> it's https://nacl.cr.yp.to/ https://tweetnacl.cr.yp.to/ linked from https://tinyssh.org/
+    14:03 <BasketCase> I asked my [Gentoo] package manager about nacl and I got this: https://paste.pound-python.org/show/qpsmwCLykWtnTKEgH27M/
+    14:04 <BasketCase> so, there is a 0. version from 2011 that not even Gentoo would accept as useful
+    14:10 <BasketCase> otoh, your link is is from 2016 so maybe it isn't quire as obsolete as I thought
+    14:11 <twb> https://nacl.cr.yp.to/install.html  still says 2011
+    14:12 <BasketCase> I am a big DJB fan.  I am not familiar with nacl but it looks like something DJB would do.
+    14:14 <BasketCase> you have convinced me to take another look at tinyssh tomorrow
+    14:15 <BasketCase> it might be useful in small environments
+    14:15 <twb> Hrm, "2017.12 update: I'm moving this group off Google. Google doesn't make this easy so you have to resubscribe, sorry: https://cr.yp.to/lists.html"
+    14:16 <twb> Which doesn't let me see a pipermail archive of the old emails :-/
