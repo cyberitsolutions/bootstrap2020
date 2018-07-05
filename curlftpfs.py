@@ -111,6 +111,7 @@ class MyFS(fuse.Operations):
                 offset,
                 offset + size - 1)})
         resp.raise_for_status()
+        print('...', 'response length is', len(resp.content), file=sys.stderr, flush=True)  # DEBUGGING
         return resp.content     # NB: as bytes, not str!
 
 if __name__ == '__main__':
