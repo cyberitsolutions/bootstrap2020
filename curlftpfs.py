@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+# GOAL: replace    nfs:/srv/rootfs/debian9.squashfs
+#       with http://nfs/srv/rootfs/debian9.squashfs
+#       So I can use HTTP load balancers for the OS.
+#       (Yes, I know iSCSI is the Right Thing here.)
+
 # References:
 # https://github.com/terencehonles/fusepy
 # https://github.com/libfuse/python-fuse/blob/master/example/hello.py
@@ -7,11 +12,14 @@
 # http://deb.debian.org/debian/pool/main/c/curlftpfs/curlftpfs_0.9.2-9.dsc
 # https://github.com/libfuse/libfuse
 
-# FUCK FUCK FUCK FUCK FUCK.
+# FFS
 # First-party libfuse/python-fuse is only in Debian for Python 2, not Python 3.
 # Debian has a third-party python3-pyfuse instead.... UGH.
+#
+# UPDATE: FIXME: Debian 10 has python3-fuse, so just backport it!
 
-
+import sys
+import stat
 import os
 import errno
 import urllib
@@ -58,59 +66,52 @@ class MyFS(fuse.Operations):
         assert self.content_length > 0
 
     def readdir(self, path, offset):
+        print('READDIR', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
         return ['.', '..', self.filename]
 
-    # def getattr(self, path):
-    #     st = MyStat()
-    #     if path == '/':
-    #         st.st_mode = stat.S_IFDIR | 0o755
-    #         st.st_nlink = 2
-    #     elif path == self.filename:
-    #         st.st_mode = stat.S_IFREG | 0o444
-    #         st.st_nlink = 1
-    #         st.st_size = self.size
-    #     else:
-    #         return -errno.ENOENT
-    #     return st
+    def getattr(self, path, fh=None):
+        print('GETATTR', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
+        assert fh is None
+        assert path in ['/',
+                        os.path.join('/', self.filename)]
+        return {'st_mode': ((stat.S_IFDIR | 0o755) if path == '/' else (stat.S_IFREG | 0o444)),
+                'st_ino': 0,
+                'st_dev': 0,
+                'st_nlink': 2 if path == '/' else 1,
+                'st_uid': 0,
+                'st_gid': 0,
+                'st_size': 0 if path == '/' else self.content_length,
+                'st_atime': 0,
+                'st_mtime': 0,
+                'st_ctime': 0}
 
     def open(self, path, flags):
-        if path != self.filename:
-            return -errno.ENOENT
+        print('OPEN', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
+        assert path in [os.path.join('/', self.filename)]
         accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
         if (flags & accmode) != os.O_RDONLY:
             return -errno.EACCES
+        else:
+            return 0            # FIXME: UGH
 
-    def read(self, path, size, offset):
-        if path != self.filename:
-            return -errno.ENOENT
-        slen = self.content_length
-        if offset < slen:
-            if offset + size > slen:
-                size = slen - offset  # ???
-            resp = self.session.get(
-                self.url,
-                headers={'Range': 'bytes={:d}-{:d}'.format(
-                    offset,
-                    offset + size)})  # FIXME: offby1?
-            resp.raise_for_status()
-            return resp.text
-        return ''               # I can't do that, Dave???
-
-
-
-# class MyStat(fuse.Stat):
-#     def __init__(self):
-#         self.st_mode = 0
-#         self.st_ino = 0
-#         self.st_dev = 0
-#         self.st_nlink = 0
-#         self.st_uid = 0
-#         self.st_gid = 0
-#         self.st_size = 0
-#         self.st_atime = 0
-#         self.st_mtime = 0
-#         self.st_ctime = 0
-
+    def read(self, path, size, offset, fh=None):
+        print('READ', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
+        print('...', 'size is', size, 'offset is', offset, file=sys.stderr, flush=True)  # DEBUGGING
+        print('fh is', fh, file=sys.stderr, flush=True)  # DEBUGGING
+        assert path in [os.path.join('/', self.filename)]
+        resp = self.session.get(
+            self.url,
+            headers={
+                # ARGH!  If you ask for bytes 0-4096, and
+                # https://en.wikipedia.org/wiki/HTTP_compression
+                # is on, you'll get too many bytes back!
+                # As a quick fix, disable HTTP compression.
+                'Accept-Encoding': '',
+                'Range': 'bytes={:d}-{:d}'.format(
+                offset,
+                offset + size - 1)})
+        resp.raise_for_status()
+        return resp.content     # NB: as bytes, not str!
 
 if __name__ == '__main__':
     main()
