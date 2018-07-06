@@ -59,7 +59,13 @@ class MyFS(fuse.Operations):
         self.filename = os.path.basename(urllib.parse.urlsplit(url).path)
         self.session = requests.Session()
 
-        resp = self.session.head(self.url)
+        # By default requests will send "Accept-Encoding: gzip, deflate" and automatically handle the gzip decompression.
+        # Problem is that the server then calculates the Content-Length according to the compressed transfer size,
+        # this doesn't allow us to find the actual file size which messes with the range requests which require the file size,
+        # not the transfer size.
+        # By enforcing no compression during the HEAD request, we can get actual file size,
+        # but we can still use gzip compression for the GET requests later.
+        resp = self.session.head(self.url, headers={'Accept-Encoding': None})
         resp.raise_for_status()
 
         assert 'Accept-Ranges' in resp.headers
