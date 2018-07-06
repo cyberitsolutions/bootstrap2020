@@ -30,10 +30,12 @@ import requests
 
 fuse.fuse_python_api = (0, 2)
 
+
 def main():
     def type_mountpoint(s):
         assert os.path.isdir(s)
         return s
+
     def type_url(s):
         assert urllib.parse.urlsplit(s)
         assert urllib.parse.urlsplit(s).scheme in ('http', 'https')
@@ -64,6 +66,7 @@ class MyFS(fuse.Operations):
         assert 'bytes' in resp.headers['Accept-Ranges']
         self.content_length = int(resp.headers['Content-Length'])
         assert self.content_length > 0
+        print('Content-Length is', resp.headers['Content-Length'], file=sys.stderr, flush=True)  # DEBUGGING
 
     def readdir(self, path, offset):
         print('READDIR', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
@@ -108,11 +111,12 @@ class MyFS(fuse.Operations):
                 # As a quick fix, disable HTTP compression.
                 'Accept-Encoding': '',
                 'Range': 'bytes={:d}-{:d}'.format(
-                offset,
-                offset + size - 1)})
+                    offset,
+                    offset + size - 1)})
         resp.raise_for_status()
         print('...', 'response length is', len(resp.content), file=sys.stderr, flush=True)  # DEBUGGING
         return resp.content     # NB: as bytes, not str!
+
 
 if __name__ == '__main__':
     main()
