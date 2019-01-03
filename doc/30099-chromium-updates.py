@@ -13,103 +13,100 @@
 #
 # Last Verified: Sep 2017
 
-# FIXME: use lxml.html instead of beautfulsoup (bs4).
-#        <tech2> twb: avoid beautifulsoup if you can;
-#                lxml.html has a much nicer api, and
-#                it allows you to use XPATH expressions which are much more powerful.
-#                lxml was originally for pure XML, but it now has an HTML parser too.
-
-
-
 import argparse
 import datetime
-import sys
+import re
 
-import bs4
-import requests
+import lxml.etree
+import lxml.html
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--since', type=int, metavar='N',
                     help='Highlight things added after Google Chrome version N')
-parser.add_argument('--until', default=300, type=int, metavar='N',
-                    help='Shitty hack because parsing current chrome version is hard.')
+parser.add_argument('--until', type=int, metavar='M',
+                    help='Highlight things added after Google Chrome version M')
 args = parser.parse_args()
+if args.since is not None and args.until is not None:
+    assert args.since <= args.until, 'Lazy input validation!'
 
-url = 'http://dev.chromium.org/administrators/policy-list-3'
-data = requests.get(url)
-data.raise_for_status()  # UGH, by default requests **IGNORES HTTP ERRORS**
-data = bs4.BeautifulSoup(data.text, 'lxml')
+data = lxml.html.parse('http://dev.chromium.org/administrators/policy-list-3')
 
-# Clear out the sidebar shit which indents EVERYTHING in w3m &c.
-data.find(id="sites-chrome-sidebar-left").decompose()
-data.find(id="sites-chrome-header").decompose()
+# Throw away the nested tables and select just the main table.
+# Even though it's a UTF-8 file on a UTF-8 system, Firefox still assumes ISO-8859-1.
+# Adding a doctype didn't help, so give up and keep the <meta> instead.  SIGH.
+innerbody, = data.xpath('//div[@id="sites-canvas-main-content"]/table/tbody/tr/td')
+outerbody, = data.xpath('/html/body')
+outerbody.getparent().append(innerbody)
+outerbody.getparent().remove(outerbody)
+innerbody.tag = 'body'
 
-# Delete the ToC.
-data.find('table', attrs={'style': 'border-style:none;border-collapse:collapse'}).decompose()
+# The original document was made in MS Word or something, so
+# instead of using a stylesheet, *EVERY* div & dd had a direct @style.
+for x in data.xpath('//*[@style]'):
+    del x.attrib['style']
+innerbody.set('style', 'font-family:sans-serif')  # TEMPORARY
 
-# Delete all "Back to top" links.
-for datum in data.find_all(href='#top'):
-    datum.decompose()
+# Delete the unwanted elements
+shit_xpaths = (
+    # The ToC.
+    '//table[thead/tr[1]/td[1]/text() = "Policy Name"]',
+    # The "Back to top" links.
+    '//a[@href="#top"]',
+    # Upstream scripts/stylesheets are buggy and unnecessary.
+    '//script', '//style', '//link',
+    # Uninteresting "Supported on" lines.
+    '//dt[text()="Supported on:"]/following-sibling::dd[1]/ul/li[not(contains(text(), "Linux"))]',
+    # Any section (DIV) that now contains an empty "Supported on" list.
+    '//div[./h3][not(.//dt[text()="Supported on:"]/following-sibling::dd[1]/ul/li)]',
+    )
+[element.getparent().remove(element)
+ for shit_xpath in shit_xpaths
+ for element in data.xpath(shit_xpath)]
+
+# Delete unwanted key/value pairs
+shit_dt_texts = (
+    'Windows registry location for Windows clients:',
+    'Windows registry location for Google Chrome OS clients:',
+    'Android restriction name:',
+    # "Example Values:" subkeys; not used in all sections.
+    'Windows (Windows clients):',
+    'Windows (Google Chrome OS clients):',
+    'Mac:',
+)
+[element.getparent().remove(element)
+ for shit_dt_text in shit_dt_texts
+ for shit_xpath in ('//dt[text()="{}"]/following-sibling::dd[1]'.format(shit_dt_text),  # the DD
+                    '//dt[text()="{}"]'.format(shit_dt_text))  # the DT
+ for element in data.xpath(shit_xpath)]
 
 # Separate the major groups of options by a horizontal rule,
 # as a quick-and-dirty aid to visibility on ttys.
-for datum in data.find_all('h2'):
-    datum.insert_before(data.new_tag('hr'))
+for h2 in data.xpath('//h2'):
+    h2.addprevious(lxml.etree.Element('hr'))
 
-for datum in data('h3'):
+for h3 in data.xpath('//h3'):
+    section = h3.getparent()    # surrounding DIV that stands-in for SECTION
+    section_name = h3[0].get('name')
+    supported_on, = section.xpath('.//dt[text()="Supported on:"]/following-sibling::dd[1]/ul/li/text()')
+    x, y = re.fullmatch(r'.*since version (\d+)(?: until version (\d+))?', supported_on).groups()
 
-    if datum.get('id', None) == "sites-page-title-header":
-        continue                # document H3, not a config option.
+    if y is None:
+        h3.text = '{}+ — '.format(x)
+    else:
+        h3.text = '{}–{} — '.format(x, y)
 
-    # Go up to the unlabelled <div> with either margin-left:28px (part
-    # of a group of settings) or margin-left:0px (a stand-alone
-    # setting e.g. AllowDinosaurEasterEgg)
-    datum = datum.parent
+    x, y = int(x), int(y) if y else None
 
-    print('⇒', datum.h3.a.next_element, file=sys.stderr)  # DEBUGGING
-
-    # REDACT THE ENTIRE SECTION.
-    if 'Linux' not in str(datum):
-        datum.decompose()
-        continue
-
-    for dt in datum.find_all('dt'):
-        if dt.string == 'Supported on:':
-            for li in dt.find_next_sibling('dd').find_all('li'):
-                if 'Linux' not in li.string:
-                    li.decompose()
-                elif 'Chrome OS' in li.string:
-                    li.decompose()
-
-            # Look for interesting options and highlight them.
-            # FIXME: currently super brute-force.
-            if (args.since and
-                any('since version {}'.format(v) in str(dt.find_next_sibling('dd'))
-                    for v in range(args.since, args.until)) and
-                not any('until version {}'.format(v) in str(dt.find_next_sibling('dd'))
-                        for v in range(args.since))):
-                datum['style'] = 'border-left:thick solid #FF4000;padding-left:1ch'
-
-        # Delete KEY/VALUE pairs we don't care about.
-        elif (dt.string or '') in ('Windows registry location:',  # old format
-                                   'Windows registry location for Windows clients:',  # new format 2018
-                                   'Windows registry location for Google Chrome OS clients:',  # new format 2018
-                                   'Android restriction name:',
-                                   'Note for Google Chrome OS devices supporting Android apps:'):
-            dt.find_next_sibling('dd').decompose()
-            dt.decompose()
-
-        # Delete examples we don't care about.
-        elif dt.string == 'Example value:':
-            for dt_ in dt.find_next_sibling('dd').find_all('dt'):
-                if (dt_.string or '') in ('Windows:', 'Mac:'):
-                    dt_.find_next_sibling('dd').decompose()
-                    dt_.decompose()
-                elif dt_.string == 'Android/Linux:':
-                    dt_.string = 'Linux:'
-
-        elif dt.string == 'Mac/Linux preference name:':
-            dt.string = 'Linux preference name:'
+    if args.since or args.until:
+        # Enable highlighting of sections "of interest"
+        if ((args.since is None or args.since <= x) and
+            (args.until is None or y is None or y <= args.until)):
+            # This is an "of interest" section
+            section.set('style', 'color:green;border-left:thick solid green')
+            h3.text = 'THIS IS NEW ' + h3.text
+        else:
+            # This is not an "of interest" section
+            section.set('style', 'color:grey')
 
 with open('policy-list-3_{}_{}-{}.html'.format(datetime.date.today(), args.since, args.until), 'w') as f:
-    f.write(data.prettify())
+    print(lxml.etree.tostring(data, encoding=str), file=f)
