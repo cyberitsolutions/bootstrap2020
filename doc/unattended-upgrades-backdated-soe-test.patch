@@ -1,0 +1,54 @@
+commit 8e173e2 (HEAD -> USB-boot)
+Author: Trent W. Buck <twb@cyber.com.au>
+Date:   4 minutes ago
+
+    This commit demonstrates how to easily test security upgrades.
+    
+    It does the initial install from a backdated snapshot.debian.org from approximately 2 months ago.
+    If there were security updates in that time (as there probably were),
+    unattended-upgrades should pick up on them on next boot.
+    
+    Note apt-* units only start when DHCP and NTP are happy, which takes around 7 minutes.
+
+diff --git a/bootstrap b/bootstrap
+index b6abaae..a8ffbf0 100755
+--- a/bootstrap
++++ b/bootstrap
+@@ -60,7 +60,13 @@ memdebstrap_options=(
+     --essential-hook='echo locales locales/locales_to_be_generated multiselect ${mm_LANG} ${mm_LANG#*.} | chroot $1 debconf-set-selections'
+     --customize-hook='chroot $1 apt-mark minimize-manual -y'    # markauto essential packages (not needed to boot)
+ )
+-mmdebstrap "${memdebstrap_options[@]}" $r $t
++mmdebstrap "${memdebstrap_options[@]}" $r $t - <<-EOF
++# DEBUGGING -- deliberately use an old sources.list, so there will be security updates.
++# NOTE: "%Y%m01" instead of "%Y%m%d" just helps apt-cacher-ng cache better between days.
++deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/$(date -d'2 months ago' +%Y%m01)/          buster         main contrib non-free
++deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/$(date -d'2 months ago' +%Y%m01)/          buster-updates main contrib non-free
++deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/$(date -d'2 months ago' +%Y%m01)/ buster/updates main contrib non-free
++EOF
+ >$t/etc/debian_chroot                   echo "bootstrap:$(GIT_DIR="$OLDPWD"/.git git describe --all || echo UNKNOWN)"
+ >$t/etc/apt/sources.list.d/bpo.list     sed -n s/-updates/-backports/p $t/etc/apt/sources.list  # FIXME: do in mmdebstrap (& add -proposed-updates)
+ >$t/etc/apt/apt.conf.d/10bootstrap      echo 'APT::Get::Assume-Yes "1"; APT::Get::AutomaticRemove "1"; APT::Install-Recommends "0"; Quiet "1";'
+@@ -142,6 +148,14 @@ then
+     exit 1
+ fi
+ 
++# Put sources.list back to its "normal" state for use after SOE is booted.
++>$t/etc/apt/sources.list cat <<-'EOF'
++deb http://deb.debian.org/debian buster main contrib non-free
++deb http://deb.debian.org/debian buster-updates main contrib non-free
++deb http://security.debian.org/debian-security buster/updates main contrib non-free
++EOF
++>$t/etc/apt/sources.list.d/bpo.list     sed -n s/-updates/-backports/p $t/etc/apt/sources.list
++
+ # Archive the git history into the image, for reference.
+ # FIXME: only committed code is archived.
+ git clone --bare --single-branch "$OLDPWD" "$t/root/bootstrap.git"
+@@ -176,6 +190,6 @@ exclusions=(
+     '^usr$/^share$/^(doc|info|man|omf|help)$/.'
+     '^usr$/^share$/^gnome$/^help$/.'
+ )
+-mksquashfs $t $t/boot/filesystem.squashfs -b 1M -comp xz -Xbcj x86 -Xdict-size 100% -no-recovery -regex -e "${exclusions[@]}"
++mksquashfs $t $t/boot/filesystem.squashfs -b 1M -comp lz4 -no-recovery -regex -e "${exclusions[@]}"
+ 
+ du -Dch $t/boot/{vmlinuz,initrd.img,filesystem.squashfs}
