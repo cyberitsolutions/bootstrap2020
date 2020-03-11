@@ -1,3 +1,9 @@
+prisonpc-wesnoth-1.14-addons (0~prisonpc2~draft1645409838) stable; urgency=medium
+
+  * Bump for Debian 10 / Wesnoth 1.14.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 10 Mar 2020 00:00:00 +1100
+
 prisonpc-wesnoth-1.12-addons (0~prisonpc1) stable; urgency=medium
 
   * Initial release.

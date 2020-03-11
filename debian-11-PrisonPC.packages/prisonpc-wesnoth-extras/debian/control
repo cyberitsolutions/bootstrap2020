@@ -1,17 +1,21 @@
-Source: prisonpc-wesnoth-1.12-addons
+Source: prisonpc-wesnoth-addons
 Section: games
 Priority: optional
-Standards-Version: 3.9.6
+Standards-Version: 4.3.0
 Maintainer: Trent W. Buck <twb@cyber.com.au>
-Build-Depends:
- debhelper (>= 10~),
-##SLOW METHOD## wesnoth-1.12-tools
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 12),
+# We use these to make the .deb a little smaller.
+ pngcrush, jpegoptim, hardlink,
+##SLOW METHOD##
+# wesnoth-1.14-tools
+##FAST METHOD##
  wget, ca-certificates
 
-Package: prisonpc-wesnoth-1.12-addons
+Package: prisonpc-wesnoth-addons
 Depends: ${misc:Depends},
  python3
-Enhances: wesnoth-1.12
+Enhances: wesnoth-1.14
 Architecture: all
 Description: Wesnoth addons
  There are a bunch of third-party addons at https://addons.wesnoth.org/.

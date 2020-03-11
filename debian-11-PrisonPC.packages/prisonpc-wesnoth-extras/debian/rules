@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
-d := debian/prisonpc-wesnoth-1.12-addons/usr/share/games/wesnoth/1.12/data/add-ons/
-e := debian/prisonpc-wesnoth-1.12-addons/usr/share/games/wesnoth/1.12/images/misc/
+d := debian/prisonpc-wesnoth-1.14-addons/usr/share/games/wesnoth/1.14/data/add-ons/
+e := debian/prisonpc-wesnoth-1.14-addons/usr/share/games/wesnoth/1.14/images/misc/
 %:
 	dh $@
 override_dh_auto_install:
@@ -17,8 +17,10 @@ override_dh_auto_install:
 	##  2. "LGPL" expanding to "Library" vs. "Lesser".
 	find $d -name COPYING.txt -size 18011c -exec ln -nsfv /usr/share/common-licenses/GPL-2 {} ';'
 	find $d -name COPYING.txt -size 18047c -exec ln -nsfv /usr/share/common-licenses/GPL-2 {} ';'  # "For_Power" only
+## FIXME: is this bugfix obsolete? --- UPDATE: the entire addon is gone!
 	## Specific bugfix for a typo in this addon.
 	find $d -path '*/Liberating_Alduin/scenarios/05_Realization.cfg' -exec sed -rsi 's/Goblin Knight\. Dark Adept/Goblin Knight, Dark Adept/' {} +
+## FIXME: is this bugfix obsolete?
 	## "ellipse" images are the star/circle underlays below special units (e.g. leader unit).
 	## The ellipse image names are generated programmatically from several boolean properties of a unit.
 	## If a campaign sets too many of these properties at once, the generated filename doesn't exist!
@@ -36,11 +38,18 @@ $d:
 	mkdir -p $@
 $d/%: $d
 ## THIS WORKS, BUT IS _VERY_ SLOW AND CANNOT BE CACHED BY SQUID!
-##	/usr/share/games/wesnoth/1.12/data/tools/wesnoth_addon_manager --campaigns-dir $(@D) --download $(@F)
-##	/usr/share/games/wesnoth/1.12/data/tools/wesnoth_addon_manager --campaigns-dir $(@D) --download $(@F)
+## UPDATE: this also IGNORES ERRORS if addons stop existing!
+#	/usr/share/games/wesnoth/1.14/data/tools/wesnoth_addon_manager --campaigns-dir $(@D) --download $(@F)
 ## THIS WORKS, AND IS MUCH FASTER.
 ## Using wget (not curl) only because buildroot adds proxy to /root/.wgetrc by default.
-	wget -O- http://files.wesnoth.org/addons/1.12/$(@F).tar.bz2 | tar -C $(@D) -jxv
+	env $(shell apt-config shell http_proxy Acquire::http::Proxy) wget -nv -O- http://files.wesnoth.org/addons/1.14/$(@F).tar.bz2 | tar -C $(@D) -jx
+
+###DID NOT WORK#### Tell dget (curl) and wget to use the same HTTP proxy as apt (if there is one).
+###DID NOT WORK###include use-apt-proxy.mk
+###DID NOT WORK###use-apt-proxy.mk:
+###DID NOT WORK###	>$@ echo export http_proxy
+###DID NOT WORK###	>$@ apt-config shell http_proxy Acquire::http::Proxy
+
 override_dh_auto_install: $d/A_Beastly_Tale
 override_dh_auto_install: $d/A_Group_in_a_War
 override_dh_auto_install: $d/A_Northern_Village

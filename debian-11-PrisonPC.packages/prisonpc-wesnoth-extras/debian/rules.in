@@ -1,79 +1,153 @@
 # In Debian 9, this was part of a -*-sh-*- script that generated debian/ on the fly.
 
-## Ref. https://addons.wesnoth.org/1.12/
+## Ref. https://addons.wesnoth.org/1.14/
 ## NOTE: this list is **NOT** comprehensive.
 ##       I've reviewed only about 60 of **500** addons.
 ##       See KB/31556-wesnoth-shortlist.txt.
 ##       See doc/31556-wesnoth-addons.py.
 ##       —twb, Oct 2017
-addons=(                                                          # .tbz size
-    A_Beastly_Tale                                                # 500KiB
-    Legend_of_the_Invincibles  The_Beautiful_Child  Affably_Evil  #  17MiB
-    A_Group_in_a_War                                              # 300KiB
-    A_Northern_Village                                            #  30KiB
-    A_Rough_Life                                                  #   5MiB
-    The_Goblin_Rebellion                                          #  40KiB
-    A_Vision_Blinded                                              #   2MiB
-    An_Innocent_Man                                               #   3MiB
-    Add_s_Army                                                    # 900KiB
-    A_Walk_In_The_Woods                                           # 300KiB
-    An_Undead_Incursion                                           # 500KiB
-    Ooze_Mini_Campaign                                            #   2MiB
-    DruidSiege                                                    #   2MiB
-    Dwarven_Fortress                                              #  10KiB
-    Zombies_Introduction                                          #   2MiB
-    Birth_of_a_Lich                                               #   4MiB
-    Only_Death_Behind                                             #   2MiB
-    Grnk                                                          # 700KiB
-    The_Final_Exam                                                #  70KiB
-    Ghostly_Calls                                                 #  90KiB
-    Children_of_Dragons                                           #   2MiB
-    Unite_the_Clans                                               #   9KiB
-    White_Troll                                                   # 900KiB
-    Liberating_Alduin                                             # 600KiB
-    The_Three_Elves                                               # 600KiB
-    Girl_unDead                                                   #   2MiB
-    Story_of_Wose                                                 # 300KiB
-    For_Power                                                     #   2MiB
-    Hunters_of_the_East                                           # 700KiB
-    Missing_Scepter                                               # 900KiB
-    Roar_of_the_Woses                                             # 400KiB
-    Elves_Banding_For_War                                         # 600KiB
-    The_Rising_Underworld                                         #   2MiB
-    Saving_Elensefar                                              #   2MiB
-    Rally_For_Roanic                                              # 800KiB
-    Galuldur                                                      #   2MiB
-    Desert_Traders                                                #  30KiB
-    The_Dark_Alliance                                             # 800KiB
-    The_Flight_of_Drakes                                          #   1MiB
-    Talentless_Mage                                               #   2MiB
+addons_PASS=(                   # Size (after unpacking)
+)
+addons_FAIL=(                      # Size (after unpacking)
+    The_Rise_Of_Wesnoth_Alternative  # FAIL - minor variation of the normal questline
+    WML_Guide                        # FAIL - programming tutorial
+    The_Heist                  # FAIL - includes backgammon (gambling)
+    Era_of_Magic                   # 2.5M  FAIL size
+      Era_of_Magic_Resources       # 65M   FAIL size
+      To_Lands_Unknown             # 11M   FAIL size
+      To_Lands_Unknown_Resources_1  # 94M  FAIL size
+      To_Lands_Unknown_Resources_2  # 64M  FAIL size
+    Invasion_from_the_Unknown       # FAIL annoying perl warnings
+      Genesis                       # FAIL size
+        Genesis_Resources           # FAIL size
+)
+addons=(                        # Size (after unpacking)
+    A_Beastly_Tale                 # 736K   PASS 2017
+    Tamanegi_Jukebox               # 180K   PASS 2017
+      A_Group_in_a_War             # 892K   PASS 2017
+      An_Independence_War          # 1.4M   PASS 2017
+    A_Few_Logs                     # 1.3M   TODO
+    Imperial_Era                    # 6.6M PASS 2017
+      Galis_Contract                # 596K PASS 2017
+      Tale_of_Vaniyera              # 2.0M PASS 2017
+    #Legend_of_the_Invincibles      # 30M    PASS 2017
+    #  The_Beautiful_Child          # 1.6M   PASS 2017
+    #  Affably_Evil                 # 3.8M   PASS 2017
+    #  Kill_the_King                # 18M    FAIL size
+    A_Magicians_Tale               # 6.4M   TODO
+    #Heroes                         # 8.6M   TODO
+    #  Carved_in_Stone              # 21M    FAIL size
+    #  Oath_of_Allegiance           # 39M    FAIL size
+    A_Little_Adventure
+    Irdya_Dragon                    # 6.2M PASS 2017
+      Ooze_Mini_Campaign            # PASS 2017
+      Elvish_Dynasty                # PASS 2017
+    Wild_Era
+      Dreams_of_Urduk
+    A_Northern_Village # PASS 2017
+    Knalgans_Of_Steel
+    Grnk               # PASS 2017
+    Era_of_Myths
+      Kromire
+      War_of_the_Dragon
+      Invasion_of_Arendia
+    Assassin_in_the_Forest
+    An_Undead_Incursion         # PASS 2017
+    Vaelia_Random_Adventures
+    Dungeons_of_Wesnoth
+    The_Dark_HordesI
+    Story_of_Wose               # PASS 2017
+    Forward_They_Cried
+    Hive_Mind
+    Invasion-of-the-Undead
+    TWoD
+    #War_of_Legends              # FAIL size?
+    #  Mercenary_Band
+    #  The_Emperor
+    #  Sepulchre_of_Elran
+    Resurrection
+    Sanctuary
+    Our_Longest_Year
+    Forgotten_Legacy
+    peasant_uprising
+    The_Final_Exam              # PASS 2017
+    wildpeasantsvsdevouringcorpses
+    Era_of_Four_Moons
+      Salt_Wars
+      PantherLord
+      Swamp_Witch_Curse
+    Revolution
+    Revenge_of_the_Five
+    White_Troll                 # PASS 2017
+    the_home
+    Desert_Traders              # PASS 2017
+    Drakes_Rescue
+    Home_of_the_Undead
+    in_defence_of_gaer_derole
+    The_Goblin_Rebellion        # PASS 2017
+    Defense_of_Elensefar
+    Kings_Quest
+    Tactics_Puzzles
+    The_Price_Of_Capture
+    Sires_Scenarios
+    Scenario_with_robots
+    A_Fiery_Birth
+    Wild_Frontiers
+    Cities_of_the_Frontier
+    Galuldur                    # PASS 2017
+    RebirthInNature
+    For_Power                   # PASS 2017
+    Raajal
+    Wrath_of_the_Lich_Lords
+    Zombies_Introduction        # PASS 2017
+    Phantom_Blood
+    The_Rising_Underworld       # PASS 2017
+    Exploration_of_Life_and_Death
+    Mage_of_Runes
+    Fairytales_of_the_Empire
+    A_Little_Adventure
+    Children_of_the_Dust
+    Eliador
+    Pax_Romana
+    Black_Cross_of_Aleron
+    Wings_of_Victory
+    Crin_of_Crenlyn
+    The_Young_Khan
+    Lich_Terror
+    Bears_Campaign
+    Return_from_the_Abyss
+    Birth_of_a_Lich             # PASS 2017
+    Voyage_of_a_Drake
+    The_North_Wind
+    Trapped
+    Pelican_Flight
+    Inky_Quest
+    The_Underdog
+    Xalzar_Quest
+    Elvish_Incursion_P1
+    The_Thelien_Attack
+    Shattered_Loyalty
+    A_Vision_Blinded            # PASS 2017
+    A_goblin_adventure
+    The_Founding_of_Borstep
+    Epic_Between_the_Tides      # 5.9M
+    Ashen_Hearts                # 6.2M
+    A_Rough_Life                # 5.7M PASS 2017
+    Epical                      # 7.1M
+    #Captured_by_a_Nightmare     # 7.8M FAIL size?
+    #The_Three_Sisters_Saga      # 7.9M FAIL size?
+    #AfterEI                     # 16M  FAIL size?
 
-    Imperial_Era  Galis_Contract  Tale_of_Vaniyera                #   5MiB
+#     #Battle_Against_Time                                          #   2MiB
+#     #Across_the_Ocean                                             #   6MiB
+#     #Secrets_of_the_Ancients                                      #   7MiB
+#     #End_of_the_Legion  War_of_Legends                            #  10MiB
+#     Dungeons_of_Wesnoth                                          #   6MiB
+# #    Invasion_from_the_Unknown  After_the_Storm                   #  18MiB
 
-    #FAIL#Aldur_The_Great                                         #  90KiB
-    #FAIL#Undead_Empire                                           #  20KiB
-    #FAIL#Bitter_Revenge                                          # 900KiB
-    #FAIL#Comrades_in_Arms                                        #   2MiB
-    #FAIL#Dreams_of_Urduk Wild_Era                                # 200KiB
-    #FAIL#Vision_of_a_Shaman  Millenium_Era                       #   2MiB
-    #FAIL#Return_of_Sir_Charles                                   #   1MiB
+#     ## ERA — War of Legends (135MiB data + 65MiB music = 200MiB total)
+#     #War_of_Legends ASoF_Music A_Song_of_Fire Aria_of_the_Dragon_Slayer War_of_the_Jewel End_of_the_Legion Hero_of_Irdya_I Minotaur_Battlefield
+#     ## ERA — Archaic Era — 100MiB total — has some kinda "moon monsters" and cyborgs
+#     #Archaic_Era Archaic_Resources Archaic_Sounds Bad_Moon_Rising Trinity
 
-    ## "runner-up" shortlisted addons
-    #Genesis  Genesis_Resources                                   #  34MiB
-    #Battle_Against_Time                                          #   2MiB
-    #Across_the_Ocean                                             #   6MiB
-    #Secrets_of_the_Ancients                                      #   7MiB
-    #Ooze_Mini_Campaign  Elvish_Dynasty  Irdya_Dragon             #   9MiB
-    #End_of_the_Legion  War_of_Legends                            #  10MiB
-    #Dungeons_of_Wesnoth                                          #   6MiB
-    #Invasion_from_the_Unknown  After_the_Storm                   #  18MiB
-
-    ## ERA — War of Legends (135MiB data + 65MiB music = 200MiB total)
-    #War_of_Legends ASoF_Music A_Song_of_Fire Aria_of_the_Dragon_Slayer War_of_the_Jewel End_of_the_Legion Hero_of_Irdya_I Minotaur_Battlefield
-    ## ERA — Era of Magic (140MB data + 38MB videos = 178MiB total)
-    ## Very sexy isometric textures, like Fallout 2
-    ## It also started glitching after the first FMV (start of mission 2)
-    #Era_of_Magic To_Lands_Unknown To_Lands_Unknown_Images To_Lands_Unknown_Cutscenes
-    ## ERA — Archaic Era — 100MiB total — has some kinda "moon monsters" and cyborgs
-    #Archaic_Era Archaic_Resources Archaic_Sounds Bad_Moon_Rising Trinity
 )
