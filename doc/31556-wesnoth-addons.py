@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Slurp http://wiki.wesnoth.org/Guide_to_UMC_Content into a database,
@@ -19,17 +19,16 @@
 import sqlite3
 import subprocess
 import sys
-sys.path.append('/usr/share/games/wesnoth/1.12/data/tools')
+
+sys.path.append('/usr/share/games/wesnoth/1.14/data/tools')
 import wesnoth.campaignserver_client
 
 def main():
     with sqlite3.connect('addons.wesnoth.org.db') as conn:
         conn.execute(CREATE_QUERY)
-        x = wesnoth.campaignserver_client.CampaignClient('add-ons.wesnoth.org')
-        ys = x.list_campaigns()
-        zs = ys.get_or_create_sub('campaigns')
-        for z in zs.get_all('campaign'):
-            upsert(conn, z)
+        campaigns, = wesnoth.campaignserver_client.CampaignClient('add-ons.wesnoth.org').list_campaigns().get_all(tag='campaigns')
+        for campaign in campaigns.get_all(tag='campaign'):
+            upsert(conn, campaign)
     # ICBF working out how to do pretty-printing from within python2.
     # Just use sqlite3's CLI tool.
     subprocess.check_call(['sqlite3', '-line', 'addons.wesnoth.org.db', SELECT_QUERY])
@@ -50,7 +49,8 @@ def upsert(conn, row):
          row.get_text_val('type'),
          row.get_text_val('version'),
          row.get_text_val('dependencies'),
-         row.get_text_val('description').decode('UTF-8')))
+         row.get_text_val('description')
+))
 
 
 CREATE_QUERY = """
@@ -61,14 +61,18 @@ CREATE_QUERY = """
     downloads    INTEGER NOT NULL,
     type         TEXT    NOT NULL,
     version      TEXT    NOT NULL,
-    dependencies TEXT    NOT NULL,  -- FIXME: move this into a separate table!
-    description  TEXT    NOT NULL);
+    dependencies TEXT,  -- FIXME: move this into a separate table!
+    description  TEXT    NOT NULL,
+    status       TEXT); -- This is PASS or FAIL or NULL depending on whether we like it.
+"""
+CREATE_VIEW_QUERY = """
+CREATE VIEW IF NOT EXISTS shortlist AS SELECT cast(((downloads / ((strftime('%s') - timestamp)/86400.0)) - (size/1024.0/1024.0)) as int) AS score, filename, description, dependencies, CAST((size/1024.0/1024.0) AS INT) as sizeMB, substr(type, 1, 1) AS type, date(timestamp, 'unixepoch') AS date, downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day FROM addons WHERE status IS NULL AND type IN ('campaign', 'scenario', 'campaign_sp_mp') ORDER BY score DESC
 """
 
 
 SELECT_QUERY = """
 SELECT *,
-       downloads / ((1508809384.0 - timestamp)/86400.0) AS DL_per_day,
+       downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day,
        (size/1024.0/1024.0) AS megabytes
 FROM addons
 WHERE type = 'campaign'
@@ -80,15 +84,16 @@ SELECT_QUERY_ATTEMPT_4 = """
 SELECT *,
        -- Prefer popular (high downloads/day) + small (small file size) addons.
        -- FIXME: doesn't include the size of dependencies!
-       (0.0+downloads) / (1508809384 - timestamp) / size AS score
+       (0.0+downloads) / (strftime('%s') - timestamp) / size AS score
 FROM addons
 ORDER BY score DESC
 LIMIT 50
 """
+
 ## UPDATE: that (#4) was weighting by size FAR too heavily.
 ## We probably should use a logarithmic scale but I'm too stupid.
 ## This is the final query:
-##    $ sqlite3 -line bootstrap/doc/addons.wesnoth.org.db "SELECT *, downloads / ((1508809384.0 - timestamp)/86400.0) AS DL_per_day, (size/1024.0/1024.0) AS megabytes FROM addons WHERE type = 'campaign' OR type = 'scenario' ORDER BY DL_per_day - megabytes DESC" >shortlist.ini
+##    $ sqlite3 -line bootstrap/doc/addons.wesnoth.org.db "SELECT *, downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day, (size/1024.0/1024.0) AS megabytes FROM addons WHERE type = 'campaign' OR type = 'scenario' ORDER BY DL_per_day - megabytes DESC" >shortlist.ini
 
 
 ## ATTEMPT #2
