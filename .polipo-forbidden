@@ -40,10 +40,13 @@
 # FIREFOX COULD NOT HANDLE HAVING MILLIONS OF ENTRIES ON ONE LINE IN /ETC/HOSTS,
 # AND AS A SIDE EFFECT ALSO DISABLED *ALL DNS* HOSTNAME RESOLUTION.
 
+#!/bin/bash
+hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
+for URL in https://easylist.to/easylist/{easyprivacy,easylist,fanboy-annoyance}.txt; do echo "## FROM $URL $(date -I)"; curl -sSfL "$URL" | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev | sed 's/^/127.254.254.254 blacklisted.invalid    /'; done
+
+## UPDATED AGAIN, TO RIGHT-ALIGN THE DOMAINS --twb, Sep 2020
 # hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
-# for URL in https://easylist.to/easylist/{easyprivacy,easylist,fanboy-annoyance}.txt; do echo "## FROM $URL $(date -I)"; curl -sSfL "$URL" | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev | sed 's/^/127.254.254.254 blacklisted.invalid    /'; done
-
-
+# for l in {easyprivacy,easylist,fanboy-annoyance}; do URL=https://easylist.to/easylist/$l.txt; echo "## FROM $URL $(date -I)"; curl -sSfL "$URL" | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev | while read -r domain; do printf '127.254.254.254 %s.blacklisted.invalid %32s\n' "$l" "$domain"; done; done
 
 
 # FIXME: integrate this list?  http://adaway.org/hosts.txt
