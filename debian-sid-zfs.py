@@ -14,7 +14,7 @@ which in turn includes a bootloader (refind), kernel, ramdisk, and filesystem.sq
 
 """
 
-parser = argparse.ArgumentParser(prolog=__doc__)
+parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.img'), type=pathlib.Path)
 parser.add_argument('--timezone', default='Australia/Melbourne', type=lambda s: s.split('/'), help='NOTE: MUST be "Area/Zone" not e.g. "UTC", for now')
 parser.add_argument('--locale', default='en_AU.UTF-8', help='NOTE: MUST end in ".UTF-8", for now')
