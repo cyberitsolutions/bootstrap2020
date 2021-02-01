@@ -25,7 +25,7 @@ parser.add_argument('--locale', default='en_AU.UTF-8', help='NOTE: MUST end in "
 args = parser.parse_args()
 
 
-filesystem_img_size = '4G'      # big enough to include filesystem.squashfs + about 128M of bootloader, kernel, and ramdisk.
+filesystem_img_size = '512M'    # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
 esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 live_media_path = 'debian-live'
@@ -43,21 +43,28 @@ with tempfile.TemporaryDirectory(prefix='debian-sid-zfs.') as td:
 
          '--include=init initramfs-tools xz-utils live-boot netbase',
          '--include=dbus',          # https://bugs.debian.org/814758
-         '--include=linux-image-amd64',
+         '--include=linux-image-amd64 firmware-linux',
 
-         # Be the equivalent of Debian Live GNOME, except with ZFS 2.0 support.
-         # '--include=live-task-gnome',
-         '--include=live-task-xfce',
+         # Have ZFS 2.0 support.
          '--include=zfs-dkms zfsutils-linux zfs-zed build-essential linux-headers-amd64',  # ZFS 2 support
+
+         # Make the initrd a little smaller (41MB -> 20MB), at the expensive of significantly slower image build time.
+         '--include=zstd',
+         '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
+         '--essential-hook=>$1/etc/initramfs-tools/conf.d/zstd echo COMPRESS=zstd',
+
+         # Be the equivalent of Debian Live GNOME
+         # '--include=live-task-gnome',
+         #'--include=live-task-xfce',
          # FIXME: enable this?  It makes live-task-xfce go from 1G to 16G... so no.
          #'--aptopt=Apt::Install-Recommends "true"',
          # ...cherry-pick instead
          # UPDATE: debian-installer-launcher DOES NOT WORK because we don't load crap SPECIFICALLY into /live/installer, in the ESP.
          # UPDATE: network-manager-gnome DOES NOT WORK, nor is systemd-networkd auto-started... WTF?
          #         end result is no networking.
-         '--include=live-config user-setup firmware-linux haveged',
-         '--include=calamares-settings-debian udisks2',  # 300MB weirdo Qt GUI debian installer
-         '--include=xfce4-terminal',
+         #'--include=live-config user-setup sudo firmware-linux haveged',
+         #'--include=calamares-settings-debian udisks2',  # 300MB weirdo Qt GUI debian installer
+         #'--include=xfce4-terminal',
 
          # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
          # The emulator is called "microcode", and is full of security vulnerabilities.
@@ -71,6 +78,7 @@ with tempfile.TemporaryDirectory(prefix='debian-sid-zfs.') as td:
          # DHCP/DNS/SNTP clients...
          # FIXME: use live-config ?
          '--include=libnss-resolve libnss-myhostname systemd-timesyncd',
+         '--customize-hook=chroot $1 cp -alf /lib/systemd/resolv.conf /etc/resolv.conf',  # This probably needs to happen LAST
          # FIXME: fix resolv.conf to point to resolved, not "copy from the build-time OS"
          # FIXME: fix hostname & hosts to not exist, not "copy from the build-time OS"
          '--customize-hook=systemctl --root=$1 enable systemd-networkd systemd-timesyncd',   # is this needed?
@@ -130,7 +138,7 @@ with tempfile.TemporaryDirectory(prefix='debian-sid-zfs.') as td:
 
          # Bare minimum to let me log in locally.
          # DO NOT use this on production builds!
-         '--essential-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
+         '--essential-hook=chroot $1 passwd --delete root',
 
          # Configure language (not needed to boot).
          # Racism saves a **LOT** of space -- something like 2GB for Debian Live images.
@@ -138,6 +146,11 @@ with tempfile.TemporaryDirectory(prefix='debian-sid-zfs.') as td:
          '--include=locales localepurge',
          f'--essential-hook=echo locales locales/default_environment_locale   select {args.locale}       | chroot $1 debconf-set-selections',
          f'--essential-hook=echo locales locales/locales_to_be_generated multiselect {args.locale} UTF-8 | chroot $1 debconf-set-selections',
+         # FIXME: https://bugs.debian.org/603700
+         "--customize-hook=chroot $1 sed -i /etc/locale.nopurge -e 's/^USE_DPKG/#ARGH#&/'",
+         "--customize-hook=chroot $1 localepurge",
+         "--customize-hook=chroot $1 sed -i /etc/locale.nopurge -e 's/^#ARGH#//'",
+
 
          # Removing documentation also saves a LOT of space.
          '--dpkgopt=path-exclude=/usr/share/doc/*',
