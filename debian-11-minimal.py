@@ -9,7 +9,7 @@ __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2020 Trent W. Buck"
 __license__ = "expat"
 
-__doc__ = """ build a Debian Live image that can install Debian 11 on ZFS 2
+__doc__ = """ build the simplest Debian Live image that can boot
 
 This uses mmdebstrap to do the heavy lifting;
 it can run entirely without root privileges.
@@ -25,12 +25,12 @@ parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.i
 args = parser.parse_args()
 
 
-filesystem_img_size = '512M'    # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
+filesystem_img_size = '256M'    # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
 esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 live_media_path = 'debian-live'
 
-with tempfile.TemporaryDirectory(prefix='debian-sid-zfs.') as td:
+with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td:
     td = pathlib.Path(td)
     subprocess.check_call(
         ['mmdebstrap',
@@ -79,7 +79,7 @@ with tempfile.TemporaryDirectory(prefix='debian-sid-zfs.') as td:
          #  f'--customize-hook=copy-out /boot/USB/filesystem.img /tmp/',
          #  f'--customize-hook=chroot $1 rm /boot/USB/filesystem.img',
 
-         'testing',
+         'bullseye',
          td / 'filesystem.squashfs'
         ])
 
