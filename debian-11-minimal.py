@@ -66,14 +66,13 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--customize-hook=echo refind refind/install_to_esp boolean true  | chroot $1 debconf-set-selections',
          '--customize-hook=chroot $1 mkdir -p /boot/USB /boot/EFI/BOOT',
          '--customize-hook=chroot $1 cp /usr/share/refind/refind/refind_x64.efi /boot/EFI/BOOT/BOOTX64.EFI',
-         '--customize-hook=chroot $1 cp /usr/share/refind/refind/refind.conf-sample /boot/EFI/BOOT/refind.conf',
          f'--customize-hook=chroot $1 truncate --size={filesystem_img_size} /boot/USB/filesystem.img',
          f'--customize-hook=chroot $1 parted --script --align=optimal /boot/USB/filesystem.img  mklabel gpt  mkpart {esp_label} {esp_offset}b 100%  set 1 esp on',
          f'--customize-hook=chroot $1 mformat -i /boot/USB/filesystem.img@@{esp_offset} -F -v {esp_label}',
          f'--customize-hook=chroot $1 mmd     -i /boot/USB/filesystem.img@@{esp_offset} ::{live_media_path}',
          f"""--customize-hook=echo '"Boot with default options" "boot=live live-media-path={live_media_path}"' >$1/boot/refind_linux.conf""",
-
-         f"""--customize-hook=chroot $1 find /boot/ -xdev -mindepth 1 -maxdepth 1 -not -name filesystem.img -not -name USB -exec mcopy -vsbpm -i /boot/USB/filesystem.img@@{esp_offset} {{}} :: ';'""",
+         # NOTE: find sidesteps the "glob expands before chroot applies" problem.
+         f"""--customize-hook=chroot $1 find -O3 /boot/ -xdev -mindepth 1 -maxdepth 1 -regextype posix-egrep -iregex '.*/(EFI|refind_linux.conf|vmlinuz.*|initrd.img.*)' -exec mcopy -vsbpm -i /boot/USB/filesystem.img@@{esp_offset} {{}} :: ';'""",
          # FIXME: copy-out doesn't handle sparseness, so is REALLY slow (about 50 seconds).
          # Therefore instead leave it in the squashfs, and extract it later.
          #  f'--customize-hook=copy-out /boot/USB/filesystem.img /tmp/',
