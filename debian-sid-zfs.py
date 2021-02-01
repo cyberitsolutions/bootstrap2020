@@ -5,6 +5,10 @@ import subprocess
 import tempfile
 import pathlib
 
+__author__ = "Trent W. Buck"
+__copyright__ = "Copyright © 2020 Trent W. Buck"
+__license__ = "expat"
+
 __doc__ = """ build a Debian Live image that can install Debian 11 on ZFS 2
 
 This uses mmdebstrap to do the heavy lifting;
