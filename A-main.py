@@ -26,19 +26,18 @@ args = parser.parse_args()
 
 http_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
-if True:
-    subprocess.check_call(
-        ['mmdebstrap',
-         '--mode=unshare',
-         '--variant=apt',
-         f'--aptopt=Acquire::http::Proxy "{http_proxy}"',
-         '--aptopt=Acquire::https::Proxy "DIRECT"',
-         '--dpkgopt=force-unsafe-io',
-         '--include=linux-image-amd64 init initramfs-tools live-boot netbase',
-         '--include=dbus',          # https://bugs.debian.org/814758
-         '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
-         '--include=ifupdown isc-dhcp-client',  # live-config doesn't support systemd-networkd yet.
-         'bullseye',
-         args.output_file])
+subprocess.check_call(
+    ['mmdebstrap',
+     '--mode=unshare',
+     '--variant=apt',
+     f'--aptopt=Acquire::http::Proxy "{http_proxy}"',
+     '--aptopt=Acquire::https::Proxy "DIRECT"',
+     '--dpkgopt=force-unsafe-io',
+     '--include=linux-image-amd64 init initramfs-tools live-boot netbase',
+     '--include=dbus',          # https://bugs.debian.org/814758
+     '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
+     '--include=ifupdown isc-dhcp-client',  # live-config doesn't support systemd-networkd yet.
+     'bullseye',
+     args.output_file])
 
-    print(f'Use rdsquashfs to extract boot material from {args.output_file}.')
+print(f'Use rdsquashfs to extract boot material from {args.output_file}.')
