@@ -26,7 +26,17 @@ args = parser.parse_args()
 
 http_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
-subprocess.check_call(
+
+# mmdebstrap doesn't provide an easy way to enable backports or proposed-updates
+apt_sources = '''
+deb http://deb.debian.org/debian-security bullseye-security         main contrib non-free
+deb http://deb.debian.org/debian          bullseye                  main contrib non-free
+deb http://deb.debian.org/debian          bullseye-updates          main contrib non-free
+deb http://deb.debian.org/debian          bullseye-proposed-updates main contrib non-free
+deb http://deb.debian.org/debian          bullseye-backports        main contrib non-free
+'''.strip()
+
+subprocess.run(
     ['mmdebstrap',
      '--mode=unshare',
      '--variant=apt',
@@ -48,6 +58,10 @@ subprocess.check_call(
      '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
      '--dpkgopt=force-confold',
      'bullseye',
-     args.output_file])
+     args.output_file,
+     '-'],
+    check=True,
+    text=True,
+    input=apt_sources)
 
 print(f'Use rdsquashfs to extract boot material from {args.output_file}.')
