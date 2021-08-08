@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 import argparse
 import pathlib
+import pathlib
 import subprocess
 import tempfile
-import pathlib
+import types
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2020 Trent W. Buck"
@@ -21,6 +22,15 @@ NOTE: this is the simplest config possible.
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.squashfs'), type=pathlib.Path)
+parser.add_argument('--LANG', default='en_AU.UTF-8', help="SOE's language",
+                    type=lambda s: types.SimpleNamespace(
+                        full=s,
+                        encoding=s.partition('.')[-1]))
+parser.add_argument('--TZ', default='Australia/Melbourne', help="SOE's timezone (for UTC, use Etc/UTC)",
+                    type=lambda s: types.SimpleNamespace(
+                        full=s,
+                        area=s.partition('/')[0],
+                        zone=s.partition('/')[-1]))
 args = parser.parse_args()
 
 
@@ -57,6 +67,18 @@ subprocess.run(
      '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
      '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
      '--dpkgopt=force-confold',
+     # Configure timezone (not needed to boot)
+     '--include=tzdata',
+     '--essential-hook={'
+     f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
+     f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
+     '     } | chroot $1 debconf-set-selections',
+     # Configure language (not needed to boot)
+     '--include=locales localepurge',
+     '--essential-hook={'
+     f'    echo locales locales/default_environment_locale select {args.LANG.full};'
+     f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
+     '     } | chroot $1 debconf-set-selections',
      'bullseye',
      args.output_file,
      '-'],
