@@ -1,0 +1,56 @@
+---
+Blackgate:                      # RON'S DEMO SOE
+  destinations:
+    local: root@tweak.prisonpc.com:/srv/netboot/images/INCOMING/
+    remote: null
+  SOEs:
+    # <DESTINATION DIR NAME>:   <GIT BRANCH NAME>
+    tvserver-tbs:               prisonpc-tvserver-tbs
+    staff:                      prisonpc-desktop-staff
+    minimal:                    prisonpc-desktop-debian9
+    bloat:                      prisonpc-desktop-bloat
+AMC:
+  destinations:
+    local: root@tweak.prisonpc.com:/srv/netboot/images/FOR-AMC/
+    remote: root@amc.prisonpc.com:/srv/netboot/images/INCOMING/
+  SOEs:
+    ## AMC NO LONGER HAVE HAUPPAGE CARDS AS AT MAR 2017. ---twb
+    #tvserver-hauppage:                 prisonpc-tvserver
+    ## AMC NO LONGER NEED THESE TWO SOES AS AT MAR 2017. ---twb
+    #desktop-insecure-lobase:           31178-amc-lobase
+    #desktop-insecure-tablet-test:      31494-tablet-proof-of-concept
+    understudy:                         understudy-debian9
+    tvserver-tbs:                       prisonpc-tvserver-tbs
+    desktop-staff:                      prisonpc-desktop-staff-amc
+    desktop-inmate:                     prisonpc-desktop-amc
+    desktop-library:                    prisonpc-desktop-amc-library
+HCC:                            # a.k.a. Hopkins
+  destinations:
+    # UPDATE MAR 2020 -- this VM is Ubuntu 10.04 (super super old);
+    #                    Mike says HCC is definitely Debian;
+    #                    Mike says apparently we don't test HCC SOEs anymore AT ALL;
+    #                    therefore just upload them to tweak like we do for AMC.
+    #local: root@hopkins:/srv/netboot/images/INCOMING/  # this is the test VM!
+    local: root@tweak.prisonpc.com:/srv/netboot/images/FOR-HCC/
+    remote: null
+  SOEs:
+    ## JESSIE SATELLITES ARE BROKEN AND DO NOT WORK —twb, Feb 2017
+    #satellite:         prisonpc-satellite
+    ## NEW TV SERVER SOES ARE BROKEN BECAUSE THEY ASSUME 17.03 LUCID,
+    ## AND HCC ARE STILL RUNNING 16.xx LUCID. —twb, Feb 2018
+    #tvserver-tbs:      prisonpc-tvserver-tbs
+    understudy:         understudy-debian9
+    desktop-staff:      prisonpc-desktop-staff-hcc
+    desktop-library:    prisonpc-desktop-hcc-library
+    desktop-profile-b:  prisonpc-desktop-hcc-profile-b
+    desktop-profile-a:  prisonpc-desktop-hcc-profile-a
+    desktop-games:      prisonpc-desktop-hcc-games
+Marngoneet:
+  destinations:
+    local: tweak.prisonpc.com:/srv/netboot/images/FOR-MARNGONEET/
+    remote: null
+  SOEs:
+    tvserver:           prisonpc-tvserver-tbs
+    desktop-staff:      prisonpc-desktop-staff
+    desktop-inmate:     prisonpc-desktop-marngoneet
+...

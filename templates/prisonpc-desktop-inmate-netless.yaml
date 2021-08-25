@@ -1,0 +1,26 @@
+documentation: |-
+    Standalone-specific configuration.
+
+    • Stock kernel (from stretch-backports).
+    • No LDAP, NFS, quotas, /srv/share.
+    • No ppc-services (e.g. disc-snitch, usb-snitch, AUP, tv-snitch).
+    • No firewall, IP address checking.
+    • Install non-Intel GPU drivers. (#31115)
+      WARNING: this is "works at all" not "works well".
+
+    • Jessie fix: don't use user-setup, because delete-bad-files has broken it.
+      instead roll our own trivial hard-coded version. (#31793) (Mar 2017)
+
+    • Jessie fix: don't use /etc/motd for the local AUP file,
+      because we strip that out! (#31793) (Mar 2017)
+
+parents:
+  - prisonpc-desktop-inmate-blackgate
+options:
+  # Delete online-y things
+  - --customize-hook=rm -v $1/overlay/etc/X11/Xsession.d/00prisonpc
+  # FIXME: THIS IS AWFUL; in the old system, we actually patched the files directly.
+  - --customize-hook=sed $1/overlay/etc/X11/xdm/Xsetup -e /curl/d
+  - --customize-hook=sed $1/overlay/etc/X11/xdm/Xsetup -e /quota-reminder/d
+  - --customize-hook=sed $1/overlay/etc/X11/xdm/Xstartup -e /snitch/d
+  - --customize-hook=sed $1/overlay/etc/fstab -e /nfs/d

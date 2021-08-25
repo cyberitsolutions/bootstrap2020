@@ -1,0 +1,209 @@
+parents:
+  - main-debian09
+options:
+  # Always install /etc/services
+  - --include=netbase
+
+  # Stretch default "dbus-user-session" requires session systemd,
+  # which ./delete-bad-files kills due to #30091. —twb, Dec 2016
+  - --include=dbus-x11
+  - >-
+    --include=
+    libpam-ldapd libnss-ldapd unscd
+    nfs-common iptables libpam-mount
+    xserver-xorg libgl1-mesa-dri xdm x11vnc
+    xserver-xorg-video-intel
+    xfce4-session xfwm4 xfce4-panel xfdesktop4 xfce4-settings
+    thunar ristretto tumbler
+    xfce4-datetime-plugin volumeicon-alsa
+    xfce4-dict xfce4-notifyd libnotify-bin
+    gtk2-engines tango-icon-theme gnome-icon-theme faenza-icon-theme clearlooks-phenix-theme
+    catfish galculator mlocate
+    chromium chromium-l10n prisonpc-chromium-hunspell-dictionaries
+  - --include=librsvg2-common   # Fix SVG icons. (#25102)
+  - --include=usermode          # passwd reset
+  - --include=gvfs policykit-1 eject thunar-volman  # thunar removable media
+  - --include=upmc=0.4prisonpc18 ir-keytable alsa-utils libdvdcss2        # NOTE: we built libdvdcss2 with libdvd-pkg
+  # To get our rebuilt vlc (w/o screenshot support) we MUST explicitly name all dependencies. —twb, Mar 2017 [#30713]
+  - >-
+    --include=
+    vlc=3.0.11-0+deb9u2inmate1
+    libvlc5=3.0.11-0+deb9u2inmate1
+    libvlccore9=3.0.11-0+deb9u2inmate1
+    libvlc-bin=3.0.11-0+deb9u2inmate1
+    vlc-bin=3.0.11-0+deb9u2inmate1
+    vlc-data=3.0.11-0+deb9u2inmate1
+    vlc-l10n=3.0.11-0+deb9u2inmate1
+    vlc-plugin-base=3.0.11-0+deb9u2inmate1
+    vlc-plugin-qt=3.0.11-0+deb9u2inmate1
+    vlc-plugin-video-output=3.0.11-0+deb9u2inmate1
+    vlc-plugin-zvbi=3.0.11-0+deb9u2inmate1
+  - --include=prayer prayer-templates-prisonpc=0.2jessie2
+  - --include=plymouth-themes
+  - --include=iproute2 quota curl python-gtk2 python-xdg xautolock        # used by our shitty scripts
+  - --include=genisoimage lsdvd libcdio-utils                             # used by disc-snitchd
+  - --include=python3-systemd python3-pyudev                              # used by disc-snitchd & usb-snitchd
+  - --include=python3-notify2                                             # used by quota-reminder
+  - --include=ca-certificates                                             # used by curl/chromium TLS
+  # Skip crap deps (#30242)
+  - >-
+    --include=
+    prisonpc-ersatz-e2fsprogs
+    prisonpc-ersatz-logrotate
+    prisonpc-ersatz-man-db
+    prisonpc-ersatz-kde-junk
+  # Install a (usually much newer) version of LibreOffice, from backports.
+  # We list deps manually (tedious!) instead of using -t $r-backports (dangerous!)
+  ##libreoffice-style-elementary/$r-backports                 # FIXME: enable this in the Adwaita branch?
+  ##libreoffice-style-colibre/$r-backports                    # FIXME: enable this for more MS-like icons?
+  - >-
+    --include=
+    libreoffice-writer/stretch-backports
+    libreoffice-calc/stretch-backports
+    libreoffice-impress/stretch-backports
+    libreoffice-math/stretch-backports
+    libreoffice-gtk2/stretch-backports
+    libreoffice-style-tango/stretch-backports
+    libreoffice-help-en-gb/stretch-backports
+    libreoffice-l10n-en-gb/stretch-backports
+    libreoffice-base-core/stretch-backports
+    libreoffice-core/stretch-backports
+    libreoffice-common/stretch-backports
+    libreoffice-draw/stretch-backports
+    uno-libs3/stretch-backports
+    ure/stretch-backports
+    fonts-opensymbol/stretch-backports
+    hunspell-en-au
+    hunspell-en-gb
+    hunspell-en-us
+    hyphen-en-gb
+    hyphen-en-us
+    mythes-en-us
+    libreoffice-lightproof-en
+    python3-uno/stretch-backports
+  - --include=prisonpc-core-fonts
+  - >-
+    --include=
+    fonts-beteckna
+    fonts-breip
+    fonts-cabin
+    fonts-cantarell
+    fonts-century-catalogue
+    fonts-comfortaa
+    fonts-dancingscript
+    fonts-dosis
+    fonts-ecolier-court
+    fonts-fanwood
+    fonts-jura
+    fonts-levien-museum
+    fonts-lindenhill
+    fonts-lobster
+    fonts-opendin
+    fonts-pecita
+    fonts-play
+    fonts-prociono
+    fonts-quattrocento
+    fonts-rufscript
+
+  # ----------------------------------------------------------------------
+  # FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+  # These path-include/path-exclude lines MUST
+  #   1. go *BEFORE* the ones added by the parent template (main)
+  #   2. apply *BEFORE* any GUI apps are installed.
+  #
+  # Therefore I think we we have to do is use a --setup-hook or
+  # --essential-hook that can write them directly into a file with a
+  # lower sort order than 99mmdebstrap (we were using
+  # $1/etc/dpkg/dpkg.cfg.d/80wimp-docs)
+  #
+  # ALSO: IIRC there's a 4096-byte limit on how long argv** can be??
+  #       This sort of thing is likely to blow it!
+  # FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+  # ----------------------------------------------------------------------
+
+  # Include English-language docs for "apps" but not for "internals" (#24888, #30232).
+  # We assume all info & manpages are "internal".
+  # We hard-code locale whitelist instead of checking /etc/defalt/locale.
+  # NB: the initial path-excludes come from 75no-docs (above).
+  # NB: if you exc=x & inc=x/y/z; you must explicitly inc=x/y/.
+  - '--dpkgopt=path-include=/usr/share/doc/dia'
+  - '--dpkgopt=path-include=/usr/share/doc/dia/html'
+  - '--dpkgopt=path-include=/usr/share/doc/dia/html/C/*'
+  - '--dpkgopt=path-include=/usr/share/doc/dia/html/en*/*'
+  - '--dpkgopt=path-include=/usr/share/doc/gnucash-docs/*-C/*'  # FIXME: whitelist gnucash PDF instead?
+  - '--dpkgopt=path-include=/usr/share/doc/gnucash-docs/*-en*/*'  # FIXME: whitelist gnucash PDF instead?
+  - '--dpkgopt=path-include=/usr/share/doc/kde'  # KDE4 location (still used in Stretch!)
+  - '--dpkgopt=path-include=/usr/share/doc/kde/HTML'  # KDE4 location (still used in Stretch!)
+  - '--dpkgopt=path-include=/usr/share/doc/kde/HTML/C/*'  # KDE4 location (still used in Stretch!)
+  - '--dpkgopt=path-include=/usr/share/doc/kde/HTML/en*/*'  # KDE4 location (still used in Stretch!)
+  - '--dpkgopt=path-include=/usr/share/doc/HTML'       # KDE5 location
+  - '--dpkgopt=path-include=/usr/share/doc/HTML/C/*'  # KDE5 location
+  - '--dpkgopt=path-include=/usr/share/doc/HTML/en*/*'  # KDE5 location
+  - '--dpkgopt=path-include=/usr/share/doc/pspp'
+  - '--dpkgopt=path-include=/usr/share/doc/pspp/pspp.xml'
+  - '--dpkgopt=path-include=/usr/share/doc/scribus'
+  - '--dpkgopt=path-include=/usr/share/doc/scribus/C'  # symlinks to /usr/share/scribus/doc
+  - '--dpkgopt=path-include=/usr/share/doc/scribus/en*'  # symlinks to /usr/share/scribus/doc
+  - '--dpkgopt=path-include=/usr/share/doc/vym'
+  - '--dpkgopt=path-include=/usr/share/doc/vym/vym.pdf'
+  - '--dpkgopt=path-include=/usr/share/doc/wesnoth-*-data/manual.C.html'
+  - '--dpkgopt=path-include=/usr/share/doc/wesnoth-*-data/manual.en*.html'
+  - '--dpkgopt=path-include=/usr/share/gnome/help/*/C/*'
+  - '--dpkgopt=path-include=/usr/share/gnome/help/*/en*/*'
+  - '--dpkgopt=path-include=/usr/share/gnome/help/gnucash-guide/ja'            # https://bugs.debian.org/898167
+  - '--dpkgopt=path-include=/usr/share/gnome/help/gnucash-guide/ja/legal.xml'  # https://bugs.debian.org/898167
+  - '--dpkgopt=path-include=/usr/share/help/C/*'
+  - '--dpkgopt=path-include=/usr/share/help/en*/*'
+  - '--dpkgopt=path-include=/usr/share/omf/*/*-C.emf'
+  - '--dpkgopt=path-include=/usr/share/omf/*/*-en*.emf'
+  # Remove some "internal" docs &c that otherwise match the above.
+  - '--dpkgopt=path-exclude=/usr/share/gtk-doc/*'                           # API docs
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kate/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kate5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kcontrol/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kcontrol5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kdebugdialog/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kdebugdialog5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kdesu/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kdesu5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kioslave/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/kioslave5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/knetattach/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/knetattach5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/fundamentals/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/fundamentals5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/onlinehelp/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/onlinehelp5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/sonnet/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/HTML/*/sonnet5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kate/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kate5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kcontrol/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kcontrol5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kdebugdialog/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kdebugdialog5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kdesu/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kdesu5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kioslave/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/kioslave5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/knetattach/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/knetattach5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/fundamentals/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/fundamentals5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/onlinehelp/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/onlinehelp5/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/sonnet/*'
+  - '--dpkgopt=path-exclude=/usr/share/doc/kde/HTML/*/sonnet5/*'
+  - '--dpkgopt=path-exclude=/usr/share/kde4/apps/khelpcenter/plugins/Manpages/*'
+  - '--dpkgopt=path-exclude=/usr/share/kde4/apps/khelpcenter/plugins/Scrollkeeper/*'
+  - '--dpkgopt=path-exclude=/usr/share/kde4/apps/khelpcenter/plugins/*.desktop'
+  # Many apps install l10n in non-standard locations.
+  # We don't bother to prune those out where the space saving is negligible (<10MiB).
+  - '--dpkgopt=path-exclude=/usr/lib/chromium/locales/*'                    # Save 18MiB
+  - '--dpkgopt=path-include=/usr/lib/chromium/locales/en*'
+  - '--dpkgopt=path-exclude=/usr/share/games/wesnoth/*/locale/*'            # Save 93MiB
+  - '--dpkgopt=path-include=/usr/share/games/wesnoth/*/locale/C/*'
+  - '--dpkgopt=path-include=/usr/share/games/wesnoth/*/locale/en*/*'
+  - '--dpkgopt=path-exclude=/usr/share/scribus/doc/*'                       # Save 26MiB
+  - '--dpkgopt=path-include=/usr/share/scribus/doc/C/*'
+  - '--dpkgopt=path-include=/usr/share/scribus/doc/en*/*'

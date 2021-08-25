@@ -1,0 +1,9 @@
+parents:
+  - prisonpc-desktop-common
+options:
+  # PRISONPC DESKTOP - Break kernel crypto modules in case a stock kernel was installed by mistake.
+  - '--dpkgopt=path-exclude=/lib/modules/*crypto*'
+
+  - --include=linux-image-4.19.118inmate
+  - --customize-hook=ln -s initrd.img-4.19.118inmate $1/boot/initrd.img
+  - --customize-hook=ln -s    vmlinuz-4.19.118inmate $1/boot/vmlinuz

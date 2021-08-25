@@ -1,0 +1,15 @@
+parents:
+  - prisonpc-desktop-common
+options:
+  - --include=linux-image-amd64/stretch-backports
+  - --include=dvdbackup gir1.2-gtk-3.0 python-gi # used by shitty dvdrip
+  # Staff-only packages
+  - --include=gvncviewer mousepad asunder xfce4-terminal xfce4-screenshooter xfburn gvfs-backends gvfs-fuse ntfs-3g exfat-fuse
+
+  # Update /usr/share/applications/mimeinfo.cache (for gvncviewer)
+  - --customize-hook=chroot $1 update-desktop-database
+
+  # Skip gstreamer warning (#25054)
+  - |
+    --customize-hook=
+    sed -rsi '/^Exec/ s/xfburn/xfburn -t basic/' $1/usr/share/applications/xfburn.desktop $1/usr/share/Thunar/sendto/thunar-sendto-xfburn.desktop

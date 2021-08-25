@@ -1,0 +1,52 @@
+parents:
+  - prisonpc-desktop-inmate-hcc-profile-a
+options:
+    # Hopkins-specific packages for ‘Games’ SOE. (#31606)
+    # Ref. KB/Hopkins+SOE+Requirements § APP_OVERVIEW.
+    # In descending order of ‘goodness’ (popularity divided by size).
+    - >-
+      --include=
+      gnome-sudoku
+      njam
+      powermanga
+      burgerspace
+      cuyo
+      supertux
+      lincity-ng
+      nikwi
+      solarwolf
+      freeciv-{client-gtk,server}/$r-backports
+      {wesnoth-1.12,prisonpc-wesnoth-1.12-addons}
+      epiphany
+      ceferino
+      pingus
+      xmoto
+      alienblaster
+      tomatoes
+      gnome-mastermind
+      torus-trooper
+      gltron
+      tworld
+      lbreakout2
+      titanion
+      beneath-a-steel-sky
+      warmux
+      ghextris
+      four-in-a-row
+      kobodeluxe
+      maelstrom
+      supertransball2
+      lierolibre
+      starfighter
+    ## New June 2019
+    #- --include=supertuxkart                                                #700MB    # NB: too slow on their hardware?
+    #- --include=alephone marathon1-data marathon2-data marathon3-data     #190MB    # Broken as at 2019-06-06
+    #- --include=warzone2100 prisonpc-warzone2100-addons                   #170MB    #
+    #- --include=blobwars                                                    # 80MB    #
+    - --include=opentyrian tyrian-data                                     # 50MB    #
+    #- --include=pybik                                                       # 45MB    #
+    - --include=pynagram                                                     # 17MB    #
+    #- --include=tuxmath                                                     # 11MB    #
+    #- --include=bomberclone                                                 #  9MB    #
+    - --include=freedroid                                                    #  7MB    #
+    - --include=numptyphysics                                                #  1MB    #

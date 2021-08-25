@@ -1,0 +1,15 @@
+description:
+  sshd: use dropbear (not openssh) [#32544]
+parents:
+  - debian11-main
+options:
+  # FIXME: THIS DOES NOT WORK.
+  #        We can't simply append to the include list such that
+  #           apt install openssh-server openssh-server- dropbear-run
+  #        Because this happens:
+  #           $ mmdebstrap sid /dev/null --include='mg mg-'
+  #           Package 'mg' is not installed, so not removed
+  #           The following NEW packages will be installed: …
+  #           The following held packages will be changed: mg
+  #           E: Held packages were changed and -y was used without --allow-change-held-packages.
+  - --include=dropbear-run openssh-server-

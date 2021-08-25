@@ -1,0 +1,9 @@
+---
+options:
+
+  - --include=init initramfs-tools xz-utils
+
+  - 
+
+  - --include=openssh-server msmtp-mta rsyslog-relp dbus
+  - --setup-hook=sed $1/etc/apt/sources.list -e ''

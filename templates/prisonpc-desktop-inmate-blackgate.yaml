@@ -1,0 +1,77 @@
+documentation: |-
+  Blackgate-specific configuration.
+
+  • Install EVERYTHING from PrisonPC App Catalogue.
+  • Install wesnoth addons.
+  • Install Marathon Trilogy / alephone (Jul 2019)
+parents:
+  - prisonpc-desktop-inmate
+options:
+  # ADDENDA FOR DEMO - ALL "EASY" prisonpc-app-catalogue entries. —twb, Jan 2016
+  # FIXME: in Debian 9+, install gimp-help-en. (https://tracker.debian.org/news/366607)
+  - >-
+    --include=
+    yelp prisonpc-yelp4kde
+    gnome-games                 # metapackage
+    aisleriot
+    alienblaster
+    atomix
+    wesnoth-1.12 prisonpc-wesnoth-1.12-addons
+    beneath-a-steel-sky
+    blobwars
+    bomberclone
+    burgerspace
+    ceferino
+    childsplay
+    crack-attack
+    dia dia-shapes
+    epiphany
+    freeciv-client-gtk/stretch-backports freeciv-server/stretch-backports
+    freedroid
+    frozen-bubble
+    gargoyle-free prisonpc-text-adventures
+    gcompris
+    ghextris
+    gnome-chess
+    gimp
+    four-in-a-row
+    gnome-mastermind
+    gnome-mines
+    gnucash gnucash-docs
+    inkscape prisonpc-inkscape-doc
+    gnome-sudoku
+    lybniz
+    gelemental
+    pynagram
+    knavalbattle
+    late
+    kbruch
+    kgeography
+    khangman
+    kig
+    tagainijisho
+    kolf
+    klavaro
+    lbreakout2
+    lincity-ng
+    gnome-mahjongg
+    marble
+    nikwi
+    njam
+    pingus
+    planner planner-doc
+    powermanga
+    quadrapassel
+    scribus scribus-doc
+    step
+    supertux
+    titanion
+    tworld
+    warmux
+    xmoto
+
+  # NB: this is 190MB on its own!
+  - --include=alephone marathon1-data marathon2-data marathon3-data
+
+  # NB: pulls in Mono C# CLR
+  - --include=gbrainy

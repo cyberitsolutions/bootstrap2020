@@ -1,0 +1,34 @@
+parents:
+  - prisonpc-desktop-staff
+options:
+  # Hopkins-specific staff configuration. (#25169, #31606)
+  #
+  # On 20 Apr 2015, conz wrote:
+  # > Miles asked that staff at HCC should have access to the
+  # > document viewing/creation applications that the inmates have.
+  #
+  # For 14.05 / Wheezy SOEs, this request was met by installing the
+  # specific applications Hopkins nominated.
+  # The packages are simply an updated version of that list. —twb, Jan 2017
+  #
+  # FIXME: we SHOULD start again from the FR above,
+  # installing all (and only) the apps necessary to meet that FR. —twb, Jan 2017
+  #
+  # Order is per the KB article, i.e. descending ‘goodness’ (popularity divided by size).
+  # FIXME: for now, some apps need GNOME/KDE help viewers. (#24888, #30502, #31512)
+  - >-
+    --include=
+    yelp prisonpc-yelp4kde
+    dia dia-shapes
+    gimp gimp-help-en
+    klavaro
+    inkscape prisonpc-inkscape-doc
+    marble
+    step
+    kgeography
+    gnucash gnucash-docs
+    scribus scribus-doc
+    kbruch
+    tagainijisho
+    lybniz
+    kig

@@ -1,0 +1,13 @@
+parents:
+  - prisonpc-desktop-staff
+options:
+  # Rationale (gimp): inmates can hide information in an .xcd;
+  # Only gimp (not ristretto) can view these;
+  # It is not feasible to disable XCD support in GIMP.
+  # --twb, Apr 2016 (#30908)
+  - --include=gimp gimp-help-en
+  # Rationale (xarchiver): educational content arrives as .zip, we cannot stop this.
+  # Inmates have no zip support for security reasons (#30738).
+  # Therefore staff must be able to unzip on their behalf.
+  # --twb, Apr 2016 (#30989)
+  - --include=xarchiver unzip

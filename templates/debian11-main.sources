@@ -1,0 +1,26 @@
+# Ref. https://manpages.debian.org/stable/apt/sources.list.5.en.html#DEB822-STYLE_FORMAT
+# NOTE: apt 1.5+ supports https natively (no apt-transport-https needed)
+# UPDATE: Using https *and* caching proxy proved to be too problematic.
+#         Therefore we now use SOLELY http (not https).
+# NOTE: intel-microcode & amd64-microcode needs contrib & non-free!
+# FIXME: is it safe to place deb.debian.org and security.debian.org together?
+# UPDATE: SOLELY deb.debian.org (no security.debian.org),
+#         which is identical to security-cdn.debian.org,
+#         which is identical to security.debian.org (mostly) due to SRV records.
+Types: deb
+URIs: http://deb.debian.org/debian-security
+Suites:
+  bullseye-security
+Components: main contrib non-free
+
+Types: deb
+URIs: http://deb.debian.org/debian
+Suites:
+  bullseye
+  bullseye-updates
+  bullseye-proposed-updates
+  bullseye-backports
+  testing
+  unstable
+  experimental
+Components: main contrib non-free

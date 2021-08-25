@@ -1,0 +1,18 @@
+parents:
+  - prisonpc-desktop-inmate
+options:
+  # Hopkins-specific packages for ‘Profile B’ SOE. (#31606)
+  # Ref. KB/Hopkins+SOE+Requirements § APP_OVERVIEW.
+  # In descending order of ‘goodness’ (popularity divided by size).
+  # FIXME: for now, some apps need GNOME/KDE help viewers. (#24888, #30502, #31512)
+  - >-
+    --include=
+    yelp prisonpc-yelp4kde
+    aisleriot
+    gnome-sudoku
+    gnome-chess
+    gnome-mines
+    klavaro
+    kgeography
+    gnucash gnucash-docs
+    kbruch
