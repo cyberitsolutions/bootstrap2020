@@ -79,6 +79,14 @@ subprocess.run(
      f'    echo locales locales/default_environment_locale select {args.LANG.full};'
      f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
      '     } | chroot $1 debconf-set-selections',
+     # Save space and time by skipping documentation.
+     # Estimated savings are for task-gnome-desktop/bullseye.
+     '--dpkgopt=path-exclude=/usr/share/doc/*',  # Save 3% (101M)
+     '--dpkgopt=path-exclude=/usr/share/info/*',  # Save 0% (1M)
+     '--dpkgopt=path-exclude=/usr/share/man/*',   # Save 0% (12M)
+     '--dpkgopt=path-exclude=/usr/share/omf/*',   # Save 0% (0M)
+     '--dpkgopt=path-exclude=/usr/share/help/*',  # Save 4% (117M)
+     '--dpkgopt=path-exclude=/usr/share/gnome/help/*',  # Save 0% (0M)
      'bullseye',
      args.output_file,
      '-'],
