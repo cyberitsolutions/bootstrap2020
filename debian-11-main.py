@@ -18,6 +18,8 @@ NOTE: this is the simplest config possible.
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--boot-test', action='store_true',
+                    help='quick-and-dirty boot test via qemu')
 args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
@@ -27,5 +29,25 @@ subprocess.check_call(
      f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
      '--aptopt=Acquire::https::Proxy "DIRECT"',
      '--include=linux-image-generic live-boot',
+     '--customize-hook=download vmlinuz vmlinuz',
+     '--customize-hook=download initrd.img initrd.img',
      'bullseye',
      'filesystem.squashfs'])
+
+if args.boot_test:
+    subprocess.check_call([
+        # NOTE: doesn't need root privs
+        'qemu-system-x86_64',
+        '--enable-kvm',
+        '--machine', 'q35',
+        '--cpu', 'host',
+        '-m', '512M',
+        '--smp', '2',
+        '--kernel', 'vmlinuz',
+        '--initrd', 'initrd.img',
+        '--nographic',
+        '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
+                     ' boot=live plainroot root=/dev/vda'),
+        '--drive', 'file=filesystem.squashfs,format=raw,media=disk,if=virtio',
+        '--net', 'nic,model=virtio',
+        '--net', 'user'])
