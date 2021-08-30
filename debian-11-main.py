@@ -20,6 +20,8 @@ NOTE: this is the simplest config possible.
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--boot-test', action='store_true',
                     help='quick-and-dirty boot test via qemu')
+parser.add_argument('--backdoor-enable', action='store_true',
+                    help='login as root with no password')
 args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
@@ -29,6 +31,8 @@ subprocess.check_call(
      f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
      '--aptopt=Acquire::https::Proxy "DIRECT"',
      '--include=linux-image-generic live-boot',
+     *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
+       if args.backdoor_enable else []),
      '--customize-hook=download vmlinuz vmlinuz',
      '--customize-hook=download initrd.img initrd.img',
      'bullseye',
