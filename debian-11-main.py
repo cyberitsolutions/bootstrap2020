@@ -20,8 +20,12 @@ NOTE: this is the simplest config possible.
 parser = argparse.ArgumentParser(description=__doc__)
 args = parser.parse_args()
 
+apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
+
 subprocess.check_call(
     ['mmdebstrap',
+     f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
+     '--aptopt=Acquire::https::Proxy "DIRECT"',
      '--include=linux-image-generic live-boot',
      'bullseye',
      'filesystem.squashfs'])
