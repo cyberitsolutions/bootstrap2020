@@ -24,6 +24,8 @@ parser.add_argument('--boot-test', action='store_true',
                     help='quick-and-dirty boot test via qemu')
 parser.add_argument('--backdoor-enable', action='store_true',
                     help='login as root with no password')
+parser.add_argument('--optimize', choices=('size', 'speed'), default='size',
+                    help='build slower to get a smaller image?')
 args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
@@ -41,6 +43,11 @@ subprocess.check_call(
      '--variant=apt',           # save 12s 30MB
      '--include=init',          # https://bugs.debian.org/993289
      '--dpkgopt=force-unsafe-io',  # save 20s (even on tmpfs!)
+     *(['--include=pigz']       # save 8s
+       if args.optimize == 'speed' else
+       ['--include=xz-utils',   # save 10MB lose 28s
+        '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
+        '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
      *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
        if args.backdoor_enable else []),
      *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
