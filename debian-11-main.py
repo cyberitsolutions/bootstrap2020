@@ -61,6 +61,8 @@ subprocess.check_call(
        if args.debug_shell else []),
      '--customize-hook=download vmlinuz vmlinuz',
      '--customize-hook=download initrd.img initrd.img',
+     *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
+       if args.optimize != 'simplicity' else []),
      'bullseye',
      'filesystem.squashfs'])
 
