@@ -24,7 +24,7 @@ parser.add_argument('--boot-test', action='store_true',
                     help='quick-and-dirty boot test via qemu')
 parser.add_argument('--backdoor-enable', action='store_true',
                     help='login as root with no password')
-parser.add_argument('--optimize', choices=('size', 'speed'), default='size',
+parser.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                     help='build slower to get a smaller image?')
 args = parser.parse_args()
 
@@ -37,13 +37,18 @@ git_description = git_proc.stdout.strip() if git_proc.returncode == 0 else 'UNKN
 
 subprocess.check_call(
     ['mmdebstrap',
-     f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
-     '--aptopt=Acquire::https::Proxy "DIRECT"',
      '--include=linux-image-generic live-boot',
-     '--variant=apt',           # save 12s 30MB
-     '--include=init',          # https://bugs.debian.org/993289
-     '--dpkgopt=force-unsafe-io',  # save 20s (even on tmpfs!)
-     *(['--include=pigz']       # save 8s
+     *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
+        '--aptopt=Acquire::https::Proxy "DIRECT"']
+       if args.optimize != 'simplicity' else []),
+     *(['--variant=apt',           # save 12s 30MB
+        '--include=init']          # https://bugs.debian.org/993289
+       if args.optimize != 'simplicity' else []),
+     *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
+       if args.optimize != 'simplicity' else []),
+     *([]
+       if args.optimize == 'simplicity' else
+       ['--include=pigz']       # save 8s
        if args.optimize == 'speed' else
        ['--include=xz-utils',   # save 10MB lose 28s
         '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
