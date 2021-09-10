@@ -61,6 +61,9 @@ subprocess.check_call(
        if args.optimize != 'simplicity' else []),
      *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
        if args.optimize != 'simplicity' else []),
+     *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
+        '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
+       if args.optimize == 'size' else []),
      *([]
        if args.optimize == 'simplicity' else
        ['--include=pigz']       # save 8s
