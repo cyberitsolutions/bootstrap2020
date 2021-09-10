@@ -32,6 +32,8 @@ parser.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), defau
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main')
+parser.add_argument('--netboot', action='store_true',
+                    help='set this if you expect to boot off PXE/HTTP/NFS (not USB/SSD)')
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
@@ -82,6 +84,19 @@ subprocess.check_call(
      destdir / 'filesystem.squashfs'])
 
 if args.boot_test:
+    if args.netboot:
+        subprocess.check_call(['cp', '-t', destdir, '--',
+                               '/usr/lib/PXELINUX/pxelinux.0',
+                               '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
+        (destdir / 'pxelinux.cfg').mkdir(exist_ok=True)
+        (destdir / 'pxelinux.cfg/default').write_text(
+            'DEFAULT linux\n'
+            'LABEL linux\n'
+            '  IPAPPEND 2\n'
+            '  KERNEL vmlinuz\n'
+            '  INITRD initrd.img\n'
+            '  APPEND earlyprintk=ttyS0 console=ttyS0 loglevel=1'
+            '         boot=live fetch=tftp://10.0.2.2/filesystem.squashfs\n')
     subprocess.check_call([
         # NOTE: doesn't need root privs
         'qemu-system-x86_64',
@@ -90,11 +105,18 @@ if args.boot_test:
         '--cpu', 'host',
         '-m', '512M',
         '--smp', '2',
-        '--kernel', destdir / 'vmlinuz',
-        '--initrd', destdir / 'initrd.img',
         '--nographic',
-        '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
-                     ' boot=live plainroot root=/dev/vda'),
-        '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio',
         '--net', 'nic,model=virtio',
-        '--net', 'user'])
+        *(['--net', f'user,bootfile=pxelinux.0,tftp={destdir}']
+          if args.netboot else
+          ['--net', 'user',
+           '--kernel', destdir / 'vmlinuz',
+           '--initrd', destdir / 'initrd.img',
+           '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
+                        ' boot=live plainroot root=/dev/vda'),
+           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio'])])
+    if args.netboot:
+        (destdir / 'pxelinux.0').unlink()
+        (destdir / 'ldlinux.c32').unlink()
+        (destdir / 'pxelinux.cfg/default').unlink()
+        (destdir / 'pxelinux.cfg').rmdir()
