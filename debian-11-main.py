@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 import argparse
+import datetime
+import pathlib
+import re
 import subprocess
 
 __author__ = "Trent W. Buck"
@@ -26,7 +29,17 @@ parser.add_argument('--backdoor-enable', action='store_true',
                     help='login as root with no password')
 parser.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                     help='build slower to get a smaller image?')
+parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
+                    default='/var/tmp/bootstrap2020/')
+parser.add_argument('--template', default='main')
 args = parser.parse_args()
+
+destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
+for part in destdir.parts:
+    if not (part == '/' or re.fullmatch(r'[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', part)):
+        raise NotImplementedError('To simplify shell quoting, all path components must conform to RFC 952.', part, destdir)
+destdir.mkdir(parents=True, mode=0o2775, exist_ok=True)
+
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
@@ -59,12 +72,12 @@ subprocess.check_call(
         '--customize-hook=chroot $1 bash -i',
         '--customize-hook=rm -f $1/etc/debian_chroot']
        if args.debug_shell else []),
-     '--customize-hook=download vmlinuz vmlinuz',
-     '--customize-hook=download initrd.img initrd.img',
+     f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
+     f'--customize-hook=download initrd.img {destdir}/initrd.img',
      *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
        if args.optimize != 'simplicity' else []),
      'bullseye',
-     'filesystem.squashfs'])
+     destdir / 'filesystem.squashfs'])
 
 if args.boot_test:
     subprocess.check_call([
@@ -75,11 +88,11 @@ if args.boot_test:
         '--cpu', 'host',
         '-m', '512M',
         '--smp', '2',
-        '--kernel', 'vmlinuz',
-        '--initrd', 'initrd.img',
+        '--kernel', destdir / 'vmlinuz',
+        '--initrd', destdir / 'initrd.img',
         '--nographic',
         '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
                      ' boot=live plainroot root=/dev/vda'),
-        '--drive', 'file=filesystem.squashfs,format=raw,media=disk,if=virtio',
+        '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio',
         '--net', 'nic,model=virtio',
         '--net', 'user'])
