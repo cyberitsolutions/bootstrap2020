@@ -66,6 +66,8 @@ subprocess.check_call(
        ['--include=xz-utils',   # save 10MB lose 28s
         '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
         '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
+     *(['--include=dbus']       # https://bugs.debian.org/814758
+       if args.optimize != 'simplicity' else []),
      *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
        if args.backdoor_enable else []),
      *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
