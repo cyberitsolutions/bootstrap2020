@@ -70,6 +70,12 @@ subprocess.check_call(
         '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
      *(['--include=dbus']       # https://bugs.debian.org/814758
        if args.optimize != 'simplicity' else []),
+     *(['--include=libnss-myhostname libnss-resolve',
+        '--customize-hook=rm $1/etc/hostname',
+        '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
+        '--essential-hook=tar-in debian-11-main.tar /',
+        '--customize-hook=systemctl --root=$1 enable systemd-networkd']
+       if args.optimize != 'simplicity' else []),
      *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
        if args.backdoor_enable else []),
      *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
