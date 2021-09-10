@@ -79,6 +79,8 @@ subprocess.check_call(
         '--essential-hook=tar-in debian-11-main.tar /',
         '--customize-hook=systemctl --root=$1 enable systemd-networkd']
        if args.optimize != 'simplicity' else []),
+     *(['--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
+       if args.netboot else []),
      *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
        if args.backdoor_enable else []),
      *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
