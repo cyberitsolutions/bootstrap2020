@@ -1,0 +1,78 @@
+#!/usr/bin/python3
+import argparse
+import datetime
+import contextlib
+import hashlib
+import json
+import pathlib
+import stat
+import sys
+import tarfile
+
+import magic
+
+__DOC__ = """ help 'git diff foo.tar' show metadata AND data
+
+For mmdebstrap I want to copy in a small number of config files.
+Most are text, a handful are binary (e.g. PNG icons).
+The metatada is important, e.g. root ownership, setuid, lack of group read.
+mmdebstrap natively likes the .tar format.
+Emacs can directly create and edit files within a tar.
+
+So the easiest thing was to just commit the tarfiles directly.
+The problem was, "git log -p" and "git diff" were kind of confusing.
+This went doubly so with
+
+    git config --global diff.tar.textconv tar vvvtf
+
+Because when I fixed some transposed characters,
+git claimed there was no change!
+This is because the file size within the tar hadn't changed,
+though the content had.
+
+So I need a way to show both the file metadata, AND
+the data -- at least if it's a text/* member.
+"""
+
+parser = argparse.ArgumentParser(description=__DOC__)
+parser.add_argument('path', type=pathlib.Path)
+args = parser.parse_args()
+
+# copy-paste-edited from cpython 3.9 tarfile:
+type_description = {
+    b"0": 'regular file',
+    b"\0": 'regular file',
+    b"1": 'link (inside tarfile)',
+    b"2": 'symbolic link',
+    b"3": 'character special device',
+    b"4": 'block special device',
+    b"5": 'directory',
+    b"6": 'fifo special device',
+    b"7": 'contiguous file',
+    b"L": 'GNU tar longname',
+    b"K": 'GNU tar longlink',
+    b"S": 'GNU tar sparse file'}
+
+
+with contextlib.closing(magic.open(magic.MAGIC_MIME_TYPE)) as mime_magic:
+    mime_magic.load()
+    with tarfile.open(name=args.path, mode="r:*") as tf:
+        for tarinfo in tf:
+            info = tarinfo.get_info()
+            info['type'] = type_description[info['type']]
+            info['mode'] = f"{info['mode']:04o} ({stat.filemode(info['mode'])})"
+            info['mtime'] = f"{info['mtime']} ({datetime.datetime.fromtimestamp(info['mtime'])})"
+            if 'chksum' not in info and tarinfo.isfile():
+                with tf.extractfile(tarinfo) as f:
+                    # FIXME: don't .read(0 the entire file into RAM first!
+                    info['sha3-256'] = hashlib.sha3_256(f.read()).hexdigest()
+            json.dump(info, sys.stdout, indent=4)
+            print(flush=True)
+            if tarinfo.isfile():
+                with tf.extractfile(tarinfo) as f:
+                    # FIXME: don't .read() the entire file into RAM first!
+                    contents = f.read()
+                    if mime_magic.buffer(contents).startswith('text/'):
+                        sys.stdout.buffer.write(contents)
+                    else:
+                        print('Binary file')
