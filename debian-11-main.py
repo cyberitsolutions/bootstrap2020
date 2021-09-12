@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 import argparse
 import datetime
+import os
 import pathlib
+import pprint
 import re
 import subprocess
 
@@ -34,6 +36,9 @@ parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
 parser.add_argument('--template', default='main')
 parser.add_argument('--netboot', action='store_true',
                     help='set this if you expect to boot off PXE/HTTP/NFS (not USB/SSD)')
+parser.add_argument('--reproducible', metavar='YYYY-MM-DD',
+                    type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=datetime.timezone.utc),
+                    help='build a reproducible OS image')
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
@@ -49,6 +54,11 @@ git_proc = subprocess.run(['git', 'describe', '--all'], text=True,
                           stdout=subprocess.PIPE,
                           stderr=subprocess.DEVNULL)
 git_description = git_proc.stdout.strip() if git_proc.returncode == 0 else 'UNKNOWN'
+
+if args.reproducible:
+    os.environ['SOURCE_DATE_EPOCH'] = str(int(args.reproducible.timestamp()))
+    # FIXME: we also need a way to use a reproducible snapshot of the Debian mirror.
+    # See /bin/debbisect for discussion re https://snapshot.debian.org.
 
 subprocess.check_call(
     ['mmdebstrap',
@@ -71,7 +81,8 @@ subprocess.check_call(
        ['--include=xz-utils',   # save 10MB lose 28s
         '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
         '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
-     *(['--include=dbus']       # https://bugs.debian.org/814758
+     *(['--include=dbus',       # https://bugs.debian.org/814758
+        '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
        if args.optimize != 'simplicity' else []),
      *(['--include=libnss-myhostname libnss-resolve',
         '--customize-hook=rm $1/etc/hostname',
@@ -91,8 +102,15 @@ subprocess.check_call(
      f'--customize-hook=download initrd.img {destdir}/initrd.img',
      *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
        if args.optimize != 'simplicity' else []),
+     *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
+       if args.reproducible else []),
      'bullseye',
      destdir / 'filesystem.squashfs'])
+
+if args.reproducible:
+    (destdir / 'args.txt').write_text(pprint.pformat(args))
+    (destdir / 'B2SUMS').write_bytes(subprocess.check_output(['b2sum', *destdir.glob('*')]))
+    subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 if args.boot_test:
     if args.netboot:
