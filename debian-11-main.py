@@ -6,6 +6,7 @@ import pathlib
 import pprint
 import re
 import subprocess
+import types
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2021 Trent W. Buck"
@@ -39,6 +40,11 @@ parser.add_argument('--netboot', action='store_true',
 parser.add_argument('--reproducible', metavar='YYYY-MM-DD',
                     type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=datetime.timezone.utc),
                     help='build a reproducible OS image')
+parser.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().strip(),
+                    help="SOE's timezone (for UTC, use Etc/UTC)",
+                    type=lambda s: types.SimpleNamespace(full=s,
+                                                         area=s.partition('/')[0],
+                                                         zone=s.partition('/')[-1]))
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
@@ -89,6 +95,12 @@ subprocess.check_call(
         '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
         '--essential-hook=tar-in debian-11-main.tar /',
         '--customize-hook=systemctl --root=$1 enable systemd-networkd']
+       if args.optimize != 'simplicity' else []),
+     *(['--include=tzdata',
+        '--essential-hook={'
+        f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
+        f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
+        '     } | chroot $1 debconf-set-selections']
        if args.optimize != 'simplicity' else []),
      *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
         '--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
