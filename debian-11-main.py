@@ -40,6 +40,9 @@ parser.add_argument('--netboot', action='store_true',
 parser.add_argument('--reproducible', metavar='YYYY-MM-DD',
                     type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=datetime.timezone.utc),
                     help='build a reproducible OS image')
+parser.add_argument('--LANG', default=os.environ['LANG'],
+                    help='locale used inside the image',
+                    type=lambda s: types.SimpleNamespace(full=s, encoding=s.partition('.')[-1]))
 parser.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().strip(),
                     help="SOE's timezone (for UTC, use Etc/UTC)",
                     type=lambda s: types.SimpleNamespace(full=s,
@@ -100,6 +103,12 @@ subprocess.check_call(
         '--essential-hook={'
         f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
         f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
+        '     } | chroot $1 debconf-set-selections']
+       if args.optimize != 'simplicity' else []),
+     *(['--include=locales',
+        '--essential-hook={'
+        f'    echo locales locales/default_environment_locale select {args.LANG.full};'
+        f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
         '     } | chroot $1 debconf-set-selections']
        if args.optimize != 'simplicity' else []),
      *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
