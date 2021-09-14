@@ -23,6 +23,13 @@ NOTE: this is the simplest config possible.
       such as amd64-microcode and smartd.
 """
 
+
+def validate_unescaped_path_is_safe(path: pathlib.Path) -> None:
+    for part in pathlib.Path(path).parts:
+        if not (part == '/' or re.fullmatch(r'[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', part)):
+            raise NotImplementedError('To simplify shell quoting, all path components must conform to RFC 952.', part, path)
+
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--debug-shell', action='store_true',
                     help='quick-and-dirty chroot debug shell')
@@ -51,9 +58,7 @@ parser.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().st
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
-for part in destdir.parts:
-    if not (part == '/' or re.fullmatch(r'[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', part)):
-        raise NotImplementedError('To simplify shell quoting, all path components must conform to RFC 952.', part, destdir)
+validate_unescaped_path_is_safe(destdir)
 destdir.mkdir(parents=True, mode=0o2775, exist_ok=True)
 
 
