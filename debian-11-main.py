@@ -1,12 +1,18 @@
 #!/usr/bin/python3
 import argparse
 import datetime
+import io
 import os
 import pathlib
 import pprint
 import re
 import subprocess
+import tarfile
+import tempfile
 import types
+
+import hyperlink                # URL validation
+import requests                 # FIXME: h2 support!
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2021 Trent W. Buck"
@@ -55,6 +61,14 @@ parser.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().st
                     type=lambda s: types.SimpleNamespace(full=s,
                                                          area=s.partition('/')[0],
                                                          zone=s.partition('/')[-1]))
+parser.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
+                    type=hyperlink.URL.from_text,
+                    help='who can SSH into your image?',
+                    default=['https://github.com/trentbuck.keys',
+                             'https://github.com/mijofa.keys',
+                             'https://github.com/emja.keys'])
+parser.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022,
+                    help='so you can run two of these at once')
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
@@ -74,7 +88,30 @@ if args.reproducible:
     # FIXME: we also need a way to use a reproducible snapshot of the Debian mirror.
     # See /bin/debbisect for discussion re https://snapshot.debian.org.
 
-subprocess.check_call(
+with tempfile.TemporaryDirectory() as td:
+    td = pathlib.Path(td)
+    validate_unescaped_path_is_safe(td)
+    # FIXME: use SSH certificates instead, and just trust a static CA!
+    authorized_keys_tar_path = td / 'ssh.tar'
+    with tarfile.open(authorized_keys_tar_path, 'w') as t:
+        with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
+            for url in args.authorized_keys_urls:
+                resp = requests.get(url)
+                resp.raise_for_status()
+                f.write(b'#')
+                f.write(url.encode())
+                f.write(b'\n')
+                # can't use resp.content, because website might be using BIG5 or something.
+                f.write(resp.text.encode())
+                f.write(b'\n')
+                f.flush()
+            member = tarfile.TarInfo('root/.ssh/authorized_keys')
+            member.mode = 0o0400
+            member.size = f.tell()
+            f.seek(0)
+            t.addfile(member, f)
+
+    subprocess.check_call(
     ['mmdebstrap',
      '--include=linux-image-generic live-boot',
      *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
@@ -119,6 +156,9 @@ subprocess.check_call(
      *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
         '--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
        if args.netboot else []),
+     *(['--include=tinysshd',
+        f'--essential-hook=tar-in {authorized_keys_tar_path} /']
+       if args.optimize != 'simplicity' else []),
      *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
        if args.backdoor_enable else []),
      *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
@@ -163,14 +203,15 @@ if args.boot_test:
         '--smp', '2',
         '--nographic', '--vga', 'none',
         '--net', 'nic,model=virtio',
-        *(['--net', f'user,hostname={args.template},bootfile=pxelinux.0,tftp={destdir}']
-          if args.netboot else
-          ['--net', f'user,hostname={args.template}',
-           '--kernel', destdir / 'vmlinuz',
+        '--net', (f'user,hostname={args.template}'
+                  f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
+                  (f',bootfile=pxelinux.0,tftp={destdir}' if args.netboot else '')),
+        *(['--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
            '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
                         ' boot=live plainroot root=/dev/vda'),
-           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly'])])
+           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly']
+          if not args.netboot else [])])
     if args.netboot:
         (destdir / 'pxelinux.0').unlink()
         (destdir / 'ldlinux.c32').unlink()
