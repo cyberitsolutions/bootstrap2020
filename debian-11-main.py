@@ -103,18 +103,18 @@ if args.boot_test:
         '--enable-kvm',
         '--machine', 'q35',
         '--cpu', 'host',
-        '-m', '512M',
+        '-m', '512M,maxmem=1G',
         '--smp', '2',
-        '--nographic',
+        '--nographic', '--vga', 'none',
         '--net', 'nic,model=virtio',
-        *(['--net', f'user,bootfile=pxelinux.0,tftp={destdir}']
+        *(['--net', f'user,hostname={args.template},bootfile=pxelinux.0,tftp={destdir}']
           if args.netboot else
-          ['--net', 'user',
+          ['--net', f'user,hostname={args.template}',
            '--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
            '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
                         ' boot=live plainroot root=/dev/vda'),
-           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio'])])
+           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly'])])
     if args.netboot:
         (destdir / 'pxelinux.0').unlink()
         (destdir / 'ldlinux.c32').unlink()
