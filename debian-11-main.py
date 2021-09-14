@@ -112,67 +112,67 @@ with tempfile.TemporaryDirectory() as td:
             t.addfile(member, f)
 
     subprocess.check_call(
-    ['mmdebstrap',
-     '--include=linux-image-generic live-boot',
-     *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
-        '--aptopt=Acquire::https::Proxy "DIRECT"']
-       if args.optimize != 'simplicity' else []),
-     *(['--variant=apt',           # save 12s 30MB
-        '--include=init']          # https://bugs.debian.org/993289
-       if args.optimize != 'simplicity' else []),
-     *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
-       if args.optimize != 'simplicity' else []),
-     *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
-        '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
-       if args.optimize == 'size' else []),
-     *([]
-       if args.optimize == 'simplicity' else
-       ['--include=pigz']       # save 8s
-       if args.optimize == 'speed' else
-       ['--include=xz-utils',   # save 10MB lose 28s
-        '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
-        '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
-     *(['--include=dbus',       # https://bugs.debian.org/814758
-        '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
-       if args.optimize != 'simplicity' else []),
-     *(['--include=libnss-myhostname libnss-resolve',
-        '--customize-hook=rm $1/etc/hostname',
-        '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
-        '--essential-hook=tar-in debian-11-main.tar /',
-        '--customize-hook=systemctl --root=$1 enable systemd-networkd']
-       if args.optimize != 'simplicity' else []),
-     *(['--include=tzdata',
-        '--essential-hook={'
-        f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
-        f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
-        '     } | chroot $1 debconf-set-selections']
-       if args.optimize != 'simplicity' else []),
-     *(['--include=locales',
-        '--essential-hook={'
-        f'    echo locales locales/default_environment_locale select {args.LANG.full};'
-        f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
-        '     } | chroot $1 debconf-set-selections']
-       if args.optimize != 'simplicity' else []),
-     *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
-        '--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
-       if args.netboot else []),
-     *(['--include=tinysshd',
-        f'--essential-hook=tar-in {authorized_keys_tar_path} /']
-       if args.optimize != 'simplicity' else []),
-     *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
-       if args.backdoor_enable else []),
-     *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
-        '--customize-hook=chroot $1 bash -i',
-        '--customize-hook=rm -f $1/etc/debian_chroot']
-       if args.debug_shell else []),
-     f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
-     f'--customize-hook=download initrd.img {destdir}/initrd.img',
-     *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
-       if args.optimize != 'simplicity' else []),
-     *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
-       if args.reproducible else []),
-     'bullseye',
-     destdir / 'filesystem.squashfs'])
+        ['mmdebstrap',
+         '--include=linux-image-generic live-boot',
+         *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
+            '--aptopt=Acquire::https::Proxy "DIRECT"']
+           if args.optimize != 'simplicity' else []),
+         *(['--variant=apt',           # save 12s 30MB
+            '--include=init']          # https://bugs.debian.org/993289
+           if args.optimize != 'simplicity' else []),
+         *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
+           if args.optimize != 'simplicity' else []),
+         *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
+            '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
+           if args.optimize == 'size' else []),
+         *([]
+           if args.optimize == 'simplicity' else
+           ['--include=pigz']       # save 8s
+           if args.optimize == 'speed' else
+           ['--include=xz-utils',   # save 10MB lose 28s
+            '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
+            '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
+         *(['--include=dbus',       # https://bugs.debian.org/814758
+            '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
+           if args.optimize != 'simplicity' else []),
+         *(['--include=libnss-myhostname libnss-resolve',
+            '--customize-hook=rm $1/etc/hostname',
+            '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
+            '--essential-hook=tar-in debian-11-main.tar /',
+            '--customize-hook=systemctl --root=$1 enable systemd-networkd']
+           if args.optimize != 'simplicity' else []),
+         *(['--include=tzdata',
+            '--essential-hook={'
+            f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
+            f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
+            '     } | chroot $1 debconf-set-selections']
+           if args.optimize != 'simplicity' else []),
+         *(['--include=locales',
+            '--essential-hook={'
+            f'    echo locales locales/default_environment_locale select {args.LANG.full};'
+            f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
+            '     } | chroot $1 debconf-set-selections']
+           if args.optimize != 'simplicity' else []),
+         *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
+            '--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
+           if args.netboot else []),
+         *(['--include=tinysshd',
+            f'--essential-hook=tar-in {authorized_keys_tar_path} /']
+           if args.optimize != 'simplicity' else []),
+         *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
+           if args.backdoor_enable else []),
+         *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
+            '--customize-hook=chroot $1 bash -i',
+            '--customize-hook=rm -f $1/etc/debian_chroot']
+           if args.debug_shell else []),
+         f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
+         f'--customize-hook=download initrd.img {destdir}/initrd.img',
+         *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
+           if args.optimize != 'simplicity' else []),
+         *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
+           if args.reproducible else []),
+         'bullseye',
+         destdir / 'filesystem.squashfs'])
 
 if args.reproducible:
     (destdir / 'args.txt').write_text(pprint.pformat(args))
