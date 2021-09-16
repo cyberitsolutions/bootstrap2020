@@ -18,15 +18,14 @@ __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2021 Trent W. Buck"
 __license__ = "expat"
 
-__doc__ = """ build the simplest Debian Live image that can boot
+__doc__ = """ build simple Debian Live image that can boot
 
 This uses mmdebstrap to do the heavy lifting;
 it can run entirely without root privileges.
 Bootloader is out-of-scope.
 
-NOTE: this is the simplest config possible.
-      It lacks CRITICAL SECURITY AND DATA LOSS packages,
-      such as amd64-microcode and smartd.
+NOTE: It lacks CRITICAL DATA LOSS packages,
+      such as smartd.
 """
 
 
@@ -153,6 +152,16 @@ with tempfile.TemporaryDirectory() as td:
             f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
             '     } | chroot $1 debconf-set-selections']
            if args.optimize != 'simplicity' else []),
+         # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
+         # The emulator is called "microcode", and is full of security vulnerabilities.
+         # Make sure security patches for microcode for *ALL* CPUs are included.
+         # By default, it tries to auto-detect the running CPU, so only patches the CPU of the build server.
+         *(['--include=intel-microcode amd64-microcode iucode-tool',
+            '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
+            '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
+            '--components=main contrib non-free',
+            '--dpkgopt=force-confold']  # https://bugs.debian.org/981004
+            if args.optimize != 'simplicity' else []),
          *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
             '--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
            if args.netboot else []),
