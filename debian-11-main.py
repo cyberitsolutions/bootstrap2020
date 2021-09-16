@@ -32,8 +32,8 @@ NOTE: this is the simplest config possible.
 
 def validate_unescaped_path_is_safe(path: pathlib.Path) -> None:
     for part in pathlib.Path(path).parts:
-        if not (part == '/' or re.fullmatch(r'[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', part)):
-            raise NotImplementedError('To simplify shell quoting, all path components must conform to RFC 952.', part, path)
+        if not (part == '/' or re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,62}', part)):
+            raise NotImplementedError('Path component should not need shell quoting', part, path)
 
 
 parser = argparse.ArgumentParser(description=__doc__)
