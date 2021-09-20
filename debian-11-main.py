@@ -34,6 +34,12 @@ def validate_unescaped_path_is_safe(path: pathlib.Path) -> None:
         if not (part == '/' or re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,62}', part)):
             raise NotImplementedError('Path component should not need shell quoting', part, path)
 
+def hostname_with_optional_user_at(s: str) -> str:
+    if re.fullmatch(r'([a-z]+@)?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', s):
+        return s
+    else:
+        raise ValueError()
+
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--debug-shell', action='store_true',
@@ -68,6 +74,9 @@ parser.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
                              'https://github.com/emja.keys'])
 parser.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022,
                     help='so you can run two of these at once')
+parser.add_argument('--upload-to', nargs='+', default=[],
+                    type=hostname_with_optional_user_at,
+                    help='hosts to rsync the finished image to e.g. "root@tweak.prisonpc.com"')
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
@@ -226,3 +235,24 @@ if args.boot_test:
         (destdir / 'ldlinux.c32').unlink()
         (destdir / 'pxelinux.cfg/default').unlink()
         (destdir / 'pxelinux.cfg').rmdir()
+
+for host in args.upload_to:
+    subprocess.check_call(
+        ['rsync', '-aihh', '--info=progress2',
+         # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
+         '--compare-dest', f'/srv/netboot/images/{args.template}-????-??-??',
+         f'{destdir}/',
+         f'{host}:/srv/netboot/images/{destdir.name}/'])
+    # NOTE: this stuff all assumes PrisonPC.
+    # FIXME: how to deal with site.dir?
+    soes = subprocess.check_output(
+        ['ssh', host, f'ln -nsf {destdir.name} /srv/netboot/images/{args.template}-latest'])
+    soes = subprocess.check_output(
+        ['ssh', host, 'tca get soes'],
+        text=True).strip().splitlines()
+    if destdir.name not in soes:
+        soes.append(destdir.name)
+        subprocess.run(['ssh', host, 'tca set soes'],
+                       text=True, check=True, input='\n'.join(soes))
+    # Sync /srv/netboot to /srv/tftp &c.
+    subprocess.check_call(['ssh', host, 'tca', 'commit'])
