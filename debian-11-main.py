@@ -55,6 +55,11 @@ parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
 parser.add_argument('--template', default='main')
 parser.add_argument('--netboot', action='store_true',
                     help='set this if you expect to boot off PXE/HTTP/NFS (not USB/SSD)')
+mutex = parser.add_mutually_exclusive_group()
+mutex.add_argument('--virtual-only', '--no-physical', action='store_true',
+                   help='save space/time by omitting physical hw support')
+mutex.add_argument('--physical-only', '--no-virtual', action='store_true',
+                   help='save space/time by omitting qemu/VM support')
 parser.add_argument('--reproducible', metavar='YYYY-MM-DD',
                     type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=datetime.timezone.utc),
                     help='build a reproducible OS image')
@@ -121,7 +126,10 @@ with tempfile.TemporaryDirectory() as td:
 
     subprocess.check_call(
         ['mmdebstrap',
-         '--include=linux-image-generic live-boot',
+         '--include=linux-image-cloud-amd64'
+         if args.virtual_only else
+         '--include=linux-image-generic',
+         '--include=live-boot',
          *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
             '--aptopt=Acquire::https::Proxy "DIRECT"']
            if args.optimize != 'simplicity' else []),
