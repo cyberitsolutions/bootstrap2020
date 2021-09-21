@@ -144,6 +144,9 @@ with tempfile.TemporaryDirectory() as td:
                 content_path = tarinfo_path.with_suffix('')
                 tarinfo_object = tarfile.TarInfo(name=str(content_path)[len(str(td)):])
                 tarinfo_object.size = content_path.stat().st_size
+                # git can store *ONE* executable bit.
+                # Default to "r--------" or "r-x------", not "---------".
+                tarinfo_object.mode = 0o500 if content_path.stat().st_mode & 0o111 else 0o400
                 with tarinfo_path.open('rb') as tarinfo_handle:
                     for k, v in json.load(tarinfo_handle).items():
                         setattr(tarinfo_object, k, v)
