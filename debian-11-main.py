@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import io
+import json
 import logging
 import os
 import pathlib
@@ -132,6 +133,24 @@ with tempfile.TemporaryDirectory() as td:
             member.size = f.tell()
             f.seek(0)
             t.addfile(member, f)
+    def create_tarball(src_path: pathlib.Path) -> pathlib.Path:
+        src_path = pathlib.Path(src_path)
+        assert src_path.exists(), 'The .glob() does not catch this!'
+        # FIXME: this can still collide
+        # FIXME: can't do symlinks, directories, &c.
+        dst_path = td / f'{src_path.name}.tar'
+        with tarfile.open(dst_path, 'w') as t:
+            for tarinfo_path in src_path.glob('**/*.tarinfo'):
+                content_path = tarinfo_path.with_suffix('')
+                tarinfo_object = tarfile.TarInfo(name=str(content_path)[len(str(td)):])
+                tarinfo_object.size = content_path.stat().st_size
+                with tarinfo_path.open('rb') as tarinfo_handle:
+                    for k, v in json.load(tarinfo_handle).items():
+                        setattr(tarinfo_object, k, v)
+                with content_path.open('rb') as content_handle:
+                    t.addfile(tarinfo_object, content_handle)
+        subprocess.check_call(['./tarmore', dst_path])  # DEBUGGING
+        return dst_path
 
     subprocess.check_call(
         ['mmdebstrap',
@@ -163,7 +182,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=libnss-myhostname libnss-resolve',
             '--customize-hook=rm $1/etc/hostname',
             '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
-            '--essential-hook=tar-in debian-11-main.tar /',
+            f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
             '--customize-hook=systemctl --root=$1 enable systemd-networkd']
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
@@ -190,9 +209,9 @@ with tempfile.TemporaryDirectory() as td:
             if args.optimize != 'simplicity' else []),
          *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
-            '--essential-hook=tar-in debian-11-main.netboot.tar /']
+            f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']
            if not args.local_boot_only else []),
-         *(['--essential-hook=tar-in debian-11-main.netboot-only.tar /']  # 9% faster 19% smaller
+         *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
            if args.netboot_only else []),
          *(['--include=tinysshd',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /']

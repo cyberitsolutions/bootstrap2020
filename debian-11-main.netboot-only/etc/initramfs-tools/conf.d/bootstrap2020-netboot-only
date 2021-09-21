@@ -1,0 +1,12 @@
+# -*-sh-*-
+# This is too much.
+
+## With any of these, PXE boot fails.
+# MODULES=list
+# BUSYBOX=n
+
+## With these, PXE boot works.
+MODULES=netboot                 # 21% faster 23% smaller
+FSTYPE=nfsv4                    # only removes fsck & logsave
+RESUME=none                     # doesn't help; doesn't hurt
+BOOT=live                       # doesn't help; doesn't hurt
