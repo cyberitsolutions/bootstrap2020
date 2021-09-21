@@ -53,8 +53,11 @@ parser.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), defau
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main')
-parser.add_argument('--netboot', action='store_true',
-                    help='set this if you expect to boot off PXE/HTTP/NFS (not USB/SSD)')
+mutex = parser.add_mutually_exclusive_group()
+mutex.add_argument('--netboot-only', '--no-local-boot', action='store_true',
+                   help='save space/time by omitting USB/SSD stuff')
+mutex.add_argument('--local-boot-only', '--no-netboot', action='store_true',
+                   help='save space/time by omitting PXE/NFS/SMB stuff')
 mutex = parser.add_mutually_exclusive_group()
 mutex.add_argument('--virtual-only', '--no-physical', action='store_true',
                    help='save space/time by omitting physical hw support')
@@ -179,9 +182,11 @@ with tempfile.TemporaryDirectory() as td:
             '--components=main contrib non-free',
             '--dpkgopt=force-confold']  # https://bugs.debian.org/981004
             if args.optimize != 'simplicity' else []),
-         *(['--include=nfs-common',  # for zz-nfs4 (see tarball)
-            '--essential-hook=tar-in debian-11-main.netboot.tar /']  # 9% faster 19% smaller
-           if args.netboot else []),
+         *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
+            '--essential-hook=tar-in debian-11-main.netboot.tar /']
+           if not args.local_boot_only else []),
+         *(['--essential-hook=tar-in debian-11-main.netboot-only.tar /']  # 9% faster 19% smaller
+           if args.netboot_only else []),
          *(['--include=tinysshd',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /']
            if args.optimize != 'simplicity' else []),
@@ -206,7 +211,7 @@ if args.reproducible:
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 if args.boot_test:
-    if args.netboot:
+    if args.netboot_only:
         subprocess.check_call(['cp', '-t', destdir, '--',
                                '/usr/lib/PXELINUX/pxelinux.0',
                                '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
@@ -231,14 +236,14 @@ if args.boot_test:
         '--net', 'nic,model=virtio',
         '--net', (f'user,hostname={args.template}'
                   f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
-                  (f',bootfile=pxelinux.0,tftp={destdir}' if args.netboot else '')),
+                  (f',bootfile=pxelinux.0,tftp={destdir}' if args.netboot_only else '')),
         *(['--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
            '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
                         ' boot=live plainroot root=/dev/vda'),
            '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly']
-          if not args.netboot else [])])
-    if args.netboot:
+          if not args.netboot_only else [])])
+    if args.netboot_only:
         (destdir / 'pxelinux.0').unlink()
         (destdir / 'ldlinux.c32').unlink()
         (destdir / 'pxelinux.cfg/default').unlink()
