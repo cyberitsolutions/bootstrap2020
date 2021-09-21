@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import io
+import logging
 import os
 import pathlib
 import pprint
@@ -99,6 +100,11 @@ git_proc = subprocess.run(['git', 'describe', '--all'], text=True,
                           stderr=subprocess.DEVNULL)
 git_description = git_proc.stdout.strip() if git_proc.returncode == 0 else 'UNKNOWN'
 
+have_smbd = pathlib.Path('/usr/sbin/smbd').exists()
+if args.boot_test and args.netboot_only and not have_smbd:
+    logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
+                    '  This is OK for small images; bad for big ones!')
+
 if args.reproducible:
     os.environ['SOURCE_DATE_EPOCH'] = str(int(args.reproducible.timestamp()))
     # FIXME: we also need a way to use a reproducible snapshot of the Debian mirror.
@@ -183,6 +189,7 @@ with tempfile.TemporaryDirectory() as td:
             '--dpkgopt=force-confold']  # https://bugs.debian.org/981004
             if args.optimize != 'simplicity' else []),
          *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
+            '--include=cifs-utils',  # support SMB3
             '--essential-hook=tar-in debian-11-main.netboot.tar /']
            if not args.local_boot_only else []),
          *(['--essential-hook=tar-in debian-11-main.netboot-only.tar /']  # 9% faster 19% smaller
@@ -222,8 +229,10 @@ if args.boot_test:
             '  IPAPPEND 2\n'
             '  KERNEL vmlinuz\n'
             '  INITRD initrd.img\n'
-            '  APPEND earlyprintk=ttyS0 console=ttyS0 loglevel=1'
-            '         boot=live fetch=tftp://10.0.2.2/filesystem.squashfs\n')
+            '  APPEND earlyprintk=ttyS0 console=ttyS0 loglevel=1' +
+            ('        boot=live netboot=cifs nfsopts=ro,guest nfsroot=//10.0.2.4/qemu live-media-path='
+             if have_smbd else
+             '        boot=live fetch=tftp://10.0.2.2/filesystem.squashfs\n'))
     subprocess.check_call([
         # NOTE: doesn't need root privs
         'qemu-system-x86_64',
@@ -236,7 +245,9 @@ if args.boot_test:
         '--net', 'nic,model=virtio',
         '--net', (f'user,hostname={args.template}'
                   f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
-                  (f',bootfile=pxelinux.0,tftp={destdir}' if args.netboot_only else '')),
+                  (f',smb={destdir}' if have_smbd else '') +
+                  (f',bootfile=pxelinux.0,tftp={destdir}'
+                   if args.netboot_only else '')),
         *(['--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
            '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
