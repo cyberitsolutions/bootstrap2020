@@ -1,3 +1,0 @@
-Approach #3 -- use deep, annoying directory nests, and then let the path be auto-computed.
-
-NOTE: we can mix both styles in a single create_tar() directory.
