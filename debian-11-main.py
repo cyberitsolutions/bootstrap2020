@@ -261,6 +261,7 @@ if args.boot_test:
             ('        boot=live netboot=cifs nfsopts=ro,guest nfsroot=//10.0.2.4/qemu live-media-path='
              if have_smbd else
              '        boot=live fetch=tftp://10.0.2.2/filesystem.squashfs\n'))
+    domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
     subprocess.check_call([
         # NOTE: doesn't need root privs
         'qemu-system-x86_64',
@@ -271,7 +272,7 @@ if args.boot_test:
         '--smp', '2',
         '--nographic', '--vga', 'none',
         '--net', 'nic,model=virtio',
-        '--net', (f'user,hostname={args.template}'
+        '--net', (f'user,hostname={args.template}.{domain}'
                   f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
                   (f',smb={destdir}' if have_smbd else '') +
                   (f',bootfile=pxelinux.0,tftp={destdir}'
