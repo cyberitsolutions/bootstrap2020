@@ -152,7 +152,7 @@ with tempfile.TemporaryDirectory() as td:
                         setattr(tarinfo_object, k, v)
                 with content_path.open('rb') as content_handle:
                     t.addfile(tarinfo_object, content_handle)
-        subprocess.check_call(['./tarmore', dst_path])  # DEBUGGING
+        subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
         return dst_path
 
     subprocess.check_call(
