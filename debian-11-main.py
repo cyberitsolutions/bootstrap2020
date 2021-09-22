@@ -185,6 +185,7 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
            if args.optimize != 'simplicity' else []),
          *(['--include=libnss-myhostname libnss-resolve',
+            '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
             '--customize-hook=rm $1/etc/hostname',
             '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
