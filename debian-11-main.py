@@ -237,6 +237,9 @@ with tempfile.TemporaryDirectory() as td:
          'bullseye',
          destdir / 'filesystem.squashfs'])
 
+subprocess.check_call(
+    ['du', '--human-readable', '--all', '--one-file-system', destdir])
+
 if args.reproducible:
     (destdir / 'args.txt').write_text(pprint.pformat(args))
     (destdir / 'B2SUMS').write_bytes(subprocess.check_output(['b2sum', *destdir.glob('*')]))
