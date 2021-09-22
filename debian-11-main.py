@@ -36,6 +36,7 @@ def validate_unescaped_path_is_safe(path: pathlib.Path) -> None:
         if not (part == '/' or re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,62}', part)):
             raise NotImplementedError('Path component should not need shell quoting', part, path)
 
+
 def hostname_with_optional_user_at(s: str) -> str:
     if re.fullmatch(r'([a-z]+@)?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', s):
         return s
@@ -133,6 +134,7 @@ with tempfile.TemporaryDirectory() as td:
             member.size = f.tell()
             f.seek(0)
             t.addfile(member, f)
+
     def create_tarball(src_path: pathlib.Path) -> pathlib.Path:
         src_path = pathlib.Path(src_path)
         assert src_path.exists(), 'The .glob() does not catch this!'
@@ -209,7 +211,7 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
             '--components=main contrib non-free',
             '--dpkgopt=force-confold']  # https://bugs.debian.org/981004
-            if args.optimize != 'simplicity' and not args.virtual_only else []),
+           if args.optimize != 'simplicity' and not args.virtual_only else []),
          *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
             f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']

@@ -3,7 +3,6 @@ import argparse
 import pathlib
 import subprocess
 import tempfile
-import pathlib
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2020 Trent W. Buck"
@@ -80,7 +79,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
 
          'bullseye',
          td / 'filesystem.squashfs'
-        ])
+         ])
 
     with args.output_file.open('wb') as f:
         subprocess.check_call(['rdsquashfs', '--cat=boot/USB/filesystem.img', td / 'filesystem.squashfs'], stdout=f)
