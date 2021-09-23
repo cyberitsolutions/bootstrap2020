@@ -50,6 +50,12 @@ group.add_argument('--debug-shell', action='store_true',
                    help='quick-and-dirty chroot debug shell')
 group.add_argument('--boot-test', action='store_true',
                    help='quick-and-dirty boot test via qemu')
+group.add_argument('--break', default='',
+                   choices=('top', 'modules', 'premount', 'mount',
+                            'mountroot', 'bottom', 'init',
+                            'live-realpremount'),
+                   dest='maybe_break',  # "break" is python keyword
+                   help='pause boot test during initrd')
 group.add_argument('--backdoor-enable', action='store_true',
                    help='login as root with no password')
 group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, metavar='N',
@@ -261,6 +267,7 @@ if args.boot_test:
             '  KERNEL vmlinuz\n'
             '  INITRD initrd.img\n'
             '  APPEND earlyprintk=ttyS0 console=ttyS0 loglevel=1' +
+            (f'       break={args.maybe_break}' if args.maybe_break else '') +
             ('        boot=live netboot=cifs nfsopts=ro,guest nfsroot=//10.0.2.4/qemu live-media-path='
              if have_smbd else
              '        boot=live fetch=tftp://10.0.2.2/filesystem.squashfs\n'))
@@ -283,7 +290,8 @@ if args.boot_test:
         *(['--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
            '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
-                        ' boot=live plainroot root=/dev/vda'),
+                        ' boot=live plainroot root=/dev/vda' +
+                        (f' break={args.maybe_break}' if args.maybe_break else '')),
            '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly']
           if not args.netboot_only else [])])
     if args.netboot_only:
