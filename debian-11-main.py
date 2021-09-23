@@ -197,8 +197,11 @@ with tempfile.TemporaryDirectory() as td:
             '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
             '--customize-hook=rm $1/etc/hostname',
             '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
+            '--include=rsyslog-relp msmtp-mta',
+            '--include=python3',  # for get-config-from-dnssd (cifs-utils needs it anyway)
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
-            '--customize-hook=systemctl --root=$1 enable systemd-networkd']
+            '--dpkgopt=force-confold',  # https://bugs.debian.org/981004 (for rsyslog.conf)
+            '--customize-hook=systemctl --root=$1 enable systemd-networkd bootstrap2020-get-config-from-dnssd']
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
             '--essential-hook={'
