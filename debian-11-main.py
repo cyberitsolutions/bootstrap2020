@@ -45,47 +45,50 @@ def hostname_with_optional_user_at(s: str) -> str:
 
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--debug-shell', action='store_true',
-                    help='quick-and-dirty chroot debug shell')
-parser.add_argument('--boot-test', action='store_true',
-                    help='quick-and-dirty boot test via qemu')
-parser.add_argument('--backdoor-enable', action='store_true',
-                    help='login as root with no password')
-parser.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
-                    help='build slower to get a smaller image?')
+group = parser.add_argument_group('debugging')
+group.add_argument('--debug-shell', action='store_true',
+                   help='quick-and-dirty chroot debug shell')
+group.add_argument('--boot-test', action='store_true',
+                   help='quick-and-dirty boot test via qemu')
+group.add_argument('--backdoor-enable', action='store_true',
+                   help='login as root with no password')
+group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, metavar='N',
+                   help='so you can run two of these at once')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main')
-mutex = parser.add_mutually_exclusive_group()
+group = parser.add_argument_group('optimization')
+group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
+                   help='build slower to get a smaller image? (default=size)')
+mutex = group.add_mutually_exclusive_group()
 mutex.add_argument('--netboot-only', '--no-local-boot', action='store_true',
                    help='save space/time by omitting USB/SSD stuff')
 mutex.add_argument('--local-boot-only', '--no-netboot', action='store_true',
                    help='save space/time by omitting PXE/NFS/SMB stuff')
-mutex = parser.add_mutually_exclusive_group()
+mutex = group.add_mutually_exclusive_group()
 mutex.add_argument('--virtual-only', '--no-physical', action='store_true',
                    help='save space/time by omitting physical hw support')
 mutex.add_argument('--physical-only', '--no-virtual', action='store_true',
                    help='save space/time by omitting qemu/VM support')
 parser.add_argument('--reproducible', metavar='YYYY-MM-DD',
                     type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=datetime.timezone.utc),
-                    help='build a reproducible OS image')
-parser.add_argument('--LANG', default=os.environ['LANG'],
-                    help='locale used inside the image',
-                    type=lambda s: types.SimpleNamespace(full=s, encoding=s.partition('.')[-1]))
-parser.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().strip(),
-                    help="SOE's timezone (for UTC, use Etc/UTC)",
-                    type=lambda s: types.SimpleNamespace(full=s,
-                                                         area=s.partition('/')[0],
-                                                         zone=s.partition('/')[-1]))
-parser.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
-                    type=hyperlink.URL.from_text,
-                    help='who can SSH into your image?',
-                    default=['https://github.com/trentbuck.keys',
-                             'https://github.com/mijofa.keys',
-                             'https://github.com/emja.keys'])
-parser.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022,
-                    help='so you can run two of these at once')
-parser.add_argument('--upload-to', nargs='+', default=[],
+                    help='build a reproducible OS image & sign it')
+group = parser.add_argument_group('customization')
+group.add_argument('--LANG', default=os.environ['LANG'], metavar='xx_XX.UTF-8',
+                   help='locale used inside the image',
+                   type=lambda s: types.SimpleNamespace(full=s, encoding=s.partition('.')[-1]))
+group.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().strip(),
+                   help="SOE's timezone (for UTC, use Etc/UTC)", metavar='REGION/CITY',
+                   type=lambda s: types.SimpleNamespace(full=s,
+                                                        area=s.partition('/')[0],
+                                                        zone=s.partition('/')[-1]))
+group.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
+                   type=hyperlink.URL.from_text,
+                   help='who can SSH into your image?',
+                   default=['https://github.com/trentbuck.keys',
+                            'https://github.com/mijofa.keys',
+                            'https://github.com/emja.keys'])
+parser.add_argument('--upload-to', nargs='+', default=[], metavar='HOST',
                     type=hostname_with_optional_user_at,
                     help='hosts to rsync the finished image to e.g. "root@tweak.prisonpc.com"')
 args = parser.parse_args()
