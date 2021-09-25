@@ -91,9 +91,9 @@ group.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().str
 group.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
                    type=hyperlink.URL.from_text,
                    help='who can SSH into your image?',
-                   default=['https://github.com/trentbuck.keys',
-                            'https://github.com/mijofa.keys',
-                            'https://github.com/emja.keys'])
+                   default=[hyperlink.URL.from_text('https://github.com/trentbuck.keys'),
+                            hyperlink.URL.from_text('https://github.com/mijofa.keys'),
+                            hyperlink.URL.from_text('https://github.com/emja.keys')])
 parser.add_argument('--upload-to', nargs='+', default=[], metavar='HOST',
                     type=hostname_with_optional_user_at,
                     help='hosts to rsync the finished image to e.g. "root@tweak.prisonpc.com"')
@@ -132,7 +132,7 @@ with tempfile.TemporaryDirectory() as td:
                 resp = requests.get(url)
                 resp.raise_for_status()
                 f.write(b'#')
-                f.write(url.encode())
+                f.write(url.to_text().encode())
                 f.write(b'\n')
                 # can't use resp.content, because website might be using BIG5 or something.
                 f.write(resp.text.encode())
