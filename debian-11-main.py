@@ -281,7 +281,7 @@ if args.boot_test:
             '  INITRD initrd.img\n'
             '  APPEND ' + ' '.join([
                 'boot=live',
-                ('netboot=cifs nfsopts=ro,guest nfsroot=//10.0.2.4/qemu live-media-path='
+                ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
                  if have_smbd else
                  'fetch=tftp://10.0.2.2/filesystem.squashfs\n'),
                 common_boot_args]))
