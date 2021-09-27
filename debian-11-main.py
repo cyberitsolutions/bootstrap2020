@@ -232,7 +232,9 @@ with tempfile.TemporaryDirectory() as td:
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
            if args.netboot_only else []),
-         *(['--include=task-xfce-desktop']  # Desktop stuff, rough cut.
+         *(['--include=task-xfce-desktop',  # Desktop stuff, rough cut.
+            '--include=chromium chromium-sandbox chromium-l10n',
+            ]
            if args.template.startswith('desktop') else []),
          *(['--include=tinysshd',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /']
