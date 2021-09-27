@@ -294,7 +294,9 @@ if args.boot_test:
         '--cpu', 'host',
         '-m', '512M,maxmem=1G',
         '--smp', '2',
-        *(['--vga', 'virtio']   # FIXME: more tuning
+        '--device', 'virtio-mouse',
+        '--device', 'virtio-keyboard',
+        *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
           if args.template.startswith('desktop') else
           ['--nographic', '--vga', 'none']),
         '--net', 'nic,model=virtio',
