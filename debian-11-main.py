@@ -62,7 +62,8 @@ group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, meta
                    help='so you can run two of these at once')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
-parser.add_argument('--template', default='main')
+parser.add_argument('--template', default='main',
+                    choices=('main', 'desktop'))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                    help='build slower to get a smaller image? (default=size)')
@@ -231,6 +232,8 @@ with tempfile.TemporaryDirectory() as td:
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
            if args.netboot_only else []),
+         *(['--include=task-xfce-desktop']  # Desktop stuff, rough cut.
+           if args.template.startswith('desktop') else []),
          *(['--include=tinysshd',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /']
            if args.optimize != 'simplicity' else []),
@@ -258,6 +261,13 @@ if args.reproducible:
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 if args.boot_test:
+    common_boot_args = ' '.join([
+        ('quiet splash'
+         if args.template.startswith('desktop') else
+         'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
+        (f'break={args.maybe_break}'
+         if args.maybe_break else '')])
+
     if args.netboot_only:
         subprocess.check_call(['cp', '-t', destdir, '--',
                                '/usr/lib/PXELINUX/pxelinux.0',
@@ -269,11 +279,12 @@ if args.boot_test:
             '  IPAPPEND 2\n'
             '  KERNEL vmlinuz\n'
             '  INITRD initrd.img\n'
-            '  APPEND earlyprintk=ttyS0 console=ttyS0 loglevel=1' +
-            (f'       break={args.maybe_break}' if args.maybe_break else '') +
-            ('        boot=live netboot=cifs nfsopts=ro,guest nfsroot=//10.0.2.4/qemu live-media-path='
-             if have_smbd else
-             '        boot=live fetch=tftp://10.0.2.2/filesystem.squashfs\n'))
+            '  APPEND ' + ' '.join([
+                'boot=live',
+                ('netboot=cifs nfsopts=ro,guest nfsroot=//10.0.2.4/qemu live-media-path='
+                 if have_smbd else
+                 'fetch=tftp://10.0.2.2/filesystem.squashfs\n'),
+                common_boot_args]))
     domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
     subprocess.check_call([
         # NOTE: doesn't need root privs
@@ -283,7 +294,9 @@ if args.boot_test:
         '--cpu', 'host',
         '-m', '512M,maxmem=1G',
         '--smp', '2',
-        '--nographic', '--vga', 'none',
+        *(['--vga', 'virtio']   # FIXME: more tuning
+          if args.template.startswith('desktop') else
+          ['--nographic', '--vga', 'none']),
         '--net', 'nic,model=virtio',
         '--net', (f'user,hostname={args.template}.{domain}'
                   f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
@@ -292,9 +305,9 @@ if args.boot_test:
                    if args.netboot_only else '')),
         *(['--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
-           '--append', ('earlyprintk=ttyS0 console=ttyS0 loglevel=1'
-                        ' boot=live plainroot root=/dev/vda' +
-                        (f' break={args.maybe_break}' if args.maybe_break else '')),
+           '--append', ' '.join([
+               'boot=live plainroot root=/dev/vda',
+               common_boot_args]),
            '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly']
           if not args.netboot_only else [])])
     if args.netboot_only:
