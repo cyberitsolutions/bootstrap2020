@@ -231,9 +231,11 @@ with tempfile.TemporaryDirectory() as td:
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
            if args.netboot_only else []),
-         *(['--include=task-xfce-desktop',  # Desktop stuff, rough cut.
-            '--include=chromium chromium-sandbox chromium-l10n',
-            '--include=plymouth-themes',
+         *(['--include='
+            '    task-xfce-desktop'  # Desktop stuff, rough cut.
+            '    chromium chromium-sandbox chromium-l10n'
+            '    libreoffice'
+            '    plymouth-themes',
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if args.template.startswith('desktop') else []),
