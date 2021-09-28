@@ -169,6 +169,7 @@ with tempfile.TemporaryDirectory() as td:
 
     subprocess.check_call(
         ['mmdebstrap',
+         '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--include=linux-image-cloud-amd64'
          if args.virtual_only else
          '--include=linux-image-generic',
@@ -201,7 +202,6 @@ with tempfile.TemporaryDirectory() as td:
             '--include=rsyslog-relp msmtp-mta',
             '--include=python3',  # for get-config-from-dnssd (cifs-utils needs it anyway)
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
-            '--dpkgopt=force-confold',  # https://bugs.debian.org/981004 (for rsyslog.conf)
             '--customize-hook=systemctl --root=$1 enable systemd-networkd bootstrap2020-get-config-from-dnssd']
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
@@ -223,8 +223,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=intel-microcode amd64-microcode iucode-tool',
             '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
             '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
-            '--components=main contrib non-free',
-            '--dpkgopt=force-confold']  # https://bugs.debian.org/981004
+            '--components=main contrib non-free']
            if args.optimize != 'simplicity' and not args.virtual_only else []),
          *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
@@ -234,6 +233,8 @@ with tempfile.TemporaryDirectory() as td:
            if args.netboot_only else []),
          *(['--include=task-xfce-desktop',  # Desktop stuff, rough cut.
             '--include=chromium chromium-sandbox chromium-l10n',
+            '--include=plymouth-themes',
+            f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if args.template.startswith('desktop') else []),
          *(['--include=tinysshd',
