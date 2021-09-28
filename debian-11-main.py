@@ -294,7 +294,7 @@ if args.boot_test:
         '--enable-kvm',
         '--machine', 'q35',
         '--cpu', 'host',
-        '-m', '512M,maxmem=1G',
+        '-m', '2G' if args.template.startswith('desktop') else '512M',
         '--smp', '2',
         '--device', 'virtio-mouse',
         '--device', 'virtio-keyboard',
