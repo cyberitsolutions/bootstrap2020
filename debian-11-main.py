@@ -312,7 +312,7 @@ if args.boot_test:
            '--append', ' '.join([
                'boot=live plainroot root=/dev/vda',
                common_boot_args]),
-           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly']
+           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
           if not args.netboot_only else [])])
     if args.netboot_only:
         (destdir / 'pxelinux.0').unlink()
