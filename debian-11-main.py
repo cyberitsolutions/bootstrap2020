@@ -255,7 +255,8 @@ with tempfile.TemporaryDirectory() as td:
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
          'bullseye',
-         destdir / 'filesystem.squashfs'])
+         destdir / 'filesystem.squashfs',
+         'debian-11.sources'])
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
