@@ -117,23 +117,24 @@ if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
 
+# First block: things we actually want.
+# Second block: install fails unless we bump these.
+# Third block: /stable works, but bump anyway.
 include_libreoffice = ' '.join('''
-                   libreoffice/bullseye-backports
-              libreoffice-core/bullseye-backports
-              libreoffice-base/bullseye-backports
               libreoffice-calc/bullseye-backports
-              libreoffice-draw/bullseye-backports
            libreoffice-impress/bullseye-backports
             libreoffice-writer/bullseye-backports
               libreoffice-math/bullseye-backports
+
+              libreoffice-draw/bullseye-backports
+              libreoffice-core/bullseye-backports
+         libreoffice-base-core/bullseye-backports
                            ure/bullseye-backports
-                   python3-uno/bullseye-backports
               uno-libs-private/bullseye-backports
        libuno-cppuhelpergcc3-3/bullseye-backports
                    libuno-sal3/bullseye-backports
               fonts-opensymbol/bullseye-backports
-      libreoffice-base-drivers/bullseye-backports
-libreoffice-report-builder-bin/bullseye-backports
+
         libuno-salhelpergcc3-3/bullseye-backports
     libuno-purpenvhelpergcc3-3/bullseye-backports
      libreoffice-style-colibre/bullseye-backports
