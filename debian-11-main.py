@@ -145,6 +145,11 @@ if args.reproducible:
     os.environ['SOURCE_DATE_EPOCH'] = str(int(args.reproducible.timestamp()))
     # FIXME: we also need a way to use a reproducible snapshot of the Debian mirror.
     # See /bin/debbisect for discussion re https://snapshot.debian.org.
+    proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
+    if proc.returncode != 0:
+        raise RuntimeError('Unsaved changes (may) break reproducible-build! (fix "git diff")')
+    if subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard']).strip():
+        raise RuntimeError('Unsaved changes (may) break reproducible-build! (fix "git status")')
 
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
