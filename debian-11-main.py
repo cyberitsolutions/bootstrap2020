@@ -292,6 +292,8 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=chroot $1 bash -i',
             '--customize-hook=rm -f $1/etc/debian_chroot']
            if args.debug_shell else []),
+         *([f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status']  # https://kb.cyber.com.au/32894-debsecan-SOEs.sh
+           if args.optimize != 'simplicity' else []),
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
