@@ -89,6 +89,14 @@ group.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().str
                    type=lambda s: types.SimpleNamespace(full=s,
                                                         area=s.partition('/')[0],
                                                         zone=s.partition('/')[-1]))
+group.add_argument('--ssh-server',
+                   default='tinysshd',
+                   choices=('tinysshd', 'dropbear', 'openssh-server'),
+                   help='Use OpenSSH?  Useful if you need'
+                   ' • "ssh X Y" to try /usr/local/bin/Y'
+                   ' • other PAM benefits, like systemd --user'
+                   ' • authorized certs, or RSA keys'
+                   ' • drop-in keys (~/.ssh/authorized_keys2)')
 group.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
                    type=hyperlink.URL.from_text,
                    help='who can SSH into your image?',
@@ -269,8 +277,12 @@ with tempfile.TemporaryDirectory() as td:
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if args.template.startswith('desktop') else []),
-         *(['--include=tinysshd',
-            f'--essential-hook=tar-in {authorized_keys_tar_path} /']
+         *([f'--include={args.ssh_server}',
+            f'--essential-hook=tar-in {authorized_keys_tar_path} /',
+            # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
+            '--customize-hook=rm -fv $1/etc/dropbear/dropbear_*_host_key',
+            '--customize-hook=rm -fv $1/etc/ssh/ssh_host_*_key*',
+            '--customize-hook=systemctl --root=$1 enable bootstrap2020-openssh-keygen']
            if args.optimize != 'simplicity' else []),
          *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
            if args.backdoor_enable else []),
