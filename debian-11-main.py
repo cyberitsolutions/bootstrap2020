@@ -115,9 +115,11 @@ destdir.mkdir(parents=True, mode=0o2775, exist_ok=True)
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
-git_proc = subprocess.run(['git', 'describe', '--all'], text=True,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.DEVNULL)
+git_proc = subprocess.run(
+    ['git', 'describe', '--always', '--dirty', '--broken'],
+    text=True,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.DEVNULL)
 git_description = git_proc.stdout.strip() if git_proc.returncode == 0 else 'UNKNOWN'
 
 have_smbd = pathlib.Path('/usr/sbin/smbd').exists()
@@ -305,6 +307,7 @@ subprocess.check_call(
 
 if args.reproducible:
     (destdir / 'args.txt').write_text(pprint.pformat(args))
+    (destdir / 'git-description.txt').write_text(git_description)
     (destdir / 'B2SUMS').write_bytes(subprocess.check_output(['b2sum', *destdir.glob('*')]))
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
