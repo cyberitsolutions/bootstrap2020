@@ -8,6 +8,7 @@ import os
 import pathlib
 import pprint
 import re
+import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -106,6 +107,8 @@ group.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
 parser.add_argument('--upload-to', nargs='+', default=[], metavar='HOST',
                     type=hostname_with_optional_user_at,
                     help='hosts to rsync the finished image to e.g. "root@tweak.prisonpc.com"')
+parser.add_argument('--remove-afterward', action='store_true',
+                    help='delete filesystem.squashfs after boot / upload (save space locally)')
 args = parser.parse_args()
 
 destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
@@ -394,3 +397,6 @@ for host in args.upload_to:
                        text=True, check=True, input='\n'.join(soes))
     # Sync /srv/netboot to /srv/tftp &c.
     subprocess.check_call(['ssh', host, 'tca', 'commit'])
+
+if args.remove_afterward:
+    shutil.rmtree(destdir)
