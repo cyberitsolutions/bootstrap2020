@@ -61,6 +61,8 @@ group.add_argument('--backdoor-enable', action='store_true',
                    help='login as root with no password')
 group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, metavar='N',
                    help='so you can run two of these at once')
+group.add_argument('--host-port-for-boot-test-http', type=int, default=8088, metavar='N',
+                   help='so you can run two of these at once')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
@@ -340,8 +342,15 @@ if args.boot_test:
                 'boot=live',
                 ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
                  if have_smbd else
-                 'fetch=tftp://10.0.2.2/filesystem.squashfs\n'),
+                 f'fetch=http://10.0.2.4/{destdir.name}/filesystem.squashfs'),
                 common_boot_args]))
+        # qemu doesn't have a built-in httpd, so we have to roll our own.
+        systemd_httpd_unit = f'bootstrap2020-busybox-httpd-{args.host_port_for_boot_test_http}.service'
+        subprocess.check_call(
+            ['systemd-run', '--user', '--unit', systemd_httpd_unit,
+             'busybox', 'httpd', '-fvv',
+             f'-p127.0.0.80:{args.host_port_for_boot_test_http}',
+             '-h', destdir.parent])
     domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
     subprocess.check_call([
         # NOTE: doesn't need root privs
@@ -361,6 +370,7 @@ if args.boot_test:
                   f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
                   (f',smb={destdir}' if have_smbd else '') +
                   (f',bootfile=pxelinux.0,tftp={destdir}'
+                   f',guestfwd=tcp:10.0.2.4:80-tcp:127.0.0.80:{args.host_port_for_boot_test_http}'
                    if args.netboot_only else '')),
         *(['--kernel', destdir / 'vmlinuz',
            '--initrd', destdir / 'initrd.img',
@@ -370,6 +380,7 @@ if args.boot_test:
            '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
           if not args.netboot_only else [])])
     if args.netboot_only:
+        subprocess.check_call(['systemctl', 'stop', '--user', systemd_httpd_unit])
         (destdir / 'pxelinux.0').unlink()
         (destdir / 'ldlinux.c32').unlink()
         (destdir / 'pxelinux.cfg/default').unlink()
