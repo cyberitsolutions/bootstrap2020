@@ -1,3 +1,6 @@
+[Unit]
+Description=Generate OpenSSH host keys
+
 [Service]
 Type=oneshot
 ExecStart=ssh-keygen -A

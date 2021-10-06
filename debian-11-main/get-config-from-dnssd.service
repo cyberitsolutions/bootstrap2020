@@ -1,3 +1,6 @@
+[Unit]
+Description=Get configuration from DNS-SD
+
 [Service]
 Type=oneshot
 ExecStart=bootstrap2020-get-config-from-dnssd
