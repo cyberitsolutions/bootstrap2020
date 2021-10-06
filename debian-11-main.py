@@ -273,6 +273,7 @@ with tempfile.TemporaryDirectory() as td:
            if args.optimize != 'simplicity' and not args.virtual_only else []),
          *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
+            '--include=httpfs2 fuse',  # support HTTP (HTTPS needs 1.0.5, which not in Debian)
             f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
@@ -306,9 +307,9 @@ with tempfile.TemporaryDirectory() as td:
            if args.optimize != 'simplicity' else []),
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
-         'bullseye',
+         'unstable',   # httpfs2 abandonware, so it's not in Debian 11
          destdir / 'filesystem.squashfs',
-         'debian-11.sources'])
+         ])
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
@@ -340,6 +341,8 @@ if args.boot_test:
             '  INITRD initrd.img\n'
             '  APPEND ' + ' '.join([
                 'boot=live',
+                f'httpfs=http://10.0.2.4/{destdir.name}/filesystem.squashfs'
+                if True else  # for now, always httpfs2, never smb nor fetch
                 ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
                  if have_smbd else
                  f'fetch=http://10.0.2.4/{destdir.name}/filesystem.squashfs'),
