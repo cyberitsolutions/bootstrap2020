@@ -1,37 +1,849 @@
 I: automatically chosen mode: unshare
 I: chroot architecture amd64 is equal to the host's architecture
 I: automatically chosen format: tar
-I: using /tmp/mmdebstrap.FYCw1ot1qj as tempdir
+I: using /tmp/mmdebstrap.ymCYfN9iOL as tempdir
 I: running apt-get update...
 Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
-Get:2 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [44.2 kB]
-Get:3 http://deb.debian.org/debian bullseye InRelease [113 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [113 kB]
+Get:3 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [44.2 kB]
 Get:4 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
 Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8178 kB]
 Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2300 B]
-Fetched 8420 kB in 3s (2945 kB/s)
+Fetched 8420 kB in 21s (397 kB/s)
 Reading package lists...
 I: downloading packages with apt...
 Reading package lists...
 Building dependency tree...
 Calculating upgrade...
+** Pass A
+Visit base-files:amd64 from DoRun
+ Visit mawk:amd64 from Provides-1
+  Visit libc6:amd64 from Provides-1
+   Visit libgcc-s1:amd64 from Provides-1
+    Visit gcc-10-base:amd64 from Provides-1
+    Leave gcc-10-base:amd64 1,0
+   Leave libgcc-s1:amd64 1,0
+   Visit libcrypt1:amd64 from Provides-1
+   Leave libcrypt1:amd64 1,0
+  Leave libc6:amd64 1,0
+ Leave mawk:amd64 1,0
+Leave base-files:amd64 1,0
+Visit bash:amd64 from DoRun
+ Visit libtinfo6:amd64 from Provides-1
+ Leave libtinfo6:amd64 1,0
+ Visit debianutils:amd64 from Provides-1
+ Leave debianutils:amd64 1,0
+Leave bash:amd64 1,0
+Visit bsdutils:amd64 from DoRun
+ Visit libsystemd0:amd64 from Provides-1
+  Visit libgcrypt20:amd64 from Provides-1
+   Visit libgpg-error0:amd64 from Provides-1
+   Leave libgpg-error0:amd64 1,0
+  Leave libgcrypt20:amd64 1,0
+  Visit liblz4-1:amd64 from Provides-1
+  Leave liblz4-1:amd64 1,0
+  Visit liblzma5:amd64 from Provides-1
+  Leave liblzma5:amd64 1,0
+  Visit libzstd1:amd64 from Provides-1
+  Leave libzstd1:amd64 1,0
+ Leave libsystemd0:amd64 1,0
+Leave bsdutils:amd64 1,0
+Visit coreutils:amd64 from DoRun
+ Visit libacl1:amd64 from Provides-1
+ Leave libacl1:amd64 1,0
+ Visit libattr1:amd64 from Provides-1
+ Leave libattr1:amd64 1,0
+ Visit libgmp10:amd64 from Provides-1
+ Leave libgmp10:amd64 1,0
+ Visit libselinux1:amd64 from Provides-1
+  Visit libpcre2-8-0:amd64 from Provides-1
+  Leave libpcre2-8-0:amd64 1,0
+ Leave libselinux1:amd64 1,0
+Leave coreutils:amd64 1,0
+Visit dash:amd64 from DoRun
+ Visit dpkg:amd64 from Provides-1
+  Visit libbz2-1.0:amd64 from Provides-1
+  Leave libbz2-1.0:amd64 1,0
+  Visit zlib1g:amd64 from Provides-1
+  Leave zlib1g:amd64 1,0
+  Visit tar:amd64 from Provides-1
+  Leave tar:amd64 1,0
+ Leave dpkg:amd64 1,0
+ Visit debconf:amd64 from Provides-1
+  Visit perl-base:amd64 from Provides-1
+  Leave perl-base:amd64 1,0
+ Leave debconf:amd64 1,0
+Leave dash:amd64 1,0
+Visit diffutils:amd64 from DoRun
+Leave diffutils:amd64 1,0
+Visit findutils:amd64 from DoRun
+Leave findutils:amd64 1,0
+Visit grep:amd64 from DoRun
+ Visit libpcre3:amd64 from Provides-1
+ Leave libpcre3:amd64 1,0
+Leave grep:amd64 1,0
+Visit gzip:amd64 from DoRun
+Leave gzip:amd64 1,0
+Visit hostname:amd64 from DoRun
+Leave hostname:amd64 1,0
+Visit login:amd64 from DoRun
+ Visit libaudit1:amd64 from Provides-1
+  Visit libaudit-common:amd64 from Provides-1
+  Leave libaudit-common:amd64 1,0
+  Visit libcap-ng0:amd64 from Provides-1
+  Leave libcap-ng0:amd64 1,0
+ Leave libaudit1:amd64 1,0
+ Visit libpam0g:amd64 from Provides-1
+ Leave libpam0g:amd64 1,0
+ Visit libpam-runtime:amd64 from Provides-1
+  Visit libpam-modules:amd64 from Provides-1
+   Visit libdb5.3:amd64 from Provides-1
+   Leave libdb5.3:amd64 1,0
+   Visit libnsl2:amd64 from Provides-1
+    Visit libtirpc3:amd64 from Provides-1
+     Visit libgssapi-krb5-2:amd64 from Provides-1
+      Visit libcom-err2:amd64 from Provides-1
+      Leave libcom-err2:amd64 1,0
+      Visit libk5crypto3:amd64 from Provides-1
+       Visit libkrb5support0:amd64 from Provides-1
+       Leave libkrb5support0:amd64 1,0
+      Leave libk5crypto3:amd64 1,0
+      Visit libkrb5-3:amd64 from Provides-1
+       Visit libkeyutils1:amd64 from Provides-1
+       Leave libkeyutils1:amd64 1,0
+       Visit libssl1.1:amd64 from Provides-1
+       Leave libssl1.1:amd64 1,0
+      Leave libkrb5-3:amd64 1,0
+     Leave libgssapi-krb5-2:amd64 1,0
+     Visit libtirpc-common:amd64 from Provides-1
+     Leave libtirpc-common:amd64 1,0
+    Leave libtirpc3:amd64 1,0
+   Leave libnsl2:amd64 1,0
+   Visit libpam-modules-bin:amd64 from Provides-1
+   Leave libpam-modules-bin:amd64 1,0
+  Leave libpam-modules:amd64 1,0
+ Leave libpam-runtime:amd64 1,0
+Leave login:amd64 1,0
+Visit ncurses-bin:amd64 from DoRun
+Leave ncurses-bin:amd64 1,0
+Visit sed:amd64 from DoRun
+Leave sed:amd64 1,0
+Visit util-linux:amd64 from DoRun
+ Visit libblkid1:amd64 from Provides-1
+ Leave libblkid1:amd64 1,0
+ Visit libmount1:amd64 from Provides-1
+ Leave libmount1:amd64 1,0
+ Visit libsmartcols1:amd64 from Provides-1
+ Leave libsmartcols1:amd64 1,0
+ Visit libudev1:amd64 from Provides-1
+ Leave libudev1:amd64 1,0
+ Visit libuuid1:amd64 from Provides-1
+ Leave libuuid1:amd64 1,0
+Leave util-linux:amd64 1,0
+Visit apt:amd64 from DoRun
+ Visit adduser:amd64 from Provides-1
+  Visit passwd:amd64 from Provides-1
+   Visit libsemanage1:amd64 from Provides-1
+    Visit libsemanage-common:amd64 from Provides-1
+    Leave libsemanage-common:amd64 1,0
+    Visit libsepol1:amd64 from Provides-1
+    Leave libsepol1:amd64 1,0
+   Leave libsemanage1:amd64 1,0
+  Leave passwd:amd64 1,0
+ Leave adduser:amd64 1,0
+ Visit gpgv:amd64 from Provides-1
+ Leave gpgv:amd64 1,0
+ Visit libapt-pkg6.0:amd64 from Provides-1
+  Visit libstdc++6:amd64 from Provides-1
+  Leave libstdc++6:amd64 1,0
+  Visit libxxhash0:amd64 from Provides-1
+  Leave libxxhash0:amd64 1,0
+ Leave libapt-pkg6.0:amd64 1,0
+ Visit debian-archive-keyring:amd64 from Provides-1
+ Leave debian-archive-keyring:amd64 1,0
+ Visit libgnutls30:amd64 from Provides-1
+  Visit libhogweed6:amd64 from Provides-1
+   Visit libnettle8:amd64 from Provides-1
+   Leave libnettle8:amd64 1,0
+  Leave libhogweed6:amd64 1,0
+  Visit libidn2-0:amd64 from Provides-1
+   Visit libunistring2:amd64 from Provides-1
+   Leave libunistring2:amd64 1,0
+  Leave libidn2-0:amd64 1,0
+  Visit libp11-kit0:amd64 from Provides-1
+   Visit libffi7:amd64 from Provides-1
+   Leave libffi7:amd64 1,0
+  Leave libp11-kit0:amd64 1,0
+  Visit libtasn1-6:amd64 from Provides-1
+  Leave libtasn1-6:amd64 1,0
+ Leave libgnutls30:amd64 1,0
+ Visit libseccomp2:amd64 from Provides-1
+ Leave libseccomp2:amd64 1,0
+Leave apt:amd64 1,0
+Visit base-passwd:amd64 from DoRun
+ Visit libdebconfclient0:amd64 from Provides-1
+ Leave libdebconfclient0:amd64 1,0
+Leave base-passwd:amd64 1,0
+Visit init-system-helpers:amd64 from DoRun
+Leave init-system-helpers:amd64 1,0
+Visit libc-bin:amd64 from DoRun
+Leave libc-bin:amd64 1,0
+Visit ncurses-base:amd64 from DoRun
+Leave ncurses-base:amd64 1,0
+Visit sysvinit-utils:amd64 from DoRun
+ Visit lsb-base:amd64 from Provides-1
+ Leave lsb-base:amd64 1,0
+Leave sysvinit-utils:amd64 1,0
+** Pass B
+Visit gcc-10-base:amd64 from DoRun
+Leave gcc-10-base:amd64 1,0
+Visit libgcc-s1:amd64 from DoRun
+ Visit libc6:amd64 from Provides-1
+  Visit libcrypt1:amd64 from Provides-1
+  Leave libcrypt1:amd64 1,0
+ Leave libc6:amd64 1,0
+Leave libgcc-s1:amd64 1,0
+Visit mawk:amd64 from DoRun
+Leave mawk:amd64 1,0
+Visit base-files:amd64 from DoRun
+Leave base-files:amd64 1,0
+Visit libtinfo6:amd64 from DoRun
+Leave libtinfo6:amd64 1,0
+Visit debianutils:amd64 from DoRun
+Leave debianutils:amd64 1,0
+Visit bash:amd64 from DoRun
+Leave bash:amd64 1,0
+Visit libgpg-error0:amd64 from DoRun
+Leave libgpg-error0:amd64 1,0
+Visit libgcrypt20:amd64 from DoRun
+Leave libgcrypt20:amd64 1,0
+Visit liblz4-1:amd64 from DoRun
+Leave liblz4-1:amd64 1,0
+Visit liblzma5:amd64 from DoRun
+Leave liblzma5:amd64 1,0
+Visit libzstd1:amd64 from DoRun
+Leave libzstd1:amd64 1,0
+Visit libsystemd0:amd64 from DoRun
+Leave libsystemd0:amd64 1,0
+Visit bsdutils:amd64 from DoRun
+Leave bsdutils:amd64 1,0
+Visit libacl1:amd64 from DoRun
+Leave libacl1:amd64 1,0
+Visit libattr1:amd64 from DoRun
+Leave libattr1:amd64 1,0
+Visit libgmp10:amd64 from DoRun
+Leave libgmp10:amd64 1,0
+Visit libpcre2-8-0:amd64 from DoRun
+Leave libpcre2-8-0:amd64 1,0
+Visit libselinux1:amd64 from DoRun
+Leave libselinux1:amd64 1,0
+Visit coreutils:amd64 from DoRun
+Leave coreutils:amd64 1,0
+Visit libbz2-1.0:amd64 from DoRun
+Leave libbz2-1.0:amd64 1,0
+Visit zlib1g:amd64 from DoRun
+Leave zlib1g:amd64 1,0
+Visit tar:amd64 from DoRun
+Leave tar:amd64 1,0
+Visit dpkg:amd64 from DoRun
+Leave dpkg:amd64 1,0
+Visit perl-base:amd64 from DoRun
+Leave perl-base:amd64 1,0
+Visit debconf:amd64 from DoRun
+Leave debconf:amd64 1,0
+Visit dash:amd64 from DoRun
+Leave dash:amd64 1,0
+Visit diffutils:amd64 from DoRun
+Leave diffutils:amd64 1,0
+Visit findutils:amd64 from DoRun
+Leave findutils:amd64 1,0
+Visit libpcre3:amd64 from DoRun
+Leave libpcre3:amd64 1,0
+Visit grep:amd64 from DoRun
+Leave grep:amd64 1,0
+Visit gzip:amd64 from DoRun
+Leave gzip:amd64 1,0
+Visit hostname:amd64 from DoRun
+Leave hostname:amd64 1,0
+Visit libaudit-common:amd64 from DoRun
+Leave libaudit-common:amd64 1,0
+Visit libcap-ng0:amd64 from DoRun
+Leave libcap-ng0:amd64 1,0
+Visit libaudit1:amd64 from DoRun
+Leave libaudit1:amd64 1,0
+Visit libpam0g:amd64 from DoRun
+Leave libpam0g:amd64 1,0
+Visit libdb5.3:amd64 from DoRun
+Leave libdb5.3:amd64 1,0
+Visit libcom-err2:amd64 from DoRun
+Leave libcom-err2:amd64 1,0
+Visit libkrb5support0:amd64 from DoRun
+Leave libkrb5support0:amd64 1,0
+Visit libk5crypto3:amd64 from DoRun
+Leave libk5crypto3:amd64 1,0
+Visit libkeyutils1:amd64 from DoRun
+Leave libkeyutils1:amd64 1,0
+Visit libssl1.1:amd64 from DoRun
+Leave libssl1.1:amd64 1,0
+Visit libkrb5-3:amd64 from DoRun
+Leave libkrb5-3:amd64 1,0
+Visit libgssapi-krb5-2:amd64 from DoRun
+Leave libgssapi-krb5-2:amd64 1,0
+Visit libtirpc-common:amd64 from DoRun
+Leave libtirpc-common:amd64 1,0
+Visit libtirpc3:amd64 from DoRun
+Leave libtirpc3:amd64 1,0
+Visit libnsl2:amd64 from DoRun
+Leave libnsl2:amd64 1,0
+Visit libpam-modules-bin:amd64 from DoRun
+Leave libpam-modules-bin:amd64 1,0
+Visit libpam-modules:amd64 from DoRun
+Leave libpam-modules:amd64 1,0
+Visit libpam-runtime:amd64 from DoRun
+Leave libpam-runtime:amd64 1,0
+Visit login:amd64 from DoRun
+Leave login:amd64 1,0
+Visit ncurses-bin:amd64 from DoRun
+Leave ncurses-bin:amd64 1,0
+Visit sed:amd64 from DoRun
+Leave sed:amd64 1,0
+Visit libblkid1:amd64 from DoRun
+Leave libblkid1:amd64 1,0
+Visit libmount1:amd64 from DoRun
+Leave libmount1:amd64 1,0
+Visit libsmartcols1:amd64 from DoRun
+Leave libsmartcols1:amd64 1,0
+Visit libudev1:amd64 from DoRun
+Leave libudev1:amd64 1,0
+Visit libuuid1:amd64 from DoRun
+Leave libuuid1:amd64 1,0
+Visit util-linux:amd64 from DoRun
+Leave util-linux:amd64 1,0
+Visit libsemanage-common:amd64 from DoRun
+Leave libsemanage-common:amd64 1,0
+Visit libsepol1:amd64 from DoRun
+Leave libsepol1:amd64 1,0
+Visit libsemanage1:amd64 from DoRun
+Leave libsemanage1:amd64 1,0
+Visit passwd:amd64 from DoRun
+Leave passwd:amd64 1,0
+Visit adduser:amd64 from DoRun
+Leave adduser:amd64 1,0
+Visit gpgv:amd64 from DoRun
+Leave gpgv:amd64 1,0
+Visit libstdc++6:amd64 from DoRun
+Leave libstdc++6:amd64 1,0
+Visit libxxhash0:amd64 from DoRun
+Leave libxxhash0:amd64 1,0
+Visit libapt-pkg6.0:amd64 from DoRun
+Leave libapt-pkg6.0:amd64 1,0
+Visit debian-archive-keyring:amd64 from DoRun
+Leave debian-archive-keyring:amd64 1,0
+Visit libnettle8:amd64 from DoRun
+Leave libnettle8:amd64 1,0
+Visit libhogweed6:amd64 from DoRun
+Leave libhogweed6:amd64 1,0
+Visit libunistring2:amd64 from DoRun
+Leave libunistring2:amd64 1,0
+Visit libidn2-0:amd64 from DoRun
+Leave libidn2-0:amd64 1,0
+Visit libffi7:amd64 from DoRun
+Leave libffi7:amd64 1,0
+Visit libp11-kit0:amd64 from DoRun
+Leave libp11-kit0:amd64 1,0
+Visit libtasn1-6:amd64 from DoRun
+Leave libtasn1-6:amd64 1,0
+Visit libgnutls30:amd64 from DoRun
+Leave libgnutls30:amd64 1,0
+Visit libseccomp2:amd64 from DoRun
+Leave libseccomp2:amd64 1,0
+Visit apt:amd64 from DoRun
+Leave apt:amd64 1,0
+Visit libdebconfclient0:amd64 from DoRun
+Leave libdebconfclient0:amd64 1,0
+Visit base-passwd:amd64 from DoRun
+Leave base-passwd:amd64 1,0
+Visit init-system-helpers:amd64 from DoRun
+Leave init-system-helpers:amd64 1,0
+Visit libc-bin:amd64 from DoRun
+Leave libc-bin:amd64 1,0
+Visit ncurses-base:amd64 from DoRun
+Leave ncurses-base:amd64 1,0
+Visit lsb-base:amd64 from DoRun
+Leave lsb-base:amd64 1,0
+Visit sysvinit-utils:amd64 from DoRun
+Leave sysvinit-utils:amd64 1,0
+** Pass C
+Visit gcc-10-base:amd64 from DoRun
+Leave gcc-10-base:amd64 1,0
+Visit libcrypt1:amd64 from DoRun
+ Visit libc6:amd64 from Provides-1
+  Visit libgcc-s1:amd64 from Provides-1
+  Leave libgcc-s1:amd64 1,0
+ Leave libc6:amd64 1,0
+Leave libcrypt1:amd64 1,0
+Visit mawk:amd64 from DoRun
+Leave mawk:amd64 1,0
+Visit base-files:amd64 from DoRun
+Leave base-files:amd64 1,0
+Visit libtinfo6:amd64 from DoRun
+Leave libtinfo6:amd64 1,0
+Visit debianutils:amd64 from DoRun
+Leave debianutils:amd64 1,0
+Visit bash:amd64 from DoRun
+Leave bash:amd64 1,0
+Visit libgpg-error0:amd64 from DoRun
+Leave libgpg-error0:amd64 1,0
+Visit libgcrypt20:amd64 from DoRun
+Leave libgcrypt20:amd64 1,0
+Visit liblz4-1:amd64 from DoRun
+Leave liblz4-1:amd64 1,0
+Visit liblzma5:amd64 from DoRun
+Leave liblzma5:amd64 1,0
+Visit libzstd1:amd64 from DoRun
+Leave libzstd1:amd64 1,0
+Visit libsystemd0:amd64 from DoRun
+Leave libsystemd0:amd64 1,0
+Visit bsdutils:amd64 from DoRun
+Leave bsdutils:amd64 1,0
+Visit libacl1:amd64 from DoRun
+Leave libacl1:amd64 1,0
+Visit libattr1:amd64 from DoRun
+Leave libattr1:amd64 1,0
+Visit libgmp10:amd64 from DoRun
+Leave libgmp10:amd64 1,0
+Visit libpcre2-8-0:amd64 from DoRun
+Leave libpcre2-8-0:amd64 1,0
+Visit libselinux1:amd64 from DoRun
+Leave libselinux1:amd64 1,0
+Visit coreutils:amd64 from DoRun
+Leave coreutils:amd64 1,0
+Visit libbz2-1.0:amd64 from DoRun
+Leave libbz2-1.0:amd64 1,0
+Visit zlib1g:amd64 from DoRun
+Leave zlib1g:amd64 1,0
+Visit tar:amd64 from DoRun
+Leave tar:amd64 1,0
+Visit dpkg:amd64 from DoRun
+Leave dpkg:amd64 1,0
+Visit perl-base:amd64 from DoRun
+Leave perl-base:amd64 1,0
+Visit debconf:amd64 from DoRun
+Leave debconf:amd64 1,0
+Visit dash:amd64 from DoRun
+Leave dash:amd64 1,0
+Visit diffutils:amd64 from DoRun
+Leave diffutils:amd64 1,0
+Visit findutils:amd64 from DoRun
+Leave findutils:amd64 1,0
+Visit libpcre3:amd64 from DoRun
+Leave libpcre3:amd64 1,0
+Visit grep:amd64 from DoRun
+Leave grep:amd64 1,0
+Visit gzip:amd64 from DoRun
+Leave gzip:amd64 1,0
+Visit hostname:amd64 from DoRun
+Leave hostname:amd64 1,0
+Visit libaudit-common:amd64 from DoRun
+Leave libaudit-common:amd64 1,0
+Visit libcap-ng0:amd64 from DoRun
+Leave libcap-ng0:amd64 1,0
+Visit libaudit1:amd64 from DoRun
+Leave libaudit1:amd64 1,0
+Visit libpam0g:amd64 from DoRun
+Leave libpam0g:amd64 1,0
+Visit libdb5.3:amd64 from DoRun
+Leave libdb5.3:amd64 1,0
+Visit libcom-err2:amd64 from DoRun
+Leave libcom-err2:amd64 1,0
+Visit libkrb5support0:amd64 from DoRun
+Leave libkrb5support0:amd64 1,0
+Visit libk5crypto3:amd64 from DoRun
+Leave libk5crypto3:amd64 1,0
+Visit libkeyutils1:amd64 from DoRun
+Leave libkeyutils1:amd64 1,0
+Visit libssl1.1:amd64 from DoRun
+Leave libssl1.1:amd64 1,0
+Visit libkrb5-3:amd64 from DoRun
+Leave libkrb5-3:amd64 1,0
+Visit libgssapi-krb5-2:amd64 from DoRun
+Leave libgssapi-krb5-2:amd64 1,0
+Visit libtirpc-common:amd64 from DoRun
+Leave libtirpc-common:amd64 1,0
+Visit libtirpc3:amd64 from DoRun
+Leave libtirpc3:amd64 1,0
+Visit libnsl2:amd64 from DoRun
+Leave libnsl2:amd64 1,0
+Visit libpam-modules-bin:amd64 from DoRun
+Leave libpam-modules-bin:amd64 1,0
+Visit libpam-modules:amd64 from DoRun
+Leave libpam-modules:amd64 1,0
+Visit libpam-runtime:amd64 from DoRun
+Leave libpam-runtime:amd64 1,0
+Visit login:amd64 from DoRun
+Leave login:amd64 1,0
+Visit ncurses-bin:amd64 from DoRun
+Leave ncurses-bin:amd64 1,0
+Visit sed:amd64 from DoRun
+Leave sed:amd64 1,0
+Visit libblkid1:amd64 from DoRun
+Leave libblkid1:amd64 1,0
+Visit libmount1:amd64 from DoRun
+Leave libmount1:amd64 1,0
+Visit libsmartcols1:amd64 from DoRun
+Leave libsmartcols1:amd64 1,0
+Visit libudev1:amd64 from DoRun
+Leave libudev1:amd64 1,0
+Visit libuuid1:amd64 from DoRun
+Leave libuuid1:amd64 1,0
+Visit util-linux:amd64 from DoRun
+Leave util-linux:amd64 1,0
+Visit libsemanage-common:amd64 from DoRun
+Leave libsemanage-common:amd64 1,0
+Visit libsepol1:amd64 from DoRun
+Leave libsepol1:amd64 1,0
+Visit libsemanage1:amd64 from DoRun
+Leave libsemanage1:amd64 1,0
+Visit passwd:amd64 from DoRun
+Leave passwd:amd64 1,0
+Visit adduser:amd64 from DoRun
+Leave adduser:amd64 1,0
+Visit gpgv:amd64 from DoRun
+Leave gpgv:amd64 1,0
+Visit libstdc++6:amd64 from DoRun
+Leave libstdc++6:amd64 1,0
+Visit libxxhash0:amd64 from DoRun
+Leave libxxhash0:amd64 1,0
+Visit libapt-pkg6.0:amd64 from DoRun
+Leave libapt-pkg6.0:amd64 1,0
+Visit debian-archive-keyring:amd64 from DoRun
+Leave debian-archive-keyring:amd64 1,0
+Visit libnettle8:amd64 from DoRun
+Leave libnettle8:amd64 1,0
+Visit libhogweed6:amd64 from DoRun
+Leave libhogweed6:amd64 1,0
+Visit libunistring2:amd64 from DoRun
+Leave libunistring2:amd64 1,0
+Visit libidn2-0:amd64 from DoRun
+Leave libidn2-0:amd64 1,0
+Visit libffi7:amd64 from DoRun
+Leave libffi7:amd64 1,0
+Visit libp11-kit0:amd64 from DoRun
+Leave libp11-kit0:amd64 1,0
+Visit libtasn1-6:amd64 from DoRun
+Leave libtasn1-6:amd64 1,0
+Visit libgnutls30:amd64 from DoRun
+Leave libgnutls30:amd64 1,0
+Visit libseccomp2:amd64 from DoRun
+Leave libseccomp2:amd64 1,0
+Visit apt:amd64 from DoRun
+Leave apt:amd64 1,0
+Visit libdebconfclient0:amd64 from DoRun
+Leave libdebconfclient0:amd64 1,0
+Visit base-passwd:amd64 from DoRun
+Leave base-passwd:amd64 1,0
+Visit init-system-helpers:amd64 from DoRun
+Leave init-system-helpers:amd64 1,0
+Visit libc-bin:amd64 from DoRun
+Leave libc-bin:amd64 1,0
+Visit ncurses-base:amd64 from DoRun
+Leave ncurses-base:amd64 1,0
+Visit lsb-base:amd64 from DoRun
+Leave lsb-base:amd64 1,0
+Visit sysvinit-utils:amd64 from DoRun
+Leave sysvinit-utils:amd64 1,0
+** Pass D
+Visit gcc-10-base:amd64 from DoRun
+Leave gcc-10-base:amd64 1,0
+Visit libgcc-s1:amd64 from DoRun
+ Visit libc6:amd64 from Provides-1
+  Visit libcrypt1:amd64 from Provides-1
+  Leave libcrypt1:amd64 1,0
+ Leave libc6:amd64 1,0
+Leave libgcc-s1:amd64 1,0
+Visit mawk:amd64 from DoRun
+Leave mawk:amd64 1,0
+Visit base-files:amd64 from DoRun
+Leave base-files:amd64 1,0
+Visit libtinfo6:amd64 from DoRun
+Leave libtinfo6:amd64 1,0
+Visit debianutils:amd64 from DoRun
+Leave debianutils:amd64 1,0
+Visit bash:amd64 from DoRun
+Leave bash:amd64 1,0
+Visit libgpg-error0:amd64 from DoRun
+Leave libgpg-error0:amd64 1,0
+Visit libgcrypt20:amd64 from DoRun
+Leave libgcrypt20:amd64 1,0
+Visit liblz4-1:amd64 from DoRun
+Leave liblz4-1:amd64 1,0
+Visit liblzma5:amd64 from DoRun
+Leave liblzma5:amd64 1,0
+Visit libzstd1:amd64 from DoRun
+Leave libzstd1:amd64 1,0
+Visit libsystemd0:amd64 from DoRun
+Leave libsystemd0:amd64 1,0
+Visit bsdutils:amd64 from DoRun
+Leave bsdutils:amd64 1,0
+Visit libacl1:amd64 from DoRun
+Leave libacl1:amd64 1,0
+Visit libattr1:amd64 from DoRun
+Leave libattr1:amd64 1,0
+Visit libgmp10:amd64 from DoRun
+Leave libgmp10:amd64 1,0
+Visit libpcre2-8-0:amd64 from DoRun
+Leave libpcre2-8-0:amd64 1,0
+Visit libselinux1:amd64 from DoRun
+Leave libselinux1:amd64 1,0
+Visit coreutils:amd64 from DoRun
+Leave coreutils:amd64 1,0
+Visit libbz2-1.0:amd64 from DoRun
+Leave libbz2-1.0:amd64 1,0
+Visit zlib1g:amd64 from DoRun
+Leave zlib1g:amd64 1,0
+Visit tar:amd64 from DoRun
+Leave tar:amd64 1,0
+Visit dpkg:amd64 from DoRun
+Leave dpkg:amd64 1,0
+Visit perl-base:amd64 from DoRun
+Leave perl-base:amd64 1,0
+Visit debconf:amd64 from DoRun
+Leave debconf:amd64 1,0
+Visit dash:amd64 from DoRun
+Leave dash:amd64 1,0
+Visit diffutils:amd64 from DoRun
+Leave diffutils:amd64 1,0
+Visit findutils:amd64 from DoRun
+Leave findutils:amd64 1,0
+Visit libpcre3:amd64 from DoRun
+Leave libpcre3:amd64 1,0
+Visit grep:amd64 from DoRun
+Leave grep:amd64 1,0
+Visit gzip:amd64 from DoRun
+Leave gzip:amd64 1,0
+Visit hostname:amd64 from DoRun
+Leave hostname:amd64 1,0
+Visit libaudit-common:amd64 from DoRun
+Leave libaudit-common:amd64 1,0
+Visit libcap-ng0:amd64 from DoRun
+Leave libcap-ng0:amd64 1,0
+Visit libaudit1:amd64 from DoRun
+Leave libaudit1:amd64 1,0
+Visit libpam0g:amd64 from DoRun
+Leave libpam0g:amd64 1,0
+Visit libdb5.3:amd64 from DoRun
+Leave libdb5.3:amd64 1,0
+Visit libcom-err2:amd64 from DoRun
+Leave libcom-err2:amd64 1,0
+Visit libkrb5support0:amd64 from DoRun
+Leave libkrb5support0:amd64 1,0
+Visit libk5crypto3:amd64 from DoRun
+Leave libk5crypto3:amd64 1,0
+Visit libkeyutils1:amd64 from DoRun
+Leave libkeyutils1:amd64 1,0
+Visit libssl1.1:amd64 from DoRun
+Leave libssl1.1:amd64 1,0
+Visit libkrb5-3:amd64 from DoRun
+Leave libkrb5-3:amd64 1,0
+Visit libgssapi-krb5-2:amd64 from DoRun
+Leave libgssapi-krb5-2:amd64 1,0
+Visit libtirpc-common:amd64 from DoRun
+Leave libtirpc-common:amd64 1,0
+Visit libtirpc3:amd64 from DoRun
+Leave libtirpc3:amd64 1,0
+Visit libnsl2:amd64 from DoRun
+Leave libnsl2:amd64 1,0
+Visit libpam-modules-bin:amd64 from DoRun
+Leave libpam-modules-bin:amd64 1,0
+Visit libpam-modules:amd64 from DoRun
+Leave libpam-modules:amd64 1,0
+Visit libpam-runtime:amd64 from DoRun
+Leave libpam-runtime:amd64 1,0
+Visit login:amd64 from DoRun
+Leave login:amd64 1,0
+Visit ncurses-bin:amd64 from DoRun
+Leave ncurses-bin:amd64 1,0
+Visit sed:amd64 from DoRun
+Leave sed:amd64 1,0
+Visit libblkid1:amd64 from DoRun
+Leave libblkid1:amd64 1,0
+Visit libmount1:amd64 from DoRun
+Leave libmount1:amd64 1,0
+Visit libsmartcols1:amd64 from DoRun
+Leave libsmartcols1:amd64 1,0
+Visit libudev1:amd64 from DoRun
+Leave libudev1:amd64 1,0
+Visit libuuid1:amd64 from DoRun
+Leave libuuid1:amd64 1,0
+Visit util-linux:amd64 from DoRun
+Leave util-linux:amd64 1,0
+Visit libsemanage-common:amd64 from DoRun
+Leave libsemanage-common:amd64 1,0
+Visit libsepol1:amd64 from DoRun
+Leave libsepol1:amd64 1,0
+Visit libsemanage1:amd64 from DoRun
+Leave libsemanage1:amd64 1,0
+Visit passwd:amd64 from DoRun
+Leave passwd:amd64 1,0
+Visit adduser:amd64 from DoRun
+Leave adduser:amd64 1,0
+Visit gpgv:amd64 from DoRun
+Leave gpgv:amd64 1,0
+Visit libstdc++6:amd64 from DoRun
+Leave libstdc++6:amd64 1,0
+Visit libxxhash0:amd64 from DoRun
+Leave libxxhash0:amd64 1,0
+Visit libapt-pkg6.0:amd64 from DoRun
+Leave libapt-pkg6.0:amd64 1,0
+Visit debian-archive-keyring:amd64 from DoRun
+Leave debian-archive-keyring:amd64 1,0
+Visit libnettle8:amd64 from DoRun
+Leave libnettle8:amd64 1,0
+Visit libhogweed6:amd64 from DoRun
+Leave libhogweed6:amd64 1,0
+Visit libunistring2:amd64 from DoRun
+Leave libunistring2:amd64 1,0
+Visit libidn2-0:amd64 from DoRun
+Leave libidn2-0:amd64 1,0
+Visit libffi7:amd64 from DoRun
+Leave libffi7:amd64 1,0
+Visit libp11-kit0:amd64 from DoRun
+Leave libp11-kit0:amd64 1,0
+Visit libtasn1-6:amd64 from DoRun
+Leave libtasn1-6:amd64 1,0
+Visit libgnutls30:amd64 from DoRun
+Leave libgnutls30:amd64 1,0
+Visit libseccomp2:amd64 from DoRun
+Leave libseccomp2:amd64 1,0
+Visit apt:amd64 from DoRun
+Leave apt:amd64 1,0
+Visit libdebconfclient0:amd64 from DoRun
+Leave libdebconfclient0:amd64 1,0
+Visit base-passwd:amd64 from DoRun
+Leave base-passwd:amd64 1,0
+Visit init-system-helpers:amd64 from DoRun
+Leave init-system-helpers:amd64 1,0
+Visit libc-bin:amd64 from DoRun
+Leave libc-bin:amd64 1,0
+Visit ncurses-base:amd64 from DoRun
+Leave ncurses-base:amd64 1,0
+Visit lsb-base:amd64 from DoRun
+Leave lsb-base:amd64 1,0
+Visit sysvinit-utils:amd64 from DoRun
+Leave sysvinit-utils:amd64 1,0
+** Unpack ordering done
+  gcc-10-base:amd64 0,0
+  libcrypt1:amd64 0,0
+  libc6:amd64 0,0
+  libgcc-s1:amd64 0,0
+  mawk:amd64 0,0
+  base-files:amd64 0,0
+  libtinfo6:amd64 0,0
+  debianutils:amd64 0,0
+  bash:amd64 0,0
+  libgpg-error0:amd64 0,0
+  libgcrypt20:amd64 0,0
+  liblz4-1:amd64 0,0
+  liblzma5:amd64 0,0
+  libzstd1:amd64 0,0
+  libsystemd0:amd64 0,0
+  bsdutils:amd64 0,0
+  libacl1:amd64 0,0
+  libattr1:amd64 0,0
+  libgmp10:amd64 0,0
+  libpcre2-8-0:amd64 0,0
+  libselinux1:amd64 0,0
+  coreutils:amd64 0,0
+  libbz2-1.0:amd64 0,0
+  zlib1g:amd64 0,0
+  tar:amd64 0,0
+  dpkg:amd64 0,0
+  perl-base:amd64 0,0
+  debconf:amd64 0,0
+  dash:amd64 0,0
+  diffutils:amd64 0,0
+  findutils:amd64 0,0
+  libpcre3:amd64 0,0
+  grep:amd64 0,0
+  gzip:amd64 0,0
+  hostname:amd64 0,0
+  libaudit-common:amd64 0,0
+  libcap-ng0:amd64 0,0
+  libaudit1:amd64 0,0
+  libpam0g:amd64 0,0
+  libdb5.3:amd64 0,0
+  libcom-err2:amd64 0,0
+  libkrb5support0:amd64 0,0
+  libk5crypto3:amd64 0,0
+  libkeyutils1:amd64 0,0
+  libssl1.1:amd64 0,0
+  libkrb5-3:amd64 0,0
+  libgssapi-krb5-2:amd64 0,0
+  libtirpc-common:amd64 0,0
+  libtirpc3:amd64 0,0
+  libnsl2:amd64 0,0
+  libpam-modules-bin:amd64 0,0
+  libpam-modules:amd64 0,0
+  libpam-runtime:amd64 0,0
+  login:amd64 0,0
+  ncurses-bin:amd64 0,0
+  sed:amd64 0,0
+  libblkid1:amd64 0,0
+  libmount1:amd64 0,0
+  libsmartcols1:amd64 0,0
+  libudev1:amd64 0,0
+  libuuid1:amd64 0,0
+  util-linux:amd64 0,0
+  libsemanage-common:amd64 0,0
+  libsepol1:amd64 0,0
+  libsemanage1:amd64 0,0
+  passwd:amd64 0,0
+  adduser:amd64 0,0
+  gpgv:amd64 0,0
+  libstdc++6:amd64 0,0
+  libxxhash0:amd64 0,0
+  libapt-pkg6.0:amd64 0,0
+  debian-archive-keyring:amd64 0,0
+  libnettle8:amd64 0,0
+  libhogweed6:amd64 0,0
+  libunistring2:amd64 0,0
+  libidn2-0:amd64 0,0
+  libffi7:amd64 0,0
+  libp11-kit0:amd64 0,0
+  libtasn1-6:amd64 0,0
+  libgnutls30:amd64 0,0
+  libseccomp2:amd64 0,0
+  apt:amd64 0,0
+  libdebconfclient0:amd64 0,0
+  base-passwd:amd64 0,0
+  init-system-helpers:amd64 0,0
+  libc-bin:amd64 0,0
+  ncurses-base:amd64 0,0
+  lsb-base:amd64 0,0
+  sysvinit-utils:amd64 0,0
 The following NEW packages will be installed:
-  adduser apt base-files base-passwd bash bsdutils coreutils dash debconf debian-archive-keyring debianutils diffutils dpkg findutils
-  gcc-10-base gpgv grep gzip hostname init-system-helpers libacl1 libapt-pkg6.0 libattr1 libaudit-common libaudit1 libblkid1 libbz2-1.0
-  libc-bin libc6 libcap-ng0 libcom-err2 libcrypt1 libdb5.3 libdebconfclient0 libffi7 libgcc-s1 libgcrypt20 libgmp10 libgnutls30
-  libgpg-error0 libgssapi-krb5-2 libhogweed6 libidn2-0 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 liblz4-1 liblzma5 libmount1
-  libnettle8 libnsl2 libp11-kit0 libpam-modules libpam-modules-bin libpam-runtime libpam0g libpcre2-8-0 libpcre3 libseccomp2 libselinux1
-  libsemanage-common libsemanage1 libsepol1 libsmartcols1 libssl1.1 libstdc++6 libsystemd0 libtasn1-6 libtinfo6 libtirpc-common libtirpc3
-  libudev1 libunistring2 libuuid1 libxxhash0 libzstd1 login lsb-base mawk ncurses-base ncurses-bin passwd perl-base sed sysvinit-utils tar
+  adduser apt base-files base-passwd bash bsdutils coreutils dash debconf
+  debian-archive-keyring debianutils diffutils dpkg findutils gcc-10-base gpgv
+  grep gzip hostname init-system-helpers libacl1 libapt-pkg6.0 libattr1
+  libaudit-common libaudit1 libblkid1 libbz2-1.0 libc-bin libc6 libcap-ng0
+  libcom-err2 libcrypt1 libdb5.3 libdebconfclient0 libffi7 libgcc-s1
+  libgcrypt20 libgmp10 libgnutls30 libgpg-error0 libgssapi-krb5-2 libhogweed6
+  libidn2-0 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 liblz4-1
+  liblzma5 libmount1 libnettle8 libnsl2 libp11-kit0 libpam-modules
+  libpam-modules-bin libpam-runtime libpam0g libpcre2-8-0 libpcre3 libseccomp2
+  libselinux1 libsemanage-common libsemanage1 libsepol1 libsmartcols1
+  libssl1.1 libstdc++6 libsystemd0 libtasn1-6 libtinfo6 libtirpc-common
+  libtirpc3 libudev1 libunistring2 libuuid1 libxxhash0 libzstd1 login lsb-base
+  mawk ncurses-base ncurses-bin passwd perl-base sed sysvinit-utils tar
   util-linux zlib1g
 0 upgraded, 89 newly installed, 0 to remove and 0 not upgraded.
 Need to get 34.9 MB of archives.
 After this operation, 121 MB of additional disk space will be used.
-Get:1 http://deb.debian.org/debian bullseye/main amd64 gcc-10-base amd64 10.2.1-6 [201 kB]
-Get:2 http://security.debian.org/debian-security bullseye-security/main amd64 perl-base amd64 5.32.1-4+deb11u1 [1627 kB]
+Get:1 http://security.debian.org/debian-security bullseye-security/main amd64 perl-base amd64 5.32.1-4+deb11u1 [1627 kB]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 gcc-10-base amd64 10.2.1-6 [201 kB]
 Get:3 http://deb.debian.org/debian bullseye/main amd64 libcrypt1 amd64 1:4.4.18-4 [87.5 kB]
-Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 libssl1.1 amd64 1.1.1k-1+deb11u1 [1554 kB]
-Get:5 http://deb.debian.org/debian bullseye/main amd64 libc6 amd64 2.31-13 [2811 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libc6 amd64 2.31-13 [2811 kB]
+Get:5 http://security.debian.org/debian-security bullseye-security/main amd64 libssl1.1 amd64 1.1.1k-1+deb11u1 [1554 kB]
 Get:6 http://deb.debian.org/debian bullseye/main amd64 libgcc-s1 amd64 10.2.1-6 [41.4 kB]
 Get:7 http://deb.debian.org/debian bullseye/main amd64 mawk amd64 1.3.4.20200120-2 [112 kB]
 Get:8 http://deb.debian.org/debian bullseye/main amd64 base-files amd64 11.1 [70.0 kB]
@@ -116,7 +928,7 @@ Get:86 http://deb.debian.org/debian bullseye/main amd64 libc-bin amd64 2.31-13 [
 Get:87 http://deb.debian.org/debian bullseye/main amd64 ncurses-base all 6.2+20201114-2 [271 kB]
 Get:88 http://deb.debian.org/debian bullseye/main amd64 lsb-base all 11.1.0 [28.7 kB]
 Get:89 http://deb.debian.org/debian bullseye/main amd64 sysvinit-utils amd64 2.96-7 [25.3 kB]
-Fetched 34.9 MB in 7s (5330 kB/s)
+Fetched 34.9 MB in 22s (1560 kB/s)
 Download complete and in download only mode
 I: extracting archives...
 I: installing essential packages...
@@ -847,29 +1659,613 @@ update-alternatives: using /bin/more to provide /usr/bin/pager (pager) in auto m
 Setting up adduser (3.118) ...
 Setting up apt (2.2.4) ...
 Processing triggers for libc-bin (2.31-13) ...
-I: running --essential-hook in shell: sh -c 'mkdir $1/etc/plymouth; printf "[Daemon]\nTheme=bgrt\n" >$1/etc/plymouth/plymouthd.conf' exec /tmp/mmdebstrap.FYCw1ot1qj
+I: running --essential-hook in shell: sh -c 'mkdir $1/etc/plymouth; printf "[Daemon]\nTheme=bgrt\n" >$1/etc/plymouth/plymouthd.conf' exec /tmp/mmdebstrap.ymCYfN9iOL
 I: installing remaining packages inside the chroot...
 Reading package lists...
 Building dependency tree...
 The following additional packages will be installed:
-  cpio dmsetup fontconfig fontconfig-config fonts-cantarell fonts-dejavu-core initramfs-tools initramfs-tools-core klibc-utils kmod
-  libapparmor1 libargon2-1 libbrotli1 libbsd0 libcairo2 libcap2 libcryptsetup12 libdatrie1 libdevmapper1.02.1 libdrm-common libdrm2
-  libexpat1 libfontconfig1 libfreetype6 libfribidi0 libglib2.0-0 libgraphite2-3 libharfbuzz0b libip4tc2 libjson-c5 libklibc libkmod2 libmd0
-  libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0 libplymouth5 libpng16-16 libthai-data libthai0 libx11-6 libx11-data
-  libxau6 libxcb-render0 libxcb-shm0 libxcb1 libxdmcp6 libxext6 libxrender1 linux-base linux-image-5.10.0-8-cloud-amd64 logsave mount
-  plymouth plymouth-label sensible-utils systemd systemd-timesyncd ucf udev
+  cpio dmsetup fontconfig fontconfig-config fonts-cantarell fonts-dejavu-core
+  initramfs-tools initramfs-tools-core klibc-utils kmod libapparmor1
+  libargon2-1 libbrotli1 libbsd0 libcairo2 libcap2 libcryptsetup12 libdatrie1
+  libdevmapper1.02.1 libdrm-common libdrm2 libexpat1 libfontconfig1
+  libfreetype6 libfribidi0 libglib2.0-0 libgraphite2-3 libharfbuzz0b libip4tc2
+  libjson-c5 libklibc libkmod2 libmd0 libpango-1.0-0 libpangocairo-1.0-0
+  libpangoft2-1.0-0 libpixman-1-0 libplymouth5 libpng16-16 libthai-data
+  libthai0 libx11-6 libx11-data libxau6 libxcb-render0 libxcb-shm0 libxcb1
+  libxdmcp6 libxext6 libxrender1 linux-base linux-image-5.10.0-8-cloud-amd64
+  logsave mount plymouth plymouth-label sensible-utils systemd
+  systemd-timesyncd ucf udev
 Suggested packages:
-  libarchive1 bash-completion linux-doc-5.10 debian-kernel-handbook grub-pc | grub-efi-amd64 | extlinux nfs-common desktop-base
-  systemd-container policykit-1
+  libarchive1 bash-completion linux-doc-5.10 debian-kernel-handbook grub-pc
+  | grub-efi-amd64 | extlinux nfs-common desktop-base systemd-container
+  policykit-1
 Recommended packages:
-  busybox | busybox-static pigz libglib2.0-data shared-mime-info xdg-user-dirs firmware-linux-free apparmor dbus
+  busybox | busybox-static pigz libglib2.0-data shared-mime-info xdg-user-dirs
+  firmware-linux-free apparmor dbus
+** Pass A
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit systemd:amd64 from DoRun
+ Visit libapparmor1:amd64 from Provides-1
+ Leave libapparmor1:amd64 1,0
+ Visit libcap2:amd64 from Provides-1
+ Leave libcap2:amd64 1,0
+ Visit libcryptsetup12:amd64 from Provides-1
+  Visit libargon2-1:amd64 from Provides-1
+  Leave libargon2-1:amd64 1,0
+  Visit libdevmapper1.02.1:amd64 from Provides-1
+   Visit dmsetup:amd64 from Provides-1
+   Leave dmsetup:amd64 1,0
+  Leave libdevmapper1.02.1:amd64 1,0
+  Visit libjson-c5:amd64 from Provides-1
+  Leave libjson-c5:amd64 1,0
+ Leave libcryptsetup12:amd64 1,0
+ Visit libip4tc2:amd64 from Provides-1
+ Leave libip4tc2:amd64 1,0
+ Visit libkmod2:amd64 from Provides-1
+ Leave libkmod2:amd64 1,0
+ Visit systemd-timesyncd:amd64 from Provides-1
+ Leave systemd-timesyncd:amd64 1,0
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+ Visit libfontconfig1:amd64 from Provides-1
+  Visit libexpat1:amd64 from Provides-1
+  Leave libexpat1:amd64 1,0
+  Visit libfreetype6:amd64 from Provides-1
+   Visit libbrotli1:amd64 from Provides-1
+   Leave libbrotli1:amd64 1,0
+   Visit libpng16-16:amd64 from Provides-1
+   Leave libpng16-16:amd64 1,0
+  Leave libfreetype6:amd64 1,0
+  Visit fontconfig-config:amd64 from Provides-1
+   Visit fonts-dejavu-core:amd64 from Provides-1
+   Leave fonts-dejavu-core:amd64 1,0
+  Leave fontconfig-config:amd64 1,0
+ Leave libfontconfig1:amd64 1,0
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+ Visit initramfs-tools-core:amd64 from Provides-1
+  Visit klibc-utils:amd64 from Provides-1
+   Visit libklibc:amd64 from Provides-1
+   Leave libklibc:amd64 1,0
+  Leave klibc-utils:amd64 1,0
+  Visit logsave:amd64 from Provides-1
+  Leave logsave:amd64 1,0
+ Leave initramfs-tools-core:amd64 1,0
+ Visit linux-base:amd64 from Provides-1
+ Leave linux-base:amd64 1,0
+Leave initramfs-tools:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+ Visit libmd0:amd64 from Provides-1
+ Leave libmd0:amd64 1,0
+Leave libbsd0:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+ Visit libpixman-1-0:amd64 from Provides-1
+ Leave libpixman-1-0:amd64 1,0
+ Visit libx11-6:amd64 from Provides-1
+  Visit libxcb1:amd64 from Provides-1
+   Visit libxau6:amd64 from Provides-1
+   Leave libxau6:amd64 1,0
+   Visit libxdmcp6:amd64 from Provides-1
+   Leave libxdmcp6:amd64 1,0
+  Leave libxcb1:amd64 1,0
+  Visit libx11-data:amd64 from Provides-1
+  Leave libx11-data:amd64 1,0
+ Leave libx11-6:amd64 1,0
+ Visit libxcb-render0:amd64 from Provides-1
+ Leave libxcb-render0:amd64 1,0
+ Visit libxcb-shm0:amd64 from Provides-1
+ Leave libxcb-shm0:amd64 1,0
+ Visit libxext6:amd64 from Provides-1
+ Leave libxext6:amd64 1,0
+ Visit libxrender1:amd64 from Provides-1
+ Leave libxrender1:amd64 1,0
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+ Visit libthai0:amd64 from Provides-1
+  Visit libthai-data:amd64 from Provides-1
+  Leave libthai-data:amd64 1,0
+ Leave libthai0:amd64 1,0
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+ Visit libpangoft2-1.0-0:amd64 from Provides-1
+ Leave libpangoft2-1.0-0:amd64 1,0
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Pass B
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+Leave dmsetup:amd64 1,0
+Visit libdevmapper1.02.1:amd64 from DoRun
+Leave libdevmapper1.02.1:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+Leave systemd-timesyncd:amd64 1,0
+Visit systemd:amd64 from DoRun
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Pass C
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+Leave dmsetup:amd64 1,0
+Visit libdevmapper1.02.1:amd64 from DoRun
+Leave libdevmapper1.02.1:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+Leave systemd-timesyncd:amd64 1,0
+Visit systemd:amd64 from DoRun
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Pass D
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+Leave dmsetup:amd64 1,0
+Visit libdevmapper1.02.1:amd64 from DoRun
+Leave libdevmapper1.02.1:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+Leave systemd-timesyncd:amd64 1,0
+Visit systemd:amd64 from DoRun
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Unpack ordering done
+  mount:amd64 0,0
+  libapparmor1:amd64 0,0
+  libcap2:amd64 0,0
+  libargon2-1:amd64 0,0
+  dmsetup:amd64 0,0
+  libdevmapper1.02.1:amd64 0,0
+  libjson-c5:amd64 0,0
+  libcryptsetup12:amd64 0,0
+  libip4tc2:amd64 0,0
+  libkmod2:amd64 0,0
+  systemd-timesyncd:amd64 0,0
+  systemd:amd64 0,0
+  cpio:amd64 0,0
+  kmod:amd64 0,0
+  sensible-utils:amd64 0,0
+  udev:amd64 0,0
+  ucf:amd64 0,0
+  libexpat1:amd64 0,0
+  libbrotli1:amd64 0,0
+  libpng16-16:amd64 0,0
+  libfreetype6:amd64 0,0
+  fonts-dejavu-core:amd64 0,0
+  fontconfig-config:amd64 0,0
+  libfontconfig1:amd64 0,0
+  fontconfig:amd64 0,0
+  fonts-cantarell:amd64 0,0
+  libklibc:amd64 0,0
+  klibc-utils:amd64 0,0
+  logsave:amd64 0,0
+  initramfs-tools-core:amd64 0,0
+  linux-base:amd64 0,0
+  initramfs-tools:amd64 0,0
+  libmd0:amd64 0,0
+  libbsd0:amd64 0,0
+  libpixman-1-0:amd64 0,0
+  libxau6:amd64 0,0
+  libxdmcp6:amd64 0,0
+  libxcb1:amd64 0,0
+  libx11-data:amd64 0,0
+  libx11-6:amd64 0,0
+  libxcb-render0:amd64 0,0
+  libxcb-shm0:amd64 0,0
+  libxext6:amd64 0,0
+  libxrender1:amd64 0,0
+  libcairo2:amd64 0,0
+  libdatrie1:amd64 0,0
+  libdrm-common:amd64 0,0
+  libdrm2:amd64 0,0
+  libfribidi0:amd64 0,0
+  libglib2.0-0:amd64 0,0
+  libgraphite2-3:amd64 0,0
+  libharfbuzz0b:amd64 0,0
+  libthai-data:amd64 0,0
+  libthai0:amd64 0,0
+  libpango-1.0-0:amd64 0,0
+  libpangoft2-1.0-0:amd64 0,0
+  libpangocairo-1.0-0:amd64 0,0
+  libplymouth5:amd64 0,0
+  linux-image-5.10.0-8-cloud-amd64:amd64 0,0
+  linux-image-cloud-amd64:amd64 0,0
+  plymouth:amd64 0,0
+  plymouth-label:amd64 0,0
+  plymouth-themes:amd64 0,0
 The following NEW packages will be installed:
-  cpio dmsetup fontconfig fontconfig-config fonts-cantarell fonts-dejavu-core initramfs-tools initramfs-tools-core klibc-utils kmod
-  libapparmor1 libargon2-1 libbrotli1 libbsd0 libcairo2 libcap2 libcryptsetup12 libdatrie1 libdevmapper1.02.1 libdrm-common libdrm2
-  libexpat1 libfontconfig1 libfreetype6 libfribidi0 libglib2.0-0 libgraphite2-3 libharfbuzz0b libip4tc2 libjson-c5 libklibc libkmod2 libmd0
-  libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0 libplymouth5 libpng16-16 libthai-data libthai0 libx11-6 libx11-data
-  libxau6 libxcb-render0 libxcb-shm0 libxcb1 libxdmcp6 libxext6 libxrender1 linux-base linux-image-5.10.0-8-cloud-amd64
-  linux-image-cloud-amd64 logsave mount plymouth plymouth-label plymouth-themes sensible-utils systemd systemd-timesyncd ucf udev
+  cpio dmsetup fontconfig fontconfig-config fonts-cantarell fonts-dejavu-core
+  initramfs-tools initramfs-tools-core klibc-utils kmod libapparmor1
+  libargon2-1 libbrotli1 libbsd0 libcairo2 libcap2 libcryptsetup12 libdatrie1
+  libdevmapper1.02.1 libdrm-common libdrm2 libexpat1 libfontconfig1
+  libfreetype6 libfribidi0 libglib2.0-0 libgraphite2-3 libharfbuzz0b libip4tc2
+  libjson-c5 libklibc libkmod2 libmd0 libpango-1.0-0 libpangocairo-1.0-0
+  libpangoft2-1.0-0 libpixman-1-0 libplymouth5 libpng16-16 libthai-data
+  libthai0 libx11-6 libx11-data libxau6 libxcb-render0 libxcb-shm0 libxcb1
+  libxdmcp6 libxext6 libxrender1 linux-base linux-image-5.10.0-8-cloud-amd64
+  linux-image-cloud-amd64 logsave mount plymouth plymouth-label
+  plymouth-themes sensible-utils systemd systemd-timesyncd ucf udev
 0 upgraded, 63 newly installed, 0 to remove and 0 not upgraded.
 Need to get 38.8 MB of archives.
 After this operation, 137 MB of additional disk space will be used.
@@ -881,16 +2277,16 @@ Get:5 http://deb.debian.org/debian bullseye/main amd64 dmsetup amd64 2:1.02.175-
 Get:6 http://deb.debian.org/debian bullseye/main amd64 libdevmapper1.02.1 amd64 2:1.02.175-2.1 [143 kB]
 Get:7 http://deb.debian.org/debian bullseye/main amd64 libjson-c5 amd64 0.15-2 [42.8 kB]
 Get:8 http://deb.debian.org/debian bullseye/main amd64 libcryptsetup12 amd64 2:2.3.5-1 [244 kB]
-Get:9 http://deb.debian.org/debian bullseye/main amd64 libip4tc2 amd64 1.8.7-1 [34.6 kB]
-Get:10 http://deb.debian.org/debian bullseye/main amd64 libkmod2 amd64 28-1 [55.6 kB]
-Get:11 http://security.debian.org/debian-security bullseye-security/main amd64 linux-image-5.10.0-8-cloud-amd64 amd64 5.10.46-5 [19.9 MB]
+Get:9 http://security.debian.org/debian-security bullseye-security/main amd64 linux-image-5.10.0-8-cloud-amd64 amd64 5.10.46-5 [19.9 MB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 libip4tc2 amd64 1.8.7-1 [34.6 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 libkmod2 amd64 28-1 [55.6 kB]
 Get:12 http://deb.debian.org/debian bullseye/main amd64 systemd-timesyncd amd64 247.3-6 [131 kB]
 Get:13 http://deb.debian.org/debian bullseye/main amd64 systemd amd64 247.3-6 [4495 kB]
-Get:14 http://security.debian.org/debian-security bullseye-security/main amd64 linux-image-cloud-amd64 amd64 5.10.46-5 [1500 B]
-Get:15 http://deb.debian.org/debian bullseye/main amd64 cpio amd64 2.13+dfsg-4 [244 kB]
-Get:16 http://deb.debian.org/debian bullseye/main amd64 kmod amd64 28-1 [92.8 kB]
-Get:17 http://deb.debian.org/debian bullseye/main amd64 sensible-utils all 0.0.14 [14.8 kB]
-Get:18 http://deb.debian.org/debian bullseye/main amd64 udev amd64 247.3-6 [1464 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 cpio amd64 2.13+dfsg-4 [244 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 kmod amd64 28-1 [92.8 kB]
+Get:16 http://deb.debian.org/debian bullseye/main amd64 sensible-utils all 0.0.14 [14.8 kB]
+Get:17 http://deb.debian.org/debian bullseye/main amd64 udev amd64 247.3-6 [1464 kB]
+Get:18 http://security.debian.org/debian-security bullseye-security/main amd64 linux-image-cloud-amd64 amd64 5.10.46-5 [1500 B]
 Get:19 http://deb.debian.org/debian bullseye/main amd64 ucf all 3.0043 [74.0 kB]
 Get:20 http://deb.debian.org/debian bullseye/main amd64 libexpat1 amd64 2.2.10-2 [96.9 kB]
 Get:21 http://deb.debian.org/debian bullseye/main amd64 libbrotli1 amd64 1.0.9-2+b2 [279 kB]
@@ -936,8 +2332,706 @@ Get:60 http://deb.debian.org/debian bullseye/main amd64 libplymouth5 amd64 0.9.5
 Get:61 http://deb.debian.org/debian bullseye/main amd64 plymouth amd64 0.9.5-3 [138 kB]
 Get:62 http://deb.debian.org/debian bullseye/main amd64 plymouth-label amd64 0.9.5-3 [18.2 kB]
 Get:63 http://deb.debian.org/debian bullseye/main amd64 plymouth-themes amd64 0.9.5-3 [772 kB]
+** Pass A
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit systemd:amd64 from DoRun
+ Visit libapparmor1:amd64 from Provides-1
+ Leave libapparmor1:amd64 1,0
+ Visit libcap2:amd64 from Provides-1
+ Leave libcap2:amd64 1,0
+ Visit libcryptsetup12:amd64 from Provides-1
+  Visit libargon2-1:amd64 from Provides-1
+  Leave libargon2-1:amd64 1,0
+  Visit libdevmapper1.02.1:amd64 from Provides-1
+   Visit dmsetup:amd64 from Provides-1
+   Leave dmsetup:amd64 1,0
+  Leave libdevmapper1.02.1:amd64 1,0
+  Visit libjson-c5:amd64 from Provides-1
+  Leave libjson-c5:amd64 1,0
+ Leave libcryptsetup12:amd64 1,0
+ Visit libip4tc2:amd64 from Provides-1
+ Leave libip4tc2:amd64 1,0
+ Visit libkmod2:amd64 from Provides-1
+ Leave libkmod2:amd64 1,0
+ Visit systemd-timesyncd:amd64 from Provides-1
+ Leave systemd-timesyncd:amd64 1,0
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+ Visit libfontconfig1:amd64 from Provides-1
+  Visit libexpat1:amd64 from Provides-1
+  Leave libexpat1:amd64 1,0
+  Visit libfreetype6:amd64 from Provides-1
+   Visit libbrotli1:amd64 from Provides-1
+   Leave libbrotli1:amd64 1,0
+   Visit libpng16-16:amd64 from Provides-1
+   Leave libpng16-16:amd64 1,0
+  Leave libfreetype6:amd64 1,0
+  Visit fontconfig-config:amd64 from Provides-1
+   Visit fonts-dejavu-core:amd64 from Provides-1
+   Leave fonts-dejavu-core:amd64 1,0
+  Leave fontconfig-config:amd64 1,0
+ Leave libfontconfig1:amd64 1,0
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+ Visit initramfs-tools-core:amd64 from Provides-1
+  Visit klibc-utils:amd64 from Provides-1
+   Visit libklibc:amd64 from Provides-1
+   Leave libklibc:amd64 1,0
+  Leave klibc-utils:amd64 1,0
+  Visit logsave:amd64 from Provides-1
+  Leave logsave:amd64 1,0
+ Leave initramfs-tools-core:amd64 1,0
+ Visit linux-base:amd64 from Provides-1
+ Leave linux-base:amd64 1,0
+Leave initramfs-tools:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+ Visit libmd0:amd64 from Provides-1
+ Leave libmd0:amd64 1,0
+Leave libbsd0:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+ Visit libpixman-1-0:amd64 from Provides-1
+ Leave libpixman-1-0:amd64 1,0
+ Visit libx11-6:amd64 from Provides-1
+  Visit libxcb1:amd64 from Provides-1
+   Visit libxau6:amd64 from Provides-1
+   Leave libxau6:amd64 1,0
+   Visit libxdmcp6:amd64 from Provides-1
+   Leave libxdmcp6:amd64 1,0
+  Leave libxcb1:amd64 1,0
+  Visit libx11-data:amd64 from Provides-1
+  Leave libx11-data:amd64 1,0
+ Leave libx11-6:amd64 1,0
+ Visit libxcb-render0:amd64 from Provides-1
+ Leave libxcb-render0:amd64 1,0
+ Visit libxcb-shm0:amd64 from Provides-1
+ Leave libxcb-shm0:amd64 1,0
+ Visit libxext6:amd64 from Provides-1
+ Leave libxext6:amd64 1,0
+ Visit libxrender1:amd64 from Provides-1
+ Leave libxrender1:amd64 1,0
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+ Visit libthai0:amd64 from Provides-1
+  Visit libthai-data:amd64 from Provides-1
+  Leave libthai-data:amd64 1,0
+ Leave libthai0:amd64 1,0
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+ Visit libpangoft2-1.0-0:amd64 from Provides-1
+ Leave libpangoft2-1.0-0:amd64 1,0
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Pass B
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+Leave dmsetup:amd64 1,0
+Visit libdevmapper1.02.1:amd64 from DoRun
+Leave libdevmapper1.02.1:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+Leave systemd-timesyncd:amd64 1,0
+Visit systemd:amd64 from DoRun
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Pass C
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+Leave dmsetup:amd64 1,0
+Visit libdevmapper1.02.1:amd64 from DoRun
+Leave libdevmapper1.02.1:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+Leave systemd-timesyncd:amd64 1,0
+Visit systemd:amd64 from DoRun
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Pass D
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+Leave dmsetup:amd64 1,0
+Visit libdevmapper1.02.1:amd64 from DoRun
+Leave libdevmapper1.02.1:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+Leave systemd-timesyncd:amd64 1,0
+Visit systemd:amd64 from DoRun
+Leave systemd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
+** Unpack ordering done
+  mount:amd64 0,0
+  libapparmor1:amd64 0,0
+  libcap2:amd64 0,0
+  libargon2-1:amd64 0,0
+  dmsetup:amd64 0,0
+  libdevmapper1.02.1:amd64 0,0
+  libjson-c5:amd64 0,0
+  libcryptsetup12:amd64 0,0
+  libip4tc2:amd64 0,0
+  libkmod2:amd64 0,0
+  systemd-timesyncd:amd64 0,0
+  systemd:amd64 0,0
+  cpio:amd64 0,0
+  kmod:amd64 0,0
+  sensible-utils:amd64 0,0
+  udev:amd64 0,0
+  ucf:amd64 0,0
+  libexpat1:amd64 0,0
+  libbrotli1:amd64 0,0
+  libpng16-16:amd64 0,0
+  libfreetype6:amd64 0,0
+  fonts-dejavu-core:amd64 0,0
+  fontconfig-config:amd64 0,0
+  libfontconfig1:amd64 0,0
+  fontconfig:amd64 0,0
+  fonts-cantarell:amd64 0,0
+  libklibc:amd64 0,0
+  klibc-utils:amd64 0,0
+  logsave:amd64 0,0
+  initramfs-tools-core:amd64 0,0
+  linux-base:amd64 0,0
+  initramfs-tools:amd64 0,0
+  libmd0:amd64 0,0
+  libbsd0:amd64 0,0
+  libpixman-1-0:amd64 0,0
+  libxau6:amd64 0,0
+  libxdmcp6:amd64 0,0
+  libxcb1:amd64 0,0
+  libx11-data:amd64 0,0
+  libx11-6:amd64 0,0
+  libxcb-render0:amd64 0,0
+  libxcb-shm0:amd64 0,0
+  libxext6:amd64 0,0
+  libxrender1:amd64 0,0
+  libcairo2:amd64 0,0
+  libdatrie1:amd64 0,0
+  libdrm-common:amd64 0,0
+  libdrm2:amd64 0,0
+  libfribidi0:amd64 0,0
+  libglib2.0-0:amd64 0,0
+  libgraphite2-3:amd64 0,0
+  libharfbuzz0b:amd64 0,0
+  libthai-data:amd64 0,0
+  libthai0:amd64 0,0
+  libpango-1.0-0:amd64 0,0
+  libpangoft2-1.0-0:amd64 0,0
+  libpangocairo-1.0-0:amd64 0,0
+  libplymouth5:amd64 0,0
+  linux-image-5.10.0-8-cloud-amd64:amd64 0,0
+  linux-image-cloud-amd64:amd64 0,0
+  plymouth:amd64 0,0
+  plymouth-label:amd64 0,0
+  plymouth-themes:amd64 0,0
+Visit mount:amd64 from DoRun
+Leave mount:amd64 1,0
+Visit libapparmor1:amd64 from DoRun
+Leave libapparmor1:amd64 1,0
+Visit libcap2:amd64 from DoRun
+Leave libcap2:amd64 1,0
+Visit libargon2-1:amd64 from DoRun
+Leave libargon2-1:amd64 1,0
+Visit dmsetup:amd64 from DoRun
+ Visit libdevmapper1.02.1:amd64 from Provides-1
+ Leave libdevmapper1.02.1:amd64 1,0
+Leave dmsetup:amd64 1,0
+Visit libjson-c5:amd64 from DoRun
+Leave libjson-c5:amd64 1,0
+Visit libcryptsetup12:amd64 from DoRun
+Leave libcryptsetup12:amd64 1,0
+Visit libip4tc2:amd64 from DoRun
+Leave libip4tc2:amd64 1,0
+Visit libkmod2:amd64 from DoRun
+Leave libkmod2:amd64 1,0
+Visit systemd-timesyncd:amd64 from DoRun
+ Visit systemd:amd64 from Provides-1
+ Leave systemd:amd64 1,0
+Leave systemd-timesyncd:amd64 1,0
+Visit cpio:amd64 from DoRun
+Leave cpio:amd64 1,0
+Visit kmod:amd64 from DoRun
+Leave kmod:amd64 1,0
+Visit sensible-utils:amd64 from DoRun
+Leave sensible-utils:amd64 1,0
+Visit udev:amd64 from DoRun
+Leave udev:amd64 1,0
+Visit ucf:amd64 from DoRun
+Leave ucf:amd64 1,0
+Visit libexpat1:amd64 from DoRun
+Leave libexpat1:amd64 1,0
+Visit libbrotli1:amd64 from DoRun
+Leave libbrotli1:amd64 1,0
+Visit libpng16-16:amd64 from DoRun
+Leave libpng16-16:amd64 1,0
+Visit libfreetype6:amd64 from DoRun
+Leave libfreetype6:amd64 1,0
+Visit fonts-dejavu-core:amd64 from DoRun
+Leave fonts-dejavu-core:amd64 1,0
+Visit fontconfig-config:amd64 from DoRun
+Leave fontconfig-config:amd64 1,0
+Visit libfontconfig1:amd64 from DoRun
+Leave libfontconfig1:amd64 1,0
+Visit fontconfig:amd64 from DoRun
+Leave fontconfig:amd64 1,0
+Visit fonts-cantarell:amd64 from DoRun
+Leave fonts-cantarell:amd64 1,0
+Visit libklibc:amd64 from DoRun
+Leave libklibc:amd64 1,0
+Visit klibc-utils:amd64 from DoRun
+Leave klibc-utils:amd64 1,0
+Visit logsave:amd64 from DoRun
+Leave logsave:amd64 1,0
+Visit initramfs-tools-core:amd64 from DoRun
+Leave initramfs-tools-core:amd64 1,0
+Visit linux-base:amd64 from DoRun
+Leave linux-base:amd64 1,0
+Visit initramfs-tools:amd64 from DoRun
+Leave initramfs-tools:amd64 1,0
+Visit libmd0:amd64 from DoRun
+Leave libmd0:amd64 1,0
+Visit libbsd0:amd64 from DoRun
+Leave libbsd0:amd64 1,0
+Visit libpixman-1-0:amd64 from DoRun
+Leave libpixman-1-0:amd64 1,0
+Visit libxau6:amd64 from DoRun
+Leave libxau6:amd64 1,0
+Visit libxdmcp6:amd64 from DoRun
+Leave libxdmcp6:amd64 1,0
+Visit libxcb1:amd64 from DoRun
+Leave libxcb1:amd64 1,0
+Visit libx11-data:amd64 from DoRun
+Leave libx11-data:amd64 1,0
+Visit libx11-6:amd64 from DoRun
+Leave libx11-6:amd64 1,0
+Visit libxcb-render0:amd64 from DoRun
+Leave libxcb-render0:amd64 1,0
+Visit libxcb-shm0:amd64 from DoRun
+Leave libxcb-shm0:amd64 1,0
+Visit libxext6:amd64 from DoRun
+Leave libxext6:amd64 1,0
+Visit libxrender1:amd64 from DoRun
+Leave libxrender1:amd64 1,0
+Visit libcairo2:amd64 from DoRun
+Leave libcairo2:amd64 1,0
+Visit libdatrie1:amd64 from DoRun
+Leave libdatrie1:amd64 1,0
+Visit libdrm-common:amd64 from DoRun
+Leave libdrm-common:amd64 1,0
+Visit libdrm2:amd64 from DoRun
+Leave libdrm2:amd64 1,0
+Visit libfribidi0:amd64 from DoRun
+Leave libfribidi0:amd64 1,0
+Visit libglib2.0-0:amd64 from DoRun
+Leave libglib2.0-0:amd64 1,0
+Visit libgraphite2-3:amd64 from DoRun
+Leave libgraphite2-3:amd64 1,0
+Visit libharfbuzz0b:amd64 from DoRun
+Leave libharfbuzz0b:amd64 1,0
+Visit libthai-data:amd64 from DoRun
+Leave libthai-data:amd64 1,0
+Visit libthai0:amd64 from DoRun
+Leave libthai0:amd64 1,0
+Visit libpango-1.0-0:amd64 from DoRun
+Leave libpango-1.0-0:amd64 1,0
+Visit libpangoft2-1.0-0:amd64 from DoRun
+Leave libpangoft2-1.0-0:amd64 1,0
+Visit libpangocairo-1.0-0:amd64 from DoRun
+Leave libpangocairo-1.0-0:amd64 1,0
+Visit libplymouth5:amd64 from DoRun
+Leave libplymouth5:amd64 1,0
+Visit linux-image-5.10.0-8-cloud-amd64:amd64 from DoRun
+Leave linux-image-5.10.0-8-cloud-amd64:amd64 1,0
+Visit linux-image-cloud-amd64:amd64 from DoRun
+Leave linux-image-cloud-amd64:amd64 1,0
+Visit plymouth:amd64 from DoRun
+Leave plymouth:amd64 1,0
+Visit plymouth-label:amd64 from DoRun
+Leave plymouth-label:amd64 1,0
+Visit plymouth-themes:amd64 from DoRun
+Leave plymouth-themes:amd64 1,0
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 38.8 MB in 6s (6254 kB/s)
+Fetched 38.8 MB in 11s (3671 kB/s)
 Selecting previously unselected package mount.
 (Reading database ... 4668 files and directories currently installed.)
 Preparing to unpack .../00-mount_2.36.1-8_amd64.deb ...
@@ -1225,5 +3319,5 @@ I: cleaning package lists and apt cache...
 Reading package lists...
 I: creating tarball...
 I: done
-I: removing tempdir /tmp/mmdebstrap.FYCw1ot1qj...
-I: success in 38.2547 seconds
+I: removing tempdir /tmp/mmdebstrap.ymCYfN9iOL...
+I: success in 76.1812 seconds
