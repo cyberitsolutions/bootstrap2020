@@ -64,7 +64,8 @@ group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, meta
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
-                    choices=('main', 'desktop'))
+                    choices=('main',
+                             'desktop'))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                    help='build slower to get a smaller image? (default=size)')
@@ -129,6 +130,8 @@ have_smbd = pathlib.Path('/usr/sbin/smbd').exists()
 if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
+
+template_wants_GUI = args.template.startswith('desktop')
 
 # First block: things we actually want.
 # Second block: install fails unless we bump these.
@@ -282,7 +285,7 @@ with tempfile.TemporaryDirectory() as td:
             '    plymouth-themes',
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
-           if args.template.startswith('desktop') else []),
+           if template_wants_GUI else []),
          *([f'--include={args.ssh_server}',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /',
             # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
@@ -320,7 +323,7 @@ if args.reproducible:
 if args.boot_test:
     common_boot_args = ' '.join([
         ('quiet splash'
-         if args.template.startswith('desktop') else
+         if template_wants_GUI else
          'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
         (f'break={args.maybe_break}'
          if args.maybe_break else '')])
@@ -349,12 +352,12 @@ if args.boot_test:
         '--enable-kvm',
         '--machine', 'q35',
         '--cpu', 'host',
-        '-m', '2G' if args.template.startswith('desktop') else '512M',
+        '-m', '2G' if template_wants_GUI else '512M',
         '--smp', '2',
         '--device', 'virtio-mouse',
         '--device', 'virtio-keyboard',
         *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
-          if args.template.startswith('desktop') else
+          if template_wants_GUI else
           ['--nographic', '--vga', 'none']),
         '--net', 'nic,model=virtio',
         '--net', (f'user,hostname={args.template}.{domain}'
