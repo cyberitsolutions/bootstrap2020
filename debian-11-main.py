@@ -242,6 +242,7 @@ with tempfile.TemporaryDirectory() as td:
             '--include=rsyslog-relp msmtp-mta',
             '--include=python3',  # for get-config-from-dnssd (cifs-utils needs it anyway)
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
+            f'--hook-dir=debian-11-main.hooks',
             '--customize-hook=systemctl --root=$1 enable systemd-networkd bootstrap2020-get-config-from-dnssd']
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
