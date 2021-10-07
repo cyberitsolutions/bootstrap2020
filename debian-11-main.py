@@ -65,6 +65,7 @@ parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/var/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
                     choices=('main',
+                             'dban',
                              'desktop'))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
@@ -132,6 +133,7 @@ if args.boot_test and args.netboot_only and not have_smbd:
                     '  This is OK for small images; bad for big ones!')
 
 template_wants_GUI = args.template.startswith('desktop')
+template_wants_disks = args.template in {'dban'}
 
 # First block: things we actually want.
 # Second block: install fails unless we bump these.
@@ -278,6 +280,15 @@ with tempfile.TemporaryDirectory() as td:
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
            if args.netboot_only else []),
+         *(['--include=nwipe']
+           if args.template == 'dban' else []),
+         *(['--include=smartmontools',
+            '--include=bsd-mailx',  # smartd calls mail(1), not sendmail(8)
+            '--include=curl ca-certificates gnupg',  # update-smart-drivedb
+            '--customize-hook=systemctl --root=$1 enable'
+            ' bootstrap2020-update-smart-drivedb.service'
+            ' bootstrap2020-update-smart-drivedb.timer']
+           if template_wants_disks and not args.virtual_only else []),
          *(['--include='
             '    task-xfce-desktop'  # Desktop stuff, rough cut.
             '    chromium chromium-sandbox chromium-l10n'
@@ -328,6 +339,16 @@ if args.boot_test:
         (f'break={args.maybe_break}'
          if args.maybe_break else '')])
 
+    if template_wants_disks:
+        dummy_path = destdir / 'dummy.img'
+        size0, size1, size2 = 1, 64, 128  # in MiB
+        subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
+        subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
+                               'mklabel gpt',
+                               f'mkpart ESP  {size0}MiB     {size0+size1}MiB', 'set 1 esp on',
+                               f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB',])
+        subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
+        subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
     if args.netboot_only:
         subprocess.check_call(['cp', '-t', destdir, '--',
                                '/usr/lib/PXELINUX/pxelinux.0',
@@ -371,12 +392,17 @@ if args.boot_test:
                'boot=live plainroot root=/dev/vda',
                common_boot_args]),
            '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
-          if not args.netboot_only else [])])
+          if not args.netboot_only else []),
+        *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
+           '--boot', 'order=n']  # don't try to boot off the dummy disk
+          if template_wants_disks else [])])
     if args.netboot_only:
         (destdir / 'pxelinux.0').unlink()
         (destdir / 'ldlinux.c32').unlink()
         (destdir / 'pxelinux.cfg/default').unlink()
         (destdir / 'pxelinux.cfg').rmdir()
+    if template_wants_disks:
+        dummy_path.unlink()
 
 for host in args.upload_to:
     subprocess.call(
