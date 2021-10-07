@@ -66,7 +66,13 @@ parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
 parser.add_argument('--template', default='main',
                     choices=('main',
                              'dban',
-                             'desktop'))
+                             'zfs',
+                             'desktop'),
+                    help=(
+                        'main: small CLI image;'
+                        'dban: erase recycled HDDs;'
+                        'zfs: install/rescue Debian root-on-ZFS;'
+                        'desktop: tweaked XFCE.'))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                    help='build slower to get a smaller image? (default=size)')
@@ -133,7 +139,7 @@ if args.boot_test and args.netboot_only and not have_smbd:
                     '  This is OK for small images; bad for big ones!')
 
 template_wants_GUI = args.template.startswith('desktop')
-template_wants_disks = args.template in {'dban'}
+template_wants_disks = args.template in {'dban', 'zfs'}
 
 # First block: things we actually want.
 # Second block: install fails unless we bump these.
@@ -282,6 +288,12 @@ with tempfile.TemporaryDirectory() as td:
            if args.netboot_only else []),
          *(['--include=nwipe']
            if args.template == 'dban' else []),
+         *(['--include=zfs-dkms zfsutils-linux zfs-zed',
+            '--include=mmdebstrap auto-apt-proxy',  # for installing
+            '--include=linux-headers-cloud-amd64'
+            if args.virtual_only else
+            '--include=linux-headers-generic']
+           if args.template == 'zfs' else []),
          *(['--include=smartmontools',
             '--include=bsd-mailx',  # smartd calls mail(1), not sendmail(8)
             '--include=curl ca-certificates gnupg',  # update-smart-drivedb
