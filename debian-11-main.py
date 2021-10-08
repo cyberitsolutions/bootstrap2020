@@ -140,6 +140,7 @@ if args.boot_test and args.netboot_only and not have_smbd:
 
 template_wants_GUI = args.template.startswith('desktop')
 template_wants_disks = args.template in {'dban', 'zfs'}
+template_wants_big_uptimes = args.template in {}
 
 # First block: things we actually want.
 # Second block: install fails unless we bump these.
@@ -294,6 +295,14 @@ with tempfile.TemporaryDirectory() as td:
             if args.virtual_only else
             '--include=linux-headers-generic']
            if args.template == 'zfs' else []),
+         # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
+         # apply what security updates we can into transient tmpfs COW.
+         # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
+         # This CANNOT persist updates across reboots (they re-download each boot).
+         # NOTE: booting with "persistence" and live-tools can solve those.
+         *(['--include=unattended-upgrades needrestart'
+            '    python3-gi powermgmt-base']  # unattended-upgrades wants these
+           if template_wants_big_uptimes else []),
          *(['--include=smartmontools',
             '--include=bsd-mailx',  # smartd calls mail(1), not sendmail(8)
             '--include=curl ca-certificates gnupg',  # update-smart-drivedb
@@ -327,7 +336,7 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
-           if args.optimize != 'simplicity' else []),
+           if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
          'bullseye',
