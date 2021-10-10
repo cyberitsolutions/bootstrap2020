@@ -353,77 +353,77 @@ if args.reproducible:
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 if args.boot_test:
-  with tempfile.TemporaryDirectory(dir=destdir) as testdir:
-    testdir = pathlib.Path(testdir)
-    validate_unescaped_path_is_safe(testdir)
-    subprocess.check_call(['ln', '-vt', testdir, '--',
-                           destdir / 'vmlinuz',
-                           destdir / 'initrd.img',
-                           destdir / 'filesystem.squashfs'])
-    common_boot_args = ' '.join([
-        ('quiet splash'
-         if template_wants_GUI else
-         'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
-        (f'break={args.maybe_break}'
-         if args.maybe_break else '')])
+    with tempfile.TemporaryDirectory(dir=destdir) as testdir:
+        testdir = pathlib.Path(testdir)
+        validate_unescaped_path_is_safe(testdir)
+        subprocess.check_call(['ln', '-vt', testdir, '--',
+                               destdir / 'vmlinuz',
+                               destdir / 'initrd.img',
+                               destdir / 'filesystem.squashfs'])
+        common_boot_args = ' '.join([
+            ('quiet splash'
+             if template_wants_GUI else
+             'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
+            (f'break={args.maybe_break}'
+             if args.maybe_break else '')])
 
-    if template_wants_disks:
-        dummy_path = testdir / 'dummy.img'
-        size0, size1, size2 = 1, 64, 128  # in MiB
-        subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
-        subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
-                               'mklabel gpt',
-                               f'mkpart ESP  {size0}MiB     {size0+size1}MiB', 'set 1 esp on',
-                               f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB',])
-        subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
-        subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
-    if args.netboot_only:
-        subprocess.check_call(['cp', '-t', testdir, '--',
-                               '/usr/lib/PXELINUX/pxelinux.0',
-                               '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
-        (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
-        (testdir / 'pxelinux.cfg/default').write_text(
-            'DEFAULT linux\n'
-            'LABEL linux\n'
-            '  IPAPPEND 2\n'
-            '  KERNEL vmlinuz\n'
-            '  INITRD initrd.img\n'
-            '  APPEND ' + ' '.join([
-                'boot=live',
-                ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
-                 if have_smbd else
-                 'fetch=tftp://10.0.2.2/filesystem.squashfs\n'),
-                common_boot_args]))
-    domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
-    subprocess.check_call([
-        # NOTE: doesn't need root privs
-        'qemu-system-x86_64',
-        '--enable-kvm',
-        '--machine', 'q35',
-        '--cpu', 'host',
-        '-m', '2G' if template_wants_GUI else '512M',
-        '--smp', '2',
-        '--device', 'virtio-mouse',
-        '--device', 'virtio-keyboard',
-        *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
-          if template_wants_GUI else
-          ['--nographic', '--vga', 'none']),
-        '--net', 'nic,model=virtio',
-        '--net', (f'user,hostname={args.template}.{domain}'
-                  f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
-                  (f',smb={testdir}' if have_smbd else '') +
-                  (f',bootfile=pxelinux.0,tftp={testdir}'
-                   if args.netboot_only else '')),
-        *(['--kernel', testdir / 'vmlinuz',
-           '--initrd', testdir / 'initrd.img',
-           '--append', ' '.join([
-               'boot=live plainroot root=/dev/vda',
-               common_boot_args]),
-           '--drive', f'file={testdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
-          if not args.netboot_only else []),
-        *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
-           '--boot', 'order=n']  # don't try to boot off the dummy disk
-          if template_wants_disks else [])])
+        if template_wants_disks:
+            dummy_path = testdir / 'dummy.img'
+            size0, size1, size2 = 1, 64, 128  # in MiB
+            subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
+            subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
+                                   'mklabel gpt',
+                                   f'mkpart ESP  {size0}MiB     {size0+size1}MiB', 'set 1 esp on',
+                                   f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB',])
+            subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
+            subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
+        if args.netboot_only:
+            subprocess.check_call(['cp', '-t', testdir, '--',
+                                   '/usr/lib/PXELINUX/pxelinux.0',
+                                   '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
+            (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
+            (testdir / 'pxelinux.cfg/default').write_text(
+                'DEFAULT linux\n'
+                'LABEL linux\n'
+                '  IPAPPEND 2\n'
+                '  KERNEL vmlinuz\n'
+                '  INITRD initrd.img\n'
+                '  APPEND ' + ' '.join([
+                    'boot=live',
+                    ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
+                     if have_smbd else
+                     'fetch=tftp://10.0.2.2/filesystem.squashfs\n'),
+                    common_boot_args]))
+        domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
+        subprocess.check_call([
+            # NOTE: doesn't need root privs
+            'qemu-system-x86_64',
+            '--enable-kvm',
+            '--machine', 'q35',
+            '--cpu', 'host',
+            '-m', '2G' if template_wants_GUI else '512M',
+            '--smp', '2',
+            '--device', 'virtio-mouse',
+            '--device', 'virtio-keyboard',
+            *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
+              if template_wants_GUI else
+              ['--nographic', '--vga', 'none']),
+            '--net', 'nic,model=virtio',
+            '--net', (f'user,hostname={args.template}.{domain}'
+                      f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
+                      (f',smb={testdir}' if have_smbd else '') +
+                      (f',bootfile=pxelinux.0,tftp={testdir}'
+                       if args.netboot_only else '')),
+            *(['--kernel', testdir / 'vmlinuz',
+               '--initrd', testdir / 'initrd.img',
+               '--append', ' '.join([
+                   'boot=live plainroot root=/dev/vda',
+                   common_boot_args]),
+               '--drive', f'file={testdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
+              if not args.netboot_only else []),
+            *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
+               '--boot', 'order=n']  # don't try to boot off the dummy disk
+              if template_wants_disks else [])])
 
 for host in args.upload_to:
     subprocess.call(
