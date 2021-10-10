@@ -377,6 +377,19 @@ if args.boot_test:
                                    f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB',])
             subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
             subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
+            if args.template == 'understudy':
+                # Used by live-boot(7) module=alice for USB/SMB/NFS (but not plainroot!)
+                common_boot_args += ' module=alice '  # try filesystem.{module}.squashfs &c
+                (testdir / 'filesystem.alice.module').write_text('filesystem.squashfs alice.dir')
+                (testdir / 'alice.dir/etc/ssh').mkdir(parents=True)
+                (testdir / 'alice.dir/etc/hostname').write_text('alice-understudy')
+                (testdir / 'alice.dir/etc/ssh/ssh_host_dsa_key').symlink_to(
+                    '/srv/backup/root/etc/ssh/understudy/ssh_host_dsa_key')
+                (testdir / 'alice.dir/etc/ssh/ssh_host_dsa_key.pub').symlink_to(
+                    '/srv/backup/root/etc/ssh/understudy/ssh_host_dsa_key.pub')
+                (testdir / 'alice.dir/etc/fstab').write_text(
+                    'LABEL=ESP  /srv/backup/boot/efi vfat noatime,X-mount.mkdir=0755 0 2\n'
+                    'LABEL=root /srv/backup/root     ext4 noatime,X-mount.mkdir=0755 0 1\n')
         if args.netboot_only:
             subprocess.check_call(['cp', '-t', testdir, '--',
                                    '/usr/lib/PXELINUX/pxelinux.0',
