@@ -390,6 +390,19 @@ if args.boot_test:
                 (testdir / 'alice.dir/etc/fstab').write_text(
                     'LABEL=ESP  /srv/backup/boot/efi vfat noatime,X-mount.mkdir=0755 0 2\n'
                     'LABEL=root /srv/backup/root     ext4 noatime,X-mount.mkdir=0755 0 1\n')
+                # Used by bootstrap2020-only personality=alice for fetch=tftp://.
+                if not have_smbd:
+                    common_boot_args += ' personality=alice '  # try filesystem.{module}.squashfs &c
+                    subprocess.run(
+                        ['cpio', '--create', '--format=newc', '--no-absolute-filenames',
+                         '--file', (testdir / 'alice.cpio'),
+                         '--directory', (testdir / 'alice.dir')],
+                        check=True,
+                        text=True,
+                        input='\n'.join([
+                            str(path.relative_to(testdir / 'alice.dir'))
+                            for path in (testdir / 'alice.dir').glob('**/*')]))
+
         if args.netboot_only:
             subprocess.check_call(['cp', '-t', testdir, '--',
                                    '/usr/lib/PXELINUX/pxelinux.0',
