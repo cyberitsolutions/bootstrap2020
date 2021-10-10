@@ -418,7 +418,7 @@ if args.boot_test:
                     'boot=live',
                     ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
                      if have_smbd else
-                     'fetch=tftp://10.0.2.2/filesystem.squashfs\n'),
+                     'fetch=tftp://10.0.2.2/filesystem.squashfs'),
                     common_boot_args]))
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         subprocess.check_call([
