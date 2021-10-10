@@ -67,11 +67,13 @@ parser.add_argument('--template', default='main',
                     choices=('main',
                              'dban',
                              'zfs',
+                             'understudy',
                              'desktop'),
                     help=(
                         'main: small CLI image;'
                         'dban: erase recycled HDDs;'
                         'zfs: install/rescue Debian root-on-ZFS;'
+                        'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4;'
                         'desktop: tweaked XFCE.'))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
@@ -139,8 +141,8 @@ if args.boot_test and args.netboot_only and not have_smbd:
                     '  This is OK for small images; bad for big ones!')
 
 template_wants_GUI = args.template.startswith('desktop')
-template_wants_disks = args.template in {'dban', 'zfs'}
-template_wants_big_uptimes = args.template in {}
+template_wants_disks = args.template in {'dban', 'zfs', 'understudy'}
+template_wants_big_uptimes = args.template in {'understudy'}
 
 # First block: things we actually want.
 # Second block: install fails unless we bump these.
@@ -295,6 +297,10 @@ with tempfile.TemporaryDirectory() as td:
             if args.virtual_only else
             '--include=linux-headers-generic']
            if args.template == 'zfs' else []),
+         *(['--include=mdadm lvm2 rsync'
+            '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
+            '    quota ']    # no slow quotacheck on failover
+          if args.template == 'understudy' else []),
          # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
          # apply what security updates we can into transient tmpfs COW.
          # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
