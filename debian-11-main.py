@@ -353,6 +353,13 @@ if args.reproducible:
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 if args.boot_test:
+  with tempfile.TemporaryDirectory(dir=destdir) as testdir:
+    testdir = pathlib.Path(testdir)
+    validate_unescaped_path_is_safe(testdir)
+    subprocess.check_call(['ln', '-vt', testdir, '--',
+                           destdir / 'vmlinuz',
+                           destdir / 'initrd.img',
+                           destdir / 'filesystem.squashfs'])
     common_boot_args = ' '.join([
         ('quiet splash'
          if template_wants_GUI else
@@ -361,7 +368,7 @@ if args.boot_test:
          if args.maybe_break else '')])
 
     if template_wants_disks:
-        dummy_path = destdir / 'dummy.img'
+        dummy_path = testdir / 'dummy.img'
         size0, size1, size2 = 1, 64, 128  # in MiB
         subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
         subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
@@ -371,11 +378,11 @@ if args.boot_test:
         subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
         subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
     if args.netboot_only:
-        subprocess.check_call(['cp', '-t', destdir, '--',
+        subprocess.check_call(['cp', '-t', testdir, '--',
                                '/usr/lib/PXELINUX/pxelinux.0',
                                '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
-        (destdir / 'pxelinux.cfg').mkdir(exist_ok=True)
-        (destdir / 'pxelinux.cfg/default').write_text(
+        (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
+        (testdir / 'pxelinux.cfg/default').write_text(
             'DEFAULT linux\n'
             'LABEL linux\n'
             '  IPAPPEND 2\n'
@@ -404,26 +411,19 @@ if args.boot_test:
         '--net', 'nic,model=virtio',
         '--net', (f'user,hostname={args.template}.{domain}'
                   f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
-                  (f',smb={destdir}' if have_smbd else '') +
-                  (f',bootfile=pxelinux.0,tftp={destdir}'
+                  (f',smb={testdir}' if have_smbd else '') +
+                  (f',bootfile=pxelinux.0,tftp={testdir}'
                    if args.netboot_only else '')),
-        *(['--kernel', destdir / 'vmlinuz',
-           '--initrd', destdir / 'initrd.img',
+        *(['--kernel', testdir / 'vmlinuz',
+           '--initrd', testdir / 'initrd.img',
            '--append', ' '.join([
                'boot=live plainroot root=/dev/vda',
                common_boot_args]),
-           '--drive', f'file={destdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
+           '--drive', f'file={testdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
           if not args.netboot_only else []),
         *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
            '--boot', 'order=n']  # don't try to boot off the dummy disk
           if template_wants_disks else [])])
-    if args.netboot_only:
-        (destdir / 'pxelinux.0').unlink()
-        (destdir / 'ldlinux.c32').unlink()
-        (destdir / 'pxelinux.cfg/default').unlink()
-        (destdir / 'pxelinux.cfg').rmdir()
-    if template_wants_disks:
-        dummy_path.unlink()
 
 for host in args.upload_to:
     subprocess.call(
