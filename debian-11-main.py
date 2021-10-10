@@ -446,6 +446,7 @@ if args.boot_test:
                       (f',smb={testdir}' if have_smbd else '') +
                       (f',bootfile=pxelinux.0,tftp={testdir}'
                        if args.netboot_only else '')),
+            '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
                '--initrd', testdir / 'initrd.img',
                '--append', ' '.join([
