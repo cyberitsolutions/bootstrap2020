@@ -68,12 +68,14 @@ parser.add_argument('--template', default='main',
                              'dban',
                              'zfs',
                              'understudy',
+                             'datasafe3',
                              'desktop'),
                     help=(
                         'main: small CLI image;'
                         'dban: erase recycled HDDs;'
                         'zfs: install/rescue Debian root-on-ZFS;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4;'
+                        'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4;'
                         'desktop: tweaked XFCE.'))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
@@ -141,8 +143,11 @@ if args.boot_test and args.netboot_only and not have_smbd:
                     '  This is OK for small images; bad for big ones!')
 
 template_wants_GUI = args.template.startswith('desktop')
-template_wants_disks = args.template in {'dban', 'zfs', 'understudy'}
-template_wants_big_uptimes = args.template in {'understudy'}
+template_wants_disks = args.template in {'dban', 'zfs', 'understudy', 'datasafe3'}
+template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
+
+if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
+    raise NotImplementedError('datasafe3 only supports OpenSSH')
 
 # First block: things we actually want.
 # Second block: install fails unless we bump these.
@@ -301,6 +306,24 @@ with tempfile.TemporaryDirectory() as td:
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
             '    quota ']    # no slow quotacheck on failover
           if args.template == 'understudy' else []),
+         *(['--include=mdadm rsnapshot'
+            '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
+            '    extlinux parted'  # debugging/rescue
+            '    python3 bsd-mailx logcheck-database'  # journalcheck dependencies
+            '    ca-certificates'  # for msmtp to verify gmail
+            ,
+            f'--essential-hook=tar-in {create_tarball("debian-11-datasafe3")} /',
+            # FIXME: symlink didn't work, so hard link for now.
+            '--customize-hook=cd $1/lib/systemd/system && cp -al ssh.service ssh-sftponly.service',
+            # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
+            '--customize-hook=cp -vat $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
+            '--customize-hook=systemctl --root=$1 enable '
+            '    ssh-sftponly'
+            '    rsnapshot.timer'
+            '    dyndns.timer'
+            '    journalcheck.timer'
+            '    storage-check.timer']
+          if args.template == 'datasafe3' else []),
          # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
          # apply what security updates we can into transient tmpfs COW.
          # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
@@ -347,7 +370,12 @@ with tempfile.TemporaryDirectory() as td:
            if args.reproducible else []),
          'bullseye',
          destdir / 'filesystem.squashfs',
-         'debian-11.sources'])
+         'debian-11.sources',
+         # https://github.com/rsnapshot/rsnapshot/issues/279
+         # https://tracker.debian.org/news/1238555/rsnapshot-removed-from-testing/
+         *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
+           if args.template == 'datasafe3' else []),
+         ])
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
