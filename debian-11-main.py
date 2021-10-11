@@ -340,12 +340,15 @@ with tempfile.TemporaryDirectory() as td:
             ' bootstrap2020-update-smart-drivedb.timer']
            if template_wants_disks and not args.virtual_only else []),
          *(['--include='
-            '    xserver-xorg'
+            '    xserver-xorg-core xserver-xorg-input-libinput'
             '    xfce4'
             '    lightdm'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
             '    plymouth-themes',
+            # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
+            # It seems there is a fallback for -vga qxl, but not -vga virtio.
+            *(['--include=xserver-xorg-video-qxl'] if args.virtual_only else []),
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),
