@@ -341,7 +341,7 @@ with tempfile.TemporaryDirectory() as td:
            if template_wants_disks and not args.virtual_only else []),
          *(['--include='
             '    xserver-xorg-core xserver-xorg-input-libinput'
-            '    xfce4'
+            '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
             '    lightdm'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
