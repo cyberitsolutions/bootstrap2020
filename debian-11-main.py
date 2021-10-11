@@ -340,7 +340,9 @@ with tempfile.TemporaryDirectory() as td:
             ' bootstrap2020-update-smart-drivedb.timer']
            if template_wants_disks and not args.virtual_only else []),
          *(['--include='
-            '    task-xfce-desktop'  # Desktop stuff, rough cut.
+            '    task-desktop'
+            '    xfce4'
+            '    lightdm'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
             '    plymouth-themes',
