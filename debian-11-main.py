@@ -468,8 +468,6 @@ if args.boot_test:
             '--cpu', 'host',
             '-m', '2G' if template_wants_GUI else '512M',
             '--smp', '2',
-            '--device', 'virtio-mouse',
-            '--device', 'virtio-keyboard',
             *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
               if template_wants_GUI else
               ['--nographic', '--vga', 'none']),
