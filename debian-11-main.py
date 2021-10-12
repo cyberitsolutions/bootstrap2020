@@ -359,7 +359,9 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=rm -fv $1/etc/ssh/ssh_host_*_key*',
             '--customize-hook=systemctl --root=$1 enable bootstrap2020-openssh-keygen']
            if args.optimize != 'simplicity' else []),
-         *(['--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
+         *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password',
+            '--customize-hook=echo x:x | chroot $1 chpasswd',
+            '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
            if args.backdoor_enable else []),
          *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
             '--customize-hook=chroot $1 bash -i',
