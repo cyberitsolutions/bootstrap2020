@@ -62,7 +62,7 @@ group.add_argument('--backdoor-enable', action='store_true',
 group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, metavar='N',
                    help='so you can run two of these at once')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
-                    default='/var/tmp/bootstrap2020/')
+                    default='/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
                     choices=('main',
                              'dban',
