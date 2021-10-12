@@ -470,6 +470,8 @@ if args.boot_test:
             '--cpu', 'host',
             '-m', '2G' if template_wants_GUI else '512M',
             '--smp', '2',
+            # no virtio-sound in qemu 6.1 ☹
+            '--device', 'ich9-intel-hda', '--device', 'hda-output',
             *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
               if template_wants_GUI else
               ['--nographic', '--vga', 'none']),
