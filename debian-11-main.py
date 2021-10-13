@@ -265,7 +265,7 @@ with tempfile.TemporaryDirectory() as td:
             '--include=python3',  # for get-config-from-dnssd (cifs-utils needs it anyway)
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
             f'--hook-dir=debian-11-main.hooks',
-            '--customize-hook=systemctl --root=$1 enable systemd-networkd bootstrap2020-get-config-from-dnssd']
+            '--customize-hook=systemctl --root=$1 enable systemd-networkd bootstrap2020-get-config-from-dnssd --quiet']
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
             '--essential-hook={'
@@ -316,8 +316,8 @@ with tempfile.TemporaryDirectory() as td:
             # FIXME: symlink didn't work, so hard link for now.
             '--customize-hook=cd $1/lib/systemd/system && cp -al ssh.service ssh-sftponly.service',
             # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
-            '--customize-hook=cp -vat $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
-            '--customize-hook=systemctl --root=$1 enable '
+            '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
+            '--customize-hook=systemctl --root=$1 enable --quiet '
             '    ssh-sftponly'
             '    rsnapshot.timer'
             '    dyndns.timer'
@@ -354,17 +354,17 @@ with tempfile.TemporaryDirectory() as td:
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
             *['--dpkgopt=path-include=/usr/share/doc/pipewire',
               '--dpkgopt=path-include=/usr/share/doc/pipewire/*',
-              '--customize-hook=systemctl link    --user --global --root $1'
+              '--customize-hook=systemctl link    --quiet --user --global --root $1'
               '    /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.service'
               '    /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.socket',
-              '--customize-hook=systemctl enable  --user --global --root $1 pipewire-pulse pipewire-pulse.socket',
-              '--customize-hook=systemctl disable --user --global --root $1 pulseaudio pulseaudio.socket',
+              '--customize-hook=systemctl enable  --quiet --user --global --root $1 pipewire-pulse pipewire-pulse.socket',
+              '--customize-hook=systemctl disable --quiet --user --global --root $1 pulseaudio pulseaudio.socket',
               '--customize-hook=touch $1/etc/pipewire/media-session.d/with-pulseaudio',
               # Chromium works without the rest.
               '--include=pipewire-audio-client-libraries',
-              '--customize-hook=cp -vt $1/etc/alsa/conf.d/ $1/usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf',
+              '--customize-hook=cp -t $1/etc/alsa/conf.d/ $1/usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf',
               '--customize-hook=touch $1/etc/pipewire/media-session.d/with-alsa',
-              '--customize-hook=find $1/usr/share/doc/pipewire/examples/ld.so.conf.d/ -name "pipewire-jack-*.conf" -exec cp -vt $1/etc/ld.so.conf.d/ {} +',
+              '--customize-hook=find $1/usr/share/doc/pipewire/examples/ld.so.conf.d/ -name "pipewire-jack-*.conf" -exec cp -t $1/etc/ld.so.conf.d/ {} +',
               '--customize-hook=chroot $1 ldconfig'],
             # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
             # It seems there is a fallback for -vga qxl, but not -vga virtio.
@@ -377,9 +377,9 @@ with tempfile.TemporaryDirectory() as td:
             # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
             '--customize-hook=rm -fv $1/etc/dropbear/dropbear_*_host_key',
             '--customize-hook=rm -fv $1/etc/ssh/ssh_host_*_key*',
-            '--customize-hook=systemctl --root=$1 enable bootstrap2020-openssh-keygen']
+            '--customize-hook=systemctl --root=$1 enable bootstrap2020-openssh-keygen --quiet']
            if args.optimize != 'simplicity' else []),
-         *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password',
+         *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
             '--customize-hook=echo x:x | chroot $1 chpasswd',
             '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE']
            if args.backdoor_enable else []),
