@@ -343,10 +343,26 @@ with tempfile.TemporaryDirectory() as td:
             '    xserver-xorg-core xserver-xorg-input-libinput'
             '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
             '    lightdm'
-            '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
+            '    pipewire xfce4-pulseaudio-plugin pavucontrol'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
             '    plymouth-themes',
+            # FIXME: in Debian 12, change to simply '--include=pipewire-pulse'
+            # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
+            *['--dpkgopt=path-include=/usr/share/doc/pipewire',
+              '--dpkgopt=path-include=/usr/share/doc/pipewire/*',
+              '--customize-hook=systemctl link    --user --global --root $1'
+              '    /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.service'
+              '    /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.socket',
+              '--customize-hook=systemctl enable  --user --global --root $1 pipewire-pulse pipewire-pulse.socket',
+              '--customize-hook=systemctl disable --user --global --root $1 pulseaudio pulseaudio.socket',
+              '--customize-hook=touch $1/etc/pipewire/media-session.d/with-pulseaudio',
+              # Chromium works without the rest.
+              '--include=pipewire-audio-client-libraries',
+              '--customize-hook=cp -vt $1/etc/alsa/conf.d/ $1/usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf',
+              '--customize-hook=touch $1/etc/pipewire/media-session.d/with-alsa',
+              '--customize-hook=find $1/usr/share/doc/pipewire/examples/ld.so.conf.d/ -name "pipewire-jack-*.conf" -exec cp -vt $1/etc/ld.so.conf.d/ {} +',
+              '--customize-hook=chroot $1 ldconfig'],
             # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
             # It seems there is a fallback for -vga qxl, but not -vga virtio.
             *(['--include=xserver-xorg-video-qxl'] if args.virtual_only else []),
