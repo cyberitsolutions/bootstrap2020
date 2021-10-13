@@ -344,6 +344,9 @@ with tempfile.TemporaryDirectory() as td:
             '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
             '    lightdm'
             '    pipewire xfce4-pulseaudio-plugin pavucontrol'
+            # Without "alsactl init" & /usr/share/alsa/init/default,
+            # pipewire/pulseaudio use the kernel default (muted & 0%)!
+            '    alsa-utils'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
             '    plymouth-themes',
