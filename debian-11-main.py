@@ -343,6 +343,7 @@ with tempfile.TemporaryDirectory() as td:
             '    xserver-xorg-core xserver-xorg-input-libinput'
             '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
             '    lightdm'
+            '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
             '    plymouth-themes',
