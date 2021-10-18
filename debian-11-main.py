@@ -369,6 +369,10 @@ with tempfile.TemporaryDirectory() as td:
             # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
             # It seems there is a fallback for -vga qxl, but not -vga virtio.
             *(['--include=xserver-xorg-video-qxl'] if args.virtual_only else []),
+            # FIXME: instead of this quick workaround,
+            #        move debian-11-desktop/startxfce4 from a essential-hook to a customize-hook.
+            #        Then, it won't be clobbered at build time.
+            f'--essential-hook=chroot $1 dpkg-divert /usr/bin/startxfce4',
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),

@@ -1,0 +1,27 @@
+#!/bin/sh -xve
+# This is an attempt to make an XFCE4 equivalent of "/usr/libexec/gnome-session-binary --systemd",
+# without REALLY knowing what I am doing.
+
+# BEFORE I started this, the process seems to be:
+#
+#   lightdm ->
+#   /etc/alternatives/x-session-manager ->
+#   /usr/bin/startxfce4 ->
+#   /etc/xdg/xfce4/xinitrc ->
+#   /usr/bin/xfce4-session
+
+if false
+then
+    # Attempt #1 -- this seems to work Just Fine, although we end up with processes with extra args like this:
+    #     xfwm4 --display :0.0 --sm-client-id 28d0aaf5b-0f77-4a24-8356-3e52aebb05c9
+    systemd-run --user --wait xfce4-session
+else
+
+    # Attempt #2 -- run whatever xfce4-session seemed to run.
+    # FIXME: these should turn into "real" units later.
+    systemd-run --user xfsettingsd
+    systemd-run --user xfdesktop
+    systemd-run --user xfce4-panel
+    systemd-run --user Thunar --daemon
+    systemd-run --user --wait xfwm4
+fi
