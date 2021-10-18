@@ -1,0 +1,134 @@
+mattcen,
+
+I am sick of mksquashfs's super-unintuitive regexp exclusions
+I'm thinking about instead having a bash script run inside the chroot that uses globstar+extglob+nullglob, then do stuff like::
+
+    rm -vrf **/systemd/system/*@(crypt|password)*
+
+Opinions?
+
+
+The Problem
+--------------------------------------------------
+The fundamental problem with mksquashfs regexps is you CANNOT exclude
+these two on one line::
+
+    x/y/z
+    x/z
+
+because they have different number of slashes.
+This crops up regularly in e.g. ::
+
+    usr/bin/foo-x
+    sbin/foo-y
+
+and::
+
+    usr/lib/systemd/system/foo.service
+    usr/lib/systemd/system/bar.service.wants/foo.service
+    usr/lib/systemd/systemd-foo
+
+Using globbing, these lines become far simpler::
+
+    **/*bin/foo-*
+    **/systemd/**/*foo*
+
+
+Real-World Example
+--------------------------------------------------
+Example before::
+
+    ^(etc|lib)$/^systemd$/./^debian-fixup.service$
+    ^(etc|lib)$/^systemd$/./^.*.wants/^debian-fixup.service$
+    ^(etc|lib)$/^systemd$/^debian-fixup
+
+    ^(etc|lib)$/^systemd$/./^.*(mqueue|sys-kernel|binfmt|fsck|random|backlight|rfkill|quota|readahead).*$
+    ^(etc|lib)$/^systemd$/./^.*.wants/^.*(mqueue|sys-kernel|binfmt|fsck|random|backlight|rfkill|quota|readahead).*$
+    ^(etc|lib)$/^systemd$/^systemd-(binfmt|fsck|random-seed|backlight|rfkill|quotacheck|readahead)$
+
+    ^sbin$/^(quotacheck|quotaoff|quotaon)$
+    ^usr$/^bin$/^quotasync$
+    ^usr$/^sbin$/^(convertquota|edquota|quot|quota_nld|quotastats|repquota|rpc.rquotad|setquota|warnquota|xqmstats)$
+
+Example after::
+
+    rm -vrf **/systemd/**/*debian-fixup*
+    rm -vrf **/systemd/**/*@(mqueue|sys-kernel|binfmt|fsck|random|backlight|rfkill|quota|readahead)*
+    rm -vrf **/*bin/@(quotacheck|quotaoff|quotaon|quotasync|convertquota|edquota|quot|quota_nld|quotastats|repquota|rpc.rquotad|setquota|warnquota|xqmstats)
+
+Example output::
+
+    removed ‘lib/systemd/debian-fixup’
+    removed ‘lib/systemd/system/debian-fixup.service’
+    removed ‘lib/systemd/system/sysinit.target.wants/debian-fixup.service’
+
+
+
+Analysis
+--------------------------------------------------
+
+BONUS:
+  mksquashfs exclusions aren't logged at all.
+  rm --verbose, we know what was removed,
+  and if we run a separate rm on each glob,
+  we know *WHICH* glob was broken.
+
+BONUS:
+  failglob will trigger errors when a glob doesn't match.
+  mksquashfs will just ignore them.
+
+MALUS:
+  It's useful to exclude bad files in prisonpc-desktop,
+  *before* installing their source package in some/all of the site SOEs.
+  For example, GIMP's python REPL.
+  failglob prevents this.
+  Turn off failglob halfway though the script,
+  then put all such exclusions at the end?
+
+BONUS:
+  It's easy to forget all the ^ and $, and exclude too much.
+  You have to opt *in* to the \*'s,
+  otherwise the file you want to kill will still be there (more obvious).
+
+MALUS:
+  OTOH I'm a little bit scared about ``**`` excluding too much.
+  For example, ``**/systemd/**/*user*``
+
+  will kill not just user@.service (bad)
+  but also multi-user.target (good).
+
+BONUS:
+  bash can have comments to the right of code.
+  mksquashfs exclusions can't.
+
+MALUS:
+  mksquashfs didn't affect the build area.
+  That meant it was really easy to inspect already-excluded files.
+  In particular, you could still run apt & dpkg though they're excluded.
+
+  With bash globs, this is not possible --- the build needs to be
+  rerun & stopped just before exclusions.
+  This takes ten to twenty minutes and slows down development.
+
+  This also means delete-bad-files must remove dpkg *after* the check
+  for "show-stopper" bad packages, which uses dpkg.
+
+BONUS:
+  Suppose upstream moves /usr/bin/badthing to /bin/badthing.
+  Under mksquashfs, it will silently appear in new SOEs.
+  Under globbing, if we write ``**/*bin/badthing`` it will still be excluded.
+
+BONUS:
+  It's easy to insert non-rm code in the middle of the script.
+MALUS:
+  It's tempting to do so too much & make the script really confusing.
+
+BONUS:
+  This mksquashfs.exclusions record is no longer needed::
+
+    ## Currently Debian uses a mix of /lib/ and /usr/lib.
+    ## Lennart says "this is wrong!"
+    ## If Debian obeys Lennart our exclusions will break!
+    ## To help catch this, exclude ALL files from the currently-unused path.
+    ## --twb, Sep 2015
+    ^usr$/^lib$/^systemd$/^system$/

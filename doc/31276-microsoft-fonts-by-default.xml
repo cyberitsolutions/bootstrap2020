@@ -1,0 +1,120 @@
+<!-- This -*-xml-*- snippet was tried INSIDE prisonpc-main.xcd.
+
+     Unfortunately this only works to change the defaults to an installed font.
+     e.g. setting it to "Breip" yields "Breip",
+     but setting it to "Times New Roman" yields "Tinos".
+
+     While discussing this with the libreoffice developers,
+     I learned that when LibreOffice creates a MS Office document (e.g. .docx),
+     it already includes code that says
+
+         Hey, MS Office!
+         If you have Liberation Serif, use that.
+         If you don't, fall back to Times New Roman.
+
+     ...and likewise for all other sensible font substitutions (e.g. Arimo → Arial).
+
+     So the document will *LOOK EXACTLY THE SAME*,
+     the only difference is the label in the font dialogue.
+
+     i.e. the inmate's assignment examiner is being *really* pedantic,
+     and normal MS office users won't notice or care.
+     —twb, Aug 2016
+-->
+
+
+  <!-- Default fonts to Win98-era MS Office.
+
+       An AMC inmate complained that he lost marks for submitting
+       university assignments in Liberation Serif (the upstream
+       default) instead of Times New Roman.
+
+       He can't select TNR from the font drop-down,
+       but he can manually type it into the combo box, &
+       this was good enough for him.
+
+       However this workaround is hard to discover and is failure-prone.
+       Therefore, for the same reason we change the default from .odt to .docx,
+       change the default fonts to MS Office versions.
+
+       We choose the Win98 (not Vista) era fonts for two reasons:
+
+       1. we don't have a metrically-compatible replacement for Consolas; &
+       2. better compatibility with *other* organizations using LibreOffice
+          (CrOS Extra fonts are less common than CrOS Core / Liberation).
+
+       FIXME: CrOS Core fonts were forked off Liberation 1.x.
+       *BUT*, Liberation 2.x is forked off CrOS Core.
+       So which is *CURRENTLY* the better choice?
+       Check changelogs of both.
+       ...
+       NOTE: Liberation 1 includes Sans Narrow (Helvetica Narrow),
+       but this is NOT included in CrOS Core or Liberation 2.
+       The OpenOffice upstream keeps that one font around from the Liberation 1 era.
+       I *THINK* Debian throws away upstream bundled fonts.
+       ...
+       NOTE: inmates looking for "Arial" will find "Arimo" faster than "Liberation Sans".
+       That alone is a good reason to choose CrOS Core, IMO. —twb, Aug 2016
+
+       FIXME: upstream main.xcd defines many fallbacks for each DefaultFonts prop.
+       For simplicity & convenience during testing, I'm not bothering.
+       Is this a problem? —twb, Aug 2016
+
+       NOTE: "VCL" stands for Visual Class Library.
+       Despite what VCL.xcs says, SubstFontsMS is used for import *AND* export filters,
+       for traditional (.doc) and modern (.docx) MS Office filters.
+       It means if you save foo.docx using Liberation Sans,
+       LO will **AUTOMATICALLY & BY DEFAULT** tell MS Office to fall back to Arial.
+       Therefore this change is only necessary because the inmate's teacher is an EXCEPTIONALLY pedantic asshole.
+       http://sources.debian.net/src/libreoffice/1:5.2.0-2/officecfg/registry/schema/org/openoffice/VCL.xcs/
+       http://sources.debian.net/src/libreoffice/1:5.2.0-2/officecfg/registry/data/org/openoffice/VCL.xcu/
+  -->
+  <oor:component-data oor:name="VCL" oor:package="org.openoffice">
+    <node oor:name="DefaultFonts">
+      <node oor:name="en" oor:op="fuse">
+        <prop oor:name="SANS"               oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="SERIF"              oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="FIXED"              oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="LATIN_DISPLAY"      oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="LATIN_HEADING"      oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="LATIN_PRESENTATION" oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="LATIN_SPREADSHEET"  oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="LATIN_TEXT"         oor:type="xs:string"><value>Times New Roman</value></prop>
+        <prop oor:name="LATIN_FIXED"        oor:type="xs:string"><value>Times New Roman</value></prop>
+
+        <!-- DEBUGGING -->
+             <prop oor:name="UI_FIXED"           oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="UI_SANS"            oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_DISPLAY"        oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_HEADING"        oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_PRESENTATION"   oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_SPREADSHEET"    oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_DISPLAY"        oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_HEADING"        oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_PRESENTATION"   oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_SPREADSHEET"    oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_TEXT"           oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="SANS_UNICODE"       oor:type="xs:string"><value>Times New Roman</value></prop>
+             <prop oor:name="SYMBOL"             oor:type="xs:string"><value>Times New Roman</value></prop>
+             <!-- END DEBUGGING -->
+
+        <!-- I believe these are used for UI elements within LibreOffice, so not worth overriding. —twb, Aug 2016
+             <prop oor:name="UI_FIXED"           ><value>Times New Roman</value></prop>
+             <prop oor:name="UI_SANS"            ><value>Times New Roman</value></prop>
+        -->
+        <!-- Upstream handles these specially.  I am scared to override it. —twb, Aug 2016
+             <prop oor:name="CJK_DISPLAY"        ><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_HEADING"        ><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_PRESENTATION"   ><value>Times New Roman</value></prop>
+             <prop oor:name="CJK_SPREADSHEET"    ><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_DISPLAY"        ><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_HEADING"        ><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_PRESENTATION"   ><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_SPREADSHEET"    ><value>Times New Roman</value></prop>
+             <prop oor:name="CTL_TEXT"           ><value>Times New Roman</value></prop>
+             <prop oor:name="SANS_UNICODE"       ><value>Times New Roman</value></prop>
+             <prop oor:name="SYMBOL"             ><value>Times New Roman</value></prop>
+        -->
+      </node>
+    </node>
+  </oor:component-data>

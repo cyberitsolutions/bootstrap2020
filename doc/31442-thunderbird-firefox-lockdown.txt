@@ -1,0 +1,860 @@
+.. COMMENT: -*- rst -*-
+
+
+Locking Down Thunderbird (and Firefox)
+======================================
+
+• https://KB.cyber.com.au/PrisonPC+MUA+FR
+
+
+
+Is Thunderbird dead?
+----------------------------------------------------------------------
+
+From 1 Dec 2015 onwards, Mozilla has dropped Thunderbird.
+They hate it because it's ‘holding back’ firefox development.
+It hasn't had active development since 2012.
+
+    https://techcrunch.com/2015/11/30/thunderbird-flies-away-from-mozilla/
+
+As at Jan 2017,
+
+| In Debian 8 Jessie, icedove=46.6 and firefox-esr=45.6.
+| In Debian 9 Stretch, icedove=45.6 and firefox-esr=45.6.
+| In Debian Unstable, thunderbird=45.6 and firefox=50.1.
+| In https://www.mozilla.org/en-US/thunderbird/, stable=45.7 and beta/alpha=51.0.
+| In https://www.mozilla.org/en-US/firefox/new/?scene=2, stable=51.0.
+
+What's the alternative?  Evolution?  Squirrel?
+
+    https://en.wikipedia.org/wiki/Evolution_(software)#cite_ref-evo-newdev_21-0
+
+While we're at it, let's just quickly check the instlal footprints
+(Jessie prisonpc-desktop base SOE, sans prayer & chromium):
+
+|    010MiB  ←  prayer prayer-templates-prisonpc=0.1wheezy1 aspell-en
+|    103MiB  ←  icedove
+|
+|    166MiB  ←  chromium
+|    100MiB  ←  firefox-esr
+|
+|    176MiB  ←  chromium prayer prayer-templates-prisonpc=0.1wheezy1 aspell-en
+|    204MiB  ←  firefox-esr icedove
+
+…a major loss for mail, a medium gain for web.
+Because thunderbird embeds firefox instead of using firefox-esr,
+we pay the full 100MB cost for firefox twice when installing both.
+Net size loss.
+
+
+
+DONE — How do I view, change & lock about:config settings?
+----------------------------------------------------------------------
+Thunderbird is mostly Firefox.
+Literally — the source code is roughly
+1.3GiB of firefox,
+20MiB email client, and
+20MiB newsreader.
+
+.. NOTE:: because Thunderbird source is so huge,
+          I've downloaded it to cyber@hasty:/srv/src/.
+
+In both, most configuration is done via a key/value store called ‘about:config’,
+similar to gconf or the Windows Registry.
+
+To reach about:config in Thunderbird 45::
+
+    ≡ ▸ Preferences ▸ Advanced ▸ Config Editor
+
+The values are set in javascript files with calls like::
+
+    lockPref("mail.server.default.offline_download", false);
+
+There is *NO WAY* to get a complete list of about:config variables.
+
+Even the developers and the source code do not know — some parts of
+the source will create and read about:config variables that aren't
+documented *anywhere*.
+
+The about:config screen won't let you simply copy everything into a spreadsheet.
+To do so, you need to do this insane hack (from #firefox on Freenode):
+
+    :b0at: You could probably write an expression to use the prefs
+      component to output everything in text to the browser
+      console (not to be confused with the web console)
+
+    :twb: "browser console" as in /dev/stderr?
+
+    :b0at: No.
+
+    :b0at: Part of this:
+      https://developer.mozilla.org/en-US/docs/Tools/Browser_Toolbox
+      Though you don't have to enable the full browser toolbox to use it.
+      It's in the tools or web dev menu.
+
+      I don't know what thunderbird has on this.
+      It might be too far behind.
+
+      But if custom buttons or something similar works in tb,
+      then you can inject a little js in to the xul context and
+      do something similar.
+
+      If you end up dumping prefs through script, this should help:
+      https://developer.mozilla.org/en-US/docs/Mozilla/Tech/Preferences_API
+      and the nsIPrefBranch docs.
+
+Also, some variables are hidden from the about:config UI even when supported:
+
+    To see the dump output you have to enable
+    browser.dom.window.dump.enabled […] this preference is not listed
+    in about:config by default, you may need to create it.
+
+Having said that, *many* variables are documented in the source code::
+
+    # Most (not all!) Firefox settings.
+    mozilla/modules/libpref/init/all.js
+    # Most (not all!) Thunderbird-specific settings.
+    mail/app/profile/all-thunderbird.js
+    # Useful settings for testing / lockdown of "normal" bits.
+    mozilla/testing/mozbase/mozprofile/mozprofile/profile.py
+
+.. Admonition:: FIXME
+
+   Go through *all* of the three files above,
+   in case there are scary things to lock down that we didn't know about! —twb, Feb 2017
+
+Things accessible via GUI config screens can be copied out of $HOME::
+
+    root@slice:~# grep cache ~p/.icedove/*/prefs.js
+    user_pref("browser.cache.disk.filesystem_reported", 1);
+    user_pref("mail.server.server1.cacheCapa.acl", false);
+    user_pref("mail.server.server1.cacheCapa.quota", false);
+    user_pref("toolkit.telemetry.cachedClientID", "d949975c-83be-4453-ad88-008d8f892165");
+
+.. NOTE:: The first line of prefs.js files is ignored.
+          You're expected to put some non-javascript crap there,
+          so you can't accidentally load it as a regular js file.
+
+.. NOTE:: sometimes icedove exits with no GUI output whatsoever,
+   no exit status, and *NOTHING* on stderr/stdout.
+
+   To debug this, ::
+
+       root@bet:~# NSPR_LOG_FILE=/tmp/ARGH AUTOCONFIG_DEBUG=1 NSPR_LOG_MODULES=MCD:5 icedove
+
+       root@bet:~# echo $?
+       0
+
+       root@bet:~# cat /tmp/ARGH
+       -263362752[7f60ef0575c0]: general.config.filename = prisonpc.js
+       -263362752[7f60ef0575c0]: evaluating .cfg file prisonpc.js with obscureValue 0
+       -263362752[7f60ef0575c0]: error evaluating .cfg file prisonpc.js 80004005
+
+References:
+
+• http://kb.mozillazine.org/About:config
+• http://kb.mozillazine.org/About:config_entries
+• https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/A_brief_guide_to_Mozilla_preferences
+• https://wiki.mozilla.org/Thunderbird/Enterprise
+• https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Deploying_Thunderbird_in_the_Enterprise/Thunderbird_Preferences_Relevant_to_Enterprises
+• http://howto.gumph.org/content/removing-local-folders-from-thunderbird/
+
+
+
+DONE — How do I pre-configure the IMAP/SMTP accounts?
+----------------------------------------------------------------------
+When thunderbird first starts up, after thinking for a while,
+it offers to create an account.
+
+This shouldn't happen — we know exactly what account the inmate should be using,
+and we should create it in advance.
+
+There is functionality called ‘Autoconfiguration’ which claims to help
+with this — Debian includes a riseup.net.xml for that mail provider.
+
+• https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration
+• https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration/FileFormat/HowTo
+• https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration/FileFormat/Definition
+• https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
+
+But this is *NOT WHAT WE WANT*, because it still requires the user to
+manually say “my username is fred and my mail provider is prisonpc” —
+more control than we want inmates to have.
+
+Instead we want to get the username from Linux and automatically
+include that in the configuration variables, like
+
+    lockPref('foo.bar', '%{USERNAME}@%{MAILNAME}')
+
+These documents from 2012 explain how to do so using getenv():
+
+• https://wiki.mozilla.org/Thunderbird/Enterprise
+• http://web.mit.edu/~firefox/www/maintainers/autoconfig.html
+• https://developer.mozilla.org/en-US/docs/MCD,_Mission_Control_Desktop_AKA_AutoConfig
+
+Unfortunately when I tried doing that directly in /etc/icedove/pref/prisonpc.js,
+my rules were silently ignored.
+To make getenv work, I *had to* do this::
+
+    In /etc/icedove/pref/foo.js:
+
+        # first line is ignored
+        lockPref('general.config.filename', 'bar.js');
+
+    In /usr/lib/icedove/bar.js:
+
+        # first line is ignored
+        lockPref('foo.bar', getenv('USER') + '@' + getenv('MAILNAME'));
+
+This comment from RTFS makes it sound like this special ‘netscape.cfg’
+js format is off by default because it's old and horrible:
+
+   The following is a small hack which will allow us to only load the library
+   which supports the netscape.cfg file if the preference is defined. We
+   test for the existence of the pref, set in the all.js (mozilla) or
+   all-ns.js (netscape 6), and if it exists we startup the pref config
+   category which will do the rest.
+
+   — icedove-45.6.0/mozilla/modules/libpref/Preferences.cpp:Preferences::Init()
+
+
+How accounts work in about:config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In about:config, there are accounts, ids, and servers.
+There are master variables like::
+
+    mail.accountmanager.accounts=account1,account2,account2
+
+And then each account/server/id is built as a *set* of variables, like::
+
+    mail.accounts.account1.foo=true
+    mail.accounts.account1.bar=2
+    mail.accounts.account1.quux="Frobozz"
+
+There are default values that are used when creating a new account,
+or when the account doesn't override it with a local variable::
+
+    mail.server.default.offline_download=false
+    mail.server.server1.offline_download=true
+
+Finally, note that OUTGOING mail ("mail.smtpserver.smtpN") is configured
+separately from a mailbox server ("mail.server.serverN").
+
+.. Admonition:: FIXME
+
+   Does it have to be called "accountN", or
+   can we call it something like "account_PrisonPC" ? —twb, Feb 2017
+
+
+
+DONE — Thunderbird doesn't trust PrisonPC CA cert
+----------------------------------------------------------------------
+My mail server uses an in-house CA.
+It's trusted by default in /etc/ssl/ (OpenSSL, GnuTLS), but tbird apparently doesn't know about that.
+How do I convince thunderbird to trust my CA (and preferably *ONLY* my CA)?
+
+    :twb: Where does Icedove (and Firefox ESR) store their CA cert
+          trust list?  As a sysadmin I want to force ALL local users
+          to trust my corporate CA cert, and (ideally) untrust all the
+          default ones.
+
+          I already solved this for chromium by overwriting ~/.pki
+          every time the user logs in (because chromium uses nss3 in a
+          configuration that ignores /etc/ entirely), but apparently
+          that's not enough for icedove
+
+          I remember seeing some horror stories about how firefox
+          default CA list was compiled into an .so (!) and couldn't be
+          modified by sysadmins at all, but I haven't found that bug
+          report yet.
+
+          Simply stracing icedove hasn't helped either :/
+
+    :jm: possibly cert8.db, but db_dump does not work for me on that file.
+
+    :twb: I hope I don't have to copy it to *yet another* dir in $HOME.
+
+          Stupid libnss3 only supports having one directory to search
+          in, so it can't search in both /etc/pki and ~/.pki at once…
+
+    :jm: Maybe this can help with part of the problem
+         https://wiki.mozilla.org/CA:AddRootToFirefox
+
+         Some interesting stuff here too
+         http://askubuntu.com/questions/244582/add-certificate-authorities-system-wide-on-firefox
+
+         Firefox's source code shows that built-in CA certs are in
+         fact hard-coded into firefox executable. They reside in
+         security/nss/lib/ckfw/builtins/certdata.txt
+
+    :twb: At least with chromium it's ~/.pki and not ~/.icedove/<random string>.default/ ☹
+
+          I guess the script will have to iterate over every dir in ~/.icedove/ or something AND again in the /etc/…/profile skeleton.
+
+          This is all nss3's fault of course.
+          (That, plus on Windows and OS X all GUI browsers uses the system cert keyring, so this problem only affects GNU and BSD users, and they're second-class citizens…)
+
+          Ah yeah I see in strace it accessing certX.db directly in the root of [ProfD].
+          I was searching before only for /tls|ssl|ca|pki/i so didn't find it.
+
+    :jm: Can it be inspected with certutil?
+
+    :twb: yeah, I just don't have certutil normally installed on inmate hosts because URGH.
+
+          I used to actually run certutil when they logged in, only
+          importing my key instead of just blowing away their entire
+          certificate hierarchy.  But it too so long, they'd start up
+          the browser, and they'd have a fight to edit it (no locking,
+          apparently), and leave their $HOME permanently broken
+
+          I tried a simple ``cp -vat ~/.icedove/*.*/ ~/.pki/nssdb/*``
+          (while icedove was off); starting icedove shows same
+          "confirm exception" popup
+
+          Hrm wait, there's that "AutoConfig via JavaScript" thing in
+          your first link.  I already have to use that to lock
+          preferences (because the more modern ways flat out don't
+          work for sysadmins), so I could try adding it in there
+
+          Of course, that API probably won't let me copy the CA cert
+          from ~/.pki/nssdb/cert9.db, so I'll have to have a second
+          copy stored directly in autoconfig.js… ☹
+
+
+References:
+
+• icedove-45.6.0/mozilla/security/manager/ssl/nsIX509CertDB.idl
+• https://mike.kaply.com/2015/02/10/installing-certificates-into-firefox/
+• http://kb.mozillazine.org/Thunderbird%5F:_FAQs_:_Import_CA_Certificate
+
+.. IMPORTANT::
+   This works::
+
+     Components.
+     ↖classes["@mozilla.org/security/x509certdb;1"].
+     ↖getService(Components.interfaces.nsIX509CertDB).
+     ↖addCertFromBase64('MIIEX…RaKQ==', 'C,C,C', '');
+
+.. Admonition:: FIXME
+
+   Instead of copying the raw key into icedove/prisonpc.js,
+   can we write some javascript to read the key from /etc/ssl/ or /etc/pki/? —twb, Feb 2017
+
+
+
+
+DONE — Local Folders must die!
+----------------------------------------------------------------------
+
+‘Local Folders’ appears in the sidebar by default.
+We don't want them — all mail SHOULD live in IMAP, not $HOME!
+
+Unfortunately there is no simple way to remove or hide it, *allegedly*.
+
+Update: gumph link below suggests initialize prefs.js,
+then go through and change server2/id2/account2 to server1/id1/account1.
+
+• At first I tried just deleting all the server2 &c lines,
+  and removing server2 &c from mail.accountmanager.accounts.
+
+  That just made the account wizard start appearing again (on Icedove start).
+
+• The second time I went through and kept all the variables and changed them,
+  including changing references like "mail.root.none" to IMAP versions.
+
+  At that point, the wizard stopped appearing, and folders like Sent
+  appeared under the IMAP account instead of under Local Folders, but
+  Local Folders itself was still appearing (being auto-created).
+
+• I went through the about:config screen again looking for "locally
+  configured" (as opposed to locked) account settings, and I found an
+  extra variable that hadn't been referenced before. ::
+
+    mail.accountmanager.localfoldersserver=server2
+
+  Setting that worked, and Local Folders are finally gone for good!
+
+References:
+
+• http://howto.gumph.org/content/removing-local-folders-from-thunderbird/
+• http://kb.mozillazine.org/Local_Folders#Getting_rid_of_Local_Folders
+• https://addons.mozilla.org/en-US/thunderbird/addon/hide-local-folders/
+
+
+
+
+TODO — Hide unwanted UI elements
+----------------------------------------------------------------------
+
+From #firefox (irc.mozilla.org):
+
+    :twb: Is there something like userChrome.css, but for the distro vendor / site sysadmin?
+          I can just put stuff in the default profile, but users might delete it
+          (ATM I'm leaning towards "I'll just live with that risk.")
+
+          Awesome. Putting ``*{display:none}`` in
+          ``~prisoner1234/.icedove/*/chrome/userChrome.css`` does what
+          you'd expect — completely empty window.
+
+          Now I "just" need to use increasingly smaller hammers to
+          hide the UI widgets I dislike.
+
+    :Cork: Or you could just use the dom inspector and find the element you want to hide.
+
+    :twb: How do I do that for tbird?
+
+    apt install xul-ext-dom-inspector???
+
+    THE NEXT DAY…
+
+    :twb: I'm trying to learn how to use the "dom inspector" so that I
+          can write userChrome.css to hide undesirable UI elements
+          from my end users.
+
+          When I do Ctrl+Shift+i in tbird, I get the UI shown in these
+          screenshots:
+          https://developer.mozilla.org/en/DOM_Inspector/Introduction_to_DOM_Inspector
+
+          …when I do Ctrl+Shift+i in firefox, I get a different UI and
+          I can't see any way to select chrome URLs for inspection.
+
+    :arai: [File] menu ▸ [Inspect Chrome Document]
+           (also, Browser Toolbox provides similar Inspector
+
+    :twb: oh, I see, there are *TWO* Ctrl+Shift+i bindings — "show tools" and "inspector".
+          If I pick the latter from Tools menu, I get the same pane I see in tbird.
+          (Er, bad quoting; lemme move these two computers closer together so I can transcribe easier…)
+
+          The process is… right-click in empty part of tabbar, click
+          "Menu Bar" to unhide menu bar, click Tools ▸ Web Developer ▸ DOM Inspector
+
+          What I don't understand is in the DOM Inspector, in both FF
+          and Tbird, for a chrome URL
+          (e.g. chrome://browser/content/browser.xul), the "DOM Nodes"
+          view is completely blank.
+
+          Shouldn't there be menus and stuff in there?
+
+    :arai: I see grid and tree there.
+           Which element do you select?
+
+    :twb: just a sec
+          http://www.cyber.com.au/~twb/tmp/tmp.png
+          That's after clicking File ▸ Inspect Chrome Document ▸ Mozilla Firefox
+    :arai: Maybe e10s is enabled?  Multiple processes or something.
+    :twb: What's e10s?
+    :arai: "Multiprocess Windows"
+    :twb: I don't use GUI browsers at all so this is a completely stock Debian 8 Jessie firefox-esr
+    :arai: what does the "Multiprocess Windows" say in about:support ?
+    :twb: 0/2 (default: false)
+    :arai: Hm,  then it's not enabled.
+    :twb: Could this be because it needs a kernel feature I've disabled?
+          e.g. in /proc is only shown user's own processes
+
+    :arai: no idea how kernel feature is related
+    :arai: I guess it should work then tho, it might be nice to try Browser Toolbox.
+           That's builtin one.
+           https://developer.mozilla.org/en-US/docs/Tools/Browser_Toolbox
+
+    :twb: I'm only using DOM inspector because that's what [somebody here told me to use yesterday].
+    :twb: arai: can I use this "browser toolbox" thing for tbird as well?
+    :arai: I don't know.  You could ask in #maildev or #devtools.
+    :twb: Righto.  Plan B is to just git grep across comm-central :P
+    :arai: Hehe.
+           Maybe, you could use remote debugging instead for Thunderbird:
+           https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging
+           https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Thunderbird
+
+    :twb: Is #maildev better than #thunderbird to ask about such things?
+    :arai: I don't know about #thunderbird, but #maildev is for developers.
+    :twb: OK.  I'm a sysadmin so I'm often halfway between using an app and developing it ☺
+    :arai: IIUC, remote debugging is basically the thing used by browser toolbox.
+    :arai: For thunderbird, you can use Firefox's debugger for thunderbird process.
+    :twb: I see.
+          …
+          OK I managed to connect the remote debugger thing to thunderbird.
+          Not sure how I kinda click on a UI element and say "tell me a CSS selector that'll match this".
+
+    :arai: do you see toolbox window?
+           This one (maybe in different color): https://mdn.mozillademos.org/files/11121/browser-toolbox.png
+
+    :twb: Oh I see waaaay under all the "xul-overlay" lines there is a <window>.
+          If I hover over that, I start to see dashed red lines around UI elements in the tbird window.
+    :arai: The button with "rectangle and arrow" next to "Inspector", at top-left corner will work
+           Click it and click the element you want to inspect.
+    :twb: arai: ah yeah I see the button you mean now.
+    :twb: It's a bit confusing what it's jumping to here http://www.cyber.com.au/~twb/tmp/tmp.png
+    :twb: But directly below the Inpector/Console/Debugger/… line, there is a search bar.
+          If I type in a random guess like #CreateAccount then it flashes a red dashed line around the UI element,
+          showing me what was selected, even though it's not showing me the XML that defined it.
+          I think that's probably enough for me to get started.
+
+          Aha!  If I do the rectangle-and-arrow icon and hover over
+          elements on the host itself, then the inspection window
+          *DOES* jump to the relevant XML now.
+
+          I guess it wasn't working before because I was doing it over VNC.
+
+          Yay learning!
+
+    THE NEXT DAY…
+
+    :twb: /JOIN #firefox
+    :twb: Hey so I am using firefox to inspect thunderbird, and I can inspect UI elements (chrome) on the main tbird window.
+          But when I try to do so for e.g. the Preferences dialog window, it seems to ignore me.
+          What am I doing wrong?  Do I need to set up a second "remote debugging" connection for the preferences window?
+
+    :Caspy7: twb: you may keep #devtools channel in mind too
+    :Cork: twb: the preference is a content now days, not a window.  That is prob why it fails for you.
+    :twb: Is the difference between content and chrome kinda artificial then?
+          It seems weird to treat the preferences dialog like another website.
+
+          I tried connecting again to thunderbird but the "Connect to
+          remote device" screen is only showing
+          "available remote processes: Main Process",
+          even though the preferences dialog is open.
+
+    :twb: /JOIN #devtools
+    :twb: I'm a sysadmin trying to lock down thunderbird for prison
+          kiosks.  Some nice people on #firefox helped me set up
+          https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Thunderbird
+          and that is working for the main thunderbird window
+
+          But when I try to inspect chrome elements of dialog windows
+          Preferences or Account Settings, the inspector seems to
+          ignore it completely.
+
+.. NOTE:: Here's the important part of the above discussion.
+
+   • apt install firefox-esr icedove xul-ext-dom-inspector  # on Debian 8 Jessie
+   • Open Firefox and Thunderbird.
+   • In Thunderbird, click Tools > Allow Remote Debugging
+
+   • In Firefox,
+
+     • right-click on empty tabbar area, enable menu bar.
+     • click Tools > Web Developer > Toggle Tools.
+     • in the bottombar that appears,
+
+       • click the gear icon (Toolbox Options).
+       • scroll all the way to the bottom
+       • check "Enable remote debugging"
+
+     • click Tools > Web Developer > Connect
+     • click Connect
+
+   • A "confirm connection" popup will appear (from tbird).  Allow it.
+   • In the Inspector (Firefox) window that appears,
+
+     • Click the pointer-in-rectangle icon in the top-left.
+
+     • Hover over a thunderbird UI element.
+       Red dashed border will appear.
+       In inspector window, it will jump to the relevant XML element (e.g. <row id="CreateAccounts …>).
+
+     • Write a CSS selector rule accordingly. (e.g. "#CreateAccounts{display:none}").
+
+     • You can test it in real time by adding CSS rules in the RHS pane of the Inspector window.
+
+
+
+
+
+TODO — CRITICAL ISSUES
+----------------------------------------------------------------------
+• TODO: in both spell checking languages, EVERY WORD is considered misspelt (test string: "I am going to eat your soul.").
+
+• TODO: Offline Mode is not properly disabled
+
+  Even though I explicitly disabled offline caching,
+  I found that there was 90MB of shit in ~/.cache/icedove for test user p (who had lots of emails).
+  Choosing "clear cache" in the GUI preferences dialogue didn't help *AT ALL*.
+
+• TODO: testing with a 1600 message / 200MB mailbox,
+  I found that as I read large messages,
+  ~/.icedove was not growing much, but
+  ~/.cache/icedove was getting really big (80MB).
+
+  NOTE: firefox has the same issue.
+
+  NOTE: the cache is *not* deleted when icedove exits.
+
+  Can we tell icedove to cache in /run/$EUID/icedove instead?
+  Is that another ``XDG_*`` environment variable we can/should set?
+
+  One or more of these options fixes this issue.
+
+  **FIXME**: find out which one(s)!
+
+  I believe (based on the names alone),
+  that this causes Icedove to cache *message bodies* in RAM but not in $HOME.
+
+  I *think* that header indexes are still cached in ~/.icedove (.msf files?)
+
+  ::
+
+      browser.cache.offline.enable=false
+      browser.cache.auto_delete_cache_version=0
+      browser.cache.disk.enable=false
+      browser.cache.disk_cache_ssl=false
+
+
+TODO — IMPORTANT issues
+-----------------------
+• DONE: folders created in prayer (e.g. "Kids" or "Parole 2016") are
+  not visible in the sidebar by default.  I can manually add them all
+  one-at-a-time by right-clicking on PrisonPC and clicking "Subscribe…",
+  but this will cause transition grief.
+
+  ⇒ mail.server.default.using_subscription=false
+
+• TODO: if you toggle between View ▸ Layout ▸  Classic and ▸ Unified,
+  a sequence of extra accounts pile up as account99 onwards
+  (due to locking mail.account.lastKey=98).
+
+  Either lock "unified" view on (or off), or hide it as a
+  configuration option in the menu.
+
+• TODO: Remove the "Security" button and menu item from the compose window.
+  (This offers signing and encryption.)
+
+• TODO: can S/MIME support be completely stripped out?
+
+
+TODO — Nice-to-have issues
+----------------------------------------------------------------------
+• TODO: lock mail.server.{default,server1}.leave_on_server=true ?!
+• TODO: change default layout to "Wide view" (but don't lock it).
+
+  | ⇒ mail.pane_config.dynamic=2 ?
+  | ⇒ mail.folder.views.version=1 ?
+
+• TODO: change default "view message body as" to "simple HTML" (but don't lock it)?
+
+  ⇒ mailnews.display.html_as=1 ?
+
+• TODO: new message editor should default to text/plain,
+  because we're going to downsample it to that anyway.
+
+  ⇒ mailnews.display.prefer_plaintext=true ?
+
+• TODO: change default folder layout to "unified" (but don't lock it)?
+  This gets rid of the "PrisonPC" top-level folder.
+  …until you create any non-standard folders, until which it comes back, ugh.
+
+• TODO: hide "view headers all" option.
+
+  ⇒ mail.show_headers=1 ?
+
+• TODO: hide "view message source".
+• TODO: hide "view security info".
+
+• DONE: remove "Know your rights" popunder.
+  ⇒ mail.rights.override=true
+
+• TODO: confirm that threading (of long email threads) works as expected.
+
+• TODO: move "sent-mail" to "Sent" ?
+
+  The "sent-mail" folder doesn't have a pretty icon,
+  despite being configured as the outbox.
+
+  UPDATE: the icon is working now, so the only downside is the
+  unintuitive name. —twb, 24 Feb 2017 ::
+
+      // NOTE: usually /Sent; set to /sent-mail for backcompat with prayer.
+      lockPref('mail.identity.id1.fcc_folder',     my_imapURL + '/sent-mail');
+      lockPref('mail.identity.default.fcc_folder', my_imapURL + '/sent-mail');
+
+• TODO: lock mail.password_protect_local_cache=false ?
+• TODO: lock mailnews.offline_sync_mail=false ?
+• TODO: lock mailnews.offline_sync_work_offline=false ?
+• TODO: what is mail.attachment.store.version ?
+• TODO: what is mail.strictly_mime ?
+
+• TODO: hide the menu bar?  By default Firefox does; tbird doesn't — why?
+
+• TODO: reportbug icedove -s "Debian tries to be UTF-8 everywhere, but
+  icedove defaults to mailnews.new_default_charset=ISO-8859-1"
+
+• TODO: we can stop inmates from creating HTML mails,
+  but incoming mail is unavoidably HTML — *or is it*?
+
+  Is there an DNS RR we could set on e.g. amc.prisonpc.com,
+  that hints to gmail / yahoo / hotmail that the domain ONLY handles text/plain,
+  so gmail / yahoo / hotmail users should *automatically* be put into
+  text/plain editing mode when *COMPOSING* the email?
+
+
+TODO — everything else I forgot to mention
+------------------------------------------
+• TODO: remove "create new account"
+
+  • UPDATE: can/should we do this with userChrome.css ?
+
+    https://mike.kaply.com/2012/03/22/customizing-firefox-advanced-autoconfig-files/
+
+    AFAICT what that code is ACTUALLY doing is saying ``mkdir -p $ProfD/chrome/`` and ``echo … >$ProfD/chrome/userChrome.css``.
+
+• TODO: why can't I create a new "outgoing" account using something other than SMTP?
+• TODO: migrate address book (from prayer)?
+• TODO: migrate aspell local dictionary (from prayer)?
+• TODO: disable "error console".
+• TODO: watch space usage in ~/.icedove.
+• TODO: if inmates can simply run "icedove --safe-mode",
+  they can bypass anything we lock down / hide in via extensions?
+  If so what can we do to block this usage?
+
+• For staff viewing an inmate mailbox,
+  "icedove --profile Foo", and
+  set up prisonpc.js to detect that somehow and change the locked variables?
+
+• TODO: should we install the iceowl (lightning/sunbird) extension?
+  If so, how do we lock it down properly?
+
+  UPDATE: I tried installing it; with iceowl & prisonpc.js both installed,
+  icedove crashes immediately on startup, and running it with --safe-mode and/or rm -rf'ing ~/.icedove does not help.
+  When I remove enable-prisonpc.js and prisonpc.js, with iceowl installed, icedove starts normally.
+
+  (So, probably just a deeply fucked-up error in prisonpc.js?)
+
+• TODO: install icedove-l10n-en-gb (and iceowl-l10n-en-gb)?  There's no en-au.
+
+• TODO: should we set mailnews.plaintext_domains to <local domain> ?
+
+• TODO: change mailnews.view_default_charset from ISO-8859-1 to UTF-8.
+
+• TODO sending emails times out trying to talk to smtp.lan.
+  Is submission port not open on inmate interface for postfix???
+
+• TODO: print and print preview hang the entire app for some time, possibly forever.
+  is slice cups in a coherent state?
+  is because thunderbird assumes it can send certain IPP commands that our server disallows due to default-deny?
+
+• TODO: spell checking offers en_US and en_AU, but defaults to en_US.
+
+• TODO: can't just email "s123" without including the local mail domain (e.g. @frobozz.prisonpc.com).
+  Is this a regression?  Should we "fix" it?
+
+  Should we fix it by teaching thunderbird how to get usernames out of LDAP?
+  This will **NOT** let inmates auto-complete staff email address, and vice-versa.
+
+• TODO: encryption/decryption is not explicitly blocked.
+
+  You can click those buttons in the UI and it just says "I'd let you,
+  but first you need to import a relevant certificate".
+
+  A smart enough inmate could probably do that.
+
+  It's also not clear to me why it is ONLY talking about certificates
+  (S/MIME) and not keys (GPG).
+
+  ::
+
+    19:55 <twb> Does thunderbird not even support GPG at all anymore, only S/MIME ?
+    19:55 <twb> Because 'sign this mail' just says "STFU MOFO U HAF NO CERTS"
+
+  UPDATE::
+
+    11:24 <twb> AFAICT thunderbird ships with S/MIME support built-in, but GPG support is an add-on called "enigmail".  Is that right?
+
+
+• TODO: GECOS user full names is deliberately blocked, but we should
+  UNBLOCK IT for the user's own name.  That would let us
+  automatically set p123's From address to "Fred Nurk
+  <p123@blackgate.prisonpc.com>" instead of just
+  "p123@blackgate.prisonpc.com".
+
+  This requires some fiddling in nslcd and/or slapd olcAccess rules.
+  There's an open existing task to improve the latter anyway.
+
+  This may not be possible.
+
+• TODO: does "global search" stuff 1. work; 2. work well; 3. cause giant slowdowns; 4. fill up $HOME ?
+  Need to test on a v. large mailbox with multiple folders.
+
+• TODO: does thunderbird provide a way to edit regular text files?
+  If so, can we remove / block / nerf same?
+  (This is a (STRONG) SHOULD NOT.)
+
+• TODO: change the default for forward from "inline" to
+  "as attachment" because FOR FUCK'S SAKE, THE 21ST CENTURY IS MIME.
+
+• TODO: the Preferences > Advanced > Network & Disk Space > Disk Space
+  default is "use up to 350MB of space for the cache".
+
+  This is CLEARLY FAR TOO HIGH.
+
+• TODO: remove the "Go Offline" buttons (inc. clicking on the
+  bottom-left network icon thing in main window).
+
+• TODO: how do we lock the list of allowed extensions,
+  so that even if inmates download an extension somehow,
+  they can't enable it?
+
+  (NOTE: we already do exactly this for chromium.)
+
+
+• DONE: are there any extensions in Debian just waiting for us to
+  install them that will make lockdown easier?
+
+  I searched in aptitude for ``?depends(icedove)``.
+
+  :STAFF?:
+    • xul-ext-imap-acl                            - extension to manage ACLs on IMAP folders
+
+  :LATER:
+    • icedove-bidiui                              - BiDirectional support for Icedove
+    • iceowl-extension                            - Calendar Extension for Thunderbird/Icedove
+    • xul-ext-compactheader                       - Icedove extension to reduce header size to one or two lines
+    • xul-ext-firetray                            - system tray extension for Iceweasel, Icedove, etc.
+    • xul-ext-https-everywhere                    - extension to force the use of HTTPS on many sites
+    • xul-ext-mozvoikko                           - Finnish spell-checker extension for Iceweasel
+    • xul-ext-nostalgy                            - keyboard shortcut extension for Icedove
+    • xul-ext-quotecolors                         - Colorize different quoting levels in e-mail messages
+    • xul-ext-sieve                               - extension that implements the ManageSieve protocol
+    • xul-ext-timeline                            - adds a timeline above the Icedove status bar
+
+  :NO?:
+    • xul-ext-adblock-plus                        - advertisement blocking extension for web browsers
+    • xul-ext-adblock-plus-element-hiding-helper  - companion for Adblock Plus to create element hiding rules
+    • xul-ext-ublock-origin                       - general-purpose lightweight ads, malware, trackers blocker
+
+  :NO:
+    • calendar-exchange-provider                  - MS Exchange support for iceowl-extension
+    • cinnamon-desktop-environment                - Cinnamon desktop environment - full desktop with extra components
+    • icedove-dbg                                 - Debug Symbols for Icedove
+    • icedove-dev                                 - Development files for Icedove
+    • xul-ext-dispmua                             - display Mail User Agent extension for Icedove
+    • xul-ext-flashgot                            - Extension to handle downloads with external download managers
+    • xul-ext-foxyproxy-standard                  - advanced proxy management tool for Iceweasel, Icedove and Iceape
+    • xul-ext-gcontactsync                        - synchronize contacts from Gmail into IceDove
+    • xul-ext-google-tasks-sync                   - synchronize tasks from Google Tasks into IceDove
+    • xul-ext-password-editor                     - edit password manager entries in Mozilla applications
+    • xul-ext-personasplus                        - easy-to-install skins for Firefox/Iceweasel
+    • xul-ext-sogo-connector                      - transforms Icedove into a full DAV client for groupware servers
+    • xul-ext-stylish                             - styles manager to customize web sites with themes and skins
+    • xul-ext-tbdialout                           - facilitates clicking the phone numbers in the address book
+    • xul-ext-toggle-proxy                        - status bar icon to toggle between two proxy settings
+
+  :MUST NOT:
+    • enigmail                                    - GPG support for Thunderbird and Debian Icedove
+    • xul-ext-dom-inspector                       - tool for inspecting the DOM of web pages
+    • xul-ext-gnome-keyring                       - Store mozilla passwords in GNOME Keyring
+    • xul-ext-torbirdy                            - configures and enhances various Mozilla birds for anonymity use
+
+
+----------------------------------------------------------------------
+
+This file is interesting,
+it includes a set of preferences for firefox and thunderbird that are set during testing.
+It turns off a lot of the "phone home to the internet and snitch on the user" settings. ::
+
+
+    EXAMPLE ⇒
+
+    // Unless overridden per-account, don't download emails into the local store.
+    // NOTE: we should lock all the overrides, too.
+    lockPref('mail.server.default.offline_download', false);
+    // Don't spy on the user and report back to mozilla.com.
+    lockPref('toolkit.telemetry.enabled', false);

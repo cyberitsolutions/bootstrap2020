@@ -1,0 +1,104 @@
+# FIXME: can we save space by forcing pngcrush & jpegoptim on all the images?  That'd be dead sexy.
+# EXPERIMENTAL: save space by crushing images.
+chroot $t apt-get install jpegoptim pngcrush graphicsmagick
+chroot $t find -O3 / -xdev -type f '(' -iname '*.jpg' -o -iname '*.png' ')' -print0 | chroot $t du --files0-from=- -sch| grep total
+chroot $t gm mogrify /usr/share/games/wesnoth/1.12/data/campaigns/Northern_Rebirth/images/campaign_image.jpg # This *was* a PNG with a JPG extension.
+chroot $t find -O3 / -xdev -type f -iname '*.jpg' -ls -exec jpegoptim -m75 {} \;
+chroot $t find -O3 / -xdev -type f -iname '*.png' -ls -exec pngcrush -q {} {}~ \; -exec mv {}~ {} \;
+chroot $t find -O3 / -xdev -type f '(' -iname '*.jpg' -o -iname '*.png' ')' -print0 | chroot $t du --files0-from=- -sch| grep total
+
+
+10:39 <twb> mattcen: why is the exit status from this, 1?
+10:39 <twb> chroot $t find -O3 / -xdev -type f -iname '*.jpg' -ls -exec jpegoptim -m75 {} +
+10:42 <russm> twb: ^ how much win does that give?
+10:42 <twb> That's what I aim to find out
+10:42 <mattcen> twb: dunno
+10:42 <twb> If it had Just Worked I'd know already
+10:43 <russm> I think that probably means that jpegoptim returned != 0 on at least one invocation
+10:43 <twb> Nod
+10:43 <twb> Aha
+10:44 <twb> /usr/share/games/wesnoth/1.12/data/campaigns/Northern_Rebirth/images/campaign_image.jpg  [ERROR]
+10:44 <russm> fucking wesnoth
+10:44 <twb> Fucken wesnoth
+10:48 <twb> chroot $t gm mogrify /usr/share/games/wesnoth/1.12/data/campaigns/Northern_Rebirth/images/campaign_image.jpg # This *was* a PNG with a JPG extension.
+11:24 <twb> russm: jpegoptim + pngcrush saves 5% of the size of all images, from 702MiB to 665MiB (or about 1% of a 3.2GiB total SOE)
+
+
+12:28 <twb> WOW.  There's 125MiB of .svg files   ---- we could save about 80% of that by compressing them to .svgz
+
+
+----------------------------------------------------------------------
+
+17:24 *** twb JOIN #svg
+17:25 <twb> I make linux kiosks that prison inmates use.  They have about 200MB of SVGs, mostly folder icons and suchlike.  It it possible to "minify" them, to save space/bandwidth ?
+17:26 <twb> (My first thought was to just switch to .svgz, but 1. I don't know if the apps will cope with that; and 2. I'm doing stronger LZMA2 compression on the block device anyway.)
+17:28 <twb> http://sprunge.us/XhSQ ::
+
+    root@zygon:~# chroot /tmp/bootstrap/live/ find / -iname '*.svg' -exec du -h {} + | sort -hr | head -30
+    2.6M    /usr/share/inkscape/tutorials/tutorial-tracing-pixelart.zh_TW.svg
+    2.5M    /usr/share/inkscape/tutorials/tutorial-tracing-pixelart.svg
+    2.5M    /usr/share/inkscape/tutorials/tutorial-tracing-pixelart.nl.svg
+    2.5M    /usr/share/inkscape/tutorials/tutorial-tracing-pixelart.fr.svg
+    2.5M    /usr/share/inkscape/tutorials/tutorial-tracing-pixelart.el.svg
+    2.3M    /usr/share/inkscape/icons/tango_icons.svg
+    2.2M    /usr/share/kde4/apps/kfourinline/grafix/yellow.svg
+    1.3M    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-spreadsheet.svg
+    1.3M    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-spreadsheet-template.svg
+    1.3M    /usr/share/icons/hicolor/scalable/apps/libreoffice-calc.svg
+    1.3M    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-spreadsheet.svg
+    1.3M    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-spreadsheet-template.svg
+    1.3M    /usr/share/icons/gnome/scalable/apps/libreoffice-calc.svg
+    1.2M    /usr/share/kde4/apps/kfourinline/grafix/gray_reflection.svg
+    1.2M    /usr/share/kde4/apps/kfourinline/grafix/default.svg
+    1.2M    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-web-template.svg
+    1.2M    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-web-template.svg
+    976K    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-drawing-template.svg
+    976K    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-drawing-template.svg
+    876K    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-presentation-template.svg
+    876K    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-presentation-template.svg
+    824K    /usr/share/gcompris/boards/memory/gcompris_band.svg
+    768K    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-text-template.svg
+    768K    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-text-template.svg
+    756K    /usr/share/kde4/apps/khangman/pics/bees/khangman_bees.svg
+    728K    /usr/share/kde4/apps/khangman/pics/winter/khangman_winter.svg
+    660K    /usr/share/icons/hicolor/scalable/mimetypes/libreoffice-oasis-formula.svg
+    660K    /usr/share/icons/hicolor/scalable/apps/libreoffice-math.svg
+    660K    /usr/share/icons/gnome/scalable/mimetypes/libreoffice-oasis-formula.svg
+    660K    /usr/share/icons/gnome/scalable/apps/libreoffice-math.svg
+
+17:33 <twb> Hrm, there are bunch of tools to do this on github, and at least python-scour in apt already.
+17:36 <fsod> Yes, there should be various "optimizers"/minifiers around if that fits the bill
+17:36 <twb> Are any particularly recommended?
+17:37 <twb> Last time I did any serious svg was back when sun had a svg+js demo page :P
+17:37 <fsod> =)
+17:38 <fsod> svgo I think is pretty decent
+17:38 <[AD]Turbo> yo all
+17:38 <fsod> twb, http://sarasoueidan.com/blog/svgo-tools/
+17:41 <twb> I was afraid you'd say that :P  I am not on the nodejs bandwagon yet
+17:41 <twb> Urgh that site assumes cookies
+17:46 <twb> Anyways Debian already had scour, so I threw that at it to see how it'd do, and it seems to be getting about 0.6 to 0.8 compression ratio so far
+17:46 <twb> Apparently I have a few foo.svgz files that aren't gzipped, so that's... great
+17:47 <fsod> =)
+
+    root@zygon:~# find /tmp/bootstrap/live/ -type f '(' -iname '*.svg' -o -iname '*.svgz' ')' -print0 | du --files0-from=- --total --human-readable | grep total$
+    135M    total
+
+    root@zygon:~# time find /tmp/bootstrap/live/ -type f '(' -iname '*.svg' -o -iname '*.svgz' ')' -exec scour --create-groups --enable-id-stripping --enable-comment-stripping --shorten-ids --remove-metadata --indent=none -i {} -o {}~ \; -exec mv {}~ {} \;
+    [...boring output...]
+
+    real    18m59.388s
+    user    18m23.536s
+    sys     0m25.324s
+
+    root@zygon:~# find /tmp/bootstrap/live/ -type f '(' -iname '*.svg' -o -iname '*.svgz' ')' -print0 | du --files0-from=- --total --human-readable | grep total$
+    80M     total
+
+    ## Except that scour has not re-compressed the .svgz again, so
+
+    root@zygon:~# find /tmp/bootstrap/live/ -type f -iname '*.svgz' -exec gzip {} \; -exec mv {}.gz {} \;
+    root@zygon:~# find /tmp/bootstrap/live/ -type f '(' -iname '*.svg' -o -iname '*.svgz' ')' -print0 | du --files0-from=- --total --human-readable | grep total$
+    73M     total
+
+So we save a total of 62MiB (before squashfs).
+So we save 46% of the SVG space (before squashfs).
+We save about 0.6% of the total filesystem.squashfs.

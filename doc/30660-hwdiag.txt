@@ -1,0 +1,37 @@
+FTR, I built a hwdiag_<date>.squashfs that I dropped in ~root on our test prisonpc servers.
+It includes just the lshw/dmidecode/lspci/lsusb bits.
+
+If you drop it into /srv/netboot/images/blah/ and reboot, you should have those binaries.
+NB: if blah was built before about 2016-02-01, its glibc will be too old.
+
+The script I used to build this is dropped into e.g. bootstrap.git:master:bootstrap::
+
+    ## We have existing Debian Live SOEs that exclude diagnostic tools,
+    ## for reasons of security paranoia.
+    ## When we want to run diagnostic tools on hardware,
+    ## rather than make a completely separate diag SOE,
+    ## just add drop in a diagnostic overlay errata squashfs.
+    ## This is similar to the old Morphix "module" system.
+    ##
+    ## NB: at first I tried just installing the packages,
+    ## then passing their files directly to mksquashfs.
+    ## Unfortunately if you do "mksquashfs usr/bin/foo bin/bar baz.sq",
+    ## you end up with ./foo and ./bar in the sq root.
+    ## For libraries, this just won't work.
+    ##
+    ## Then I tried cpio instead, but that was a pain.
+    ##
+    ## Instead just have dpkg extract the files into another buildroot.
+    ##
+    ## Since wget won't work in there (due to missing the linker & libc),
+    ## run update-<foo>ids in the base chroot,
+    ## then copy them into the hwdiag "chroot".
+    chroot $t find /var/cache/apt/archives/ -name '*.deb' -delete
+    chroot $t apt-get install pciutils usbutils lshw dmidecode wget
+    chroot $t find /var/cache/apt/archives/ -name '*.deb' -exec dpkg-deb -x {} /boot/hwdiag/ \;
+    chroot $t update-pciids
+    chroot $t update-usbids
+    chroot $t cp -v {,/boot/hwdiag/}/var/lib/usbutils/usb.ids
+    chroot $t cp -v {,/boot/hwdiag/}/usr/share/misc/pci.ids
+    mksquashfs $t/boot/hwdiag $t/boot/hwdiag_"$(date -I)".squashfs -b 1M -comp xz -Xbcj x86 -Xdict-size 100% -no-recovery
+    exit 1

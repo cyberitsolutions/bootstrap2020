@@ -1,0 +1,70 @@
+10:32 *** twb JOIN #docs@irc.gnome.org
+10:34 <twb> Can yelp be tricked into rendering KDE manuals?  I have a mix of GNOME & KDE apps, so I ship yelp *and* khelpcenter4 --- I'd prefer to ship only yelp.
+10:41 <gpoo> which is the format of kde's documentation?
+10:41 <gpoo> (not that I know the answer :-)
+10:43 <twb> docbook
+10:43 <twb> I haven't looked lately but I think it's just indexed slightly differently
+10:45 <gpoo> if that is the case, maybe with some xlst2 transformations...
+10:45 <gpoo> or maybe there is a better solution
+10:46 <gpoo> shaunm might know better, though
+10:46 <twb> I was hoping something like "yelp file:///usr/share/doc/kde/knavalbattle/manual.xml" rather than "yelp help:aisleriot" or whatever the gnome URL style is
+10:47 <twb> I haven't thought about this at all really -- I hoped someone would have already solved this
+10:51 <gpoo> twb: did you try with the url? as you said
+10:51 <gpoo> yelp groks docbook, mallard, info, and man
+10:53 <twb> I didn't yet, no :-)
+10:53 <twb> Lemme go do that
+10:55 <twb> Hmm maybe it's HTML not docbook...
+10:55 <twb> There's a /usr/share/doc/kde/HTML/en/kbruch/index.cache.bz2 which appears to be HTML
+10:55 <twb> There's /usr/share/doc/kde/HTML/en/kbruch/man-kbruch.1.docbook as well but that's different content, I think
+10:56 <gpoo> yelp transforms everything to html
+10:56 <gpoo> so, if it is html, it can show it as it is, I believe
+10:57 <twb> I will have to do some more poking around
+10:57 <gpoo> indeed
+10:57 <gpoo> good luck
+10:58 <twb> root@alef:~# yelp file:///usr/share/doc/kde/HTML/en/kbounce/index.docbook
+10:58 <twb> [1771:1771:0909/105834:FATAL:setuid_sandbox_client.cc(126)] Check failed: IsFileSystemAccessDenied().
+10:59 <gpoo> that sounds like a restriction at the system level
+11:00 <twb> The man-kbruch.1.docbook XML included a URL "help:/kbruch" so I tried that and help:kbruch, but they both just cause yelp to say it can't find help:kbruch/index
+11:00 <twb> gpoo: yeah, which is odd because AFAIK this host doesn't have selinux or anything configured
+11:00 <twb> It might be that yelp internally is configured to refuse file://* always, for security reasons
+11:01 <gpoo> try with an html page, it should work. it works here, at least.
+11:02 <twb> gpoo: as in yelp file:///home/twb/foo.html ?
+11:02 <gpoo> yes, or even without file://
+11:02 <twb> OK
+11:03 <gpoo> it works here either way.
+
+[...]
+
+12:48 <shaunm> twb: (1) the help: scheme was intended to be shared between gnome and kde. it was worked out between me and a kde developer back in 2009. I was the only one that implemented it. :(
+12:49 <shaunm> (2) last I knew, khelpcenter can't display docbook natively, and kde installs both the rendered html and the source docbook. I don't understand why they install the source docbook if they're just using the rendered html.
+12:49 <shaunm> (my information might be out of date here)
+12:49 <twb> Probably because they're dumb
+12:49 <twb> FSVO they = could be the debian packagers
+12:49 <shaunm> (3) you can point yelp at any docbook or html file, and it ought to work properly, except...
+12:50 <shaunm> (4) iirc kde's docbook files can only resolve entities correctly if you have some shared xml entities files installed and xml catalogs set up properly for them to load.
+12:51 <shaunm> that's all I know, I think
+12:51 <twb> OK, thanks for the succinct answers
+12:51 <shaunm> unless I know something I'm not thinking of ;)
+12:51 <shaunm> it's been a while since I worked on kde interoperability
+
+[...]
+
+12:54 <twb> The other problem I haven't mentioned yet is if you are in the KDE already and go Help > Manual or whatever, that runs khelpcenter4 now, and I'd have to work out how to trick that into running yelp instead
+12:54 *** mikergray QUIT Ping timeout: 186 seconds
+12:55 <twb> If it's just forking khelpcenter4 that'll be easy, but it's probably doing something icky like DCOP IPC to some khelpcenter "service"
+12:55 <shaunm> oh, also, kde's help:/ scheme (with a slash) effectively works as a rerooting mechanism on a path, so it's possible some resource references on those files won't resolve correctly when accessed as file:/ URIs
+12:55 <shaunm> is DCOP still a thing?
+12:56 <twb> No idea
+12:57 <shaunm> honestly, on the flip side, I couldn't guarantee any sanity in how gnome apps call yelp. some call `yelp`, some call `gnome-help`, some ask for the default handler for help: URIs, some still ask for the default handler for ghelp: URIs
+12:57 <twb> So I tested a bit more, and "yelp /usr/share/doc/kde/HTML/en/kbounce/index.docbook" shows an empty window (no error) --- I think that's the entity problem you mentioned.
+12:57 <twb> "yelp /usr/share/doc/kde/HTML/en/kbounce/index.cache.bz2" didn't work, but if I manually bunzip2 it and rename it to index.html, then
+12:58 <twb> "yelp /usr/share/doc/kde/HTML/en/kbounce/index.html" *does* render
+12:58 <shaunm> a dbus service endpoint you expect your desktop to implement wouldn't be an awful way of doing things, but only if we could agree on a base system so app authors had some assurance their help would actually work
+12:58 <twb> shaunm: right
+12:58 <shaunm> oh, right, they have those quasi-tarballs. forgot about those.
+12:59 <shaunm> having yelp be able to gunzip/bunzip2/etc docbook, html, and mallard would be nice, actually. already does it for man and info anyway.
+12:59 <twb> What would be ideal from my perspective is if KDE and GNOME both had a help viewer, and both could see *both* lots of docs, and the same dbus call would open the "native" help viewer.
+12:59 <twb> So that Help > Manual of a KDE app on GNOME desktop would use yelp
+13:00 <twb> And vice versa for GNOME app in KDE desktop
+13:01 <shaunm> that would be incredibly nice
+13:02 <twb> My actual plan A to solve this is to try to get rid of KDE apps altogether, because they're a pain for more than just this

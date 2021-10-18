@@ -1,0 +1,181 @@
+SHUT THE FUCK UP, D-Bus!
+========================
+
+After upgrading AMC desktops from Wheezy to Jessie,
+we started getting ridiculous amounts of spam in logcheck.
+
+Things like this::
+
+    org.freedesktop.thumbnails.Cache (tumblerd:DIGITS): tumblerd-WARNING **: Failed to start the thumbnail cache service: Another thumbnail cache service is already running
+    org.freedesktop.thumbnails.Cache (tumblerd:PID): GLib-GObject-CRITICAL **: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+    org.freedesktop.thumbnails.Cache (tumblerd:PID): GStreamer-CRITICAL **: gst_bus_timed_pop_filtered: assertion 'GST_IS_BUS (bus)' failed
+    org.freedesktop.thumbnails.Cache (tumblerd:PID): GStreamer-CRITICAL **: gst_element_get_bus: assertion 'GST_IS_ELEMENT (element)' failed
+    org.freedesktop.thumbnails.Cache (tumblerd:PID): GStreamer-CRITICAL **: gst_element_set_state: assertion 'GST_IS_ELEMENT (element)' failed
+    org.freedesktop.thumbnails.Cache libpng error: Read Error
+    org.freedesktop.thumbnails.Thumb (tumblerd:DIGITS): GVFS-RemoteVolumeMonitor-WARNING **: Owner of volume monitor org.gtk.Private.UDisks2VolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+    org.freedesktop.thumbnails.Thumb (tumblerd:PID): GLib-GObject-CRITICAL **: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+    org.freedesktop.thumbnails.Thumb (tumblerd:PID): GLib-GObject-CRITICAL **: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+    org.freedesktop.thumbnails.Thumb (tumblerd:PID): GStreamer-CRITICAL **: gst_bus_timed_pop_filtered: assertion 'GST_IS_BUS (bus)' failed
+    org.freedesktop.thumbnails.Thumb (tumblerd:PID): GStreamer-CRITICAL **: gst_element_get_bus: assertion 'GST_IS_ELEMENT (element)' failed
+    org.freedesktop.thumbnails.Thumb (tumblerd:PID): GStreamer-CRITICAL **: gst_element_set_state: assertion 'GST_IS_ELEMENT (element)' failed
+    org.freedesktop.thumbnails.Thumb (tumblerd:PID): GStreamer-CRITICAL **: gst_object_unref: assertion 'object != NULL' failed
+    org.freedesktop.thumbnails.Thumb g_dbus_connection_real_closed: Remote peer vanished with error: Underlying GIOStream returned 0 bytes on an async read (g-io-error-quark, 0). Exiting.
+    org.freedesktop.thumbnails.Thumb libpng error: Read Error
+    org.gtk.Private.UDisks2VolumeMon index_parse.c:191: indx_parse(): error opening /media/p1234/UNTITLED_DISC/BDMV/BACKUP/index.bdmv
+    org.gtk.Private.UDisks2VolumeMon index_parse.c:191: indx_parse(): error opening /media/p1234/UNTITLED_DISC/BDMV/index.bdmv
+    org.gtk.Private.UDisks2VolumeMon index_parse.c:191: indx_parse(): error opening /media/p1234/XMEN_1_5_DISC1/BDMV/BACKUP/index.bdmv
+    org.gtk.Private.UDisks2VolumeMon index_parse.c:191: indx_parse(): error opening /media/p1234/XMEN_1_5_DISC1/BDMV/index.bdmv
+    org.xfce.FileManager[PID]: (gnome-chess:PID): Gtk-WARNING **: Symbolic icon foo-bar-baz of size 16 is in an icon theme directory of size 96
+    org.xfce.FileManager[PID]: ** (gnome-chess:PID): WARNING **: Error retrieving accessibility bus address: org.freedesktop.DBus.Error.ServiceUnknown: The name org.a11y.Bu
+    org.xfce.FileManager[PID]: .* The name org.bluez was not provided by any .service files
+    org.xfce.FileManager[PID]: Warning: failed to read path from javaldx
+    org.xfce.FileManager[PID]: [XDIGITS] access_mms access error: cannot connect to images.google.com:80
+    org.xfce.FileManager[PID]: [XDIGITS] access_mms access error: cannot connect to mb.videolan.org:80
+    org.xfce.FileManager[PID]: [XDIGITS] core art finder error: no suitable access module for `http://images.google.com/images?q=...'
+    org.xfce.FileManager[PID]: [XDIGITS] core art finder error: no suitable access module for `http://mb.videolan.org/ws/2/recording/?query=...'
+    org.xfce.FileManager[PID]: [XDIGITS] core decoder error: Could not convert timestamp DIGITS
+    org.xfce.FileManager[PID]: [XDIGITS] core libvlc: Running vlc with the default interface. Use 'cvlc' to use vlc without interface.
+    org.xfce.FileManager[PID]: [XDIGITS] pulse audio output error: PulseAudio server connection failure: Connection refused
+    org.xfce.FileManager[PID]: [XDIGITS] ts demux error: libdvbpsi (PSI decoder): TS discontinuity (received 0, expected DIGITS) for PID DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] 00 motion_type at DIGITS DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] MVs not available, ER not possible.
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] ac-tex damaged at DIGITS DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] invalid cbp at DIGITS DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] invalid mb type in B Frame at DIGITS DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] invalid mb type in P Frame at DIGITS DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] mb incr damaged
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] skipped MB in I frame at DIGITS DIGITS
+    org.xfce.FileManager[PID]: [mpeg2video @ 0xXDIGITS] slice mismatch
+    org.xfce.FileManager[PID]: javaldx: Could not find a Java Runtime Environment!
+    org.xfce.FileManager[PID]: test case for pitch=DIGITS is processed DIGITS times for 100 msec
+
+The lines that say org.xfce.FileManager (Thunar --daemon) are actually coming from random GUI apps launched *via* Thunar.
+
+The access_mms lines were also reporting what DVDs and CDDAs the inmates were using,
+which is kinda privacy violation-y.
+
+The fundmental cause is this::
+
+    #ifdef HAVE_SYSTEMD
+      /* This may fail, but it's not critical.
+       * In particular, if we were compiled with journald support but are now
+       * running on a non-systemd system, this is going to fail, so we
+       * have to cope gracefully. */
+      fd_out = sd_journal_stream_fd (sitter->log_name, LOG_INFO, FALSE);
+      fd_err = sd_journal_stream_fd (sitter->log_name, LOG_WARNING, FALSE);
+    #endif
+
+    [...]
+
+    #ifdef HAVE_SYSTEMD
+             /* log to systemd journal if possible */
+             if (fd_out >= 0)
+               dup2 (fd_out, STDOUT_FILENO);
+             if (fd_err >= 0)
+               dup2 (fd_err, STDERR_FILENO);
+             close_and_invalidate (&fd_out);
+             close_and_invalidate (&fd_err);
+    #endif
+
+
+    https://sources.debian.net/src/dbus/1.8.20-0%2Bdeb8u1/dbus/dbus-spawn.c/#L1302
+
+What happens is, dbus says "we're running systemd, therefore ALL
+stdout and stderr from dbus services should go into the journal".
+
+When systemd isn't used,
+
+ * Due to the presence of <syslog /> in /etc/dbus-1/system.conf,
+   the system dbus logs to syslog.
+
+ * Due to the absence of <syslog /> in /etc/dbus-1/session.conf,
+   dbus leaves stdio file descriptors alone,
+   so they remain where /etc/X11/Xsession sent them: ~/.xsession-errors.
+
+We want the old behaviour!
+
+D-Bus provides no way to get the old behaviour!
+
+
+----------------------------------------------------------------------
+
+
+This is how I managed to reproduce the problem in the lab::
+
+    # x=(/var/lib/xdm/authdir/authfiles/*); export DISPLAY=:0 LC_ALL=C XAUTHORITY=$x
+    # dbus-send --session --print-reply --dest=org.xfce.FileManager /org/xfce/FileManager org.xfce.FileManager.Execute string:/ string:/bin/echo array:string:'grumbled diddling companions' string::0 string:
+
+The arguments were cargo-culted by studying thunar/thunar-dbus-service-infos.xml
+from the thunar package.
+
+
+----------------------------------------------------------------------
+
+
+As a workaround, we can try to patch the service files::
+
+    # cat /usr/share/dbus-1/services/org.xfce.FileManager.service
+    [D-BUS Service]
+    Name=org.xfce.FileManager
+    Exec=/bin/sh -ec 'exec >/dev/null 2>&1 /usr/bin/Thunar --daemon'
+
+That WORKED, but it's UGLY as hell, and difficult to write a clean sed rule for.
+(We need to patch *ALL* the service files, remember.)
+
+I tried using the same syntax as systemd .service files::
+
+    StandardOutput=null
+    StandardError=inherit
+    Exec=/usr/bin/Thunar --daemon
+
+The dbus .service format isn't documented so I had to RTFS.
+Based on desktop-file.h it supports Name=, Exec=, User=, and SystemdService=,
+and all other keys are silently ignored.
+
+I thought: if dbus runs some intermediary helper before Thunar,
+I could put it behind a wrapper.  I straced it. I was wrong::
+
+    # strace -o/tmp/trace -fetrace=process dbus-launch dbus-send [...as above...]
+    2029  execve("/usr/bin/dbus-launch", ["dbus-launch", "dbus-send", ...
+    2029  clone(child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7fcdddf959d0) = 2030
+    2030  <... clone resumed> child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7fcdddf959d0) = 2031
+    2031  execve("/usr/bin/dbus-daemon", ["/usr/bin/dbus-daemon", "--fork", "--print-pid", "5", "--print-address", "7", "--session"], [/* 21 vars */]) = 0
+    2031  clone(child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f8fc5ebeb50) = 2033
+    2033  clone(child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f8fc5ebeb50) = 2034
+    2034  clone(child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f8fc5ebeb50) = 2035
+    2034  wait4(2035, 0x7ffd917e966c, WNOHANG, NULL) = 0
+    2035  execve("/usr/bin/Thunar", ["/usr/bin/Thunar", "--daemon"], [/* 24 vars */]) = 0
+
+I tried using nohup, but because the stdout and stderr are already
+going to something other than /dev/tty, nohup says "I have nothing to do".
+
+So I went back to the sh approach.
+Sigh.
+
+
+----------------------------------------------------------------------
+
+
+Should I append to .xsession-errors, which is where these lines used to go?
+I'm worried that if I just do "exec >>~/.xsession-errors",
+the other processes that still have it open (from /etc/X11/Xsession) will race.
+
+Probably that's not really a big deal,
+but I thought we could instead append to a new file, ~/.dbus-errors.
+That will remind people it's dbus being a retard.
+
+OTOH that also means we have to truncate that file, too::
+
+   --- a/bootstrap
+   +++ b/bootstrap
+     sed -i '/^ERRFILE=/a truncate -s0 "$ERRFILE"' $t/etc/X11/Xsession # Don't grow indefinitely. (#24889)
+   + sed -i '/^ERRFILE=/a truncate -s0 ~/.dbus-errors' $t/etc/X11/Xsession  # Don't grow indefinitely. (#30648)
+   + chroot $t find /usr/share/dbus-1/services/ -name '*.service' -exec sed -rsi 's|^Exec=|& ... |' {} +
+
+Just on that basis, I'm inclined to use .xsession-errors anyway,
+and say "fuck you!" to race conditions.
+
+
+Here's the final version, which should match bootstrap (unless this rant goes stale)::
+
+    chroot $t find /usr/share/dbus-1/services/ -name '*.service' -exec sed -rsi 's|^Exec=|&/bin/sh -ec '\''exec >>~/.xsession-errors 2>\&1 "$@"'\'' -- |' {} +

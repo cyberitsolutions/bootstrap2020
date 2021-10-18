@@ -1,0 +1,21 @@
+SOEs only ship enough to load pre-compiled profiles.
+If you want to create / amend / debug a profile, you need these ingredients::
+
+    chroot $t apt install apparmor-utils less               # aa-genprof (adds ~40MB)
+    >$t/etc/rsyslog.conf printf %s\\n '$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat' 'module(load="imklog")' 'kern.* -/var/log/syslog'   # polled by aa-genprof
+
+    #chroot $t rm -r /etc/apparmor.d                                                             # COMMENT OUT
+    #removing **/*bin/@(ldd|pldd|catchsegv)                                                      # COMMENT OUT (delete-bad-files --- aa-autodep needs ldd)
+    #removing **/*bin/@(arpd|bridge|ctstat|lnstat|nstat|routef|routel|rtacct|rtmon|rtstat|ss|tc) # COMMENT OUT (delete-bad-files --- aa-unconfined uses ss)
+
+    # Know that we use /home/ROLE/NAME not /home/NAME.
+    sed -i $t/etc/apparmor/logprof.conf -e '\|/home/*|d'
+    >>$t/etc/apparmor/logprof.conf echo '^/home/(?:staff|prisoners)/[^\/]+ = @{HOME}'
+
+NOTE: less is needed because aa-logprof is hard-coded to call less, not $PAGER.
+
+NOTE: often aa-genprof does not correctly detect the date range to pass to aa-logprof internally.
+If this happens, quit out of genprof and run logprof by hand::
+
+    journalctl -k >x
+    aa-logprof --file=x

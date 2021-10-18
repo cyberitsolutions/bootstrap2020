@@ -1,0 +1,42 @@
+mattcen (et al),
+
+I want a second opinion about this implementation decision.
+
+Exclude files in dpkg.cfg (instead of mksquashfs)?
+
+  BONUS: adding exceptions for C & en languages is MUCH clearer.
+
+  BONUS: files aren't even extracted - build time slightly faster
+
+  BONUS: the install & exclude lines are in the same block of code,
+         rather than excludes being buried at the end of the script.
+
+  MALUS: *ONLY* affects dpkg.  Files created with ucf or debconf will ignore the rule.
+
+  MALUS: breaks some postinsts (e.g. dictionaries-common assumes its emacs files were created)
+
+  MALUS: this doesn't work:
+
+           path-exclude=/usr/share/doc
+           path-include=/usr/share/doc/kde/HTML/{C,en*}
+
+         instead you have to say
+
+           path-exclude=/usr/share/doc/*
+           path-include=/usr/share/doc/kde
+           path-include=/usr/share/doc/kde/HTML
+           path-include=/usr/share/doc/kde/HTML/{C,en*}
+
+         and I'm not not 100% sure that's working as desired,
+         because Dad was giving a lecture while I was testing this.
+
+The last two are the real show-stoppers.
+
+
+The other alternative is one you can see in some places below,
+where I explicitly do
+
+    rm /usr/share/applications/foo.desktop
+
+So that an upgrade changing foo.desktop to foo2.desktop causes an error and WE NOTICE.
+I think I overestimated that risk and applied that idiom for unimportant things.

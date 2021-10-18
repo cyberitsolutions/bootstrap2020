@@ -1,0 +1,70 @@
+The bootstrap script emits only the kernel/ramdisk/rootfs for the netboot server.
+The rest of the process is documented below.
+
+Set up syslinux as usual on a USB key's VFAT /dev/sdz1 partition.
+
+The following structure::
+
+    # The netboot server bootloader.
+    ldlinux.sys
+    syslinux.cfg
+    menu.c32
+
+    # The netboot server files.
+    live/filesystem.squashfs
+    live/initrd.img
+    live/vmlinuz
+
+    # Patch in the SOEs & pxelinux config
+    live/filesystem.module
+    live/filesystem.dir/srv/tftp/pxelinux.cfg/default
+
+    # The SOEs themselves.
+    live/filesystem.dir/srv/tftp/foo/filesystem.squashfs
+    live/filesystem.dir/srv/tftp/foo/initrd.img
+    live/filesystem.dir/srv/tftp/foo/vmlinuz
+    live/filesystem.dir/srv/tftp/bar/filesystem.squashfs
+    live/filesystem.dir/srv/tftp/bar/initrd.img
+    live/filesystem.dir/srv/tftp/bar/vmlinuz
+    live/filesystem.dir/srv/tftp/baz/filesystem.squashfs
+    live/filesystem.dir/srv/tftp/baz/initrd.img
+    live/filesystem.dir/srv/tftp/baz/vmlinuz
+
+The file contents should be as follows.
+
+syslinux.cfg::
+
+    UI menu.c32
+    PROMPT 1
+    TIMEOUT 30
+
+    LABEL linux
+      MENU LABEL Netboot server (YYYY-MM-DD)
+      KERNEL live/vmlinuz
+      APPEND initrd=live/initrd.img boot=live ip=eth0:10.0.0.1:8:10.0.0.1:10.0.0.1
+
+live/filesystem.module::
+
+    filesystem.squashfs
+    filesystem.dir
+
+live/filesystem.dir/srv/tftp/pxelinux.cfg/default::
+
+    UI menu.c32
+    PROMPT 1
+    TIMEOUT 30
+
+    LABEL foo
+      MENU LABEL foo
+      KERNEL foo/vmlinuz
+      APPEND initrd=foo/initrd.img boot=live fetch=http://10.0.0.1/foo/filesystem.squashfs
+
+    LABEL bar
+      MENU LABEL bar
+      KERNEL bar/vmlinuz
+      APPEND initrd=bar/initrd.img boot=live fetch=http://10.0.0.1/bar/filesystem.squashfs
+
+    LABEL baz
+      MENU LABEL baz
+      KERNEL baz/vmlinuz
+      APPEND initrd=baz/initrd.img boot=live fetch=http://10.0.0.1/baz/filesystem.squashfs

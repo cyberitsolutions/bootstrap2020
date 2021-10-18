@@ -1,0 +1,40 @@
+Fast reboot times are "nice to have" for inmates,
+but "*VERY* nice to have" for us developers.
+
+There are two key problems with kexec:
+
+1. Under systemd, kexec-load doesn't start reliably.
+
+   Assuming mksquashfs.exclusions hasn't gutted systemd's sysvinit
+   compatibility layers yet, this can be (more-or-less) fixed thusly::
+
+       root@spoon:~# cat /srv/netboot/images/inmate/site.dir/etc/systemd/system/kexec-load.service.d/fix.conf
+       [Service]
+       ExecStop=
+       ExecStop=/usr/sbin/pxe-kexec -nLl linux prisonpc
+       Type=oneshot
+       ExecStart=
+       ExecStart=/bin/true
+
+2. It's slower than it should be!
+   See https://bugs.debian.org/806285
+   On an H81 running jessie, with the above fix, it takes **55s** to reboot from xdm login to xdm login.
+   It should be **40s**.
+
+   This can't be fixed without patching the pxe-kexec source,
+   or replacing it with a shitty python script (EASIER!).
+
+   We could reduce it to **35s** without recoding pxe-kexec by simply
+   running it every few minutes, instead of only during reboot.
+   (This is about 25MB per desktop per interval, which is why we've avoided it so far.)
+
+   kexec'ing ipxe would work, but (unlike pxe-kexec) it will have the STP bringup delay,
+   because ipxe can't inherit the network setup from the already-running desktop.
+
+   For comparison, jessie/h81 cold boot is **55s**.
+
+   For comparison, jessie/h81 reboot w/o kexec is **55s**.
+
+Because this is non-zero effort to get working *well*,
+and Ron gives ZERO shits about it,
+kexec is simply disabled until further notice.

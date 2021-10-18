@@ -1,0 +1,162 @@
+Background
+==========
+
+Normally a Debian Live system does several independent DHCP DORA bringups:
+
+* the PXE ROM does one.
+* the live-boot ramdisk does one using ipconfig (from klibc-utils).
+* the root filesystem does one,
+  and keeps running in the background to deal with lease expiry.
+
+Because under PrisonPC all DHCP allocations are "fixed" by TCA,
+we don't bother with the third step.  When the lease expires,
+the desktop just keeps using the address.
+
+At first this was an accident,
+later we kept it because fixing it was nontrivial.
+
+
+There are some problems with this approach:
+
+* the Understudy SOE is sometimes deployed outside of PrisonPC.
+* tca can reallocate the address to a new host [FIXME: task number]
+* we have to hard-code the NTP server hostname,
+  instead of getting it from DHCP.
+
+So we'd like to fix this eventually.
+
+
+Problem
+=======
+
+Originally we used isc-dhcp-server.  ISC is always terrible.
+
+In Debian 7 we wanted to use busybox udhcpc instead, (#23324)
+because busybox is already there, and it's simple and it works.
+EXCEPT there were problems with ifupdown integration.
+
+In Debian 8 we want to use systemd-networkd instead, (#30134)
+because it's already there and PREPARE TO BE ASSIMILATED.
+EXCEPT it doesn't work because of #23221 (Vendor Class check),
+which requires VendorClassIdentifier from systemd v216+ (jessie has v215).
+
+WARNING: v216+ changed a lot of this code;
+it also also needs at least UseDomains=yes.
+
+
+What happens if there's multiple ethernet cards plugged in?
+
+When booting off the network,
+live-boot 3 (wheezy) & 4 (jessie) are *SUPPOSED TO* configure
+/etc/network/interfaces to use a static address on the configured interface.
+I don't think they ever actually DID that.
+
+
+
+Draft Implementation
+====================
+
+I think systemd-networkd is enabled by default, so we *don't* need to do this::
+
+    chroot $t systemctl enable systemd-networkd
+
+We *do* need tell it to perform DHCP, or it just logs NO-/CARRIER status. ::
+
+    >$t/etc/systemd/network/live.network    printf %s\\n [Match] 'Name=eth[0-9]*'  [Network] DHCP=v4  [DHCP] CriticalConnection=yes UseMTU=yes
+
+In theory with that, we can also remove::
+
+    >$t/etc/systemd/timesyncd.conf          printf %s\\n [Time] Servers=ntp
+
+
+.. WARNING:: This WILL NOT WORK if you have multiple NICs cabled.
+   In that case, you can get BOOTIF= from /proc/cmdline and add
+   mangle that into a [Match] MACAddress line, which *MUST* be in
+   de:ad:be:ef:ba:be format.
+
+.. WARNING:: even then, systemd-networkd won't flush the addresses &
+   routes already on the link, before doing a DHCP.  Not sure yet if
+   this is a serious problem.
+
+
+Test Results
+============
+
+Key points:
+
+* when a PrisonPC client boots,
+  it should get its hostname and DNS domain name from DHCP.
+
+  This is working even systemd-networkd masked (completely disabled),
+  I can't find the code that's doing this.
+  Something (ipconfig?) creates /run/net-eth0.conf with the right hostname in it.
+
+  Should it also set up /etc/hostname & /etc/hosts?
+  This appears to be unnecessary now.
+
+* when alpha-understudy boots,
+  it should *SEND* the hostname,
+  so that dnsmasq on alpha adds it,
+  and other hosts can refer to it by name.
+
+  I tested a generic boot with systemd-networkd enabled (and live.network configured),
+  with no /etc/ethers & /etc/hosts entries on the dnsmasq side.
+  The hostname stayed "localhost".
+
+  Creating these files at build time didn't help::
+
+    >$t/etc/hostname echo disappointingly-cicadae
+    >$t/etc/sysctl.d/hostname.conf echo kernel/hostname=pullover-defers
+
+  Shortly *after* systemd-networkd started, the logs all changed to pullover-defers,
+  but dnsmasq didn't have an A record for either name, nor a PTR for the IP address.
+  (Which makes sense, because tcpdump showed systemd-networkd didn't send-hostname.)
+
+  If I "systemctl restart systemd-networkd" with the above, I see::
+
+    Nov 20 18:39:55 pullover-defers systemd-networkd[469]: eth0 : Not connected to system bus, ignoring transient hostname.
+
+  What if we do one of those things in the ramdisk, before systemd starts?
+
+  Change "panic=10" to "break".
+  At the (initramfs) prompt, "hostname pounding-gobble" then Ctrl+D.
+  Once the login prompt appears, "ping pounding-gobble" from server works!
+
+* Without setting an explicit NTP server in timesyncd.conf,
+  with systemd-networkd off, it tries & fails to reach Debian NTP servers.
+
+  With systemd-networkd *on*, and dnsmasq allowing the requests,
+
+* From RTFS, as at v215, it looks like
+  systemd-networkd will ALWAYS use the NTP servers suggested by the DHCP server.
+  systemd-networkd will ALWAYS send the hostname to the DHCP server.
+
+  *BUT*!  With live.network configured and *without* Server=ntp, even
+  after the network is up, timesyncd continues to try to talk to
+  Debian NTP servers instead of the one offered by dnsmasq (dhcp-option=42,0.0.0.0).
+
+
+
+Understudy tests
+----------------
+
+* With [Match] Name=eth[0-9]*, if you plug in a second NIC,
+  they BOTH come up and you get conflicting routes.
+
+* With [Match] MACAddress=... taken from BOOTIF,
+  only the boot NIC comes up, but you get this::
+
+    $ ssh login,203.7.155.174 busybox ip r
+    default via 203.7.155.129 dev eth0
+    default via 203.7.155.129 dev eth0  metric 1024
+    203.7.155.128/26 dev eth0  src 203.7.155.174
+    203.7.155.129 dev eth0  metric 1024
+
+* With [Match] MACAddress=... taken from BOOTIF,
+  AND "ip a flush up" before switch_root,
+  you get this::
+
+    $ ssh root@login,alpha-understudy busybox ip r
+    default via 203.7.155.129 dev eth0  metric 1024
+    203.7.155.128/26 dev eth0  src 203.7.155.174
+    203.7.155.129 dev eth0  metric 1024
