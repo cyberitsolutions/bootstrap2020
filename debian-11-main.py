@@ -69,14 +69,20 @@ parser.add_argument('--template', default='main',
                              'zfs',
                              'understudy',
                              'datasafe3',
-                             'desktop'),
+                             'desktop',
+                             'desktop-inmate',
+                             'desktop-staff'
+                             ),
                     help=(
                         'main: small CLI image;'
                         'dban: erase recycled HDDs;'
                         'zfs: install/rescue Debian root-on-ZFS;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4;'
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4;'
-                        'desktop: tweaked XFCE.'))
+                        'desktop: tweaked XFCE;',
+                        'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
+                        'desktop-staff:  desktop w/ PrisonPC operational staff stuff.'
+                    ))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                    help='build slower to get a smaller image? (default=size)')
@@ -143,6 +149,8 @@ if args.boot_test and args.netboot_only and not have_smbd:
                     '  This is OK for small images; bad for big ones!')
 
 template_wants_GUI = args.template.startswith('desktop')
+template_wants_paranoia = (args.template.startswith('desktop-inmate') or
+                           args.template.startswith('desktop-staff'))
 template_wants_disks = args.template in {'dban', 'zfs', 'understudy', 'datasafe3'}
 template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
 
@@ -394,6 +402,8 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
+         *(['--hook-dir=debian-11-main.paranoia.hooks']
+           if template_wants_paranoia else []),
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
          'bullseye',
