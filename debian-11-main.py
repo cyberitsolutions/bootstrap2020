@@ -534,25 +534,37 @@ if args.boot_test:
               if template_wants_disks else [])])
 
 for host in args.upload_to:
-    subprocess.call(
-        ['ssh', host, f'mv -vT /srv/netboot/images/{args.template}-latest /srv/netboot/images/{args.template}-penultimate'])
+    rename_proc = subprocess.run(
+        ['ssh', host, f'mv -vT /srv/netboot/images/{args.template}-latest /srv/netboot/images/{args.template}-previous'],
+        check=False)
+    if rename_proc.returncode != 0:
+        # This is the first time uploading this template to this host.
+        # Create a fake -previous so later commands can assume there is ALWAYS a -previous.
+        subprocess.check_call(
+            ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-previous'])
     subprocess.check_call(
         ['rsync', '-aihh', '--info=progress2', '--protect-args',
          # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
-         f'--copy-dest=/srv/netboot/images/{args.template}-penultimate',
+         f'--copy-dest=/srv/netboot/images/{args.template}-previous',
          f'{destdir}/',
          f'{host}:/srv/netboot/images/{destdir.name}/'])
     # NOTE: this stuff all assumes PrisonPC.
-    # FIXME: how to deal with site.dir?
+    subprocess.check_call([
+        'ssh', host,
+        f'[ ! -d /srv/netboot/images/{args.template}-previous/site.dir ] || '
+        f'cp -at /srv/netboot/images/{destdir.name}/ /srv/netboot/images/{args.template}-previous/site.dir'])
     subprocess.check_call(
         ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-latest'])
-    soes = subprocess.check_output(
+    soes = set(subprocess.check_output(
         ['ssh', host, 'tca get soes'],
-        text=True).strip().splitlines()
-    if destdir.name not in soes:
-        soes.append(destdir.name)
-        subprocess.run(['ssh', host, 'tca set soes'],
-                       text=True, check=True, input='\n'.join(soes))
+        text=True).strip().splitlines())
+    soes |= {f'{args.template}-latest',
+             f'{args.template}-previous'}
+    subprocess.run(
+        ['ssh', host, 'tca set soes'],
+        text=True,
+        check=True,
+        input='\n'.join(sorted(soes)))
     # Sync /srv/netboot to /srv/tftp &c.
     subprocess.check_call(['ssh', host, 'tca', 'commit'])
 
