@@ -69,14 +69,20 @@ parser.add_argument('--template', default='main',
                              'zfs',
                              'understudy',
                              'datasafe3',
-                             'desktop'),
+                             'desktop',
+                             'desktop-inmate',
+                             'desktop-staff'
+                             ),
                     help=(
                         'main: small CLI image;'
                         'dban: erase recycled HDDs;'
                         'zfs: install/rescue Debian root-on-ZFS;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4;'
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4;'
-                        'desktop: tweaked XFCE.'))
+                        'desktop: tweaked XFCE;',
+                        'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
+                        'desktop-staff:  desktop w/ PrisonPC operational staff stuff.'
+                    ))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                    help='build slower to get a smaller image? (default=size)')
@@ -145,6 +151,9 @@ if args.boot_test and args.netboot_only and not have_smbd:
 template_wants_GUI = args.template.startswith('desktop')
 template_wants_disks = args.template in {'dban', 'zfs', 'understudy', 'datasafe3'}
 template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
+template_wants_PrisonPC = (
+    args.template.startswith('desktop-inmate') or
+    args.template.startswith('desktop-staff'))
 
 if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
     raise NotImplementedError('datasafe3 only supports OpenSSH')
@@ -372,6 +381,16 @@ with tempfile.TemporaryDirectory() as td:
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),
+         *(['--include=libnss-ldapd libpam-ldapd unscd',
+            f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC")} /',
+            f'--customize-hook=tar-in {create_tarball("debian-11-PrisonPC-staff")} /'
+            if args.template.startswith('desktop-staff') else
+            f'--customize-hook=tar-in {create_tarball("debian-11-PrisonPC-inmate")} /',
+            '--essential-hook={'
+            '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
+            '     } | chroot $1 debconf-set-selections',
+            ]
+           if template_wants_PrisonPC else []),
          *([f'--include={args.ssh_server}',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /',
             # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
