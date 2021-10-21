@@ -1,0 +1,9 @@
+[Mount]
+What=nfs:/srv/tv
+Where=/srv/tv
+Type=nfs
+Options=nodev,noexec,nosuid
+DirectoryMode=0
+
+[Install]
+WantedBy=remote-fs.target

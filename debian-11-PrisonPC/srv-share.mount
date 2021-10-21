@@ -1,0 +1,9 @@
+[Mount]
+What=nfs:/srv/share
+Where=/srv/share
+Type=nfs
+Options=nodev,noexec,nosuid,ro
+DirectoryMode=0
+
+[Install]
+WantedBy=remote-fs.target

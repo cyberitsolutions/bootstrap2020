@@ -389,6 +389,9 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook={'
             '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
             '     } | chroot $1 debconf-set-selections',
+            '--customize-hook=systemctl enable --quiet --root $1 srv-share.mount srv-tv.mount'
+            if args.template.startswith('desktop-staff') else
+            '--customize-hook=systemctl enable --quiet --root $1 srv-share.mount',
             ]
            if template_wants_PrisonPC else []),
          *([f'--include={args.ssh_server}',
