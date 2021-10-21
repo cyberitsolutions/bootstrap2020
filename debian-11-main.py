@@ -224,16 +224,22 @@ with tempfile.TemporaryDirectory() as td:
         with tarfile.open(dst_path, 'w') as t:
             for tarinfo_path in src_path.glob('**/*.tarinfo'):
                 content_path = tarinfo_path.with_suffix('')
-                tarinfo_object = tarfile.TarInfo(name=str(content_path)[len(str(td)):])
-                tarinfo_object.size = content_path.stat().st_size
+                tarinfo_object = tarfile.TarInfo()
                 # git can store *ONE* executable bit.
                 # Default to "r--------" or "r-x------", not "---------".
-                tarinfo_object.mode = 0o500 if content_path.stat().st_mode & 0o111 else 0o400
-                with tarinfo_path.open('rb') as tarinfo_handle:
-                    for k, v in json.load(tarinfo_handle).items():
-                        setattr(tarinfo_object, k, v)
-                with content_path.open('rb') as content_handle:
-                    t.addfile(tarinfo_object, content_handle)
+                tarinfo_object.mode = (
+                    0 if not content_path.exists() else
+                    0o500 if content_path.stat().st_mode & 0o111 else 0o400)
+                for k, v in json.loads(tarinfo_path.read_text()).items():
+                    setattr(tarinfo_object, k, v)
+                if tarinfo_object.linkpath:
+                    tarinfo_object.type = tarfile.SYMTYPE
+                if tarinfo_object.isreg():
+                    tarinfo_object.size = content_path.stat().st_size
+                    with content_path.open('rb') as content_handle:
+                        t.addfile(tarinfo_object, content_handle)
+                else:
+                    t.addfile(tarinfo_object)
         subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
         return dst_path
 
