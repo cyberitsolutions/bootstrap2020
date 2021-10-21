@@ -280,7 +280,7 @@ with tempfile.TemporaryDirectory() as td:
             '--include=python3',  # for get-config-from-dnssd (cifs-utils needs it anyway)
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
             f'--hook-dir=debian-11-main.hooks',
-            '--customize-hook=systemctl --root=$1 enable systemd-networkd bootstrap2020-get-config-from-dnssd --quiet']
+            '--customize-hook=systemctl --root=$1 enable systemd-networkd --quiet']
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
             '--essential-hook={'
@@ -332,12 +332,7 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=cd $1/lib/systemd/system && cp -al ssh.service ssh-sftponly.service',
             # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
             '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
-            '--customize-hook=systemctl --root=$1 enable --quiet '
-            '    ssh-sftponly'
-            '    rsnapshot.timer'
-            '    dyndns.timer'
-            '    journalcheck.timer'
-            '    storage-check.timer']
+            '--customize-hook=systemctl --root=$1 enable --quiet ssh-sftponly']
           if args.template == 'datasafe3' else []),
          # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
          # apply what security updates we can into transient tmpfs COW.
@@ -347,12 +342,10 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=unattended-upgrades needrestart'
             '    python3-gi powermgmt-base']  # unattended-upgrades wants these
            if template_wants_big_uptimes else []),
-         *(['--include=smartmontools',
-            '--include=bsd-mailx',  # smartd calls mail(1), not sendmail(8)
-            '--include=curl ca-certificates gnupg',  # update-smart-drivedb
-            '--customize-hook=systemctl --root=$1 enable'
-            ' bootstrap2020-update-smart-drivedb.service'
-            ' bootstrap2020-update-smart-drivedb.timer']
+         *(['--include=smartmontools'
+            '    bsd-mailx'    # smartd calls mail(1), not sendmail(8)
+            '    curl ca-certificates gnupg',  # update-smart-drivedb
+            f'--essential-hook=tar-in {create_tarball("debian-11-main.disks")} /']
            if template_wants_disks and not args.virtual_only else []),
          *(['--include='
             '    xserver-xorg-core xserver-xorg-input-libinput'
@@ -395,17 +388,13 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook={'
             '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
             '     } | chroot $1 debconf-set-selections',
-            '--customize-hook=systemctl enable --quiet --root $1 srv-share.mount srv-tv.mount'
-            if args.template.startswith('desktop-staff') else
-            '--customize-hook=systemctl enable --quiet --root $1 srv-share.mount',
             ]
            if template_wants_PrisonPC else []),
          *([f'--include={args.ssh_server}',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /',
             # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
             '--customize-hook=rm -fv $1/etc/dropbear/dropbear_*_host_key',
-            '--customize-hook=rm -fv $1/etc/ssh/ssh_host_*_key*',
-            '--customize-hook=systemctl --root=$1 enable bootstrap2020-openssh-keygen --quiet']
+            '--customize-hook=rm -fv $1/etc/ssh/ssh_host_*_key*']
            if args.optimize != 'simplicity' else []),
          *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
             '--customize-hook=echo x:x | chroot $1 chpasswd',

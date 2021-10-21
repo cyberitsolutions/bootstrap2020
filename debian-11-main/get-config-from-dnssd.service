@@ -17,6 +17,3 @@ After=network-online.target
 
 Before=msmtpd.service
 Before=rsyslog.service
-[Install]
-RequiredBy=msmtpd.service
-RequiredBy=rsyslog.service

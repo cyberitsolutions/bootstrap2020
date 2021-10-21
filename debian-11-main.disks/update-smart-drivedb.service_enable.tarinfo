@@ -1,0 +1,2 @@
+{"name": "etc/systemd/system/smartmontools.service.wants/update-smart-drivedb.service",
+ "linkname": "../update-smart-drivedb.service"}

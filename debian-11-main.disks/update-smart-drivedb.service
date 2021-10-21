@@ -1,6 +1,3 @@
-# The size/time impact is negligible, so
-# install this file even when not using smartmontools.
-
 [Unit]
 Description=Update SMART drive database
 ConditionPathExists=/usr/sbin/update-smart-drivedb
@@ -14,5 +11,3 @@ Wants=network-online.target
 After=network-online.target
 
 Before=smartmontools.service
-[Install]
-WantedBy=smartmontools.service

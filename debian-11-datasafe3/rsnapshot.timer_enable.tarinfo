@@ -1,0 +1,2 @@
+{"name": "etc/systemd/system/timers.target.wants/rsnapshot.timer",
+ "linkname": "../rsnapshot.timer"}

@@ -1,0 +1,2 @@
+{"name": "etc/systemd/system/remote-fs.target.wants/srv-share.mount",
+ "linkname": "../srv-share.mount"}
