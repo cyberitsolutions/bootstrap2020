@@ -347,9 +347,11 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=unattended-upgrades needrestart'
             '    python3-gi powermgmt-base']  # unattended-upgrades wants these
            if template_wants_big_uptimes else []),
-         *(['--include=smartmontools',
-            '--include=bsd-mailx',  # smartd calls mail(1), not sendmail(8)
-            '--include=curl ca-certificates gnupg',  # update-smart-drivedb
+         *(['--include=smartmontools'
+            '    bsd-mailx'    # smartd calls mail(1), not sendmail(8)
+            '    curl ca-certificates gnupg',  # update-smart-drivedb
+            f'--essential-hook=tar-in {create_tarball("debian-11-main.disks")} /',
+            '--customize-hook=chroot $1 update-smart-drivedb',
             '--customize-hook=systemctl --root=$1 enable'
             ' bootstrap2020-update-smart-drivedb.service'
             ' bootstrap2020-update-smart-drivedb.timer']
