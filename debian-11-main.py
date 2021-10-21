@@ -240,9 +240,9 @@ with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
-         '--include=linux-image-cloud-amd64'
+         '--include=linux-image-cloud-amd64/bullseye-backports'
          if args.virtual_only else
-         '--include=linux-image-generic',
+         '--include=linux-image-amd64/bullseye-backports',
          '--include=live-boot',
          *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
             '--aptopt=Acquire::https::Proxy "DIRECT"']
@@ -307,9 +307,9 @@ with tempfile.TemporaryDirectory() as td:
            if args.template == 'dban' else []),
          *(['--include=zfs-dkms zfsutils-linux zfs-zed',
             '--include=mmdebstrap auto-apt-proxy',  # for installing
-            '--include=linux-headers-cloud-amd64'
+            '--include=linux-headers-cloud-amd64/bullseye-backports'
             if args.virtual_only else
-            '--include=linux-headers-generic']
+            '--include=linux-headers-amd64/bullseye-backports']
            if args.template == 'zfs' else []),
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
