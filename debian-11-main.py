@@ -516,7 +516,7 @@ if args.boot_test:
               if template_wants_GUI else
               ['--nographic', '--vga', 'none']),
             '--net', 'nic,model=virtio',
-            '--net', (f'user,hostname={args.template}.{domain}'
+            '--net', (f'user,hostname={args.template}.{domain},dnssearch={domain}'
                       f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
                       (f',smb={testdir}' if have_smbd else '') +
                       (f',bootfile=pxelinux.0,tftp={testdir}'

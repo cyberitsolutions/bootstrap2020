@@ -10,3 +10,12 @@ Type=ether
 Name=en*
 [Network]
 DHCP=yes
+
+# If the DHCP server says "your name is foo.example.com",
+# allow this host to do "ping bar" to mean "bar.example.com".
+[DHCPv4]
+UseDomains=yes
+[DHCPv6]
+UseDomains=yes
+[IPv6AcceptRA]
+UseDomains=yes
