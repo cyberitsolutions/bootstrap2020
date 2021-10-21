@@ -381,7 +381,9 @@ with tempfile.TemporaryDirectory() as td:
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),
-         *(['--include=libnss-ldapd libpam-ldapd unscd',
+         *(['--include='
+            '    libnss-ldapd libpam-ldapd unscd'
+            '    nfs-common libpam-mount',
             f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC")} /',
             f'--customize-hook=tar-in {create_tarball("debian-11-PrisonPC-staff")} /'
             if args.template.startswith('desktop-staff') else

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE pam_mount SYSTEM "pam_mount.conf.xml.dtd">
+<pam_mount>
+  <volume fstype="nfs"
+          server="nfs"
+          path="~"
+          mountpoint="~"
+          options="nodev,noexec,nosuid">
+    <not><user>root</user></not>
+  </volume>
+  <mkmountpoint enable="1" remove="false" />
+  <pmvarrun>/bin/true</pmvarrun>
+  <debug enable="0" />
+</pam_mount>
