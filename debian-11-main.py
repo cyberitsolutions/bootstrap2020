@@ -158,27 +158,11 @@ template_wants_PrisonPC = (
 if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
     raise NotImplementedError('datasafe3 only supports OpenSSH')
 
-# First block: things we actually want.
-# Second block: install fails unless we bump these.
-# Third block: /stable works, but bump anyway.
 include_libreoffice = ' '.join('''
-              libreoffice-calc/bullseye-backports
-           libreoffice-impress/bullseye-backports
-            libreoffice-writer/bullseye-backports
-              libreoffice-math/bullseye-backports
-
-              libreoffice-draw/bullseye-backports
-              libreoffice-core/bullseye-backports
-         libreoffice-base-core/bullseye-backports
-                           ure/bullseye-backports
-              uno-libs-private/bullseye-backports
-       libuno-cppuhelpergcc3-3/bullseye-backports
-                   libuno-sal3/bullseye-backports
-              fonts-opensymbol/bullseye-backports
-
-        libuno-salhelpergcc3-3/bullseye-backports
-    libuno-purpenvhelpergcc3-3/bullseye-backports
-     libreoffice-style-colibre/bullseye-backports
+libreoffice-calc
+libreoffice-impress
+libreoffice-writer
+libreoffice-math
 '''.split())
 
 
@@ -246,9 +230,9 @@ with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
-         '--include=linux-image-cloud-amd64/bullseye-backports'
+         '--include=linux-image-cloud-amd64'
          if args.virtual_only else
-         '--include=linux-image-amd64/bullseye-backports',
+         '--include=linux-image-amd64',
          '--include=live-boot',
          *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
             '--aptopt=Acquire::https::Proxy "DIRECT"']
@@ -313,9 +297,9 @@ with tempfile.TemporaryDirectory() as td:
            if args.template == 'dban' else []),
          *(['--include=zfs-dkms zfsutils-linux zfs-zed',
             '--include=mmdebstrap auto-apt-proxy',  # for installing
-            '--include=linux-headers-cloud-amd64/bullseye-backports'
+            '--include=linux-headers-cloud-amd64'
             if args.virtual_only else
-            '--include=linux-headers-amd64/bullseye-backports']
+            '--include=linux-headers-amd64']
            if args.template == 'zfs' else []),
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)

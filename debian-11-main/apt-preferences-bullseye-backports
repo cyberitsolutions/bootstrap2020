@@ -1,0 +1,9 @@
+Explanation: use LibreOffice 7.2+ (not 7.0)
+Package: src:libreoffice
+Pin: release a=bullseye-backports
+Pin-Priority: 500
+
+Explanation: use Linux 5.14+ (not 5.10)
+Package: src:linux-signed-amd64
+Pin: release a=bullseye-backports
+Pin-Priority: 500
