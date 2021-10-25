@@ -1,0 +1,11 @@
+# -*- conf -*-
+# From libc-bin.  (FIXME: remove more).
+**/*bin/ldd
+**/*bin/pldd
+**/*bin/catchsegv
+# From util-linux.  (FIXME: remove more).
+**/*bin/blkdiscard
+**/*bin/resizepart
+**/*bin/runuser
+**/*bin/utmpdump
+**/*bin/wdctl

@@ -408,6 +408,8 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
+         *(['--hook-dir=debian-11-PrisonPC.hooks']
+           if template_wants_PrisonPC else []),
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
          'bullseye',
