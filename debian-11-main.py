@@ -157,6 +157,10 @@ template_wants_PrisonPC = (
 
 if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
     raise NotImplementedError('datasafe3 only supports OpenSSH')
+if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
+    logging.warning('prisonpc.tca3 server code expects OpenSSH')
+if template_wants_GUI and args.virtual_only:
+    logging.warning('GUI on cloud kernel is a bit hinkey')
 
 include_libreoffice = ' '.join('''
 libreoffice-calc
@@ -175,6 +179,8 @@ if args.reproducible:
         raise RuntimeError('Unsaved changes (may) break reproducible-build! (fix "git diff")')
     if subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard']).strip():
         raise RuntimeError('Unsaved changes (may) break reproducible-build! (fix "git status")')
+    if args.backdoor_enable or args.debug_shell:
+        logging.warning('debug/backdoor might break reproducibility')
 
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
