@@ -15,7 +15,5 @@ DHCP=yes
 # allow this host to do "ping bar" to mean "bar.example.com".
 [DHCPv4]
 UseDomains=yes
-[DHCPv6]
-UseDomains=yes
 [IPv6AcceptRA]
 UseDomains=yes
