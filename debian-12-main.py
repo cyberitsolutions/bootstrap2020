@@ -110,6 +110,47 @@ def create_tarball2(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     return dst_path
 
 
+def mmdebstrap_but_zstd(args):
+    "mmdebstrap ALWAYS uses -comp xz when emitting a squashfs."
+    "This is a bad speed/size tradeoff, so use zstd instead."
+    "This requires re-doing some of mmdebstrap's internals, here."
+    "https://salsa.debian.org/debian/mmdebstrap/-/blob/debian/1.3.7-2/mmdebstrap?ref_type=tags#L7286-7297"
+    "https://salsa.debian.org/debian/mmdebstrap/-/blob/debian/1.3.7-2/mmdebstrap?ref_type=tags#L5819-5828"
+    with (subprocess.Popen(
+            # Change "⋯/filesystem.squashfs" to "-"
+            ['-' if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs' else x
+             for x in args],
+            stdout=subprocess.PIPE) as mmdebstrap_proc,
+          # Remove "system" xattrs that mmdebstrap doesn't know to remove, because
+          # we don't tell mmdebstrap we're making a squashfs.
+          # (ERROR: squashfs does not support xattr prefix of system.posix_acl_default)
+          # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L5820-L5828
+          subprocess.Popen(
+              ['mmtarfilter', '--pax-exclude=SCHILY.xattr.system.*'],
+              stdin=mmdebstrap_proc.stdout,
+              stdout=subprocess.PIPE) as mmtarfilter_proc):
+        # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L6096-L6102
+        subprocess.check_call(
+            ['tar2sqfs',
+             '--quiet',
+             '--no-skip',
+             '--force',
+             '--exportable',
+             '--compressor=zstd',
+             '--block-size=1M',
+             # Get the "⋯/filesystem.squashfs" we stole from mmdebstrap.
+             *[x
+               for x in args
+               if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs']],
+            stdin=mmtarfilter_proc.stdout)
+        mmdebstrap_proc.wait()
+        mmtarfilter_proc.wait()
+        if mmdebstrap_proc.returncode:
+            raise RuntimeError('mmdebstrap crashed')
+        if mmtarfilter_proc.returncode:
+            raise RuntimeError('mmtarfilter crashed')
+
+
 def do_boot_test():
     # PrisonPC SOEs are hard-coded to check their IP address.
     # This is not boot-time configurable for paranoia reasons.
@@ -568,7 +609,7 @@ for template in args.templates:
         validate_unescaped_path_is_safe(destdir)
         destdir.mkdir()
 
-        subprocess.check_call(
+        mmdebstrap_but_zstd(
             ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
              'mmdebstrap',
              '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
