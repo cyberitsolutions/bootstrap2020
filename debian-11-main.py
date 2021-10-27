@@ -162,11 +162,16 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
 
+# We ask for "gpg" explicitly, so apt chooses
+# libreoffice->libgpgme11->gpg  rather than
+# libreoffice->libgpgme11->gnupg->gpg.
+# Avoids 14 packages including pinentry-*.
 include_libreoffice = ' '.join('''
 libreoffice-calc
 libreoffice-impress
 libreoffice-writer
 libreoffice-math
+gpg
 '''.split())
 
 
