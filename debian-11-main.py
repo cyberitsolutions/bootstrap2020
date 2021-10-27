@@ -238,7 +238,7 @@ with tempfile.TemporaryDirectory() as td:
         subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
         return dst_path
 
-    subprocess.check_call(
+    with subprocess.Popen(
         ['mmdebstrap',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--include=linux-image-cloud-amd64'
@@ -415,13 +415,34 @@ with tempfile.TemporaryDirectory() as td:
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
          'bullseye',
-         destdir / 'filesystem.squashfs',
+         '-',                   # output filename
          'debian-11.sources',
          # https://github.com/rsnapshot/rsnapshot/issues/279
          # https://tracker.debian.org/news/1238555/rsnapshot-removed-from-testing/
          *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
            if args.template == 'datasafe3' else []),
-         ])
+         ],
+            stdout=subprocess.PIPE) as mmdebstrap_proc, \
+            subprocess.Popen(
+                ['mmtarfilter', '--pax-exclude=*',
+                 '--pax-include=SCHILY.xattr.user.*',
+                 '--pax-include=SCHILY.xattr.trusted.*',
+                 '--pax-include=SCHILY.xattr.security.*'],
+                stdin=mmdebstrap_proc.stdout,
+                stdout=subprocess.PIPE) as mmtarfilter_proc:
+            subprocess.check_call(
+                ['tar2sqfs',
+                 '--quiet',
+                 '--no-skip',
+                 '--force',
+                 '--exportable',
+                 '--compressor', 'lz4' if args.optimize == 'speed' else 'zstd',
+                 destdir / 'filesystem.squashfs'],
+                stdin=mmtarfilter_proc.stdout)
+        # mmdebstrap_proc.wait()
+        # mmtarfilter_proc.wait()
+        # assert mmdebstrap_proc.returncode == 0
+        # assert mmtarfilter_proc.returncode == 0
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
