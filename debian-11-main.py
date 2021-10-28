@@ -34,7 +34,7 @@ NOTE: It lacks CRITICAL DATA LOSS packages,
 
 def validate_unescaped_path_is_safe(path: pathlib.Path) -> None:
     for part in pathlib.Path(path).parts:
-        if not (part == '/' or re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,62}', part)):
+        if not (part == '/' or re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9_-]{0,62}', part)):
             raise NotImplementedError('Path component should not need shell quoting', part, path)
 
 
@@ -133,6 +133,8 @@ destdir = (args.destdir / f'{args.template}-{datetime.date.today()}')
 validate_unescaped_path_is_safe(destdir)
 destdir.mkdir(parents=True, mode=0o2775, exist_ok=True)
 
+# signed-by needs an absolute path, so also validate $PWD.
+validate_unescaped_path_is_safe(pathlib.Path.cwd())
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
@@ -421,6 +423,8 @@ with tempfile.TemporaryDirectory() as td:
          # https://tracker.debian.org/news/1238555/rsnapshot-removed-from-testing/
          *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
            if args.template == 'datasafe3' else []),
+         *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye desktop']
+           if template_wants_PrisonPC else []),
          ])
 
 subprocess.check_call(
