@@ -356,6 +356,7 @@ with tempfile.TemporaryDirectory() as td:
             '    alsa-utils'
             '    chromium chromium-sandbox chromium-l10n'
             f'   {include_libreoffice}'
+            f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
             '    plymouth-themes',
             # FIXME: in Debian 12, change to simply '--include=pipewire-pulse'
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA

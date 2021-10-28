@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+import argparse
+import subprocess
+
+__doc__ = """ pre-build libdvdcss2.deb, so airgapped no-compiler desktops can watch DVDs
+
+This script can be run as a regular (non-root) user.
+With a hot cache, it takes ~60s.
+It (temporarily) requires ~600MB storage capacity in /tmp.
+
+This script will create files in your current directory, like:
+
+   libdvd-pkg/libdvdcss-dev_1.4.2-1~local_amd64.deb
+   libdvd-pkg/libdvdcss2-1.4.2-1.is-installed
+   libdvd-pkg/libdvdcss2-dbgsym_1.4.2-1~local_amd64.deb
+   libdvd-pkg/libdvdcss2_1.4.2-1~local_amd64.build
+   libdvd-pkg/libdvdcss2_1.4.2-1~local_amd64.deb            <-- you only really need this one
+   libdvd-pkg/libdvdcss_1.4.2-1~local_amd64.buildinfo
+   libdvd-pkg/libdvdcss_1.4.2-1~local_amd64.changes
+   libdvd-pkg/libdvdcss_1.4.2.orig.tar.bz2
+
+NOTE: an alternative (possibly easier) way to get this library is to:
+
+   git clone https://salsa.debian.org/multimedia-team/libdvdcss
+   cd libdvdcss
+   git buildpackage, I guess?
+
+"""
+
+
+parser = argparse.ArgumentParser(
+    description=__doc__,
+    formatter_class=argparse.RawDescriptionHelpFormatter)
+args = parser.parse_args()
+
+apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
+
+subprocess.check_call(
+    ['mmdebstrap',
+     '--variant=apt',
+     f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
+     '--aptopt=Acquire::https::Proxy "DIRECT"',
+     '--dpkgopt=force-unsafe-io',
+     '--dpkgopt=path-exclude=/usr/share/doc/*',
+     # These options do the actual compiling.
+     '--include=libdvd-pkg',
+     '--components=main,contrib',
+     # By default libdvdcss adds "Depends: libdvd-pkg", so
+     # you can't have dvdcss.so unless you ALSO have all the infrastructure to rebuild it ON THE SAME COMPUTER.
+     # Since we EXTREMELY do not want this on inmate desktops, remove the one-liner that adds that Depends.
+     '--customize-hook=chroot $1 sed -i 64d /usr/lib/libdvd-pkg/b-i_libdvdcss.sh',
+     '--customize-hook=chroot $1 /usr/lib/libdvd-pkg/b-i_libdvdcss.sh',
+     '--customize-hook=rm -rf $1/usr/src/libdvd-pkg/build',
+     # Can we copy STRAIGHT to the apt repo, not even bothering to make a local copy?
+     # UPDATE: no, because the hook runs as pseudo-root and can't see my ~/.ssh and ssh-agent:
+     #
+     #     Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+     #     Could not stat /root/.ssh: Permission denied
+     #     root@apt.cyber.com.au: Permission denied (publickey).
+     #
+     # '--customize-hook=rsync -ai --info=progress2 $1/usr/src/libdvd-pkg/ apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/libdvdcss/',
+     '--customize-hook=sync-out /usr/src/libdvd-pkg libdvdcss/',
+     'bullseye',
+     '/dev/null'])
+
+# We can at least do the upload directly afterwards.
+subprocess.check_call([
+    'rsync', '-ai', '--info=progress2',
+    'libdvdcss/',
+    'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/libdvdcss/'])
