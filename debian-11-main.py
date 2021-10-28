@@ -533,6 +533,12 @@ if args.boot_test:
               if template_wants_disks else [])])
 
 for host in args.upload_to:
+    subprocess.check_call(
+        ['rsync', '-aihh', '--info=progress2', '--protect-args',
+         # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
+         f'--copy-dest=/srv/netboot/images/{args.template}-latest',
+         f'{destdir}/',
+         f'{host}:/srv/netboot/images/{destdir.name}/'])
     rename_proc = subprocess.run(
         ['ssh', host, f'mv -vT /srv/netboot/images/{args.template}-latest /srv/netboot/images/{args.template}-previous'],
         check=False)
@@ -541,12 +547,6 @@ for host in args.upload_to:
         # Create a fake -previous so later commands can assume there is ALWAYS a -previous.
         subprocess.check_call(
             ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-previous'])
-    subprocess.check_call(
-        ['rsync', '-aihh', '--info=progress2', '--protect-args',
-         # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
-         f'--copy-dest=/srv/netboot/images/{args.template}-previous',
-         f'{destdir}/',
-         f'{host}:/srv/netboot/images/{destdir.name}/'])
     # NOTE: this stuff all assumes PrisonPC.
     subprocess.check_call([
         'ssh', host,
