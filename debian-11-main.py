@@ -272,7 +272,7 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=rm $1/etc/hostname',
             '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
             '--include=rsyslog-relp msmtp-mta',
-            '--include=python3',  # for get-config-from-dnssd (cifs-utils needs it anyway)
+            '--include=python3-dbus',  # for get-config-from-dnssd
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
             f'--hook-dir=debian-11-main.hooks',
             ]
