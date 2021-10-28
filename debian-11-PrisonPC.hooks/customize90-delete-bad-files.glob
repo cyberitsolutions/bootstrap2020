@@ -1,11 +1,70 @@
 # -*- conf -*-
-# From libc-bin.  (FIXME: remove more).
-**/*bin/ldd
-**/*bin/pldd
-**/*bin/catchsegv
-# From util-linux.  (FIXME: remove more).
-**/*bin/blkdiscard
-**/*bin/resizepart
-**/*bin/runuser
-**/*bin/utmpdump
-**/*bin/wdctl
+
+## Inmates MUST NOT have unnecessary crypto
+## ========================================
+
+
+
+## Inmates MUST NOT have clandestine comms
+## =======================================
+
+
+## Inmates MUST NOT have writable local media (DVD, USB)
+## =====================================================
+
+
+## Inmates MUST NOT have containers (VMs)
+## ======================================
+
+
+## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
+## ===========================================================
+# From util-linux & systemd.  We only want GUI & SSH logins.
+**/*getty*
+**/*sulogin*
+**/systemd/**/*autovt*
+**/systemd/**/*console*
+**/systemd/**/*debug*
+**/systemd/**/*emergency*
+**/systemd/**/*rescue*
+**/systemd/**/*shell*
+
+
+## Inmates SHOULD NOT have a text editor
+## =====================================
+
+
+## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
+## ================================================================
+
+
+## Inmates SHOULD NOT be have miscellaneous scary things
+## =====================================================
+
+
+## Inmates SHOULD NOT be able to use VLC for evil
+## ==============================================
+
+
+## Inmates SHOULD NOT have packaging tools
+## =======================================
+
+
+## Inmates SHOULD NOT have diagnostic tools
+## ========================================
+
+
+## Inmates SHOULD NOT have development tools
+## =========================================
+
+
+## Useless & confusing menu items SHOULD be hidden (#30257)
+## ========================================================
+
+
+## Useless & confusing "under the hood" files MAY be removed
+## =========================================================
+
+
+## sysvinit compatibility MAY be removed
+## =====================================
