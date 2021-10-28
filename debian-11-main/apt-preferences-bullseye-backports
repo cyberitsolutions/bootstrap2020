@@ -7,3 +7,8 @@ Explanation: use Linux 5.14+ (not 5.10)
 Package: src:linux-signed-amd64
 Pin: release a=bullseye-backports
 Pin-Priority: 500
+
+Explanation: use newest microcode (stable, security, or backports)
+Package: src:amd64-microcode src:intel-microcode src:iucode-tool
+Pin: release a=bullseye-backports
+Pin-Priority: 500
