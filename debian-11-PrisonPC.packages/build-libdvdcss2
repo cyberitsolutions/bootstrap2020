@@ -57,6 +57,7 @@ with tempfile.TemporaryDirectory() as td:
          'bullseye',
          '/dev/null'])
     subprocess.check_call([
-        'rsync', '-ai', '--info=progress2',
+        'rsync', '-ai', '--info=progress2', '--protect-args',
+        '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
         'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/libdvdcss/'])
