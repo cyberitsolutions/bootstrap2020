@@ -9,16 +9,16 @@ This script can be run as a regular (non-root) user.
 With a hot cache, it takes ~60s.
 It (temporarily) requires ~600MB storage capacity in /tmp.
 
-This script will create files in your current directory, like:
+This script will upload files to apt.cyber.com.au, like:
 
-   libdvd-pkg/libdvdcss-dev_1.4.2-1~local_amd64.deb
-   libdvd-pkg/libdvdcss2-1.4.2-1.is-installed
-   libdvd-pkg/libdvdcss2-dbgsym_1.4.2-1~local_amd64.deb
-   libdvd-pkg/libdvdcss2_1.4.2-1~local_amd64.build
-   libdvd-pkg/libdvdcss2_1.4.2-1~local_amd64.deb            <-- you only really need this one
-   libdvd-pkg/libdvdcss_1.4.2-1~local_amd64.buildinfo
-   libdvd-pkg/libdvdcss_1.4.2-1~local_amd64.changes
-   libdvd-pkg/libdvdcss_1.4.2.orig.tar.bz2
+   libdvdcss-dev_1.4.2-1~local_amd64.deb
+   libdvdcss2-1.4.2-1.is-installed
+   libdvdcss2-dbgsym_1.4.2-1~local_amd64.deb
+   libdvdcss2_1.4.2-1~local_amd64.build
+   libdvdcss2_1.4.2-1~local_amd64.deb  ← you really only need this one
+   libdvdcss_1.4.2-1~local_amd64.buildinfo
+   libdvdcss_1.4.2-1~local_amd64.changes
+   libdvdcss_1.4.2.orig.tar.bz2
 
 NOTE: an alternative (possibly easier) way to get this library is to:
 
