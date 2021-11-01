@@ -69,6 +69,8 @@
 
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
+# util-linux provides mkfs.{bfs,cramfs,minix}
+**/bin/mkfs.*
 
 
 ## Inmates SHOULD NOT have development tools

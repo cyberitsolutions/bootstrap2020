@@ -30,6 +30,8 @@ Package: prisonpc-bad-package-conflicts
 Depends:
  prisonpc-ersatz-gpg,
 Conflicts:
+## Inmates MUST NOT have unnecessary crypto
+## ========================================
 # ?source-package(^gnupg2$), except for
 #   gpgv (apt needs it), &
 #   gpg  (handled by prisonpc-ersatz-gpg).
@@ -52,9 +54,269 @@ Conflicts:
  gnupg1,
  gnupg1-l10n,
  gpgv1,
+# pinentry-gnome3 &c provide GUI password prompts, mostly for gpg
+ pinentry,
+# askpass-gnome &c provide GUI password prompts, mostly for ssh
+ ssh-askpass,
+# zip/bullseye only supports weak encryption, but
+# later versions might adopt strong encryption.
+# https://en.wikipedia.org/wiki/ZIP_(file_format)#Encryption
+# NOTE: libreoffice also supports ODF/OOXML encryption.
+# UPDATE 2021: .rar and .7z also support AES.
+# libarchive (bsdtar) can DEFINITELY created strongly encrypted zip files.
+# We can't remove libarchive itself without upsetting vlc (everyone) and gvfs-backends (staff).
+ p7zip,
+ p7zip-full,
+ unrar,
+ unrar-nonfree,
+ zip,
+ libarchive-tools,
+## Inmates MUST NOT have clandestine comms
+## =======================================
+ bluez,
+ avahi-daemon,
+# It's THEORETICALLY possible to use wesnoth<->wesnoth-server and then do in-game chat,
+# which would give the inmate a clandestine comms channel.
+ wesnoth-1.14-server,
+# We use systemd-networkd.
+# Other network clients shouldn't be there.
+# Inmate might use them to set up custom networking.
+ network-manager,
+ libnm0,
+ libnma0,
+ ifupdown,
+ resolvconf,
+ ifupdown2,
+ ifupdown-multi,
+ mobile-broadband-provider-info,
+ modem-manager-gui,
+ isc-dhcp-client,
+ isc-dhcp-server,
+ iw,
+ wireless-tools,
+ wpasupplicant,
+ rfkill,
+ iptables-persistent,
+ netfilter-persistent,
+ pppconfig,
+ pppd,
+ wpan-tools,
+ ahcpd,
+ airport-utils,
+ atm-tools,
+ bootpc,
+ bootp,
+ bridge-utils,
+ comitup,
+ connman,
+ crda,
+ dhcpd5,
+ ez-ipupdate,
+ faifa,
+ hostapd,
+ ifrename,
+ inetutils-tools,
+ macchanger,
+ net-tools,
+ netplug,
+ open-iscsi,
+ pppoeconf,
+ pptp-linux,
+ pptpd,
+ rancid,
+ rarpd,
+ tcputils,
+ wakeonlan,
+ wavemon,
+ whereami,
+ wide-dhcpv6-client,
+ wide-dhcpv6-server,
+ wide-dhcpv6-relay,
+ wpagui,
+ dhcpy6d,
+ wmifinfo,
+ xfce4-wavelan-plugin,
+ dhcpd,
+ xl2tpd,
+## Inmates MUST NOT have writable local media (DVD, USB)
+## =====================================================
+# e2fsprogs is shitlisted because in Debian 9 it was hard to avoid.
+# Upstream changes mean that shouldn't happen again, but it doesn't hurt.
+# UPDATE 2021: shitlist other mkfs.* packages also.
+# NOTE: staff need ntfs-3g https://alloc.cyber.com.au/task/task.php?taskID=24592
+# NOTE: staff need exfat   https://alloc.cyber.com.au/task/task.php?taskID=32658
+ e2fsprogs,
+ dosfstools,
+ erofs-utils,
+ exfatprogs,
+ exfat-utils,
+ f2fs-tools,
+ gfs2-utils,
+ hfsprogs,
+ jfsutils,
+ mtd-utils,
+ nilfs-tools,
+ ocfs2-tools,
+ reiser4progs,
+ reiserprogs,
+ udftools,
+ xfsprogs,
+# In theory an inmate could write a userland filesystem with fuse.
+# NOTE: staff will need gvfs-backend (thus fuse) for sftp...
+ gvfs-backends,
+ fuse,
+ cuse,
+## Inmates MUST NOT have containers (VMs)
+## ======================================
+ libvirt-daemon,
+ libvirt-clients,
+ gnome-boxes,
+ libvirt0,
+ qemu-user,
+ qemu-system-x86,
+ qemu-system-data,
+ grub-firmware-qemu,
+ ipxe-qemu,
+ systemd-container,
+ libnss-mymachines,
+ gnome-boxes,
+## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
+## ===========================================================
 # All terminal emulators.
 # Fortunately, a virtual package here covers most of them.
  x-terminal-emulator,
+# We need at most one privesc framework.  Block the rest.
+# We need thunar->udisks2->polkit for mounting/ejecting DVDs.
+ sudo,
+ sudo-ldap,
+## Inmates SHOULD NOT have a text editor
+## =====================================
+# FIXME: Staff will need a text editor.
+# CLI text editors
+ editor,
+# https://codesearch.debian.net/search?q=update-alternatives+--install+%2Fusr%2Fbin%2Feditor+editor&literal=1
+ cream, dav-text, diffstat, e3, efte, elvis-tiny, fte, gnuserv, joe, jove, jupp,
+ le, lpe, mc, mg, nano, ne, nedit, neovim, ng, nvi, tilde, vile, xemacs21, yi,
+ zile,
+# GUI text editors (not comprehensive)
+ mousepad,
+ pluma,
+ juffed,
+ gedit,
+ kate,
+ kwrite,
+ retext,
+ yudit,
+ textedit.app,
+# The GTK / Qt widgets that provide text editor functionality.
+# This will error out if an app has such an editor as an embedded widget.
+ libkf5texteditor5,
+ libgtksourceview-3.0-1,
+ libgtksourceview-4-0,
+ gir1.2-gtksource-4,
+## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
+## ================================================================
+# NOTE: systemd timer units can still be used.
+ anacron,
+ at,
+ cron,
+ logrotate,
+ featherpad,
+## Inmates SHOULD NOT have miscellaneous scary things
+## ==================================================
+# As at Debian 11, python 2.x is obsolete.
+# We REALLY should not see it anywhere!
+ python2,
+# X11 doesn't REALLY support screen locking:
+#   https://www.jwz.org/blog/2021/01/i-told-you-so-2021-edition/
+# Rather than pretend, we simply do not let inmate lock the screen.
+# This also prevents inmate in a shared area from locking the screen and walking away, which is a sort of DOS.
+ xscreensaver,
+ kscreensaver,
+ gnome-screensaver,
+ mate-screensaver,
+ cinnamon-screensaver,
+ ukui-screensaver,
+# Also don't let them suspend.
+# FIXME: can probably still suspend via systemd...
+ xfce4-power-manager,
+ sleepd,
+ thermald,
+ upower,
+# Fuck it, why NOT block this?
+ ftp-server,
+ httpd,
+ httpd-cgi,
+ httpd-wsgi,
+ imap-server,
+ ldap-server,
+ irc, ircd,
+## Inmates SHOULD NOT be able to use VLC for evil
+## ==============================================
+## Inmates SHOULD NOT have packaging tools
+## =======================================
+ packagekit,
+ packagekit-tools,
+ dpkg-dev,
+ python-apt,
+## Inmates SHOULD NOT have diagnostic tools
+## ========================================
+## Inmates SHOULD NOT have development tools
+## =========================================
+# libc-dev should be enough to block most compiler stuff.
+ libc-dev,
+ c-compiler,
+ c++-compiler,
+ go-compiler,
+ brig-compiler,
+ c-sharp-compiler,
+ d-compiler,
+ fortran-compiler,
+ go-compiler,
+ haskell-compiler,
+ java-compiler,
+ lisp-compiler,
+ m2-compiler,
+ objc++-compiler,
+ objc-compiler,
+ ocaml-best-compilers,
+ ocaml-native-compilers,
+# IDEs (not comprehensive)
+ geany,
+ devhelp,
+ gnome-devel,
+ gnome-builder,
+ glade,
+ gnome-api-docs,
+ manpages-dev,
+ lazarus-ide,
+ kdevelop,
+ gambas3,
+ eric,
+ spyder,
+ jupyter-core,
+ jypyter-server,
+ python3-pandas,
+ thonny,
+ valinor,
+ idle,
+ idle3,
+ pyzo,
+ faustworks,
+# Version control tools (not comprehensive)
+ git,
+ mercurial,
+ rcs,
+ svn,
+ fossil,
+# Debuggers (not comprehensive)
+ god,
+## Useless & confusing menu items SHOULD be hidden (#30257)
+## ========================================================
+## Useless & confusing "under the hood" files MAY be removed
+## =========================================================
+## sysvinit compatibility MAY be removed
+## =====================================
 Architecture: all
 Description: conflict with CANTHAPPEN packages
  Some packages should NEVER be installed (e.g. terminal emulators).
