@@ -9,7 +9,11 @@ __doc__ = """ like ‘debspawn build’, but faster and rootless """
 parser = argparse.ArgumentParser(
     description=__doc__,
     formatter_class=argparse.RawDescriptionHelpFormatter)
-parser.add_argument('package_path', type=pathlib.Path)
+parser.add_argument(
+    'package_path',
+    nargs='?',
+    type=pathlib.Path,
+    default=pathlib.Path.cwd())
 args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
