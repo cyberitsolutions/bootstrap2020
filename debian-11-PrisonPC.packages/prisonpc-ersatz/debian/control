@@ -1,0 +1,24 @@
+Source: prisonpc-ersatz
+Section: metapackages
+Priority: optional
+Standards-Version: 4.3.0
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13)
+
+Package: prisonpc-ersatz-gpg
+Provides: gpg (= 2.2.27-2),
+Conflicts: gpg
+Replaces: gpg
+Architecture: all
+Description: appease libreoffice
+ Inmates SHOULD NOT have access to "unnecessary" cryptography.
+ .
+ LibreOffice 6+ has a hard dependency on libgpgme.
+ If we remove libgpgme, libreoffice won't even start.
+ HOWEVER, libgpgme really just fork-and-execs /bin/gpg, then
+ talks to it over stdio.
+ .
+ So we trick apt into shipping libgpgme but not gpg,
+ all of libreoffice will work except for password-protected documents.

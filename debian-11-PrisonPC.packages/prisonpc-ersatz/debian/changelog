@@ -1,0 +1,9 @@
+prisonpc-ersatz (11.0) bullseye; urgency=medium
+
+  * Fresh package for Debian 11.
+    I expect to cherry-pick from the old packaging, later.
+
+  * Try to surgically remove gpg/gnupg.
+    Debian 9's apt needed full gpg, which prevented this.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 01 Nov 2021 15:21:04 +1100

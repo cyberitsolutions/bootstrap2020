@@ -168,12 +168,12 @@ if template_wants_GUI and args.virtual_only:
 # libreoffice->libgpgme11->gpg  rather than
 # libreoffice->libgpgme11->gnupg->gpg.
 # Avoids 14 packages including pinentry-*.
-include_libreoffice = ' '.join('''
+include_libreoffice = ' '.join(f'''
 libreoffice-calc
 libreoffice-impress
 libreoffice-writer
 libreoffice-math
-gpg
+{"prisonpc-ersatz-gpg" if template_wants_PrisonPC else "gpg"}
 '''.split())
 
 
