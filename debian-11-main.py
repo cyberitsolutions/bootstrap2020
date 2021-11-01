@@ -164,16 +164,11 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
 
-# We ask for "gpg" explicitly, so apt chooses
-# libreoffice->libgpgme11->gpg  rather than
-# libreoffice->libgpgme11->gnupg->gpg.
-# Avoids 14 packages including pinentry-*.
 include_libreoffice = ' '.join(f'''
 libreoffice-calc
 libreoffice-impress
 libreoffice-writer
 libreoffice-math
-{"prisonpc-ersatz-gpg" if template_wants_PrisonPC else "gpg"}
 '''.split())
 
 
@@ -358,6 +353,8 @@ with tempfile.TemporaryDirectory() as td:
             f'   {include_libreoffice}'
             f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
             '    plymouth-themes',
+            *(['--include=prisonpc-bad-package-conflicts']
+              if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change to simply '--include=pipewire-pulse'
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
             *['--dpkgopt=path-include=/usr/share/doc/pipewire',

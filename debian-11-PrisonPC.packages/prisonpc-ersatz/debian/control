@@ -8,9 +8,12 @@ Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13)
 
 Package: prisonpc-ersatz-gpg
-Provides: gpg (= 2.2.27-2),
-Conflicts: gpg
-Replaces: gpg
+Provides:
+ gpg,
+Conflicts:
+ gpg,
+Replaces:
+ gpg,
 Architecture: all
 Description: appease libreoffice
  Inmates SHOULD NOT have access to "unnecessary" cryptography.
@@ -22,3 +25,45 @@ Description: appease libreoffice
  .
  So we trick apt into shipping libgpgme but not gpg,
  all of libreoffice will work except for password-protected documents.
+
+Package: prisonpc-bad-package-conflicts
+Depends:
+ prisonpc-ersatz-gpg,
+Conflicts:
+# ?source-package(^gnupg2$), except for
+#   gpgv (apt needs it), &
+#   gpg  (handled by prisonpc-ersatz-gpg).
+ dirmngr,
+ gnupg,
+ gnupg-agent,
+ gnupg-l10n,
+ gnupg-utils,
+ gnupg2,
+ gpg-agent,
+ gpg-wks-agent,
+ gpg-wks-server,
+ gpgconf,
+ gpgsm,
+ gpgv-static,
+ gpgv-win32,
+ gpgv2,
+ scdaemon,
+# ?source-package(^gnupg1$).  Can't happen.
+ gnupg1,
+ gnupg1-l10n,
+ gpgv1,
+# All terminal emulators.
+# Fortunately, a virtual package here covers most of them.
+ x-terminal-emulator,
+Architecture: all
+Description: conflict with CANTHAPPEN packages
+ Some packages should NEVER be installed (e.g. terminal emulators).
+ Sometimes updates cause apt to start installing such a package.
+ When this happens, the build should abort, so a human can investigate.
+ .
+ Note that this is different from a prisonpc-ersatz-* package.
+ Ersatz packages are where we HAVE DECIDED the best option is to lie to apt.
+ This package is for things where we HAVEN'T DECIDED yet.
+ .
+ One easy way to test for this is to ask for task-xfce-desktop, which
+ should fail due to a conflict relating to X terminal emulators.

@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.1~0) UNRELEASED; urgency=medium
+
+  * Add prisonpc-bad-package-conflicts
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 01 Nov 2021 19:44:32 +1100
+
 prisonpc-ersatz (11.0) bullseye; urgency=medium
 
   * Fresh package for Debian 11.
