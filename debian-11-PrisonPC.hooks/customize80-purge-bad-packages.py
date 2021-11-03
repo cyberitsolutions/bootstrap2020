@@ -33,26 +33,27 @@ args = parser.parse_args()
 # We CAN'T purge the kernel itself, because
 # some drivers may be loaded AFTER pivot_root.
 #
-# We can't purge plymouth, because
-# systemd uses one of its units AFTER pivot_root to STOP plymouth.
-#
-# This de facto means we can't remove any of these without a --force-depends
-#   plymouth
-#   → initramfs-tools | dracut
-#   linux-image-*  (but not linux-image-inmate)
-#   → linux-initramfs-tool
-#   initramfs-tools
-#   → klibc-utils !
-#   → cpio
-#   → logsave
-#
 # We DO NOT have to sit through a SLOW, needless rd rebuild, as
 # debian-11-main.py has already removed /boot/vmlinuz*, so
 # the update-initramfs trigger does nothing.
+#
+# We use apt first for --autoremove, then
+# we use dpkg to make sure apt did the Right Thing.
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'apt', 'purge', '--autoremove', '--assume-yes',
+    # Workaround stock kernels needing *a* linux-initramfs-tool.
+    # Install the smallest one; we never actually use it.
+    # FIXME: once PrisonPC has custom inmate kernels, remove this.
+    'tiny-initramfs+',
+    '?installed?name(plymouth)',
+    'initramfs-tools'])
+# Safety net: if apt got confused and kept busybox,
+# dpkg will fail (due to dependencies), aborting the build.
 subprocess.check_call([
     'chroot', args.chroot_path,
     'dpkg', '--purge',
-    'live-boot', 'live-boot-initramfs-tools', 'busybox'])
+    'busybox', 'klibc-utils'])
 
 
 # Now that all package installs are done,
