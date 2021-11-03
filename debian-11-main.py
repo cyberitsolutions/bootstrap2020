@@ -344,7 +344,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include='
             '    xserver-xorg-core xserver-xorg-input-libinput'
             '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
-            '    lightdm'
+            '    xdm'
             '    pipewire xfce4-pulseaudio-plugin pavucontrol'
             # Without "alsactl init" & /usr/share/alsa/init/default,
             # pipewire/pulseaudio use the kernel default (muted & 0%)!
