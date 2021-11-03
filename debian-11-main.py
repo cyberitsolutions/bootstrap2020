@@ -290,7 +290,7 @@ with tempfile.TemporaryDirectory() as td:
          # The emulator is called "microcode", and is full of security vulnerabilities.
          # Make sure security patches for microcode for *ALL* CPUs are included.
          # By default, it tries to auto-detect the running CPU, so only patches the CPU of the build server.
-         *(['--include=intel-microcode amd64-microcode iucode-tool',
+         *(['--include=intel-microcode amd64-microcode',
             '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
             '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
             '--components=main contrib non-free']
