@@ -1,0 +1,35 @@
+# Hey, Emacs!  This is a -*- apt-sources -*- file.
+#
+# We have some in-house packages.
+# We could do "apt install ./x_1_all.deb", but
+# in the case of ersatz dependency metapackages,
+# mmdebstrap would have already installed the package we were trying to avoid.
+# It's also just simpler and cleaner if as much stuff as possible is
+# installed as a single huge apt install call (by mmdebstrap).
+#
+# Use of https here is a cunning trick:
+# my home apt-cacher-ng mirror doesn't have work VPN access, but
+# but using https, we force our in-house packages to bypass the mirror.
+Types: deb
+URIs: https://apt.cyber.com.au/PrisonPC
+Suites: bookworm
+Components: desktop
+# Using a literal public key here requires apt 2.3.10+.
+# This is only available in Debian 12.
+# Note that mmdebstrap runs the host's apt, so
+# you need not just "mmdebstrap bookworm" (or later)
+# you need the host to ALSO be bookworm (or later).
+#
+# https://salsa.debian.org/apt-team/apt/-/commit/3f07f534
+# https://salsa.debian.org/apt-team/apt/-/blame/main/doc/sources.list.5.xml#L316
+Signed-By:
+ -----BEGIN PGP PUBLIC KEY BLOCK-----
+ .
+ mDMEYXpW+BYJKwYBBAHaRw8BAQdAp6GUJD7VYuMPq5K/TBLhyE0mzGkfpoTJImci
+ IzSTHsK0VUN5YmVySVQgU29sdXRpb25zIFByaXNvblBDIEFQVCByZXBvc2l0b3J5
+ IHNpZ25pbmcga2V5IDxzeXNhZG1pbi1hcHQtZ3BnQGN5YmVyLmNvbS5hdT6IkAQT
+ FggAOBYhBBB5jVGzqMyPkXX7GF1ZUo2HKrMmBQJhelb4AhsDBQsJCAcCBhUKCQgL
+ AgQWAgMBAh4BAheAAAoJEF1ZUo2HKrMmruoBAJRIhgny5geyCnwfCpUvNi5HhdR/
+ udlSH/SgWa25HSQtAP96L6cTlK2eZ8JosRYYxegZ1Do/d51DH1ByAfBjKtNtCw==
+ =YsKL
+ -----END PGP PUBLIC KEY BLOCK-----
