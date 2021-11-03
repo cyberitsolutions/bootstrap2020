@@ -1,0 +1,53 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:12:54 AEDT; 36s ago
+   CGroup: /
+           ├─user.slice 
+           │ └─user-1000.slice 
+           │   └─user@1000.service …
+           │     ├─app.slice 
+           │     │ ├─pipewire-pulse.service 
+           │     │ │ └─464 /usr/bin/pipewire-pulse
+           │     │ ├─pipewire.service 
+           │     │ │ ├─466 /usr/bin/pipewire
+           │     │ │ └─476 /usr/bin/pipewire-media-session
+           │     │ └─dbus.service 
+           │     │   ├─472 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │     │   └─536 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd
+           │     └─init.scope 
+           │       ├─444 /lib/systemd/systemd --user
+           │       └─445 (sd-pam)
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─410 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─xdm.service 
+             │ ├─346 /usr/bin/xdm -nodaemon
+             │ ├─381 /usr/lib/xorg/Xorg :0 vt7 -nolisten tcp -auth /var/lib/xdm/authdir/authfiles/A:0-RoB6Fk
+             │ └─616 -:0
+             ├─systemd-networkd.service 
+             │ └─270 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─264 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─341 /usr/libexec/polkitd --no-debug
+             ├─systemd-journald.service 
+             │ └─250 /lib/systemd/systemd-journald
+             ├─systemd-resolved.service 
+             │ └─296 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─303 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@5-10.0.2.15:22-10.0.2.2:42350.service 
+             │   ├─635 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─638 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─286 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─361 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─304 /lib/systemd/systemd-logind

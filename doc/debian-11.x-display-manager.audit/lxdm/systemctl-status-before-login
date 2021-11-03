@@ -1,0 +1,40 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:15:44 AEDT; 10s ago
+   CGroup: /
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─405 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─272 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─264 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─327 /usr/libexec/polkitd --no-debug
+             ├─lxdm.service 
+             │ ├─333 /usr/sbin/lxdm-binary
+             │ ├─378 /usr/lib/xorg/Xorg -background none :0 vt07 -nolisten tcp -novtswitch -auth /var/run/lxdm/lxdm-:0.auth
+             │ └─399 /usr/lib/lxdm/lxdm-greeter-gtk
+             ├─systemd-journald.service 
+             │ └─250 /lib/systemd/systemd-journald
+             ├─systemd-hostnamed.service 
+             │ └─306 /lib/systemd/systemd-hostnamed
+             ├─systemd-resolved.service 
+             │ └─295 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─298 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@3-10.0.2.15:22-10.0.2.2:42378.service 
+             │   ├─430 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─433 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─286 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─379 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─299 /lib/systemd/systemd-logind

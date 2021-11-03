@@ -1,0 +1,37 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:21:11 AEDT; 1min 18s ago
+   CGroup: /
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─404 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─269 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─264 /lib/systemd/systemd-udevd
+             ├─slim.service 
+             │ ├─378 /usr/bin/slim -nodaemon
+             │ └─381 /usr/lib/xorg/Xorg -nolisten tcp -auth /var/run/slim.auth
+             ├─polkit.service 
+             │ └─325 /usr/libexec/polkitd --no-debug
+             ├─systemd-journald.service 
+             │ └─250 /lib/systemd/systemd-journald
+             ├─systemd-resolved.service 
+             │ └─297 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─306 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@3-10.0.2.15:22-10.0.2.2:42450.service 
+             │   ├─431 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─434 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─288 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─375 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─308 /lib/systemd/systemd-logind

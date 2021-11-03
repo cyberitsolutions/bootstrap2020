@@ -1,0 +1,103 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:07:36 AEDT; 43s ago
+   CGroup: /
+           ├─user.slice 
+           │ ├─user-106.slice 
+           │ │ ├─session-c2.scope 
+           │ │ │ ├─871 gdm-session-worker [pam/gdm-launch-environment]
+           │ │ │ ├─875 /usr/libexec/gdm-wayland-session --register-session dbus-run-session -- gnome-session --autostart /usr/share/gdm/greeter/autostart
+           │ │ │ ├─878 dbus-run-session -- gnome-session --autostart /usr/share/gdm/greeter/autostart
+           │ │ │ ├─879 dbus-daemon --nofork --print-address 4 --session
+           │ │ │ ├─880 /usr/libexec/gnome-session-binary --systemd --autostart /usr/share/gdm/greeter/autostart
+           │ │ │ ├─888 /usr/bin/gnome-shell
+           │ │ │ ├─913 /usr/bin/Xwayland :1024 -rootless -noreset -accessx -core -auth /run/user/106/.mutter-Xwaylandauth.SB1DC1 -listen 4 -listen 5 -displayfd 6 -listen 7
+           │ │ │ ├─916 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+           │ │ │ ├─917 /usr/libexec/gsd-color
+           │ │ │ ├─920 /usr/libexec/gsd-print-notifications
+           │ │ │ ├─924 /usr/libexec/gsd-a11y-settings
+           │ │ │ ├─926 /usr/libexec/gsd-power
+           │ │ │ ├─934 /usr/libexec/gsd-media-keys
+           │ │ │ ├─935 /usr/libexec/gsd-rfkill
+           │ │ │ ├─944 /usr/libexec/gsd-keyboard
+           │ │ │ ├─952 /usr/libexec/gsd-wacom
+           │ │ │ ├─954 /usr/libexec/gsd-housekeeping
+           │ │ │ ├─955 /usr/libexec/gsd-sound
+           │ │ │ ├─956 /usr/libexec/gsd-datetime
+           │ │ │ ├─962 /usr/libexec/gsd-smartcard
+           │ │ │ ├─968 /usr/libexec/gsd-screensaver-proxy
+           │ │ │ ├─976 /usr/libexec/gsd-sharing
+           │ │ │ └─995 /usr/libexec/gsd-printer
+           │ │ └─user@106.service …
+           │ │   ├─app.slice 
+           │ │   │ ├─pipewire-pulse.service 
+           │ │   │ │ └─417 /usr/bin/pipewire-pulse
+           │ │   │ ├─pipewire.service 
+           │ │   │ │ ├─418 /usr/bin/pipewire
+           │ │   │ │ └─426 /usr/bin/pipewire-media-session
+           │ │   │ └─dbus.service 
+           │ │   │   └─421 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │ │   └─init.scope 
+           │ │     ├─397 /lib/systemd/systemd --user
+           │ │     └─398 (sd-pam)
+           │ └─user-1000.slice 
+           │   └─user@1000.service …
+           │     ├─app.slice 
+           │     │ ├─pipewire-pulse.service 
+           │     │ │ └─653 /usr/bin/pipewire-pulse
+           │     │ ├─evolution-calendar-factory.service 
+           │     │ │ └─818 /usr/libexec/evolution-calendar-factory
+           │     │ ├─evolution-source-registry.service 
+           │     │ │ └─805 /usr/libexec/evolution-source-registry
+           │     │ ├─pipewire.service 
+           │     │ │ ├─654 /usr/bin/pipewire
+           │     │ │ └─660 /usr/bin/pipewire-media-session
+           │     │ ├─dbus.service 
+           │     │ │ ├─656 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │     │ │ ├─750 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd
+           │     │ │ └─812 /usr/libexec/dconf-service
+           │     │ └─evolution-addressbook-factory.service 
+           │     │   └─833 /usr/libexec/evolution-addressbook-factory
+           │     └─init.scope 
+           │       ├─633 /lib/systemd/systemd --user
+           │       └─634 (sd-pam)
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─582 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─272 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─266 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─322 /usr/libexec/polkitd --no-debug
+             ├─accounts-daemon.service 
+             │ └─296 /usr/libexec/accounts-daemon
+             ├─systemd-journald.service 
+             │ └─251 /lib/systemd/systemd-journald
+             ├─gdm.service 
+             │ └─387 /usr/sbin/gdm3
+             ├─systemd-hostnamed.service 
+             │ └─990 /lib/systemd/systemd-hostnamed
+             ├─upower.service 
+             │ └─301 /usr/libexec/upowerd
+             ├─systemd-resolved.service 
+             │ └─310 /lib/systemd/systemd-resolved
+             ├─systemd-localed.service 
+             │ └─466 /lib/systemd/systemd-localed
+             ├─dbus.service 
+             │ └─297 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@5-10.0.2.15:22-10.0.2.2:42308.service 
+             │   ├─1035 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─1038 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─269 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty2.service 
+             │   └─874 /sbin/agetty -o -p -- \u --noclear tty2 linux
+             └─systemd-logind.service 
+               └─300 /lib/systemd/systemd-logind

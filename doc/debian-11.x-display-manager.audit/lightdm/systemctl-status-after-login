@@ -1,0 +1,80 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:25:00 AEDT; 11s ago
+   CGroup: /
+           ├─user.slice 
+           │ ├─user-106.slice 
+           │ │ └─user@106.service …
+           │ │   ├─app.slice 
+           │ │   │ ├─pipewire-pulse.service 
+           │ │   │ │ └─428 /usr/bin/pipewire-pulse
+           │ │   │ ├─pipewire.service 
+           │ │   │ │ ├─429 /usr/bin/pipewire
+           │ │   │ │ └─434 /usr/bin/pipewire-media-session
+           │ │   │ └─dbus.service 
+           │ │   │   └─433 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │ │   └─init.scope 
+           │ │     ├─408 /lib/systemd/systemd --user
+           │ │     └─409 (sd-pam)
+           │ └─user-1000.slice 
+           │   ├─user@1000.service …
+           │   │ ├─app.slice 
+           │   │ │ ├─pipewire-pulse.service 
+           │   │ │ │ └─514 /usr/bin/pipewire-pulse
+           │   │ │ ├─gpg-agent.service 
+           │   │ │ │ └─585 /usr/bin/gpg-agent --supervised
+           │   │ │ ├─pipewire.service 
+           │   │ │ │ ├─515 /usr/bin/pipewire
+           │   │ │ │ └─523 /usr/bin/pipewire-media-session
+           │   │ │ └─dbus.service 
+           │   │ │   ├─519 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │   │ │   └─573 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd
+           │   │ └─init.scope 
+           │   │   ├─494 /lib/systemd/systemd --user
+           │   │   └─495 (sd-pam)
+           │   └─session-2.scope 
+           │     ├─489 lightdm --session-child 15 22
+           │     ├─517 xfce4-session
+           │     ├─587 xfwm4
+           │     ├─590 xfsettingsd
+           │     ├─593 xfce4-panel
+           │     ├─597 Thunar --daemon
+           │     ├─606 xfdesktop
+           │     ├─613 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libsystray.so 6 14680072 systray Status Tray Plugin Provides status notifier items (application indicators) and legacy systray items
+           │     ├─614 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libpulseaudio-plugin.so 8 14680073 pulseaudio PulseAudio Plugin Adjust the audio volume of the PulseAudio sound system
+           │     └─619 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libactions.so 14 14680074 actions Action Buttons Log out, lock or other system actions
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─458 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─273 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─267 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─325 /usr/libexec/polkitd --no-debug
+             ├─lightdm.service 
+             │ ├─338 /usr/sbin/lightdm
+             │ └─383 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+             ├─systemd-journald.service 
+             │ └─251 /lib/systemd/systemd-journald
+             ├─systemd-hostnamed.service 
+             │ └─303 /lib/systemd/systemd-hostnamed
+             ├─systemd-resolved.service 
+             │ └─297 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─299 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@4-10.0.2.15:22-10.0.2.2:42490.service 
+             │   ├─626 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─629 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─270 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─382 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─300 /lib/systemd/systemd-logind

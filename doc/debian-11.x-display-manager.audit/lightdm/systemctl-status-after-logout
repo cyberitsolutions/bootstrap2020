@@ -1,0 +1,71 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:25:00 AEDT; 24s ago
+   CGroup: /
+           ├─user.slice 
+           │ ├─user-106.slice 
+           │ │ ├─session-c2.scope 
+           │ │ │ ├─661 lightdm --session-child 17 20
+           │ │ │ └─687 /usr/sbin/lightdm-gtk-greeter
+           │ │ └─user@106.service …
+           │ │   ├─app.slice 
+           │ │   │ ├─pipewire-pulse.service 
+           │ │   │ │ └─685 /usr/bin/pipewire-pulse
+           │ │   │ ├─pipewire.service 
+           │ │   │ │ ├─686 /usr/bin/pipewire
+           │ │   │ │ └─691 /usr/bin/pipewire-media-session
+           │ │   │ └─dbus.service 
+           │ │   │   └─690 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │ │   └─init.scope 
+           │ │     ├─665 /lib/systemd/systemd --user
+           │ │     └─666 (sd-pam)
+           │ └─user-1000.slice 
+           │   └─user@1000.service …
+           │     ├─app.slice 
+           │     │ ├─pipewire-pulse.service 
+           │     │ │ └─514 /usr/bin/pipewire-pulse
+           │     │ ├─pipewire.service 
+           │     │ │ ├─515 /usr/bin/pipewire
+           │     │ │ └─523 /usr/bin/pipewire-media-session
+           │     │ └─dbus.service 
+           │     │   ├─519 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │     │   └─573 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd
+           │     └─init.scope 
+           │       ├─494 /lib/systemd/systemd --user
+           │       └─495 (sd-pam)
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─458 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─273 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─267 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─325 /usr/libexec/polkitd --no-debug
+             ├─lightdm.service 
+             │ ├─338 /usr/sbin/lightdm
+             │ ├─640 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+             │ └─706 lightdm --session-child 13 20
+             ├─systemd-journald.service 
+             │ └─251 /lib/systemd/systemd-journald
+             ├─systemd-hostnamed.service 
+             │ └─303 /lib/systemd/systemd-hostnamed
+             ├─systemd-resolved.service 
+             │ └─297 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─299 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@5-10.0.2.15:22-10.0.2.2:42494.service 
+             │   ├─711 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─714 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─270 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─382 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─300 /lib/systemd/systemd-logind

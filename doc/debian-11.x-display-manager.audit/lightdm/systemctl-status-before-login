@@ -1,0 +1,57 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:25:00 AEDT; 5s ago
+   CGroup: /
+           ├─user.slice 
+           │ └─user-106.slice 
+           │   ├─session-c1.scope 
+           │   │ ├─404 lightdm --session-child 16 19
+           │   │ └─430 /usr/sbin/lightdm-gtk-greeter
+           │   └─user@106.service …
+           │     ├─app.slice 
+           │     │ ├─pipewire-pulse.service 
+           │     │ │ └─428 /usr/bin/pipewire-pulse
+           │     │ ├─pipewire.service 
+           │     │ │ ├─429 /usr/bin/pipewire
+           │     │ │ └─434 /usr/bin/pipewire-media-session
+           │     │ └─dbus.service 
+           │     │   └─433 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │     └─init.scope 
+           │       ├─408 /lib/systemd/systemd --user
+           │       └─409 (sd-pam)
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─458 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─273 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─267 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─325 /usr/libexec/polkitd --no-debug
+             ├─lightdm.service 
+             │ ├─338 /usr/sbin/lightdm
+             │ ├─383 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+             │ └─452 lightdm --session-child 15 20
+             ├─systemd-journald.service 
+             │ └─251 /lib/systemd/systemd-journald
+             ├─systemd-hostnamed.service 
+             │ └─303 /lib/systemd/systemd-hostnamed
+             ├─systemd-resolved.service 
+             │ └─297 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─299 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@3-10.0.2.15:22-10.0.2.2:42486.service 
+             │   ├─483 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─486 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─270 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─382 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─300 /lib/systemd/systemd-logind

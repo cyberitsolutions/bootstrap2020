@@ -1,0 +1,65 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:15:44 AEDT; 30s ago
+   CGroup: /
+           ├─user.slice 
+           │ └─user-1000.slice 
+           │   ├─user@1000.service …
+           │   │ ├─app.slice 
+           │   │ │ ├─pipewire-pulse.service 
+           │   │ │ │ └─457 /usr/bin/pipewire-pulse
+           │   │ │ ├─gpg-agent.service 
+           │   │ │ │ └─553 /usr/bin/gpg-agent --supervised
+           │   │ │ ├─pipewire.service 
+           │   │ │ │ ├─458 /usr/bin/pipewire
+           │   │ │ │ └─469 /usr/bin/pipewire-media-session
+           │   │ │ └─dbus.service 
+           │   │ │   ├─464 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │   │ │   └─541 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd
+           │   │ └─init.scope 
+           │   │   ├─437 /lib/systemd/systemd --user
+           │   │   └─438 (sd-pam)
+           │   └─session-1.scope 
+           │     ├─435 /usr/lib/lxdm/lxdm-session
+           │     ├─459 xfce4-session
+           │     ├─555 xfwm4
+           │     ├─558 xfsettingsd
+           │     ├─561 xfce4-panel
+           │     ├─565 Thunar --daemon
+           │     ├─574 xfdesktop
+           │     ├─581 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libsystray.so 6 12582920 systray Status Tray Plugin Provides status notifier items (application indicators) and legacy systray items
+           │     ├─582 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libpulseaudio-plugin.so 8 12582921 pulseaudio PulseAudio Plugin Adjust the audio volume of the PulseAudio sound system
+           │     └─587 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libactions.so 14 12582922 actions Action Buttons Log out, lock or other system actions
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─405 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─272 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─264 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─327 /usr/libexec/polkitd --no-debug
+             ├─lxdm.service 
+             │ ├─333 /usr/sbin/lxdm-binary
+             │ └─378 /usr/lib/xorg/Xorg -background none :0 vt07 -nolisten tcp -novtswitch -auth /var/run/lxdm/lxdm-:0.auth
+             ├─systemd-journald.service 
+             │ └─250 /lib/systemd/systemd-journald
+             ├─systemd-resolved.service 
+             │ └─295 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─298 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@4-10.0.2.15:22-10.0.2.2:42382.service 
+             │   ├─596 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─599 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─286 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice 
+             │ └─getty@tty1.service 
+             │   └─379 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service 
+               └─299 /lib/systemd/systemd-logind

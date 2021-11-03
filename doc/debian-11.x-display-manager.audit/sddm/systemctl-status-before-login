@@ -1,0 +1,53 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:18:38 AEDT; 6s ago
+   CGroup: /
+           ├─user.slice 
+           │ └─user-106.slice 
+           │   ├─user@106.service …
+           │   │ ├─app.slice 
+           │   │ │ ├─pipewire-pulse.service 
+           │   │ │ │ └─423 /usr/bin/pipewire-pulse
+           │   │ │ ├─pipewire.service 
+           │   │ │ │ ├─424 /usr/bin/pipewire
+           │   │ │ │ └─429 /usr/bin/pipewire-media-session
+           │   │ │ └─dbus.service 
+           │   │ │   └─428 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │   │ └─init.scope 
+           │   │   ├─403 /lib/systemd/systemd --user
+           │   │   └─404 (sd-pam)
+           │   └─session-1.scope 
+           │     ├─401 /usr/lib/x86_64-linux-gnu/sddm/sddm-helper --socket /tmp/sddm-auth18750d2b-c100-44f0-acf4-327c88bce2ec --id 2 --start /usr/bin/sddm-greeter --socket /tmp/sddm-:0-blNJRE --user sddm --greeter
+           │     └─425 /usr/bin/sddm-greeter --socket /tmp/sddm-:0-blNJRE
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─451 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─274 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─266 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─340 /usr/libexec/polkitd --no-debug
+             ├─systemd-journald.service 
+             │ └─250 /lib/systemd/systemd-journald
+             ├─systemd-hostnamed.service 
+             │ └─324 /lib/systemd/systemd-hostnamed
+             ├─sddm.service 
+             │ ├─335 /usr/bin/sddm
+             │ └─379 /usr/lib/xorg/Xorg -nolisten tcp -auth /var/run/sddm/{5711c76e-f667-4461-ad61-914994bc988c} -background none -noreset -displayfd 17 -seat seat0 vt7
+             ├─systemd-resolved.service 
+             │ └─295 /lib/systemd/systemd-resolved
+             ├─dbus.service 
+             │ └─301 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@3-10.0.2.15:22-10.0.2.2:42414.service 
+             │   ├─476 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─479 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─269 /lib/systemd/systemd-timesyncd
+             └─systemd-logind.service 
+               └─302 /lib/systemd/systemd-logind

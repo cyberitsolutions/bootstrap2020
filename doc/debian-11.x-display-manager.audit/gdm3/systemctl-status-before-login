@@ -1,0 +1,80 @@
+● desktop.lan
+    State: running
+     Jobs: 0 queued
+   Failed: 0 units
+    Since: Wed 2021-11-03 18:07:36 AEDT; 19s ago
+   CGroup: /
+           ├─user.slice 
+           │ └─user-106.slice 
+           │   ├─session-c1.scope 
+           │   │ ├─392 gdm-session-worker [pam/gdm-launch-environment]
+           │   │ ├─419 /usr/libexec/gdm-wayland-session --register-session dbus-run-session -- gnome-session --autostart /usr/share/gdm/greeter/autostart
+           │   │ ├─425 dbus-run-session -- gnome-session --autostart /usr/share/gdm/greeter/autostart
+           │   │ ├─427 dbus-daemon --nofork --print-address 4 --session
+           │   │ ├─429 /usr/libexec/gnome-session-binary --systemd --autostart /usr/share/gdm/greeter/autostart
+           │   │ ├─440 /usr/bin/gnome-shell
+           │   │ ├─465 /usr/bin/Xwayland :1024 -rootless -noreset -accessx -core -auth /run/user/106/.mutter-Xwaylandauth.YDX9B1 -listen 4 -listen 5 -displayfd 6 -listen 7
+           │   │ ├─469 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+           │   │ ├─471 /usr/libexec/gsd-color
+           │   │ ├─475 /usr/libexec/gsd-print-notifications
+           │   │ ├─476 /usr/libexec/gsd-a11y-settings
+           │   │ ├─477 /usr/libexec/gsd-power
+           │   │ ├─485 /usr/libexec/gsd-media-keys
+           │   │ ├─486 /usr/libexec/gsd-rfkill
+           │   │ ├─488 /usr/libexec/gsd-keyboard
+           │   │ ├─492 /usr/libexec/gsd-wacom
+           │   │ ├─500 /usr/libexec/gsd-housekeeping
+           │   │ ├─501 /usr/libexec/gsd-sound
+           │   │ ├─506 /usr/libexec/gsd-datetime
+           │   │ ├─509 /usr/libexec/gsd-smartcard
+           │   │ ├─513 /usr/libexec/gsd-screensaver-proxy
+           │   │ ├─517 /usr/libexec/gsd-sharing
+           │   │ ├─547 /usr/libexec/gsd-printer
+           │   │ └─592 /usr/libexec/dconf-service
+           │   └─user@106.service …
+           │     ├─app.slice 
+           │     │ ├─pipewire-pulse.service 
+           │     │ │ └─417 /usr/bin/pipewire-pulse
+           │     │ ├─pipewire.service 
+           │     │ │ ├─418 /usr/bin/pipewire
+           │     │ │ └─426 /usr/bin/pipewire-media-session
+           │     │ └─dbus.service 
+           │     │   └─421 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │     └─init.scope 
+           │       ├─397 /lib/systemd/systemd --user
+           │       └─398 (sd-pam)
+           ├─init.scope 
+           │ └─1 /sbin/init plainroot splash
+           └─system.slice 
+             ├─msmtpd.service 
+             │ └─582 /usr/bin/msmtpd --interface=127.0.0.1 --port=25
+             ├─systemd-networkd.service 
+             │ └─272 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service 
+             │ └─266 /lib/systemd/systemd-udevd
+             ├─polkit.service 
+             │ └─322 /usr/libexec/polkitd --no-debug
+             ├─accounts-daemon.service 
+             │ └─296 /usr/libexec/accounts-daemon
+             ├─systemd-journald.service 
+             │ └─251 /lib/systemd/systemd-journald
+             ├─gdm.service 
+             │ └─387 /usr/sbin/gdm3
+             ├─systemd-hostnamed.service 
+             │ └─325 /lib/systemd/systemd-hostnamed
+             ├─upower.service 
+             │ └─301 /usr/libexec/upowerd
+             ├─systemd-resolved.service 
+             │ └─310 /lib/systemd/systemd-resolved
+             ├─systemd-localed.service 
+             │ └─466 /lib/systemd/systemd-localed
+             ├─dbus.service 
+             │ └─297 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─system-tinysshd.slice 
+             │ └─tinysshd@3-10.0.2.15:22-10.0.2.2:42300.service 
+             │   ├─621 /usr/sbin/tinysshd -v -- /etc/tinyssh/sshkeydir
+             │   └─624 systemctl status
+             ├─systemd-timesyncd.service 
+             │ └─269 /lib/systemd/systemd-timesyncd
+             └─systemd-logind.service 
+               └─300 /lib/systemd/systemd-logind
