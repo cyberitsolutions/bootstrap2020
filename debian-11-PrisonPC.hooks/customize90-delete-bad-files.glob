@@ -57,6 +57,11 @@
 
 ## Inmates SHOULD NOT have miscellaneous scary things
 ## ==================================================
+# From tiny-initramfs & tiny-initramfs-core.
+# In ./customize80-purge-bad-packages.py we remove initrd stuff.
+# Nerf the unused "stub" initrd it installs.
+**/tiny-initramfs
+**/*bin/*tirfs
 
 
 ## Inmates SHOULD NOT be able to use VLC for evil
