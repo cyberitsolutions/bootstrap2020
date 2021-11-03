@@ -42,6 +42,8 @@ args = parser.parse_args()
 subprocess.check_call([
     'chroot', args.chroot_path,
     'apt', 'purge', '--autoremove', '--assume-yes',
+    # These firmware blobs aren't needed now the rd is built.
+    'amd64-microcode', 'intel-microcode',
     # Workaround stock kernels needing *a* linux-initramfs-tool.
     # Install the smallest one; we never actually use it.
     # FIXME: once PrisonPC has custom inmate kernels, remove this.
