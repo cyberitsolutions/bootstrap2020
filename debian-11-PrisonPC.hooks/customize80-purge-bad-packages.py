@@ -24,6 +24,37 @@ parser = argparse.ArgumentParser(
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
 
+# busybox and klibc-utils contain a bunch of utilities.
+# We would rather inmates not have these tools.
+# They are needed in the initrd, but not the rootfs.
+#
+# By the time this script runs, the initrd is built.
+# So we can purge initrd-related stuff.
+# We CAN'T purge the kernel itself, because
+# some drivers may be loaded AFTER pivot_root.
+#
+# We can't purge plymouth, because
+# systemd uses one of its units AFTER pivot_root to STOP plymouth.
+#
+# This de facto means we can't remove any of these without a --force-depends
+#   plymouth
+#   → initramfs-tools | dracut
+#   linux-image-*  (but not linux-image-inmate)
+#   → linux-initramfs-tool
+#   initramfs-tools
+#   → klibc-utils !
+#   → cpio
+#   → logsave
+#
+# We DO NOT have to sit through a SLOW, needless rd rebuild, as
+# debian-11-main.py has already removed /boot/vmlinuz*, so
+# the update-initramfs trigger does nothing.
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'dpkg', '--purge',
+    'live-boot', 'live-boot-initramfs-tools', 'busybox'])
+
+
 # Now that all package installs are done,
 # we can remove apt and its dependencies.
 # "apt purge apt --autoremove" does not
