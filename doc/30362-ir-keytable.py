@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # I'm configuring an IR remote.
 # I need to add bindings to ir-keytable and xfwm4/upmc.
@@ -58,9 +58,9 @@ if debug_parse_results:
     pprint.pprint(xorg_key2sym)
 
 
-print 'kName kCode xCode xKey xSym'
-print '===== ===== ===== ==== ===='
-for code, name in linux_code2name.iteritems():
+print('kName kCode xCode xKey xSym')
+print('===== ===== ===== ==== ====')
+for code, name in linux_code2name.items():
     line = [name, code]
     code += 8                   # xorg code = 8 + linux code
     if code in xorg_code2key:
@@ -69,4 +69,4 @@ for code, name in linux_code2name.iteritems():
         if key in xorg_key2sym:
             line += [xorg_key2sym[key]]
 
-    print '\t'.join([str(word) for word in line])
+    print('\t'.join([str(word) for word in line]))
