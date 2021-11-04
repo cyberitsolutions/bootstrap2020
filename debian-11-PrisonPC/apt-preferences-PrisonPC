@@ -1,0 +1,4 @@
+Explanation: use VLC with screenshot support disabled
+Package: src:vlc
+Pin: release o=Cyber
+Pin-Priority: 500
