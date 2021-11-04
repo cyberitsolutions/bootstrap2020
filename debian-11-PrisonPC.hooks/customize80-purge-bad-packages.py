@@ -2,7 +2,6 @@
 import argparse
 import pathlib
 import subprocess
-import shutil
 
 __doc__ = """ if we can remove it, remove it
 
