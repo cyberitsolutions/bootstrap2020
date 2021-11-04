@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 %:
 	dh $@
-# Install /usr/games/alpehone not /usr/bin/alephone
+# Install /usr/games/alephone not /usr/bin/alephone
 CONFIGURE_FLAGS += --bindir=/usr/games --datadir=/usr/share/games
 # Use system-wide lua, not embedded lua
 # FIXME: doesn't Just Work so ignoring for now?!
@@ -15,7 +15,7 @@ CONFIGURE_FLAGS += --enable-opengl
 # The marathon[123]-data packages have 1200 PNGs — do we need --with-png for those?
 # UPDATE: No. Good graphics work *IFF* you set the render mode to OpenGL (not software).
 # This is true regardless of libpng's direct usage.
-CONFIGURE_FLAGS += --without-ffmpeg --without-smpeg --without-speex --without-alsa --without-png
+CONFIGURE_FLAGS += --without-ffmpeg --without-smpeg --without-speex --without-alsa --without-png --without-miniupnp
 # Create smaller game saves
 CONFIGURE_FLAGS += --with-zzip
 # FIXME: not needed?

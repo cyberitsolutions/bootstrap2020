@@ -2,10 +2,10 @@ Source: alephone
 Section: games
 Priority: optional
 Homepage: https://alephone.lhowon.org/
-Standards-Version: 4.3.0
+Standards-Version: 4.5.1
 Maintainer: Trent W. Buck <twb@cyber.com.au>
 Rules-Requires-Root: no
-Build-Depends: debhelper-compat (= 12),
+Build-Depends: debhelper-compat (= 13),
  libboost-dev,
  libboost-filesystem-dev,
  libboost-system-dev,
@@ -31,7 +31,7 @@ Build-Conflicts:
 # libcurl4-dev
 
 Package: alephone
-Depends: ${misc:Depends}, ${shlibs:Depends}, ttf-dejavu-extra
+Depends: ${misc:Depends}, ${shlibs:Depends}, fonts-dejavu-extra
 Suggests: marathon1-data, marathon2-data, marathon3-data
 Architecture: any
 Description: FPS engine for the Marathon Trilogy
