@@ -29,6 +29,9 @@ os.environ['SOURCE_DATE_EPOCH'] = subprocess.check_output(
      '--file', args.package_path / 'debian/changelog',
      '--show-field=timestamp'],
     text=True).strip()
+# Makes autotools/make/gcc print "CC foo" instead of the full 600-character command.
+# Makes errors/warnings much easier to see.
+os.environ['DEB_BUILD_OPTIONS'] = 'terse'
 
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
