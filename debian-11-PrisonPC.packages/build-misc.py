@@ -33,7 +33,7 @@ os.environ['SOURCE_DATE_EPOCH'] = subprocess.check_output(
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
-         '--variant=apt',
+         '--variant=buildd',    # "build-dep" would do this anyway
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
