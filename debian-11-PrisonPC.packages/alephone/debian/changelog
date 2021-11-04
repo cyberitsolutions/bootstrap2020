@@ -1,0 +1,17 @@
+alephone (20190331-0~prisonpc1) stable; urgency=medium
+
+  * New upstream.  Switch to Debian 10.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 01 Nov 2021 13:47:02 +1100
+
+alephone (20150620-1~prisonpc1) stable; urgency=medium
+
+  * Install icon & menu items.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 01 Nov 2021 13:47:02 +1100
+
+alephone (20150620-1~prisonpc0) stable; urgency=medium
+
+  * Initial release.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 01 Nov 2021 13:47:02 +1100

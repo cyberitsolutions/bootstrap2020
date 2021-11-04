@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=alephone /usr/share/games/marathon3
+TryExec=/usr/share/games/marathon3
+Name=Marathon Infinity
+Icon=marathon
+Categories=Application;Game;ArcadeGame;

@@ -1,0 +1,46 @@
+Source: alephone
+Section: games
+Priority: optional
+Homepage: https://alephone.lhowon.org/
+Standards-Version: 4.3.0
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 12),
+ libboost-dev,
+ libboost-filesystem-dev,
+ libboost-system-dev,
+# system (not embedded) lua
+ liblua5.1-dev,
+# support for opengl:
+ libgl1-mesa-dev | libgl-dev,
+ libglu1-mesa-dev | libglu-dev,
+# support for mp3 and audio:
+ libasound2-dev,
+ libmad0-dev,
+ libsndfile1-dev,
+ libvorbis-dev,
+ libsdl2-image-dev,
+ libsdl2-net-dev,
+ libsdl2-ttf-dev,
+ libzzip-dev,
+ zlib1g-dev
+Build-Conflicts:
+ libsmpeg-dev,
+ libspeexdsp-dev,
+# libpng12-dev,
+# libcurl4-dev
+
+Package: alephone
+Depends: ${misc:Depends}, ${shlibs:Depends}, ttf-dejavu-extra
+Suggests: marathon1-data, marathon2-data, marathon3-data
+Architecture: any
+Description: FPS engine for the Marathon Trilogy
+ Aleph One is a first-person shooter engine based on Bungie's Marathon 2:
+ Durandal.  It features software and OpenGL rendering, Internet play, Lua
+ scripting, and much more.
+ .
+ Play requires both the engine (this package) and a "scenario" (the game data).
+ Debian does not distribute scenarios, but they can be downloaded gratis from
+ Bungie's website or using the game-data-packager system.
+ .
+ Internet play is (hopefully) disabled in this for-PrisonPC build.
