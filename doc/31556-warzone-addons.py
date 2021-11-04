@@ -3,8 +3,9 @@
 # Filter addons.wz2100.net by license (e.g. not CC-NC), by version (≤3.1), by type (map or mapmod).
 
 import lxml.html
-import datetime
+# import datetime
 import sqlite3
+
 
 def main():
     with sqlite3.connect('addons.wz2100.net.db') as conn:
@@ -67,6 +68,7 @@ def upsert(conn, pairs):
          pairs['Addon type'],
          pairs['Game version']))
 
+
 CREATE_QUERY = """
   CREATE TABLE IF NOT EXISTS addons (
     id           INTEGER PRIMARY KEY,
@@ -95,4 +97,3 @@ if __name__ == '__main__':
 #  'Oil': 'High',
 #  'Players': '6',
 #  'Rating': '1.0'}
-

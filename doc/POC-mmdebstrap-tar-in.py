@@ -29,6 +29,7 @@ import io
 
 class MyTarInfo(tarfile.TarInfo):
     fileobj = None
+
     def __init__(self, content=None, **kwargs):
         super().__init__()
         for k, v in kwargs.items():

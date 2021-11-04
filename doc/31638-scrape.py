@@ -99,6 +99,7 @@ def valid_tadsid(s):
     assert s.isalnum()
     return s
 
+
 # The /viewgame page is hard to parse.
 # The /editgame page is easy to parse, but behind a login form.
 # This class handles getting the login cookie.
@@ -109,6 +110,7 @@ class IFDBAuth(requests.auth.AuthBase):
                                 'password': password})
         r.raise_for_status()  # UGH, by default requests **IGNORES HTTP ERRORS**
         self._cookies = r.cookies
+
     def __call__(self, r):
         r.prepare_cookies(self._cookies)
         return r

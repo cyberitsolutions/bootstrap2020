@@ -23,6 +23,7 @@ import sys
 sys.path.append('/usr/share/games/wesnoth/1.14/data/tools')
 import wesnoth.campaignserver_client
 
+
 def main():
     with sqlite3.connect('addons.wesnoth.org.db') as conn:
         conn.execute(CREATE_QUERY)
@@ -50,7 +51,7 @@ def upsert(conn, row):
          row.get_text_val('version'),
          row.get_text_val('dependencies'),
          row.get_text_val('description')
-))
+         ))
 
 
 CREATE_QUERY = """
