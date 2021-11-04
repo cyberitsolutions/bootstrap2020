@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import os
 import pathlib
 import subprocess
 import tempfile
@@ -22,6 +23,11 @@ package_version = subprocess.check_output(
     ['dpkg-parsechangelog',
      '--file', args.package_path / 'debian/changelog',
      '--show-field=version'],
+    text=True).strip()
+os.environ['SOURCE_DATE_EPOCH'] = subprocess.check_output(
+    ['dpkg-parsechangelog',
+     '--file', args.package_path / 'debian/changelog',
+     '--show-field=timestamp'],
     text=True).strip()
 
 with tempfile.TemporaryDirectory() as td:
