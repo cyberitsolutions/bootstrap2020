@@ -15,7 +15,7 @@ xorg_key2sym = {}
 debug_match_failures = False
 debug_parse_results = False
 
-with open('/usr/include/linux/input.h') as fh:
+with open('/usr/include/linux/input-event-codes.h') as fh:
     for line in fh:
         match = re.search(r'^\s*#\s*define\s+(KEY_\S+)\s+(0x)?([0-9a-fA-F]+)', line)
         if match:
