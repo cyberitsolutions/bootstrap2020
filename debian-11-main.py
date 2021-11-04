@@ -164,7 +164,7 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
 
-include_libreoffice = ' '.join(f'''
+include_libreoffice = ' '.join('''
 libreoffice-calc
 libreoffice-impress
 libreoffice-writer
@@ -271,7 +271,7 @@ with tempfile.TemporaryDirectory() as td:
             '--include=rsyslog-relp msmtp-mta',
             '--include=python3-dbus',  # for get-config-from-dnssd
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
-            f'--hook-dir=debian-11-main.hooks',
+            '--hook-dir=debian-11-main.hooks',
             ]
            if args.optimize != 'simplicity' else []),
          *(['--include=tzdata',
@@ -312,20 +312,19 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
             '    quota ']    # no slow quotacheck on failover
-          if args.template == 'understudy' else []),
+           if args.template == 'understudy' else []),
          *(['--include=mdadm rsnapshot'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
             '    extlinux parted'  # debugging/rescue
             '    python3 bsd-mailx logcheck-database'  # journalcheck dependencies
-            '    ca-certificates'  # for msmtp to verify gmail
-            ,
+            '    ca-certificates',  # for msmtp to verify gmail
             f'--essential-hook=tar-in {create_tarball("debian-11-datasafe3")} /',
             # FIXME: symlink didn't work, so hard link for now.
             '--customize-hook=cd $1/lib/systemd/system && cp -al ssh.service ssh-sftponly.service',
             # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
             '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
             ]
-          if args.template == 'datasafe3' else []),
+           if args.template == 'datasafe3' else []),
          # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
          # apply what security updates we can into transient tmpfs COW.
          # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
@@ -457,7 +456,7 @@ if args.boot_test:
             subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
                                    'mklabel gpt',
                                    f'mkpart ESP  {size0}MiB     {size0+size1}MiB', 'set 1 esp on',
-                                   f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB',])
+                                   f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB'])
             subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
             subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
             if args.template == 'understudy':
