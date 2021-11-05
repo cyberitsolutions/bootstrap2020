@@ -369,6 +369,10 @@ with tempfile.TemporaryDirectory() as td:
              '--include=i965-va-driver-shaders intel-media-va-driver-non-free'
              if template_wants_PrisonPC else
              '--include=va-driver-all'),
+            # Seen on H81 and H110 Pioneer AIOs.
+            # Not NEEDED, just makes journalctl -p4' quieter.
+            *(['--include=firmware-realtek firmware-misc-nonfree']
+              if template_wants_PrisonPC and not args.virtual_only else []),
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),
