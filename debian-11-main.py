@@ -373,7 +373,16 @@ with tempfile.TemporaryDirectory() as td:
               '--customize-hook=chroot $1 ldconfig'],
             # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
             # It seems there is a fallback for -vga qxl, but not -vga virtio.
-            *(['--include=xserver-xorg-video-qxl'] if args.virtual_only else []),
+            ('--include=xserver-xorg-video-qxl'
+             if args.virtual_only else
+             # We don't need any xserver-xorg-video-* packages.
+             # We don't NEED va-driver, but it makes apps like vlc play "better".
+             # PrisonPC doesn't need Nvidia/AMD (mesa-va-drivers).
+             # PrisonPC might as well use non-free Intel drivers, though.
+             # FIXME: remove i965-* once first-generation Pioneer AIOs are gone.
+             '--include=i965-va-driver-shaders intel-media-va-driver-non-free'
+             if template_wants_PrisonPC else
+             '--include=va-driver-all'),
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),
