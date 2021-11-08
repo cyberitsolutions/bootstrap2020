@@ -534,7 +534,12 @@ if args.boot_test:
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
-                *(['guestfwd=tcp:10.0.2.100:636-cmd:ssh cyber@tweak.prisonpc.com -F /dev/null -y -W prisonpc-inmate.lan:636']
+                *(['guestfwd=tcp:10.0.2.100:636-cmd:'
+                   f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:636'
+                   for host in {
+                           'prisonpc-staff.lan'
+                           if args.template.startswith('desktop-staff') else
+                           'prisonpc-inmate.lan'}]
                   if template_wants_PrisonPC else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
