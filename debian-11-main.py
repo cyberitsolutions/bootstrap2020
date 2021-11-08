@@ -502,6 +502,16 @@ if args.boot_test:
                      'fetch=tftp://10.0.2.2/filesystem.squashfs'),
                     common_boot_args]))
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
+        # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
+        # We need a simple A record in the guest.
+        # This is a quick-and-dirty way to achieve that (FIXME: do better).
+        if template_wants_PrisonPC:
+            if not (args.netboot_only and have_smbd):
+                logging.warning('boot-test fake DNS A records will not work!')
+            (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
+            (testdir / 'site.dir').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 ldap')
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
@@ -524,6 +534,8 @@ if args.boot_test:
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
+                *(['guestfwd=tcp:10.0.2.100:636-cmd:ssh cyber@tweak.prisonpc.com -F /dev/null -y -W prisonpc-inmate.lan:636']
+                  if template_wants_PrisonPC else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
