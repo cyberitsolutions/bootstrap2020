@@ -516,11 +516,15 @@ if args.boot_test:
               if template_wants_GUI else
               ['--nographic', '--vga', 'none']),
             '--net', 'nic,model=virtio',
-            '--net', (f'user,hostname={args.template}.{domain},dnssearch={domain}'
-                      f',hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22' +
-                      (f',smb={testdir}' if have_smbd else '') +
-                      (f',bootfile=pxelinux.0,tftp={testdir}'
-                       if args.netboot_only else '')),
+            '--net', ','.join([
+                'user',
+                f'hostname={args.template}.{domain}',
+                f'dnssearch={domain}',
+                f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
+                *([f'smb={testdir}'] if have_smbd else []),
+                *([f'tftp={testdir}', 'bootfile=pxelinux.0']
+                  if args.netboot_only else []),
+            ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
                '--initrd', testdir / 'initrd.img',
