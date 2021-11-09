@@ -2,7 +2,7 @@
 What=nfs:/srv/share
 Where=/srv/share
 Type=nfs
-Options=nodev,noexec,nosuid,ro
+Options=nodev,noexec,nosuid,ro,sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049
 DirectoryMode=0
 
 [Install]

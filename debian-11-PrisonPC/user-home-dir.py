@@ -68,7 +68,10 @@ if mount_point.is_relative_to('/home'):
         subprocess.check_call([
             'systemd-mount',
             '-tnfs',
-            '-onodev,noexec,nosuid',
+            '-onodev,noexec,nosuid'
+            # Force the specific NFS we want.
+            # This prevents mount.nfs even trying 111/tcp.
+            ',sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049',
             f'nfs:{mount_point}',
             mount_point])
     else:

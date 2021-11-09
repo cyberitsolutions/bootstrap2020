@@ -511,7 +511,7 @@ if args.boot_test:
             (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
-            (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 ldap')
+            (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 PrisonPC ldap nfs')
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
@@ -534,8 +534,9 @@ if args.boot_test:
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
-                *(['guestfwd=tcp:10.0.2.100:636-cmd:'
-                   f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:636'
+                *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
+                   f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
+                   for port in {636, 2049}  # LDAP, NFS
                    for host in {
                            'prisonpc-staff.lan'
                            if args.template.startswith('desktop-staff') else
