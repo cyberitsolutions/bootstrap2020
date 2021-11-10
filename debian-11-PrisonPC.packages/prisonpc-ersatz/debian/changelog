@@ -1,3 +1,22 @@
+prisonpc-ersatz (11.3) unstable; urgency=medium
+
+  * fix lintian debhelper-but-no-misc-depends
+
+  * slurp Debian 9 "prisonpc-core-fonts" as "fonts-prisonpc-core".
+  * slurp cjb's list as "fonts-prisonpc-extra".
+  * move opendyslexic from former to latter.
+  * use Noto (not DejaVu) as UI font.
+  * replace a bunch more near-identical fonts
+  * create fonts-prisonpc to refer to both at once.
+  * miscellaneous cleanup of font packages (Debian 9 to 11).
+  * add Multi-Arch: foreign due to
+    https://lintian.debian.org/tags/font-package-not-multi-arch-foreign
+
+  * libreoffice's dependency on fonts-opensymbol is versioned, so
+    provide a new version.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 11 Nov 2021 08:35:31 +1100
+
 prisonpc-ersatz (11.1~1) UNRELEASED; urgency=medium
 
   * Add prisonpc-bad-package-conflicts

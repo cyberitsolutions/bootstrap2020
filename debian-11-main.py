@@ -356,7 +356,9 @@ with tempfile.TemporaryDirectory() as td:
             f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    plymouth-themes',
-            *(['--include=prisonpc-bad-package-conflicts']
+            *(['--include=prisonpc-bad-package-conflicts'
+               '    fonts-prisonpc'
+               ]
               if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
