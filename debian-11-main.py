@@ -354,6 +354,7 @@ with tempfile.TemporaryDirectory() as td:
             f'   {include_libreoffice}'
             '    vlc'
             f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
+            '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    plymouth-themes',
             *(['--include=prisonpc-bad-package-conflicts']
               if template_wants_PrisonPC else []),
