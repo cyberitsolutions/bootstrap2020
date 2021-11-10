@@ -359,16 +359,14 @@ with tempfile.TemporaryDirectory() as td:
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
             # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
             # It seems there is a fallback for -vga qxl, but not -vga virtio.
-            ('--include=xserver-xorg-video-qxl'
-             if args.virtual_only else
-             # We don't need any xserver-xorg-video-* packages.
-             # We don't NEED va-driver, but it makes apps like vlc play "better".
-             # PrisonPC doesn't need Nvidia/AMD (mesa-va-drivers).
-             # PrisonPC might as well use non-free Intel drivers, though.
-             # FIXME: remove i965-* once first-generation Pioneer AIOs are gone.
-             '--include=i965-va-driver-shaders intel-media-va-driver-non-free'
-             if template_wants_PrisonPC else
-             '--include=va-driver-all'),
+            '--include=xserver-xorg-video-qxl'
+            if args.virtual_only else
+            # Accelerated graphics drivers for several libraries & GPU families
+            '--include=vdpau-driver-all'  # VA/AMD, free
+            '    mesa-vulkan-drivers'     # Intel/AMD/Nvidia, free
+            '    va-driver-all'           # Intel/AMD/Nvidia, free
+            '    i965-va-driver-shaders'  # Intel, non-free, 2013-2017
+            '    intel-media-va-driver-non-free',  # Intel, non-free, 2017+
             # Seen on H81 and H110 Pioneer AIOs.
             # Not NEEDED, just makes journalctl -p4' quieter.
             *(['--include=firmware-realtek firmware-misc-nonfree']
