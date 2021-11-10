@@ -295,6 +295,8 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
             '--components=main contrib non-free']
            if args.optimize != 'simplicity' and not args.virtual_only else []),
+         *(['--include=ca-certificates publicsuffix']
+           if args.optimize != 'simplicity' else []),
          *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
             f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']
