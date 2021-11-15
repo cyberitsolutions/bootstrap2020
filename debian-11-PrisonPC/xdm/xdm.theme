@@ -1,0 +1,35 @@
+! Hey, Emacs!  This is a -*- conf-xdefaults -*- file.
+
+xlogin.Login.greeting:          PrisonPC
+
+! Colors - text on flat background with no boxes.
+! Background should match xsetroot in ./Xsetup.
+! Plymouth defaults to #2e3436 (Tango Aluminium 6).
+! https://sources.debian.org/src/plymouth/0.9.5-3/src/plugins/splash/text/plugin.c/?hl=174#L174
+! https://en.wikipedia.org/wiki/Tango_Desktop_Project#Palette
+! FIXME: should we switch at some point from Tango to GNOME 40?
+! https://developer.gnome.org/hig/reference/palette.html
+xlogin.Login.sepWidth:          0
+xlogin.Login.frameWidth:        0
+xlogin.Login.innerFramesWidth:  0
+xlogin.borderWidth:             0
+
+! Fonts - avoid jaggies in default serif/italic faces.
+xlogin.Login.greetFace:         Sans-36:bold
+xlogin.Login.promptFace:        Sans-24:bold
+xlogin.Login.failFace:          Sans-24:bold
+xlogin.Login.face:              Sans-24
+
+! Place login prompt in the top-left,
+! so the AUP is less likely to overlap it.
+xlogin.Login.x:                 0
+xlogin.Login.y:                 0
+
+! Hardening.
+xlogin.Login.echoPasswd:        true
+xlogin.Login.allowRootLogin:    false
+xlogin.Login.allowNullPassword: false
+
+! Use a separate file for colors only so staff can get different
+! colors without copy-paste-editing the rest of this file.
+#include "Xresources.colors"
