@@ -7,6 +7,15 @@ but before the xdm login prompt is displayed.
 """
 
 
+# Xorg includes a "screen saver", but
+# this is really a screen BLANKER, not a screen LOCKER.
+# Disable this, so the screen will never blank.
+subprocess.check_call([
+    'xset',
+    '-dpms',                    # do not power down the monitor
+    's', 'off'])                # do not blank the video output
+
+
 # Xorg supports -br ("black background", the default),
 #               -wr ("white background"), and
 #               -retro (stipple background).
