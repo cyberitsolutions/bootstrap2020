@@ -73,7 +73,13 @@ if mount_point.is_relative_to('/home'):
             # This prevents mount.nfs even trying 111/tcp.
             ',sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049',
             f'nfs:{mount_point}',
+            # We MUST tell systemd that $HOME mount is part of the user session.
+            # If we do not do this, reboot/shutdown hangs for 90s on this unit.
+            # This happens even if $HOME is a tmpfs (not nfs) mount, so
+            # it is not just a network issue.
+            f'--property=Slice=user-{args.user_id}.slice',
             mount_point])
     else:
-        subprocess.check_call([
-            'systemd-umount', mount_point])
+        pass
+        # We don't need to manually systemd-umount.
+        # This --priority=Slice=... above will take care of it.
