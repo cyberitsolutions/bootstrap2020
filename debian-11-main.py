@@ -356,7 +356,9 @@ with tempfile.TemporaryDirectory() as td:
             f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    plymouth-themes',
-            *(['--include=prisonpc-bad-package-conflicts']
+            *(['--include=prisonpc-bad-package-conflicts'
+               '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
+               ]
               if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
@@ -512,7 +514,7 @@ if args.boot_test:
             (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
-            (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 PrisonPC ldap nfs')
+            (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 PrisonPC ldap nfs ppc-services')
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
@@ -537,7 +539,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049}  # LDAP, NFS
+                   for port in {636, 2049, 443}  # LDAP, NFS, HTTPS
                    for host in {
                            'prisonpc-staff.lan'
                            if args.template.startswith('desktop-staff') else
