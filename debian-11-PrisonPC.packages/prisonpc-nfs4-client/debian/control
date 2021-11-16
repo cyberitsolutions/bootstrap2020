@@ -1,0 +1,35 @@
+Source: prisonpc-nfs4-client
+Section: net
+Priority: optional
+Standards-Version: 4.3.0
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ libklibc-dev,
+
+Package: prisonpc-nfs4-client
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Conflicts: nfs-common
+Replaces: nfs-common
+Enhances: klibc-utils
+Architecture: any
+Description: mount unkerberized NFSv4 with no bullshit
+ Debian 11 GNU/Linux has a single useful NFS client.
+ It is inside the kernel.
+ To use it you just need to turn mount(1) into mount(2).
+ There are two tools for this:
+  * nfsmount(8klibc-utils) runs in the ramdisk, when root=nfs.
+  * mount.nfs(8nfs-utils) runs after pivot_root for other NFS mounts.
+ .
+ This package provides the BARE MINIMUM needed to do mount(1) -> mount(2).
+ .
+ The immediate benefits are:
+  * you can boot Debian off NFSv4
+  * you can block everything except 2049/tcp on your NFS server
+  * rpcbind doesn't run needlessly on clients
+  * nfs-utils and klibc-utils are mostly abandoned in Debian.
+    This code is abandoned, too, but it's much less code.
