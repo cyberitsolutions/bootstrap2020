@@ -76,3 +76,16 @@ subprocess.check_call([
     # https://gitlab.mister-muffin.de/josch/mmdebstrap/commit/1a18160
     # https://gitlab.mister-muffin.de/josch/mmdebstrap/commit/3e488dd
     'apt-transport-https'])
+
+
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'dpkg', '--purge',
+    '--force-depends',
+    'debconf', 'adduser', 'ucf'])
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'dpkg', '--purge',
+    '--force-depends',
+    '--force-remove-essential',
+    'dpkg'])
