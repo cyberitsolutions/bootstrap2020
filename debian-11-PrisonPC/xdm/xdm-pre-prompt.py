@@ -1,9 +1,13 @@
 #!/usr/bin/python3
+import os
 import subprocess
 
 __doc__ == """
 This script runs AS ROOT after X starts
 but before the xdm login prompt is displayed.
+
+FIXME: error messages from this script don't end up in journal??
+(Change xdm logfile to /dev/stderr or something, in xdm/Xresources ???)
 """
 
 
@@ -29,3 +33,12 @@ stdout = subprocess.check_output(['xrdb', '-query'], text=True)
 xresources = dict(line.split(':\t', 1) for line in stdout.splitlines())
 background_color = xresources['xlogin.Login.Background']
 subprocess.check_call(['xsetroot', '-solid', background_color])
+
+
+subprocess.check_call([
+    'systemd-run',
+    '--unit=acceptable-use-policy.service',
+    '--property=PartOf=xdm.service',
+    *{f'--setenv={key}={os.environ[key]}'
+      for key in {'DISPLAY', 'XAUTHORITY'}},
+    'acceptable-use-policy'])
