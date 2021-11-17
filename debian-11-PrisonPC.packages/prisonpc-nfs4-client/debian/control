@@ -8,6 +8,7 @@ Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
  libklibc-dev,
+ config-package-dev,
 
 Package: prisonpc-nfs4-client
 Depends:
