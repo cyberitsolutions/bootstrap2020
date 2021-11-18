@@ -127,5 +127,9 @@ for broken_path_str in subprocess.check_output(
          '-name', '*.py',
          '-print0'],
         text=True).split('\0'):
-    if broken_path_str not in harmless:
-        logging.warning('Unable to obfuscate python file %s', broken_path_str)
+    if broken_path_str in harmless:
+        continue
+    if any(pathlib.Path(broken_path_str).is_relative_to(executable_dir_path)
+           for executable_dir_path in executable_dir_paths):
+        continue
+    logging.warning('Unable to obfuscate python file %s', broken_path_str)
