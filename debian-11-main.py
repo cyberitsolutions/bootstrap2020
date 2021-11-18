@@ -25,10 +25,7 @@ __doc__ = """ build simple Debian Live image that can boot
 
 This uses mmdebstrap to do the heavy lifting;
 it can run entirely without root privileges.
-Bootloader is out-of-scope.
-
-NOTE: It lacks CRITICAL DATA LOSS packages,
-      such as smartd.
+Bootloader is out-of-scope (but --boot-test --netboot-only has an example PXELINUX.cfg).
 """
 
 
