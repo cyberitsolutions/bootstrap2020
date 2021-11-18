@@ -62,6 +62,15 @@
 # Nerf the unused "stub" initrd it installs.
 **/tiny-initramfs
 **/*bin/*tirfs
+# The Xsession.options file has "no-allow-xsession", but
+# Xsession will stlil executes ~/.xsessionrc.
+# Remove the snippet that does so.
+/etc/X11/Xsession.d/40x11-common_xsessionrc
+# Remove some other not-dangerous but not-useful snippets.
+/etc/X11/Xsession.d/20x11-common_process-args
+/etc/X11/Xsession.d/30x11-common_xresources
+/etc/X11/Xsession.d/35x11-common_xhost-local
+/etc/X11/Xsession.d/90x11-common_ssh-agent
 
 
 ## Inmates SHOULD NOT be able to use VLC for evil
