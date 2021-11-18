@@ -71,12 +71,12 @@ parser.add_argument('--template', default='main',
                              'desktop-staff'
                              ),
                     help=(
-                        'main: small CLI image;'
-                        'dban: erase recycled HDDs;'
-                        'zfs: install/rescue Debian root-on-ZFS;'
-                        'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4;'
-                        'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4;'
-                        'desktop: tweaked XFCE;'
+                        'main: small CLI image; '
+                        'dban: erase recycled HDDs; '
+                        'zfs: install/rescue Debian root-on-ZFS; '
+                        'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4; '
+                        'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
+                        'desktop: tweaked XFCE; '
                         'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
                         'desktop-staff:  desktop w/ PrisonPC operational staff stuff.'
                     ))
