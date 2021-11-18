@@ -342,6 +342,7 @@ with tempfile.TemporaryDirectory() as td:
             # Without "alsactl init" & /usr/share/alsa/init/default,
             # pipewire/pulseaudio use the kernel default (muted & 0%)!
             '    alsa-utils'
+            '    ir-keytable'   # infrared TV remote control
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    plymouth-themes',
             *(['--include='
