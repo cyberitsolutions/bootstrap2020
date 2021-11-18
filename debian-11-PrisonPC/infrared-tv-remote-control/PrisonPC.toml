@@ -1,7 +1,12 @@
-# table PrisonPC, type: NEC
+# In Debian 9 this used a different file format.
+# The change happened around 2018:
+#     https://github.com/gjasny/v4l-utils/commit/3646338
+#     https://github.com/gjasny/v4l-utils/commit/0547426
 
-# WARNING: the line above is NOT A COMMENT.
-# It is metadata used by ir-keytable and MUST be on the first line.
+[[protocols]]
+name = "PrisonPC"
+protocol = "nec"
+variant = "nec"
 
 # Layout of our PrisonPC remotes (v2 safety pack)
 # ╔════╤════╤════╗     ╔════╤════╤════╗
@@ -21,21 +26,21 @@
 
 # The first field is what the remote sends.
 # The second field is an input.h keysym.
-
-0x5c KEY_CLOSE
-0x1e KEY_MENU
-0x58 KEY_CONNECT
-0x1b KEY_UP
-0x16 KEY_CHAT
-0x55 KEY_LEFT
-0x17 KEY_ENTER
-0x15 KEY_RIGHT
-0x59 KEY_ESC
-0x1a KEY_DOWN
-0x18 KEY_HELP
-0x5d KEY_MUTE
-0x1d KEY_VOLUMEDOWN
-0x1c KEY_VOLUMEUP
+[protocols.scancodes]
+0x5c  = "KEY_CLOSE"
+0x1e  = "KEY_MENU"
+0x58  = "KEY_CONNECT"
+0x1b  = "KEY_UP"
+0x16  = "KEY_CHAT"
+0x55  = "KEY_LEFT"
+0x17  = "KEY_ENTER"
+0x15  = "KEY_RIGHT"
+0x59  = "KEY_ESC"
+0x1a  = "KEY_DOWN"
+0x18  = "KEY_HELP"
+0x5d  = "KEY_MUTE"
+0x1d  = "KEY_VOLUMEDOWN"
+0x1c  = "KEY_VOLUMEUP"
 
 # Here is how you turn e.g. KEY_POWER (Linux) into XF86PowerOff (Xorg).
 # The input.h number is *EIGHT LESS* than evdev number!
