@@ -83,6 +83,9 @@ parser.add_argument('--template', default='main',
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
                    help='build slower to get a smaller image? (default=size)')
+group.add_argument('--no-apps', dest='apps', action='store_false',
+                   help='omit browser/office/vlc'
+                   '     for faster turnaround when testing something else')
 mutex = group.add_mutually_exclusive_group()
 mutex.add_argument('--netboot-only', '--no-local-boot', action='store_true',
                    help='save space/time by omitting USB/SSD stuff')
@@ -160,14 +163,6 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
     logging.warning('prisonpc.tca3 server code expects OpenSSH')
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
-
-include_libreoffice = ' '.join('''
-libreoffice-calc
-libreoffice-impress
-libreoffice-writer
-libreoffice-math
-'''.split())
-
 
 if args.reproducible:
     os.environ['SOURCE_DATE_EPOCH'] = str(int(args.reproducible.timestamp()))
@@ -347,12 +342,14 @@ with tempfile.TemporaryDirectory() as td:
             # Without "alsactl init" & /usr/share/alsa/init/default,
             # pipewire/pulseaudio use the kernel default (muted & 0%)!
             '    alsa-utils'
-            '    chromium chromium-sandbox chromium-l10n'
-            f'   {include_libreoffice}'
-            '    vlc'
-            f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    plymouth-themes',
+            *(['--include='
+               '    chromium chromium-sandbox chromium-l10n'
+               '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
+               '    vlc'
+               f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
+               ] if args.apps else []),
             *(['--include=prisonpc-bad-package-conflicts'
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
                ]
