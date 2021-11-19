@@ -345,6 +345,7 @@ with tempfile.TemporaryDirectory() as td:
             '    ir-keytable'   # infrared TV remote control
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    gnome-themes-extra adwaita-qt'  # theming
+            '    at-spi2-core gnome-accessibility-themes'
             '    plymouth-themes',
             *(['--include='
                '    chromium chromium-sandbox chromium-l10n'
