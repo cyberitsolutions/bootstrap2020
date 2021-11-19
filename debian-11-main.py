@@ -344,10 +344,12 @@ with tempfile.TemporaryDirectory() as td:
             '    alsa-utils'
             '    ir-keytable'   # infrared TV remote control
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
+            '    gnome-themes-extra adwaita-qt'  # theming
             '    plymouth-themes',
             *(['--include='
                '    chromium chromium-sandbox chromium-l10n'
                '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
+               '    libreoffice-gtk3'
                '    vlc'
                f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
                ] if args.apps else []),
