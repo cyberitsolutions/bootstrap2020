@@ -356,6 +356,7 @@ with tempfile.TemporaryDirectory() as td:
                ] if args.apps else []),
             *(['--include=prisonpc-bad-package-conflicts'
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
+               '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)
                ]
               if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse

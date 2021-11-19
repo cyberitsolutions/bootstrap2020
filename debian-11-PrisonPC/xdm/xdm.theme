@@ -15,10 +15,10 @@ xlogin.Login.innerFramesWidth:  0
 xlogin.borderWidth:             0
 
 ! Fonts - avoid jaggies in default serif/italic faces.
-xlogin.Login.greetFace:         Sans-36:bold
-xlogin.Login.promptFace:        Sans-24:bold
-xlogin.Login.failFace:          Sans-24:bold
-xlogin.Login.face:              Sans-24
+xlogin.Login.greetFace:         Universalis ADF Std-36:bold
+xlogin.Login.promptFace:        Universalis ADF Std-24:bold
+xlogin.Login.failFace:          Universalis ADF Std-24:bold
+xlogin.Login.face:              Universalis ADF Std-24
 
 ! Place login prompt in the top-left,
 ! so the AUP is less likely to overlap it.
