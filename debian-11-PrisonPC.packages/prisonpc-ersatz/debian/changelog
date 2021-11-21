@@ -1,3 +1,10 @@
+prisonpc-ersatz (11.3) unstable; urgency=medium
+
+  * Add prisonpc-ersatz-e2fsprogs (and prisonpc-bad-package-conflicts depends on it)
+  * Block fuse-based packages for (mostly esoteric) filesystems.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 22 Nov 2021 10:31:48 +1100
+
 prisonpc-ersatz (11.1~1) UNRELEASED; urgency=medium
 
   * Add prisonpc-bad-package-conflicts

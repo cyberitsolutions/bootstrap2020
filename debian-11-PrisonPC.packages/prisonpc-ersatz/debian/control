@@ -26,9 +26,39 @@ Description: appease libreoffice
  So we trick apt into shipping libgpgme but not gpg,
  all of libreoffice will work except for password-protected documents.
 
+Package: prisonpc-ersatz-e2fsprogs
+Provides:  e2fsprogs (= 1.46.2-2)
+Conflicts: e2fsprogs
+Replaces:  e2fsprogs
+Essential: yes
+Architecture: all
+Description: work around https://bugs.debian.org/1000353
+ Inmates must not have access to local persistent storage.
+ We remove mke2fs (& debugfs &c) as part of that requirement.
+ .
+ We install gvfs to provide trash:// in thunar file manager.
+ This depends on e2fsprogs via
+ gvfs → gvfs-daemons → udisks2 → libblockdev-fs2 → e2fsprogs.
+ This is a Depends due to https://bugs.debian.org/887270
+ It should probably be a Recommends due to runtime checks:
+ https://codesearch.debian.net/search?q=bd_fs_ext_is_tech_avail
+ Therefore we need a fake e2fsprogs.
+ .
+ We install quota package for its /usr/bin/quota.
+ In Debian 9 its unused /sbin/quotacheck needed libext2fs2 (as "e2fslibs").
+ In Debian 11 this issue is gone.
+ .
+ We install initramfs-tools to build a live-boot ramdisk.
+ initramfs-tools needs logsave (from e2fsprogs) to fsck ANY rootfs.
+ PrisonPC systems are diskless, so we do not use fsck.
+ In Debian 9, logsave was in the e2fsprogs .deb.
+ In Debian 11, logsave is a separate .deb.
+ As logsave is harmless, we do not nerf it.
+
 Package: prisonpc-bad-package-conflicts
 Depends:
- prisonpc-ersatz-gpg,
+ prisonpc-ersatz-gpg (= ${binary:Version}),
+ prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
 Conflicts:
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
@@ -142,10 +172,11 @@ Conflicts:
 ## =====================================================
 # e2fsprogs is shitlisted because in Debian 9 it was hard to avoid.
 # Upstream changes mean that shouldn't happen again, but it doesn't hurt.
+# UPDATE 2021: e2fsprogs is still needed, by
+#              gvfs→gvfs-daemons→udisks2→libblockdev-fs2→e2fsprogs.
 # UPDATE 2021: shitlist other mkfs.* packages also.
 # NOTE: staff need ntfs-3g https://alloc.cyber.com.au/task/task.php?taskID=24592
 # NOTE: staff need exfat   https://alloc.cyber.com.au/task/task.php?taskID=32658
- e2fsprogs,
  dosfstools,
  erofs-utils,
  exfatprogs,
@@ -161,6 +192,20 @@ Conflicts:
  reiserprogs,
  udftools,
  xfsprogs,
+# UPDATE 2021: also list (some) packages that Depends: libfuse2.
+ fuse2fs, afflib-tools, android-file-transfer, archivemount, avfs, bindfs, btfs,
+ casync, ceph-fuse, ceph-osd, coop-computing-tools, curlftpfs, dislocker,
+ disorderfs, dnet-progs, encfs, ewf-tools, exfat-fuse, ffmpegfs, fosfat, fossil,
+ fuse-convmvfs, fuse-posixovl, fuse-zip, fuse2fs, fuseext2, fusefat, fuseiso,
+ fuseiso9660, gfarm2fs, gnunet-fuse, gocryptfs, gphotofs, httpdirfs, httpfs2,
+ hubicfuse, ifuse, jmtpfs, libbde-utils, libfsapfs-utils, libfvde-utils,
+ libguestfs-tools, libguestfs0, libnbd-bin, libolecf-utils, libqcow-utils,
+ libregf-utils, libsmraw-utils, libvhdi-utils, libvirt-daemon-driver-lxc,
+ libvmdk-utils, libvshadow-utils, libvslvm-utils, libwim15, loggedfs, lxcfs,
+ mergerfs, mhddfs, mp3fs, obexfs, open-vm-tools, openafs-fuse, osspd, owfs-fuse,
+ pike8, rbd-fuse, rdiff-backup-fs, s3backer, s3fs, securefs, smbnetfs,
+ squashfuse, sra-toolkit, tmfs, tup, uml-utilities, unionfs-fuse, vmfs-tools,
+ vmfs6-tools, winregfs, wit, xmount, xrdp, xrootd-fuse, zfs-fuse, apt-cacher-ng,
 # In theory an inmate could write a userland filesystem with fuse.
 # NOTE: staff will need gvfs-backend (thus fuse) for sftp...
  gvfs-backends,
