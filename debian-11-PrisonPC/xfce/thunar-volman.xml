@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="thunar-volman" version="1.0" unlocked="root">
+  <property name="automount-media" type="empty">
+    <property name="enabled" type="bool" value="true"/>
+  </property>
+  <property name="autobrowse" type="empty">
+    <property name="enabled" type="bool" value="true"/>
+  </property>
+  <property name="autoopen" type="empty">
+    <property name="enabled" type="empty"/>
+  </property>
+  <property name="autoplay-audio-cds" type="empty">
+    <property name="enabled" type="bool" value="true"/>
+    <property name="command" type="string" value="vlc cdda://"/>
+  </property>
+  <property name="autoplay-video-cds" type="empty">
+    <property name="enabled" type="bool" value="true"/>
+    <property name="command" type="string" value="vlc dvd://"/>
+  </property>
+</channel>
