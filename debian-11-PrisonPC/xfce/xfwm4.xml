@@ -38,5 +38,10 @@
          <property name="box_resize" type="bool" value="true"/>
     -->
 
+    <!-- Hard-code to the same "UI font" as in xsettings.xml.
+         Note that this has no effect on GTK3 "CSD" windows.
+         For example, this affects Thunar but not Xfwm4-settings. -->
+    <property name="title_font" type="string" value="Universalis ADF Std Bold 10"/>
+
   </property>
 </channel>
