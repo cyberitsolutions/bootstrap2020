@@ -344,6 +344,8 @@ with tempfile.TemporaryDirectory() as td:
             '    alsa-utils'
             '    ir-keytable'   # infrared TV remote control
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
+            '    gvfs'               # Thunar trash://
+            '    thunar-volman'      # Thunar DVD autoplay & eject
             '    gnome-themes-extra adwaita-qt'  # theming
             '    at-spi2-core gnome-accessibility-themes'
             '    plymouth-themes',
