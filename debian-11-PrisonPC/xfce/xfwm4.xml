@@ -3,7 +3,7 @@
 <!-- NOTE: settings not explicitly mentioned fall back to their C source defaults.
      As the <channel> has no unlocked="root",
      an inmate can change any setting not explicitly mentioned (& locked) here. -->
-<channel name="xfwm4" version="1.0">
+<channel name="xfwm4" version="1.0" unlocked="root">
   <property name="general" type="empty">
 
     <!-- Lock the number of workspaces to be exactly 1, to mitigate
