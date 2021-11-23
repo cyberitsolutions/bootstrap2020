@@ -521,6 +521,9 @@ if args.boot_test:
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 PrisonPC ldap nfs ppc-services')
+            if 'inmate' in args.template:
+                # Simulate a site-specific desktop image (typically not done for staff).
+                subprocess.check_call(['convert', 'rose:', testdir / 'site.dir/wallpaper.jpg'])
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
