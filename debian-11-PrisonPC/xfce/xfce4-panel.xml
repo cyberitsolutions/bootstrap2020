@@ -57,11 +57,12 @@
       </property>
     </property>
     <!-- directorymenu is like a Thunar launcher, but a little smarter.  -->
-    <property name="plugin-19" type="string" value="directorymenu">
-      <property name="open-folder" type="bool" value="false"/>
-      <property name="open-in-terminal" type="bool" value="false"/>
-      <property name="new-folder" type="bool" value="false"/>
-      <property name="new-document" type="bool" value="false"/>
+    <property name="plugin-19" type="string" value="places">
+      <!-- Make a search button appear. -->
+      <property name="search-cmd" type="string" value="catfish"/>
+      <!-- Hide this option not because it is dangerous, but
+           just because it LOOKS like a "hide my actions from staff".  -->
+      <property name="show-recent-clear" type="bool" value="false"/>
     </property>
 
     <property name="plugin-20" type="string" value="tasklist">

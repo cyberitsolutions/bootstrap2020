@@ -347,6 +347,8 @@ with tempfile.TemporaryDirectory() as td:
             '    gvfs'               # Thunar trash://
             '    thunar-volman'      # Thunar DVD autoplay & eject
             '    xfce4-notifyd '     # xfce4-panel notification popups
+            # FIXME: use plocate (not mlocate) once PrisonPC master server upgrades!
+            '    catfish mlocate xfce4-places-plugin'  # "Find Files" tool
             '    librsvg2-common'    # SVG icons in GTK3 apps
             '    gnome-themes-extra adwaita-qt'  # theming
             '    at-spi2-core gnome-accessibility-themes'
