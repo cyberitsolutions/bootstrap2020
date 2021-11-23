@@ -2,6 +2,9 @@
 
 <channel name="xfce4-desktop" version="1.0" unlocked="root">
   <property name="windowlist-menu" type="empty">
+    <!-- This MUST be disabled; it lets inmates add workspaces,
+         even though xfwm4/general/workspace_count=1 is locked!
+         https://en.wikipedia.org/wiki/Boss_key#Alternatives -->
     <property name="show-add-remove-workspaces" type="bool" value="false" unlocked="root"/>
     <property name="show" type="bool" value="false"/>
   </property>
