@@ -42,7 +42,9 @@
   </property>
   <property name="plugins" type="empty">
     <property name="plugin-10" type="string" value="applicationsmenu">
-      <property name="show-generic-names" type="bool" value="true"/>
+      <!-- FIXME: show-generic-names=true is blocked by https://bugs.debian.org/1000426
+           See also https://alloc.cyber.com.au/task/task.php?taskID=24180 -->
+      <property name="show-generic-names" type="bool" value="false"/>
       <property name="show-tooltips" type="bool" value="true"/>
       <property name="show-button-title" type="bool" value="true"/>
       <property name="button-title" type="string" value="Applications"/>
