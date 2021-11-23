@@ -48,6 +48,7 @@
       <property name="show-tooltips" type="bool" value="true"/>
       <property name="show-button-title" type="bool" value="true"/>
       <property name="button-title" type="string" value="Applications"/>
+      <property name="button-icon" type="string" value="/usr/share/pixmaps/PrisonPC-menu.svg"/>
     </property>
     <property name="plugin-15" type="string" value="launcher">
       <property name="items" type="array">
