@@ -33,6 +33,7 @@
         <value type="int" value="20"/>
         <value type="int" value="21"/>
         <value type="int" value="70"/>
+        <value type="int" value="71"/>
         <value type="int" value="76"/>
         <value type="int" value="75"/>
         <value type="int" value="80"/>
@@ -77,6 +78,7 @@
 
 
     <property name="plugin-70" type="string" value="systray"/>
+    <property name="plugin-71" type="string" value="notification-plugin"/>
     <!-- FIXME: is power-manager interesting? -->
     <property name="plugin-76" type="string" value="power-manager-plugin"/>
     <property name="plugin-75" type="string" value="pulseaudio">

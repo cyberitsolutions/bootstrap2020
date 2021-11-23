@@ -346,6 +346,7 @@ with tempfile.TemporaryDirectory() as td:
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
             '    gvfs'               # Thunar trash://
             '    thunar-volman'      # Thunar DVD autoplay & eject
+            '    xfce4-notifyd '     # xfce4-panel notification popups
             '    librsvg2-common'    # SVG icons in GTK3 apps
             '    gnome-themes-extra adwaita-qt'  # theming
             '    at-spi2-core gnome-accessibility-themes'
