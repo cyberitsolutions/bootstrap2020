@@ -36,6 +36,7 @@
         <value type="int" value="71"/>
         <value type="int" value="76"/>
         <value type="int" value="75"/>
+        <value type="int" value="79"/>
         <value type="int" value="80"/>
         <value type="int" value="90"/>
       </property>
@@ -85,6 +86,11 @@
     <property name="plugin-75" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="show-notifications" type="bool" value="true"/>
+    </property>
+    <property name="plugin-79" type="string" value="xkb">
+      <!-- show "EN" not "US" nor USA's flag -->
+      <property name="display-name" type="uint" value="1"/>
+      <property name="display-type" type="uint" value="2"/>
     </property>
     <property name="plugin-80" type="string" value="clock"/>
 
