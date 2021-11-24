@@ -53,4 +53,4 @@ subprocess.check_call([
     '--property=Type=forking',
     *{f'--setenv={key}={os.environ[key]}'
       for key in {'DISPLAY', 'XAUTHORITY'}},
-    'x11vnc', '-rc', '/etc/x11vnc.conf'])
+    'x11vnc', '-rc', '/etc/x11vnc.conf', '$X11VNC_EXTRA_ARGS'])
