@@ -58,6 +58,8 @@ group.add_argument('--backdoor-enable', action='store_true',
                    help='login as root with no password')
 group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, metavar='N',
                    help='so you can run two of these at once')
+group.add_argument('--host-port-for-boot-test-vnc', type=int, default=5900, metavar='N',
+                   help='so you can run two of these at once')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
@@ -364,6 +366,7 @@ with tempfile.TemporaryDirectory() as td:
             *(['--include=prisonpc-bad-package-conflicts'
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
                '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)
+               '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
                ]
               if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
@@ -543,6 +546,8 @@ if args.boot_test:
                 f'hostname={args.template}.{domain}',
                 f'dnssearch={domain}',
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
+                *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
+                  if template_wants_PrisonPC else []),
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
