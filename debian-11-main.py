@@ -165,6 +165,11 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
     logging.warning('prisonpc.tca3 server code expects OpenSSH')
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
+if template_wants_PrisonPC and args.boot_test and not (args.netboot_only and have_smbd):
+    raise NotImplementedError(
+        'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
+        ' Without these, site.dir cannot patch /etc/hosts, so'
+        ' boot-test ldap/nfs/squid/pete redirect will not work!')
 
 if args.reproducible:
     os.environ['SOURCE_DATE_EPOCH'] = str(int(args.reproducible.timestamp()))
@@ -527,8 +532,6 @@ if args.boot_test:
         # We need a simple A record in the guest.
         # This is a quick-and-dirty way to achieve that (FIXME: do better).
         if template_wants_PrisonPC:
-            if not (args.netboot_only and have_smbd):
-                logging.warning('boot-test fake DNS A records will not work!')
             (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
