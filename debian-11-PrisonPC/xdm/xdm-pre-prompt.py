@@ -54,3 +54,7 @@ subprocess.check_call([
     *{f'--setenv={key}={os.environ[key]}'
       for key in {'DISPLAY', 'XAUTHORITY'}},
     'x11vnc', '-rc', '/etc/x11vnc.conf', '$X11VNC_EXTRA_ARGS'])
+
+
+# Configure & lock desktop background setting for all discovered monitors.
+subprocess.check_call(['bootstrap2020-xfce4-desktop-update.py'])
