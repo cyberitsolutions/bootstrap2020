@@ -178,6 +178,15 @@ if args.reproducible:
     if args.backdoor_enable or args.debug_shell:
         logging.warning('debug/backdoor might break reproducibility')
 
+if subprocess.check_output(
+        ['systemctl', 'is-enabled', 'systemd-resolved'],
+        text=True).strip() != 'enabled':
+    logging.warning(
+        'If you see odd DNS errors during the build,'
+        ' either run "systemctl enable --now systemd-resolved" on your host, or'
+        ' make the /lib/systemd/resolv.conf line run much later.')
+
+
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
     validate_unescaped_path_is_safe(td)
