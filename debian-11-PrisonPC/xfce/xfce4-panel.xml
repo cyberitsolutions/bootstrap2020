@@ -28,9 +28,11 @@
            It is not possible to give them logical names. -->
       <property name="plugin-ids" type="array">
         <value type="int" value="10"/>
-        <value type="int" value="15"/>
-        <value type="int" value="16"/>
-        <value type="int" value="17"/>
+        <!-- FIXME: https://bugs.debian.org/1000789
+                    The quick-launch panel items are disabled until this is resolved! -->
+        <!-- <value type="int" value="15"/> -->
+        <!-- <value type="int" value="16"/> -->
+        <!-- <value type="int" value="17"/> -->
         <value type="int" value="19"/>
         <value type="int" value="20"/>
         <value type="int" value="21"/>
