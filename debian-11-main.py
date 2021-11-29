@@ -380,6 +380,7 @@ with tempfile.TemporaryDirectory() as td:
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
                '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)
                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
+               '    prayer-templates-prisonpc'
                ]
               if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
@@ -534,7 +535,11 @@ if args.boot_test:
             (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
-            (testdir / 'site.dir/etc/hosts').write_text('10.0.2.100 PrisonPC ldap nfs ppc-services')
+            (testdir / 'site.dir/etc/hosts').write_text(
+                '127.0.2.1 webmail\n'
+                '10.0.2.100 PrisonPC ldap nfs ppc-services')
+            (testdir / 'site.dir/prayer.errata').write_text(
+                'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:
                 # Simulate a site-specific desktop image (typically not done for staff).
                 subprocess.check_call(['convert', 'rose:', testdir / 'site.dir/wallpaper.jpg'])
@@ -564,7 +569,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443}  # LDAP, NFS, HTTPS
+                   for port in {636, 2049, 443, 993}
                    for host in {
                            'prisonpc-staff.lan'
                            if args.template.startswith('desktop-staff') else

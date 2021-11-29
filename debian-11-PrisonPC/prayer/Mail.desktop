@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mail
+Icon=mail-unread
+Exec=chromium --app=http://webmail
+Categories=Network;Email;
+
+# NB: keep this synced with /usr/share/xfce4/helpers/com.PrisonPC.Mail.desktop!
