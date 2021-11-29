@@ -1,0 +1,5 @@
+[Service]
+Type=oneshot
+ExecStart=bootstrap2020-nssdb-install.py
+[Install]
+WantedBy=default.target

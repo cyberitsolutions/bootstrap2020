@@ -420,6 +420,7 @@ with tempfile.TemporaryDirectory() as td:
             ]
            if args.optimize != 'simplicity' else []),
          '--customize-hook=chroot $1 systemctl preset-all',  # enable ALL units!
+         '--customize-hook=chroot $1 systemctl preset-all --user --global',
          *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
             '--customize-hook=echo x:x | chroot $1 chpasswd',
             '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
