@@ -57,11 +57,28 @@ Description: work around https://bugs.debian.org/1000353
  In Debian 11, logsave is a separate .deb.
  As logsave is harmless, we do not nerf it.
 
+Package: prisonpc-ersatz-logrotate
+Depends: ${misc:Depends},
+Provides:  logrotate
+Conflicts: logrotate
+Replaces:  logrotate
+Architecture: all
+Description: appease prayer
+ This stub package lets us remove logrotate without apt knowing.
+ .
+ The default prayer config writes directly into /var/log/prayer/,
+ so it has a hard dependency on logrotate (to avoid filling /var/log).
+ .
+ Our prayer config doesn't use logfiles,
+ so we don't need logrotate.
+ This also lets us avoid installing cron.
+
 Package: prisonpc-bad-package-conflicts
 Depends:
  ${misc:Depends},
  prisonpc-ersatz-gpg (= ${binary:Version}),
  prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
+ prisonpc-ersatz-logrotate (= ${binary:Version}),
 Conflicts:
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
@@ -268,7 +285,6 @@ Conflicts:
  anacron,
  at,
  cron,
- logrotate,
  featherpad,
 ## Inmates SHOULD NOT have miscellaneous scary things
 ## ==================================================

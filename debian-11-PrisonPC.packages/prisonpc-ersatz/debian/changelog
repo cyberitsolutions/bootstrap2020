@@ -1,5 +1,6 @@
-prisonpc-ersatz (11.4) bullseye; urgency=medium
+prisonpc-ersatz (11.5) bullseye; urgency=medium
 
+  * Add prisonpc-ersatz-logrotate
   * Appease lintian:
      * fix debhelper-but-no-misc-depends
      * fix no-debian-copyright-in-source
