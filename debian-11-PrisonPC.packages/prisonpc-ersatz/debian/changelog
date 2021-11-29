@@ -1,3 +1,13 @@
+prisonpc-ersatz (11.4) bullseye; urgency=medium
+
+  * Appease lintian:
+     * fix debhelper-but-no-misc-depends
+     * fix no-debian-copyright-in-source
+     * fix no-copyright-file
+     * override new-essential-package
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 29 Nov 2021 12:06:23 +1100
+
 prisonpc-ersatz (11.3) unstable; urgency=medium
 
   * Add prisonpc-ersatz-e2fsprogs (and prisonpc-bad-package-conflicts depends on it)

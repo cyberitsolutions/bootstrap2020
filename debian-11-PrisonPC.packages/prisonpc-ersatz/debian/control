@@ -8,6 +8,7 @@ Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13)
 
 Package: prisonpc-ersatz-gpg
+Depends: ${misc:Depends}
 Provides:
  gpg,
 Conflicts:
@@ -27,6 +28,7 @@ Description: appease libreoffice
  all of libreoffice will work except for password-protected documents.
 
 Package: prisonpc-ersatz-e2fsprogs
+Depends: ${misc:Depends}
 Provides:  e2fsprogs (= 1.46.2-2)
 Conflicts: e2fsprogs
 Replaces:  e2fsprogs
@@ -57,6 +59,7 @@ Description: work around https://bugs.debian.org/1000353
 
 Package: prisonpc-bad-package-conflicts
 Depends:
+ ${misc:Depends},
  prisonpc-ersatz-gpg (= ${binary:Version}),
  prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
 Conflicts:
