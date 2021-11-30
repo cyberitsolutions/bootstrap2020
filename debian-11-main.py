@@ -570,7 +570,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993}
+                   for port in {636, 2049, 443, 993, 3128}
                    for host in {
                            'prisonpc-staff.lan'
                            if args.template.startswith('desktop-staff') else
