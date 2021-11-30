@@ -1,0 +1,23 @@
+{
+    "DefaultSearchProviderEnabled": true,
+    "DefaultSearchProviderName": "My Intranet Search",
+    "DefaultSearchProviderKeyword": "mis",
+    "DefaultSearchProviderSearchURL": "https://search.my.company/search?q={searchTerms}",
+    "DefaultSearchProviderSuggestURL": "https://search.my.company/suggest?q={searchTerms}",
+    "DefaultSearchProviderIconURL": "https://search.my.company/favicon.ico",
+    "DefaultSearchProviderEncodings": [
+        "UTF-8",
+        "UTF-16",
+        "GB2312",
+        "ISO-8859-1"
+    ],
+    "DefaultSearchProviderAlternateURLs": [
+        "https://search.my.company/suggest#q={searchTerms}",
+        "https://search.my.company/suggest/search#q={searchTerms}"
+    ],
+    "DefaultSearchProviderImageURL": "https://search.my.company/searchbyimage/upload",
+    "DefaultSearchProviderNewTabURL": "https://search.my.company/newtab",
+    "DefaultSearchProviderSearchURLPostParams": "q={searchTerms},ie=utf-8,oe=utf-8",
+    "DefaultSearchProviderSuggestURLPostParams": "q={searchTerms},ie=utf-8,oe=utf-8",
+    "DefaultSearchProviderImageURLPostParams": "content={imageThumbnail},url={imageURL},sbisrc={SearchSource}"
+}

@@ -1,0 +1,19 @@
+{
+    "ScreenCaptureAllowed": false,
+    "ScreenCaptureAllowedByOrigins": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "WindowCaptureAllowedByOrigins": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "TabCaptureAllowedByOrigins": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "SameOriginTabCaptureAllowedByOrigins": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ]
+}

@@ -1,0 +1,4 @@
+{
+    "SamlInSessionPasswordChangeEnabled": true,
+    "SAMLOfflineSigninTimeLimit": 32
+}

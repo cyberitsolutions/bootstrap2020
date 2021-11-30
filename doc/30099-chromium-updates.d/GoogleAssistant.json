@@ -1,0 +1,4 @@
+{
+    "VoiceInteractionContextEnabled": true,
+    "AssistantVoiceMatchEnabledDuringOobe": true
+}

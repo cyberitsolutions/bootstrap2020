@@ -1,0 +1,167 @@
+{
+    "DefaultCookiesSetting": 1,
+    "DefaultFileSystemReadGuardSetting": 2,
+    "DefaultFileSystemWriteGuardSetting": 2,
+    "DefaultImagesSetting": 1,
+    "DefaultInsecureContentSetting": 2,
+    "DefaultJavaScriptSetting": 1,
+    "DefaultJavaScriptJitSetting": 1,
+    "DefaultPopupsSetting": 1,
+    "DefaultNotificationsSetting": 2,
+    "DefaultGeolocationSetting": 1,
+    "DefaultSensorsSetting": 2,
+    "DefaultWebBluetoothGuardSetting": 2,
+    "DefaultWebUsbGuardSetting": 2,
+    "DefaultSerialGuardSetting": 2,
+    "AutoSelectCertificateForUrls": [
+        "{\"pattern\":\"https://www.example.com\",\"filter\":{\"ISSUER\":{\"CN\":\"certificate issuer name\", \"L\": \"certificate issuer location\", \"O\": \"certificate issuer org\", \"OU\": \"certificate issuer org unit\"}, \"SUBJECT\":{\"CN\":\"certificate subject name\", \"L\": \"certificate subject location\", \"O\": \"certificate subject org\", \"OU\": \"certificate subject org unit\"}}}"
+    ],
+    "CookiesAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "CookiesBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "CookiesSessionOnlyForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "FileSystemReadAskForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "FileSystemReadBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "FileSystemWriteAskForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "FileSystemWriteBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "ImagesAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "ImagesBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "InsecureContentAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "InsecureContentBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "JavaScriptAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "JavaScriptBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "JavaScriptJitAllowedForSites": [
+        "[*.]example.edu"
+    ],
+    "JavaScriptJitBlockedForSites": [
+        "[*.]example.edu"
+    ],
+    "LegacySameSiteCookieBehaviorEnabledForDomainList": [
+        "www.example.com",
+        "[*.]example.edu"
+    ],
+    "PopupsAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "RegisteredProtocolHandlers": [
+        {
+            "protocol": "mailto",
+            "url": "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+            "default": true
+        }
+    ],
+    "PopupsBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "NotificationsAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "NotificationsBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "SensorsAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "SensorsBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "WebUsbAllowDevicesForUrls": [
+        {
+            "devices": [
+                {
+                    "vendor_id": 1234,
+                    "product_id": 5678
+                }
+            ],
+            "urls": [
+                "https://google.com"
+            ]
+        }
+    ],
+    "WebUsbAskForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "WebUsbBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "SerialAskForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "SerialBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "SerialAllowAllPortsForUrls": [
+        "https://www.example.com"
+    ],
+    "SerialAllowUsbDevicesForUrls": [
+        {
+            "devices": [
+                {
+                    "vendor_id": 1234,
+                    "product_id": 5678
+                }
+            ],
+            "urls": [
+                "https://specific-device.example.com"
+            ]
+        },
+        {
+            "devices": [
+                {
+                    "vendor_id": 1234
+                }
+            ],
+            "urls": [
+                "https://all-vendor-devices.example.com"
+            ]
+        }
+    ]
+}

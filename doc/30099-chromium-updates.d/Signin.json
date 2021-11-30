@@ -1,0 +1,15 @@
+{
+    "DeviceAllowNewUsers": true,
+    "DeviceLoginScreenDomainAutoComplete": "students.school.edu",
+    "DeviceShowUserNamesOnSignin": true,
+    "LoginAuthenticationBehavior": 0,
+    "DeviceSamlLoginAuthenticationType": 0,
+    "LoginVideoCaptureAllowedUrls": [
+        "https://example.com"
+    ],
+    "DeviceLoginScreenLocales": [
+        "en-US"
+    ],
+    "DeviceLoginScreenSystemInfoEnforced": true,
+    "DeviceShowNumericKeyboardForPassword": true
+}

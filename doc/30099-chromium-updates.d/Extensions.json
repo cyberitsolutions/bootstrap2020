@@ -1,0 +1,90 @@
+{
+    "ExtensionInstallAllowlist": [
+        "extension_id1",
+        "extension_id2"
+    ],
+    "ExtensionInstallBlocklist": [
+        "extension_id1",
+        "extension_id2"
+    ],
+    "ExtensionInstallForcelist": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;https://clients2.google.com/service/update2/crx",
+        "abcdefghijklmnopabcdefghijklmnop"
+    ],
+    "ExtensionInstallSources": [
+        "https://corp.mycompany.com/*"
+    ],
+    "ExtensionAllowedTypes": [
+        "hosted_app"
+    ],
+    "ExtensionSettings": {
+        "abcdefghijklmnopabcdefghijklmnop": {
+            "installation_mode": "allowed",
+            "blocked_permissions": [
+                "history"
+            ],
+            "minimum_version_required": "1.0.1",
+            "toolbar_pin": "force_pinned"
+        },
+        "bcdefghijklmnopabcdefghijklmnopa": {
+            "installation_mode": "force_installed",
+            "update_url": "https://example.com/update_url",
+            "allowed_permissions": [
+                "downloads"
+            ],
+            "runtime_blocked_hosts": [
+                "*://*.example.com"
+            ],
+            "runtime_allowed_hosts": [
+                "*://good.example.com"
+            ]
+        },
+        "cdefghijklmnopabcdefghijklmnopab": {
+            "installation_mode": "blocked",
+            "blocked_install_message": "Custom error message."
+        },
+        "defghijklmnopabcdefghijklmnopabc,efghijklmnopabcdefghijklmnopabcd": {
+            "installation_mode": "blocked",
+            "blocked_install_message": "Custom error message."
+        },
+        "update_url:https://www.example.com/update.xml": {
+            "blocked_permissions": [
+                "wallpaper"
+            ],
+            "allowed_permissions": [
+                "downloads"
+            ],
+            "installation_mode": "allowed"
+        },
+        "fghijklmnopabcdefghijklmnopabcde": {
+            "installation_mode": "removed",
+            "blocked_install_message": "Custom removal message."
+        },
+        "ghijklmnopabcdefghijklmnopabcdef": {
+            "installation_mode": "force_installed",
+            "update_url": "https://example.com/update_url",
+            "override_update_url": true
+        },
+        "*": {
+            "installation_mode": "blocked",
+            "blocked_permissions": [
+                "downloads",
+                "bookmarks"
+            ],
+            "install_sources": [
+                "https://company-intranet/chromeapps"
+            ],
+            "allowed_types": [
+                "hosted_app"
+            ],
+            "runtime_blocked_hosts": [
+                "*://*.example.com"
+            ],
+            "runtime_allowed_hosts": [
+                "*://good.example.com"
+            ],
+            "blocked_install_message": "Custom error message."
+        }
+    },
+    "BlockExternalExtensions": true
+}

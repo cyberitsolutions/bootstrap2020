@@ -1,0 +1,5 @@
+{
+    "PinUnlockMinimumLength": 6,
+    "PinUnlockWeakPinsAllowed": false,
+    "PinUnlockAutosubmitEnabled": true
+}

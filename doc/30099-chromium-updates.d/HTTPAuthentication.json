@@ -1,0 +1,12 @@
+{
+    "AuthSchemes": "basic,digest,ntlm,negotiate",
+    "DisableAuthNegotiateCnameLookup": false,
+    "EnableAuthNegotiatePort": false,
+    "BasicAuthOverHttpEnabled": false,
+    "AuthServerAllowlist": "*.example.com,example.com",
+    "AuthNegotiateDelegateAllowlist": "foobar.example.com",
+    "AuthNegotiateDelegateByKdcPolicy": true,
+    "GSSAPILibraryName": "libgssapi_krb5.so.2",
+    "AllowCrossOriginAuthPrompt": false,
+    "NtlmV2Enabled": true
+}

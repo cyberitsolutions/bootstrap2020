@@ -1,0 +1,20 @@
+{
+    "SpokenFeedbackEnabled": true,
+    "VirtualKeyboardEnabled": true,
+    "StickyKeysEnabled": true,
+    "KeyboardDefaultToFunctionKeys": true,
+    "DictationEnabled": true,
+    "CursorHighlightEnabled": true,
+    "MonoAudioEnabled": true,
+    "DeviceLoginScreenDefaultLargeCursorEnabled": true,
+    "DeviceLoginScreenDefaultSpokenFeedbackEnabled": true,
+    "DeviceLoginScreenDefaultHighContrastEnabled": true,
+    "DeviceLoginScreenSelectToSpeakEnabled": true,
+    "DeviceLoginScreenCaretHighlightEnabled": true,
+    "DeviceLoginScreenAutoclickEnabled": true,
+    "DeviceLoginScreenKeyboardFocusHighlightEnabled": true,
+    "DeviceLoginScreenScreenMagnifierType": true,
+    "DeviceLoginScreenShowOptionsInSystemTrayMenu": true,
+    "DeviceLoginScreenAccessibilityShortcutsEnabled": true,
+    "EnhancedNetworkVoicesInSelectToSpeakAllowed": true
+}

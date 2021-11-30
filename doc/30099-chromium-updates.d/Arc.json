@@ -1,0 +1,29 @@
+{
+    "ArcPolicy": "{\"applications\":[{\"packageName\":\"com.google.android.gm\",\"installType\":\"FORCE_INSTALLED\",\"defaultPermissionPolicy\":\"PROMPT\",\"managedConfiguration\":{}},{\"packageName\":\"com.google.android.apps.docs\",\"installType\":\"PRELOAD\",\"defaultPermissionPolicy\":\"PROMPT\",\"managedConfiguration\":{}}]}",
+    "ArcBackupRestoreServiceEnabled": 1,
+    "DeviceArcDataSnapshotHours": {
+        "intervals": [
+            {
+                "start": {
+                    "day_of_week": "MONDAY",
+                    "time": 12840000
+                },
+                "end": {
+                    "day_of_week": "MONDAY",
+                    "time": 21720000
+                }
+            },
+            {
+                "start": {
+                    "day_of_week": "FRIDAY",
+                    "time": 38640000
+                },
+                "end": {
+                    "day_of_week": "FRIDAY",
+                    "time": 57600000
+                }
+            }
+        ],
+        "timezone": "GMT"
+    }
+}

@@ -1,0 +1,707 @@
+{
+    "DefaultBrowserSettingEnabled": true,
+    "AlternateErrorPagesEnabled": true,
+    "SearchSuggestEnabled": true,
+    "WindowOcclusionEnabled": true,
+    "NetworkPredictionOptions": 1,
+    "WPADQuickCheckEnabled": true,
+    "GloballyScopeHTTPAuthCacheEnabled": false,
+    "DNSInterceptionChecksEnabled": true,
+    "IntranetRedirectBehavior": 1,
+    "IncognitoModeAvailability": 1,
+    "SavingBrowserHistoryDisabled": true,
+    "AllowDeletingBrowserHistory": true,
+    "HistoryClustersVisible": false,
+    "AllowDinosaurEasterEgg": false,
+    "ForceGoogleSafeSearch": false,
+    "ForceYouTubeRestrict": 0,
+    "MetricsReportingEnabled": true,
+    "AutofillAddressEnabled": false,
+    "AutofillCreditCardEnabled": false,
+    "AlwaysOpenPdfExternally": true,
+    "SyncDisabled": true,
+    "SyncTypesListDisabled": [
+        "bookmarks"
+    ],
+    "RoamingProfileSupportEnabled": true,
+    "RoamingProfileLocation": "${roaming_app_data}\\chrome-profile",
+    "DiskCacheDir": "${user_home}/Chrome_cache",
+    "DiskCacheSize": 104857600,
+    "DownloadRestrictions": 4,
+    "DownloadDirectory": "/home/${user_name}/Downloads",
+    "AutoOpenFileTypes": [
+        "exe",
+        "txt"
+    ],
+    "AutoOpenAllowedForURLs": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/good_path",
+        "https://server:8080/path",
+        ".exact.hostname.com"
+    ],
+    "AutoLaunchProtocolsFromOrigins": [
+        {
+            "protocol": "spotify",
+            "allowed_origins": [
+                "example.com",
+                "http://www.example.com:8080"
+            ]
+        },
+        {
+            "protocol": "teams",
+            "allowed_origins": [
+                "https://example.com",
+                "https://.mail.example.com"
+            ]
+        },
+        {
+            "protocol": "outlook",
+            "allowed_origins": [
+                "*"
+            ]
+        }
+    ],
+    "ProxySettings": {
+        "ProxyMode": "fixed_servers",
+        "ProxyServer": "123.123.123.123:8080",
+        "ProxyBypassList": "https://www.example1.com,https://www.example2.com,https://internalsite/"
+    },
+    "BrowserLabsEnabled": false,
+    "DeveloperToolsAvailability": 2,
+    "RemoteDebuggingAllowed": true,
+    "HeadlessMode": 2,
+    "BlockThirdPartyCookies": false,
+    "DefaultSearchProviderContextMenuAccessAllowed": true,
+    "LensRegionSearchEnabled": true,
+    "InsecurePrivateNetworkRequestsAllowed": false,
+    "InsecurePrivateNetworkRequestsAllowedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu"
+    ],
+    "Disable3DAPIs": false,
+    "PolicyRefreshRate": 3600000,
+    "MaxInvalidationFetchDelay": 10000,
+    "ChromeOsMultiProfileUserBehavior": "unrestricted",
+    "ForceLogoutUnauthenticatedUserEnabled": false,
+    "SecurityTokenSessionNotificationSeconds": 10,
+    "TargetBlankImpliesNoOpener": false,
+    "TranslateEnabled": true,
+    "BookmarkBarEnabled": true,
+    "EditBookmarksEnabled": false,
+    "ShowAppsShortcutInBookmarkBar": false,
+    "AllowFileSelectionDialogs": true,
+    "SecurityKeyPermitAttestation": [
+        "https://example.com"
+    ],
+    "U2fSecurityKeyApiEnabled": true,
+    "ImportBookmarks": true,
+    "ImportHistory": true,
+    "ImportHomepage": true,
+    "ImportSearchEngine": true,
+    "ImportSavedPasswords": true,
+    "ImportAutofillFormData": true,
+    "MaxConnectionsPerProxy": 32,
+    "URLBlocklist": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/bad_path",
+        "https://server:8080/path",
+        ".exact.hostname.com",
+        "file://*",
+        "custom_scheme:*",
+        "*"
+    ],
+    "URLAllowlist": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/good_path",
+        "https://server:8080/path",
+        ".exact.hostname.com"
+    ],
+    "PolicyAtomicGroupsEnabled": true,
+    "PolicyListMultipleSourceMergeList": [
+        "ExtensionInstallAllowlist",
+        "ExtensionInstallBlocklist"
+    ],
+    "PolicyDictionaryMultipleSourceMergeList": [
+        "ExtensionSettings"
+    ],
+    "CloudUserPolicyMerge": true,
+    "EnableExperimentalPolicies": [
+        "ExtensionInstallAllowlist",
+        "ExtensionInstallBlocklist"
+    ],
+    "EnableOnlineRevocationChecks": false,
+    "RequireOnlineRevocationChecksForLocalAnchors": false,
+    "BuiltinCertificateVerifierEnabled": false,
+    "ForceEphemeralProfiles": true,
+    "SamlLockScreenOfflineSigninTimeLimitDays": 32,
+    "ReportCrostiniUsageEnabled": false,
+    "KioskCRXManifestUpdateURLIgnored": true,
+    "ManagedGuestSessionPrivacyWarningsEnabled": false,
+    "BackgroundModeEnabled": true,
+    "RestrictSigninToPattern": ".*@example\\.com",
+    "DisableSafeBrowsingProceedAnyway": true,
+    "SpellCheckServiceEnabled": false,
+    "ExternalStorageReadOnly": true,
+    "AudioCaptureAllowed": false,
+    "AudioCaptureAllowedUrls": [
+        "https://www.example.com/",
+        "https://[*.]example.edu/"
+    ],
+    "VideoCaptureAllowed": false,
+    "VideoCaptureAllowedUrls": [
+        "https://www.example.com/",
+        "https://[*.]example.edu/"
+    ],
+    "DisableScreenshots": true,
+    "ShowLogoutButtonInTray": true,
+    "BuiltInDnsClientEnabled": true,
+    "DnsOverHttpsMode": "off",
+    "DnsOverHttpsTemplates": "https://dns.example.net/dns-query{?dns}",
+    "AdditionalDnsQueryTypesEnabled": true,
+    "ShelfAlignment": "Bottom",
+    "SystemFeaturesDisableMode": "blocked",
+    "UserDisplayName": "Policy User",
+    "FullscreenAllowed": true,
+    "TermsOfServiceURL": "https://www.example.com/terms_of_service.txt",
+    "PrimaryMouseButtonSwitch": true,
+    "SharedClipboardEnabled": true,
+    "HideWebStoreIcon": true,
+    "VariationsRestrictParameter": "restricted",
+    "ChromeVariations": 1,
+    "ManagedBookmarks": [
+        {
+            "toplevel_name": "My managed bookmarks folder"
+        },
+        {
+            "name": "Google",
+            "url": "google.com"
+        },
+        {
+            "name": "Youtube",
+            "url": "youtube.com"
+        },
+        {
+            "name": "Chrome links",
+            "children": [
+                {
+                    "name": "Chromium",
+                    "url": "chromium.org"
+                },
+                {
+                    "name": "Chromium Developers",
+                    "url": "dev.chromium.org"
+                }
+            ]
+        }
+    ],
+    "UserAvatarImage": {
+        "url": "https://example.com/avatar.jpg",
+        "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    },
+    "EasyUnlockAllowed": true,
+    "BrowserGuestModeEnabled": true,
+    "BrowserGuestModeEnforced": true,
+    "BrowserAddPersonEnabled": true,
+    "BrowserSignin": 2,
+    "SSLVersionMin": "tls1.2",
+    "CECPQ2Enabled": true,
+    "CertificateTransparencyEnforcementDisabledForUrls": [
+        "example.com",
+        ".example.com"
+    ],
+    "CertificateTransparencyEnforcementDisabledForCas": [
+        "sha256/AAAAAAAAAAAAAAAAAAAAAA==",
+        "sha256//////////////////////w=="
+    ],
+    "CertificateTransparencyEnforcementDisabledForLegacyCas": [
+        "sha256/AAAAAAAAAAAAAAAAAAAAAA==",
+        "sha256//////////////////////w=="
+    ],
+    "SSLErrorOverrideAllowed": true,
+    "SSLErrorOverrideAllowedForOrigins": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "QuicAllowed": true,
+    "HardwareAccelerationModeEnabled": true,
+    "SuppressUnsupportedOSWarning": true,
+    "TaskManagerEndProcessEnabled": true,
+    "AllowScreenLock": false,
+    "AllowedDomainsForApps": "managedchrome.com,example.com",
+    "MediaRouterCastAllowAllIPs": false,
+    "NTPCustomBackgroundEnabled": true,
+    "NTPCardsVisible": true,
+    "WebRtcUdpPortRange": "10000-11999",
+    "WebRtcLocalIpsAllowedUrls": [
+        "https://www.example.com",
+        "*example.com*"
+    ],
+    "WebRestrictionsAuthority": "com.android.chrome.SupervisedUserProvider",
+    "ComponentUpdatesEnabled": true,
+    "WifiSyncAndroidAllowed": true,
+    "InstantTetheringAllowed": true,
+    "PhoneHubNotificationsAllowed": true,
+    "NearbyShareAllowed": true,
+    "BrowserNetworkTimeQueriesEnabled": true,
+    "CloudPolicyOverridesPlatformPolicy": false,
+    "CloudUserPolicyOverridesCloudMachinePolicy": false,
+    "PromptForDownloadLocation": false,
+    "IsolateOrigins": "https://a.example.com/,https://othersite.org/,https://[*.]corp.example.com",
+    "SitePerProcess": true,
+    "SitePerProcessAndroid": true,
+    "SharedArrayBufferUnrestrictedAccessAllowed": false,
+    "SandboxExternalProtocolBlocked": true,
+    "CrossOriginWebAssemblyModuleSharingEnabled": true,
+    "DisplayCapturePermissionsPolicyEnabled": true,
+    "DefaultDownloadDirectory": "/home/${user_name}/Downloads",
+    "AbusiveExperienceInterventionEnforce": true,
+    "SpellcheckLanguage": [
+        "fr",
+        "es"
+    ],
+    "SpellcheckLanguageBlocklist": [
+        "fr",
+        "es"
+    ],
+    "SpellcheckEnabled": false,
+    "AdsSettingForIntrusiveAdsSites": 1,
+    "RelaunchNotification": 1,
+    "RelaunchNotificationPeriod": 604800000,
+    "RelaunchWindow": {
+        "entries": [
+            {
+                "start": {
+                    "hour": 2,
+                    "minute": 15
+                },
+                "duration_mins": 240
+            }
+        ]
+    },
+    "CloudManagementEnrollmentToken": "37185d02-e055-11e7-80c1-9a214cf093ae",
+    "CloudManagementEnrollmentMandatory": true,
+    "AutoplayAllowed": true,
+    "AutoplayAllowlist": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "ChromeCleanupReportingEnabled": true,
+    "AllowedInputMethods": [
+        "xkb:us::eng"
+    ],
+    "ExtensionInstallEventLoggingEnabled": true,
+    "EnableSyncConsent": false,
+    "PromotionalTabsEnabled": false,
+    "SafeSitesFilterBehavior": 0,
+    "OverrideSecurityRestrictionsOnInsecureOrigin": [
+        "http://testserver.example.com/",
+        "*.example.org"
+    ],
+    "UrlKeyedAnonymizedDataCollectionEnabled": true,
+    "WebRtcEventLogCollectionAllowed": true,
+    "CoalesceH2ConnectionsWithClientCertificatesForHosts": [
+        "example.com"
+    ],
+    "ManagedConfigurationPerOrigin": [
+        {
+            "origin": "https://www.google.com",
+            "managed_configuration_url": "https://gstatic.google.com/configuration.json",
+            "managed_configuration_hash": "asd891jedasd12ue9h"
+        },
+        {
+            "origin": "https://www.example.com",
+            "managed_configuration_url": "https://gstatic.google.com/configuration2.json",
+            "managed_configuration_hash": "djio12easd89u12aws"
+        }
+    ],
+    "WebAppInstallForceList": [
+        {
+            "url": "https://www.google.com/maps",
+            "default_launch_container": "window",
+            "create_desktop_shortcut": true
+        },
+        {
+            "url": "https://docs.google.com",
+            "default_launch_container": "tab"
+        },
+        {
+            "url": "https://docs.google.com/editor",
+            "default_launch_container": "window",
+            "fallback_app_name": "Editor"
+        },
+        {
+            "url": "https://docs.google.com/sheets",
+            "default_launch_container": "window",
+            "custom_name": "Spreadsheets"
+        },
+        {
+            "url": "https://weather.example.com",
+            "custom_icon": {
+                "url": "https://mydomain.example.com/sunny_icon.png",
+                "hash": "c28f469c450e9ab2b86ea47038d2b324c6ad3b1e9a4bd8960da13214afd0ca38"
+            }
+        }
+    ],
+    "EnterpriseHardwarePlatformAPIEnabled": true,
+    "ClientCertificateManagementAllowed": 1,
+    "SignedHTTPExchangeEnabled": true,
+    "ContextAwareAccessSignalsAllowlist": [
+        "https://example1.com",
+        "https://[*.]example2.com",
+        "https://foo.example3.com/path"
+    ],
+    "UserFeedbackAllowed": true,
+    "DeviceScheduledReboot": {
+        "reboot_time": {
+            "hour": 22,
+            "minute": 30
+        },
+        "frequency": "WEEKLY",
+        "day_of_week": "TUESDAY",
+        "day_of_month": 11
+    },
+    "CommandLineFlagSecurityWarningsEnabled": true,
+    "DevicePowerwashAllowed": true,
+    "CACertificateManagementAllowed": 1,
+    "OnFileDownloadedEnterpriseConnector": [
+        {
+            "service_provider": "Google",
+            "enable": [
+                {
+                    "url_list": [
+                        "*"
+                    ],
+                    "tags": [
+                        "malware"
+                    ]
+                },
+                {
+                    "url_list": [
+                        "*.them.com",
+                        "*.others.com"
+                    ],
+                    "tags": [
+                        "dlp"
+                    ]
+                }
+            ],
+            "disable": [
+                {
+                    "url_list": [
+                        "*.us.com"
+                    ],
+                    "tags": [
+                        "malware"
+                    ]
+                }
+            ],
+            "block_until_verdict": 1,
+            "block_password_protected": false,
+            "block_large_files": true,
+            "require_justification_tags": [
+                "malware",
+                "dlp"
+            ],
+            "custom_messages": [
+                {
+                    "message": "Custom message for potential sensitive data leaks.",
+                    "learn_more_url": "moreinfo.example.com",
+                    "language": "default",
+                    "tag": "dlp"
+                },
+                {
+                    "message": "Custom message for potential malware file transfer.",
+                    "learn_more_url": "moreinfo.example.com/en",
+                    "language": "en-US",
+                    "tag": "malware"
+                },
+                {
+                    "message": "Message pour le transfert de logiciel malveillant.",
+                    "learn_more_url": "moreinfo.example.com/fr",
+                    "language": "fr-CA",
+                    "tag": "malware"
+                }
+            ]
+        }
+    ],
+    "OnFileAttachedEnterpriseConnector": [
+        {
+            "service_provider": "Google",
+            "enable": [
+                {
+                    "url_list": [
+                        "*"
+                    ],
+                    "tags": [
+                        "malware"
+                    ]
+                },
+                {
+                    "url_list": [
+                        "*.them.com",
+                        "*.others.com"
+                    ],
+                    "tags": [
+                        "dlp"
+                    ]
+                }
+            ],
+            "disable": [
+                {
+                    "url_list": [
+                        "*.us.com"
+                    ],
+                    "tags": [
+                        "malware"
+                    ]
+                }
+            ],
+            "block_until_verdict": 0,
+            "block_password_protected": true,
+            "block_large_files": false,
+            "require_justification_tags": [
+                "malware",
+                "dlp"
+            ],
+            "custom_messages": [
+                {
+                    "message": "Custom message for potential sensitive data leaks.",
+                    "learn_more_url": "moreinfo.example.com",
+                    "language": "default",
+                    "tag": "dlp"
+                },
+                {
+                    "message": "Custom message for potential malware file transfer.",
+                    "learn_more_url": "moreinfo.example.com/en",
+                    "language": "en-US",
+                    "tag": "malware"
+                },
+                {
+                    "message": "Message pour le transfert de logiciel malveillant.",
+                    "learn_more_url": "moreinfo.example.com/fr",
+                    "language": "fr-CA",
+                    "tag": "malware"
+                }
+            ]
+        }
+    ],
+    "OnBulkDataEntryEnterpriseConnector": [
+        {
+            "service_provider": "Google",
+            "enable": [
+                {
+                    "url_list": [
+                        "*"
+                    ],
+                    "tags": [
+                        "malware"
+                    ]
+                },
+                {
+                    "url_list": [
+                        "*.them.com",
+                        "*.others.com"
+                    ],
+                    "tags": [
+                        "dlp"
+                    ]
+                }
+            ],
+            "disable": [
+                {
+                    "url_list": [
+                        "*.us.com"
+                    ],
+                    "tags": [
+                        "malware"
+                    ]
+                }
+            ],
+            "block_until_verdict": 0,
+            "minimum_data_size": 100,
+            "require_justification_tags": [
+                "malware",
+                "dlp"
+            ],
+            "custom_messages": [
+                {
+                    "message": "Custom message for potential sensitive data leaks.",
+                    "learn_more_url": "moreinfo.example.com",
+                    "language": "default",
+                    "tag": "dlp"
+                },
+                {
+                    "message": "Custom message for potential malware file transfer.",
+                    "learn_more_url": "moreinfo.example.com/en",
+                    "language": "en-US",
+                    "tag": "malware"
+                },
+                {
+                    "message": "Message pour le transfert de logiciel malveillant.",
+                    "learn_more_url": "moreinfo.example.com/fr",
+                    "language": "fr-CA",
+                    "tag": "malware"
+                }
+            ]
+        }
+    ],
+    "OnSecurityEventEnterpriseConnector": [
+        {
+            "service_provider": "Google",
+            "enabled_event_names": [
+                "passwordChangedEvent",
+                "sensitiveDataEvent"
+            ]
+        }
+    ],
+    "EnterpriseRealTimeUrlCheckMode": 1,
+    "BrowserLegacyExtensionPointsBlocked": false,
+    "HSTSPolicyBypassList": [
+        "meet"
+    ],
+    "AllowSyncXHRInPageDismissal": false,
+    "AudioSandboxEnabled": true,
+    "ExternalProtocolDialogShowAlwaysOpenCheckbox": true,
+    "ClickToCallEnabled": true,
+    "UserDataSnapshotRetentionLimit": 3,
+    "AmbientAuthenticationInPrivateModesEnabled": 0,
+    "PaymentMethodQueryEnabled": true,
+    "AllowSystemNotifications": true,
+    "AdvancedProtectionAllowed": true,
+    "ScrollToTextFragmentEnabled": false,
+    "AccessibilityImageLabelsEnabled": false,
+    "IntensiveWakeUpThrottlingEnabled": true,
+    "UserAgentClientHintsGREASEUpdateEnabled": true,
+    "ShowFullUrlsInAddressBar": false,
+    "InsecureFormsWarningsEnabled": true,
+    "LookalikeWarningAllowlistDomains": [
+        "foo.example.com",
+        "example.org"
+    ],
+    "TosDialogBehavior": 2,
+    "DataLeakPreventionReportingEnabled": true,
+    "WebRtcAllowLegacyTLSProtocols": false,
+    "MediaRecommendationsEnabled": true,
+    "BrowsingDataLifetime": [
+        {
+            "time_to_live_in_hours": 24,
+            "data_types": [
+                "browsing_history"
+            ]
+        },
+        {
+            "time_to_live_in_hours": 12,
+            "data_types": [
+                "password_signin",
+                "autofill"
+            ]
+        }
+    ],
+    "LacrosSecondaryProfilesAllowed": true,
+    "ClearBrowsingDataOnExitList": [
+        "browsing_history",
+        "download_history",
+        "cookies_and_other_site_data",
+        "cached_images_and_files",
+        "password_signin",
+        "autofill",
+        "site_settings",
+        "hosted_app_data"
+    ],
+    "ProfilePickerOnStartupAvailability": 0,
+    "SigninInterceptionEnabled": true,
+    "SendDownloadToCloudEnterpriseConnector": [
+        {
+            "service_provider": "Google",
+            "enterprise_id": "1234567890",
+            "domain": "example.com",
+            "enable": [
+                {
+                    "url_list": [
+                        "*"
+                    ],
+                    "mime_types": [
+                        "text/plain"
+                    ]
+                },
+                {
+                    "url_list": [
+                        "*.them.com",
+                        "*.others.com"
+                    ],
+                    "mime_types": [
+                        "image/png"
+                    ]
+                }
+            ],
+            "disable": [
+                {
+                    "url_list": [
+                        "*.us.com"
+                    ],
+                    "mime_types": [
+                        "application/zip"
+                    ]
+                }
+            ]
+        }
+    ],
+    "WebAppSettings": {
+        "https://foo.example": {
+            "run_on_os_login": "allowed"
+        },
+        "https://bar.example": {
+            "run_on_os_login": "blocked"
+        },
+        "https://foobar.example": {
+            "run_on_os_login": "run_windowed"
+        },
+        "*": {
+            "run_on_os_login": "blocked"
+        }
+    },
+    "FetchKeepaliveDurationSecondsOnShutdown": 1,
+    "SuppressDifferentOriginSubframeDialogs": true,
+    "ForcedLanguages": [
+        "en-US"
+    ],
+    "BrowserThemeColor": "#FFFFFF",
+    "WebRtcIPHandling": "default",
+    "DeviceAllowedBluetoothServices": [
+        "0x111E",
+        "0x110B",
+        "0x1203",
+        "0x1108",
+        "0x110C",
+        "0x110E",
+        "0x110F",
+        "0x1200"
+    ],
+    "ExplicitlyAllowedNetworkPorts": [
+        "10080"
+    ],
+    "SuggestLogoutAfterClosingLastWindow": true,
+    "ManagedAccountsSigninRestriction": "primary_account",
+    "LockIconInAddressBarEnabled": true,
+    "HttpsOnlyMode": "disallowed",
+    "DesktopSharingHubEnabled": true,
+    "RestrictedManagedGuestSessionExtensionCleanupExemptList": [
+        "abcdefghijklmnopabcdefghijklmnop",
+        "bcdefghijklmnopabcdefghijklmnopa"
+    ],
+    "ChromeAppsEnabled": true,
+    "GhostWindowEnabled": true,
+    "WebSQLInThirdPartyContextEnabled": true,
+    "AccessCodeCastEnabled": true,
+    "AccessCodeCastDeviceDuration": 60,
+    "DeskTemplatesEnabled": true,
+    "PreconfiguredDeskTemplates": {
+        "url": "https://example.com/a.json",
+        "hash": "842841a4c75a55ad050d686f4ea5f77e83ae059877fe9b6946aa63d3d057ed32"
+    },
+    "FastPairEnabled": true,
+    "CORSNonWildcardRequestHeadersSupport": true
+}

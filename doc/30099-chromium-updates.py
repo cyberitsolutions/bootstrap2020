@@ -5,6 +5,7 @@ import logging
 import pathlib
 import pprint
 import re
+import subprocess
 import sys
 import textwrap
 
@@ -16,6 +17,7 @@ __doc__ = """ emit a greppable single-page text version of https://chromeenterpr
 
 json_path = pathlib.Path('30099-chromium-updates.json')
 org_path = pathlib.Path('30099-chromium-updates.org')
+example_path = pathlib.Path('30099-chromium-updates.d')
 
 resp = requests.get('https://chromeenterprise.google/static/json/policy_templates_en-US.json')
 resp.raise_for_status()
@@ -42,27 +44,7 @@ for d in root['policy_definitions']:
             if policy_name in group_policies:
                 group_policies.remove(policy_name)
 
-
-
-def rst_heading(n, text) -> str:
-    # Workaround an annoying "feature" in Google's internal knowledge base.
-    text = text.replace('\n      ', ' ')
-    if '\n' in text:
-        raise RuntimeError('newline in text', text)
-    underline_char = {1: '=', 2: '-'}[n]
-    return text + '\n' + len(text) * underline_char
-
-def org_heading(n, text) -> str:
-    # Workaround an annoying "feature" in Google's internal knowledge base.
-    text = text.replace('\n      ', ' ')
-    if '\n' in text:
-        raise RuntimeError('newline in text', text)
-    return '*' * n + ' ' + text
-
-heading = org_heading
-h1 = lambda text: heading(1, text)
-h2 = lambda text: heading(2, text)
-
+# Restructure the json into "groups" and "everything else".
 groups = {
     d['name']: d
     for d in root['policy_definitions']
@@ -71,7 +53,6 @@ policies = {
     d['name']: d
     for d in root['policy_definitions']
     if d['type'] != 'group'}
-
 # Are any policies in NO groups?
 # Are any policies in MULTIPLE groups?
 groupless_policy_names = []
@@ -92,6 +73,41 @@ groups['X-GrouplessPolicies'] = {
     'caption': 'These policies have no group!',
     'desc': 'FIXME',
     'policies': groupless_policy_names}
+
+
+# Create a directory of just example policies.
+# One file per group.  No deprecated policies.  No non-Linux policies.
+# Doesn't prune out unsupported versions yet.
+subprocess.check_call(['rm', '-rf', example_path])
+example_path.mkdir()
+for group_name, group in groups.items():
+    example_object = {
+        policy_name: policies[policy_name]['example_value']
+        for policy_name in group['policies']
+        if not policies[policy_name].get('deprecated', False)}
+    (example_path / f'{group_name}.json').write_text(
+        json.dumps(example_object, indent=4))
+
+
+
+def rst_heading(n, text) -> str:
+    # Workaround an annoying "feature" in Google's internal knowledge base.
+    text = text.replace('\n      ', ' ')
+    if '\n' in text:
+        raise RuntimeError('newline in text', text)
+    underline_char = {1: '=', 2: '-'}[n]
+    return text + '\n' + len(text) * underline_char
+
+def org_heading(n, text) -> str:
+    # Workaround an annoying "feature" in Google's internal knowledge base.
+    text = text.replace('\n      ', ' ')
+    if '\n' in text:
+        raise RuntimeError('newline in text', text)
+    return '*' * n + ' ' + text
+
+heading = org_heading
+h1 = lambda text: heading(1, text)
+h2 = lambda text: heading(2, text)
 
 with org_path.open('w') as f:
     for group_name, group in groups.items():

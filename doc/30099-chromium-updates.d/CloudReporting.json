@@ -1,0 +1,9 @@
+{
+    "ReportVersionData": false,
+    "ReportPolicyData": false,
+    "ReportMachineIDData": false,
+    "ReportUserIDData": false,
+    "ReportExtensionsAndPluginsData": false,
+    "CloudExtensionRequestEnabled": true,
+    "CloudReportingEnabled": true
+}

@@ -1,0 +1,29 @@
+{
+    "AlternativeBrowserPath": "${ie}",
+    "AlternativeBrowserParameters": [
+        "-foreground",
+        "-new-window",
+        "${url}",
+        "-profile",
+        "%HOME%\\browser_profile"
+    ],
+    "BrowserSwitcherChromeParameters": [
+        "--force-dark-mode"
+    ],
+    "BrowserSwitcherDelay": 10000,
+    "BrowserSwitcherEnabled": true,
+    "BrowserSwitcherExternalSitelistUrl": "http://example.com/sitelist.xml",
+    "BrowserSwitcherExternalGreylistUrl": "http://example.com/greylist.xml",
+    "BrowserSwitcherKeepLastChromeTab": false,
+    "BrowserSwitcherParsingMode": 1,
+    "BrowserSwitcherUrlList": [
+        "ie.com",
+        "!open-in-chrome.ie.com",
+        "foobar.com/ie-only/"
+    ],
+    "BrowserSwitcherUrlGreylist": [
+        "ie.com",
+        "!open-in-chrome.ie.com",
+        "foobar.com/ie-only/"
+    ]
+}

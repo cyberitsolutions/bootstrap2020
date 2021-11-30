@@ -1,0 +1,26 @@
+{
+    "RemoteAccessHostClientDomainList": [
+        "my-awesome-domain.com",
+        "my-auxiliary-domain.com"
+    ],
+    "RemoteAccessHostFirewallTraversal": false,
+    "RemoteAccessHostDomainList": [
+        "my-awesome-domain.com",
+        "my-auxiliary-domain.com"
+    ],
+    "RemoteAccessHostRequireCurtain": false,
+    "RemoteAccessHostAllowClientPairing": false,
+    "RemoteAccessHostAllowGnubbyAuth": true,
+    "RemoteAccessHostAllowRelayedConnection": false,
+    "RemoteAccessHostUdpPortRange": "12400-12409",
+    "RemoteAccessHostMatchUsername": false,
+    "RemoteAccessHostTokenUrl": "https://example.com/issue",
+    "RemoteAccessHostTokenValidationUrl": "https://example.com/validate",
+    "RemoteAccessHostTokenValidationCertificateIssuer": "Example Certificate Authority",
+    "RemoteAccessHostAllowFileTransfer": false,
+    "RemoteAccessHostEnableUserInterface": false,
+    "RemoteAccessHostAllowRemoteAccessConnections": false,
+    "RemoteAccessHostMaximumSessionDurationMinutes": 1200,
+    "RemoteAccessHostClipboardSizeBytes": 1048576,
+    "RemoteAccessHostAllowRemoteSupportConnections": false
+}
