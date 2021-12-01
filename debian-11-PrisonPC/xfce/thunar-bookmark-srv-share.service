@@ -1,0 +1,5 @@
+[Service]
+Type=oneshot
+ExecStart=bootstrap2020-thunar-bookmark-srv-share.py
+[Install]
+WantedBy=default.target

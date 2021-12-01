@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This channel is not locked.
+     Thunar wants to remember things like last-window-width in here. -->
+<channel name="thunar" version="1.0">
+  <!-- Make it less obvious that inmates can navigate around outside $HOME. -->
+  <property name="last-location-bar" type="string" value="ThunarLocationButtons" unlocked="root"/>
+  <property name="last-menubar-visible" type="bool" value="false" unlocked="root"/>
+  <property name="hidden-bookmarks" type="array" unlocked="root">
+    <value type="string" value="file:///"/>
+    <value type="string" value="computer:///"/>
+    <value type="string" value="network:///"/>
+  </property>
+</channel>
