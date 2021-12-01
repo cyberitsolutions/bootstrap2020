@@ -254,6 +254,11 @@ Conflicts:
 # We need thunar->udisks2->polkit for mounting/ejecting DVDs.
  sudo,
  sudo-ldap,
+# These are alternatives to the XFCE4 applications/start menu.
+# They provide easy ways to run an arbitrary shell command (i.e. Win+R).
+# There is no easy way to remove that feature while keeping the "nice menu" feature.
+ xfce4-appfinder,
+ xfce4-whiskermenu-plugin,
 ## Inmates SHOULD NOT have a text editor
 ## =====================================
 # FIXME: Staff will need a text editor.
