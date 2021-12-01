@@ -386,6 +386,29 @@ Conflicts:
 ## =========================================================
 ## sysvinit compatibility MAY be removed
 ## =====================================
+## Inmates SHOULD NOT be able to make screenshots
+## ==============================================
+## https://alloc.cyber.com.au/task/task.php?taskID=30713
+# x11-apps provides "xwd" screenshot tool.
+ xfce4-screenshooter,
+ scrot,
+ x11-apps,
+ gnome-screenshot,
+ gtk-vector-screenshot,
+ deepin-screenshot,
+ fbcat,
+ flameshot,
+ kde-spectacle,
+ ksnip,
+ screengrab,
+ mirage,
+ screenfetch,
+ kazam,
+ gkrellshoot,
+ grim,
+ grimshot,
+ maim,
+ mate-utils,
 Architecture: all
 Description: conflict with CANTHAPPEN packages
  Some packages should NEVER be installed (e.g. terminal emulators).

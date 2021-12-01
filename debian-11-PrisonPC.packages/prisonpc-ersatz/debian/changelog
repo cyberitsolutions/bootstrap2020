@@ -1,6 +1,7 @@
 prisonpc-ersatz (11.6) bullseye; urgency=medium
 
   * Explicitly block XFCE "nice start menu" plugins that include REPLs.
+  * Explicitly block screenshot tools from XFCE et al.
 
  -- Trent W. Buck <trentbuck@gmail.com>  Wed, 01 Dec 2021 13:31:11 +1100
 
