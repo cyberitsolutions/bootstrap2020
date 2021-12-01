@@ -97,6 +97,34 @@
 
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
+# https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-uca/
+# Right click > Open Terminal Here
+# User-configurable custom commands (system(3)).
+# Can't actually open a terminal (exo-open --launch TerminalEmulator).
+**/thunar-uca.so*
+**/Thunar/uca.xml
+# https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-apr/README.md/
+# Right click > Properties > Launcher (edit .desktop command) -- slightly bad.
+# Right click > Properties > Image (Image Type and Image Size) -- don't care.
+**/thunar-apr.so*
+# https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-wallpaper/
+# Useless because locked in xfconf.
+**/thunar-wallpaper-plugin.so*
+# https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-sendto-email/
+# Useless because needs zip(1) and we block it.
+**/thunar-sendto-email*
+# https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-tpa/README.md/
+# This is a xfce4-panel plugin for trash://.  Harmless.  Not removed.
+# https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-sbr/README.md/
+# Applications > Accessories > Bulk Rename
+# Only useful for "power users", so remove.
+**/thunar-sbr.so*
+/usr/share/applications/thunar-bulk-rename.desktop
+# https://sources.debian.org/src/thunar/4.16.8-1/debian/
+# These are Debian things we do not want.
+# Harmless as the binaries aren't installed.
+/usr/share/Thunar/sendto/bluetooth-sendto.desktop
+/usr/share/Thunar/sendto/gnome-obex-send.desktop
 
 
 ## sysvinit compatibility MAY be removed
