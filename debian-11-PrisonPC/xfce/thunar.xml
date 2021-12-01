@@ -10,4 +10,8 @@
     <value type="string" value="computer:///"/>
     <value type="string" value="network:///"/>
   </property>
+
+  <!-- Enable tabbed views. -->
+  <property name="misc-middle-click-in-tab" type="bool" value="true"/>
+  <property name="misc-open-new-window-as-tab" type="bool" value="true"/>
 </channel>
