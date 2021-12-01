@@ -3,10 +3,8 @@ Type=X-XFCE-Helper
 Name=Mail
 X-XFCE-Category=MailReader
 X-XFCE-Binaries=chromium;
-X-XFCE-Commands=chromium --app=http://webmail
-X-XFCE-CommandsWithParameter=chromium --app=http://webmail
-
-# NB: keep this synced with /usr/share/applications/com.PrisonPC.Mail.desktop!
+X-XFCE-Commands=gtk-launch com.PrisonPC.Mail
+X-XFCE-CommandsWithParameter=gtk-launch com.PrisonPC.Mail
 
 # FIXME: X-XFCE-CommandsWithParameter is supposed to receive a mailto:
 # link and do something useful with it.  It doesn't work, but the
