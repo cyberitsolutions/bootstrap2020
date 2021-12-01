@@ -6,3 +6,4 @@
 FileManager=thunar
 WebBrowser=chromium
 MailReader=com.PrisonPC.Mail
+TerminalEmulator=com.PrisonPC.log-terminal-attempt

@@ -378,6 +378,7 @@ with tempfile.TemporaryDirectory() as td:
                ] if args.apps else []),
             *(['--include=prisonpc-bad-package-conflicts'
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
+               '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
                '    libgtk-3-bin'  # gtk-launch (used by some .desktop files)
                '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)
                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
