@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import pathlib
+import subprocess
 
 __doc__ = """ make /srv/share easy to find in Thunar
 
@@ -43,12 +44,22 @@ Therefore, resort to editing the file by hand, like a FUCKING SAVAGE.
 
 my_bookmark_str = 'file:///srv/share Shared Files'
 bookmark_path = pathlib.Path('~/.config/gtk-3.0/bookmarks').expanduser()
-try:
-    bookmarks = frozenset(bookmark_path.read_text().splitlines())
-    need_to_add_my_bookmark = my_bookmark_str not in bookmarks
-except FileNotFoundError:
-    need_to_add_my_bookmark = True
-    bookmark_path.parent.mkdir(parents=True, exist_ok=True)
+
+# I observed a race condition for new users where this script raced
+# with xdg-user-dirs-gtk-update, resulting in
+# xdg-user-dirs-gtk-update's changes not appearing.
+#
+# I was *GOING* to be clever and add Wants/After= but,
+#
+#   1. xdg-user-dirs-gtk-update may or may not be a systemd user unit.
+#   2. xdg-user-dirs-gtk-update is idempotent, and
+#      running it directly, here, simplifies our code.
+subprocess.check_call(['xdg-user-dirs-update'])
+subprocess.check_call(['xdg-user-dirs-gtk-update'])
+
+# We can now simply assume the bookmarks dir exists.
+bookmarks = frozenset(bookmark_path.read_text().splitlines())
+need_to_add_my_bookmark = my_bookmark_str not in bookmarks
 if need_to_add_my_bookmark:
     with bookmark_path.open('a') as f:
         print(my_bookmark_str, file=f)
