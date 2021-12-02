@@ -1,7 +1,0 @@
-{
-    "AttestationEnabledForDevice": true,
-    "AttestationExtensionAllowlist": [
-        "ghdilpkmfbfdnomkmaiogjhjnggaggoi"
-    ],
-    "AttestationForContentProtectionEnabled": true
-}

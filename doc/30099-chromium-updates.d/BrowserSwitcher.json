@@ -7,9 +7,6 @@
         "-profile",
         "%HOME%\\browser_profile"
     ],
-    "BrowserSwitcherChromeParameters": [
-        "--force-dark-mode"
-    ],
     "BrowserSwitcherDelay": 10000,
     "BrowserSwitcherEnabled": true,
     "BrowserSwitcherExternalSitelistUrl": "http://example.com/sitelist.xml",

@@ -783,8 +783,6 @@ SYNOPSIS: "direct"
     type: string
   supported_on:
   - chrome.*:10-
-  - chrome_os:11-
-  - android:30-
   type: string-enum
 
 ** ProxyServerMode (DEPRECATED) — Choose how to specify proxy server settings
@@ -1127,7 +1125,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:13-
-  - chrome_os:62-
   tags:
   - website-sharing
   type: main
@@ -1156,97 +1153,6 @@ SYNOPSIS: true
   tags:
   - website-sharing
   type: main
-
-** IntegratedWebAuthenticationAllowed (DEPRECATED) — Allow reusing the Google Chrome OS login credentials for network authentication
-SYNOPSIS: true
-  This policy is deprecated, please configure Kerberos policies to reuse the login password instead.
-
-  default: false
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: The Google Chrome OS login credentials will be used for network authentication
-      to a managed proxy.
-    value: true
-  - caption: The Google Chrome OS login credentials will not be used for network authentication.
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:89-93
-  type: main
-
-* Kerberos — Kerberos
- Policies related to Kerberos authentication.
-
-** KerberosRememberPasswordEnabled — Enable 'Remember password' feature
-SYNOPSIS: true
- Controls whether the 'Remember password' feature is enabled in the Kerberos authentication dialog. Passwords are stored encryped on disk, only accessible to the Kerberos system daemon and during a user session.
-
-           If this policy is enabled or not set, users can decide whether Kerberos passwords are remembered, so that they do not have to be entered again. Kerberos tickets are automatically fetched unless additional authentication is required (two-factor authentication).
-
-           If this policy is disabled, passwords are never remembered and all previously stored passwords are removed. Users have to enter their password every time they need to authenticate with the Kerberos system. Depending on server settings, this usually happens between every 8 hours to several months.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:87-
-  tags:
-  - website-sharing
-  type: main
-
-** KerberosAccounts — Configure Kerberos accounts
-SYNOPSIS: [{"principal": "${LOGIN_EMAIL}", "password": "${PASSWORD}"}, {"principal": "user1@REALM.COM", "remember_password": true}, {"principal": "user2@REALM.COM", "password": "p4zzw0rd!", "krb5conf": ["[libdefaults]", "  default_tgs_enctypes = aes256-cts-hmac-sha1-96", "  default_tkt_enctypes = aes256-cts-hmac-sha1-96", "  permitted_enctypes = aes256-cts-hmac-sha1-96", "  default_realm = REALM.COM", "", "[realms]", "  REALM.COM = {", "    kdc = us-west.realm.com", "    master_kdc = us-west.realm.com", "    kpasswd_server = us-west.realm.com", "  }"]}]
- Adds prefilled Kerberos accounts. If the Kerberos credentials match the login credentials, an account can be configured to reuse the login credentials by specifying '${{LOGIN_EMAIL}}' and ${{PASSWORD}}' for principal and password, respectively, so that the Kerberos ticket can be retrieved automatically unless two-factor authentication is configured. Users cannot modify accounts added via this policy.
-
-           If this policy is enabled, the list of accounts defined by the policy is added to the Kerberos Accounts settings.
-
-           If this policy is disabled or not set, no accounts are added to the Kerberos Accounts settings and all accounts previously added with this policy are removed. Users may still add accounts manually if the 'Users can add Kerberos accounts' policy is enabled.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      properties:
-        krb5conf:
-          description: Kerberos configuration (one line per array item), see https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.
-          items:
-            type: string
-          type: array
-        password:
-          description: Kerberos password. The placeholder ${{PASSWORD}} is replaced
-            by the login password.
-          sensitiveValue: true
-          type: string
-        principal:
-          description: User principal 'user@realm'. The placeholder ${{LOGIN_ID}} is
-            replaced by the username 'user'. The placeholder ${{LOGIN_EMAIL}} is replaced
-            by the full principal 'user@realm'.
-          pattern: ^(?:[^@]+@[^@]+)|(?:\${LOGIN_ID})|(?:\${LOGIN_EMAIL})$
-          type: string
-        remember_password:
-          description: Whether to remember the Kerberos password. If not set or set
-            to false, the password is not remembered. Ignored if the password is not
-            specified.
-          type: boolean
-      required:
-      - principal
-      type: object
-    type: array
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:87-
-  tags:
-  - website-sharing
-  type: dict
 
 * Extensions — Extensions
  Configures extension-related policies. The user is not allowed to install blocked extensions unless they are whitelisted. You can also force Google Chrome to automatically install extensions by specifying them in ExtensionInstallForcelist. Force-installed extensions are installed regardless whether they are present in the blocklist.
@@ -2455,8 +2361,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
     type: array
   supported_on:
   - chrome.*:11-
-  - chrome_os:11-
-  - android:30-
   type: list
 
 ** CookiesBlockedForUrls — Block cookies on these sites
@@ -3150,8 +3054,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
       type: string
     type: array
   supported_on:
-  - chrome_os:68-
-  - android:68-
   - chrome.*:68-
   tags:
   - website-sharing
@@ -3508,1022 +3410,6 @@ SYNOPSIS: ["text/xml", "application/xml"]
   - chrome_frame:8-32
   type: list
 
-* Drive — Google Drive
- Configure Google Drive in Google Chrome OS.
-
-** DriveDisabledOverCellular — Disable Google Drive over cellular connections in the Google Chrome OS Files app
-SYNOPSIS: true
- Setting the policy to Enabled turns off Google Drive syncing in the Google Chrome OS Files app when on a cellular connection. Data is only synced to Drive when connected through Wi-Fi or Ethernet.
-
-       Setting the policy to Disabled or leaving it unset lets users transfer files to Drive on cellular connections.
-
-  arc_support: This policy has no effect on the Android Google Drive app. If you want
-    to prevent use of Google Drive over cellular connections, you should disallow installation
-    of the Android Google Drive app.
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:19-
-  type: main
-
-* PowerManagement — Power management
- Configure power management in Google Chrome OS.
-
-       These policies let you configure how Google Chrome OS behaves when the user remains idle for some amount of time.
-
-** ScreenDimDelayAC (DEPRECATED) — Screen dim delay when running on AC power
-SYNOPSIS: 420000
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use PowerManagementIdleSettings instead.
-
-           Specifies the length of time without user input after which the screen is dimmed when running on AC power.
-
-           When this policy is set to a value greater than zero, it specifies the length of time that the user must remain idle before Google Chrome OS dims the screen.
-
-           When this policy is set to zero, Google Chrome OS does not dim the screen when the user becomes idle.
-
-           When this policy is unset, a default length of time is used.
-
-           The policy value should be specified in milliseconds. Values are clamped to be less than or equal the screen off delay (if set) and the idle delay.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:26-
-  type: int
-
-** ScreenLockDelayAC (DEPRECATED) — Screen lock delay when running on AC power
-SYNOPSIS: 600000
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use ScreenLockDelays instead.
-
-           Specifies the length of time without user input after which the screen is locked when running on AC power.
-
-           When this policy is set to a value greater than zero, it specifies the length of time that the user must remain idle before Google Chrome OS locks the screen.
-
-           When this policy is set to zero, Google Chrome OS does not lock the screen when the user becomes idle.
-
-           When this policy is unset, a default length of time is used.
-
-           The recommended way to lock the screen on idle is to enable screen locking on suspend and have Google Chrome OS suspend after the idle delay. This policy should only be used when screen locking should occur a significant amount of time sooner than suspend or when suspend on idle is not desired at all.
-
-           The policy value should be specified in milliseconds. Values are clamped to be less than the idle delay.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:26-
-  type: int
-
-** IdleDelayAC (DEPRECATED) — Idle delay when running on AC power
-SYNOPSIS: 1800000
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use PowerManagementIdleSettings instead.
-
-           Specifies the length of time without user input after which the idle action is taken when running on AC power.
-
-           When this policy is set, it specifies the length of time that the user must remain idle before Google Chrome OS takes the idle action, which can be configured separately.
-
-           When this policy is unset, a default length of time is used.
-
-           The policy value should be specified in milliseconds.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:26-
-  type: int
-
-** ScreenOffDelayBattery (DEPRECATED) — Screen off delay when running on battery power
-SYNOPSIS: 360000
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use PowerManagementIdleSettings instead.
-
-           Specifies the length of time without user input after which the screen is turned off when running on battery power.
-
-           When this policy is set to a value greater than zero, it specifies the length of time that the user must remain idle before Google Chrome OS turns off the screen.
-
-           When this policy is set to zero, Google Chrome OS does not turn off the screen when the user becomes idle.
-
-           When this policy is unset, a default length of time is used.
-
-           The policy value should be specified in milliseconds. Values are clamped to be less than or equal the idle delay.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:26-
-  type: int
-
-** IdleWarningDelayBattery (DEPRECATED) — Idle warning delay when running on battery power
-SYNOPSIS: 545000
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use PowerManagementIdleSettings instead.
-
-           Specifies the length of time without user input after which a warning dialog is shown when running on battery power.
-
-           When this policy is set, it specifies the length of time that the user must remain idle before Google Chrome OS shows a warning dialog telling the user that the idle action is about to be taken.
-
-           When this policy is unset, no warning dialog is shown.
-
-           The policy value should be specified in milliseconds. Values are clamped to be less than or equal the idle delay.
-
-           The warning message is only shown if the idle action is to logout or shut down.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:27-
-  type: int
-
-** IdleAction (DEPRECATED) — Action to take when the idle delay is reached
-SYNOPSIS: 0
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use PowerManagementIdleSettings instead.
-
-           This policy provides a fallback value for the more-specific IdleActionAC and IdleActionBattery policies. If this policy is set, its value gets used if the respective more-specific policy is not set.
-
-           When this policy is unset, behavior of the more-specific policies remains unaffected.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Suspend
-    name: IdleActionSuspend
-    value: 0
-  - caption: Log the user out
-    name: IdleActionLogout
-    value: 1
-  - caption: Shut down
-    name: IdleActionShutdown
-    value: 2
-  - caption: Do nothing
-    name: IdleActionDoNothing
-    value: 3
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 3
-    type: integer
-  supported_on:
-  - chrome_os:26-
-  type: int-enum
-
-** IdleActionBattery (DEPRECATED) — Action to take when the idle delay is reached while running on battery power
-SYNOPSIS: 0
- Note that this policy is deprecated and will be removed in Google Chrome OS version 85. Please use PowerManagementIdleSettings instead.
-
-           When this policy is set, it specifies the action that Google Chrome OS takes when the user remains idle for the length of time given by the idle delay, which can be configured separately.
-
-           When this policy is unset, the default action is taken, which is suspend.
-
-           If the action is suspend, Google Chrome OS can separately be configured to either lock or not lock the screen before suspending.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Suspend
-    name: IdleActionSuspend
-    value: 0
-  - caption: Log the user out
-    name: IdleActionLogout
-    value: 1
-  - caption: Shut down
-    name: IdleActionShutdown
-    value: 2
-  - caption: Do nothing
-    name: IdleActionDoNothing
-    value: 3
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 3
-    type: integer
-  supported_on:
-  - chrome_os:30-
-  type: int-enum
-
-** PowerManagementUsesAudioActivity — Specify whether audio activity affects power management
-SYNOPSIS: true
- Setting the policy to Enabled or leaving it unset means the user is not considered idle while audio plays. This prevents the idle timeout from being reached and the idle action from being taken. However, screen dimming, screen off, and screen lock will still occur after their configured timeouts despite audio activity.
-
-       Setting the policy to Disabled means the system can consider users idle despite audio activity.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:26-
-  type: main
-
-** PresentationIdleDelayScale (DEPRECATED) — Percentage by which to scale the idle delay in presentation mode (deprecated)
-SYNOPSIS: 200
- This policy has been retired as of Google Chrome OS version 29. Please use the PresentationScreenDimDelayScale policy instead.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: integer
-  supported_on:
-  - chrome_os:26-28
-  type: int
-
-** AllowWakeLocks — Allow wake locks
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset allows wake locks for power management. Extensions can request wake locks through the power management extension API and ARC apps.
-
-       Setting the policy to Disabled means wake lock requests are ignored.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Allow wake locks for power management
-    value: true
-  - caption: Ignore requests for wake locks for power management
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:71-
-  type: main
-
-** UserActivityScreenDimDelayScale — Percentage by which to scale the screen dim delay if the user becomes active after dimming
-SYNOPSIS: 200
- If PowerSmartDimEnabled is Disabled, then setting UserActivityScreenDimDelayScale specifies the percent that the screen dim delay scales when there's user activity while the screen dims or soon after the screen turns off. When the dim delay scales, the screen off, screen lock and idle delays adjust to maintain the same distances from the screen dim delay as originally set.
-
-       Leaving the policy unset puts a default scale factor in use.
-
-       Note: The scale factor must be 100% or more.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: integer
-  supported_on:
-  - chrome_os:29-
-  type: int
-
-** PowerManagementIdleSettings — Power management settings when the user becomes idle
-SYNOPSIS: {"AC": {"IdleAction": "DoNothing"}, "Battery": {"IdleAction": "DoNothing", "Delays": {"ScreenDim": 10000, "ScreenOff": 20000, "IdleWarning": 5000, "Idle": 30000}}}
- Setting the policy controls the power management strategy when the user idles.
-
-       There are 4 actions:
-
-       * The screen dims if the user is idle for the time specified by ScreenDim.
-
-       * The screen turns off if the user is idle for the time specified by ScreenOff.
-
-       * A warning dialog appears if the user remains idle for the time specified by IdleWarning. It warns the user that the idle action will be taken and only appears if the idle action is to sign out or shut down.
-
-       * The action specified by IdleAction is taken if the user is idle for the time specified by Idle.
-
-       For each of the above actions, the delay should be specified in milliseconds and must be set to a value greater than zero to trigger the corresponding action. If the delay is set to zero, Google Chrome OS won't take the corresponding action.
-
-       For each of the above delays, when the time is unset, a default value is used.
-
-       ScreenDim values will be clamped to be less than or equal to ScreenOff. ScreenOff and IdleWarning will be clamped to be less than or equal to Idle.
-
-       IdleAction can be one of 4 actions:
-
-       * Suspend
-
-       * Logout
-
-       * Shutdown
-
-       * DoNothing
-
-       If the IdleAction is not set, Suspend is taken.
-
-       Note: There are separate settings for AC power and battery.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    properties:
-      AC:
-        description: Delays and actions to take when the device is idle and running
-          on AC power
-        id: PowerManagementDelays
-        properties:
-          Delays:
-            properties:
-              Idle:
-                description: The length of time without user input after which the idle
-                  action is taken, in milliseconds
-                minimum: 0
-                type: integer
-              IdleWarning:
-                description: The length of time without user input after which a warning
-                  dialog is shown, in milliseconds
-                minimum: 0
-                type: integer
-              ScreenDim:
-                description: The length of time without user input after which the screen
-                  is dimmed, in milliseconds
-                minimum: 0
-                type: integer
-              ScreenOff:
-                description: The length of time without user input after which the screen
-                  is turned off, in milliseconds
-                minimum: 0
-                type: integer
-            type: object
-          IdleAction:
-            description: Action to take when the idle delay is reached
-            enum:
-            - Suspend
-            - Logout
-            - Shutdown
-            - DoNothing
-            type: string
-        type: object
-      Battery:
-        $ref: PowerManagementDelays
-        description: Delays and actions to take when the device is idle and running
-          on battery
-    type: object
-  supported_on:
-  - chrome_os:35-
-  type: dict
-
-** ScreenBrightnessPercent — Screen brightness percent
-SYNOPSIS: {"BrightnessAC": 90, "BrightnessBattery": 75}
- Setting the policy specifies screen brightness percent, turning autobrightness features off. Initial screen brightness adjusts to the policy value, but users can change it.
-
-       Leaving the policy unset doesn't affect user screen controls or autobrightness features.
-
-       Note: The policy values should be specified in percents from 0 to 100.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    properties:
-      BrightnessAC:
-        description: Screen brightness percent when running on AC power
-        maximum: 100
-        minimum: 0
-        type: integer
-      BrightnessBattery:
-        description: Screen brightness percent when running on battery power
-        maximum: 100
-        minimum: 0
-        type: integer
-    type: object
-  supported_on:
-  - chrome_os:72-
-  type: dict
-
-** DevicePowerPeakShiftDayConfig — Set power peak shift day config
-SYNOPSIS: {"entries": [{"day": "MONDAY", "start_time": {"hour": 9, "minute": 0}, "end_time": {"hour": 15, "minute": 15}, "charge_start_time": {"hour": 20, "minute": 45}}, {"day": "FRIDAY", "start_time": {"hour": 2, "minute": 30}, "end_time": {"hour": 21, "minute": 0}, "charge_start_time": {"hour": 23, "minute": 45}}]}
- If DevicePowerPeakShiftEnabled is Enabled, setting DevicePowerPeakShiftDayConfig sets power peak shift day configuration.
-
-       Leaving the policy unset keeps power peak shift off.
-
-       Valid values for the minute field in start_time, end_time and charge_start_time are 0, 15, 30, 45.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    properties:
-      entries:
-        items:
-          properties:
-            charge_start_time:
-              $ref: Time
-              description: Time when the device will use alternating current to charge
-                battery, interpreted in the device's local time zone.
-            day:
-              $ref: WeekDay
-            end_time:
-              $ref: Time
-              description: Time when the device will run from alternating current, interpreted
-                in the device's local time zone.
-            start_time:
-              $ref: Time
-              description: Time when the device will start running from the battery,
-                interpreted in the device's local time zone.
-          type: object
-        type: array
-    type: object
-  supported_on:
-  - chrome_os:75-
-  type: dict
-
-** DevicePowerPeakShiftEnabled — Enable peak shift power management
-SYNOPSIS: false
- Setting the policy to Enabled and setting DevicePowerPeakShiftBatteryThreshold and DevicePowerPeakShiftDayConfig keeps power peak shift on, if supported on the device. Power peak shift power management policy is a power-saving policy that minimizes alternating current usage during peak times. For each weekday, you can set a start and end time to run in power peak shift mode. As long as the battery stays above the threshold specified, during these times, the device runs from the battery (even if the alternating current is attached). After the specified end time, the device runs from alternating current (if attached), but won't charge the battery. The device will again function normally using alternating current and recharging the battery after the specified charge start time.
-
-       Setting the policy to Disabled keeps power peak shift off.
-
-       If unset, power peak shift is off at first. Users can't change this setting.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:75-
-  type: main
-
-** DeviceAdvancedBatteryChargeModeEnabled — Enable advanced battery charge mode
-SYNOPSIS: false
- If DeviceAdvancedBatteryChargeModeDayConfig is set, setting DeviceAdvancedBatteryChargeModeEnabled to Enabled keeps advanced battery charge mode power management policy on (if supported on the device). Using a standard charging algorithm and other techniques outside work hours, this mode lets users maximize battery health. During work hours, the system uses an express charge, which lets the battery charge faster. Specify the time when the system is used most each day by the start time and the duration.
-
-       Setting the policy to Disabled or leaving it unset keeps advanced battery charge mode off.
-
-       Users are unable to change this setting.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:75-
-  type: main
-
-** DeviceBatteryChargeMode — Battery charge mode
-SYNOPSIS: 1
- Unless DeviceAdvancedBatteryChargeModeEnabled is specified, which overrides DeviceBatteryChargeMode, then setting DeviceBatteryChargeMode specifies battery charge mode power management policy (if supported on the device). To extend battery life, the policy dynamically controls battery charging by minimizing stress and wear-out.
-
-       Leaving the policy unset (if supported on the device) applies the standard battery charge mode, and users can't change it.
-
-       Note: If Custom battery charge mode is selected, then also specify DeviceBatteryChargeCustomStartCharging and DeviceBatteryChargeCustomStopCharging.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Fully charge battery at a standard rate.
-    name: Standard
-    value: 1
-  - caption: Charge battery using fast charging technology.
-    name: ExpressCharge
-    value: 2
-  - caption: Charge battery for devices that are primarily connected to an external
-      power source.
-    name: PrimarilyAcUse
-    value: 3
-  - caption: Adaptive charge battery based on battery usage pattern.
-    name: Adaptive
-    value: 4
-  - caption: Charge battery while it is within a fixed range.
-    name: Custom
-    value: 5
-  schema:
-    enum:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    type: integer
-  supported_on:
-  - chrome_os:75-
-  type: int-enum
-
-** DeviceBatteryChargeCustomStopCharging — Set battery charge custom stop charging in percent
-SYNOPSIS: 90
- If DeviceBatteryChargeMode is set to "custom", then setting DeviceBatteryChargeCustomStopCharging customizes when the battery stops charging, based on the percentage of battery charge. DeviceBatteryChargeCustomStartCharging must be at least 5 percentage points below DeviceBatteryChargeCustomStopCharging.
-
-       Leaving the policy unset applies the "standard" battery charge mode.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    maximum: 100
-    minimum: 55
-    type: integer
-  supported_on:
-  - chrome_os:75-
-  type: int
-
-** DeviceUsbPowerShareEnabled — Enable USB power share
-SYNOPSIS: true
- Setting the policy to Enabled turns on the USB power share power management policy.
-
-       Certain devices have a specific USB port with a lightning bolt or battery icon for charging devices using the system battery. This policy affects the charging behavior of this port while the system is in sleep and shut down modes. It doesn't affect the other USB ports and the charging behavior while the system is awake, when the USB port always provides power.
-
-       When sleeping, power is supplied to the USB port when the device is plugged in to the wall charger or if the battery level exceeds 50%. When shut down, power is supplied to the USB port when the device is plugged in to the wall charger.
-
-       Setting the policy to Disabled means no power is supplied.
-
-       Leaving the policy unset means the policy is on, and users can't turn it off.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:75-
-  type: main
-
-* Accessibility — Accessibility settings
- Configure Google Chrome OS accessibility features.
-
-** SpokenFeedbackEnabled — Enable spoken feedback
-SYNOPSIS: true
- Setting the policy to True keeps spoken feedback on. Setting the policy to False keeps spoken feedback off.
-
-        If you set the policy, users can't change it. If not set, spoken feedback is off at first, but users can turn it on any time.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:29-
-  type: main
-
-** VirtualKeyboardEnabled — Enable on-screen keyboard
-SYNOPSIS: true
- Setting the policy to True keeps the on-screen keyboard on. Setting the policy to False keeps the on-screen keyboard off.
-
-       If you set the policy, users can't change it. If not set, the on-screen keyboard is off at first, but users can turn it on any time.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:34-
-  type: main
-
-** StickyKeysEnabled — Enable sticky keys
-SYNOPSIS: true
- Setting the policy to True keeps sticky keys on. Setting the policy to False keeps sticky keys off.
-
-       If you set the policy, users can't change it. If not set, sticky keys is off at first, but users can turn it on any time.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:76-
-  type: main
-
-** KeyboardDefaultToFunctionKeys — Media keys default to function keys
-SYNOPSIS: true
- Setting the policy to True makes the top row of keys on the keyboard act as function key commands. Pressing the Search key changes their behavior back to media keys.
-
-       If set to False or not set, the keyboard defaults to producing media key commands. Pressing the Search key changes them to function keys.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:35-
-  type: main
-
-** DictationEnabled — Enable the dictation accessibility feature
-SYNOPSIS: true
- Enable the dictation accessibility feature.
-
-           If this policy is set to enabled, the dictation will always be enabled.
-
-           If this policy is set to disabled, the dictation will always be disabled.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the dictation is disabled initially but can be enabled by the user anytime.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:78-
-  type: main
-
-** CursorHighlightEnabled — Enable the cursor highlight accessibility feature
-SYNOPSIS: true
- Enable the cursor highlight accessibility feature.
-
-           This feature is responsible for highlighting the area that surrounds the mouse cursor while moving it.
-
-           If this policy is set to enabled, the cursor highlight will always be enabled.
-
-           If this policy is set to disabled, the cursor highlight will always be disabled.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the cursor highlight is disabled initially but can be enabled by the user anytime.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:78-
-  type: main
-
-** MonoAudioEnabled — Enable the mono audio accessibility feature
-SYNOPSIS: true
- Enable the mono audio accessibility feature.
-
-           This feature is responsible for outputing stereo audio which includes different left and right channels, so different ears get different sounds.
-
-           If this policy is set to enabled, the mono audio will always be enabled.
-
-           If this policy is set to disabled, the mono audio will always be disabled.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the mono audio is disabled initially but can be enabled by the user anytime.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:78-
-  type: main
-
-** DeviceLoginScreenDefaultLargeCursorEnabled — Set default state of the large cursor on the login screen
-SYNOPSIS: true
- Setting the policy to True turns the large cursor on at the sign-in screen. Setting the policy to False turns the large cursor off at the sign-in screen.
-
-       If you set the policy, users can temporarily turn the large cursor on or off. When the sign-in screen reloads or stays idle for a minute, it reverts to its original state.
-
-       If not set, the large cursor is off at the sign-in screen. Users can turn it on any time, and its status on the sign-in screen persists across users.
-
-           Note: DeviceLoginScreenLargeCursorEnabled overrides this policy if the former is specified.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:29-
-  type: main
-
-** DeviceLoginScreenDefaultSpokenFeedbackEnabled — Set the default state of spoken feedback on the login screen
-SYNOPSIS: true
- Setting the policy to True turns spoken feedback on at the sign-in screen. Setting the policy to False turns spoken feedback off at the screen.
-
-       If you set the policy, users can temporarily turn spoken feedback on or off. When the sign-in screen reloads or stays idle for a minute, it reverts to its original state.
-
-       If not set, spoken feedback is off at the sign-in screen. Users can turn it on any time, and its status on the sign-in screen persists across users.
-
-           Note: DeviceLoginScreenSpokenFeedbackEnabled overrides this policy if the former is specified.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:29-
-  type: main
-
-** DeviceLoginScreenDefaultHighContrastEnabled — Set the default state of high contrast mode on the login screen
-SYNOPSIS: true
- Setting the policy to True turns High-contrast mode on at the sign-in screen. Setting the policy to False turns High-contrast mode off at the screen.
-
-       If you set the policy, users can temporarily change High-contrast mode, turning it on or off. When the sign-in screen reloads or stays idle for a minute, it reverts to its original state.
-
-       If not set, High-contrast mode is off at the sign-in screen. Users can turn it on any time, and its status on the sign-in screen persists across users.
-
-           Note: DeviceLoginScreenHighContrastEnabled overrides this policy if the former is specified.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:29-
-  type: main
-
-** DeviceLoginScreenDefaultVirtualKeyboardEnabled (DEPRECATED) — Set default state of the on-screen keyboard on the login screen
-SYNOPSIS: true
- This policy is deprecated, please use the DeviceLoginScreenVirtualKeyboardEnabled policy instead.
-
-       Setting the policy to True turns the on-screen keyboard on at sign-in. Setting the policy to False turns the on-screen keyboard off at sign-in.
-
-       If you set the policy, users can temporarily turn the on-screen keyboard on or off. When the sign-in screen reloads or stays idle for a minute, it reverts to its original state.
-
-       If not set, the on-screen keyboard is off at the sign-in screen. Users can turn it on any time, and its status on the sign-in screen persists across users.
-
-       Note: DeviceLoginScreenVirtualKeyboardEnabled overrides this policy if the former is specified.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:34-
-  type: main
-
-** DeviceLoginScreenSelectToSpeakEnabled — Enable the select to speak on the login screen
-SYNOPSIS: true
- Enable the select to speak accessibility feature on the login screen.
-
-           If this policy is set to true, the select to speak will always be enabled on the login screen.
-
-           If this policy is set to false, the select to speak will always be disabled on the login screen.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the select to speak is disabled on the login screen initially but can be enabled by the user anytime.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:79-
-  type: main
-
-** DeviceLoginScreenCaretHighlightEnabled — Enable the caret highlight on the login screen
-SYNOPSIS: true
- Enable the caret highlight accessibility feature on the login screen.
-
-           If this policy is set to true, the caret highlight will always be enabled on the login screen.
-
-           If this policy is set to false, the caret highlight will always be disabled on the login screen.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the caret highlight is disabled on the login screen initially but can be enabled by the user anytime.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:79-
-  type: main
-
-** DeviceLoginScreenAutoclickEnabled — Enable the autoclick on the login screen
-SYNOPSIS: true
- Enable the autoclick accessibility feature on the login screen.
-
-           This feature allows to automatically click when the mouse cursor stops, without requiring the user to physically press the mouse or touchpad buttons.
-
-           If this policy is set to true, the autoclick will always be enabled on the login screen.
-
-           If this policy is set to false, the autoclick will always be disabled on the login screen.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the autoclick is disabled on the login screen initially but can be enabled by the user anytime.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:79-
-  type: main
-
-** DeviceLoginScreenKeyboardFocusHighlightEnabled — Enable the keyboard focus highlighting accessibility feature
-SYNOPSIS: true
- Enable the keyboard focus highlighting accessibility feature on the login screen.
-
-           This feature is responsible for highlighting the object that is focused by the keyboard.
-
-           If this policy is set to enabled, the keyboard focus highlighting will always be enabled.
-
-           If this policy is set to disabled, the keyboard focus highlighting will always be disabled.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the keyboard focus highlighting is disabled initially but can be enabled by the user anytime.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:79-
-  type: main
-
-** DeviceLoginScreenScreenMagnifierType — Set the screen magnifier type on the login screen
-SYNOPSIS: true
- If this policy is set, it controls the type of screen magnifier that is enabled.
-
-           If this policy is set to "Full-screen", the screen magnifier will always be enabled in full-screen magnifier mode on the login screen.
-
-           If this policy is set to "Docked", the screen magnifier will always be enabled in docked magnifier mode on the login screen.
-
-           If this policy is set to "None", the screen magnifier will always be disabled on the login screen.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the dictation is disabled on the login screen initially but can be enabled by the user anytime.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  items:
-  - caption: Screen magnifier disabled
-    name: None
-    value: 0
-  - caption: Full-screen magnifier enabled
-    name: Full-screen
-    value: 1
-  - caption: Docked magnifier enabled
-    name: Docked
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:79-
-  type: int-enum
-
-** DeviceLoginScreenShowOptionsInSystemTrayMenu — Show accessibility options in system tray menu in the login screen
-SYNOPSIS: true
- Setting the policy to True displays the accessibility options in the system tray menu. If you set the policy to False, the options don't appear in the menu.
-
-       If you set the policy, users can't change it. If not set, accessibility options don't appear in the menu, but users can make them appear through the Settings page.
-
-       If you turn on accessibility features by other means (for example, by key combination), accessibility options always appear in the system tray menu.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:80-
-  type: main
-
-** DeviceLoginScreenAccessibilityShortcutsEnabled — Enable accessibility features shortcuts on the login screen
-SYNOPSIS: true
- Enable accessibility features shortcuts on the login screen.
-
-           If this policy is set to true, accessibility features shortcuts will always be enabled on the login screen.
-
-           If this policy is set to false, accessibility features shortcuts will always be disabled on the login screen.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, accessibility features shortcuts will be enabled by default on the login screen.
-
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:81-
-  type: main
-
-** EnhancedNetworkVoicesInSelectToSpeakAllowed — Allow the enhanced network text-to-speech voices in Select-to-speak
-SYNOPSIS: true
- Allow the enhanced network text-to-speech voices in Select-to-speak accessibility feature. These voices send text to Google's servers to synthesize natural-sounding speech.
-
-           If this policy is set to false, the enhanced network text-to-speech voices feature in Select-to-speak will always be disabled.
-
-           If this policy is set to true or unset, the enhanced network text-to-speech voices feature in Select-to-speak can be enabled or disabled by the user.
-
-  default: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Allow enhanced network text-to-speech voices when using Select-to-Speak
-    value: true
-  - caption: Disallow enhanced network text-to-speech voices when using Select-to-Speak
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:94-
-  type: main
-
-* Attestation — Remote attestation
- Configure the remote attestation with TPM mechanism.
-
-** AttestationEnabledForDevice — Enable remote attestation for the device
-SYNOPSIS: true
- Setting the policy to Enabled allows remote attestation for the device. A certificate is automatically generated and uploaded to the Device Management Server.
-
-       Setting the policy to Disabled or leaving it unset means no certificate is generated and calls to the Enterprise Platform Keys API fail.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:28-
-  type: main
-
-** AttestationExtensionAllowlist — Extensions allowed to to use the remote attestation API
-SYNOPSIS: ["ghdilpkmfbfdnomkmaiogjhjnggaggoi"]
- Setting the policy specifies the allowed extensions to use the Enterprise Platform Keys API functions for remote attestation. Extensions must be on this list to use the API.
-
-       If an extension is not in the list, or the list is not set, the call to the API fails with an error code.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:87-
-  type: list
-
-** AttestationForContentProtectionEnabled — Enable the use of remote attestation for content protection for the device
-SYNOPSIS: true
- Setting the policy to Enabled or leaving it unset lets Google Chrome OS devices use remote attestation (Verified Access) to get a certificate issued by the Google Chrome OS CA that asserts the device is eligible to play protected content. This process involves sending hardware endorsement information to the Google Chrome OS CA which uniquely identifies the device.
-
-       Setting the policy to Disabled means the device won't use remote attestation for content protection, and the device may not play protected content.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:31-
-  type: main
-
 * LocallyManagedUsers — Locally managed users settings
  Configure settings for managed users.
 
@@ -4701,95 +3587,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   - chrome.*:95-
   type: list
 
-* QuickUnlock — Quick unlock
- Configures quick unlock related policies.
-
-** QuickUnlockModeWhitelist (DEPRECATED) — Configure allowed quick unlock modes
-SYNOPSIS: ["PIN"]
- Setting the policy controls which quick unlock modes can unlock the lock screen.
-
-       To allow:
-
-       * Every quick unlock mode, use ["all"] (includes modes added in the future).
-
-       * Only PIN unlock, use ["PIN"].
-
-       * PIN and fingerprint, use ["PIN", "FINGERPRINT"].
-
-       If the policy is unset or set to an empty list, no quick unlock modes are available for managed devices.
-
-       This policy is deprecated, please use QuickUnlockModeAllowlist instead
-
-  default_for_enterprise_users: []
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    id: QuickUnlockModeWhitelist
-    items:
-      enum:
-      - all
-      - PIN
-      - FINGERPRINT
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:56-
-  type: list
-
-** PinUnlockMinimumLength — Set the minimum length of the lock screen PIN
-SYNOPSIS: 6
- Setting the policy enforces the minimum PIN length chosen. (Values below 1 are rounded up to the minimum of 1.)
-
-       Leaving the policy unset enforces a minimal PIN length of 6 digits, the recommended minimum.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: integer
-  supported_on:
-  - chrome_os:57-
-  type: int
-
-** PinUnlockWeakPinsAllowed — Enable users to set weak PINs for the lock screen PIN
-SYNOPSIS: false
- Setting the policy to Enabled allows weak PINs. Some characteristics of weak PINs: only one digit (1111), digits increase by 1 (1234), digits decrease by 1 (4321), and common PINs. Setting the policy to Disabled means users can't set weak, easy-to-guess PINs.
-
-       By default, users get a warning, not an error, for a weak PIN.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:57-
-  type: main
-
-** PinUnlockAutosubmitEnabled — Enable PIN auto-submit feature on the lock and login screen.
-SYNOPSIS: true
- The PIN auto-submit feature changes how PINs are entered in Chrome OS.
-           Instead of showing the same textfield that is used for password input, this
-           feature shows a special UI that clearly shows to the user how many
-           digits are necessary for their PIN. As a consequence, the user's PIN length
-           will be stored outside the user encrypted data. Only supports PINs that are
-           between 6 and 12 digits long.
-
-           If this policy is set to false, users will not have the option of enabling
-           the feature on the Settings page.
-
-  default_for_enterprise_users: false
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:86-
-  type: main
-
 * CastReceiver — Cast Receiver
  Configure the Cast Receiver in Google Chrome OS.
 
@@ -4940,7 +3737,6 @@ SYNOPSIS: ["mydomain.com", "myuniversity.edu"]
     type: array
   supported_on:
   - chrome.*:68-
-  - chrome_os:68-
   type: list
 
 ** SafeBrowsingAllowlistDomains — Configure the list of domains on which Safe Browsing will not trigger warnings.
@@ -5000,7 +3796,6 @@ SYNOPSIS: 1
     type: integer
   supported_on:
   - chrome.*:69-
-  - chrome_os:69-
   type: int-enum
 
 ** PasswordProtectionLoginURLs — Configure the list of enterprise login URLs where password protection service should capture salted hashes of passwords.
@@ -5038,25 +3833,6 @@ SYNOPSIS: "https://mydomain.com/change_password.html"
   supported_on:
   - chrome.*:69-
   type: string
-
-* NetworkFileShares — Network File Shares settings
- Configure Network File Share related policies.
-
-** NTLMShareAuthenticationEnabled — Controls enabling NTLM as an authentication protocol for SMB mounts
-SYNOPSIS: true
- Setting the policy to Enabled means the Network File Shares feature for Google Chrome OS uses NTLM for authentication to SMB shares if necessary. Setting the policy to Disabled turns off NTLM authentication to SMB shares.
-
-       Leaving the policy unset means the behavior defaults to off for managed users and on for other users.
-
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: false
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:71-
-  type: main
 
 * CloudReporting — Cloud Reporting
  Configure cloud reporting policies.
@@ -5299,27 +4075,6 @@ SYNOPSIS: ["-foreground", "-new-window", "${url}", "-profile", "%HOME%\\browser_
   - chrome.*:71-
   type: list
 
-** BrowserSwitcherChromeParameters — Command-line parameters for switching from the alternative browser.
-SYNOPSIS: ["--force-dark-mode"]
- Setting the policy to a list of strings means the strings are joined with spaces and passed from Internet Explorer® to Google Chrome as command-line parameters. If an parameter contains ${url}, ${url} is replaced with the URL of the page to open. If no parameter contains ${url}, the URL is appended at the end of the command line.
-
-       Environment variables are expanded. On Microsoft® Windows®, %ABC% is replaced with the value of the ABC environment variable.
-
-       Leaving the policy unset means Internet Explorer® only passes the URL to Google Chrome as a command-line parameter.
-
-       Note: If the Legacy Browser Support add-in for Internet Explorer® isn't installed, this policy has no effect.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome.win:74-
-  type: list
-
 ** BrowserSwitcherDelay — Delay before launching alternative browser (milliseconds)
 SYNOPSIS: 10000
  Setting the policy to a number has Google Chrome show a message for that number of milliseconds, then it opens an alternative browser.
@@ -5470,188 +4225,8 @@ SYNOPSIS: ["ie.com", "!open-in-chrome.ie.com", "foobar.com/ie-only/"]
   - chrome.*:71-
   type: list
 
-* PluginVm — PluginVm
- Configure PluginVm related policies.
-
-** PluginVmAllowed — Allow devices to use a PluginVm on Google Chrome OS
-SYNOPSIS: true
- Setting the policy to Enabled turns on PluginVm for the device, as long as other settings also allow it. PluginVmAllowed and UserPluginVmAllowed must be True, and either PluginVmLicenseKey or PluginVmUserId must be set for PluginVm to run.
-
-       Setting the policy to Disabled or leaving it unset means PluginVm isn't on for the device.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:72-
-  type: main
-
-** PluginVmImage — PluginVm image
-SYNOPSIS: {"url": "https://example.com/plugin_vm_image", "hash": "842841a4c75a55ad050d686f4ea5f77e83ae059877fe9b6946aa63d3d057ed32"}
- Setting the policy specifies the PluginVm image for a user. Specify this policy as a JSON format string, with URL stating where to download the image and hash as a SHA-256 hash used to verify the integrity of the download.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    properties:
-      hash:
-        description: The SHA-256 hash of the PluginVm image.
-        type: string
-      url:
-        description: The URL from which the PluginVm image can be downloaded.
-        type: string
-    type: object
-  supported_on:
-  - chrome_os:72-
-  type: dict
-
-** PluginVmLicenseKey (DEPRECATED) — PluginVm license key
-SYNOPSIS: "LICENSE_KEY"
- Setting the policy specifies the PluginVm license key for this device.
-
-       This policy was removed in M94.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    sensitiveValue: true
-    type: string
-  supported_on:
-  - chrome_os:73-93
-  type: string
-
-** PluginVmRequiredFreeDiskSpace — Required free disk space for PluginVm
-SYNOPSIS: 20
- Free disk space (in GB) required to install PluginVm.
-
-       If this policy is left unset, PluginVm installation fails if free disk space available on the device is less than 20 GB (default value).
-       If this policy is set, PluginVm installation fails if free disk space available on the device is less than required by policy.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    maximum: 1000
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:85-
-  type: int
-
 * Signin — Sign-in settings
  Controls the behavior of the sign-in screen, where users log into their accounts. Settings include who can log in, what type of accounts are allowed, what authentication methods should be used, as well as general accessibility, input method and locale settings.
-
-** DeviceUserWhitelist (DEPRECATED) — Login user white list
-SYNOPSIS: ["madmax@managedchrome.com"]
- Defines the list of users that are allowed to login to the device. Entries are of the form user@domain, such as madmax@managedchrome.com. To allow arbitrary users on a domain, use entries of the form *@domain.
-
-       If this policy is not configured, there are no restrictions on which users are allowed to sign in. Note that creating new users still requires the DeviceAllowNewUsers policy to be configured appropriately.
-
-       This policy is deprecated, please use DeviceUserAllowlist instead.
-      
-
-  arc_support: This policy controls who may start a Google Chrome OS session. It does
-    not prevent users from signing in to additional Google accounts within Android.
-    If you want to prevent this, configure the Android-specific accountTypesWithManagementDisabled
-    policy as part of ArcPolicy.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    items:
-      type: string
-    sensitiveValue: true
-    type: array
-  supported_on:
-  - chrome_os:12-
-  type: list
-
-** DeviceAllowNewUsers — Allow creation of new user accounts
-SYNOPSIS: true
- Controls whether Google Chrome OS allows new user accounts to be created.
-
-       If this policy is set to false, only users present in DeviceUserAllowlist will be able to login.
-
-       If this policy is set to true or not configured, all users will be able to login.
-
-  arc_support: This policy controls whether new users can be added to Google Chrome
-    OS. It does not prevent users from signing in to additional Google accounts within
-    Android. If you want to prevent this, configure the Android-specific accountTypesWithManagementDisabled
-    policy as part of ArcPolicy.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:12-
-  type: main
-
-** DeviceLoginScreenDomainAutoComplete — Enable domain name autocomplete during user sign in
-SYNOPSIS: "students.school.edu"
- If this policy is set to a blank string or not configured, Google Chrome OS will not show an autocomplete option during user sign-in flow.
-       If this policy is set to a string representing a domain name, Google Chrome OS will show an autocomplete option during user sign-in allowing the user to type in only their user name without the domain name extension.  The user will be able to overwrite this domain name extension.
-       If the value of the policy is not a valid domain, the policy will not be applied.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:44-
-  type: string
-
-** DeviceShowUserNamesOnSignin — Show usernames on login screen
-SYNOPSIS: true
- If this policy is set to true or not configured, Google Chrome OS will show existing users on the login screen and allow to pick one.
-
-       If this policy is set to false, Google Chrome OS will not show existing users on the login screen. The normal sign-in screen (prompting for the user email and password or phone) or the SAML interstitial screen (if enabled via the LoginAuthenticationBehavior policy) will be shown, unless a Managed Session is configured. When a Managed Session is configured, only the Managed Session accounts will be shown, allowing to pick one of them.
-
-       Note that this policy does not affect whether the device keeps or discards the local user data.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:12-
-  type: main
-
-** LoginAuthenticationBehavior — Configure the login authentication behavior
-SYNOPSIS: 0
- When this policy is set, the login authentication flow will be in one of the following ways depending on the value of the setting:
-
-       If set to GAIA, login will be done via the normal GAIA authentication flow.
-
-       If set to SAML_INTERSTITIAL, login will show an interstitial screen offering the user to go forward with authentication via the SAML IdP of the device's enrollment domain, or go back to the normal GAIA login flow.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Authentication via the default GAIA flow
-    name: GAIA
-    value: 0
-  - caption: Redirect to SAML IdP after user confirmation
-    name: SAML_INTERSTITIAL
-    value: 1
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:51-
-  type: int-enum
 
 ** DeviceSamlLoginAuthenticationType — SAML login authentication type
 SYNOPSIS: 0
@@ -5682,148 +4257,8 @@ SYNOPSIS: 0
   - system-security
   type: int-enum
 
-** LoginVideoCaptureAllowedUrls — URLs that will be granted access to video capture devices on SAML login pages
-SYNOPSIS: ["https://example.com"]
- Patterns in this list will be matched against the security
-       origin of the requesting URL.  If a match is found, access to video
-       capture devices will be granted on SAML login pages.  If no match is
-       found, access will be automatically denied.  Wildcard patterns are not
-       allowed.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:52-
-  tags:
-  - website-sharing
-  type: list
-
-** DeviceLoginScreenLocales — Device sign-in screen locale
-SYNOPSIS: ["en-US"]
- Configures the locale which is enforced on the Google Chrome OS sign-in screen.
-
-       If this policy is set, the sign-in screen will always be displayed in the locale which is given by the first value of this policy (the policy is defined as a list for forward compatibility).  If this policy is not set or is set to an empty list, the sign-in screen will be displayed in the locale of the last user session.  If this policy is set to a value which is not a valid locale, the sign-in screen will be displayed in a fallback locale (currently, en-US).
-
-  device_only: true
-  features:
-    dynamic_refresh: false
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:58-
-  type: list
-
-** DeviceLoginScreenSystemInfoEnforced — Force the sign-in screen to show or hide system information.
-SYNOPSIS: true
- Specify whether the system information (e.g. Chrome OS version, device serial
-       number) is always shown (or hidden) on the login screen.
-
-       If the policy is set to true, the system information will be shown forcedly.
-       If the policy is set to false, the system information will be hidden forcedly.
-       If the policy is unset, default hehavior (being shown for Canary / Dev channel)
-       is effective. Users can toggle the visibility by specific operations (e.g., Alt-V).
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:79-
-  type: main
-
-** DeviceLoginScreenSitePerProcess (DEPRECATED) — Enable Site Isolation for every site
-SYNOPSIS: true
-
-       This policy was removed in M77.
-       This policy applies to the sign-in screen. Please see also the SitePerProcess policy which applies to the user session. It is recommended to set both policies to the same value. If the values don't match, a delay may be incurred when entering a user session while the value specified by user policy is being applied.
-      
-
-  device_only: true
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:66-76
-  tags:
-  - system-security
-  type: main
-
-** DeviceShowNumericKeyboardForPassword — Show numeric keyboard for password
-SYNOPSIS: true
- Setting the policy to true displays numeric keyboard by default for entering password on the login screen. Users still could switch to the normal keyboard.
-
-       If you set the policy, users can't change it. If not set or set to false, it has no effect.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:80-
-  type: main
-
 * UserAndDeviceReporting — User and device reporting
  Controls what kind of user and device information is reported.
-
-** EnableDeviceGranularReporting — Enable granular reporting controls
-SYNOPSIS: true
- Setting the policy to enabled or leaving it unset allows for the device to recieve granular reporting controls.
-       Setting the policy to Disabled means enrolled devices won't receive granular reporting controls.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  default: true
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Allow granular reporting controls
-    value: true
-  - caption: Do not allow granular reporting controls
-    value: false
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:96-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceActivityTimes — Report device activity times
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset has enrolled devices report time periods when a user is active on the device.
-
-       Setting the policy to Disabled means enrolled devices don't record or report activity times.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:18-
-  tags:
-  - admin-sharing
-  type: main
 
 ** ReportDeviceAudioStatus — Report device audio status
 SYNOPSIS: false
@@ -5867,220 +4302,6 @@ SYNOPSIS: false
   - admin-sharing
   type: main
 
-** ReportDeviceNetworkInterfaces — Report device network interfaces
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset has enrolled devices report the list of network interfaces with their types and hardware addresses.
-
-       Setting the policy to Disabled means enrolled devices don't report the network interface.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:29-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceHardwareStatus — Report hardware status
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset has enrolled devices report hardware statistics such as CPU/RAM usage.
-
-       Setting the policy to Disabled means enrolled devices don't report the hardware statistics.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:42-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceCrashReportInfo — Report information about crash reports.
-SYNOPSIS: false
- Report information related to crash reports, such as remote id,
-       capture timestamp and cause.
-
-       If the policy is set to false or left unset, the crash report information
-       will not be reported. If set to true, crash report information will be
-       reported.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:83-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceBoardStatus — Report board status
-SYNOPSIS: false
- Setting the policy to Enabled has enrolled devices report hardware statistics for SoC components.
-
-       Setting the policy to Disabled or leaving it unset means enrolled devices don't report the statistics.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:73-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceTimezoneInfo — Report Timezone info
-SYNOPSIS: false
- Report information for a device's timezone.
-
-       If the policy is set to false or left unset, the information will not be reported.
-       If set to true, the device's currently set timezone will be reported.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:83-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceBacklightInfo — Report backlight info
-SYNOPSIS: false
- Report information about a device's backlights.
-
-       If the policy is set to false or left unset, the information will not be reported.
-       If set to true, the device's backlight information will be reported.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:83-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDevicePowerStatus — Report power status
-SYNOPSIS: false
- Setting the policy to Enabled has enrolled devices report hardware statistics and identifiers related to power.
-
-       Setting the policy to Disabled or leaving it unset means enrolled devices don't report power statistics.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:73-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceSecurityStatus — Report device security status
-SYNOPSIS: false
- Setting the policy to enabled or leaving it unset has enrolled devices report device TPM security status.
-
-       Setting the policy to Disabled means enrolled devices don't record or report TPM security status.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  default: false
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Report security status
-    value: true
-  - caption: Do not report security status
-    value: false
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:96-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceBluetoothInfo — Report Bluetooth info
-SYNOPSIS: false
- Report a device's Bluetooth information.
-
-       If the policy is set to false or left unset, the information will not be reported.
-       If set to true, the device's Bluetooth information will be reported.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:85-
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceVpdInfo — Report VPD info
-SYNOPSIS: false
- Report a device's VPD information.
-
-       If the policy is set to false or left unset, the information will not be reported.
-       If set to true, the device's VPD information will be reported.
-       Vital Product Data (VPD) is a collection of configuration and informational data (such as part and serial numbers) associated with the device.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:85-
-  tags:
-  - admin-sharing
-  type: main
-
 ** ReportDevicePrintJobs — Report print jobs
 SYNOPSIS: false
  Report a device's print jobs.
@@ -6104,65 +4325,6 @@ SYNOPSIS: false
   - google_cloud
   tags:
   - admin-sharing
-  type: main
-
-** ReportUploadFrequency — Frequency of device status report uploads
-SYNOPSIS: 10800000
- Setting the policy determines how frequently to send device status uploads, in milliseconds. The minimum allowed is 60 seconds.
-
-       If not set, the default interval of 3 hours applies.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    minimum: 60000
-    type: integer
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:42-
-  tags:
-  - admin-sharing
-  type: int
-
-** HeartbeatFrequency — Frequency of monitoring network packets
-SYNOPSIS: 180000
- Setting the policy determines how frequently to send monitoring network packets, in milliseconds. Intervals range from 30 seconds to 24 hours. Values outside this range are clamped to this range.
-
-       If not set, the default interval of 3 minutes applies.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    minimum: 30000
-    type: integer
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:43-
-  type: int
-
-** DeviceMetricsReportingEnabled — Enable metrics reporting
-SYNOPSIS: true
- Setting the policy to Enabled has Google Chrome OS report usage metrics and diagnostic data, including crash reports, back to Google. Setting the policy to Disabled turns off metrics and diagnostic data reporting.
-
-        Leaving the policy unset keeps metrics and diagnostic data reporting off on unmanaged devices and on for managed devices.
-
-  arc_support: This policy also controls Android usage and diagnostic data collection.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:14-
-  tags:
-  - admin-sharing
-  - google-sharing
   type: main
 
 ** ReportDeviceNetworkTelemetryCollectionRateMs — Network telemetry collection rate in milliseconds.
@@ -6205,317 +4367,8 @@ SYNOPSIS: 60000
   - admin-sharing
   type: int
 
-* Network — Network settings
- Controls device-wide network configuration.
-
-** DeviceOpenNetworkConfiguration — Device-level network configuration
-SYNOPSIS: "{ \"NetworkConfigurations\": [ { \"GUID\": \"{4b224dfd-6849-7a63-5e394343244ae9c9}\", \"Name\": \"my WiFi\", \"Type\": \"WiFi\", \"WiFi\": { \"SSID\": \"my WiFi\", \"HiddenSSID\": false, \"Security\": \"None\", \"AutoConnect\": true } } ] }"
- Setting the policy allows pushing network configuration for all users of a Google Chrome OS device. The network configuration is a JSON-formatted string, as defined by the Open Network Configuration format.
-
-  arc_support: Android apps can use the network configurations and CA certificates set
-    via this policy, but do not have access to some configuration options.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:16-
-  tags:
-  - full-admin-access
-  type: string
-  url_schema: https://chromium.googlesource.com/chromium/src/+/HEAD/components/onc/docs/onc_spec.md
-
-** NetworkThrottlingEnabled — Enable throttling network bandwidth
-SYNOPSIS: {"enabled": true, "upload_rate_kbits": 5600, "download_rate_kbits": 5600}
- Setting the policy turns network throttling on or off. This means that the system is throttled to achieve the provided upload and download rates (in kbits/s). It applies to all users and interfaces on the device.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    properties:
-      download_rate_kbits:
-        description: Desired download rate in kbits/s.
-        type: integer
-      enabled:
-        description: A boolean flag indicating if throttling is enabled.
-        type: boolean
-      upload_rate_kbits:
-        description: Desired upload rate in kbits/s.
-        type: integer
-    required:
-    - enabled
-    - upload_rate_kbits
-    - download_rate_kbits
-    type: object
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:56-
-  type: dict
-
-** DeviceHostnameUserConfigurable — Allow user to configure their device hostname
-SYNOPSIS: true
- Determine whether a user is allowed to configure the device hostname.
-
-       If DeviceHostnameTemplate is set, the admininistrator sets hostname and the user cannot choose regardless of what this policy is set to.
-       If this policy is set to True and DeviceHostnameTemplate is not set, the admininistrator does not set hostname and the user can choose one.
-       If this policy is set to False and DeviceHostnameTemplate is not set, the admininistrator does not set hostname and the user cannot choose one, hence the default name is used.
-
-  default: false
-  device_only: true
-  features:
-    can_be_mandatory: true
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Allow managed user to configure device hostname
-    value: true
-  - caption: Prevent managed user from configuring device hostname
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:97-
-  type: main
-
-** DeviceWiFiAllowed — Enable WiFi
-SYNOPSIS: true
- Setting the policy to Disabled means Google Chrome OS turns off Wi-Fi, and users can't change it.
-
-       Setting the policy to Enabled or leaving it unset lets users turn Wi-Fi on or off.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:75-
-  type: main
-
 * DeviceUpdate — Device update settings
  Controls how and when Chrome OS updates are applied.
-
-** ChromeOsReleaseChannelDelegated — Users may configure the Chrome OS release channel
-SYNOPSIS: false
- Users are only allowed to change the release channel of the device if this policy is set to True. If this policy is False or not set, users are not allowed to change the channel.
-
-       Setting ChromeOsReleaseChannel only has an effect if ChromeOsReleaseChannelDelegated is set to False.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:19-
-  type: main
-
-** DeviceAutoUpdateDisabled — Disable Auto Update
-SYNOPSIS: true
- Disables automatic updates when set to True.
-
-       Google Chrome OS devices automatically check for updates when this setting is not configured or set to False.
-
-       Warning: It is recommended to keep auto-updates enabled so that users receive software updates and critical security fixes. Turning off auto-updates might leave users at risk.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:19-
-  tags:
-  - system-security
-  type: main
-
-** DeviceAutoUpdateTimeRestrictions — Update Time Restrictions
-SYNOPSIS: [{"start": {"day_of_week": "Monday", "minutes": 50, "hours": 3}, "end": {"day_of_week": "Thursday", "minutes": 30, "hours": 2}}, {"start": {"day_of_week": "Thursday", "minutes": 30, "hours": 3}, "end": {"day_of_week": "Sunday", "minutes": 10, "hours": 15}}]
- This policy controls the time frames during which the Google Chrome OS device is not allowed to check for updates automatically.
-       When this policy is set to a non-empty list of time intervals:
-       Devices will not be able to check for updates automatically during the specified time intervals. Devices that require an enterprise rollback or are below the minimum Google Chrome OS version will not be affected by this policy due to potential security issues. Furthermore, this policy will not block update checks requested by users or administrators.
-       Starting from M88, this policy cancels an ongoing update when a restricted time interval is reached. The next auto update after the restricted time interval ends will automatically resume the update. Devices updating to a Quick Fix Build will not be affected by this policy.
-       When this policy is unset or contains no time intervals:
-       No automatic update checks will be blocked by this policy, but they may be blocked by other policies.
-       Till M88, this feature is only enabled on Google Chrome OS devices configured as auto-launch kiosks. Other devices will not be restricted by this policy. However starting from M89, this policy is enabled on all Google Chrome OS devices.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      description: Time interval that spans at most one week. If the start time is later
-        than the end time, then the interval will wrap around.
-      properties:
-        end:
-          $ref: DisallowedTimeInterval
-          description: End of the interval, exclusive.
-        start:
-          description: Start time of the interval, inclusive.
-          id: DisallowedTimeInterval
-          properties:
-            day_of_week:
-              description: Day of the week for the interval.
-              enum:
-              - Monday
-              - Tuesday
-              - Wednesday
-              - Thursday
-              - Friday
-              - Saturday
-              - Sunday
-              type: string
-            hours:
-              description: Hours elapsed since the start of the day in (24 hour format).
-              maximum: 23
-              minimum: 0
-              type: integer
-            minutes:
-              description: Minutes elapsed in the current hour.
-              maximum: 59
-              minimum: 0
-              type: integer
-          required:
-          - day_of_week
-          - minutes
-          - hours
-          type: object
-      required:
-      - start
-      - end
-      type: object
-    type: array
-  supported_on:
-  - chrome_os:69-
-  type: dict
-
-** DeviceTargetVersionPrefix — Target Auto Update Version
-SYNOPSIS: "1412."
- Sets a target version for Auto Updates.
-
-       Specifies the prefix of a target version Google Chrome OS should update to. If the device is running a version that's before the specified prefix, it will update to the latest version with the given prefix. If the device is already on a later version, effects depend on the value of DeviceRollbackToTargetVersion. The prefix format works component-wise as is demonstrated in the following example:
-
-       "" (or not configured): update to latest version available.
-       "1412.": update to any minor version of 1412 (e.g. 1412.24.34 or 1412.60.2)
-       "1412.2.": update to any minor version of 1412.2 (e.g. 1412.2.34 or 1412.2.2)
-       "1412.24.34": update to this specific version only
-
-       Warning: It is not recommended to configure version restrictions as they may prevent users from receiving software updates and critical security fixes. Restricting updates to a specific version prefix might leave users at risk.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:19-
-  tags:
-  - system-security
-  type: string
-
-** DeviceUpdateScatterFactor — Auto update scatter factor
-SYNOPSIS: 7200
- Specifies the number of seconds up to which a device may randomly delay its download of an update from the time the update was first pushed out to the server. The device may wait a portion of this time in terms of wall-clock-time and the remaining portion in terms of the number of update checks. In any case, the scatter is upper bounded to a constant amount of time so that a device does not ever get stuck waiting to download an update forever.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: integer
-  supported_on:
-  - chrome_os:20-
-  tags:
-  - system-security
-  type: int
-
-** DeviceUpdateHttpDownloadsEnabled — Allow autoupdate downloads via HTTP
-SYNOPSIS: true
- Auto-update payloads on Google Chrome OS can be downloaded via HTTP instead of HTTPS. This allows transparent HTTP caching of HTTP downloads.
-
-       If this policy is set to true, Google Chrome OS will attempt to download auto-update payloads via HTTP. If the policy is set to false or not set, HTTPS will be used for downloading auto-update payloads.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:29-
-  type: main
-
-** MinimumRequiredChromeVersion (DEPRECATED) — Configure minimum allowed Chrome version for the device.
-SYNOPSIS: "61.0.3163.120"
- This policy is removed in M82, please use DeviceMinimumVersion instead.
-
-       Configures the requirement of the minimum allowed version of Google Chrome. Versions below given are treated as obsolete and device would not allow user sign in before OS is updated.
-
-       If current version becomes obsolete during user session, user will be forcefully signed out.
-
-       If this policy is not set, no restrictions are applied, and user can sign regardless of Google Chrome version.
-
-       Here "Version" can be either an exact version like '61.0.3163.120' or a version prefix, like '61.0'  
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:64-81
-  type: string
-
-** DeviceRollbackAllowedMilestones — Number of milestones rollback is allowed
-SYNOPSIS: 4
- Specifies the minimum number of Google Chrome OS milestones rollback should be allowed starting from the stable version at any time.
-
-       Default is 0 for consumer, 4 (approx. half a year) for enterprise enrolled devices.
-
-       Setting this policy prevents rollback protection to apply for at least this number of milestones.
-
-       Setting this policy to a lower value has a permanent effect: the device MAY not be able to roll back to earlier versions even after the policy is reset to a larger value.
-
-       Actual rollback possibilities may also depend on the board and critical vulnerability patches.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    maximum: 4
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:67-
-  tags:
-  - system-security
-  type: int
-
-** DeviceMinimumVersionAueMessage — Configure auto update expiration message for DeviceMinimumVersion policy
-SYNOPSIS: "This device has reached auto update expiration. Kindly return it."
- This policy is only effective when the device has reached auto update expiration and does not meet the minimum allowed version of Google Chrome OS set through DeviceMinimumVersion policy.
-
-       When this policy is set to a non-empty string :
-       If the warning time mentioned in DeviceMinimumVersion policy has expired, this message is shown at the login screen when the device is blocked for any user to sign in.
-       If the warning time mentioned in DeviceMinimumVersion policy has not expired, this message is shown on the Chrome management page after user sign in.
-
-       If this policy is not set or set to empty, the default auto update expiration message is shown to the user in both of the above cases.
-       The auto update expiration message must be plain text without any formatting. No markup is allowed.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:86-
-  type: string
 
 ** DeviceChannelDowngradeBehavior — Channel downgrade behavior
 SYNOPSIS: 1
@@ -6551,198 +4404,8 @@ SYNOPSIS: 1
     type: integer
   type: int-enum
 
-* PowerAndShutdown — Power and shutdown
- Controls settings related to power management and rebooting.
-
-** DeviceLoginScreenPowerManagement — Power management on the login screen
-SYNOPSIS: {"AC": {"IdleAction": "DoNothing"}, "Battery": {"IdleAction": "DoNothing", "Delays": {"ScreenDim": 10000, "ScreenOff": 20000, "Idle": 30000}}, "LidCloseAction": "Suspend", "UserActivityScreenDimDelayScale": 110}
- Setting the policy lets you set how Google Chrome OS behaves when there is no user activity for some amount of time while the sign-in screen appears. The policy controls multiple settings. For their individual semantics and value ranges, see the corresponding policies that control power management within a session.
-
-       The deviations from these policies are:
-
-       * The actions to take on idle or lid close cannot be to end the session.
-
-       * The default action taken on idle when running on AC power is to shut down.
-
-       Leaving the policy or any of its settings unset results in the use of the default values for the various power settings.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    properties:
-      AC:
-        description: Power management settings applicable only when running on AC power
-        id: DeviceLoginScreenPowerSettings
-        properties:
-          Delays:
-            properties:
-              Idle:
-                description: The length of time without user input after which the idle
-                  action is taken, in milliseconds
-                minimum: 0
-                type: integer
-              ScreenDim:
-                description: The length of time without user input after which the screen
-                  is dimmed, in milliseconds
-                minimum: 0
-                type: integer
-              ScreenOff:
-                description: The length of time without user input after which the screen
-                  is turned off, in milliseconds
-                minimum: 0
-                type: integer
-            type: object
-          IdleAction:
-            description: Action to take when the idle delay is reached
-            enum:
-            - Suspend
-            - Shutdown
-            - DoNothing
-            type: string
-        type: object
-      Battery:
-        $ref: DeviceLoginScreenPowerSettings
-        description: Power management settings applicable only when running on battery
-          power
-      LidCloseAction:
-        description: Action to take when the lid is closed
-        enum:
-        - Suspend
-        - Shutdown
-        - DoNothing
-        type: string
-      UserActivityScreenDimDelayScale:
-        description: Percentage by which the screen dim delay is scaled when user activity
-          is observed while the screen is dimmed or soon after the screen has been turned
-          off
-        minimum: 100
-        type: integer
-    type: object
-  supported_on:
-  - chrome_os:30-
-  type: dict
-
-** UptimeLimit — Limit device uptime by automatically rebooting
-SYNOPSIS: 86400
- Setting the policy limits the device uptime by scheduling automatic restarts, which you can delay by up to 24 hours if a user is on the device. The policy value should be specified in seconds. Values are clamped to be at least 3,600 (one hour).
-
-       If you set the policy, users can't change it. If not set, the device uptime isn't limited.
-
-       Note: Automatic restarts are only on while the sign-in screen appears or during a kiosk app session.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: integer
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:29-
-  type: int
-
-** DeviceRebootOnShutdown — Automatic reboot on device shutdown
-SYNOPSIS: true
- Setting the policy to Enabled means Google Chrome OS triggers a restart when users shut down the device. Google Chrome OS replaces all shutdown buttons in the UI with restart buttons. If the users shut down devices using the power button, they won't automatically restart, even if the policy is on.
-
-       Setting the policy to Disabled or leaving it unset means Google Chrome OS lets them shut down the device.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:41-
-  type: main
-
-* Kiosk — Kiosk settings
- Controls public session and kiosk account types.
-
-** DeviceLocalAccountAutoLoginDelay — Device-local account auto-login timer
-SYNOPSIS: 180000
- Setting the policy determines the amount of time in milliseconds without user activity before automatically signing in to the device-local account specified by the DeviceLocalAccountAutoLoginId policy.
-
-       Leaving it unset means 0 milliseconds is used as the timeout.
-
-       If the DeviceLocalAccountAutoLoginId policy is unset, this policy has no effect.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: integer
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:26-
-  type: int
-
-** DeviceLocalAccountPromptForNetworkWhenOffline — Enable network configuration prompt when offline
-SYNOPSIS: true
- Setting the policy to Enabled or leaving it unset means when a device is offline, if a device-local account is set for zero-delay, automatic sign-in, Google Chrome OS shows a network-configuration prompt.
-
-       Setting the policy to Disabled has an error message displayed instead.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:33-
-  type: main
-
 * Other — Other
  Controls miscellaneous settings including USB, bluetooth, policy refresh, developer mode and others.
-
-** UsbDetachableAllowlist — Allowlist of USB detachable devices
-SYNOPSIS: [{"vendor_id": 1027, "product_id": 24577}, {"vendor_id": 16700, "product_id": 8453}]
- Setting the policy defines the list of USB devices users can detach from their kernel driver to use through the chrome.usb API directly inside a web app. Entries are pairs of USB Vendor Identifier and Product Identifier to identify specific hardware.
-
-       If not set, the list of a detachable USB devices is empty.
-
-  device_only: true
-  features:
-    dynamic_refresh: false
-  schema:
-    items:
-      id: UsbDeviceIdInclusive
-      properties:
-        product_id:
-          type: integer
-        vendor_id:
-          type: integer
-      type: object
-    type: array
-  supported_on:
-  - chrome_os:87-
-  tags:
-  - system-security
-  type: list
-
-** DeviceBlockDevmode — Block developer mode
-SYNOPSIS: true
- Setting the policy to Enabled means Google Chrome OS stops the device from going into Developer mode.
-
-        Setting the policy to Disabled or leaving it unset keeps Developer mode available for the device.
-
-  arc_support: This policy controls Google Chrome OS developer mode only. If you want
-    to prevent access to Android Developer Options, you need to set the DeveloperToolsDisabled
-    policy.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:37-
-  type: main
 
 ** PromptOnMultipleMatchingCertificates — Prompt for the client certificate when multiple certificates match.
 SYNOPSIS: true
@@ -6763,115 +4426,8 @@ SYNOPSIS: true
   schema:
     type: boolean
   supported_on:
-  - chrome_os:96-
   - chrome.*:96-
   type: main
-
-* DateAndTime — Date and time
- Controls clock and time zone settings.
-
-** SystemTimezoneAutomaticDetection — Configure the automatic timezone detection method
-SYNOPSIS: 0
- Unless the SystemTimezone policy turns off automatic time zone detection, then setting the policy outlines the automatic time zone detection method, which users can't change.
-
-       Setting the policy to:
-        * TimezoneAutomaticDetectionDisabled keeps automatic time zone detection off.
-        * TimezoneAutomaticDetectionIPOnly keeps automatic time zone detection on, using the IP-only method.
-        * TimezoneAutomaticDetectionSendWiFiAccessPoints keeps automatic time zone detection on, continually sending the list of visible Wi-Fi access-points to the Geolocation API server for finer-grained time zone detection.
-        * TimezoneAutomaticDetectionSendAllLocationInfo keeps automatic time zone detection on, continually sending location information (such as Wi-Fi access points, reachable cell towers, GPS) to a server for the most fine-grained time zone detection.
-
-       If not set, set to Let users decide, or set to None, then users control automatic time zone detection using normal controls in chrome://settings.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Let users decide
-    name: TimezoneAutomaticDetectionUsersDecide
-    value: 0
-  - caption: Never auto-detect timezone
-    name: TimezoneAutomaticDetectionDisabled
-    value: 1
-  - caption: Always use coarse timezone detection
-    name: TimezoneAutomaticDetectionIPOnly
-    value: 2
-  - caption: Always send WiFi access-points to server while resolving timezone
-    name: TimezoneAutomaticDetectionSendWiFiAccessPoints
-    value: 3
-  - caption: Always send any available location signals to the server while resolving
-      timezone
-    name: TimezoneAutomaticDetectionSendAllLocationInfo
-    value: 4
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 3
-    - 4
-    type: integer
-  supported_on:
-  - chrome_os:53-
-  tags:
-  - google-sharing
-  type: int-enum
-
-** SystemUse24HourClock — Use 24 hour clock by default
-SYNOPSIS: true
- Setting the policy to True gives a device's sign-in screen a 24-hour clock format.
-
-       Setting the policy to False gives a device's sign-in screen a 12-hour clock format.
-
-       Leaving the policy unset makes a device use the format from the current locale.
-
-       User sessions also default to the device format, but users can change an account's clock format.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:30-
-  type: main
-
-* Display — Display
- Controls display settings.
-
-** DisplayRotationDefault — Set default display rotation, reapplied on every reboot
-SYNOPSIS: 1
- Setting the policy has each display rotate to the specified orientation on every reboot and the first time it's connected after the policy value changes. Users may change the display rotation through the settings page after signing in, but it changes back at the next reboot. This policy applies to primary and secondary displays.
-
-       If not set, the default value is 0 degrees and users are free to change it. In this case, the default value isn't reapplied at restart.
-
-  device_only: true
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Rotate screen by 0 degrees
-    name: ROTATE_0
-    value: 0
-  - caption: Rotate screen clockwise by 90 degrees
-    name: ROTATE_90
-    value: 1
-  - caption: Rotate screen by 180 degrees
-    name: ROTATE_180
-    value: 2
-  - caption: Rotate screen clockwise by 270 degrees
-    name: ROTATE_270
-    value: 3
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 3
-    type: integer
-  supported_on:
-  - chrome_os:48-
-  type: int-enum
 
 * Printing — Printing
  Controls printing settings.
@@ -6895,9 +4451,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:8-
-  - chrome_os:11-
-  - android:39-
-  - ios:88-
   type: main
 
 ** CloudPrintProxyEnabled — Enable Google Cloud Print proxy
@@ -6919,36 +4472,6 @@ SYNOPSIS: true
   supported_on:
   - chrome.*:17-
   type: main
-
-** PrintingAllowedDuplexModes — Restrict printing duplex mode
-SYNOPSIS: "duplex"
- Setting the policy restricts printing duplex mode.
-
-       Leaving the policy unset or empty results in no restriction.
-
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Allow all duplex modes
-    name: any
-    value: any
-  - caption: Simplex printing only
-    name: simplex
-    value: simplex
-  - caption: Duplex printing only
-    name: duplex
-    value: duplex
-  schema:
-    enum:
-    - any
-    - simplex
-    - duplex
-    type: string
-  supported_on:
-  - chrome_os:71-
-  type: string-enum
 
 ** PrintingAllowedBackgroundGraphicsModes — Restrict background graphics printing mode
 SYNOPSIS: "enabled"
@@ -6975,36 +4498,7 @@ SYNOPSIS: "enabled"
     - disabled
     type: string
   supported_on:
-  - chrome_os:79-
   - chrome.*:80-
-  type: string-enum
-
-** PrintingDuplexDefault — Default printing duplex mode
-SYNOPSIS: "long-edge"
- Setting the policy overrides the default printing duplex mode. If the mode is unavailable, this policy is ignored.
-
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Enable simplex printing
-    name: simplex
-    value: simplex
-  - caption: Enable short edge duplex printing
-    name: short-edge
-    value: short-edge
-  - caption: Enable long edge duplex printing
-    name: long-edge
-    value: long-edge
-  schema:
-    enum:
-    - simplex
-    - short-edge
-    - long-edge
-    type: string
-  supported_on:
-  - chrome_os:72-
   type: string-enum
 
 ** PrintingBackgroundGraphicsDefault — Default background graphics printing mode
@@ -7028,7 +4522,6 @@ SYNOPSIS: "enabled"
     - disabled
     type: string
   supported_on:
-  - chrome_os:79-
   - chrome.*:80-
   type: string-enum
 
@@ -7203,41 +4696,6 @@ SYNOPSIS: {"name": "custom", "custom_size": {"width": 210000, "height": 297000}}
   - chrome.*:84-
   type: dict
 
-** PrintingMaxSheetsAllowed — Maximal number of sheets allowed to use for a single print job
-SYNOPSIS: 10
- Specifies the maximal number of sheets user is allowed to print for a single print job.
-
-       If not set, no limitations are applied and user can print any documents.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    minimum: 1
-    type: integer
-  supported_on:
-  - chrome_os:84-
-  type: int
-
-** PrintingAPIExtensionsWhitelist (DEPRECATED) — Extensions allowed to skip confirmation dialog when sending print jobs via chrome.printing API
-SYNOPSIS: ["abcdefghabcdefghabcdefghabcdefgh"]
- This policy specifies the allowed extensions to skip print job confirmation dialog when they use the Printing API function chrome.printing.submitJob() for sending a print job.
-
-       If an extension is not in the list, or the list is not set, the print job confirmation dialog will be shown to the user for every chrome.printing.submitJob() function call.
-
-       This policy is deprecated, please use PrintingAPIExtensionsAllowlist instead.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:81-
-  type: list
-
 ** CloudPrintSubmitEnabled — Enable submission of documents to Google Cloud Print
 SYNOPSIS: true
  Setting the policy to Enabled or leaving it unset lets users print to Google Cloud Print from the Google Chrome print dialog. Google Chrome can submit documents to Google Cloud Print for printing. This doesn't prevent users from submitting print jobs on websites.
@@ -7322,266 +4780,6 @@ SYNOPSIS: "{ \"kind\": \"cloud\", \"idPattern\": \".*public\", \"namePattern\": 
         type: string
     type: object
 
-** Printers — Configures a list of printers
-SYNOPSIS: ["{ \"display_name\": \"Color Laser\", \"description\": \"The printer next to the water cooler.\", \"manufacturer\": \"Printer Manufacturer\", \"model\": \"Color Laser 2004\", \"uri\": \"ipps://print-server.intranet.example.com:443/ipp/cl2k4\", \"uuid\": \"1c395fdb-5d93-4904-b246-b2c046e79d12\", \"ppd_resource\": { \"effective_model\": \"Printer Manufacturer ColorLaser2k4\", \"autoconf\": false } }"]
- Setting the policy lets administrators set up a list of printers for their users. Printer selection occurs the first time users try to print.
-
-       Using the policy:
-
-       * Customize free-form display_name and description for ease of printer selection.
-
-       * Help users identify printers using manufacturer and model.
-
-       * uri should be an address reachable from a client computer, including the scheme, port, and queue.
-
-       * Optionally provide uuid to help deduplicate zeroconf printers.
-
-       * Either use the model name for effective_model or set autoconf to True. Printers with both or no properties get ignored.
-
-       PPDs are downloaded after the printer is used, and frequently used PPDs are cached. This policy doesn't affect whether users can configure printers on individual devices.
-
-       Note: For Microsoft® Active Directory® managed devices, this policy supports expansion of ${MACHINE_NAME[,pos[,count]]} to the Microsoft® Active Directory® machine name or a substring of it. For example, if the machine name is CHROMEBOOK, then ${MACHINE_NAME,6,4} gets replaced by the 4 characters starting after the 6th position, in other words, BOOK. The position is zero-based.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:86-
-  type: list
-  validation_schema:
-    items:
-      id: PrinterTypeInclusive
-      properties:
-        description:
-          type: string
-        display_name:
-          type: string
-        manufacturer:
-          type: string
-        model:
-          type: string
-        ppd_resource:
-          id: PpdResourceInclusive
-          properties:
-            autoconf:
-              description: Boolean flag indicating whether IPP Everywhere should be
-                used to set up the printer.
-              type: boolean
-            effective_model:
-              description: This field must match one of the strings which represent
-                a Google Chrome OS supported printer. The string will be used to identify
-                and install the appropriate PPD for the printer. More information can
-                be found at https://support.google.com/chrome?p=noncloudprint.
-              type: string
-          type: object
-        uri:
-          type: string
-        uuid:
-          type: string
-      type: object
-    type: array
-
-** PrintersBulkConfiguration — Enterprise printer configuration file
-SYNOPSIS: {"url": "https://example.com/printerpolicy", "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef"}
- Setting this policy configure enterprise printers. Its format matches the Printers dictionary, with an additional required "id" or "guid" field for each printer for allow listing or deny listing. The file size can't exceed 5MB and is in JSON format. A file with about 21,000 printers encodes as a 5MB file. The cryptographic hash helps verify download integrity. The file is downloaded, cached, and redownloaded when the URL or the hash changes. Google Chrome OS downloads the file for printer configurations and makes printers available along with PrintersBulkAccessMode, PrintersBulkAllowlist, and PrintersBulkBlocklist.
-
-       This policy has no effect on whether users can configure printers on individual devices. It is intended to be supplementary to the configuration of printers by individual users.
-
-       If you set the policy, users can't change it.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  max_size: 5242880
-  schema:
-    properties:
-      hash:
-        type: string
-      url:
-        type: string
-    type: object
-  supported_on:
-  - chrome_os:86-
-  type: external
-
-** PrintersBulkAccessMode — Printer configuration access policy.
-SYNOPSIS: 1
- Setting the policy designates which access policy applies to bulk printer configuration, controlling which printers from PrintersBulkConfiguration are available for users.
-
-       * BlocklistRestriction (value 0) uses PrintersBulkBlocklist to restrict access to the specified printers
-
-       * AllowlistPrintersOnly (value 1) uses PrintersBulkAllowlist to designate only those printers which are selectable
-
-       * AllowAll (value 2) displays all printers
-
-       Leaving the policy unset puts AllowAll in use.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: All printers are shown except those in the blocklist.
-    name: BlocklistRestriction
-    value: 0
-  - caption: Only printers in the allowlist are shown to users
-    name: AllowlistPrintersOnly
-    value: 1
-  - caption: Allow all printers from the configuration file.
-    name: AllowAll
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:86-
-  type: int-enum
-
-** PrintersBulkBlocklist — Disabled enterprise printers
-SYNOPSIS: ["id1", "id2", "id3"]
- If BlocklistRestriction is chosen for PrintersBulkAccessMode, then setting PrintersBulkBlocklist specifies which printers users can't use. All printers are provided to the user, except for the IDs listed in this policy. The IDs must correspond to the "id" or "guid" fields in the file specified in PrintersBulkConfiguration.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:86-
-  type: list
-
-** PrintersBulkAllowlist — Enabled enterprise printers
-SYNOPSIS: ["id1", "id2", "id3"]
- If AllowlistPrintersOnly is chosen for PrintersBulkAccessMode, then setting PRINTERS_BULK_ALLOWLIST specifies which printers users can use. Only the printers with IDs matching the values in this policy are available to the user. The IDs must correspond to the "id" or "guid" fields in the file specified in PrintersBulkConfiguration.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:86-
-  type: list
-
-** DeviceNativePrintersAccessMode (DEPRECATED) — Device printers configuration access policy.
-SYNOPSIS: 1
- Setting the policy designates which access policy applies to bulk printer configuration, controlling which printers from DevicePrinters are available for users.
-
-       * BlacklistRestriction (value 0), DevicePrintersBlocklist can restrict access to the specified printers
-
-       * If set to WhitelistPrintersOnly (value 1), DevicePrintersAllowlist designates only those printers which are selectable
-
-       * AllowAll (value 2), all printers are shown.
-
-       Leaving the policy unset applies AllowAll.
-
-       This policy is deprecated, please use DevicePrintersAccessMode instead.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: All printers are shown except those in the blacklist.
-    name: BlacklistRestriction
-    value: 0
-  - caption: Only printers in the whitelist are shown to users
-    name: WhitelistPrintersOnly
-    value: 1
-  - caption: Allow all printers from the configuration file.
-    name: AllowAll
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:73-
-  type: int-enum
-
-** DeviceNativePrintersWhitelist (DEPRECATED) — Enabled enterprise device printers
-SYNOPSIS: ["id1", "id2", "id3"]
- If WhitelistPrintersOnly is chosen for DevicePrintersAccessMode, then setting DeviceNativePrintersWhitelist specifies which printers users can use. Only the printers with IDs matching the values in this policy are available to users. The IDs must correspond to the "id" or "guid" fields in the file specified in DevicePrinters.
-
-       This policy is deprecated, please use DevicePrintersAllowlist instead.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:73-
-  type: list
-
-** DevicePrintersAccessMode — Device printers configuration access policy.
-SYNOPSIS: 1
- Setting the policy designates which access policy applies to bulk printer configuration, controlling which printers from DevicePrinters are available for users.
-
-       * BlocklistRestriction (value 0), DevicePrintersBlocklist can restrict access to the specified printers
-
-       * AllowlistPrintersOnly (value 1), DevicePrintersAllowlist designates only those printers which are selectable
-
-       * AllowAll (value 2), all printers are allowed.
-
-       Leaving the policy unset applies AllowAll.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: All printers are shown except those in the blocklist.
-    name: BlocklistRestriction
-    value: 0
-  - caption: Only printers in the allowlist are shown to users
-    name: AllowlistPrintersOnly
-    value: 1
-  - caption: Allow all printers from the configuration file.
-    name: AllowAll
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:87-
-  type: int-enum
-
-** DevicePrintersAllowlist — Enabled enterprise device printers
-SYNOPSIS: ["id1", "id2", "id3"]
- If AllowlistPrintersOnly is chosen for DevicePrintersAccessMode, then setting DevicePrintersAllowlist specifies which printers users can use. Only the printers with IDs matching the values in this policy are available to users. The IDs must correspond to the "id" or "guid" fields in the file specified in DevicePrinters
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:87-
-  type: list
-
 ** PrintPreviewUseSystemDefaultPrinter — Use System Default Printer as Default
 SYNOPSIS: false
  Setting the policy to Enabled means Google Chrome uses the OS default printer as the default destination for print preview.
@@ -7603,45 +4801,6 @@ SYNOPSIS: false
   supported_on:
   - chrome.*:61-
   type: main
-
-** UserPrintersAllowed — Allow access to CUPS printers
-SYNOPSIS: false
- Allows you to control if users can access non-enterprise printers
-
-       If the policy is set to True, or not set at all, users will be able to add, configure, and print using their own printers.
-
-       If the policy is set to False, users will not be able to add and configure their own printers. They will also not be able to print using any previously configured printers.
-      
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:86-
-  type: main
-
-** ExternalPrintServersAllowlist — Enabled external print servers
-SYNOPSIS: ["id1", "id2", "id3"]
- Specifies the subset of print servers that will be queried for server printers.
-
-       If this policy is used, only the server printers with ids matching the values in this policy are available to the user.
-
-       The ids must correspond to the "id" field in the file specified in ExternalPrintServers.
-
-       If this policy is not set, filtering is omitted and all print servers are taken into account.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:86-
-  type: list
 
 ** DeviceExternalPrintServers — External print servers
 SYNOPSIS: {"url": "https://example.com/printserverpolicy", "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef"}
@@ -7745,38 +4904,6 @@ SYNOPSIS: ["cloud", "privet"]
   - chrome.*:80-
   type: string-enum-list
 
-** PrintRasterizationMode — Print Rasterization Mode
-SYNOPSIS: 1
- Controls how Google Chrome prints on Microsoft® Windows®.
-
-       When printing to a non-PostScript printer on Microsoft® Windows®, sometimes print jobs need to be rasterized to print correctly.
-
-       When this policy is set to Full, Google Chrome will do full page rasterization if necessary.
-
-       When this policy is set to Fast, Google Chrome will avoid rasterization if possible, reducing the amount of rasterization can help reduce print job sizes and increase printing speed.
-
-       When this policy is not set, Google Chrome will be in Full mode.
-
-  default: 0
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Full
-    name: Full
-    value: 0
-  - caption: Fast
-    name: Fast
-    value: 1
-  schema:
-    enum:
-    - 0
-    - 1
-    type: integer
-  supported_on:
-  - chrome.win:84-
-  type: int-enum
-
 ** PrintRasterizePdfDpi — Print Rasterize PDF DPI
 SYNOPSIS: 300
  Controls print image resolution when Google Chrome prints PDFs with rasterization.
@@ -7796,7 +4923,6 @@ SYNOPSIS: 300
     type: integer
   supported_on:
   - chrome.*:94-
-  - chrome_os:94-
   type: int
 
 ** CloudPrintWarningsSuppressed (DEPRECATED) — Suppress Google Cloud Print deprecation messages
@@ -7849,229 +4975,8 @@ SYNOPSIS: true
   - chrome.*:95-
   type: main
 
-* ActiveDirectoryManagement — Microsoft® Active Directory® management settings
- Controls settings specific to Microsoft® Active Directory® managed Google Chrome OS devices.
-
-** DeviceUserPolicyLoopbackProcessingMode — User policy loopback processing mode
-SYNOPSIS: 0
- Setting the policy specifies whether and how user policy from computer Group Policy Object (GPO) is processed.
-
-       * Default or leaving it unset has user policy read only from user GPOs. Computer GPOs are ignored.
-
-       * Merge will merge user policy in user GPOs with that of computer GPOs. Computer GPOs take precedence.
-
-       * Replace will replace user policy in user GPOs with that of computer GPOs. User GPOs are ignored.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Default
-    name: Default
-    value: 0
-  - caption: Merge
-    name: Merge
-    value: 1
-  - caption: Replace
-    name: Replace
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_chrome_os_management:
-  - active_directory
-  supported_on:
-  - chrome_os:66-
-  type: int-enum
-
-** DeviceGpoCacheLifetime — GPO cache lifetime
-SYNOPSIS: 0
- Setting the policy specifies in hours the Group Policy Object (GPO) cache lifetime—the maximum duration GPOs can be reused before they're redownloaded. Instead of redownloading them on every policy fetch, the system reuses cached GPOs as long as their version doesn't change.
-
-       Setting the policy to 0 turns GPO caching off. Doing this increases server load, because GPOs are redownloaded on every policy fetch, even if they didn't change.
-
-       Leaving the policy unset means cached GPOs can be reused for up to 25 hours.
-
-       Note: Restarting and signing out clears the cache.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    maximum: 9999
-    minimum: 0
-    type: integer
-  supported_chrome_os_management:
-  - active_directory
-  supported_on:
-  - chrome_os:73-
-  type: int
-
-* Arc — Android settings
- Controls settings for the Android container (ARC) and Android apps.
-
-** ArcPolicy — Configure ARC
-SYNOPSIS: "{\"applications\":[{\"packageName\":\"com.google.android.gm\",\"installType\":\"FORCE_INSTALLED\",\"defaultPermissionPolicy\":\"PROMPT\",\"managedConfiguration\":{}},{\"packageName\":\"com.google.android.apps.docs\",\"installType\":\"PRELOAD\",\"defaultPermissionPolicy\":\"PROMPT\",\"managedConfiguration\":{}}]}"
- Setting the policy specifies a set of policies to hand over to the ARC runtime. Admins can use it to select the Android apps that autoinstall. Enter value in valid JSON format.
-
-       To pin apps to the launcher, see PinnedLauncherApps.
-
-  description_schema:
-    properties:
-      applications:
-        items:
-          properties:
-            defaultPermissionPolicy:
-              description: 'Policy for granting permission requests to apps. PERMISSION_POLICY_UNSPECIFIED:
-                Policy not specified. If no policy is specified for a permission at
-                any level, then the `PROMPT` behavior is used by default. PROMPT: Prompt
-                the user to grant a permission. GRANT: Automatically grant a permission.
-                DENY: Automatically deny a permission.'
-              enum:
-              - PERMISSION_POLICY_UNSPECIFIED
-              - PROMPT
-              - GRANT
-              - DENY
-              type: string
-            installType:
-              description: 'Specifies how an app is installed. OPTIONAL: The app is
-                not installed automatically, but the user can install it. This is the
-                default if this policy is not specified. PRELOAD: The app is installed
-                automatically, but the user can uninstall it. FORCE_INSTALLED: The app
-                is installed automatically and the user cannot uninstall it. BLOCKED:
-                The app is blocked and cannot be installed. If the app was installed
-                under a previous policy it will be uninstalled.'
-              enum:
-              - OPTIONAL
-              - PRELOAD
-              - FORCE_INSTALLED
-              - BLOCKED
-              type: string
-            managedConfiguration:
-              description: 'App-specific JSON configuration object with a set of key-value
-                pairs, e.g. ''"managedConfiguration": { "key1": value1, "key2": value2
-                }''. The keys are defined in the app manifest.'
-              type: object
-            packageName:
-              description: Android app identifier, e.g. "com.google.android.gm" for
-                Gmail
-              type: string
-          type: object
-        type: array
-    type: object
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:50-
-  type: string
-
-** ArcBackupRestoreServiceEnabled — Control Android backup and restore service
-SYNOPSIS: 1
- Setting the policy to BackupAndRestoreEnabled means Android backup and restore is initially on. Setting the policy to BackupAndRestoreDisabled or leaving it unset keeps backup and restore off during setup.
-
-       Setting the policy to BackupAndRestoreUnderUserControl means users see prompts to use backup and restore. If they turn on backup and restore, Android app data is uploaded to Android backup servers and restored during reinstallations of compatible apps.
-
-       After initial setup, users can turn backup and restore on or off.
-
-  default_for_enterprise_users: 0
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: Backup and restore disabled
-    name: BackupAndRestoreDisabled
-    value: 0
-  - caption: User decides whether to enable backup and restore
-    name: BackupAndRestoreUnderUserControl
-    value: 1
-  - caption: Backup and restore enabled
-    name: BackupAndRestoreEnabled
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:68-
-  tags:
-  - google-sharing
-  type: int-enum
-
-** ArcLocationServiceEnabled (DEPRECATED) — Enable Android Google Location Service
-SYNOPSIS: false
- This policy was removed in Google Chrome OS 68 and replaced by ArcGoogleLocationServicesEnabled.
-
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:57-67
-  tags:
-  - google-sharing
-  type: main
-
-** DeviceArcDataSnapshotHours — Intervals when ARC data snapshot update process can be started for Managed Guest Sessions
-SYNOPSIS: {"intervals": [{"start": {"day_of_week": "MONDAY", "time": 12840000}, "end": {"day_of_week": "MONDAY", "time": 21720000}}, {"start": {"day_of_week": "FRIDAY", "time": 38640000}, "end": {"day_of_week": "FRIDAY", "time": 57600000}}], "timezone": "GMT"}
- If "DeviceArcDataSnapshotHours" policy is set, then the ARC data snapshotting mechanism is turned on. And the ARC data snapshot update can be started automatically during the defined time intervals. When an interval starts, ARC data snapshot update is required and no user is logged-in, the ARC data snapshot update process is started without user notification. If the user session is active, the UI notification is shown and have to be accepted in order to reboot a device and start ARC data snapshot update process. Note: a device is blocked for usage during the ARC data snapshot update process.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    properties:
-      intervals:
-        items:
-          $ref: WeeklyTimeIntervals
-        type: array
-      timezone:
-        type: string
-    type: object
-  supported_on:
-  - chrome_os:88-
-  type: dict
-
 * Crostini — Linux container
  Controls settings for the Linux container (Crostini).
-
-** CrostiniAllowed — User is enabled to run Crostini
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset lets users run Crostini, as long as VirtualMachinesAllowed and CrostiniAllowed are set to Enabled. Setting the policy to Disabled turns Crostini off for the user. Changing it to Disabled starts applying the policy to starting new Crostini containers, not those already running.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:70-
-  tags:
-  - system-security
-  type: main
-
-** CrostiniExportImportUIAllowed — User is enabled to export / import Crostini containers via the UI
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset makes the export-import UI available to users. Setting the policy to Disabled renders the export-import UI unavailable to users.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:74-
-  tags:
-  - system-security
-  type: main
 
 ** CrostiniRootAccessAllowed — User is allowed to have root access to Crostini containers
 SYNOPSIS: false
@@ -8153,339 +5058,6 @@ SYNOPSIS: 1
   - system-security
   type: int-enum
 
-* GoogleAssistant — Google Assistant
- Controls settings for Google Assistant.
-
-** VoiceInteractionContextEnabled — Allow Google Assistant to access screen context
-SYNOPSIS: true
- Setting the policy to Enabled lets Google Assistant access screen context and send that data to a server. Setting the policy to Disabled keeps Google Assistant from screen context.
-
-       Leaving the policy unset lets users decide to turn this feature on or off.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:74-
-  tags:
-  - google-sharing
-  type: main
-
-** AssistantVoiceMatchEnabledDuringOobe — Enable Google Assistant voice match flow
-SYNOPSIS: true
- Setting the policy to Enabled lets show Google Assistant voice match flow during initial setup. Setting the policy to Disabled keeps Google Assistant from showing voice match flow during initial setup.
-
-       Leaving the policy unset means it is Enabled.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Show Google Assistant voice match flow during initial setup
-    value: true
-  - caption: Do not show Google Assistant voice match flow during initial setup
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:93-
-  type: main
-
-* QuickAnswers — Quick Answers
- Controls settings for Quick Answers.
-
-** QuickAnswersEnabled — Enable Quick Answers
-SYNOPSIS: true
- This policy gives Quick Answers permission to access selected content and send the info to the server.
-
-       If the policy is enabled, Quick Answers will be enabled.
-       If the policy is disabled, Quick Answers will be disabled.
-       If the policy is not set, users can decide whether to enable or disable Quick Answers.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Enable Quick Answers
-    value: true
-  - caption: Disable Quick Answers
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:97-
-  tags:
-  - google-sharing
-  type: main
-
-** QuickAnswersTranslationEnabled — Enable Quick Answers Translation
-SYNOPSIS: true
- This policy gives Quick Answers permission to access selected content and send the info to the server to get translation results.
-
-       If the policy is enabled or not set, Quick Answers translation will be enabled.
-       If the policy is disabled, Quick Answers translation will be disabled.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Enable Quick Answers Translation
-    value: true
-  - caption: Disable Quick Answers Translation
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:97-
-  tags:
-  - google-sharing
-  type: main
-
-* WilcoDtc — Wilco DTC
- Controls wilco diagnostics and telemetry controller settings.
-
-** DeviceWilcoDtcAllowed — Allows wilco diagnostics and telemetry controller
-SYNOPSIS: false
- Setting the policy to Enabled when wilco diagnostics and telemetry controller (DTC) is available on the device turns collecting, processing, and reporting of telemetry and diagnostics data on.
-
-       Setting the policy to Disabled or leaving it unset turns DTC off. It can't collect, process, or report telemetry and diagnostics data from the device.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:74-
-  type: main
-
-* ParentalSupervision — Parental supervision settings
- Controls parental supervision policies, that are applied to child accounts only.
-       These policies are not set in the admin console, but configured directly by Kids API Server.
-
-** PerAppTimeLimitsAllowlist — Per-App Time Limits Allowlist
-SYNOPSIS: {"url_list": ["chrome://*", "file://*", "https://www.support.google.com", "https://www.policies.google.com"], "app_list": [{"app_id": "pjkljhegncpnkpknbcohdijeoejaedia", "app_type": "EXTENSION"}, {"app_id": "iniodglblcgmngkgdipeiclkdjjpnlbn", "app_type": "BUILT-IN"}]}
- This policy specifies which applications and URLs should be allowed for per-app usage restrictions.
-         The configured allowlist is applied to the apps installed on Google Chrome OS for the given user with per-app time limits.
-         The configured allowlist can only be applied to child user accounts and take effect when PerAppTimeLimits policy is set.
-         The configured allowlist is applied to applications and URLs so that they will not be blocked by per-app time limits.
-         Accessing allowed URLs will not count towards the chrome time limit.
-         Add url regular expressions to |url_list| to allow urls that match any of the regular expressions in the list.
-         Add an application with its |app_id| and |app_type| to |app_list| to allow the application.
-       
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    properties:
-      app_list:
-        items:
-          properties:
-            app_id:
-              type: string
-            app_type:
-              enum:
-              - ARC
-              - BUILT-IN
-              - EXTENSION
-              - WEB
-              - CROSTINI
-              type: string
-          type: object
-        type: array
-      url_list:
-        items:
-          type: string
-        type: array
-    type: object
-  supported_on:
-  - 'chrome_os: 86-'
-  type: dict
-
-** EduCoexistenceToSVersion — The valid version of Edu Coexistence Terms of Service
-SYNOPSIS: "333024512"
- This policy indicates current valid version of Edu Coexistence Terms of Service.
-       It is compared with the version last accepted by the parent and used to prompt parent permission renewal when needed.
-
-       When this policy is set Terms of Service version can be validated.
-       When this policy is unset it is not possible to verify validity of Edu Coexistence Terms of Service.
-
-       This policy is only used for Family Link users.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    description: The valid version of Terms of Service derived from Google3 cl that
-      introduced new Terms version.
-    type: string
-  supported_on:
-  - chrome_os:89-
-  type: string
-
-* PrivacyScreen — Privacy screen settings
- Controls user and device policies for the privacy screen feature.
-
-** DeviceLoginScreenPrivacyScreenEnabled — Set the state of privacy screen on the login screen
-SYNOPSIS: true
- Set the state of the privacy screen feature on the login screen.
-
- If this policy is set to True, privacy screen will be enabled when the login screen is shown.
-
- If this policy is set to False, privacy screen will be disabled when the login screen is shown.
-
- When this policy is set, the user cannot override the value when the login screen is shown.
-
- If this policy is left unset, the privacy screen is disabled initially, but remains controllable by the user when the login screen is shown.
-
-  default: null
-  device_only: true
-  features:
-    can_be_mandatory: true
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:83-
-  type: main
-
-* CertificateManagement — Certificate management settings
- Controls user and device policies for certificate management.
-
-** RequiredClientCertificateForDevice — Required device-wide Client Certificates
-SYNOPSIS: [{"name": "Certificate Profile 1", "cert_profile_id": "cert_profile_id_1", "key_algorithm": "rsa", "renewal_period_seconds": 2592000, "policy_version": "some_hash", "enable_remote_attestation_check": true}]
- Specifies device-wide client certificates that should be enrolled using the device management protocol.
-
-  device_only: true
-  features:
-    can_be_mandatory: true
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      properties:
-        cert_profile_id:
-          description: The identifier for this client certificate.
-          type: string
-        enable_remote_attestation_check:
-          description: 'Enable an additional security check based on remote attestation
-            (optional, default: True).'
-          type: boolean
-        key_algorithm:
-          description: The algorithm for key pair generation.
-          enum:
-          - rsa
-          type: string
-        name:
-          description: The name of the certificate profile.
-          type: string
-        policy_version:
-          description: The client should not interpret this data and should forward
-            it verbatim. The DMServer uses policy_version to verify that the policy
-            view of DMServer matches the view of Chrome OS device.
-          type: string
-        renewal_period_seconds:
-          description: Number of seconds before expiration of a certificate when renewal
-            should be triggered
-          type: integer
-      required:
-      - cert_profile_id
-      - key_algorithm
-      type: object
-    type: array
-  supported_on:
-  - chrome_os:84-
-  type: dict
-
-* Gaia — Gaia user identity management settings
- Controls settings for users authenticated againts Gaia without SAML.
-
-* SAML — Saml user identity management settings
- Controls settings for users authenticated via SAML with an extaernal IdP
-
-** SamlInSessionPasswordChangeEnabled — Password synchronization between third-party SSO providers and Chrome devices
-SYNOPSIS: true
- Enables SAML password sync between multiple Chrome devices by monitoring the value of password sync token and sending a user through the online re-authentication if password was updated and needs to be synchronized.
-
-       Enables a page at chrome://password-change that lets SAML users change their SAML passwords while in-session, which ensures that the SAML password and the device lockscreen password are kept in-sync.
-
-       This policy also enables notifications that warn SAML users if their SAML passwords are soon to expire so that they can deal with this immediately by doing an in-session password change.
-       But, these notifications will only be shown if password expiry information is sent to the device by the SAML identity provider during the SAML login flow.
-
-       Setting this policy to Disabled or not set, SAML password can't be changed at chrome://password-change and there won't be any notification when SAML passwords are soon to expire.
-
-  default: false
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  future: true
-  items:
-  - caption: Trigger authentication flows to synchronize passwords with SSO providers
-    value: true
-  - caption: Do not trigger authentication flows for password synchronization
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:76-
-  type: main
-
-** SAMLOfflineSigninTimeLimit — Limit the time for which a user authenticated via SAML can log in offline
-SYNOPSIS: 32
- During login, Google Chrome OS can authenticate against a server (online) or using a cached password (offline).
-
-       When this policy is set to a value of -1, the user can authenticate offline indefinitely. When this policy is set to any other value, it specifies the length of time since the last online authentication after which the user must use online authentication again.
-
-       Leaving this policy not set will make Google Chrome OS use a default time limit of 14 days after which the user must use online authentication again.
-
-       This policy affects only users who authenticated using SAML.
-
-       The policy value should be specified in seconds.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    minimum: -1
-    type: integer
-  supported_on:
-  - chrome_os:34-
-  type: int
-
-* Borealis — Borealis
- Controls policies related to the Borealis subsystem.
-
-** UserBorealisAllowed — Allow users to use Borealis on Google Chrome OS
-SYNOPSIS: true
- Controls the availability of Borealis for this user.
-
-       If the policy is set to false, Borealis will be unavailable. Otherwise (when the policy is unset, or true) Borealis will be available if and only if no other policy or setting disables it.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Do not prevent Borealis from running for a user
-    value: true
-  - caption: Prevent Borealis from running for a user
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:91-
-  type: main
-
 * X-GrouplessPolicies — These policies have no group!
  FIXME
 
@@ -8531,8 +5103,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:8-
-  - chrome_os:11-
-  - android:30-
   type: main
 
 ** SearchSuggestEnabled — Enable search suggestions
@@ -8554,32 +5124,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:8-
-  type: main
-
-** WindowOcclusionEnabled — Enable Window Occlusion
-SYNOPSIS: true
- Enables window occlusion in Google Chrome.
-
-       If you enable this setting, to reduce CPU and power consumption Google Chrome will detect when a window is covered by other windows, and will suspend work painting pixels.
-
-       If you disable this setting Google Chrome will not detect when a window is covered by other windows.
-
-       If this policy is left not set, occlusion detection will be enabled.
-
-  default: true
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Detect covered window and suspend its painting
-    value: true
-  - caption: Do not detect covered window
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome.win:90-
   type: main
 
 ** DnsPrefetchingEnabled (DEPRECATED) — Enable network prediction
@@ -9069,8 +5613,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:25-
-  - chrome_os:25-
-  - android:30-
   tags:
   - filtering
   type: main
@@ -9752,7 +6294,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:11-28
-  - chrome_os:11-28
   type: main
 
 ** ProxySettings — Proxy settings
@@ -10016,7 +6557,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:94-
-  - chrome_os:94-
   type: main
 
 ** InsecurePrivateNetworkRequestsAllowed — Specifies whether to allow insecure websites to make requests to more-private network endpoints
@@ -10049,9 +6589,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:92-
-  - chrome_os:92-
-  - android:92-
-  - webview_android:92-
   tags:
   - system-security
   type: main
@@ -10138,83 +6675,6 @@ SYNOPSIS: 10000
   - chrome.*:30-
   type: int
 
-** ChromeOsMultiProfileUserBehavior — Control the user behavior in a multiprofile session
-SYNOPSIS: "unrestricted"
- Control the user behavior in a multiprofile session on Google Chrome OS devices.
-
-       If this policy is set to 'MultiProfileUserBehaviorUnrestricted', the user can be either primary or secondary user in a multiprofile session.
-
-       If this policy is set to 'MultiProfileUserBehaviorMustBePrimary', the user can only be the primary user in a multiprofile session.
-
-       If this policy is set to 'MultiProfileUserBehaviorNotAllowed', the user cannot be part of a multiprofile session.
-
-       If you set this setting, users cannot change or override it.
-
-       If the setting is changed while the user is signed into a multiprofile session, all users in the session will be checked against their corresponding settings. The session will be closed if any one of the users is no longer allowed to be in the session.
-
-       If the policy is left not set, the default value 'MultiProfileUserBehaviorMustBePrimary' applies for enterprise-managed users and 'MultiProfileUserBehaviorUnrestricted' will be used for non-managed users.
-
-  arc_support: When multiple users are logged in, only the primary user can use Android
-    apps.
-  default_for_enterprise_users: primary-only
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Allow enterprise user to be both primary and secondary  (Default behavior
-      for non-managed users)
-    name: MultiProfileUserBehaviorUnrestricted
-    value: unrestricted
-  - caption: Allow enterprise user to be primary multiprofile user only (Default behavior
-      for enterprise-managed users)
-    name: MultiProfileUserBehaviorMustBePrimary
-    value: primary-only
-  - caption: Do not allow enterprise user to be part of multiprofile (primary or secondary)
-    name: MultiProfileUserBehaviorNotAllowed
-    value: not-allowed
-  schema:
-    enum:
-    - unrestricted
-    - primary-only
-    - not-allowed
-    type: string
-  supported_on:
-  - chrome_os:31-
-  type: string-enum
-
-** ForceLogoutUnauthenticatedUserEnabled — Force logout the user when their account becomes unauthenticated
-SYNOPSIS: false
- Force logout the user when their primary account's authentication token becomes invalid.
-         This policy can protect the user from access to restricted content on Google web properties.
-         If this policy is set to True, the user will be logged out as soon as their authentication token becomes invalid and attempts to restore this token fail.
-         If this policy is set to False or unset, the user can continue working in an unauthenticated state.
-
-  features:
-    dynamic_refresh: false
-    per_profile: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:81-
-  type: main
-
-** SecurityTokenSessionNotificationSeconds — Duration of the notification on smart card removal for Google Chrome OS.
-SYNOPSIS: 10
- This policy only takes effect when the policy SecurityTokenSessionBehavior is set to LOCK or LOGOUT, and a user who authenticates via a smart card removes that smart card. Then, this policy specifies for how many seconds a notification which informs the user of the impending action is displayed. This notification is blocking the screen. The action will only happen after this notification expires. The user can prevent the action from happening by re-inserting the smart card before the notification expires. If this policy is set to zero, no notification will be displayed and the action happens immediately.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    maximum: 9999
-    minimum: 0
-    type: integer
-  supported_on:
-  - chrome_os:90-
-  type: int
-
 ** TargetBlankImpliesNoOpener — Do not set window.opener for links targeting _blank
 SYNOPSIS: false
  Setting the policy to Disabled allows popups targeting _blank to access (via JavaScript) the page that requested to open the popup.
@@ -10281,9 +6741,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:12-
-  - chrome_os:12-
-  - android:30-
-  - ios:88-
   type: main
 
 ** AllowOutdatedPlugins (DEPRECATED) — Allow running plugins that are outdated
@@ -11056,104 +7513,6 @@ SYNOPSIS: true
   - chrome.*:32-
   type: main
 
-** SamlLockScreenOfflineSigninTimeLimitDays — Limit the time for which a user authenticated via SAML can log in offline at the lock screen
-SYNOPSIS: 32
- While logging in through the lock screen, Google Chrome OS can authenticate against a server (online) or using a cached password (offline).
-
-       When this policy is set to -2, it will match the value of the login screen offline signin time limit which comes from SAMLOfflineSigninTimeLimit.
-
-       When the policy is unset or set to a value of -1, it will not enforce online authentication on the lock screen and will allow the user to use offline authentication unless a different reason than this policy enforces an online authentication.
-
-       If the policy is set to a value of 0, online authentication will always be required.
-
-       When this policy is set to any other value, it specifies the number of days since the last online authentication after which the user must use online authentication again in the next login through the lock screen.
-
-       This policy affects users who authenticated using SAML.
-
-       The policy value should be specified in days.
-
-  default: null
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    maximum: 365
-    minimum: -2
-    type: integer
-  supported_on:
-  - chrome_os:92-
-  type: int
-
-** ReportCrostiniUsageEnabled — Report information about usage of Linux apps
-SYNOPSIS: false
- If Linux app support is on, setting the policy to Enabled sends information about Linux apps usage back to the server.
-
-       Setting the policy to Disabled or leaving it unset means no usage information is reported.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:70-
-  tags:
-  - admin-sharing
-  type: main
-
-** DeviceStartUpUrls (DEPRECATED) — Load specified urls on demo login
-SYNOPSIS: ["https://google.com", "chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaa/"]
- This policy is active in retail mode only.
-
-       Determines the set of URLs to be loaded when the demo session is started. This policy will override any other mechanisms for setting the initial URL and thus can only be applied to a session not associated with a particular user.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:19-40
-  type: list
-
-** DeviceIdleLogoutWarningDuration (DEPRECATED) — Duration of the idle log-out warning message
-SYNOPSIS: 15000
- This policy is active in retail mode only.
-
-       When DeviceIdleLogoutTimeout is specified this policy defines the duration of the warning box with a count down timer that is shown to the user before the logout is executed.
-
-       The policy value should be specified in milliseconds.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: integer
-  supported_on:
-  - chrome_os:19-40
-  type: int
-
-** DeviceLoginScreenSaverTimeout (DEPRECATED) — Duration of inactivity before the screen saver is shown on the sign-in screen in retail mode
-SYNOPSIS: 120000
- This policy is active in retail mode only.
-
-       Determines the duration before the screen saver is shown on the sign-in screen for devices in retail mode.
-
-       The policy value should be specified in milliseconds.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    type: integer
-  supported_on:
-  - chrome_os:19-40
-  type: int
-
 ** KioskCRXManifestUpdateURLIgnored — Use only policy-provided update URL when downloading and updating Kiosk Chrome apps
 SYNOPSIS: true
  Setting the policy will disable in-session Kiosk Chrome apps update (which uses update URL from the extension manifest) and leaves only CRX pre-fetching as the update mechanism.
@@ -11174,27 +7533,6 @@ SYNOPSIS: true
     value: false
   schema:
     type: boolean
-  type: main
-
-** ManagedGuestSessionPrivacyWarningsEnabled — Reduce Managed-guest session auto-launch notifications
-SYNOPSIS: false
-  Controls the privacy warning of the managed-guest session on Google Chrome OS.
-
-       If this policy is set to False, the privacy warnings on the login screen and the auto-launch notification inside the managed-guest session will get deactivated.
-
-       This policy should not be used for devices used by the general public.
-
-       If the policy is set to True or not set, the privacy warning notification in the auto-launched managed-guest session will be pinned until the user dismisses it.
-
-  device_only: true
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - 'chrome_os: 84-'
   type: main
 
 ** BackgroundModeEnabled — Continue running background apps when Google Chrome is closed
@@ -11295,21 +7633,6 @@ SYNOPSIS: false
   - chrome.*:22-
   type: main
 
-** ExternalStorageReadOnly — Treat external storage devices as read-only
-SYNOPSIS: true
- Setting the policy to True prevents users from writing to external storage devices.
-
-       Unless external storage is blocked, if you set ExternalStorageReadOnly to False or leave it unset, users can create and modify files of physically writable, external storage devices. (You can block external storage by setting ExternalStorageDisable to True.)
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:54-
-  type: main
-
 ** AudioCaptureAllowed — Allow or deny audio capture
 SYNOPSIS: false
  Setting the policy to Enabled or leaving it unset means that, with the exception of URLs set in the AudioCaptureAllowedUrls list, users get prompted for audio capture access.
@@ -11327,7 +7650,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:25-
-  - chrome_os:23-
   type: main
 
 ** AudioCaptureAllowedUrls — URLs that will be granted access to audio capture devices without prompt
@@ -11396,21 +7718,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:22-
-  type: main
-
-** ShowLogoutButtonInTray — Add a logout button to the system tray
-SYNOPSIS: true
- Setting the policy to True displays a big, red sign-out button in the system tray during active sessions while the screen isn't locked.
-
-       Setting the policy to False or leaving it unset means no button appears.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:25-
   type: main
 
 ** BuiltInDnsClientEnabled — Use built-in DNS client
@@ -11516,94 +7823,6 @@ SYNOPSIS: true
   - chrome.*:92-
   type: main
 
-** ShelfAlignment — Control the shelf position
-SYNOPSIS: "Bottom"
- Control the position of the Google Chrome OS shelf.
-
-       If this policy is set to 'Bottom', the shelf will be placed at the bottom of the screen.
-
-       If this policy is set to 'Left', the shelf will be placed on the left side of the screen.
-
-       If this policy is set to 'Right', the shelf will be placed on the right side of the screen.
-
-       If you set this policy as mandatory, users cannot change or override it.
-
-       If the policy is left not set, the shelf will be be positioned at the bottom of the screen by default and the user can change the shelf's position.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Position the shelf on the left side of the screen
-    name: Left
-    value: Left
-  - caption: Position the shelf at the bottom of the screen
-    name: Bottom
-    value: Bottom
-  - caption: Position the shelf on the right side of the screen
-    name: Right
-    value: Right
-  schema:
-    enum:
-    - Left
-    - Bottom
-    - Right
-    type: string
-  supported_on:
-  - chrome_os:79-
-  type: string-enum
-
-** SystemFeaturesDisableMode — Set the user experience of disabled features
-SYNOPSIS: "blocked"
- Controls the user experience of disabled features listed in SystemFeaturesDisableList.
-
-       If this policy is set to "blocked", the disabled features will become unusable but still visible to users.
-
-       If this policy is set to "hidden", the disabled features will become unusable and invisible to users.
-
-       If this policy is left unset or has an invalid value, the disable mode of system features will be "blocked".
-
-  default: blocked
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Block the disabled features
-    name: blocked
-    value: blocked
-  - caption: Hide and block the disabled features
-    name: hidden
-    value: hidden
-  schema:
-    enum:
-    - blocked
-    - hidden
-    type: string
-  supported_on:
-  - chrome_os:91-
-  type: string-enum
-
-** UserDisplayName — Set the display name for device-local accounts
-SYNOPSIS: "Policy User"
- Controls the account name Google Chrome OS shows on the login screen for the corresponding device-local account.
-
-       If this policy is set, the login screen will use the specified string in the picture-based login chooser for the corresponding device-local account.
-
-       If the policy is left not set, Google Chrome OS will use the device-local account's email account ID as the display name on the login screen.
-
-       This policy is ignored for regular user accounts.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:25-
-  type: string
-
 ** FullscreenAllowed — Allow fullscreen mode
 SYNOPSIS: true
  Setting the policy to True or leaving it unset means that, with appropriate permissions, users, apps, and extensions can enter Fullscreen mode (in which only web content appears).
@@ -11618,48 +7837,7 @@ SYNOPSIS: true
   schema:
     type: boolean
   supported_on:
-  - chrome.win:31-
   - chrome.linux:31-
-  - chrome_os:31-
-  type: main
-
-** TermsOfServiceURL — Set the Terms of Service for a device-local account
-SYNOPSIS: "https://www.example.com/terms_of_service.txt"
- Setting the policy means Google Chrome OS downloads the Terms of Service and presents them to users whenever a device-local account session starts. Users can only sign in to the session after accepting the Terms of Service.
-
-       Leaving the policy unset means no Terms of Service appear.
-
-       The policy should be set to a URL from which Google Chrome OS can download the Terms of Service. The Terms of Service must be plain text, served as MIME type text/plain. No markup is allowed.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  supported_on:
-  - chrome_os:26-
-  type: string
-
-** PrimaryMouseButtonSwitch — Switch the primary mouse button to the right button
-SYNOPSIS: true
- Switch the primary mouse button to the right button.
-
-           If this policy is set to enabled, the right button of the mouse will always be the primary key.
-
-           If this policy is set to disabled, the left button of the mouse will always be the primary key.
-
-           If you set this policy, users cannot change or override it.
-
-           If this policy is left unset, the left button of the mouse will be the primary key initially, but can be switched by the user anytime.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:81-
   type: main
 
 ** SharedClipboardEnabled — Enable the Shared Clipboard Feature
@@ -11683,8 +7861,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:79-
-  - chrome_os:79-
-  - android:79-
   type: main
 
 ** HideWebStoreIcon — Hide the web store from the New Tab Page and app launcher
@@ -11720,7 +7896,6 @@ SYNOPSIS: "restricted"
     type: string
   supported_on:
   - chrome.*:27-
-  - android:34-
   type: string
 
 ** ChromeVariations — Determine the availability of variations
@@ -11756,7 +7931,6 @@ SYNOPSIS: 1
     type: integer
   supported_on:
   - chrome.*:83-
-  - ios:88-
   type: int-enum
 
 ** SuppressChromeFrameTurndownPrompt (DEPRECATED) — Suppress the Google Chrome Frame turndown prompt
@@ -11797,40 +7971,8 @@ SYNOPSIS: [{"toplevel_name": "My managed bookmarks folder"}, {"name": "Google", 
       type: object
     type: array
   supported_on:
-  - android:30-
   - chrome.*:37-
-  - chrome_os:37-
-  - ios:88-
   type: dict
-
-** UserAvatarImage — User avatar image
-SYNOPSIS: {"url": "https://example.com/avatar.jpg", "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"}
- This policy allows you to configure the avatar image representing the user on the login screen. The policy is set by specifying the URL from which Google Chrome OS can download the avatar image and a cryptographic hash used to verify the integrity of the download. The image must be in JPEG format, its size must not exceed 512kB. The URL must be accessible without any authentication.
-
-       The avatar image is downloaded and cached. It will be re-downloaded whenever the URL or the hash changes.
-
-       If this policy is set, Google Chrome OS will download and use the avatar image.
-
-       If you set this policy, users cannot change or override it.
-
-       If the policy is left not set, the user can choose the avatar image representing them on the login screen.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  max_size: 524288
-  schema:
-    properties:
-      hash:
-        description: The SHA-256 hash of the avatar image.
-        type: string
-      url:
-        description: The URL from which the avatar image can be downloaded.
-        type: string
-    type: object
-  supported_on:
-  - chrome_os:34-
-  type: external
 
 ** EnableDeprecatedWebPlatformFeatures (DEPRECATED) — Enable deprecated web platform features for a limited time
 SYNOPSIS: ["ExampleDeprecatedFeature_EffectiveUntil20080902"]
@@ -11858,29 +8000,9 @@ SYNOPSIS: ["ExampleDeprecatedFeature_EffectiveUntil20080902"]
     type: array
   supported_on:
   - chrome.*:37-87
-  - chrome_os:37-87
-  - android:37-87
   tags:
   - system-security
   type: string-enum-list
-
-** EasyUnlockAllowed — Allow Smart Lock to be used
-SYNOPSIS: true
- If you enable this setting, users will be allowed to use Smart Lock if the requirements for the feature are satisfied.
-
-       If you disable this setting, users will not be allowed to use Smart Lock.
-
-       If this policy is left not set, the default is not allowed for enterprise-managed users and allowed for non-managed users.
-
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:38-
-  type: main
 
 ** BrowserGuestModeEnabled — Enable guest mode in browser
 SYNOPSIS: true
@@ -11954,6 +8076,7 @@ SYNOPSIS: 2
     supported_on:
     - chrome.win:70-
     - chrome.mac:70-
+    - ios:97-
     value: 2
   schema:
     enum:
@@ -11963,8 +8086,6 @@ SYNOPSIS: 2
     type: integer
   supported_on:
   - chrome.*:70-
-  - android:70-
-  - ios:90-
   type: int-enum
 
 ** SSLVersionMin — Minimum SSL version enabled
@@ -12211,8 +8332,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:44-
-  - chrome_os:44-
-  - android:44-
   type: main
 
 ** SSLErrorOverrideAllowedForOrigins — Allow proceeding from the SSL warning page on specific origins
@@ -12249,22 +8368,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:43-
-  - chrome_os:43-
-  type: main
-
-** WelcomePageOnOSUpgradeEnabled (DEPRECATED) — Enable showing the welcome page on the first browser launch following OS upgrade
-SYNOPSIS: false
- If this policy is set to true or not configured, the browser will re-show the welcome page on the first launch following an OS upgrade.
-
-       If this policy is set to false, the browser will not re-show the welcome page on the first launch following an OS upgrade.
-
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome.win:45-62
   type: main
 
 ** HardwareAccelerationModeEnabled — Use hardware acceleration when available
@@ -12295,7 +8398,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:49-
-  - chrome_os:49-
   tags:
   - system-security
   type: main
@@ -12313,21 +8415,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:52-
-  type: main
-
-** AllowScreenLock — Permit locking the screen
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset lets users who authenticate with a password lock the screen.
-
-       Setting the policy to Disabled means users can't lock the screen. (They can only sign out from the user session.)
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:52-
   type: main
 
 ** AllowedDomainsForApps — Define domains allowed to access Google Workspace
@@ -12348,8 +8435,6 @@ SYNOPSIS: "managedchrome.com,example.com"
     type: string
   supported_on:
   - chrome.*:51-
-  - chrome_os:51-
-  - android:51-
   tags:
   - filtering
   type: string
@@ -12424,7 +8509,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:80-
-  - chrome_os:80-
   type: main
 
 ** NTPCardsVisible — Show cards on the New Tab Page
@@ -12521,91 +8605,6 @@ SYNOPSIS: true
   - chrome.*:54-
   type: main
 
-** WifiSyncAndroidAllowed — Allow Wi-Fi network configurations to be synced across Google Chrome OS devices and a connected Android phone.
-SYNOPSIS: true
- If this setting is enabled, users will be allowed to sync Wi-Fi network configurations between their Google Chrome OS device(s) and a connected Android phone. Before Wi-Fi network configurations can sync, users must explicitly opt in to this feature by completing a setup flow.
-
-       If this setting is disabled, users will not be allowed to sync Wi-Fi network configurations.
-
-       This feature depends on the wifiConfigurations datatype in Chrome Sync being enabled. If wifiConfigurations is disabled in the SyncTypesListDisabled policy, or Chrome Sync is disabled in the SyncDisabled policy this feature will not be enabled.
-
-       If this policy is left not set, the default is not allowed for managed users.
-
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:89-
-  tags:
-  - local-data-access
-  - google-sharing
-  type: main
-
-** InstantTetheringAllowed — Allow Instant Tethering to be used.
-SYNOPSIS: true
- If this setting is enabled, users will be allowed to use Instant Tethering, which allows their Google phone to share its mobile data with their device.
-
-       If this setting is disabled, users will not be allowed to use Instant Tethering.
-
-       If this policy is left not set, the default is not allowed for enterprise-managed users and allowed for non-managed users.
-
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:60-
-  tags:
-  - local-data-access
-  - google-sharing
-  type: main
-
-** PhoneHubNotificationsAllowed — Allow Phone Hub notifications to be enabled.
-SYNOPSIS: true
- If this setting is enabled, users who have already opted in to Phone Hub, will be able to send/receive their phone's notifications on Chrome OS.
-
-       If this setting is disabled, users will not be allowed to use this feature. If the PhoneHubAllowed policy is disabled, users also will not be allowed to use this feature.
-
-       If this policy is left not set, the default is allowed for both enterprise-managed users and non-managed users.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:89-
-  tags:
-  - local-data-access
-  - google-sharing
-  type: main
-
-** NearbyShareAllowed — Allow Nearby Share to be enabled.
-SYNOPSIS: true
- If this setting is enabled, users will be allowed to opt in to Nearby Share, which allows them to send and receive files from people closeby.
-
-       If this setting is disabled, users will not be allowed to opt in to Nearby Share.
-
-       If this policy is left not set, the default is not allowed for enterprise-managed users and allowed for non-managed users.
-
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:91-
-  tags:
-  - local-data-access
-  - google-sharing
-  type: main
-
 ** BrowserNetworkTimeQueriesEnabled — Allow queries to a Google time service
 SYNOPSIS: true
  Setting the policy to Enabled or leaving it unset means Google Chrome send occasional queries to a Google server to retrieve an accurate timestamp.
@@ -12627,76 +8626,6 @@ SYNOPSIS: true
   - chrome.*:60-
   type: main
 
-** EcryptfsMigrationStrategy (DEPRECATED) — Migration strategy for ecryptfs
-SYNOPSIS: 2
- This policy was removed in M87 and home directories will automatically migrate to ext4 at sign-in.
-       Setting the policy specifies the action to take when the user's home directory was created with ecryptfs encryption. Unless ecryptfs-encrypted home directories migrate to ext4-encryption, Android apps might stop running.
-
-       Setting the policy to:
-
-       * Migrate (or an unsupported option such as AskUser or AskForEcryptfsArcUsers) means directories automatically migrate to ext4 at sign-in, without asking for user consent.
-
-       * Wipe or MinimalMigrate means that, at sign-in, new ext4-encrypted home directories replace old ecryptfs-encrypted directories. To help the user avoid repeated sign-ins, MinimalMigrate tries to preserve sign-in tokens.
-
-       * DisallowArc or leaving it unset prevents migration, and the user's Android apps stop running.
-
-       This policy doesn't apply to kiosk users.
-
-       Warning: Wipe and MinimalMigrate remove local data.
-
-  device_only: false
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: Disallow data migration and ARC.
-    name: DisallowArc
-    value: 0
-  - caption: "Migrate automatically, don\u2019t ask for user consent."
-    name: Migrate
-    value: 1
-  - caption: "Wipe the user\u2019s ecryptfs home directory and start with a fresh ext4-encrypted\
-      \ home directory."
-    name: Wipe
-    value: 2
-  - caption: Similar to Wipe (value 2), but tries to preserve login tokens so the user
-      does not have to sign in again.
-    name: MinimalMigrate
-    value: 4
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 4
-    type: integer
-  supported_on:
-  - chrome_os:61-87
-  type: int-enum
-
-** NoteTakingAppsLockScreenWhitelist (DEPRECATED) — Whitelist note-taking apps allowed on the Google Chrome OS lock screen
-SYNOPSIS: ["abcdefghabcdefghabcdefghabcdefgh"]
- This policy is deprecated, please use NoteTakingAppsLockScreenAllowlist instead.
-
-       Setting the policy specifies the apps that users can turn on as a note-taking app on the Google Chrome OS lock screen.
-
-       If the preferred app is on the lock screen, a UI element for launching the preferred note-taking app appears on the screen. When launched, the app can create a window on top of the lock screen and create notes in this context. The app can import created notes to the primary user session, when the session is unlocked. Only Google Chrome note-taking apps are supported on the lock screen.
-
-       Setting the policy means users can turn on an app on the lock screen if the app's extension ID is in the policy list value. So, setting it to an empty list will turn off note-taking on the lock screen. The policy with an app ID doesn't necessarily mean that users can turn the app on as a note-taking app on the lock screen. For example, on Google Chrome 61, the set of available apps is also restricted by the platform.
-
-       Leaving the policy unset amounts to no restrictions on the set of apps users can enable on the lock screen imposed by the policy.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:61-
-  type: list
-
 ** CloudPolicyOverridesPlatformPolicy — Google Chrome cloud policy overrides Platform policy.
 SYNOPSIS: false
  Setting the policy to Enabled means cloud policy takes precedence if it conflicts with platform policy.
@@ -12713,8 +8642,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:75-
-  - ios:88-
-  - android:97-
   type: main
 
 ** CloudUserPolicyOverridesCloudMachinePolicy — Allow user cloud policies to override Chrome Browser Cloud Management policies.
@@ -12802,30 +8729,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:63-
-  tags:
-  - system-security
-  type: main
-
-** SitePerProcessAndroid — Enable Site Isolation for every site
-SYNOPSIS: true
- Setting the policy to Enabled isolates all sites on Android, such that each site runs in its own process, and it prevents users from opting out. A site is a scheme plus eTLD+1 (e.g., https://example.com). Note that Android isolates certain sensitive sites by default starting in Google Chrome version 77, and this policy extends that default site isolation mode to apply to all sites.
-
-       Setting the policy to Disabled turns off any form of site isolation, including isolation of sensitive sites and field trials of IsolateOriginsAndroid, SitePerProcessAndroid, and other site isolation modes. Users can still turn the policy on manually.
-
-       Leaving the policy unset means users can change this setting.
-
-       IsolateOriginsAndroid might also be useful for isolating specific origins at a finer granularity than site (e.g., https://a.example.com).
-
-       Note: Support for isolating every site on Android will improve, but currently it may cause performance problems, especially on low-end devices. This policy applies only to Chrome on Android running on devices with strictly more than 1 GB of RAM. To isolate specific sites while limiting performance impact for users, use IsolateOriginsAndroid with a list of the sites you want to isolate.  To apply the policy on non-Android platforms, use SitePerProcess.
-
-  device_only: false
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - android:68-
   tags:
   - system-security
   type: main
@@ -13148,7 +9051,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:65-
-  - chrome_os:65-
   type: main
 
 ** AdsSettingForIntrusiveAdsSites — Ads setting for sites with intrusive ads
@@ -13273,7 +9175,6 @@ SYNOPSIS: {"entries": [{"start": {"hour": 2, "minute": 15}, "duration_mins": 240
     type: object
   supported_on:
   - chrome.*:93-
-  - chrome_os:93-
   type: dict
 
 ** MachineLevelUserCloudPolicyEnrollmentToken (DEPRECATED) — The enrollment token of cloud policy on desktop
@@ -13396,80 +9297,6 @@ SYNOPSIS: true
   - chrome.*:67-67
   type: main
 
-** ChromeCleanupReportingEnabled — Control how Chrome Cleanup reports data to Google
-SYNOPSIS: true
- Setting the policy to Enabled means if Chrome Cleanup detects unwanted software, it may, in line with policy set by SafeBrowsingExtendedReportingEnabled, report about the scan to Google. Chrome Cleanup asks users if they want the cleanup. It sends results to Google.
-
-       Setting the policy to Disabled means if Chrome Cleanup detects unwanted software, it won't report about the scan to Google, regardless of the value of SafeBrowsingExtendedReportingEnabled. Chrome Cleanup asks users if they want the cleanup. The results aren't reported to Google.
-
-       Leaving the policy unset means Chrome Cleanup may, in line with policy set by SafeBrowsingExtendedReportingEnabled, report about scans for detecting unwanted software to Google. Chrome Cleanup asks users if they want the cleanup and to share the results with Google to help with future unwanted software detection. These results have file metadata, automatically installed extensions, and registry keys, as described by the Chrome Privacy Whitepaper.
-
-       On Microsoft® Windows®, this functionality is only available on instances that are joined to a Microsoft® Active Directory® domain, running on Windows 10 Pro, or enrolled in Chrome Browser Cloud Management.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome.win:68-
-  tags:
-  - system-security
-  type: main
-
-** AllowedInputMethods — Configure the allowed input methods in a user session
-SYNOPSIS: ["xkb:us::eng"]
- Setting the policy lets users choose one of the input methods for Google Chrome OS sessions that you specify.
-
-        If you leave it unset or set to an empty list, users can select all supported input methods.
-
-       Note: If the current input method is unsupported, it switches to the hardware keyboard layout (if allowed) or the first valid entry in this list. Invalid or unsupported methods are ignored.
-
-  device_only: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:69-
-  type: list
-
-** ExtensionInstallEventLoggingEnabled — Log events for policy based extension installs
-SYNOPSIS: true
- Setting the policy to True sends reports of key, policy-triggered extension installation events to Google. Setting the policy to False means no events are captured. If the policy is unset, default value is set to True.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  supported_on:
-  - chrome_os:85-
-  tags:
-  - google-sharing
-  type: main
-
-** EnableSyncConsent — Enable displaying Sync Consent during sign-in
-SYNOPSIS: false
- This policy controls if Sync Consent can be shown to the user during first sign-in. It should be set to false if Sync Consent is never needed for the user.
-       If set to false, Sync Consent will not be displayed.
-       If set to true or unset, Sync Consent can be displayed.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:66-
-  type: main
-
 ** PromotionalTabsEnabled — Enable showing full-tab promotional content
 SYNOPSIS: false
  Setting the policy to True or leaving it unset lets Google Chrome show users product information as full-tab content.
@@ -13555,7 +9382,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:79-79
-  - chrome_os:79-79
   type: main
 
 ** UrlKeyedAnonymizedDataCollectionEnabled — Enable URL-keyed anonymized data collection
@@ -13592,7 +9418,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:70-
-  - chrome_os:70-
   tags:
   - google-sharing
   type: main
@@ -13615,8 +9440,6 @@ SYNOPSIS: ["example.com"]
     type: array
   supported_on:
   - chrome.*:70-
-  - android:70-
-  - chrome_os:70-
   type: list
 
 ** ManagedConfigurationPerOrigin — Sets managed configuration values to websites to specific origins
@@ -13646,7 +9469,6 @@ SYNOPSIS: [{"origin": "https://www.google.com", "managed_configuration_url": "ht
     type: array
   supported_on:
   - chrome.*:89-
-  - chrome_os:89-
   type: dict
 
 ** WebAppInstallForceList — Configure list of force-installed Web Apps
@@ -13746,49 +9568,6 @@ SYNOPSIS: true
   - chrome.*:71-
   type: main
 
-** ClientCertificateManagementAllowed — Allow users to manage installed client certificates.
-SYNOPSIS: 1
- Setting the policy to 'All' (value 0) or leaving it unset lets users manage certificates. Setting the policy to 'None' (value 2) means users can only view (not manage) certificates.
-
-       Setting the policy to 'UserOnly' (value 1) lets users manage user certificates, but not device-wide certificates.
-
-  default: 0
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Allow users to manage all certificates
-    name: All
-    value: 0
-  - caption: Allow users to manage user certificates
-    name: UserOnly
-    value: 1
-  - caption: Disallow users from managing certificates
-    name: None
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:74-
-  type: int-enum
-
-** ForceNetworkInProcess (DEPRECATED) — Force networking code to run in the browser process
-SYNOPSIS: false
- This policy is deprecated.
-
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome.win:72-83
-  type: main
-
 ** AllowPopupsDuringPageUnload (DEPRECATED) — Allows a page to show popups during its unloading
 SYNOPSIS: false
  Setting the policy to True allows pages to show pop-ups while the pages unload.
@@ -13879,49 +9658,7 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:77-
-  - chrome_os:77-
   type: main
-
-** DeviceScheduledReboot — Set custom schedule to reboot kiosk devices
-SYNOPSIS: {"reboot_time": {"hour": 22, "minute": 30}, "frequency": "WEEKLY", "day_of_week": "TUESDAY", "day_of_month": 11}
- Allows setting a custom schedule to reboot devices. The policy currently applies only to devices which have enabled auto-launch app in the Kiosk session. Once set to True, the device will reboot to the schedule. The policy must be removed to cancel any more scheduled reboots.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    properties:
-      day_of_month:
-        description: Day of month [1-31] when the reboot should happen, interpreted
-          in the device's local time zone. Only used when 'frequency' is 'MONTHLY'.
-          If this is more than the maximum number of days in a given month then the
-          last day of the month will be chosen.
-        maximum: 31
-        minimum: 1
-        type: integer
-      day_of_week:
-        $ref: WeekDay
-        description: Day of week when the reboot should happen, interpreted in the device's
-          local time zone. Only used when 'frequency' is 'WEEKLY'.
-      frequency:
-        description: Frequency at which the reboot should recur.
-        enum:
-        - DAILY
-        - WEEKLY
-        - MONTHLY
-        type: string
-      reboot_time:
-        $ref: Time
-        description: Time when the reboot should happen, interpreted in the device's
-          local time zone.
-    required:
-    - reboot_time
-    - frequency
-    type: object
-  supported_on:
-  - chrome_os:94-
-  type: dict
 
 ** CommandLineFlagSecurityWarningsEnabled — Enable security warnings for command-line flags
 SYNOPSIS: true
@@ -13949,50 +9686,6 @@ SYNOPSIS: true
   tags:
   - system-security
   type: main
-
-** DevicePowerwashAllowed — Allow the device to request powerwash
-SYNOPSIS: true
- Setting the policy to Enabled or leaving it unset lets a device trigger powerwash.
-
-       Setting the policy to Disabled doesn't let a device trigger powerwash. An exception to still allow a powerwash can occur if TPMFirmwareUpdateSettings is set to a value that lets the TPM firmware update, but it hasn't updated yet.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:77-
-  type: main
-
-** CACertificateManagementAllowed — Allow users to manage installed CA certificates.
-SYNOPSIS: 1
- Setting the policy to All (0) or leaving it unset lets users edit trust settings for all CA certificates, remove user-imported certificates, and import certificates using Certificate Manager. Setting the policy to UserOnly (1) lets users manage only user-imported certificates, but not change trust settings of built-in certificates. Setting it to None (2) lets users view (not manage) CA certificates.
-
-  default: 0
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Allow users to manage all certificates
-    name: All
-    value: 0
-  - caption: Allow users to manage user certificates
-    name: UserOnly
-    value: 1
-  - caption: Disallow users from managing certificates
-    name: None
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - chrome_os:78-
-  type: int-enum
 
 ** OnFileDownloadedEnterpriseConnector — Configuration policy for the OnFileDownloaded Chrome Enterprise Connector
 SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags": ["malware"]}, {"url_list": ["*.them.com", "*.others.com"], "tags": ["dlp"]}], "disable": [{"url_list": ["*.us.com"], "tags": ["malware"]}], "block_until_verdict": 1, "block_password_protected": false, "block_large_files": true, "require_justification_tags": ["malware", "dlp"], "custom_messages": [{"message": "Custom message for potential sensitive data leaks.", "learn_more_url": "moreinfo.example.com", "language": "default", "tag": "dlp"}, {"message": "Custom message for potential malware file transfer.", "learn_more_url": "moreinfo.example.com/en", "language": "en-US", "tag": "malware"}, {"message": "Message pour le transfert de logiciel malveillant.", "learn_more_url": "moreinfo.example.com/fr", "language": "fr-CA", "tag": "malware"}]}]
@@ -14077,7 +9770,6 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
     type: array
   supported_on:
   - chrome.*:84-
-  - chrome_os:84-
   type: dict
 
 ** OnFileAttachedEnterpriseConnector — Configuration policy for the OnFileAttached Chrome Enterprise Connector
@@ -14306,31 +9998,6 @@ SYNOPSIS: 1
   - chrome.*:86-
   type: int-enum
 
-** BrowserLegacyExtensionPointsBlocked — Block Browser Legacy Extension Points
-SYNOPSIS: false
- Setting the policy to Enabled or leaving it unset will enable ProcessExtensionPointDisablePolicy to block legacy extension points in the Browser process.
-
-       Setting the policy to Disabled has a detrimental effect on Google Chrome's security and stability as unknown and potentially hostile code can load inside Google Chrome's browser process. Only turn off the policy if there are compatibility issues with third-party software that must run inside Google Chrome's browser process.
-
-       Note: Read more about Process mitigation policies ( https://chromium.googlesource.com/chromium/src/+/HEAD/docs/design/sandbox.md#Process-mitigation-policies ).
-
-  default: true
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: Block legacy extension points in the Browser process
-    value: true
-  - caption: Do not block legacy extension points in the Browser process
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome.win:95-
-  tags:
-  - system-security
-  type: main
-
 ** HSTSPolicyBypassList — List of names that will bypass the HSTS policy check
 SYNOPSIS: ["meet"]
  Setting the policy specifies a list of hostnames that bypass preloaded HSTS upgrades from http to https.
@@ -14393,8 +10060,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:79-85
-  - chrome_os:79-85
-  - android:79-85
   tags:
   - system-security
   type: main
@@ -14508,9 +10173,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:80-84
-  - chrome_os:80-84
-  - android:80-84
-  - webview_android:80-84
   type: main
 
 ** UseLegacyFormControls (DEPRECATED) — Use Legacy Form Controls until M84.
@@ -14615,7 +10277,6 @@ SYNOPSIS: 0
     type: integer
   supported_on:
   - chrome.*:80-
-  - chrome_os:80-
   type: int-enum
 
 ** PaymentMethodQueryEnabled — Allow websites to query for available payment methods.
@@ -14807,7 +10468,6 @@ SYNOPSIS: false
   schema:
     type: boolean
   supported_on:
-  - chrome_os:84-
   - chrome.*:84-
   tags:
   - google-sharing
@@ -14863,9 +10523,7 @@ SYNOPSIS: true
   schema:
     type: boolean
   supported_on:
-  - chrome_os:84-93
   - chrome.*:84-93
-  - android:84-93
   type: main
 
 ** UserAgentClientHintsGREASEUpdateEnabled — Control the User-Agent Client Hints GREASE Update feature.
@@ -14906,7 +10564,6 @@ SYNOPSIS: false
   schema:
     type: boolean
   supported_on:
-  - chrome_os:86-
   - chrome.*:86-
   type: main
 
@@ -14950,41 +10607,6 @@ SYNOPSIS: ["foo.example.com", "example.org"]
   - website-sharing
   type: list
 
-** TosDialogBehavior — Configuring the ToS behavior during first-run for CCT
-SYNOPSIS: 2
- By default the Terms of Service are shown when CCT is first-run. Setting this policy to SkipTosDialog will cause the Terms of Service dialog to not appear during the first-run-experience or subsequent runs. Setting this policy to StandardTosDialog or leaving it unset will cause the Terms of Service dialog to appear during the first-run-experience. The other caveats are:
-
-       - This policy only works on fully managed Android devices that can be configured by Unified Endpoint Management vendors.
-
-       - If this policy is SkipTosDialog the BrowserSignin policy will have no effect.
-
-       - If this policy is SkipTosDialog metrics​ will not be sent to the server.
-
-       - If this policy is SkipTosDialog the browser will have limited functionality.
-
-       - If this policy is SkipTosDialog admins must communicate this to end users of the device.
-
-  default: 1
-  features:
-    dynamic_refresh: false
-    per_profile: false
-    platform_only: true
-  items:
-  - caption: Use default browser behavior, shows the ToS and waits for the user to accept.
-    name: StandardTosDialog
-    value: 1
-  - caption: Automatically skips ToS and loads the browser.
-    name: SkipTosDialog
-    value: 2
-  schema:
-    enum:
-    - 1
-    - 2
-    type: integer
-  supported_on:
-  - android:87-
-  type: int-enum
-
 ** EnableDeprecatedPrivetPrinting (DEPRECATED) — Enable deprecated privet printing
 SYNOPSIS: true
  This policy controls whether any available privet printers are shown to users in the print preview dialog.
@@ -15004,29 +10626,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:89-93
-  type: main
-
-** DataLeakPreventionReportingEnabled — Enable data leak prevention reporting
-SYNOPSIS: true
- This policy is a general switch for all rules defined in the DataLeakPreventionRulesList policy.
-       Setting this policy to True will switch on real-time reporting of data leak prevention events.
-       Setting this policy to False or leaving it unset will switch off the reporting.
-       Rules defined with ALLOW level restrictions in DataLeakPreventionRulesList will not report events in both cases.
-
-  default: false
-  features:
-    can_be_recommended: false
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: Enable reporting of data leak prevention events
-    value: true
-  - caption: Disable reporting of data leak prevention events
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:92-
   type: main
 
 ** WebRtcAllowLegacyTLSProtocols — Allow legacy TLS/DTLS downgrade in WebRTC
@@ -15052,7 +10651,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:87-
-  - chrome_os:87-
   type: main
 
 ** MediaRecommendationsEnabled — Enable Media Recommendations
@@ -15138,7 +10736,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.linux:91-92
-  - chrome_os:91-
   type: main
 
 ** ClearBrowsingDataOnExitList — Clear Browsing Data on Exit
@@ -15468,24 +11065,6 @@ SYNOPSIS: "default"
   - chrome.*:91-
   type: string-enum
 
-** DeviceAllowedBluetoothServices — Only allow connection to the Bluetooth services in the list
-SYNOPSIS: ["0x111E", "0x110B", "0x1203", "0x1108", "0x110C", "0x110E", "0x110F", "0x1200"]
- This policy allows admins to configure Bluetooth services that Google Chrome OS is allowed to connect to.
-
- When this policy is set, Google Chrome OS only allows users to connect to the specified Bluetooth services with an exception when the list is empty which means any service is allowed to use. UUIDs reserved by the Bluetooth SIG can be represented as '0xABCD' or 'ABCD'. Custom UUIDs can be represented as 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'. UUIDs are case insensitive. Leaving this policy unset lets users connect to any Bluetooth service.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    items:
-      pattern: ^((0x)?[0-9A-Fa-f]{4})|((0x)?[0-9A-Fa-f]{8})|([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:91-
-  type: list
-
 ** ExplicitlyAllowedNetworkPorts — Explicitly allowed network ports
 SYNOPSIS: ["10080"]
  There is a list of restricted ports built into Google Chrome. Connections to these ports will fail. This setting permits bypassing that list. The value is a comma-separated list of zero or more ports that outgoing connections will be permitted on.
@@ -15561,27 +11140,6 @@ SYNOPSIS: ["10080"]
   - website-sharing
   - local-data-access
   type: string-enum-list
-
-** SuggestLogoutAfterClosingLastWindow — Display the logout confirmation dialog
-SYNOPSIS: true
- The policy only applies to managed guest sessions.
-       Setting the policy to True or leaving it unset will show a dialog asking the user to confirm or deny logout when the last window is closed.
-       Setting the policy to False will prevent the dialog from being displayed and therefore also disables auto-logout after closing the last window.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Show logout dialog on last window closed.
-    value: true
-  - caption: Suppress showing logout dialog on last window closed.
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:92-
-  type: main
 
 ** TripleDESEnabled (DEPRECATED) — Enable 3DES cipher suites in TLS
 SYNOPSIS: false
@@ -15722,24 +11280,6 @@ SYNOPSIS: true
   - chrome.linux:93-
   type: main
 
-** RestrictedManagedGuestSessionExtensionCleanupExemptList — Configure the list of extension IDs exempt from the restricted managed guest session clean-up procedure
-SYNOPSIS: ["abcdefghijklmnopabcdefghijklmnop", "bcdefghijklmnopabcdefghijklmnopa"]
- The policy only applies to managed guest sessions.
-       Setting the policy specifies a list of extension IDs that are exempt from the restricted managed guest session clean-up procedure (see DeviceRestrictedManagedGuestSessionEnabled).
-       Leaving the policy unset means no extensions are exempt from the reset procedure.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      pattern: ^[a-p]{32}$
-      type: string
-    type: array
-  supported_on:
-  - chrome_os:96-
-  type: list
-
 ** ChromeAppsEnabled — Extend support for Chrome Apps on Windows, Mac, and Linux.
 SYNOPSIS: true
  Chrome Apps are deprecated on Windows, Mac, and Linux.
@@ -15761,27 +11301,6 @@ SYNOPSIS: true
     value: false
   schema:
     type: boolean
-  type: main
-
-** GhostWindowEnabled — Enable the ghost window feature
-SYNOPSIS: true
- Setting the policy to enable the ghost window feature.
-       If this policy is true, ARC ghost windows will be created before ARC boots after a crash or reboot based on the restore app setting.
-       If this policy is false, there is no ghost window created before ARC boots. Arc apps are restored after ARC boots
-
-  default: true
-  features:
-    dynamic_refresh: false
-    per_profile: true
-  items:
-  - caption: Enable the ghost window feature.
-    value: true
-  - caption: Disable the ghost window feature.
-    value: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_os:96-
   type: main
 
 ** WebSQLInThirdPartyContextEnabled — Force WebSQL in third-party contexts to be re-enabled.

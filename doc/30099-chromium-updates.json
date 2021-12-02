@@ -4173,9 +4173,6 @@
                 "per_profile": true,
                 "dynamic_refresh": false
             },
-            "future_on": [
-                "ios"
-            ],
             "id": 649,
             "name": "SyncTypesListDisabled",
             "owners": [
@@ -4191,7 +4188,8 @@
             "supported_on": [
                 "chrome.*:79-",
                 "android:79-",
-                "chrome_os:79-"
+                "chrome_os:79-",
+                "ios:97-"
             ],
             "tags": [
                 "system-security"
@@ -17453,7 +17451,8 @@
                     "name": "Force",
                     "supported_on": [
                         "chrome.win:70-",
-                        "chrome.mac:70-"
+                        "chrome.mac:70-",
+                        "ios:97-"
                     ],
                     "value": 2
                 }
@@ -22110,9 +22109,6 @@
                 "dynamic_refresh": true,
                 "per_profile": false
             },
-            "future_on": [
-                "ios"
-            ],
             "id": 410,
             "name": "RestrictAccountsToPatterns",
             "owners": [
@@ -22126,7 +22122,8 @@
                 "type": "array"
             },
             "supported_on": [
-                "android:65-"
+                "android:65-",
+                "ios:97-"
             ],
             "tags": [],
             "type": "list"

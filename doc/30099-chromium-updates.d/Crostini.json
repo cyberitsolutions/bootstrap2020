@@ -1,6 +1,4 @@
 {
-    "CrostiniAllowed": false,
-    "CrostiniExportImportUIAllowed": false,
     "CrostiniRootAccessAllowed": false,
     "CrostiniArcAdbSideloadingAllowed": 1,
     "DeviceCrostiniArcAdbSideloadingAllowed": 1

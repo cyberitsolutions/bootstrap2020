@@ -2,7 +2,6 @@
     "DefaultBrowserSettingEnabled": true,
     "AlternateErrorPagesEnabled": true,
     "SearchSuggestEnabled": true,
-    "WindowOcclusionEnabled": true,
     "NetworkPredictionOptions": 1,
     "WPADQuickCheckEnabled": true,
     "GloballyScopeHTTPAuthCacheEnabled": false,
@@ -82,9 +81,6 @@
     "Disable3DAPIs": false,
     "PolicyRefreshRate": 3600000,
     "MaxInvalidationFetchDelay": 10000,
-    "ChromeOsMultiProfileUserBehavior": "unrestricted",
-    "ForceLogoutUnauthenticatedUserEnabled": false,
-    "SecurityTokenSessionNotificationSeconds": 10,
     "TargetBlankImpliesNoOpener": false,
     "TranslateEnabled": true,
     "BookmarkBarEnabled": true,
@@ -136,15 +132,11 @@
     "RequireOnlineRevocationChecksForLocalAnchors": false,
     "BuiltinCertificateVerifierEnabled": false,
     "ForceEphemeralProfiles": true,
-    "SamlLockScreenOfflineSigninTimeLimitDays": 32,
-    "ReportCrostiniUsageEnabled": false,
     "KioskCRXManifestUpdateURLIgnored": true,
-    "ManagedGuestSessionPrivacyWarningsEnabled": false,
     "BackgroundModeEnabled": true,
     "RestrictSigninToPattern": ".*@example\\.com",
     "DisableSafeBrowsingProceedAnyway": true,
     "SpellCheckServiceEnabled": false,
-    "ExternalStorageReadOnly": true,
     "AudioCaptureAllowed": false,
     "AudioCaptureAllowedUrls": [
         "https://www.example.com/",
@@ -156,17 +148,11 @@
         "https://[*.]example.edu/"
     ],
     "DisableScreenshots": true,
-    "ShowLogoutButtonInTray": true,
     "BuiltInDnsClientEnabled": true,
     "DnsOverHttpsMode": "off",
     "DnsOverHttpsTemplates": "https://dns.example.net/dns-query{?dns}",
     "AdditionalDnsQueryTypesEnabled": true,
-    "ShelfAlignment": "Bottom",
-    "SystemFeaturesDisableMode": "blocked",
-    "UserDisplayName": "Policy User",
     "FullscreenAllowed": true,
-    "TermsOfServiceURL": "https://www.example.com/terms_of_service.txt",
-    "PrimaryMouseButtonSwitch": true,
     "SharedClipboardEnabled": true,
     "HideWebStoreIcon": true,
     "VariationsRestrictParameter": "restricted",
@@ -197,11 +183,6 @@
             ]
         }
     ],
-    "UserAvatarImage": {
-        "url": "https://example.com/avatar.jpg",
-        "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
-    },
-    "EasyUnlockAllowed": true,
     "BrowserGuestModeEnabled": true,
     "BrowserGuestModeEnforced": true,
     "BrowserAddPersonEnabled": true,
@@ -229,7 +210,6 @@
     "HardwareAccelerationModeEnabled": true,
     "SuppressUnsupportedOSWarning": true,
     "TaskManagerEndProcessEnabled": true,
-    "AllowScreenLock": false,
     "AllowedDomainsForApps": "managedchrome.com,example.com",
     "MediaRouterCastAllowAllIPs": false,
     "NTPCustomBackgroundEnabled": true,
@@ -241,17 +221,12 @@
     ],
     "WebRestrictionsAuthority": "com.android.chrome.SupervisedUserProvider",
     "ComponentUpdatesEnabled": true,
-    "WifiSyncAndroidAllowed": true,
-    "InstantTetheringAllowed": true,
-    "PhoneHubNotificationsAllowed": true,
-    "NearbyShareAllowed": true,
     "BrowserNetworkTimeQueriesEnabled": true,
     "CloudPolicyOverridesPlatformPolicy": false,
     "CloudUserPolicyOverridesCloudMachinePolicy": false,
     "PromptForDownloadLocation": false,
     "IsolateOrigins": "https://a.example.com/,https://othersite.org/,https://[*.]corp.example.com",
     "SitePerProcess": true,
-    "SitePerProcessAndroid": true,
     "SharedArrayBufferUnrestrictedAccessAllowed": false,
     "SandboxExternalProtocolBlocked": true,
     "CrossOriginWebAssemblyModuleSharingEnabled": true,
@@ -288,12 +263,6 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "ChromeCleanupReportingEnabled": true,
-    "AllowedInputMethods": [
-        "xkb:us::eng"
-    ],
-    "ExtensionInstallEventLoggingEnabled": true,
-    "EnableSyncConsent": false,
     "PromotionalTabsEnabled": false,
     "SafeSitesFilterBehavior": 0,
     "OverrideSecurityRestrictionsOnInsecureOrigin": [
@@ -346,7 +315,6 @@
         }
     ],
     "EnterpriseHardwarePlatformAPIEnabled": true,
-    "ClientCertificateManagementAllowed": 1,
     "SignedHTTPExchangeEnabled": true,
     "ContextAwareAccessSignalsAllowlist": [
         "https://example1.com",
@@ -354,18 +322,7 @@
         "https://foo.example3.com/path"
     ],
     "UserFeedbackAllowed": true,
-    "DeviceScheduledReboot": {
-        "reboot_time": {
-            "hour": 22,
-            "minute": 30
-        },
-        "frequency": "WEEKLY",
-        "day_of_week": "TUESDAY",
-        "day_of_month": 11
-    },
     "CommandLineFlagSecurityWarningsEnabled": true,
-    "DevicePowerwashAllowed": true,
-    "CACertificateManagementAllowed": 1,
     "OnFileDownloadedEnterpriseConnector": [
         {
             "service_provider": "Google",
@@ -558,7 +515,6 @@
         }
     ],
     "EnterpriseRealTimeUrlCheckMode": 1,
-    "BrowserLegacyExtensionPointsBlocked": false,
     "HSTSPolicyBypassList": [
         "meet"
     ],
@@ -581,8 +537,6 @@
         "foo.example.com",
         "example.org"
     ],
-    "TosDialogBehavior": 2,
-    "DataLeakPreventionReportingEnabled": true,
     "WebRtcAllowLegacyTLSProtocols": false,
     "MediaRecommendationsEnabled": true,
     "BrowsingDataLifetime": [
@@ -670,30 +624,14 @@
     ],
     "BrowserThemeColor": "#FFFFFF",
     "WebRtcIPHandling": "default",
-    "DeviceAllowedBluetoothServices": [
-        "0x111E",
-        "0x110B",
-        "0x1203",
-        "0x1108",
-        "0x110C",
-        "0x110E",
-        "0x110F",
-        "0x1200"
-    ],
     "ExplicitlyAllowedNetworkPorts": [
         "10080"
     ],
-    "SuggestLogoutAfterClosingLastWindow": true,
     "ManagedAccountsSigninRestriction": "primary_account",
     "LockIconInAddressBarEnabled": true,
     "HttpsOnlyMode": "disallowed",
     "DesktopSharingHubEnabled": true,
-    "RestrictedManagedGuestSessionExtensionCleanupExemptList": [
-        "abcdefghijklmnopabcdefghijklmnop",
-        "bcdefghijklmnopabcdefghijklmnopa"
-    ],
     "ChromeAppsEnabled": true,
-    "GhostWindowEnabled": true,
     "WebSQLInThirdPartyContextEnabled": true,
     "AccessCodeCastEnabled": true,
     "AccessCodeCastDeviceDuration": 60,

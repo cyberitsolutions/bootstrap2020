@@ -1,22 +1,7 @@
 {
-    "EnableDeviceGranularReporting": true,
-    "ReportDeviceActivityTimes": false,
     "ReportDeviceAudioStatus": false,
     "ReportDeviceLocation": false,
-    "ReportDeviceNetworkInterfaces": false,
-    "ReportDeviceHardwareStatus": false,
-    "ReportDeviceCrashReportInfo": false,
-    "ReportDeviceBoardStatus": false,
-    "ReportDeviceTimezoneInfo": false,
-    "ReportDeviceBacklightInfo": false,
-    "ReportDevicePowerStatus": false,
-    "ReportDeviceSecurityStatus": false,
-    "ReportDeviceBluetoothInfo": false,
-    "ReportDeviceVpdInfo": false,
     "ReportDevicePrintJobs": false,
-    "ReportUploadFrequency": 10800000,
-    "HeartbeatFrequency": 180000,
-    "DeviceMetricsReportingEnabled": true,
     "ReportDeviceNetworkTelemetryCollectionRateMs": 600000,
     "ReportDeviceNetworkTelemetryEventCheckingRateMs": 60000
 }

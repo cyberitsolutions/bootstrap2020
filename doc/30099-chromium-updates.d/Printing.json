@@ -1,9 +1,7 @@
 {
     "PrintingEnabled": true,
     "CloudPrintProxyEnabled": true,
-    "PrintingAllowedDuplexModes": "duplex",
     "PrintingAllowedBackgroundGraphicsModes": "enabled",
-    "PrintingDuplexDefault": "long-edge",
     "PrintingBackgroundGraphicsDefault": "enabled",
     "PrintingPaperSizeDefault": {
         "name": "custom",
@@ -12,42 +10,11 @@
             "height": 297000
         }
     },
-    "PrintingMaxSheetsAllowed": 10,
     "CloudPrintSubmitEnabled": true,
     "DisablePrintPreview": false,
     "PrintHeaderFooter": false,
     "DefaultPrinterSelection": "{ \"kind\": \"cloud\", \"idPattern\": \".*public\", \"namePattern\": \".*Color\" }",
-    "Printers": [
-        "{ \"display_name\": \"Color Laser\", \"description\": \"The printer next to the water cooler.\", \"manufacturer\": \"Printer Manufacturer\", \"model\": \"Color Laser 2004\", \"uri\": \"ipps://print-server.intranet.example.com:443/ipp/cl2k4\", \"uuid\": \"1c395fdb-5d93-4904-b246-b2c046e79d12\", \"ppd_resource\": { \"effective_model\": \"Printer Manufacturer ColorLaser2k4\", \"autoconf\": false } }"
-    ],
-    "PrintersBulkConfiguration": {
-        "url": "https://example.com/printerpolicy",
-        "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef"
-    },
-    "PrintersBulkAccessMode": 1,
-    "PrintersBulkBlocklist": [
-        "id1",
-        "id2",
-        "id3"
-    ],
-    "PrintersBulkAllowlist": [
-        "id1",
-        "id2",
-        "id3"
-    ],
-    "DevicePrintersAccessMode": 1,
-    "DevicePrintersAllowlist": [
-        "id1",
-        "id2",
-        "id3"
-    ],
     "PrintPreviewUseSystemDefaultPrinter": false,
-    "UserPrintersAllowed": false,
-    "ExternalPrintServersAllowlist": [
-        "id1",
-        "id2",
-        "id3"
-    ],
     "DeviceExternalPrintServers": {
         "url": "https://example.com/printserverpolicy",
         "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef"
@@ -61,7 +28,6 @@
         "cloud",
         "privet"
     ],
-    "PrintRasterizationMode": 1,
     "PrintRasterizePdfDpi": 300,
     "PrintPdfAsImageDefault": true
 }

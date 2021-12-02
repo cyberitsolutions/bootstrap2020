@@ -1,36 +1,3 @@
 {
-    "ChromeOsReleaseChannelDelegated": false,
-    "DeviceAutoUpdateDisabled": true,
-    "DeviceAutoUpdateTimeRestrictions": [
-        {
-            "start": {
-                "day_of_week": "Monday",
-                "minutes": 50,
-                "hours": 3
-            },
-            "end": {
-                "day_of_week": "Thursday",
-                "minutes": 30,
-                "hours": 2
-            }
-        },
-        {
-            "start": {
-                "day_of_week": "Thursday",
-                "minutes": 30,
-                "hours": 3
-            },
-            "end": {
-                "day_of_week": "Sunday",
-                "minutes": 10,
-                "hours": 15
-            }
-        }
-    ],
-    "DeviceTargetVersionPrefix": "1412.",
-    "DeviceUpdateScatterFactor": 7200,
-    "DeviceUpdateHttpDownloadsEnabled": true,
-    "DeviceRollbackAllowedMilestones": 4,
-    "DeviceMinimumVersionAueMessage": "This device has reached auto update expiration. Kindly return it.",
     "DeviceChannelDowngradeBehavior": 1
 }
