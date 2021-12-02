@@ -1,0 +1,8 @@
+{
+    "ShowHomeButton": false,
+    "HomepageLocation": "https://prisonpc/",
+    "HomepageIsNewTabPage": true,
+    "NewTabPageLocation": "https://prisonpc/",
+    "RestoreOnStartup": 1,      // Restore the last session
+    "RestoreOnStartupURLs": ["https://prisonpc/"]
+}

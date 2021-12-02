@@ -1,0 +1,21 @@
+{
+    // Allow only basic (cleartext) over TLS (encryption).
+    // Disallow digest (insecure MD5), ntlm (insecure MD4), and negotiate (SPNEGO).
+    //
+    // This only affects unusual HTTP-level logins, e.g.
+    //    http://download.magnatune.com/membership/download3
+    // This has NO EFFECT WHATSOEVER on normal HTML-level logins, e.g.
+    //    https://lwn.net/Login/
+    "AuthSchemes": "basic",
+    "BasicAuthOverHttpEnabled": false
+
+    // Irrelevant as SPNEGO ∉ AuthSchemes.
+    // "DisableAuthNegotiateCnameLookup": false,
+    // "EnableAuthNegotiatePort": false,
+    // "AuthNegotiateDelegateByKdcPolicy": true,
+    // "AuthServerAllowlist": "*.example.com,example.com",
+    // "AuthNegotiateDelegateAllowlist": "foobar.example.com",
+    // "GSSAPILibraryName": "libgssapi_krb5.so.2",
+    // "AllowCrossOriginAuthPrompt": false,
+    // "NtlmV2Enabled": true
+}

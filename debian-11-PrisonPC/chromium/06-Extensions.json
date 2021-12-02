@@ -1,0 +1,10 @@
+// Block all extensions.
+{
+    "ExtensionInstallAllowlist": [],
+    "ExtensionInstallBlocklist": ["*"],
+    "ExtensionInstallForcelist": [],
+    "ExtensionInstallSources": [],
+    "ExtensionAllowedTypes": [],
+    "ExtensionSettings": {},
+    "BlockExternalExtensions": true
+}

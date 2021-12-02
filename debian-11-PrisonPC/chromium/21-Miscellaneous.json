@@ -1,0 +1,631 @@
+{
+    // There is no point Chromium checking if it's the default browser.
+    // It should be the only browser installed.
+    "DefaultBrowserSettingEnabled": false,
+
+    // We never worked out if this is better on or off.
+    // Not very important.
+    // "AlternateErrorPagesEnabled": true,
+    "SearchSuggestEnabled": false,
+    // We never set this.
+    // Is it better on or off?
+    // "NetworkPredictionOptions": 2,
+    // "WPADQuickCheckEnabled": true,
+
+    // This is a "enable old less-secure default because my corporate website needs it" option.
+    // We do not want it.
+    // "GloballyScopeHTTPAuthCacheEnabled": false,
+
+    // By default chromium tries to resolve unqualified domains with random strings.
+    // This is super annoying in the dnsmasq logs.
+    // Its looking for ISPs that change every NXDOMAIN to a <buy this domain from us> website.
+    // We do not do that, and (probably) the prison's ISP doesn't, either.
+    // For a related option in dnsmasq see --bogux-nxdomain.
+    "DNSInterceptionChecksEnabled": false,
+    "IntranetRedirectBehavior": 1,
+
+    // In Debian 9 we *INITIALLY* disabled saving password, and
+    // as part of that, forced Incognito Mode to be *on* (2).
+    // https://alloc.cyber.com.au/task/task.php?taskID=30846
+    // https://alloc.cyber.com.au/task/task.php?taskID=30099
+    // It was commented out later (meaning users can toggle it).
+    // Should we disable it outright?
+    // I think so, if only because it provides a false ILLUSION of anonymity.
+    // The actual URL logging works regardless of incognito mode.
+    "IncognitoModeAvailability": 1,
+    // Also commented-out without consideration as part of the
+    // "I *NEED* password saving nnggggh" thing.
+    // I think history should be allowed.
+    "SavingBrowserHistoryDisabled": false,
+    // History can still be erased with a "factory reset".
+    // They just can't be surgical about it.
+    // NOTE: this also affects download history... is that super annoying?
+    "AllowDeletingBrowserHistory": false,
+    // I do not understand this.
+    // In Debian 9, we did not set this.
+    // Something about chrome://history/journeys
+    // "HistoryClustersVisible": false,
+    "AllowDinosaurEasterEgg": false,
+    // Block "female presenting nipple" and other things that upset _American_ corporate culture.
+    // Only affects google/youtube search, so will only apply to staff.
+    "ForceGoogleSafeSearch": true,
+    "ForceYouTubeRestrict": 2,
+
+    // Do not send telemetry to google.
+    // The sending is almost certainly blocked anyway, so
+    // this really just reduces noise in squid logs.
+    "MetricsReportingEnabled": false,
+
+    // Inmates shouldn't be filling in these fields anyway...
+    "AutofillAddressEnabled": false,
+    "AutofillCreditCardEnabled": false,
+
+    // Nope, the opposite.
+    // Chromium is our preferred PDF reader.
+    "AlwaysOpenPdfExternally": false,
+
+    // I *think* this is about the google equivalent of
+    // C:\Users\alice\AppData\Roaming being synchronized between your
+    // phone and your desktop when they're both logged in to the same
+    // google account.
+    // Disable out of paranoia more than anything else.
+    "SyncDisabled": true,
+    // Shouldn't need to cherry-pick, since the previous rule covers all.
+    // "SyncTypesListDisabled": ["bookmarks", "readingList", "preferences", "passwords", "autofill", "themes", "typedUrls", "extensions", "apps", "tabs", "wifiConfigurations"],
+    "RoamingProfileSupportEnabled": false,
+    // "RoamingProfileLocation": "${roaming_app_data}\\chrome-profile",
+
+    // This is set implicitly by $XDG_CACHE_HOME.
+    // "DiskCacheDir": "${user_home}/Chrome_cache",
+    // "DiskCacheSize": 104857600,
+
+    // <twb> Do we care about https://chromeenterprise.google/policies/?policy=DownloadRestrictions
+    // <twb> "safe browsing" is blocked by squid
+    // <twb> so I think this really just prevents downloading files ending in .exe
+    // <mike> There's a lot more than '.exe'
+    // <twb> "* A dangerous file type (e.g. all SWF downloads and many EXE downloads)"
+    // <mike> I think it even blocks '.zip'
+    // <twb> "Only recommended for OUs/browsers/users that have a high tolerance for False Positives."
+    // <mike> Definitely blocks .jar
+    // <twb> mike: interesting
+    // <mike> It annoys me more than it helps me, but then I check things before it gets that far anyway
+    // <twb> https://source.chromium.org/search?q=dangerous.file.type (needs js)
+    // <twb> https://source.chromium.org/search?q=DANGER_TYPE_DANGEROUS&ss=chromium%2Fchromium%2Fsrc&start=11
+    // <twb> DANGER_TYPE_DANGEROUS_CONTENT is safe browsing
+    // <twb> DANGER_TYPE_DANGEROUS_[URL|FILE] is for non-safe-browsing cases
+    // <twb> I can't see where it actually SETS that
+    // "DownloadRestrictions": 4,
+
+    // We cannot say "~/Downloads", so just leave it unset.
+    // "DownloadDirectory": "/home/${user_name}/Downloads",
+
+    // 15:46 <twb> I don't understand AutoOpenFileTypes — List of file types that should be automatically opened on download SYNOPSIS: ["exe", "txt"]
+    // 15:47 <twb> Does that mean that chromium -- which can read .txt files -- wont' just read them, but will still "download" them to a local file, then call xdg-open on them, which might end up opening them in chromium anyway
+    // 15:47 <twb> I think that's what it means
+    // 15:47 <twb> I'll leave that for now
+    // "AutoOpenFileTypes": ["exe", "txt"],
+    // "AutoOpenAllowedForURLs": [
+    //     "example.com",
+    //     "https://ssl.server.com",
+    //     "hosting.com/good_path",
+    //     "https://server:8080/path",
+    //     ".exact.hostname.com"
+    // ],
+
+    // The UPMC replacement will set this, elsewhere???
+    // "AutoLaunchProtocolsFromOrigins": [
+    //     {"protocol": "spotify",
+    //      "allowed_origins": [
+    //          "example.com",
+    //          "http://www.example.com:8080"]},
+    //     {"protocol": "teams",
+    //      "allowed_origins": [
+    //          "https://example.com",
+    //          "https://.mail.example.com"]}],
+
+    // This is set in 00-Proxy.json because it's
+    // 1) super important; and
+    // 2) handy to chery-pick out during testing.
+    // "ProxySettings": {
+    //     "ProxyMode": "fixed_servers",
+    //     "ProxyServer": "123.123.123.123:8080",
+    //     "ProxyBypassList": "https://www.example1.com,https://www.example2.com,https://internalsite/"
+    // },
+
+
+    // Hide "experimental features" from the toolbar(?!)
+    // Does not block chrome://flags nor other places.
+    "BrowserLabsEnabled": false,
+
+    // Inmates DEFINITELY should not have developer tools!
+    "DeveloperToolsAvailability": 2,
+
+    // This is basically a remote control for selenium-type things.
+    "RemoteDebuggingAllowed": false,
+    "HeadlessMode": 2,
+    "BlockThirdPartyCookies": true,
+    // Don't know, but sounds slightly scary.
+    "DefaultSearchProviderContextMenuAccessAllowed": false,
+    "LensRegionSearchEnabled": true,
+
+    // Requires chromium 92+, so not tested yet...
+    "InsecurePrivateNetworkRequestsAllowed": false,
+    "InsecurePrivateNetworkRequestsAllowedForUrls": [],
+
+    "Disable3DAPIs": true,
+    // Not interesting, because
+    // desktops are not enrolled into Google CloudDPC stuff.
+    // "PolicyRefreshRate": 3600000,
+    // "MaxInvalidationFetchDelay": 10000,
+
+    // Not intesting?  Only valid for Chromium 88-92.
+    // "TargetBlankImpliesNoOpener": false,
+
+    // Blocked by squid anyway.
+    "TranslateEnabled": false,
+
+    // In Debian 9 we blocked this.
+    // In Debian 11 we seed ManagedBookmarks, do leave up to user???
+    // "BookmarkBarEnabled": false,
+    // In Debian 9 we blocked this BECAUSE the bookmarks list needed chrome://bookmarks,
+    // which was blocked by URLBlocklist.  Should we unblock both in Debian 11??
+    // "EditBookmarksEnabled": false,
+
+    // Google apps are blocked in squid anyway.
+    "ShowAppsShortcutInBookmarkBar": false,
+
+    // We can't really get away with blocking File > Save, especially for PDFs.
+    // "AllowFileSelectionDialogs": true,
+
+    // Not interesting.
+    "SecurityKeyPermitAttestation": [],
+    "U2fSecurityKeyApiEnabled": false,
+
+    // Users can't have any other browsers, so import is not interesting.
+    "ImportBookmarks": false,
+    "ImportHistory": false,
+    "ImportHomepage": false,
+    "ImportSearchEngine": false,
+    "ImportSavedPasswords": false,
+    "ImportAutofillFormData": true,
+
+    // FIXME: this sounds kind of important!
+    //     "The value should be lower than 100 and higher than 6."
+    //     "Lower below the default [32] at your own risk."
+    // We never tested this AFAIK.
+    // Leaving at the default for now.
+    // "MaxConnectionsPerProxy": 32,
+
+    // This is set in 00-URLs.json because it's
+    // 1) super important; and
+    // 2) handy to chery-pick out during testing.
+    // "URLBlocklist": ["*"],
+    // "URLAllowlist": ["example.com", "https://ssl.server.com", "https://server:8080/path", ".exact.hostname.com"],
+
+    // I don't fully understand this one.
+    // I think about which value "wins" in cases like
+    //    "00.json" has {"A": true}, and
+    //    "01.json" has {"A": false}.
+    // "PolicyAtomicGroupsEnabled": true,
+
+    // I think this would allow you to do dropins that append (instead of replacing) keys.
+    // For example,
+    //     00.json:  {"PolicyListMultipleSourceMergeList": ["URLAllowlist", "URLBlocklist"]}
+    //     01.json:  {"URLAllowlist": ["chrome://*"]}
+    //     02.json:  {"URLAllowlist": ["https://*"]}
+    //
+    // I THINK ends up meaning "URLAllowlist": ["chrome://*", "https://*"].
+    // Leaving blank for now.
+    // "PolicyListMultipleSourceMergeList": ["ExtensionInstallAllowlist", "ExtensionInstallBlocklist"],
+    // "PolicyDictionaryMultipleSourceMergeList": ["ExtensionSettings"],
+
+    // Not relevant as our devices/users aren't enrolled into google MDM.
+    // "CloudUserPolicyMerge": true,
+
+    // I don't think there are any of these we care about as at Dec 2021.
+    // "EnableExperimentalPolicies": [],
+
+    // OCSP/CRL doesn't work very well and is probably blocked by our squid rules anyway.
+    // In Chromium 19+ they rely on cert pinning (fed by certificate transparency) by default.
+    // This is sensible.
+    // "EnableOnlineRevocationChecks": false,
+    // "RequireOnlineRevocationChecksForLocalAnchors": false,
+
+    // Not supported after Chromium 83.
+    // "BuiltinCertificateVerifierEnabled": false,
+
+    // Turning Ephemeral on means website login passwords (e.g. prayer)
+    // cannot be saved between chromium sessions.
+    // Apparently everyone hated that.
+    // https://alloc.cyber.com.au/task/task.php?taskID=30846
+    // https://alloc.cyber.com.au/task/task.php?taskID=30099
+    // "ForceEphemeralProfiles": true,
+
+    // I don't understand this, but
+    // we do not use extensions anyway, so I think it is moot.
+    // "KioskCRXManifestUpdateURLIgnored": true,
+
+    // This means "closing chrome doesn't stop chrome".
+    // I don't think XFCE can do the "start chrome on desktop login" part.
+    // I don't think we care about this.
+    // "BackgroundModeEnabled": true,
+
+    // Not interesting as users aren't logged into google.
+    // "RestrictSigninToPattern": ".*@example\\.com",
+
+    // This is a good thing.
+    // If Google goes "hey this cert is shit", the
+    // user cannot click "I accept the risks, continue".
+    "DisableSafeBrowsingProceedAnyway": true,
+    "SSLErrorOverrideAllowed": false,
+    // "SSLErrorOverrideAllowedForOrigins": ["https://www.example.com", "[*.]example.edu"],
+
+    // This disables an ONLINE spell checker, which
+    // squid probably blocks anyway.
+    // Local spell checking (using .bdic files) is governed by SpellcheckEnabled.
+    "SpellCheckServiceEnabled": false,
+
+    // No video conferencing.
+    "AudioCaptureAllowed": false,
+    "AudioCaptureAllowedUrls": [],
+    "VideoCaptureAllowed": false,
+    "VideoCaptureAllowedUrls": [],
+
+    // Inmates were making "highlight montages" of the nude scenes from films.
+    // Therefore screenshot support is banned from all apps.  --twb, Jan 2014
+    "DisableScreenshots": true,
+
+    // DNS resolution should be consistent between Chromium and everything else.
+    "BuiltInDnsClientEnabled": true,
+    "DnsOverHttpsMode": "off",
+    // "DnsOverHttpsTemplates": "https://dns.example.net/dns-query{?dns}",
+    // "AdditionalDnsQueryTypesEnabled": true,
+
+    // Fullscreen hides taskbar, making it easier to have a "naughty"
+    // window that the staff can't easily spot. --twb, Jan 2014
+    // https://en.wikipedia.org/wiki/Boss_key#Alternatives
+    "FullscreenAllowed": false,
+
+    // Not interesting as users aren't logged into google.
+    "SharedClipboardEnabled": false,
+
+    // Don't offer a "web store" which I guess is basically play.google.com?
+    "HideWebStoreIcon": true,
+
+    // This is for A/B testing of changes to this file.
+    // It is not interesting to us.
+    // "VariationsRestrictParameter": "restricted",
+    // "ChromeVariations": 1,
+
+    // Created dynamically from https://PrisonPC/ManagedBookmarks after user login.
+    // "ManagedBookmarks": [
+    //     {"toplevel_name": "My managed bookmarks folder"},
+    //     {"name": "Google", "url": "google.com"},
+    //     {"name": "Youtube", "url": "youtube.com"},
+    //     {"name": "Chrome links",
+    //      "children": [
+    //             {"name": "Chromium", "url": "chromium.org"},
+    //             {"name": "Chromium Developers", "url": "dev.chromium.org"}]}],
+
+    // Users aren't logged into google;
+    // we don't want chromium to even OFFER that stuff if we can hide it.
+    "BrowserGuestModeEnabled": false,
+    "BrowserGuestModeEnforced": false,
+    "BrowserAddPersonEnabled": false,
+    "BrowserSignin": 0,
+    // This is a special kind of AddPerson/GuestMode that only applies to Chrome-inside-ChromeOS???
+    "LacrosSecondaryProfilesAllowed": false,
+
+    // The default behaviour is better than the override we can set.
+    // "SSLVersionMin": "tls1.2",
+
+    // The default behaviour is better than the override we can set.
+    // "CECPQ2Enabled": true,
+
+    // We don't have to do this because it's turned on implicitly for our CA because it's installed locally.
+    // "CertificateTransparencyEnforcementDisabledForUrls": ["example.com", ".example.com"],
+    // "CertificateTransparencyEnforcementDisabledForCas": ["sha256/AAAAAAAAAAAAAAAAAAAAAA==", "sha256//////////////////////w=="],
+    // "CertificateTransparencyEnforcementDisabledForLegacyCas": ["sha256/AAAAAAAAAAAAAAAAAAAAAA==", "sha256//////////////////////w=="],
+
+    // Not spoken by squid anyway.
+    "QuicAllowed": false,
+
+    // I see no reason to block this.
+    "HardwareAccelerationModeEnabled": true,
+
+    // I see no reason to enable this.
+    "SuppressUnsupportedOSWarning": false,
+
+    // I think this is Shift+Esc to open the in-browser task manager for browser threads.
+    // I think it lets the user force-quit browser tabs.
+    // I DON'T think it lets the user force-quit non-browser processes/threads.
+    // Users can always close all of chromium.
+    // I don't think users really need this.
+    // This was disabled in Debian 9 PrisonPC also.
+    "TaskManagerEndProcessEnabled": false,
+
+    // Not interesting as users aren't logged into google.
+    // "AllowedDomainsForApps": "managedchrome.com,example.com",
+
+    // "New Tab page won't allow users to customize the background."
+    "NTPCustomBackgroundEnabled": false,
+    // This is chrome://newtab (NOT Network Time Protocol).
+    // I think "card" basically means "recently used websites".
+    "NTPCardsVisible": false,
+
+    // This is about the SOURCE port on the local computer.
+    // We use stateful firewalls, so this is not interesting.
+    // "WebRtcUdpPortRange": "10000-11999",
+
+    // I don't know what this is.
+    "WebRtcLocalIpsAllowedUrls": [],
+
+    // I don't know what tihs is.
+    // "WebRestrictionsAuthority": "com.android.chrome.SupervisedUserProvider",
+
+    // This tells chrome://components "don't try to download first-party stuff from google".
+    // This stuff is mostly important things!
+    //   * spelling dictionaries (wavy-red-underline support)
+    //   * a list of weak passwords
+    //   * a list of dodgy websites
+    //   * heuristics to guess which text fields are for credit card numbers
+    // AFAICT Chromium DOES NOT SUPPORT getting this content preloaded by the sysadmin!
+    // AFAICT Debian DOES NOT PROVIDE this content, i.e. it is not vetted by Debian QA or Debian Security.
+    // In Debian 9, we rolled a hack for spelling, and just let the fail.
+    // We ought to see if we can generalize that hack for ALL chrome://components...
+    //
+    // https://www.researchgate.net/publication/349979628_Web_Browser_Privacy_What_Do_Browsers_Say_When_They_Phone_Home
+    // https://www.researchgate.net/publication/349979628_Web_Browser_Privacy_What_Do_Browsers_Say_When_They_Phone_Home/fulltext/604a2ba992851c1bd4df939f/Web-Browser-Privacy-What-Do-Browsers-Say-When-They-Phone-Home.pdf
+    // FIXME FIXME FIXME // "ComponentUpdatesEnabled": true,
+
+    // By default Chromium does something like htpdate, to Google servers.
+    // We already have regular, system-wide NTP.
+    // Squid probably blocks this anyway.
+    "BrowserNetworkTimeQueriesEnabled": false,
+
+    // Not interesting as users aren't logged into google.
+    // "CloudPolicyOverridesPlatformPolicy": false,
+    // "CloudUserPolicyOverridesCloudMachinePolicy": false,
+
+    // Not an interesting thing to lock.
+    // "PromptForDownloadLocation": false,
+
+    // Prevent users from turning OFF this security feature.
+    // "all sites are already isolated by default on Desktop platforms"
+    // "IsolateOrigins": "https://a.example.com/,https://othersite.org/,https://[*.]corp.example.com",
+    "SitePerProcess": true,
+
+    // These are "re-enable insecure old behaviour?" options.  Force the secure defaults.
+    "SharedArrayBufferUnrestrictedAccessAllowed": false,
+    "SandboxExternalProtocolBlocked": true,
+    "CrossOriginWebAssemblyModuleSharingEnabled": false,
+    "DisplayCapturePermissionsPolicyEnabled": true,
+    "AbusiveExperienceInterventionEnforce": true,
+    "OverrideSecurityRestrictionsOnInsecureOrigin": [],
+    "EnterpriseHardwarePlatformAPIEnabled": false,
+    "CommandLineFlagSecurityWarningsEnabled": true,
+    "HSTSPolicyBypassList": [],
+    "AllowSyncXHRInPageDismissal": false,
+    "InsecureFormsWarningsEnabled": true,
+    "LookalikeWarningAllowlistDomains": [],
+    "WebRtcAllowLegacyTLSProtocols": false,
+    "SuppressDifferentOriginSubframeDialogs": true,
+    "ExplicitlyAllowedNetworkPorts": [],
+    "WebSQLInThirdPartyContextEnabled": false,
+    "CORSNonWildcardRequestHeadersSupport": true,
+
+    // We cannot set this because there is no variable for $HOME.
+    // It's not interesting to set, though, so meh.
+    // "DefaultDownloadDirectory": "/home/${user_name}/Downloads",
+
+    // We don't care about these.
+    // "SpellcheckLanguage": ["en-AU"],
+    // "SpellcheckLanguageBlocklist": ["en-GB", "en-US"],
+    // "SpellcheckEnabled": false,
+
+    // 2=BlockAds (except Google's ads, because this is Google's browser ☹)
+    "AdsSettingForIntrusiveAdsSites": 2,
+
+    // This is basically an app-specific https://packages.debian.org/stable/needrestart-session
+    // We do not care because the way we build images, chromium CAN'T update without a full reboot.
+    // "RelaunchNotification": 1,
+    // "RelaunchNotificationPeriod": 604800000,
+    // "RelaunchWindow": {"entries": [{
+    //     "start": {"hour": 2, "minute": 15},
+    //     "duration_mins": 240}]},
+
+    // Not interesting as users aren't logged into google.
+    // "CloudManagementEnrollmentToken": "37185d02-e055-11e7-80c1-9a214cf093ae",
+    // "CloudManagementEnrollmentMandatory": true,
+
+    // Off by default; I don't think we care?
+    // It's about auto-playing videos inside a webpage, e.g.
+    //   https://store.steampowered.com/app/220
+    // "AutoplayAllowed": true,
+    // "AutoplayAllowlist": ["https://www.example.com", "[*.]example.edu"],
+
+    // I don't know what this is.   Maybe this?
+    //     https://developers.google.com/gmail/promotab/
+    // In any case, I'm pretty sure it means "google ads".
+    "PromotionalTabsEnabled": false,
+
+    // I think this means "block porn?"
+    // Where does the blocklist come from?
+    // We never set this setting in Debian 9, though it existed back then.
+    // As a staff user, it doesn't block https://porn.com/.
+    // I think it needs SafeBrowsing, and doesn't say so, though
+    // e.g. AdsSettingForIntrusiveAdsSites DOES explicitly say so.
+    "SafeSitesFilterBehavior": 1,
+
+    // "Enable google spyware telemetry?" No.
+    "UrlKeyedAnonymizedDataCollectionEnabled": false,
+    "WebRtcEventLogCollectionAllowed": false,
+
+    // Not interesting; we do not use client certificates.
+    // "CoalesceH2ConnectionsWithClientCertificatesForHosts": ["example.com"],
+
+    // Not interesting; we have the same policy.json for all sites.
+    // "ManagedConfigurationPerOrigin": [],
+
+    // This seems like a thing that is not cool and nobody cares about.
+    // Since Squid does SSL inspection of inmates, this will NEVER affect inmates.
+    // It might affect staff, I guess?
+    "SignedHTTPExchangeEnabled": false,
+
+    // This is for "remote attestation" stuff, i.e.
+    //   Hi netflix, this is the browser.
+    //   Here is evidence my "owner" has definitely not put a recording device in me.
+    //   Therefore it is safe to transmit high definition video to me.
+    // We give ZERO SHITS about this.
+    "ContextAwareAccessSignalsAllowlist": [],
+
+    // Inmates cannot write bug reports to google.
+    // (Menu > Help > Report an Issue)
+    "UserFeedbackAllowed": false,
+
+    // I have no idea what the fuck these are, but
+    // I'm 99% sure they do not apply to us.
+    // Also: "can only be set from the Google Admin console"
+    // "OnFileDownloadedEnterpriseConnector": [],
+    // "OnFileAttachedEnterpriseConnector": [],
+    // "OnBulkDataEntryEnterpriseConnector": [],
+    // "OnSecurityEventEnterpriseConnector": [],
+    // "SendDownloadToCloudEnterpriseConnector": [],
+    // This reports every URL to google (i.e. spyware/telemetry).
+    // Disable (0)!
+    // Also: "can only be set from the Google Admin console"
+    "EnterpriseRealTimeUrlCheckMode": 0,
+
+    // "If [true], the audio process will run sandboxed." (i.e. more secure)
+    // "default configuration [...] may differ per platform."
+    "AudioSandboxEnabled": true,
+
+    // "If this policy is set to True or not set, when an external protocol confirmation is shown, the user can select "Always allow" to skip all future confirmation prompts for the protocol on this site."
+    // That seems like a reasonable thing to allow.
+    // "ExternalProtocolDialogShowAlwaysOpenCheckbox": true,
+
+    // Not interesting as users aren't logged into google (and are not supposed to have smartphones).
+    "ClickToCallEnabled": false,
+
+    // Chromium can read a ~/.config/chromium written by an older chromium.
+    // But it will FLAT OUT REFUSE to read a config written by a newer chromium.
+    // To cover downgrade cases, anytime it detects a version bump, it will snapshot ~/.config/chromium.
+    // This is likely to bite us if we have e.g. Debian 11 and Debian 9 SOEs running concurrently for a while.
+    // The default is to keep up to 3 snapshots, which sounds like a reasonable limit for us.
+    // "UserDataSnapshotRetentionLimit": 3,
+
+    // I *think* setting this to 0 (RegularOnly) will essentially brick Incognito and Guest modes.
+    // Because we use HTTPS basic auth for e.g. squid proxy, and this will (I think) cause it to re-prompt on every single URL.
+    // UPDATE: oh wait, the default is 0 anyway in chromium 81+...
+    "AmbientAuthenticationInPrivateModesEnabled": 0,
+
+    // Website cannot ask browser "do you ALREADY know the user's credit card details?"
+    "PaymentMethodQueryEnabled": false,
+
+    // Chromium is allowed to use libnotify to make xfce4-notifyd popups.
+    // (This is on by default anyway.)
+    "AllowSystemNotifications": true,
+
+    // This is "do extra spyware/telemetry?"
+    // I think it only fires for users logged into google, and is off by default.
+    "AdvancedProtectionAllowed": false,
+
+    // This is a useful thing and I see no reason to block it.
+    // "ScrollToTextFragmentEnabled": false,
+
+    // This does NOT apply to <img alt="funny cat" src=https://example.com/cat.jpg>.
+    // This applies to <img src=https://example.com/cat.jpg> with no alt=.
+    // If you enable this, the browser will say "google AI, please describe https://example.com/cat.jpg" and add an alt=.
+    // i.e. it relies on real-time spyware/telemetry to Google.
+    "AccessibilityImageLabelsEnabled": false,
+
+    // When true, slow down js on tabs that are ignored for at least 5 minutes.
+    // This is a Good Thing, but OTOH there's a SMALL risk of it annoying someone, and
+    // WE aren't paying the power bills.  So I guess ignore for now?
+    // Was not set to anything on Debian 9 PrisonPC SOEs.
+    // "IntensiveWakeUpThrottlingEnabled": true,
+
+    // This looks like something that will annoy a SHITLOAD of people.
+    // But WE do not care about it right now.
+    // "UserAgentClientHintsGREASEUpdateEnabled": true,
+
+    // Meh.  Don't care.
+    // "ShowFullUrlsInAddressBar": false,
+
+    // PROBABLY has no effect because users aren't logged into google, but
+    // the documentation is not clear.  Disable anyway because probably telemetry spyware.
+    "MediaRecommendationsEnabled": false,
+
+    // We can use this to force users to erase old browsing history.
+    // This is not interesting for desktops.
+    // It might be interesting for shared tablets.
+    // "BrowsingDataLifetime": [{"time_to_live_in_hours": 24, "data_types": ["browsing_history"]},
+    //                          {"time_to_live_in_hours": 12, "data_types": ["password_signin", "autofill"]}],
+
+    // I don't think we care about this.
+    // "ClearBrowsingDataOnExitList": ["browsing_history",
+    //                                 "download_history",
+    //                                 "cookies_and_other_site_data",
+    //                                 "cached_images_and_files",
+    //                                 "password_signin",
+    //                                 "autofill",
+    //                                 "site_settings",
+    //                                 "hosted_app_data"],
+
+    // Don't let inmates have multiple profiles.
+    // We only allow one, "Default".
+    // The en-AU-9-0.bdic hack is hard-coded to expect that.
+    // Possibly other reasons, too.
+    "ProfilePickerOnStartupAvailability": 1,
+
+    // Not interesting as users aren't logged into google.
+    // "SigninInterceptionEnabled": true,
+
+    // I don't know what this is, but it sounds boring.
+    // "FetchKeepaliveDurationSecondsOnShutdown": 1,
+
+    // chromium is (was?) ignoring $LANG and assuming EN-US.
+    // Does putting EN-AU first here mitigate that?
+    "ForcedLanguages": ["en-AU", "en-GB", "en-US"],
+
+    // Just use the GTK theme's colors, mofo.
+    // Inmate can override this; we don't really care.
+    // "BrowserThemeColor": "#FFFFFF",
+
+    // Do we care about this?
+    // "disable_non_proxied_udp" sounds like it makes RTC "more work-y", but
+    // I'm 90% sure we never want RTC to work anyway, so... meh?
+    // "WebRtcIPHandling": "default",
+
+    // This can say "your main chrome account MUST be tied to google".
+    // This cannot say "you are not allowed to log into google".
+    // "ManagedAccountsSigninRestriction": "primary_account",
+
+    "LockIconInAddressBarEnabled": false,  // "true" means LEGACY BEHAVIOUR.
+
+    // This is the built-in equivalent of EASE
+    // (Encrypt All Sites Eligible) from EFF's webext-https-everywhere.
+    // From personal experience, "force_enabled" will cause too many complaints.
+    // FIXME: unless maybe you can opt-out for specific sites still???
+    "HttpsOnlyMode": "allowed",
+
+    // I don't know what this is.
+    // I *think* this is where instead of Right Click > Copy,
+    // you have to click Right Click > Share > Share to Clipboard.
+    // It is only in Chromium 93+, which is not in Debian 11 yet.
+    "DesktopSharingHubEnabled": false,
+
+    // NOTE: as at chromium 90, this DOES NOT break chrome://apps.
+    //       This only break (I think) "written specially for chrome" apps???
+    //       Which are banned from June 2021 in non-ChOS Chrome.
+    "ChromeAppsEnabled": false
+
+    // These are ChromeOS features that are not supported yet.
+    // As a result, the "supported_on" is ABSENT rather than EMPTY.
+    // This causes our policy analysis script to mistakenly think they apply to us.
+    // I'm 90% sure they don't.
+    // https://chromeunboxed.com/first-look-chrome-os-virtual-desk-templates
+    // "DeskTemplatesEnabled": true,
+    // "PreconfiguredDeskTemplates": {},
+    // "FastPairEnabled": true,
+}

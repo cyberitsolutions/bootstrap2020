@@ -1,0 +1,10 @@
+// I'm pretty sure this is an obsolete thing we never want and will never see.
+// Block it just to be sure.
+// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging
+// https://developer.chrome.com/docs/apps/nativeMessaging/
+// https://blog.chromium.org/2020/08/changes-to-chrome-app-support-timeline.html
+{
+    "NativeMessagingBlocklist": ["*"],
+    "NativeMessagingAllowlist": [],
+    "NativeMessagingUserLevelHosts": false
+}
