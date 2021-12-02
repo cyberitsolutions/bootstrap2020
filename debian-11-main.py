@@ -373,6 +373,11 @@ with tempfile.TemporaryDirectory() as td:
                '    chromium chromium-sandbox chromium-l10n'
                '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
                '    libreoffice-gtk3'
+               '    libreoffice-help-en-gb libreoffice-l10n-en-gb'
+               '    libreoffice-lightproof-en'
+               '    hunspell-en-au hunspell-en-gb hunspell-en-us'
+               '    hyphen-en-gb hyphen-en-us'
+               '    mythes-en-us'
                '    vlc'
                f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
                ] if args.apps else []),
