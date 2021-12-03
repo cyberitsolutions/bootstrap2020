@@ -7,7 +7,15 @@
     // This has NO EFFECT WHATSOEVER on normal HTML-level logins, e.g.
     //    https://lwn.net/Login/
     "AuthSchemes": "basic",
-    "BasicAuthOverHttpEnabled": false
+    "BasicAuthOverHttpEnabled": false,
+
+    // UPDATE: as at Debian 9, squid cannot concurrently do BOTH
+    //           1) do SSL inspection; and
+    //           2) encrypt the browser-to-proxy connection.
+    //         Since #1 is mission-critical we forego #2.
+    //         As a result, the browser must send the user's proxy password to squid unencrypted.
+    //         Therefore, we must allow BasicAuthOverHttp.
+    "BasicAuthOverHttpEnabled": true
 
     // Irrelevant as SPNEGO ∉ AuthSchemes.
     // "DisableAuthNegotiateCnameLookup": false,
