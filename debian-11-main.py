@@ -361,8 +361,7 @@ with tempfile.TemporaryDirectory() as td:
             '    ir-keytable'   # infrared TV remote control
             '    xfce4-xkb-plugin '  # basic foreign language input (e.g. Russian, but not Japanese)
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
-            '    gvfs'               # Thunar trash://
-            '    thunar-volman'      # Thunar DVD autoplay & eject
+            '    gvfs thunar-volman eject'  # Thunar trash://, DVD autoplay, DVD eject
             '    xfce4-notifyd '     # xfce4-panel notification popups
             # FIXME: use plocate (not mlocate) once PrisonPC master server upgrades!
             '    catfish mlocate xfce4-places-plugin'  # "Find Files" tool
