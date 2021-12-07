@@ -51,7 +51,11 @@ def popup_wait_crash(message: str) -> None:
 # INITIAL QUERY GOES TO /session/login/<USER>
 # In Debian 9, this HTTP query ran in Xsession as the inmate user.
 try:
-    with urllib.request.urlopen(f'https://ppc-services/session/login/{args.user}') as f:
+    with urllib.request.urlopen(
+            urllib.request.Request(
+                url=f'https://ppc-services/session/login/{args.user}',
+                # Work around a paranoia check in PrisonPC 20.09.
+                headers={'User-Agent': 'curl (but really, urllib)'})) as f:
         response_text = f.read().decode()
     print('pete said', response_text, file=sys.stderr, flush=True)  # for syslog
     if response_text != 'OK':
