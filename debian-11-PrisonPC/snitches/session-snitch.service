@@ -1,0 +1,16 @@
+# NOTE: this unit is started by /etc/X11/xdm/Xstartup,
+#       which is why it has on Install.WantedBy.
+[Service]
+Type=notify
+ExecStart=PrisonPC-session-snitch
+
+# If this unit does not sd_notify('WATCHDOG=1')
+# AT LEAST once every 60s, it has hung (failed).
+# Note that this is UNCONNECTED to hardware watchdogs.
+# If PID=1 hangs, this will not trigger.
+WatchdogSec=60
+
+# If this unit fails, reboot the whole system.
+# We use "immediate" because if the rootfs disappears,
+# systemd cannot (always) do a regular clean reboot.
+FailureAction=reboot-immediate

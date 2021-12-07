@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 import subprocess
 
 __doc__ == """
@@ -12,6 +13,16 @@ FIXME: error messages from this script don't end up in journal??
 
 # Close the AUP window that Xsetup started.
 subprocess.check_call(['systemctl', 'stop', 'acceptable-use-policy'])
+
+# Start the session notification daemon.
+subprocess.check_call([
+    'systemctl', 'set-property', '--runtime', 'bootstrap2020-session-snitch.service',
+    f'Environment=USER={os.environ["USER"]}',
+    # FIXME: are these two actually needed?
+    f'Environment=DISPLAY={os.environ["DISPLAY"]}',
+    f'Environment=XAUTHORITY={os.environ["XAUTHORITY"]}'])
+subprocess.check_call([
+    'systemctl', 'start', 'bootstrap2020-session-snitch'])
 
 
 # Call the upstream script.
