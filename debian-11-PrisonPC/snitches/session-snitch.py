@@ -42,42 +42,49 @@ parser.add_argument('user')
 args = parser.parse_args()
 
 
-def ask_pete() -> str:
-    while True:
-        try:
-            with urllib.request.urlopen(f'https://ppc-services/session/check/{args.user}') as f:
-                response_text = f.read().decode()
-                print('pete said', response_text, file=sys.stderr, flush=True)  # for syslog
-            return response_text
-        except urllib.error.HTTPError:
-            # Sometimes pete won't answer due to a transient outage.
-            # In such cases, do not immediately force a reboot.
-            # We will just retry forever, every ten seconds.
-            # If we fail too many times in a row, then
-            # systemd WatchdogSec=60s will force a reboot.
-            print('pete did not answer, will try again later', file=sys.stderr, flush=True)  # for syslog
-            time.sleep(10)
+def popup_wait_crash(message: str) -> None:
+    subprocess.run(['root-notify-send'], check=True, text=True, input=message)
+    time.sleep(10)              # let them read the popup
+    exit(os.EX_ERR)             # trigger OnFailure=reboot-immediate
 
 
+# INITIAL QUERY GOES TO /session/login/<USER>
+# In Debian 9, this HTTP query ran in Xsession as the inmate user.
+try:
+    with urllib.request.urlopen(f'https://ppc-services/session/login/{args.user}') as f:
+        response_text = f.read().decode()
+    print('pete said', response_text, file=sys.stderr, flush=True)  # for syslog
+    if response_text != 'OK':
+        popup_wait_crash(
+            f'This computer is restricted to {response_text} members; you ({args.user}) are not a member.')
+except urllib.error.HTTPError:
+    print('pete did not answer, giving up', file=sys.stderr, flush=True)  # for syslog
+    popup_wait_crash(f'Group verification failed')
+
+
+# SUBSEQUENT QUERIES GO TO /session/check/<USER>
 print(f'starting for {args.user}', file=sys.stderr, flush=True)  # for syslog
-systemd.daemon.notify('READY=1')
+systemd.daemon.notify('READY=1')  # tell systemd to start WatchdogSec= countdown
 while True:
-    response_text = ask_pete()
-    if response_text == 'OK':
-        systemd.daemon.notify('WATCHDOG=1')
-    else:
-        # Tell the end user.
-        subprocess.run(
-            ['root-notify-send'],
-            check=False,    # even if it fails, keep looping
-            text=True,
-            input=(response_text[len('ERR '):]
-                   if response_text.startswith('ERR ') else
-                   response_text))
-        time.sleep(10)      # let them read the popup
-        # Crash, so systemd forces an immediate reboot.
-        exit(os.EX_ERR)
     time.sleep(10)
+    try:
+        with urllib.request.urlopen(f'https://ppc-services/session/check/{args.user}') as f:
+            response_text = f.read().decode()
+        print('pete said', response_text, file=sys.stderr, flush=True)  # for syslog
+        if response_text == 'OK':
+            systemd.daemon.notify('WATCHDOG=1')  # reset WatchdogSec= countdown
+        else:
+            # Current login is not allowed, so tell the user.
+            if response_text.startswith('ERR '):
+                response_text = response_text[len('ERR '):]  # yuk
+            popup_wait_crash(response_text)
+    except urllib.error.HTTPError:
+        # Sometimes pete won't answer due to a transient outage.
+        # In such cases, do not immediately reboot without warning!
+        # We will just retry forever, every ten seconds.
+        # If we fail too many times in a row (6), then
+        # systemd WatchdogSec=60s will reboot without warning.
+        print('pete did not answer, so will not pet watchdog', file=sys.stderr, flush=True)  # for syslog
 
 
 # 10:16 <twb> I am upgrading a pre-systemd system.
