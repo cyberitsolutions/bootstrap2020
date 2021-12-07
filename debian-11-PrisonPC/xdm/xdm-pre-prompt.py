@@ -47,6 +47,7 @@ subprocess.check_call([
 
 subprocess.check_call([
     'systemd-run',
+    '--collect',
     '--unit=x11vnc.service',
     '--property=PartOf=xdm.service',
     # x11vnc double-forks, because
