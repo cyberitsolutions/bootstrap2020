@@ -101,6 +101,8 @@ def obfuscate_executable(src: pathlib.Path, shebang) -> None:
 # Obfuscate binaries in $PATH.
 executable_dir_paths = {
     pathlib.Path(p) for p in {
+        '/etc/X11/xdm', '/lib/systemd',  # not really $PATH, but do it anyway
+
         '/usr/local/bin', '/usr/bin', '/bin',
         '/usr/local/sbin', '/usr/sbin', '/sbin',
         '/usr/games'}}
