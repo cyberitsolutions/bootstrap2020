@@ -2,7 +2,7 @@
 #       which is why it has on Install.WantedBy.
 [Service]
 Type=notify
-ExecStart=PrisonPC-session-snitch %i
+ExecStart=bootstrap2020-session-snitch %i
 
 # If this unit does not sd_notify('WATCHDOG=1')
 # AT LEAST once every 60s, it has hung (failed).
