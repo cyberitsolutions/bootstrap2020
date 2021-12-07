@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import argparse
 import os
 import subprocess
 import sys
@@ -34,11 +35,17 @@ Ref. /etc/modprobe.d/watchdog.conf (wdt defaults) [UPDATE: managed by systemd no
 
 """
 
+parser = argparse.ArgumentParser(
+    description=__doc__,
+    formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('user')
+args = parser.parse_args()
+
 
 def ask_pete() -> str:
     while True:
         try:
-            with urllib.request.urlopen(f'https://ppc-services/session/check/{os.environ["USER"]}') as f:
+            with urllib.request.urlopen(f'https://ppc-services/session/check/{args.user}') as f:
                 response_text = f.read().decode()
                 print('pete said', response_text, file=sys.stderr, flush=True)  # for syslog
             return response_text
@@ -52,7 +59,7 @@ def ask_pete() -> str:
             time.sleep(10)
 
 
-print(f'starting for {os.environ["USER"]}', file=sys.stderr, flush=True)  # for syslog
+print(f'starting for {args.user}', file=sys.stderr, flush=True)  # for syslog
 systemd.daemon.notify('READY=1')
 while True:
     response_text = ask_pete()

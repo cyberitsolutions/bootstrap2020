@@ -16,13 +16,8 @@ subprocess.check_call(['systemctl', 'stop', 'acceptable-use-policy'])
 
 # Start the session notification daemon.
 subprocess.check_call([
-    'systemctl', 'set-property', '--runtime', 'bootstrap2020-session-snitch.service',
-    f'Environment=USER={os.environ["USER"]}',
-    # FIXME: are these two actually needed?
-    f'Environment=DISPLAY={os.environ["DISPLAY"]}',
-    f'Environment=XAUTHORITY={os.environ["XAUTHORITY"]}'])
-subprocess.check_call([
-    'systemctl', 'start', 'bootstrap2020-session-snitch'])
+    'systemctl', 'start',
+    f'bootstrap2020-session-snitch@{os.environ["USER"]}'])
 
 
 # Call the upstream script.
