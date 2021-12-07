@@ -37,6 +37,7 @@ subprocess.check_call(['xsetroot', '-solid', background_color])
 
 subprocess.check_call([
     'systemd-run',
+    '--collect',
     '--unit=acceptable-use-policy.service',
     '--property=PartOf=xdm.service',
     *{f'--setenv={key}={os.environ[key]}'
