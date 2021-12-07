@@ -580,10 +580,9 @@ if args.boot_test:
                 *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128}
-                   for host in {
-                           'prisonpc-staff.lan'
-                           if args.template.startswith('desktop-staff') else
-                           'prisonpc-inmate.lan'}]
+                   for host in {'prisonpc-staff.lan'
+                                if args.template.startswith('desktop-staff') else
+                                'prisonpc-inmate.lan'}]
                   if template_wants_PrisonPC else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
