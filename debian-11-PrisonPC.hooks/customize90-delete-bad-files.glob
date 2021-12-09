@@ -93,6 +93,10 @@
 
 ## Useless & confusing menu items SHOULD be hidden (#30257)
 ## ========================================================
+# From chromium, contains XBEL bookmarks for https://debian.org/.
+# These appear below the address bar on chrome://newtab tabs.
+# They are not interesting (and blocked by squid in any case).
+/usr/share/chromium/initial_bookmarks.html
 
 
 ## Useless & confusing "under the hood" files MAY be removed
