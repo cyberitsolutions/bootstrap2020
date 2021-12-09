@@ -1,0 +1,141 @@
+{
+    "URLAllowlist": [
+        // NOTE: in Debian 9, we blocked *ALL* chrome://*.
+        "chrome://bookmarks",
+        "chrome://downloads",
+        "chrome://history",
+        "chrome://print",
+        "chrome://settings/passwords",  // TESTING
+
+        // Ron won't let me block file:// and wait for complaints. --twb, Jan 2014
+        "file://*",
+
+        // And allow http/https.  squid will manage access within these protocols.
+        "http://*",
+        "https://*"
+    ],
+
+    // NOTE: blocking chrome://* prevents access to many (but not all) internal features.
+    //       You can see a list at chrome://chrome-urls
+    "URLBlocklist": [
+        // Here's a list of chrome:// URLs I determined should explicitly be blocked.
+        // They are listed here mainly to document the decision.
+        "chrome://about",       // mostly harmless
+        "chrome://accessibility",  // dunno
+        "chrome://appcache-internals",  // dunno
+        "chrome://apps",                // mostly harmless
+        "chrome://autofill-internals",  // dunno
+        "chrome://blob-internals",      // dunno
+        "chrome://bluetooth-internals",  // BAD!
+        // "chrome://bookmarks",         // GOOD?
+        "chrome://chrome-urls",  // mostly harmless
+        "chrome://components",   // mostly harmless
+        "chrome://conversion-internals",  // bad?
+        "chrome://crashes",               // BAD?
+        "chrome://credits",               // harmless
+        "chrome://device-log",            // BAD! (bluetooth &c)
+        "chrome://devices",               // bad?
+        "chrome://dino",                  // easter egg game (blocked elsewhere)
+        "chrome://discards",              // bad?
+        "chrome://download-internals",    // mostly harmless?
+        // "chrome://downloads",          // GOOD?
+        "chrome://extensions",  // bad? (disable/configure sysadmin-installed webexts)
+        "chrome://flags",       // BAD!
+        "chrome://gcm-internals",  // bad?
+        "chrome://gpu",            // useful for debugging
+        "chrome://help",  // good? (redirects to chrome://settings/help)
+        "chrome://histograms",  // mostly harmless
+        // "chrome://history",     // GOOD?
+        "chrome://indexeddb-internals",  // mostly harmless
+        "chrome://inspect",              // VERY BAD!
+        "chrome://interstitials",        // slightly bad?
+        "chrome://invalidations",        // mostly harmless?
+        "chrome://linux-proxy-config",   // mostly harmless
+        "chrome://local-state",          // bad
+        "chrome://management",           // mostly harmless
+        "chrome://media-engagement",     // dunno
+        "chrome://media-internals",      // bad
+        "chrome://memories",             // dunno (doesn't work in chromium 90)
+        "chrome://net-export",           // bad!
+        "chrome://net-internals",        // bad!
+        "chrome://network-error",        // dunno
+        "chrome://network-errors",       // mostly harmless
+        "chrome://new-tab-page",         // fancy new tab page -- bad?
+        "chrome://newtab",               // simple new tab page -- good?
+        "chrome://ntp-tiles-internals",  // configuration screen for new-tab-page -- bad?
+        "chrome://omnibox",              // configuration for address bar ("omnibox") -- bad!
+        "chrome://password-manager-internals",  // bad?
+        "chrome://policy",                      // bad! (read-only)
+        "chrome://predictors",                  // slightly bad
+        "chrome://prefs-internals",             // bad
+        // Mike says that he/we had a LOT of troubles with print
+        // dialog evenfor personal use, and therefore recommends
+        // continuing to block this and instead use the "system print dialog".
+        // (The "system print" has no PDF-like print preview.)
+        // "chrome://print",       // good?
+        "chrome://process-internals",  // bad
+        "chrome://quota-internals",    // bad
+        "chrome://safe-browsing",      // slightly bad
+        "chrome://sandbox",            // mostly harmless
+        "chrome://serviceworker-internals",  // bad!
+        "chrome://session-service-internals",  // dunno
+        "chrome://settings",                   // some bad, some maybe good???
+        // FUCK ME, THIS LIST OF SUB-PAGES IS NOT EVEN REMOTELY COMPLETE.
+        // "chrome://settings/people",
+        // "chrome://settings/autofill",
+        // "chrome://settings/safetyCheck",
+        // "chrome://settings/privacy",
+        // "chrome://settings/appearance",
+        // "chrome://settings/search",
+        // "chrome://settings/defaultBrowser",
+        // "chrome://settings/onStartup",
+        // "chrome://settings/languages",
+        // "chrome://settings/downloads",
+        // "chrome://settings/accessibility",
+        // "chrome://settings/system",
+        // "chrome://settings/reset",
+        // "chrome://settings/help",
+        "chrome://signin-internals",  // bad
+        "chrome://site-engagement",   // bad
+        "chrome://suggestions",       // bad!
+        "chrome://sync-internals",    // bad
+        "chrome://system",            // mostly harmless?
+        "chrome://terms",             // mostly harmless
+        "chrome://tracing",           // dunno (dead on chromium 90)
+        "chrome://translate-internals",  // bad
+        "chrome://ukm",                  // bad
+        "chrome://usb-internals",        // bad
+        "chrome://user-actions",         // bad?
+        "chrome://version",              // mostly harmless
+        "chrome://webrtc-internals",     // bad?
+        "chrome://webrtc-logs",          // bad?
+
+        // Mostly harmless
+        "chrome://internals",   // not accessible
+        "chrome://internals/web-app",  // bad?
+
+        // Blocking everything in the "For Debug" list is a no-brainer.
+        "chrome://badcastcrash",
+        "chrome://inducebrowsercrashforrealz",
+        "chrome://crash",
+        "chrome://crashdump",
+        "chrome://kill",
+        "chrome://hang",
+        "chrome://shorthang",
+        "chrome://gpuclean",
+        "chrome://gpucrash",
+        "chrome://gpuhang",
+        "chrome://memory-exhaust",
+        "chrome://memory-pressure-critical",
+        "chrome://memory-pressure-moderate",
+        "chrome://ppapiflashcrash",
+        "chrome://ppapiflashhang",
+        "chrome://webuijserror",
+        "chrome://quit",
+        "chrome://restart",
+
+
+        // And of course, block everything else (default deny).
+        "*"]
+
+}
