@@ -36,9 +36,9 @@ except urllib.error.HTTPError:
     # Slurp <a href=X>Y</a> into a list of tuples.
     # Then spit it out to a file in chromium format.
     class MyHTMLParser(html.parser.HTMLParser):
-        def __init__(self, *args, **kwargs):
+        def __init__(self, *_args, **_kwargs):
             self.links = []
-            super().__init__(*args, **kwargs)
+            super().__init__(*_args, **_kwargs)
 
         def handle_starttag(self, tag, attrs):
             attrs = {k: v for k, v in attrs}
@@ -52,14 +52,14 @@ except urllib.error.HTTPError:
             if tag == 'a':
                 self.links.append((self.last_url, self.last_name))
 
-        def close(self, *args, **kwargs):
+        def close(self, *_args, **_kwargs):
             args.json_path.write_text(
                 json.dumps(
                     {'ManagedBookmarks': [
                         {'toplevel_name': 'PrisonPC Bookmarks'},
                         *({'url': u, 'name': n}
                           for u, n in self.links)]}))
-            super().close(*args, **kwargs)
+            super().close(*_args, **_kwargs)
 
     with urllib.request.urlopen('https://prisonpc/Bookmarks') as f:
         p = MyHTMLParser()
