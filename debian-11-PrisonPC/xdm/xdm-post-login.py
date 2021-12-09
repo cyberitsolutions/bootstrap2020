@@ -19,6 +19,12 @@ subprocess.check_call([
     'systemctl', 'start',
     f'bootstrap2020-session-snitch@{os.environ["USER"]}'])
 
+# Slurp https://PrisonPC/ManagedBookmarks into /etc/chromium/.
+# MUST happen after session-snitch does /login, so
+# (for now) we cannot put them in the same "systemctl start" call.
+subprocess.check_call([
+    'systemctl', 'start', 'bootstrap2020-chromium-managed-bookmarks'])
+
 
 # Call the upstream script.
 # It does a few things we could probably just do here:
