@@ -93,6 +93,10 @@
 
 ## Useless & confusing menu items SHOULD be hidden (#30257)
 ## ========================================================
+# From x11vnc.
+# Inmates don't (and can't) run x11vnc.
+# Appears because xfce4-panel only checks if $PATH/x11vnc *exists*, not if it is executable.
+/usr/share/applications/x11vnc.desktop
 # From chromium, contains XBEL bookmarks for https://debian.org/.
 # These appear below the address bar on chrome://newtab tabs.
 # They are not interesting (and blocked by squid in any case).
