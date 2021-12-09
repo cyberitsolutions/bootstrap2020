@@ -23,7 +23,7 @@ subprocess.check_call([
 # MUST happen after session-snitch does /login, so
 # (for now) we cannot put them in the same "systemctl start" call.
 subprocess.check_call([
-    'systemctl', 'start', 'bootstrap2020-chromium-managed-bookmarks'])
+    'systemctl', 'start', '--no-block', 'bootstrap2020-chromium-managed-bookmarks'])
 
 
 # Call the upstream script.

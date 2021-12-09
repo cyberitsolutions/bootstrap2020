@@ -4,6 +4,7 @@ import html.parser
 import json
 import pathlib
 import urllib.request
+import time
 
 
 __doc__ = """ copy https://prisonpc/Bookmarks to chromium policy
@@ -25,6 +26,12 @@ try:
         urllib.request.urlopen('https://prisonpc/ManagedBookmarks').read())
 except urllib.error.HTTPError:
     # FIXME: remove after January 2023!
+    # Even though we wait until session-snitch has successfully got an "OK" from /login,
+    # pete only "remembers" login state from /check, not /login.
+    # So we must wait until after the first /check, which happens 10s later.
+    # FIXME: remove after January 2023!
+    time.sleep(15)    # must be at least 10s
+
     # Backwards compatibility with PrisonPC 20.09.
     # Slurp <a href=X>Y</a> into a list of tuples.
     # Then spit it out to a file in chromium format.
