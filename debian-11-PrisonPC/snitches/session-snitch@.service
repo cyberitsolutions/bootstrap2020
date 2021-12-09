@@ -1,5 +1,5 @@
 # NOTE: this unit is started by /etc/X11/xdm/Xstartup,
-#       which is why it has on Install.WantedBy.
+#       which is why it has no Install.WantedBy.
 [Service]
 Type=notify
 ExecStart=bootstrap2020-session-snitch %i
