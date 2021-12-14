@@ -105,6 +105,31 @@
 
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
+# XFCE settings widgets that are either locked, undesirable, or both.
+/usr/bin/thunar-volman-settings
+/usr/bin/xfce4-display-settings
+/usr/bin/xfce4-mime-settings
+/usr/bin/xfce4-session-settings
+/usr/bin/xfdesktop-settings
+/usr/bin/xfwm4-workspace-settings
+/usr/bin/xfwm4-settings
+# We MUST also delete the .desktop, or the GUI still offers the option, then fails when you click it.
+# Why the .desktop files don't TryExec=, I don't know...
+/usr/share/applications/panel-preferences.desktop
+/usr/share/applications/thunar-volman-settings.desktop
+/usr/share/applications/xfce-backdrop-settings.desktop
+/usr/share/applications/xfce-display-settings.desktop
+/usr/share/applications/xfce-session-settings.desktop
+/usr/share/applications/xfce-workspaces-settings.desktop
+/usr/share/applications/xfce4-mime-settings.desktop
+/usr/share/applications/xfce4-session-settings.desktop
+/usr/share/applications/xfce-wm-settings.desktop
+# This one is useful for debugging XFCE lockdown.
+/usr/bin/xfce4-settings-editor
+/usr/share/applications/xfce4-settings-editor.desktop
+# FIXME: this one isn't locked down yet.
+/usr/bin/xfwm4-tweaks-settings
+/usr/share/applications/xfce-wmtweaks-settings.desktop
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-uca/
 # Right click > Open Terminal Here
 # User-configurable custom commands (system(3)).
