@@ -35,8 +35,8 @@ def validate_unescaped_path_is_safe(path: pathlib.Path) -> None:
             raise NotImplementedError('Path component should not need shell quoting', part, path)
 
 
-def hostname_with_optional_user_at(s: str) -> str:
-    if re.fullmatch(r'([a-z]+@)?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?', s):
+def hostname_or_fqdn_with_optional_user_at(s: str) -> str:
+    if re.fullmatch(r'([a-z]+@)?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*', s):
         return s
     else:
         raise ValueError()
@@ -125,7 +125,7 @@ group.add_argument('--authorized-keys-urls', metavar='URL', nargs='*',
                             hyperlink.URL.from_text('https://github.com/mijofa.keys'),
                             hyperlink.URL.from_text('https://github.com/emja.keys')])
 parser.add_argument('--upload-to', nargs='+', default=[], metavar='HOST',
-                    type=hostname_with_optional_user_at,
+                    type=hostname_or_fqdn_with_optional_user_at,
                     help='hosts to rsync the finished image to e.g. "root@tweak.prisonpc.com"')
 parser.add_argument('--remove-afterward', action='store_true',
                     help='delete filesystem.squashfs after boot / upload (save space locally)')
