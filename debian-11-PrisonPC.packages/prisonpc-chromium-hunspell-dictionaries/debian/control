@@ -30,11 +30,14 @@
 Source: prisonpc-chromium-hunspell-dictionaries
 Section: web
 Priority: optional
-Standards-Version: 3.9.6
+Standards-Version: 4.5.1
 Maintainer: Trent W. Buck <twb@cyber.com.au>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Rules-Requires-Root: no
 Build-Depends:
- debhelper (>= 10~),
- wget, ca-certificates
+ debhelper-compat (= 13),
+ ca-certificates,
+ wget2,
 
 Package: prisonpc-chromium-hunspell-dictionaries
 Depends: ${misc:Depends}

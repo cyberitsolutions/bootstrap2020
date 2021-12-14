@@ -5,9 +5,8 @@ d := debian/prisonpc-chromium-hunspell-dictionaries/usr/share/prisonpc-chromium-
 # Chromium 57+ uses en-XX-7-1.bdic.
 # Chromium 64+ uses en-XX-8-0.bdic.
 # See also https://crbug.com/796748.
+# Chromium 90 in Debian 11 uses en-XX-9-0.bdic.
 override_dh_auto_install:
-	wget -P $d https://redirector.gvt1.com/edgedl/chrome/dict/en-AU-8-0.bdic
-	ln -nsf en-AU-8-0.bdic $d/en-GB-7-1.bdic
-	ln -nsf en-AU-8-0.bdic $d/en-US-7-1.bdic
-	ln -nsf en-AU-8-0.bdic $d/en-GB-8-0.bdic
-	ln -nsf en-AU-8-0.bdic $d/en-US-8-0.bdic
+	wget2 -P $d "https://redirector.gvt1.com/edgedl/chrome/dict/en-AU-9-0.bdic"
+	ln -nsf en-AU-9-0.bdic $d/en-GB-9-0.bdic
+	ln -nsf en-AU-9-0.bdic $d/en-US-9-0.bdic
