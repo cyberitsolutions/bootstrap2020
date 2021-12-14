@@ -1,0 +1,59 @@
+Steps to reproduce:
+
+#. Find out what .bdic and .crx URLs are downloaded.
+
+    #. Chromium components cannot update when the proxy requires authentication, so disable this temporarily::
+
+           ssh tweak -t sudoedit /etc/squid/squid.conf.prisonpc
+
+              -http_access allow PrisonPC_src_staff  PrisonPC_UA_chrome PrisonPC_user
+              +http_access allow PrisonPC_src_staff  PrisonPC_UA_chrome
+
+           ssh tweak -t sudo systemctl force-reload squid
+
+    #. Make sure the user has no components downloaded yet::
+
+           ssh tweak -t sudo rm -rf ~s123/.config/chromium
+
+    #. Start a new user desktop::
+
+           ./debian-11-main.py --remove --optimize=speed --netboot --template=desktop-staff --boot
+
+    #. In the staff desktop, allow access to chrome://components::
+
+           ssh bootstrap2020 rm /etc/chromium/policies/managed/00-URLs.json
+
+    #. Log into the staff desktop as s123.
+       Open chromium.
+       Browse to chrome://components.
+       Click each "Check for update" button.
+       Wait until all are updated, i.e. stop saying "Version 0.0.0.0".
+
+    #. Look at what URLs were downloaded::
+
+           ssh tweak -t sudo -g proxy grep -Fw gvt1.com /var/log/squid/access.log
+
+           1639448594.733     16 10.128.0.1 TCP_DENIED/403 4232 GET https://redirector.gvt1.com/edgedl/chrome/dict/en-gb-9-0.bdic p123 HIER_NONE/- text/html
+           1639454336.368     18 10.0.0.1 TCP_MISS/200 10188 GET http://edgedl.me.gvt1.com/edgedl/chromewebstore/L2Nocm9tZV9leHRlbnNpb24vYmxvYnMvMjg0QUFYSnN4MFUtaEQwNDZqVGRkVkFmZw/1.0.6.0_aemomkdncapdnfajjbbcbdebjljbpmpj.crx - HIER_DIRECT/34.104.35.123 application/x-chrome-extension
+           1639454362.148     10 10.0.0.1 TCP_MISS/200 10232 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/ANlaTV2JH2WK9RCoHi__mxg_1.0.6/S3ybLvFx94Hgn9pWLt24ug - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454363.807     23 10.0.0.1 TCP_MISS/200 114451 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/AJqZYiqGvCtix64S2N84g-M_2020.11.2.164946/EWvH2e-LS80S29cxzuTfRA - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454365.658    142 10.0.0.1 TCP_MISS/200 38563 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/acrnwfwrwyfoaex2tmhugvq66gra_9.33.0/gcmjkmgdlgnkkcocmoeiminaijmmjnii_9.33.0_all_adfrftuuoxg6g5b2f4cotvv3u43a.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454366.599      8 10.0.0.1 TCP_MISS/200 10541 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/acqghemx2qw6d4isvzmbenpaqhmq_2021.12.13.1201/ggkkehgbnfjpeggfpleeakpidbkibbmn_2021.12.13.1201_all_joktoxsm2mp4dx2htv6vt3rp4m.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454367.792     58 10.0.0.1 TCP_MISS/200 6083 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/AIZk8O7Cv2UUbxc_aaUykKI_7/ALzUVHP-vRgKCzqwbtGugSE - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454368.556      9 10.0.0.1 TCP_MISS/200 25869 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/actq44ay6lphi2rvpokaf3j6hbiq_7034/hfnkpimlhhgieaddgfemjhofmfblmnib_7034_all_oo6aoztlckqjzowx5ag3eyeruu.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454369.105    125 10.0.0.1 TCP_MISS/200 819054 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/adw2ijks3mbe575dxptpcjnvrepa_99.0.4764.2/jamhcnnkihinmdlkakkaopbjbbcngflc_99.0.4764.2_all_nfh7crk5nxg3omjxfwx5cuhrz4.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454370.122      8 10.0.0.1 TCP_MISS/200 25538 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/acoof3hxrw6kobkazuyehcxdgxeq_2749/jflookgnkcckhobaglndicnbbgbonegd_2749_all_jujpn2jyxpu4ped7yujq342ypq.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454371.166     46 10.0.0.1 TCP_MISS/200 6190 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/d2x3uopwnl3xsvaj7k7zvnmd5m_47/khaoiebndkojlmppeemjhbpbandiljpe_47_linux_acmi2nr4xsob35ob7s4dvea4hg6a.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454372.312     73 10.0.0.1 TCP_MISS/200 3555 GET http://edgedl.me.gvt1.com/edgedl/chromewebstore/L2Nocm9tZV9leHRlbnNpb24vYmxvYnMvOGMyQUFYUjhaZkNqaEUyZDFCRWM2S3dUZw/1.0.0.11_llkgjffcdpffmhiakmfcdcblohccpfmo.crx - HIER_DIRECT/34.104.35.123 application/x-chrome-extension
+           1639454397.413     62 10.0.0.1 TCP_MISS/200 394812 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/APhHMzuprJvS7ixvnAk_gdI_1/anGnv31dmOJhheXBnYQ3gw - HIER_DIRECT/34.104.35.123 application/octet-stream
+           1639454399.462      7 10.0.0.1 TCP_MISS/200 13052 GET http://edgedl.me.gvt1.com/edgedl/release2/chrome_component/ccqwc52cyybdcncouijnt6kpaq_2021.8.17.1300/pdafiollngonhoadbmdoemagnfpdphbe_2021.08.17.1300_all_acatmzocbizfck6xlj6bync6egba.crx3 - HIER_DIRECT/34.104.35.123 application/octet-stream
+
+    #. Undo the backdoor you opened earlier::
+
+           ssh tweak -t sudoedit /etc/squid/squid.conf.prisonpc
+
+              -http_access allow PrisonPC_src_staff  PrisonPC_UA_chrome
+              +http_access allow PrisonPC_src_staff  PrisonPC_UA_chrome PrisonPC_user
+
+           ssh tweak -t sudo systemctl force-reload squid
+
