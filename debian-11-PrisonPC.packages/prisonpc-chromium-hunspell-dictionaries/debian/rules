@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+d := debian/prisonpc-chromium-hunspell-dictionaries/usr/share/prisonpc-chromium-hunspell-dictionaries/
+%:
+	dh $@
+# Chromium 57+ uses en-XX-7-1.bdic.
+# Chromium 64+ uses en-XX-8-0.bdic.
+# See also https://crbug.com/796748.
+override_dh_auto_install:
+	wget -P $d https://redirector.gvt1.com/edgedl/chrome/dict/en-AU-8-0.bdic
+	ln -nsf en-AU-8-0.bdic $d/en-GB-7-1.bdic
+	ln -nsf en-AU-8-0.bdic $d/en-US-7-1.bdic
+	ln -nsf en-AU-8-0.bdic $d/en-GB-8-0.bdic
+	ln -nsf en-AU-8-0.bdic $d/en-US-8-0.bdic
