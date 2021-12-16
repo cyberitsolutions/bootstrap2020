@@ -13,14 +13,6 @@
       <property name="XF86Mail" type="string" value="exo-open --launch MailReader"/>
       <property name="&lt;Super&gt;e" type="string" value="thunar"/>
       <property name="&lt;Primary&gt;&lt;Alt&gt;f" type="string" value="thunar"/>
-      <!-- In Windows and GNOME, ⌘+1 key binding refers to the 1st item in the taskbar.
-           It either starts it, or if already running, alt-tabs to it.
-           Is there a way to get that on XFCE?
-           In the meantime, at least do the opening command.
-           This should be kept in sync with the xfce4-panel launcher plugins. -->
-      <property name="&lt;Super&gt;1" type="string" value="gtk-launch com.PrisonPC.TV"/>
-      <property name="&lt;Super&gt;2" type="string" value="exo-open --launch WebBrowser"/>
-      <property name="&lt;Super&gt;3" type="string" value="exo-open --launch MailReader"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

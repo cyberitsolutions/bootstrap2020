@@ -1,8 +1,64 @@
 {
     "ShowHomeButton": false,
+    // If not set, Alt+Home goes to debian.org!  Yeccch.
     "HomepageLocation": "https://prisonpc/",
     "HomepageIsNewTabPage": true,
-    "NewTabPageLocation": "https://prisonpc/",
+    // If NOT SET AT ALL,
+    // shows "recently used" sites (NTPCardsVisible).
+    // The search bar is disabled... somewhere.
+    // Does not include chrome://apps in that list.
+    // If set to chrome://apps, shows apps instead of recent.
+    // "NewTabPageLocation": "chrome://apps",
     "RestoreOnStartup": 1,      // Restore the last session
-    "RestoreOnStartupURLs": ["https://prisonpc/"]
+    "RestoreOnStartupURLs": ["https://prisonpc/"],
+
+    // Should we do this instead of hand-rolling a "webmail" app?
+    // https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen
+    // These options are from "Miscellaneous" (not "Startup").
+    // NOTE: inmates can add their own apps!
+    //       They just can't (permanently) remove these ones.
+    // NOTE: each unique *URL* ends up in the start menu.
+    //       If we change the NAME, the menu item will change.
+    //       If we change the URL, the old menu item will not go away.
+    //       This is ugly and shit, but I don't think I can avoid this,
+    //       other than saying "oh well, I guess no start menu anymore".
+    "WebAppInstallForceList": [
+        // Not moving Mail yet because chromium shows that as "insecure" because there is no https,
+        // even though it is running on localhost.  Because it runs on the desktop, to do https,
+        // we would have to use the snakeoil certs created by ca-certificates package.
+        // Which are trusted automatically by gnutls and openssl, but NOT by FUCKING CHROMIUM AND ITS FUCKING NSS3.
+        // To make chromium trust it, we would have to ship certutil(1nss-tools) and have it patch ~p123/.pki/ on EVERY BOOT.
+        // We used to do exactly that, and we know that it leads to permanent corruption in ~/.config/chromium unless the user is prevented from running chromium until it finishes.
+        // It is just... really awful.
+        // We also do not really want to ship certutil in the first place since it is a low-level cert management tool.
+        // {"fallback_app_name": "Mail",
+        //  "url": "http://webmail/",
+        //  "default_launch_container": "window",
+        //  "create_desktop_shortcut": true},
+        {"fallback_app_name": "Watch TV",
+         "url": "https://prisonpc/TV/",
+         "default_launch_container": "window",
+         "create_desktop_shortcut": true},
+        {"fallback_app_name": "Lodge Complaint",
+         "url": "https://prisonpc/Complain/",
+         "default_launch_container": "tab",
+         "create_desktop_shortcut": true}],
+    // I *guess* this is a way to make Mail autostart on GUI login?
+    // Does that even work?
+    // "WebAppSettings": {
+    //     "https://foo.example": {"run_on_os_login": "allowed"},
+    //     "https://bar.example": {"run_on_os_login": "blocked"},
+    //     "https://foobar.example": {"run_on_os_login": "run_windowed"},
+    //     "*": {"run_on_os_login": "blocked"}},
+    // If a site.dir creates a dropin .json,
+    // it will APPEND to the above "app" list,
+    // rather than replacing it.
+    // This makes it easier to append, but
+    // impossible to remove "mail" and "complain".
+    // Which is something HCC wanted, IIRC.
+    // "PolicyListMultipleSourceMergeList": ["WebAppInstallForceList"],
+    // "NTP" means chrome://newtab (NOT Network Time Protocol).
+    // "Card" means "recently used websites".
+    "NTPCardsVisible": false,
+    "ShowAppsShortcutInBookmarkBar": true
 }

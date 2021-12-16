@@ -171,9 +171,6 @@
     // which was blocked by URLBlocklist.  Should we unblock both in Debian 11??
     // "EditBookmarksEnabled": false,
 
-    // Google apps are blocked in squid anyway.
-    "ShowAppsShortcutInBookmarkBar": false,
-
     // We can't really get away with blocking File > Save, especially for PDFs.
     // "AllowFileSelectionDialogs": true,
 
@@ -349,9 +346,6 @@
 
     // "New Tab page won't allow users to customize the background."
     "NTPCustomBackgroundEnabled": false,
-    // This is chrome://newtab (NOT Network Time Protocol).
-    // I think "card" basically means "recently used websites".
-    "NTPCardsVisible": false,
 
     // This is about the SOURCE port on the local computer.
     // We use stateful firewalls, so this is not interesting.

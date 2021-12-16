@@ -7,6 +7,8 @@
         "chrome://print",
         "chrome://settings/passwords",  // TESTING
 
+        "chrome://apps",                // for new-style New Tab Page
+
         // Ron won't let me block file:// and wait for complaints. --twb, Jan 2014
         "file://*",
 
@@ -23,7 +25,6 @@
         "chrome://about",       // mostly harmless
         "chrome://accessibility",  // dunno
         "chrome://appcache-internals",  // dunno
-        "chrome://apps",                // mostly harmless
         "chrome://autofill-internals",  // dunno
         "chrome://blob-internals",      // dunno
         "chrome://bluetooth-internals",  // BAD!
