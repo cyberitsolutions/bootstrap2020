@@ -390,6 +390,7 @@ with tempfile.TemporaryDirectory() as td:
                '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)
                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
                '    prayer-templates-prisonpc'
+               '    prisonpc-chromium-hunspell-dictionaries'
                ]
               if template_wants_PrisonPC else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
