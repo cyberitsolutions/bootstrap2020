@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import json                     # because jsmin.jsmin doesn't validate
 import logging
 import pathlib
 
@@ -28,6 +29,9 @@ policy_dir = args.chroot_path / 'etc/chromium/policies/managed'
 for json_path in policy_dir.glob('*.json'):
     logging.debug('minifying %s', json_path)
     # NOTE: does not preserve mtime.  Do we care?
+    # NOTE: jsmin.jsmin('[1,2,3,,]') should error, but doesn't, hence dumps+loads as well.
     json_path.write_text(
-        jsmin.jsmin(
-            json_path.read_text()))
+        json.dumps(
+            json.loads(         # error on bad json syntax
+                jsmin.jsmin(    # strip comments
+                    json_path.read_text()))))
