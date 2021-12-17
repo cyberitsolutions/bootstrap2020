@@ -1,0 +1,5 @@
+{"HomepageLocation": "https://PPCAdm/",
+ "WebAppInstallForceList": [
+    {"fallback_app_name": "PrisonPC Admin",
+     "url": "http://PPCAdm/",
+     "create_desktop_shortcut": true}]}

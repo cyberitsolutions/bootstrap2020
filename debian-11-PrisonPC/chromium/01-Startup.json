@@ -56,7 +56,8 @@
     // This makes it easier to append, but
     // impossible to remove "mail" and "complain".
     // Which is something HCC wanted, IIRC.
-    // "PolicyListMultipleSourceMergeList": ["WebAppInstallForceList"],
+    // UPDATE: we also need this to append ppcadm to the staff-only app list.
+    "PolicyListMultipleSourceMergeList": ["WebAppInstallForceList"],
     // "NTP" means chrome://newtab (NOT Network Time Protocol).
     // "Card" means "recently used websites".
     "NTPCardsVisible": false,

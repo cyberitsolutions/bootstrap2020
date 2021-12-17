@@ -548,7 +548,7 @@ if args.boot_test:
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
-                '10.0.2.100 PrisonPC ldap nfs ppc-services')
+                '10.0.2.100 PrisonPC ldap nfs ppc-services PPCAdm')
             (testdir / 'site.dir/prayer.errata').write_text(
                 'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:
