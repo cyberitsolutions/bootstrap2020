@@ -1,0 +1,496 @@
+<?xml version="1.0"?>
+<!-- REFERENCE: https://wiki.documentfoundation.org/Deployment_and_Migration#Post_deployment_configuration  -->
+<!-- REFERENCE: https://wiki.documentfoundation.org/Documentation/Disable_OOXML_Export  -->
+<!-- REFERENCE: http://web.archive.org/web/20101103025920/http://util.openoffice.org/common/configuration/oor-document-format.html -->
+<!-- REFERENCE: https://people.freedesktop.org/~vmiklos/2013/oor-document-format.html  (another mirror) -->
+<!-- FIXME: add additional notes here. -->
+<oor:data xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:oor="http://openoffice.org/2001/registry">
+
+  <!-- AFAICT <dependency> means "load me AFTER /usr/lib/libreoffice/share/registry/foo.xcd". -->
+  <dependency file="calc" />    <!-- for default save format (.xlsx) -->
+  <dependency file="impress" /> <!-- for default save format (.pptx) -->
+  <dependency file="writer" />  <!-- for default save format (.docx) -->
+  <dependency file="main" />    <!-- for everything else -->
+  <!-- Due to the Filters blacklisting at the bottom of the file,
+       we need to basically depend on ALL the other XCD files.
+       In particular xsltfilter otherwise loads AFTER us (due to alphabetic sorting),
+       and File > Export allows DocBook, XHTML, & UOF.
+       FIXME: why doesn't oor:finalize="true" avoid this issue? —twb, Mar 2016
+  -->
+  <dependency file="xsltfilter" />     <!-- DocBook/XHTML/UOT export filters -->
+  <dependency file="graphicfilter" />  <!-- LO Draw component -->
+  <dependency file="math" />           <!-- LO Math component -->
+
+  <!-- FIXME: explain how locking was causing problems.  Give user story. -->
+  <oor:component-data oor:name="Common" oor:package="org.openoffice.Office">
+    <node oor:name="Misc">
+      <prop oor:name="UseDocumentOOoLockFile" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+    </node>
+  </oor:component-data>
+
+  <!-- Forbid inmates from installing their own third-party packages. -->
+  <oor:component-data oor:name="ExtensionManager" oor:package="org.openoffice.Office">
+    <node oor:name="ExtensionSecurity">
+      <prop oor:name="DisableExtensionInstallation" oor:op="fuse" oor:finalized="true"><value>true</value></prop>
+      <prop oor:name="DisableExtensionRemoval" oor:op="fuse" oor:finalized="true"><value>true</value></prop>
+    </node>
+  </oor:component-data>
+
+  <!-- Random grab-bag of "good" things to set. -->
+  <oor:component-data oor:name="Common" oor:package="org.openoffice.Office">
+    <node oor:name="Security">
+      <prop oor:name="EnableExpertConfiguration" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+      <node oor:name="Scripting">
+        <prop oor:name="OfficeBasic"             oor:op="fuse" oor:finalized="true"><value>0</value></prop>
+        <prop oor:name="ExecutePlugins"          oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+        <prop oor:name="MacroSecurityLevel"      oor:op="fuse" oor:finalized="true"><value>3</value></prop>
+        <prop oor:name="DisableMacrosExecution"  oor:op="fuse" oor:finalized="true"><value>true</value></prop>
+      </node>
+    </node>
+  </oor:component-data>
+
+  <!-- Disable all VBA by default, but allow inmates to reenable it? -->
+  <!-- WARNING: Tools > Options description indicates this applies to MS Office 97/2000/XP documents (.doc, .ppt, .xls) ONLY;
+       It does not mention OOXML formats (.docx, .pptx, .xlsx). -->
+  <!-- FIXME: testing indicates even with oor:finalized="true",
+       inmates can go into Tools > Options and enable these until LibreOffice quits.
+       Can we do anything about this? -->
+  <oor:component-data oor:name="Calc" oor:package="org.openoffice.Office">
+    <node oor:name="Filter">
+      <node oor:name="Import">
+        <node oor:name="VBA">
+          <prop oor:name="Executable" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+          <prop oor:name="Load"       oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+          <prop oor:name="Save"       oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+        </node>
+      </node>
+    </node>
+  </oor:component-data>
+  <oor:component-data oor:name="Writer" oor:package="org.openoffice.Office">
+    <node oor:name="Filter">
+      <node oor:name="Import">
+        <node oor:name="VBA">
+          <prop oor:name="Executable" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+          <prop oor:name="Load"       oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+          <prop oor:name="Save"       oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+        </node>
+      </node>
+    </node>
+  </oor:component-data>
+  <oor:component-data oor:name="Impress" oor:package="org.openoffice.Office">
+    <node oor:name="Filter">
+      <node oor:name="Import">
+        <node oor:name="VBA">
+          <prop oor:name="Executable" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+          <prop oor:name="Load"       oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+          <prop oor:name="Save"       oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+        </node>
+      </node>
+    </node>
+  </oor:component-data>
+
+  <!-- Use OOXML (not ODF) as the default save format. -->
+  <oor:component-data oor:name="Setup" oor:package="org.openoffice">
+    <node oor:name="Office">
+      <node oor:name="Factories">
+        <node oor:name="com.sun.star.sheet.SpreadsheetDocument" oor:op="fuse">
+          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Calc MS Excel 2007 XML</value></prop>
+        </node>
+      </node>
+    </node>
+  </oor:component-data>
+  <oor:component-data oor:name="Setup" oor:package="org.openoffice">
+    <node oor:name="Office">
+      <node oor:name="Factories">
+        <node oor:name="com.sun.star.presentation.PresentationDocument" oor:op="fuse">
+          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Impress MS PowerPoint 2007 XML</value></prop>
+        </node>
+      </node>
+    </node>
+  </oor:component-data>
+  <oor:component-data oor:name="Setup" oor:package="org.openoffice">
+    <node oor:name="Office">
+      <node oor:name="Factories">
+        <node oor:name="com.sun.star.text.TextDocument" oor:op="fuse">
+          <prop oor:name="ooSetupFactoryDefaultFilter"><value>MS Word 2007 XML</value></prop>
+        </node>
+      </node>
+    </node>
+  </oor:component-data>
+
+  <!-- Default the UI language to en-GB because we don't install the normal default of en-US so it tries to get help online. (#30103) -->
+  <!-- As at 2015-08-10 There is no en-AU available for this option -->
+  <oor:component-data oor:name="Setup" oor:package="org.openoffice">
+    <node oor:name="L10N">
+      <prop oor:name="ooLocale" oor:op="fuse"><value>en-GB</value></prop>
+    </node>
+  </oor:component-data>
+  <oor:component-data oor:name="Linguistic" oor:package="org.openoffice.Office">
+    <node oor:name="General">
+      <prop oor:name="UILocale" oor:op="fuse"><value>en-GB</value></prop>
+    </node>
+  </oor:component-data>
+
+
+  <!-- FORMAT RESTRICTIONS
+       ===================
+       Rationale:
+        * Inmates MUST be able to exchange office docs with teachers & prison staff.
+        * Inmates SHOULD NOT be able to create or view encrypted documents.
+        * Obscure formats SHOULD be disabled because:
+          * They're a common source of vulnerabilities;
+          * Automated forensic search tools (i.e. "grep for Office docs")
+            probably don't support ancient binary formats;
+            disabling them makes intel/AFP's job easier.
+
+        * The text/plain format in particular should be disabled
+          because it makes it harder for inmates to write shell scripts &
+          view their output.
+
+          FIXME: AMC still has 600 .txt files in inmate home dirs.
+          Only disable write access for now?
+
+        To disable encryption, we prop Flags -= ENCRYPTION PASSWORDTOMODIFY.
+        To disable save/write, we prop Flags -= EXPORT.
+        To disable the format entirely, we delete all entries in the node.
+        UPDATE: to disable the format entirely, we remove IMPORT & EXPORT and hope for the best.
+
+        Removing items from Flags is not directly supported;
+        instead we have to SET a copy/pasted/edit of the original value.
+        —twb, Mar 2016 (#30752)
+
+        NOTE: as at Mar 2016, there is evidence AMC inmates are still
+        heavily using "MS Office 95-2003" formats (.doc/.ppt/.xls):
+
+            3251 docx        149 odt           5 csv
+            2754 pdf         103 rtf           4 ots
+            1339 doc          86 ods           3 ott
+             975 xlsx         58 pptx          2 stw
+             823 html         55 ppt           1 xml
+             545 txt          18 zip           1 odm
+             279 xls           6 odp           1 htm
+             259 odg           5 pps
+
+       Policy as at Mar 2016:
+
+         • No ENCRYPTION nor PASSWORDTOMODIFY.
+         • IMPORT only:
+           • MS Office 97-03 (doc/xls/ppt)
+           • Current Visio (vsdx)
+           • Text & CSV & RTF (txt/csv/rtf)
+             Inmates can abuse Text EXPORT to create sh scripts.
+         • IMPORT & EXPORT:
+           • Current MS Office (docx/xlsx/pptx)
+           • Current LO5 (odt/ods/odp/...?)
+             This especially matters for formats with no MS Office equivalent: Math, Draw, Chart.
+           • "Typical" image formats (jpg/png/svg/...?)
+             Import only for "yukky" typical formats? (gif/bmp/tiff)?
+             Export here is ONLY to support the LO Draw -> Scribus workflow.
+         • EXPORT only:
+           • PDF — iff we can disable encryption.
+         • Template variants (e.g. .odt -> .ott "template") have same policy as their parent format.
+         • Anything else is NOT ALLOWED.
+
+       UPDATE Mar 2017:
+
+         • Digital signatures (SUPPORTSSIGNING) are allowed.
+           Ref. http://vmiklos.hu/blog/ooxml-signature-import.html
+
+       Here's how you generate a summary dump from a single XCD file:
+
+           xmlstarlet sel -T -t -m '//oor:component-data[@oor:name="Filter"]/node[@oor:name="Filters"]/node' -v @oor:name -n -v 'prop[@oor:name="Flags"]' -n /usr/lib/libreoffice/share/registry/writer.xcd
+
+
+       Here's a slightly more complete recipe:
+
+           (bootstrap:heads/master)root@zygon:/# mount -t proc none /proc      # because java
+           (bootstrap:heads/master)root@zygon:/# apt install -t stretch-backports libreoffice xmlstarlet
+           (bootstrap:heads/master)root@zygon:/# umount /proc                  # because java
+           (bootstrap:heads/master)root@zygon:/# find / -xdev -name '*.xcd' -not -name '*langpack*' | sort | xargs -n1 xmlstarlet sel -T -t -m '//oor:component-data[@oor:name="Filter"]/node[@oor:name="Filters"]/node' -o '      <node oor:name="' -v @oor:name -o '"><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> ' -v 'prop[@oor:name="Flags"]' -o ' </value></prop></node>' -n | sed -r 's/\<(GPGENCRYPTION|ENCRYPTION|PASSWORDTOMODIFY|IMPORT|EXPORT)\>/<!\-\- \1 \-\->/g' >tmp.list
+
+
+  -->
+  <oor:component-data oor:name="Filter" oor:package="org.openoffice.TypeDetection">
+    <node oor:name="Filters">
+      <!-- UPDATED AS AT libreoffice 1:6.1.0~rc2-3~bpo9+1 -->
+      <node oor:name="StarOffice XML (Base)"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> OWN DEFAULT 3RDPARTYFILTER <!-- ENCRYPTION --> EXOTIC </value></prop></node>
+      <node oor:name="DIF"                                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="HTML (StarCalc)"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN USEOPTIONS </value></prop></node>
+      <node oor:name="OpenDocument Spreadsheet Flat XML"                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> OWN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="Lotus"                                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="Quattro Pro 6.0"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="MS Excel 4.0"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="MS Excel 4.0 Vorlage/Template"                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="MS Excel 5.0/95"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="MS Excel 5.0/95 Vorlage/Template"                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="MS Excel 95"                                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="MS Excel 95 Vorlage/Template"                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="MS Excel 97"                                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="MS Excel 97 Vorlage/Template"                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN TEMPLATE TEMPLATEPATH <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="MS Excel 2003 XML Orcus"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN PREFERRED </value></prop></node>
+      <node oor:name="Rich Text Format (StarCalc)"                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="SYLK"                                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="StarOffice XML (Calc)"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="Text - txt - csv (StarCalc)"                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="calc_HTML_WebQuery"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN USEOPTIONS PREFERRED </value></prop></node>
+      <node oor:name="calc_StarOffice_XML_Calc_Template"                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE TEMPLATEPATH OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="calc_pdf_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="dBase"                                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="calc8"                                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE OWN DEFAULT <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> <!-- GPGENCRYPTION --> </value></prop></node>
+      <node oor:name="calc8_template"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE TEMPLATEPATH OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Gnumeric Spreadsheet"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="Calc MS Excel 2007 XML"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT ALIEN 3RDPARTYFILTER PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> SUPPORTSSIGNING </value></prop></node>
+      <node oor:name="Calc MS Excel 2007 VBA XML"                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN 3RDPARTYFILTER PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Calc MS Excel 2007 XML Template"                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN 3RDPARTYFILTER TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="Calc MS Excel 2007 Binary"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Calc Office Open XML"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Calc Office Open XML Template"                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="MS_Works_Calc"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="WPS_Lotus_Calc"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="WPS_QPro_Calc"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="ClarisWorks_Calc"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Claris_Resolve_Calc"                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Mac_Works_Calc"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Apple Numbers"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MWAW_Database"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="MWAW_Spreadsheet"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="StarOffice_Spreadsheet"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Microsoft Multiplan"                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="OpenDocument Drawing Flat XML"                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> OWN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="StarOffice XML (Draw)"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN PREFERRED <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="draw_StarOffice_XML_Draw_Template"                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE TEMPLATEPATH OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="draw_pdf_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="draw8"                                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE OWN DEFAULT PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> <!-- GPGENCRYPTION --> </value></prop></node>
+      <node oor:name="draw8_template"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE TEMPLATEPATH OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="WordPerfect Graphics"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Visio Document"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Publisher Document"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Corel Draw Document"                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Corel Presentation Exchange"                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Freehand Document"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="ClarisWorks_Draw"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="PageMaker Document"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="QXP Document"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="ZMF Document"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MWAW_Bitmap"                                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="MWAW_Drawing"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="StarOffice_Drawing"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="BMP - MS Windows"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN </value></prop></node>
+      <node oor:name="DXF - AutoCAD Interchange"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="EMF - MS Windows Metafile"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="EPS - Encapsulated PostScript"                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="GIF - Graphics Interchange"                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN </value></prop></node>
+      <node oor:name="JPG - JPEG"                                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN </value></prop></node>
+      <node oor:name="MET - OS/2 Metafile"                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="MOV - MOV"                                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="PBM - Portable Bitmap"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="PCT - Mac Pict"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="PCX - Zsoft Paintbrush"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="PGM - Portable Graymap"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="PNG - Portable Network Graphic"                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN </value></prop></node>
+      <node oor:name="PPM - Portable Pixelmap"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="PSD - Adobe Photoshop"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="RAS - Sun Rasterfile"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="SVG - Scalable Vector Graphics Draw"                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="SVG - Scalable Vector Graphics"                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="SVM - StarView Metafile"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="TGA - Truevision TARGA"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="TIF - Tag Image File"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN </value></prop></node>
+      <node oor:name="WMF - MS Windows Metafile"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="XBM - X-Consortium"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="XPM"                                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN EXOTIC </value></prop></node>
+      <node oor:name="draw_PCD_Photo_CD_Base"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="draw_PCD_Photo_CD_Base16"                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="draw_PCD_Photo_CD_Base4"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="draw_bmp_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_emf_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_eps_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> EXPORT ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_flash_Export"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="draw_gif_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_html_Export"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="draw_jpg_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> EXPORT ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_png_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> EXPORT ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_svg_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="draw_tif_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="draw_wmf_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="CGM - Computer Graphics Metafile"                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="impress_bmp_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_emf_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_eps_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_flash_Export"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="impress_gif_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_html_Export"                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="impress_jpg_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_png_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_svg_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="impress_tif_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="impress_wmf_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="calc_jpg_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="calc_png_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER SUPPORTSSELECTION </value></prop></node>
+      <node oor:name="writer_jpg_Export"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writer_png_Export"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="Apple Keynote"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MS PowerPoint 97"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="MS PowerPoint 97 AutoPlay"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN STARTPRESENTATION </value></prop></node>
+      <node oor:name="MS PowerPoint 97 Vorlage"                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> TEMPLATE TEMPLATEPATH ALIEN </value></prop></node>
+      <node oor:name="impress_StarOffice_XML_Draw"                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="OpenDocument Presentation Flat XML"                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> OWN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="StarOffice XML (Impress)"                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN PREFERRED <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="impress_StarOffice_XML_Impress_Template"                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE TEMPLATEPATH OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="impress_pdf_Export"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="impress8"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE OWN DEFAULT PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> <!-- GPGENCRYPTION --> </value></prop></node>
+      <node oor:name="impress8_template"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE TEMPLATEPATH OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="impress8_draw"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Impress MS PowerPoint 2007 XML"                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT ALIEN 3RDPARTYFILTER PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> SUPPORTSSIGNING </value></prop></node>
+      <node oor:name="Impress MS PowerPoint 2007 XML AutoPlay"                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT ALIEN 3RDPARTYFILTER PREFERRED STARTPRESENTATION <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Impress MS PowerPoint 2007 XML Template"                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT ALIEN 3RDPARTYFILTER TEMPLATE TEMPLATEPATH PREFERRED </value></prop></node>
+      <node oor:name="Impress MS PowerPoint 2007 XML VBA"                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> SUPPORTSSIGNING </value></prop></node>
+      <node oor:name="Impress Office Open XML"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Impress Office Open XML Template"                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER TEMPLATE TEMPLATEPATH PREFERRED </value></prop></node>
+      <node oor:name="Impress Office Open XML AutoPlay"                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER PREFERRED STARTPRESENTATION <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="ClarisWorks_Impress"                                        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="StarOffice_Presentation"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MWAW_Presentation"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="PowerPoint 3"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writer_web_HTML_help"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> INTERNAL NOTINFILEDIALOG READONLY </value></prop></node>
+      <node oor:name="StarOffice XML (Chart)"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> OWN ALIEN NOTINFILEDIALOG <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="chart8"                                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT OWN DEFAULT PREFERRED <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="MathML XML (Math)"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> TEMPLATE </value></prop></node>
+      <node oor:name="MathType 3.x"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN NOTINFILEDIALOG </value></prop></node>
+      <node oor:name="StarOffice XML (Math)"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="math_pdf_Export"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="math8"                                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE OWN DEFAULT <!-- ENCRYPTION --> <!-- GPGENCRYPTION --> </value></prop></node>
+      <node oor:name="draw_pdf_import"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> PREFERRED SUPPORTSSIGNING </value></prop></node>
+      <node oor:name="impress_pdf_import"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> PREFERRED </value></prop></node>
+      <node oor:name="writer_pdf_import"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> PREFERRED </value></prop></node>
+      <node oor:name="writer_pdf_addstream_import"                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> NOTINFILEDIALOG </value></prop></node>
+      <node oor:name="impress_pdf_addstream_import"                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> NOTINFILEDIALOG NOTINCHOOSER </value></prop></node>
+      <node oor:name="draw_pdf_addstream_import"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> NOTINFILEDIALOG NOTINCHOOSER </value></prop></node>
+      <node oor:name="calc_pdf_addstream_import"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> 3RDPARTYFILTER ALIEN <!-- IMPORT --> NOTINFILEDIALOG NOTINCHOOSER </value></prop></node>
+      <node oor:name="Text (encoded) (StarWriter/GlobalDocument)"                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="writer_globaldocument_StarOffice_XML_Writer"                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> TEMPLATE ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="writer_globaldocument_StarOffice_XML_Writer_GlobalDocument" ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN PREFERRED <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="writer_globaldocument_pdf_Export"                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writerglobal8"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> TEMPLATE OWN PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="writerglobal8_template"                                     ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> TEMPLATE TEMPLATEPATH OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="writerglobal8_writer"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> TEMPLATE DEFAULT <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="writerglobal8_HTML"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="HTML"                                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> PREFERRED </value></prop></node>
+      <node oor:name="Text (StarWriter/Web)"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="Text (encoded) (StarWriter/Web)"                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="writer_web_HTML_help"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> INTERNAL NOTINFILEDIALOG READONLY </value></prop></node>
+      <node oor:name="writer_web_StarOffice_XML_Writer"                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> TEMPLATE ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="writer_web_StarOffice_XML_Writer_Web_Template"              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE TEMPLATEPATH OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="writer_web_pdf_Export"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writer_web_png_Export"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writer_web_jpg_Export"                                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writerweb8_writer_template"                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> TEMPLATE TEMPLATEPATH OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="writerweb8_writer"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> TEMPLATE <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="HTML (StarWriter)"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="MS WinWord 5"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="MS WinWord 6.0"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="MS Word 95"                                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN </value></prop></node>
+      <node oor:name="MS Word 95 Vorlage"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE TEMPLATEPATH ALIEN </value></prop></node>
+      <node oor:name="MS Word 97"                                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="MS Word 97 Vorlage"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> TEMPLATE TEMPLATEPATH ALIEN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="OpenDocument Text Flat XML"                                 ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> OWN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="Rich Text Format"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="StarOffice XML (Writer)"                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE OWN ALIEN PREFERRED <!-- ENCRYPTION --> EXOTIC </value></prop></node>
+      <node oor:name="WordPerfect"                                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MS_Works"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="MS_Write"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="DosWord"                                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="ClarisWorks"                                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Mac_Word"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Mac_Works"                                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MacWrite"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Mariner_Write"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="WriteNow"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="AbiWord"                                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER EXOTIC </value></prop></node>
+      <node oor:name="T602Document"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="LotusWordPro"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Text"                                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN PREFERRED </value></prop></node>
+      <node oor:name="Text (encoded)"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN </value></prop></node>
+      <node oor:name="writer_MIZI_Hwp_97"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER EXOTIC </value></prop></node>
+      <node oor:name="writer_StarOffice_XML_Writer_Template"                      ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> TEMPLATE TEMPLATEPATH OWN ALIEN <!-- ENCRYPTION --> </value></prop></node>
+      <node oor:name="writer_pdf_Export"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="writer8"                                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE OWN DEFAULT PREFERRED <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> <!-- GPGENCRYPTION --> </value></prop></node>
+      <node oor:name="writer8_template"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT TEMPLATE TEMPLATEPATH OWN <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="MS Word 2007 XML"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT EXPORT ALIEN 3RDPARTYFILTER <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> SUPPORTSSIGNING </value></prop></node>
+      <node oor:name="MS Word 2007 XML Template"                                  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT ALIEN 3RDPARTYFILTER TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="MS Word 2007 XML VBA"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> SUPPORTSSIGNING </value></prop></node>
+      <node oor:name="Office Open XML Text"                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER <!-- ENCRYPTION --> <!-- PASSWORDTOMODIFY --> </value></prop></node>
+      <node oor:name="Office Open XML Text Template"                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER TEMPLATE TEMPLATEPATH </value></prop></node>
+      <node oor:name="writer_layout_dump"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="BroadBand eBook"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="FictionBook 2"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="PalmDoc"                                                    ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Plucker eBook"                                              ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="Apple Pages"                                                ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="MWAW_Text_Document"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED EXOTIC </value></prop></node>
+      <node oor:name="Palm_Text_Document"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="StarOffice_Writer"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER PREFERRED </value></prop></node>
+      <node oor:name="EPUB"                                                       ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="ADO Rowset XML"                                             ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="DocBook File"                                               ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="MS Excel 2003 XML"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="MS Word 2003 XML"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="XHTML Calc File"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="XHTML Draw File"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="XHTML Impress File"                                         ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="XHTML Writer File"                                          ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="UOF text"                                                   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="UOF spreadsheet"                                            ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+      <node oor:name="UOF presentation"                                           ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> <!-- EXPORT --> ALIEN 3RDPARTYFILTER </value></prop></node>
+    </node>
+  </oor:component-data>
+
+  <!--
+      (bootstrap:heads/master)root@zygon:/# find / -xdev -name '*.xcd' -not -name '*langpack*' | sort | xargs -n1 xmlstarlet sel -T -t -m '//oor:component-data[@oor:name="GraphicFilter"]/node[@oor:name="Filters"]/node' -o '      <node oor:name="' -v @oor:name -o '"><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> ' -v 'prop[@oor:name="Flags"]' -o ' </value></prop></node>' -n | sed -r 's/\<(GPGENCRYPTION|ENCRYPTION|PASSWORDTOMODIFY|IMPORT|EXPORT)\>/<!\-\- \1 \-\->/g' >tmp.list
+  -->
+  <oor:component-data oor:name="GraphicsFilter" oor:package="org.openoffice.TypeDetection">
+    <node oor:name="Filters">
+      <!-- UPDATED AS AT libreoffice 1:6.1.0~rc2-3~bpo9+1 -->
+      <node oor:name="bmp_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="bmp_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="dxf_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="emf_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="emf_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="eps_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="eps_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="gif_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="gif_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="jpg_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> EXPORT </value></prop></node>
+      <node oor:name="jpg_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="met_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pbm_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pcd_Import_Base"   ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pcd_Import_Base4"  ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pcd_Import_Base16" ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pct_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pcx_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="pdf_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="pdf_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="pgm_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="png_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> EXPORT </value></prop></node>
+      <node oor:name="png_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="ppm_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="psd_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="ras_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="svg_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> EXPORT </value></prop></node>
+      <node oor:name="svg_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> IMPORT </value></prop></node>
+      <node oor:name="svm_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="svm_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="tga_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="tif_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="tif_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="wmf_Export"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- EXPORT --> </value></prop></node>
+      <node oor:name="wmf_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="xbm_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="xpm_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+      <node oor:name="mov_Import"        ><prop oor:name="Flags" oor:op="replace" oor:finalized="true"><value> <!-- IMPORT --> </value></prop></node>
+    </node>
+  </oor:component-data>
+</oor:data>
