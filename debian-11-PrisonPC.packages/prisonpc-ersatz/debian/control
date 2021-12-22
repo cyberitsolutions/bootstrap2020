@@ -293,6 +293,18 @@ Conflicts:
  featherpad,
 ## Inmates SHOULD NOT have miscellaneous scary things
 ## ==================================================
+# In principle IPP2 supports authentication, though
+# it happens inside the IPP2 payload, not inside HTTP.
+# When we experimentally enabled it,
+# we found that it asked for passwords WAY too often.
+# We have not gone back and tuned it yet.
+# In the meantime, inmates can spoof their identity to the print server with "lp -U alice test.pdf"
+# This does not directly affect security, but
+# it could affect billing of print resources (paper and ink).
+# The quick fix is simply to make sure lp(1) cannot be installed.
+# Applications almost always use cups as a library (not CLI fork+exec binaries).
+# When used as a library, this spoofing is much harder (maybe impossible).
+ cups-client,
 # As at Debian 11, python 2.x is obsolete.
 # We REALLY should not see it anywhere!
  python2,
@@ -327,7 +339,7 @@ Conflicts:
  packagekit,
  packagekit-tools,
  dpkg-dev,
- python-apt,
+ python3-apt,
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
 ## Inmates SHOULD NOT have development tools
