@@ -218,6 +218,10 @@
 /usr/share/xfce4/helpers/xfce4-terminal.desktop
 /usr/share/xfce4/helpers/xfe.desktop
 /usr/share/xfce4/helpers/xterm.desktop
+# Debian LibreOffice config includes an example GenericPrinter which DOES NOT WORK.
+# Remove it so it does not appear in the GUI printer list.
+# UPDATE: not needed -- when cupsd is reachable, GenericPrinter is hidden.
+# /etc/libreoffice/psprint.conf
 
 
 
