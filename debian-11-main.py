@@ -548,7 +548,7 @@ if args.boot_test:
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
-                '10.0.2.100 PrisonPC ldap nfs ppc-services PPCAdm')
+                '10.0.2.100 PrisonPC ldap nfs ppc-services PPCAdm printserver')
             (testdir / 'site.dir/prayer.errata').write_text(
                 'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:
@@ -580,7 +580,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128}
+                   for port in {636, 2049, 443, 993, 3128, 631}
                    for host in {'prisonpc-staff.lan'
                                 if args.template.startswith('desktop-staff') else
                                 'prisonpc-inmate.lan'}]
