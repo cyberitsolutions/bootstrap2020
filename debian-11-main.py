@@ -415,9 +415,9 @@ with tempfile.TemporaryDirectory() as td:
            if template_wants_GUI else []),
          *(['--include=libnss-ldapd libpam-ldapd unscd',
             f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC")} /',
-            f'--customize-hook=tar-in {create_tarball("debian-11-PrisonPC-staff")} /'
+            f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-staff")} /'
             if args.template.startswith('desktop-staff') else
-            f'--customize-hook=tar-in {create_tarball("debian-11-PrisonPC-inmate")} /',
+            f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-inmate")} /',
             '--essential-hook={'
             '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
             '     } | chroot $1 debconf-set-selections',
@@ -472,6 +472,13 @@ if args.reproducible:
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 if args.boot_test:
+    # PrisonPC SOEs are hard-coded to check their IP address.
+    # This is not boot-time configurable for paranoia reasons.
+    # Therefore, qemu needs to use compatible IP addresses.
+    network, tftp_address, smb_address, master_address = (
+        ('10.0.2.0/24', '10.0.2.2', '10.0.2.4', '10.0.2.100')
+        if args.template.startswith('desktop-staff') else
+        ('10.128.2.0/24', '10.128.2.2', '10.128.2.4', '10.128.2.100'))
     with tempfile.TemporaryDirectory(dir=destdir) as testdir:
         testdir = pathlib.Path(testdir)
         validate_unescaped_path_is_safe(testdir)
@@ -535,9 +542,9 @@ if args.boot_test:
                 '  INITRD initrd.img\n'
                 '  APPEND ' + ' '.join([
                     'boot=live',
-                    ('netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//10.0.2.4/qemu live-media-path='
+                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
                      if have_smbd else
-                     'fetch=tftp://10.0.2.2/filesystem.squashfs'),
+                     f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
                     common_boot_args]))
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
@@ -549,7 +556,7 @@ if args.boot_test:
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
-                '10.0.2.100 PrisonPC PrisonPC-inmate PrisonPC-staff ldap nfs ppc-services PPCAdm printserver')
+                f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ldap nfs ppc-services PPCAdm printserver')
             (testdir / 'site.dir/prayer.errata').write_text(
                 'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:
@@ -571,6 +578,7 @@ if args.boot_test:
             '--net', 'nic,model=virtio',
             '--net', ','.join([
                 'user',
+                f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
                 f'hostname={args.template}.{domain}',
                 f'dnssearch={domain}',
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
@@ -579,7 +587,7 @@ if args.boot_test:
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
-                *([f'guestfwd=tcp:10.0.2.100:{port}-cmd:'
+                *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631}
                    for host in {'prisonpc-staff.lan'
