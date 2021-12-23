@@ -1,0 +1,90 @@
+#!/usr/sbin/nft --file
+
+# Rationale: we don't want direct communication between inmates.
+# Without firewalls, only the switches stop them.
+# With INPUT filtered, attacker must compromise one endpoint.
+# With OUTPUT also filtered, both endpoints must be compromised.
+#
+# (Not a big win, but it's reasonably cheap to do.)
+
+add table inet PrisonPC         # idempotent
+delete table inet PrisonPC      # not idempotent
+table inet PrisonPC {
+
+    # Desktops are not routers; FORWARD is deny-all.
+    chain FORWARD {
+        type filter hook forward priority filter; policy drop;
+    }
+
+    chain INPUT {
+        type filter hook input priority filter; policy drop;
+        # Because TV traffic is multicast,
+        # it is not possible to block it by host (or user) at the source.
+        # We MUST block it on the individual desktop. (#25324, #22980)
+        #
+        # The user might already be watching TV when a curfew kicks in.
+        # We MUST put this rule before "ct state established"!
+        # The magic number here is the multicast IP address range.
+        #
+        # CORRECTION: it's the subset of the multicast range PrisonPC uses.
+        #             https://alloc.cyber.com.au/task/task.php?taskID=31648
+        #
+        # https://en.wikipedia.org/wiki/Multicast_address
+        ip daddr 239.255.0.0/16  jump television
+        jump prelude
+        # Log remote monitoring.  The "in" side could be inmates or staff.
+        tcp dport 5900  log prefix "VNC in: " level info
+        # Prisoner machines allow initiation of connections from and to the
+        # server, and (for clandestine monitoring) from staff desktops.
+        #
+        # NOTE: dnsmasq split-horizon means the hostname "PrisonPC" is an alias for
+        #       "PrisonPC-inmate" on inmate network, and
+        #       "PrisonPC-staff" on staff network.
+        #       However, an inmate SOE should never be on the staff network.
+        #       So explicitly asking for the expected network acts as a safety net.
+        #
+        # NOTE: "PrisonPC-staff/16" (to mean "the /16 that includes PrisonPC-staff") is not allowed.
+        ip saddr PrisonPC-inmate  accept
+        ip saddr 10.0.0.0/16  tcp dport 5900  accept
+    }
+
+    # Normally OUTPUT is default-allow; ours is default-deny.
+    # Usually local processess are implicitly trusted; ours aren't.
+    chain OUTPUT {
+        type filter hook output priority filter; policy drop;
+        jump prelude
+        # Log remote monitoring.  The "out" side should only be staff!
+        tcp dport 5900  log prefix "VNC out: " level info
+        # Watching IPTV requires the inmate desktop to send some IGMP
+        # subscription request stuff to the TV server(s) multicast addresses,
+        # and then to receive the TV streams.
+        # The former is covered here.
+        # The latter is covered by "chain television".
+        # For rationale discussion see
+        # https://alloc.cyber.com.au/task/task.php?taskID=31648
+        # —twb, Jan 2017
+        #
+        # FIXME: limit this to "ip protocol igmp" and "udp ??? rtp"?
+        ip daddr { 224.0.0.1, 224.0.0.2, 239.255.0.0/16 }  accept  comment "IPTV"
+        # Prisoner machines allow initiation of connections from and to the
+        # server, and (for clandestine monitoring) from the staff network.
+        ip daddr PrisonPC-inmate  accept
+    }
+
+    # Normally prelude is shared between INPUT and FORWARD.
+    # Ours is shared between INPUT and OUTPUT.
+    # Not a problem because does not use "ip daddr" &c.
+    chain prelude {
+        ct state vmap { established: accept, related: accept, invalid: drop }
+        iiftype loopback  accept
+        icmp type echo-request  accept
+        icmpv6 type { echo-request, nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert }  accept
+    }
+
+    # This chain is edited after login by tv-snitch.
+    chain television {
+        drop
+    }
+
+
+}

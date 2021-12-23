@@ -382,6 +382,7 @@ with tempfile.TemporaryDirectory() as td:
                f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
                ] if args.apps else []),
             *(['--include=prisonpc-bad-package-conflicts'
+               '    nftables'
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
                '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
                '    libgtk-3-bin'  # gtk-launch (used by some .desktop files)
@@ -548,7 +549,7 @@ if args.boot_test:
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
-                '10.0.2.100 PrisonPC ldap nfs ppc-services PPCAdm printserver')
+                '10.0.2.100 PrisonPC PrisonPC-inmate PrisonPC-staff ldap nfs ppc-services PPCAdm printserver')
             (testdir / 'site.dir/prayer.errata').write_text(
                 'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:

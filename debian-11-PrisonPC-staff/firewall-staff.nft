@@ -1,0 +1,19 @@
+#!/usr/sbin/nft --file
+
+# There is no staff equivalent of "tvviewers" inmate group.
+# ppcadm won't let you set a staff TV curfew.
+# Since this makes staff TV curfews useless,
+# they're just disabled entirely for now (for staff). --twb, Jan 2015
+# https://alloc.cyber.com.au/task/task.php?taskID=30643
+#
+# An empty chain means IPTV packets "falls through", to be implicitly allowed by "ct state".
+flush chain inet PrisonPC television
+
+# Staff machines allow initiation of connections from and to the
+# server (both addresses), to the prisoner network (for clandestine
+# monitoring), and from the staff net (for IPTV).
+#
+# NOTE: "PrisonPC-inmate/16" (to mean "the /16 that includes PrisonPC-staff") is not allowed.
+add rule inet PrisonPC INPUT   ip saddr PrisonPC-staff  accept
+add rule inet PrisonPC OUTPUT  ip daddr PrisonPC-staff  accept
+add rule inet PrisonPC OUTPUT  ip daddr 10.128.0.1/16  tcp dport 5900  accept
