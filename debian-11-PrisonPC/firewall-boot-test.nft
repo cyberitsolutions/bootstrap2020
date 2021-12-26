@@ -1,0 +1,26 @@
+# NOTE: this file is not installed in any SOEs.
+# It is copied into --boot-test's temporary site.dir.
+
+# In production, everything runs on PrisonPC/32.
+# In testing, SOME things have different IPs!
+#
+# I considered making the main firewall.nft use "set servers {⋯}", and
+# having this file just edit that list, but
+# it looked like it would be rather messy.
+#
+# Likewise, this should probably be a template that
+# gets "10.0.2.x" or "10.128.2.x" from debian-11-main.py at runtime.
+# That also felt excessively messy.
+#
+# The main counter-argument is that this approach means that VM
+# testing *of the firewall itself* is prone to false-positives and
+# false-negatives.  Other tests are still fine!
+add rule inet PrisonPC INPUT   ip saddr { 10.0.2.2, 10.128.2.2 }  meta l4proto . th dport { tcp . ssh, udp . bootpc }  accept
+add rule inet PrisonPC OUTPUT  ip daddr { 10.0.2.3, 10.128.2.3 }  meta l4proto { tcp, udp }  th dport domain  accept
+add rule inet PrisonPC OUTPUT  ip daddr { 10.0.2.4, 10.128.2.4 }  tcp dport microsoft-ds  accept
+add rule inet PrisonPC OUTPUT  udp dport ntp  accept
+
+# When something is attempted and isn't allowed,
+# log it so that we can work out what it is.
+add rule inet PrisonPC INPUT  ip saddr 10.0.0.0/8  log prefix "FIXME"
+add rule inet PrisonPC OUTPUT ip saddr 10.0.0.0/8  log prefix "FIXME"

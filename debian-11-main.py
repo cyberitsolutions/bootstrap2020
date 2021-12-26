@@ -475,10 +475,10 @@ if args.boot_test:
     # PrisonPC SOEs are hard-coded to check their IP address.
     # This is not boot-time configurable for paranoia reasons.
     # Therefore, qemu needs to use compatible IP addresses.
-    network, tftp_address, smb_address, master_address = (
-        ('10.0.2.0/24', '10.0.2.2', '10.0.2.4', '10.0.2.100')
+    network, tftp_address, dns_address, smb_address, master_address = (
+        ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if args.template.startswith('desktop-staff') else
-        ('10.128.2.0/24', '10.128.2.2', '10.128.2.4', '10.128.2.100'))
+        ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
     with tempfile.TemporaryDirectory(dir=destdir) as testdir:
         testdir = pathlib.Path(testdir)
         validate_unescaped_path_is_safe(testdir)
@@ -562,6 +562,9 @@ if args.boot_test:
             if 'inmate' in args.template:
                 # Simulate a site-specific desktop image (typically not done for staff).
                 subprocess.check_call(['convert', 'rose:', testdir / 'site.dir/wallpaper.jpg'])
+            (testdir / 'site.dir/etc/nftables.conf.d').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
+                pathlib.Path('debian-11-PrisonPC/firewall-boot-test.nft').read_text())
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',

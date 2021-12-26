@@ -12,8 +12,4 @@ flush chain inet PrisonPC television
 # Staff machines allow initiation of connections from and to the
 # server (both addresses), to the prisoner network (for clandestine
 # monitoring), and from the staff net (for IPTV).
-#
-# NOTE: "PrisonPC-inmate/16" (to mean "the /16 that includes PrisonPC-staff") is not allowed.
-add rule inet PrisonPC INPUT   ip saddr PrisonPC-staff  accept
-add rule inet PrisonPC OUTPUT  ip daddr PrisonPC-staff  accept
-add rule inet PrisonPC OUTPUT  ip daddr 10.128.0.1/16  tcp dport 5900  accept
+add rule inet PrisonPC OUTPUT  ip daddr "PrisonPC-inmate"/16  tcp dport 5900  log prefix "VNC out: " level info  accept

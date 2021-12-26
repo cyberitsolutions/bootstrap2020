@@ -32,8 +32,6 @@ table inet PrisonPC {
         # https://en.wikipedia.org/wiki/Multicast_address
         ip daddr 239.255.0.0/16  jump television
         jump prelude
-        # Log remote monitoring.  The "in" side could be inmates or staff.
-        tcp dport 5900  log prefix "VNC in: " level info
         # Prisoner machines allow initiation of connections from and to the
         # server, and (for clandestine monitoring) from staff desktops.
         #
@@ -43,9 +41,18 @@ table inet PrisonPC {
         #       However, an inmate SOE should never be on the staff network.
         #       So explicitly asking for the expected network acts as a safety net.
         #
-        # NOTE: "PrisonPC-staff/16" (to mean "the /16 that includes PrisonPC-staff") is not allowed.
-        ip saddr PrisonPC-inmate  accept
-        ip saddr 10.0.0.0/16  tcp dport 5900  accept
+        #       UPDATE: not needed anymore as network-check-script.sh
+        #       has already run in the initrd.
+        #
+        # NOTE: "PrisonPC-staff"/16 or PrisonPC-staff / 16 means
+        #       "the /16 that includes host PrisonPC-staff",
+        #       i.e. "the staff network".
+        ip saddr "PrisonPC" tcp dport ssh  accept
+        # FIXME: why is this showing up in the logs?
+        #        It should be covered under "ct state {established, related}"!
+        ip saddr "PrisonPC"  udp sport bootps  udp dport bootpc  log prefix "DHCP - not whitelisted?"  accept
+        ip saddr "PrisonPC-staff"/16  tcp dport 5900  log prefix "VNC in: " level info  accept
+
     }
 
     # Normally OUTPUT is default-allow; ours is default-deny.
@@ -53,8 +60,6 @@ table inet PrisonPC {
     chain OUTPUT {
         type filter hook output priority filter; policy drop;
         jump prelude
-        # Log remote monitoring.  The "out" side should only be staff!
-        tcp dport 5900  log prefix "VNC out: " level info
         # Watching IPTV requires the inmate desktop to send some IGMP
         # subscription request stuff to the TV server(s) multicast addresses,
         # and then to receive the TV streams.
@@ -65,10 +70,30 @@ table inet PrisonPC {
         # —twb, Jan 2017
         #
         # FIXME: limit this to "ip protocol igmp" and "udp ??? rtp"?
+        #
+        # FIXME: during testing, I observed before GUI login this packet:
+        #           IN= OUT=enp0s1 SRC=10.0.2.15 DST=224.0.0.22 LEN=40 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0xc4
+        #        Where 10.0.2.15 is the desktop VM.
+        #        Why is IGMP happening so early?
+        #        I speculate this is related to systemd-resolved.
+        #
+        # FIXME: disable 5355/udp (LLMNR) and MDNS in resolved, as it is not needed for PrisonPC...
         ip daddr { 224.0.0.1, 224.0.0.2, 239.255.0.0/16 }  accept  comment "IPTV"
         # Prisoner machines allow initiation of connections from and to the
         # server, and (for clandestine monitoring) from the staff network.
-        ip daddr PrisonPC-inmate  accept
+        ip daddr "PrisonPC"  meta l4proto . th dport {
+            udp . ntp,
+            udp . bootps,
+            udp . domain,
+            tcp . domain,
+            tcp . nfs,
+            tcp . 3128,         # squid
+            tcp . 2514,         # rsyslog-relp
+            tcp . ipp,
+            tcp . https,
+            tcp . ldaps,
+            tcp . submission,
+            tcp . imaps }  accept
     }
 
     # Normally prelude is shared between INPUT and FORWARD.
