@@ -9,6 +9,10 @@
 # An empty chain means IPTV packets "falls through", to be implicitly allowed by "ct state".
 flush chain inet PrisonPC television
 
+# In ppcadm, "Browse p123's home directory" just links to sftp://p123@inmates/p123.
+# The port and hostname are added in via client-side ssh_config.
+add rule inet PrisonPC OUTPUT  ip daddr "PrisonPC"  tcp dport 2222  accept
+
 # Staff machines allow initiation of connections from and to the
 # server (both addresses), to the prisoner network (for clandestine
 # monitoring), and from the staff net (for IPTV).

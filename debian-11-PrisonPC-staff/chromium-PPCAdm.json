@@ -1,5 +1,22 @@
+// NOTE: this file assumes PolicyListMultipleSourceMergeList includes
+//       WebAppInstallForceList and URLAllowlist, so
+//       entries here add to (not replace) the inmate defaults.
 {"HomepageLocation": "https://PPCAdm/",
  "WebAppInstallForceList": [
     {"fallback_app_name": "PrisonPC Admin",
      "url": "http://PPCAdm/",
-     "create_desktop_shortcut": true}]}
+     "create_desktop_shortcut": true}],
+
+ // In ppcadm, "Browse p123's home directory" just links to sftp://p123@inmates/p123.
+ // In ppcadm, "Control desktop" just links to vnc://10.128.1.2.
+ //
+ // In Chromium 52+ these must be in URLAllowlist,
+ // EVEN THOUGH chromium just hands them to xdg-open (exo-open).
+ //
+ // AFAICT I can whitelist wildcard domains, but not wildcard addresses.
+ // For example "vnc://10.128.*.*" doesn't seem to work.
+ // Therefore, just whitelisting the entire protocol for now.  Sigh.
+ // Ref. https://www.chromium.org/administrators/url-blacklist-filter-format
+ // --twb, Oct 2016 (#31488)
+ "URLAllowlist": ["vnc://*", "sftp://*"]
+}
