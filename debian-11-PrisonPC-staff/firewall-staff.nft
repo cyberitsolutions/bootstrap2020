@@ -12,4 +12,4 @@ flush chain inet PrisonPC television
 # Staff machines allow initiation of connections from and to the
 # server (both addresses), to the prisoner network (for clandestine
 # monitoring), and from the staff net (for IPTV).
-add rule inet PrisonPC OUTPUT  ip daddr "PrisonPC-inmate"/16  tcp dport 5900  log prefix "VNC out: " level info  accept
+add rule inet PrisonPC OUTPUT  ip daddr { "PrisonPC-inmate"/16, "PrisonPC-staff"/16 }  tcp dport 5900  log prefix "VNC out: " level info  accept
