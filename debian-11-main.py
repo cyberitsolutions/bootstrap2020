@@ -156,7 +156,7 @@ template_wants_GUI = args.template.startswith('desktop')
 template_wants_disks = args.template in {'dban', 'zfs', 'understudy', 'datasafe3'}
 template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
 template_wants_PrisonPC = (
-    args.template.startswith('desktop-inmate') or
+    args.template.startswith('desktop-inmate') or  # noqa: W504
     args.template.startswith('desktop-staff'))
 
 if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
@@ -458,7 +458,9 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=chroot $1 bash -i',
             '--customize-hook=rm -f $1/etc/debian_chroot']
            if args.debug_shell else []),
-         *([f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status']  # https://kb.cyber.com.au/32894-debsecan-SOEs.sh
+         # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
+         # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
+         *([f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status']
            if args.optimize != 'simplicity' else []),
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
@@ -475,7 +477,7 @@ with tempfile.TemporaryDirectory() as td:
          # https://tracker.debian.org/news/1238555/rsnapshot-removed-from-testing/
          *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
            if args.template == 'datasafe3' else []),
-         *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye desktop']
+         *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye desktop']  # noqa: E501
            if template_wants_PrisonPC else []),
          ])
 
