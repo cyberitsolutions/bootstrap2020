@@ -31,6 +31,8 @@
   </oor:component-data>
 
   <!-- Forbid inmates from installing their own third-party packages. -->
+  <!-- UPDATE: Confirmed this disables Tools>Extension Manager>Add
+               as at Dec 2021 / Debian 11 / LibreOffice 7.2. -->
   <oor:component-data oor:name="ExtensionManager" oor:package="org.openoffice.Office">
     <node oor:name="ExtensionSecurity">
       <prop oor:name="DisableExtensionInstallation" oor:op="fuse" oor:finalized="true"><value>true</value></prop>
@@ -39,6 +41,8 @@
   </oor:component-data>
 
   <!-- Random grab-bag of "good" things to set. -->
+  <!-- UPDATE: Confirmed this disables (most of) Tools>Options>Security
+               as at Dec 2021 / Debian 11 / LibreOffice 7.2. -->
   <oor:component-data oor:name="Common" oor:package="org.openoffice.Office">
     <node oor:name="Security">
       <prop oor:name="EnableExpertConfiguration" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
@@ -56,7 +60,8 @@
        It does not mention OOXML formats (.docx, .pptx, .xlsx). -->
   <!-- FIXME: testing indicates even with oor:finalized="true",
        inmates can go into Tools > Options and enable these until LibreOffice quits.
-       Can we do anything about this? -->
+       Can we do anything about this?
+       UPDATE: still true as at Dec 2021 / Debian 11 / LibreOffice 7.2. -->
   <oor:component-data oor:name="Calc" oor:package="org.openoffice.Office">
     <node oor:name="Filter">
       <node oor:name="Import">
@@ -120,8 +125,24 @@
     </node>
   </oor:component-data>
 
-  <!-- Default the UI language to en-GB because we don't install the normal default of en-US so it tries to get help online. (#30103) -->
-  <!-- As at 2015-08-10 There is no en-AU available for this option -->
+  <!-- With this, pressing F1 browses to local files from libreoffice-help-en-gb.
+       Without this, pressing F1 pops up thi whinge:
+
+           LibreOffice Help Not Installed
+           The LibreOffice built-in help for current UI language
+           (English (USA)) is not installed on your computer.
+
+           You may either install it from our website or your system's
+           repositories, or read an online version.
+
+           [ ] Do not show this dialog again
+
+           [Read Help Online]  [Cancel]
+
+       This is because we do not install libreoffice-help-en-us, the default/fallback.
+       As at Debian 11 (Dec 2021), there is no libreoffice-help-en-au.
+       https://alloc.cyber.com.au/task/task.php?taskID=30103
+  -->
   <oor:component-data oor:name="Setup" oor:package="org.openoffice">
     <node oor:name="L10N">
       <prop oor:name="ooLocale" oor:op="fuse"><value>en-GB</value></prop>
@@ -132,4 +153,21 @@
       <prop oor:name="UILocale" oor:op="fuse"><value>en-GB</value></prop>
     </node>
   </oor:component-data>
+
+
+  <!-- Disable Java (which is not installed anyway).
+       Doesn't really help or hurt.
+       Does NOT prevent this needless warning in ~/.xsession-errors:
+
+           Warning: failed to launch javaldx - java may not function correctly
+
+       Confirmed this completely hides Tools>Options>Java
+       as at Dec 2021 / Debian 11 / LibreOffice 7.2 -->
+  <oor:component-data oor:name="Java" oor:package="org.openoffice.Office">
+    <node oor:name="VirtualMachine">
+      <prop oor:name="Enable" oor:op="fuse" oor:finalized="true"><value>false</value></prop>
+    </node>
+  </oor:component-data>
+
+
 </oor:data>
