@@ -73,7 +73,36 @@ Description: appease prayer
  so we don't need logrotate.
  This also lets us avoid installing cron.
 
-Package: prisonpc-bad-package-conflicts
+Package: prisonpc-bad-package-conflicts-inmates
+Depends:
+ ${misc:Depends},
+ prisonpc-bad-package-conflicts-everyone,
+Enhances:
+ prisonpc-bad-package-conflicts-everyone,
+Architecture: all
+Description:
+ Most bad packages can be banned for everyone.
+ That is done in prisonpc-bad-package-conflicts
+ This package amends that to also ban things
+ inmates MUST NOT have, but staff MUST have.
+Conflicts:
+ xfce4-terminal, x-terminal-emulator,
+ mousepad, libgtksourceview-3.0-1,
+ xfce4-screenshooter,
+# NOTE: staff need ntfs3 and exfat
+# https://alloc.cyber.com.au/task/task.php?taskID=24592
+# https://alloc.cyber.com.au/task/task.php?taskID=32658
+# NOTE: exfat-fuse removed as exfat is now in-kernel.
+# https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
+# FIXME: move ntfs-3g to prisonpc-bad-package-conflicts-everyone
+#        when 5.15 reaches bullseye-backports.
+# https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
+ ntfs-3g,
+# Browse p123's home (sftp://)
+ gvfs-backends,
+ gvfs-fuse, fuse,
+
+Package: prisonpc-bad-package-conflicts-everyone
 Depends:
  ${misc:Depends},
  prisonpc-ersatz-gpg (= ${binary:Version}),
@@ -227,9 +256,7 @@ Conflicts:
  squashfuse, sra-toolkit, tmfs, tup, uml-utilities, unionfs-fuse, vmfs-tools,
  vmfs6-tools, winregfs, wit, xmount, xrdp, xrootd-fuse, zfs-fuse, apt-cacher-ng,
 # In theory an inmate could write a userland filesystem with fuse.
-# NOTE: staff will need gvfs-backend (thus fuse) for sftp...
- gvfs-backends,
- fuse,
+# NOTE: staff need gvfs-fuse (thus fuse) for sftp:// in thunar.
  cuse,
 ## Inmates MUST NOT have containers (VMs)
 ## ======================================
@@ -247,9 +274,7 @@ Conflicts:
  gnome-boxes,
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
-# All terminal emulators.
-# Fortunately, a virtual package here covers most of them.
- x-terminal-emulator,
+# NOTE: staff need x-terminal-emulator (xfce4-terminal).
 # We need at most one privesc framework.  Block the rest.
 # We need thunar->udisks2->polkit for mounting/ejecting DVDs.
  sudo,
@@ -261,7 +286,7 @@ Conflicts:
  xfce4-whiskermenu-plugin,
 ## Inmates SHOULD NOT have a text editor
 ## =====================================
-# FIXME: Staff will need a text editor.
+# NOTE: staff need mousepad (GUI text editor), thus also libgtksourceview-3.0-1.
 # CLI text editors
  editor,
 # https://codesearch.debian.net/search?q=update-alternatives+--install+%2Fusr%2Fbin%2Feditor+editor&literal=1
@@ -269,7 +294,6 @@ Conflicts:
  le, lpe, mc, mg, nano, ne, nedit, neovim, ng, nvi, tilde, vile, xemacs21, yi,
  zile,
 # GUI text editors (not comprehensive)
- mousepad,
  pluma,
  juffed,
  gedit,
@@ -281,7 +305,6 @@ Conflicts:
 # The GTK / Qt widgets that provide text editor functionality.
 # This will error out if an app has such an editor as an embedded widget.
  libkf5texteditor5,
- libgtksourceview-3.0-1,
  libgtksourceview-4-0,
  gir1.2-gtksource-4,
 ## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
@@ -401,8 +424,8 @@ Conflicts:
 ## Inmates SHOULD NOT be able to make screenshots
 ## ==============================================
 ## https://alloc.cyber.com.au/task/task.php?taskID=30713
+# NOTE: staff need xfce4-screenshoter.
 # x11-apps provides "xwd" screenshot tool.
- xfce4-screenshooter,
  scrot,
  x11-apps,
  gnome-screenshot,
@@ -433,3 +456,7 @@ Description: conflict with CANTHAPPEN packages
  .
  One easy way to test for this is to ask for task-xfce-desktop, which
  should fail due to a conflict relating to X terminal emulators.
+ .
+ Most bad packages can be banned for everyone (this package).
+ A few things inmates MUST NOT have, but staff MUST have.
+ That is done in prisonpc-bad-package-conflicts-inmates.

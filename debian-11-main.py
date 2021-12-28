@@ -381,7 +381,10 @@ with tempfile.TemporaryDirectory() as td:
                '    vlc'
                f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
                ] if args.apps else []),
-            *(['--include=prisonpc-bad-package-conflicts'
+            *([('--include=prisonpc-bad-package-conflicts-everyone'
+                if args.template.startswith('desktop-staff') else
+                '--include=prisonpc-bad-package-conflicts-inmates'),
+               '--include='
                '    nftables'
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
                '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
@@ -394,6 +397,20 @@ with tempfile.TemporaryDirectory() as td:
                '    prisonpc-chromium-hunspell-dictionaries'
                ]
               if template_wants_PrisonPC else []),
+            # Staff and generic (non-PrisonPC) desktops
+            *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
+              if not args.template.startswith('desktop-inmate') else []),
+            # Staff-only packages
+            *(['--include='
+               '    gvncviewer'  # Control desktop (vnc://)
+               '    gvfs-backends gvfs-fuse'  # Browse p123's home (sftp://)
+               '    dvdbackup asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
+               # NOTE: exfat-fuse removed as exfat is now in-kernel.
+               # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
+               # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.
+               # https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
+               '    ntfs-3g'  # USB HDDs
+               ] if args.template.startswith('desktop-staff') else []),
             # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
             # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
             # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.

@@ -1,3 +1,10 @@
+prisonpc-ersatz (11.9) bullseye; urgency=medium
+
+  * Break up into "everyone" (staff) and "inmates".
+    This allows staff to have a terminal emulator.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 29 Dec 2021 09:06:18 +1100
+
 prisonpc-ersatz (11.7) bullseye; urgency=medium
 
   * Ban cups-client due to "lp -U alice test.pdf".
