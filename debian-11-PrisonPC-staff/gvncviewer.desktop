@@ -1,0 +1,22 @@
+# In ppcadm, "Browse p123's home directory" just links to sftp://p123@inmates/p123.
+# The port and hostname are added in via client-side ssh_config.
+
+# gvncviewer is invoked like "gvncviewer hostname[:display]"
+# chromium wants to open a URL like "vnc://hostname[:display]".
+# The sh below just throws away everything up to the last slash,
+# so the latter becomes the former.
+
+[Desktop Entry]
+Version=1.0
+Name=gVNCviewer
+Comment=Connect to a remote desktop over VNC
+GenericName=Remote Desktop viewer (URL handler)
+Exec=sh -c 'exec gvncviewer "${1##*/}"' -- %U
+# Old python version.
+#Exec=python -c 'import urlparse, sys, subprocess; subprocess.Popen(["gvncviewer", urlparse.urlsplit(sys.argv[1]).netloc])' %U
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/vnc;
+# Pretty sure we don't need both of these.
+#MimeType=x-scheme-handler/x-chromium-vnc;x-scheme-handler/vnc;
+NoDisplay=true
