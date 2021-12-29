@@ -29,13 +29,32 @@ was_drop = True                 # used to decide whether to syslog
 def enact(drop, why=None):
     global was_drop             # FIXME: use a proper closure.
 
-    # FIXME: calling iptables instead of iptables-restore is Wrong.
-    # Doing it in this limited fashion is LESS Wrong, but not Right.
-    # Can we instead abuse ipset or something? --twb, Jan 2016
-    if drop:
-        subprocess.check_call(['iptables', '-R', 'TV', '1', '-j', 'DROP'])
-    else:
-        subprocess.check_call(['iptables', '-R', 'TV', '1'])  # NOOP
+    subprocess.run(
+        ['nft', '--file=-'],
+        check=True,
+        text=True,
+        input=';'.join([
+            'flush chain inet PrisonPC television',
+            'add rule inet PrisonPC television drop' if drop else '']))
+
+    # FIXME: use python3-nftables (not subprocess + nft)?
+    #        https://ral-arturo.org/2020/11/22/python-nftables-tutorial.html
+    #        https://manpages.debian.org/unstable/libnftables1/libnftables-json.5.en.html
+    #        I think it would look something like this...
+    if False:
+        import nftables
+        with nftables.Nftables() as nft:
+            _, _, error = nft.cmd(
+                {'nftables': [
+                    {'flush': {'chain': {'protocol': 'inet',
+                                         'table': 'PrisonPC',
+                                         'name': 'television'}}},
+                    *([{'add': {'chain': {'protocol': 'inet',
+                                          'table': 'PrisonPC',
+                                          'name': 'television',
+                                          'expr': [{'drop': None}]}}}] if drop else [])]})
+            if error:
+                raise RuntimeError(error)
 
     # We want logging.
     # ALWAYS logging would be too much logs.
