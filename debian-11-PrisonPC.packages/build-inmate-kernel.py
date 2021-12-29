@@ -87,3 +87,40 @@ config_arguments = [
                 value]]
 
 print('The full command is', *config_arguments)
+
+apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
+
+subprocess.check_call(
+    ['mmdebstrap',
+     '--variant=buildd',
+     f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
+     '--aptopt=Acquire::https::Proxy "DIRECT"',
+     '--dpkgopt=force-unsafe-io',
+     '--dpkgopt=path-exclude=/usr/share/doc/*',
+
+     # We install linux-image-amd64, but only for /boot/config.
+     # Save a little time by skipping the rest.
+     '--dpkgopt=path-exclude=/lib/modules/*',
+
+     # This include list is from Debian 9 and is probably out-of-date!
+     '--include=build-essential devscripts curl wget bc libncurses-dev lsb-release fakeroot',
+     '--include=gcc-10-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
+     '--include=libelf-dev',  # for CONFIG_UNWINDER_ORC, in 4.14.3 (new since 4.14.7)
+     # '--include=kernel-wedge/stretch-backports',  # 4.19 needs newer version
+     # '--include=quilt/stretch-backports',  # new debhelper needs new quilt?
+
+     '--include=linux-image-amd64',  # for the current /boot/config-*
+     '--essential-hook=mkdir -p $1/etc/apt/preferences.d/',
+     '--essential-hook=copy-in ../debian-11-main/apt-preferences-bullseye-backports /etc/apt/preferences.d/',
+     '--customize-hook=cp -T $1/boot/config-* $1/boot/config',
+     '--customize-hook=copy-out boot/config ./',
+
+     # BLEH.
+     '--customize-hook=sed -rsi "/Types:/cTypes: deb deb-src" $1/etc/apt/sources.list.d/*',
+     '--customize-hook=chroot $1 apt update --quiet',
+     '--customize-hook=chroot $1 apt source linux --quiet',
+
+     'bullseye',
+     '/dev/null',
+     '../debian-11.sources'
+     ])
