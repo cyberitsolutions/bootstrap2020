@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import configparser
 import subprocess
 
 
@@ -76,18 +75,6 @@ conflicting sources.
 """
 
 
-parser = configparser.ConfigParser()
-parser.read('build-inmate-kernel.ini')
-config_arguments = [
-    arg
-    for section in parser.sections()
-    for key, value_str in parser[section].items()
-    for value in value_str.split()
-    for arg in ['-d' if key in {'should not', 'must not'} else '-e',
-                value]]
-
-print('The full command is', *config_arguments)
-
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
 subprocess.check_call(
@@ -119,6 +106,12 @@ subprocess.check_call(
      '--customize-hook=sed -rsi "/Types:/cTypes: deb deb-src" $1/etc/apt/sources.list.d/*',
      '--customize-hook=chroot $1 apt update --quiet',
      '--customize-hook=chroot $1 apt source linux --quiet',
+
+     '--include=python3',
+     '--customize-hook=copy-in build-inmate-kernel.ini /',
+     '--customize-hook=copy-in build-inmate-kernel-inner.py /',
+     '--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py',
+
 
      'bullseye',
      '/dev/null',
