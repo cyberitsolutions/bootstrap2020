@@ -63,7 +63,7 @@ try:
             f'This computer is restricted to {response_text} members; you ({args.user}) are not a member.')
 except urllib.error.HTTPError:
     print('pete did not answer, giving up', file=sys.stderr, flush=True)  # for syslog
-    popup_wait_crash(f'Group verification failed')
+    popup_wait_crash('Group verification failed')
 
 
 # SUBSEQUENT QUERIES GO TO /session/check/<USER>
