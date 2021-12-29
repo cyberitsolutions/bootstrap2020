@@ -3,6 +3,7 @@ import argparse
 import pathlib
 import subprocess
 import shutil
+import sys
 
 __doc__ = """ if we can't remove it, block it
 
@@ -70,8 +71,9 @@ bash and python globs lack "--one-file-system" or "-xdev".
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
-parser.set_defaults(shitlist_path=pathlib.Path(
-    'debian-11-PrisonPC.hooks/customize90-delete-bad-files.glob'))
+parser.set_defaults(shitlist_path=(
+    pathlib.Path(sys.argv[0]).parent /
+    'customize90-delete-bad-files.glob'))
 args = parser.parse_args()
 
 # Accidentally deleting large parts of a normal OS is BAD BAD BAD.
