@@ -468,6 +468,8 @@ with tempfile.TemporaryDirectory() as td:
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--hook-dir=debian-11-PrisonPC.hooks']
            if template_wants_PrisonPC else []),
+         *(['--hook-dir=debian-11-PrisonPC-inmate.hooks']
+           if args.template.startswith('desktop-inmate') else []),
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
            if args.reproducible else []),
          'bullseye',
@@ -611,7 +613,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128, 631}
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222}
                    for host in {'prisonpc-staff.lan'
                                 if args.template.startswith('desktop-staff') else
                                 'prisonpc-inmate.lan'}]

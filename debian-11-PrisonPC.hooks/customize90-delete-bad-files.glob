@@ -9,18 +9,16 @@
 ## =======================================
 # From openssh-client & openssh-sftp-server.
 # openssh-server needs ssh-keygen at boot time; exclude the rest.
-# FIXME: staff need sftp://, so
-#        this block will probably need "if inmate" not "if PrisonPC"...
+#
+# NOTE: staff need /usr/bin/ssh (for "Browse p123's home directory").
 **/*bin/scp
 **/*bin/sftp
 **/*bin/slogin
-**/*bin/ssh
 **/*bin/ssh-add
 **/*bin/ssh-agent
 **/*bin/ssh-argv0
 **/*bin/ssh-copy-id
 **/*bin/ssh-keyscan
-/etc/ssh/ssh_config
 /usr/lib/openssh
 **/*bin/ssh-copy-id
 **/systemd/**/*ssh-agent*
