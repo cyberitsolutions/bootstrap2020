@@ -8,6 +8,7 @@ import time
 
 processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
 os.environ['MAKEFLAGS'] = f'j{processors_online}'
+os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processors_online}'
 
 parser = configparser.ConfigParser()
 parser.read('build-inmate-kernel.ini')
