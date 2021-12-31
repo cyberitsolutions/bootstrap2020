@@ -18,6 +18,7 @@ processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']
 os.environ['MAKEFLAGS'] = f'j{processors_online}'
 os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processors_online}'
 
+
 parser = configparser.ConfigParser()
 parser.read('build-inmate-kernel.ini')
 policy = collections.defaultdict(set)
@@ -52,7 +53,6 @@ subprocess.check_call(['cp', '-vT', config_old_path, '.config'])
 # we'd just make a mistake and then correct it straight away.
 # That won't work anymore...
 pathlib.Path('.version').write_text(str(int(time.time())))
-
 
 # NOTE: From 2016 to 2018 we did "--disable modules" and forced all =m to =y.
 #       This was done as a defense-in-depth security feature.
@@ -115,9 +115,9 @@ if enabled_naughty_words := {
                for s in naughty_substrings)}:
     raise RuntimeError('ERROR: VERY naughty module(s) found!', enabled_naughty_words)
 
+############################################################
 # Do the actual compile at last.
-
-
+############################################################
 # NOTE: "make bindeb-pkg" is like
 #       "make deb-pkg" except
 #       it does not construct a source package (.dsc + .orig.tar.xz + .debian.tar.xz).
