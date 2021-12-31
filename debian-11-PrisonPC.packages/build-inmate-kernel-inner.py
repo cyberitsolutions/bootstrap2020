@@ -69,6 +69,7 @@ pathlib.Path('.version').write_text(str(int(time.time())))
 #       https://alloc.cyber.com.au/task/task.php?taskID=32037
 subprocess.check_call([
     'scripts/config',
+    '--set-str', 'build_salt', '',  # SHUT THE FUCK UP ABOUT THIS!
     '--set-str', 'localversion', 'inmate',
     # Only allow magic sysrq via /proc/sysrq-trigger.
     # FIXME: obsolete now that systemd handles watchdogs?
