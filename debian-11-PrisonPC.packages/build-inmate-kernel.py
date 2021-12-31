@@ -75,6 +75,10 @@ conflicting sources.
 """
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--menuconfig', action='store_true')
+args = parser.parse_args()
+
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
 subprocess.check_call(
@@ -115,6 +119,8 @@ subprocess.check_call(
      '--customize-hook=cp -T $1/boot/config-* $1/boot/config',
      '--customize-hook=copy-out boot/config ./',
 
+     *(['--include=libncurses-dev git less'] if args.menuconfig else []),
+
      # BLEH.
      '--customize-hook=sed -rsi "/Types:/cTypes: deb deb-src" $1/etc/apt/sources.list.d/*',
      '--customize-hook=chroot $1 apt update --quiet',
@@ -123,7 +129,7 @@ subprocess.check_call(
      '--include=python3',
      '--customize-hook=copy-in build-inmate-kernel.ini /',
      '--customize-hook=copy-in build-inmate-kernel-inner.py /',
-     '--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py',
+     f'--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py {"--menuconfig" if args.menuconfig else ""} || chroot $1 bash',
 
 
      'bullseye',

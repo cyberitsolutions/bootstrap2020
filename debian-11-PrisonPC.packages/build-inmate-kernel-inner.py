@@ -8,6 +8,11 @@ import pathlib
 import subprocess
 import time
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--menuconfig', action='store_true')
+args = parser.parse_args()
+
 processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
 os.environ['MAKEFLAGS'] = f'j{processors_online}'
 os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processors_online}'
@@ -51,6 +56,14 @@ subprocess.check_call([
       for word in policy['MUST'] | policy['SHOULD']
       for arg in ('--enable', word)]])
 
+if args.menuconfig:
+    subprocess.check_call(['cp', '-vT', '.config', '.config.before'])
+    subprocess.check_call(['make', 'MENUCONFIG_COLOR=blackbg', 'menuconfig'])
+    # Show exactly what "make menuconfig" actually changed.
+    # A human can then transcribe as appropriate into the policy .ini.
+    subprocess.call(['git', 'diff', '--no-index', '--color', '-U0', '.config', '.config.before'])
+    # Abort here, since this is an "investigation" build, not a "build" build.
+    exit(os.EX_CONFIG)
 
 # Normalize the config file (NB: was "make silentoldconfig" before 4.17)
 subprocess.check_call(['make', 'syncconfig'])
