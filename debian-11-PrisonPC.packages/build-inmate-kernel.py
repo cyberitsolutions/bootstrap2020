@@ -77,11 +77,16 @@ conflicting sources.
 """
 
 
+def http_type(s: str) -> str:
+    if s.startswith('http://'):
+        return s
+    raise NotImplementedError('Your apt-cacher-ng cannot cache https:// URLs', s)
 parser = argparse.ArgumentParser()
 parser.add_argument('--menuconfig', action='store_true')
 parser.add_argument('--upload', action='store_true')
 parser.add_argument(
     '--dsc-url',
+    type=http_type,
     help="""Something like
     http://snapshot.debian.org/archive/debian/20210930T153600Z/pool/main/l/linux/linux_4.19.208-1.dsc
     use this instead of "apt source linux", to get an old version of the source.
@@ -89,6 +94,7 @@ parser.add_argument(
     It may help to do it one step at a time, instead of all at once.""")
 parser.add_argument(
     '--deb-url',
+    type=http_type,
     help="""Something like
     http://snapshot.debian.org/archive/debian/20211002/pool/main/l/linux-latest/linux-image-amd64_4.19+105+deb10u13_amd64.deb
     http://snapshot.debian.org/archive/debian/20210930/pool/main/l/linux/linux-image-4.19.0-16-amd64-unsigned_4.19.181-1_amd64.deb
