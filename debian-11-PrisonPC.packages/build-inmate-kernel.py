@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import argparse
+import pathlib
 import subprocess
+import tempfile
 
 
 __doc__ = """ build kernel with Debian patches and config, modulo PrisonPC policy
@@ -77,6 +79,7 @@ conflicting sources.
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--menuconfig', action='store_true')
+parser.add_argument('--upload', action='store_true')
 parser.add_argument(
     '--dsc-url',
     help="""Something like
@@ -96,7 +99,9 @@ args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
-subprocess.check_call(
+with tempfile.TemporaryDirectory() as td:
+  td = pathlib.Path(td)
+  subprocess.check_call(
     ['mmdebstrap',
      '--variant=buildd',
      f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
@@ -158,7 +163,20 @@ subprocess.check_call(
      '--customize-hook=copy-in build-inmate-kernel-inner.py /',
      f'--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py {"--menuconfig" if args.menuconfig else ""} || chroot $1 bash',
 
+     # Copy the built kernel back out.
+     f'--customize-hook=sync-out /X {td}',
+
      'bullseye',
      '/dev/null',
      '../debian-11.sources'
      ])
+  if args.upload:
+    # debsign here?
+    package_version, = [
+        path.name.split('_')[1]
+        for path in td.glob('*.changes')]
+    subprocess.check_call([
+        'rsync', '-ai', '--info=progress2', '--protect-args',
+        '--no-group',       # allow remote sgid dirs to do their thing
+        f'{td}/',     # trailing suffix forces correct rsync semantics
+        f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/linux-{package_version}/'])

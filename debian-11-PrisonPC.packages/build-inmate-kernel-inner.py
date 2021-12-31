@@ -137,3 +137,8 @@ subprocess.check_call(['make', 'bindeb-pkg'])
 
 # ls -hlS ../*deb
 # dcmd cp -rLv ../*.changes /usr/src/PrisonPC-built/
+
+changes_paths = list(pathlib.Path('..').glob('*.changes'))
+destdir = pathlib.Path('/X')
+destdir.mkdir(parents=True, exist_ok=True)
+subprocess.check_call(['dcmd', 'cp', '-rLvt', destdir, *changes_paths])
