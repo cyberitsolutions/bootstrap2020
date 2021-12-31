@@ -27,14 +27,17 @@ for section in parser.sections():
     for key, value_str in parser[section].items():
         policy[key.upper()] |= {value.upper()
                                 for value in value_str.split()}
-
-os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
-subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
+# Sanity check.
+if overlap := ((policy['MUST'] | policy['SHOULD']) &
+               (policy['MUST NOT'] | policy['SHOULD NOT'])):
+    logging.warning('SHOULD/MUST and SHOULD/MUST NOT overlap: %s', overlap)
 
 
 ############################################################
 # Apply config & policy
 ############################################################
+os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
+subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
 # Are we building the current kernel, or
 # are we updating from config meant for an older version?
 config_current_path = pathlib.Path('/boot/build-inmate-kernel.config-current')
