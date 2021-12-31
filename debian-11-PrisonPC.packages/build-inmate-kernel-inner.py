@@ -2,6 +2,7 @@
 import argparse
 import collections
 import configparser
+import logging
 import os
 import re
 import pathlib
@@ -27,7 +28,22 @@ for section in parser.sections():
 
 os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
 subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
-subprocess.check_call(['cp', '-vT', *list(pathlib.Path('/boot').glob('config-*')), '.config'])
+
+
+############################################################
+# Apply config & policy
+############################################################
+# Are we building the current kernel, or
+# are we updating from config meant for an older version?
+config_current_path = pathlib.Path('/boot/build-inmate-kernel.config-current')
+config_old_path = pathlib.Path('/boot/build-inmate-kernel.config-old')
+if config_is_old := config_current_path.read_text() != config_old_path.read_text():
+    logging.warning(
+        'build-inmate-kernel.config-old is for an older kernel (%s vs %s)!',
+        config_old_path.read_text().splitlines()[2].split()[2],
+        config_current_path.read_text().splitlines()[2].split()[2])
+
+subprocess.check_call(['cp', '-vT', config_old_path, '.config'])
 
 # Don't always build "version 1".
 # This is because apt.cyber.com.au:/srv/apt/PrisonPC now runs apt-ftparchive with caching enabled.

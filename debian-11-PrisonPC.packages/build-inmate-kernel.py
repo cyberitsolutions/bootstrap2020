@@ -116,8 +116,9 @@ subprocess.check_call(
      '--include=linux-image-amd64',  # for the current /boot/config-*
      '--essential-hook=mkdir -p $1/etc/apt/preferences.d/',
      '--essential-hook=copy-in ../debian-11-main/apt-preferences-bullseye-backports /etc/apt/preferences.d/',
-     '--customize-hook=cp -T $1/boot/config-* $1/boot/config',
-     '--customize-hook=copy-out boot/config ./',
+     '--customize-hook=cp -T $1/boot/config-* $1/boot/build-inmate-kernel.config-current',
+     '--customize-hook=copy-out boot/build-inmate-kernel.config-current ./',
+     '--customize-hook=copy-in build-inmate-kernel.config-old /boot/',
 
      *(['--include=libncurses-dev git less'] if args.menuconfig else []),
 
