@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 import argparse
+import collections
 import configparser
 import os
+import re
 import pathlib
 import subprocess
 import time
@@ -12,13 +14,11 @@ os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processo
 
 parser = configparser.ConfigParser()
 parser.read('build-inmate-kernel.ini')
-config_arguments = [
-    arg
-    for section in parser.sections()
-    for key, value_str in parser[section].items()
-    for value in value_str.split()
-    for arg in ['-d' if key in {'should not', 'must not'} else '-e',
-                value]]
+policy = collections.defaultdict(set)
+for section in parser.sections():
+    for key, value_str in parser[section].items():
+        policy[key.upper()] |= {value.upper()
+                                for value in value_str.split()}
 
 os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
 subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
@@ -32,26 +32,26 @@ subprocess.check_call(['cp', '-vT', *list(pathlib.Path('/boot').glob('config-*')
 # That won't work anymore...
 pathlib.Path('.version').write_text(str(int(time.time())))
 
-subprocess.check_call(['scripts/config', *config_arguments])
 
-## UPDATE [#32037]
-##
-## In Oct 2018, I noticed that DVDs weren't working properly.
-## Discs in the drive at boot time were scanned OK, but
-## ejecting and inserting discs didn't trigger CHANGE events in "udevadm monitor".
-## This suggests a kernel-level problem, i.e. below the udev rules, let alone disc-snitchd.
-## AMC staff SOEs were not affected.
-## AMC inmate SOEs from 2018-08-28 and 2018-09-25 were broken.
-## AMC librarian can reproduce the problem.
-## Reusing pre-built inmage SOE with vmlinuz and initrd.img pointed at old inmate kernels (4.13, 4.16, 4.17), showed the problem.
-## Rebuilding the inmate kernel (and SOE) WITHOUT "--disable modules", and the problem goes away.
-## That test build was having some odd sound card issues as well, so I am disabling BOTH these lines;
-## if module support is compiled in, there is no benefit from s/=m/=y/ anyway.
-## Disabling modules was originally done in 2016-02-23 #24362 as a "nice to have" security layer.
-## —twb, Nov 2018, [#32037]
-#sed -i s/=m$/=y/ .config        # without this, "-d modules" makes silentoldconfig go silly.  FIXME: Why?
-#scripts/config --disable modules
-## END UPDATE [#32037]
+# NOTE: From 2016 to 2018 we did "--disable modules" and forced all =m to =y.
+#       This was done as a defense-in-depth security feature.
+#       This SOMEHOW broke DVD scanning.
+#       Discs inserted before boot were scanned.
+#       Discs inserted after boot didn't trigger CHANGE events in "udevadm monitor".
+#       The problem occurred in AT LEAST 4.13, 4.16, 4.17.
+#       --twb, Nov 2018
+#       https://alloc.cyber.com.au/task/task.php?taskID=24362
+#       https://alloc.cyber.com.au/task/task.php?taskID=32037
+subprocess.check_call([
+    'scripts/config',
+    *[arg
+      for word in policy['MUST NOT'] | policy['SHOULD NOT']
+      for arg in ('--disable', word)],
+    *[arg
+      for word in policy['MUST'] | policy['SHOULD']
+      for arg in ('--enable', word)]])
+
+
 # Normalize the config file (NB: was "make silentoldconfig" before 4.17)
 subprocess.check_call(['make', 'syncconfig'])
 
@@ -70,28 +70,18 @@ if 0 == subprocess.call([
     raise RuntimeError('ERROR: VERY naughty module(s) found -- see above.')
 
 
-MUST_words = {
-    value.upper()
-    for section in parser.sections()
-    for value in parser[section].get('must', '').split()}
-MUST_NOT_words = {
-    value.upper()
-    for section in parser.sections()
-    for value in parser[section].get('must not', '').split()}
 enabled_words = {}
 for line in pathlib.Path('.config').read_text().splitlines():
     line = line.strip()
     if m := re.fullmatch(r'^CONFIG_\(.*\)=.*', line):
-        enabled_words.update(m.group(1))
-
-# None of the MUST NOT should match.
-if enabled_MUST_NOT_words := enabled_words ^ MUST_NOT_words:
-    raise RuntimeError('ERROR: NAUGHTY module(s) found!', enabled_MUST_NOT_words)
+        enabled_words.add(m.group(1))
 
 # Every MUST should match!
-if disabled_MUST_words := MUST_WORDS - enabled_words:
+if disabled_MUST_words := policy['MUST'] - enabled_words:
     raise RuntimeError('ERROR: VITAL module(s) not found!', disabled_MUST_words)
-
+# None of the MUST NOT should match.
+if enabled_MUST_NOT_words := policy['MUST NOT'] & enabled_words:
+    raise RuntimeError('ERROR: NAUGHTY module(s) found!', enabled_MUST_NOT_words)
 
 # Do the actual compile at last.
 
