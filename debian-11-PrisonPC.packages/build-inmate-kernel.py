@@ -77,6 +77,21 @@ conflicting sources.
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--menuconfig', action='store_true')
+parser.add_argument(
+    '--dsc-url',
+    help="""Something like
+    http://snapshot.debian.org/archive/debian/20210930T153600Z/pool/main/l/linux/linux_4.19.208-1.dsc
+    use this instead of "apt source linux", to get an old version of the source.
+    The main use case for this is when you're doing a big upgrade.
+    It may help to do it one step at a time, instead of all at once.""")
+parser.add_argument(
+    '--deb-url',
+    help="""Something like
+    http://snapshot.debian.org/archive/debian/20211002/pool/main/l/linux-latest/linux-image-amd64_4.19+105+deb10u13_amd64.deb
+    http://snapshot.debian.org/archive/debian/20210930/pool/main/l/linux/linux-image-4.19.0-16-amd64-unsigned_4.19.181-1_amd64.deb
+    use this instead of "apt install linux-image-amd64", to get an old version of /boot/config.
+    The main use case for this is when you're doing a big upgrade.
+    It may help to do it one step at a time, instead of all at once.""")
 args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
@@ -113,7 +128,13 @@ subprocess.check_call(
      ' graphviz python3-sphinx python3-sphinx-rtd-theme'
      ' texlive-latex-base texlive-latex-extra dvipng patchutils',
 
-     '--include=linux-image-amd64',  # for the current /boot/config-*
+     # Get the /boot/config-* to be copied out as "config-current".
+     *(['--include=curl ca-certificates tiny-initramfs',
+        f'--customize-hook=chroot $1 curl --output x.deb --proxy {apt_proxy} {args.deb_url}',
+        '--customize-hook=chroot $1 apt install --assume-yes --quiet ./x.deb']
+       if args.deb_url else
+       # NORMAL USAGE: just delegate to apt.
+       ['--include=linux-image-amd64 tiny-initramfs']),
      '--essential-hook=mkdir -p $1/etc/apt/preferences.d/',
      '--essential-hook=copy-in ../debian-11-main/apt-preferences-bullseye-backports /etc/apt/preferences.d/',
      '--customize-hook=cp -T $1/boot/config-* $1/boot/build-inmate-kernel.config-current',
@@ -122,16 +143,20 @@ subprocess.check_call(
 
      *(['--include=libncurses-dev git less'] if args.menuconfig else []),
 
-     # BLEH.
-     '--customize-hook=sed -rsi "/Types:/cTypes: deb deb-src" $1/etc/apt/sources.list.d/*',
-     '--customize-hook=chroot $1 apt update --quiet',
-     '--customize-hook=chroot $1 apt source linux --quiet',
+     # Download the source
+     *(['--include=curl ca-certificates devscripts debian-keyring',
+        f'--customize-hook=chroot $1 env http_proxy={apt_proxy} dget {args.dsc_url}']
+       if args.dsc_url else
+       # NORMAL USAGE: just delegate to apt.
+       # Do a nasty hack to turn on deb-src :-(
+       ['--customize-hook=sed -rsi "/Types:/cTypes: deb deb-src" $1/etc/apt/sources.list.d/*',
+        '--customize-hook=chroot $1 apt update --quiet',
+        '--customize-hook=chroot $1 apt source linux --quiet']),
 
      '--include=python3',
      '--customize-hook=copy-in build-inmate-kernel.ini /',
      '--customize-hook=copy-in build-inmate-kernel-inner.py /',
      f'--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py {"--menuconfig" if args.menuconfig else ""} || chroot $1 bash',
-
 
      'bullseye',
      '/dev/null',
