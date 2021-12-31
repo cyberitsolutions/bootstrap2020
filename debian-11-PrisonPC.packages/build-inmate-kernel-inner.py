@@ -4,7 +4,6 @@ import collections
 import configparser
 import logging
 import os
-import re
 import pathlib
 import subprocess
 import time
@@ -84,13 +83,13 @@ if args.menuconfig:
 # Normalize the config file (NB: was "make silentoldconfig" before 4.17)
 subprocess.check_call(['make', 'syncconfig'])
 
-# Safety nets.
-
-enabled_words = {}
-for line in pathlib.Path('.config').read_text().splitlines():
-    line = line.strip()
-    if m := re.fullmatch(r'^CONFIG_\(.*\)=.*', line):
-        enabled_words.add(m.group(1))
+############################################################
+# Safety nets
+############################################################
+enabled_words = {
+    line[len('CONFIG_'):].split('=')[0]
+    for line in pathlib.Path('.config').read_text().splitlines()
+    if line.startswith('CONFIG_')}
 # NOTE: also look for: CRYPTO DEBUG DIAG TEST DUMMY SERIAL INJECT
 naughty_substrings = [
     # networking things
