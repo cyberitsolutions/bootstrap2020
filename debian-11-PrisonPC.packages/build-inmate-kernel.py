@@ -90,11 +90,24 @@ subprocess.check_call(
      '--dpkgopt=path-exclude=/lib/modules/*',
 
      # This include list is from Debian 9 and is probably out-of-date!
-     '--include=build-essential devscripts curl wget bc libncurses-dev lsb-release fakeroot',
+     # '--include=build-essential devscripts curl wget bc libncurses-dev lsb-release fakeroot',
      '--include=gcc-10-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
-     '--include=libelf-dev',  # for CONFIG_UNWINDER_ORC, in 4.14.3 (new since 4.14.7)
-     # '--include=kernel-wedge/stretch-backports',  # 4.19 needs newer version
-     # '--include=quilt/stretch-backports',  # new debhelper needs new quilt?
+
+     # We call "apt build-dep", so this line is not strictly needed.
+     # I put it here only because mmdebstrap installs much more quietly than apt --quiet.
+     # The only downside is if upstream's build-deps change, then
+     # we'll waste a little time and space.
+     # https://sources.debian.org/src/linux/5.14.9-2%7Ebpo11+1/debian/control/#L7-L9
+     '--include='
+     ' debhelper dh-exec python3 quilt cpio xz-utils dh-python bison flex'
+     ' kernel-wedge kmod bc libssl-dev openssl libelf-dev rsync lz4'
+     ' dwarves gcc-10 python3-docutils zlib1g-dev libcap-dev libpci-dev'
+     ' autoconf automake libtool libglib2.0-dev libudev-dev libwrap0-dev'
+     ' asciidoctor gcc-multilib libaudit-dev libbabeltrace-dev'
+     ' libbabeltrace-dev libdw-dev libiberty-dev libnewt-dev libnuma-dev'
+     ' libperl-dev libunwind-dev libopencsd-dev python3-dev'
+     ' graphviz python3-sphinx python3-sphinx-rtd-theme'
+     ' texlive-latex-base texlive-latex-extra dvipng patchutils',
 
      '--include=linux-image-amd64',  # for the current /boot/config-*
      '--essential-hook=mkdir -p $1/etc/apt/preferences.d/',

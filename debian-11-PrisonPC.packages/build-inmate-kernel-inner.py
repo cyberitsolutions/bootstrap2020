@@ -21,6 +21,7 @@ config_arguments = [
                 value]]
 
 os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
+subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
 subprocess.check_call(['cp', '-vT', *list(pathlib.Path('/boot').glob('config-*')), '.config'])
 
 # Don't always build "version 1".
