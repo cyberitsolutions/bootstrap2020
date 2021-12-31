@@ -69,6 +69,10 @@ pathlib.Path('.version').write_text(str(int(time.time())))
 #       https://alloc.cyber.com.au/task/task.php?taskID=32037
 subprocess.check_call([
     'scripts/config',
+    '--set-str', 'localversion', 'inmate',
+    # Only allow magic sysrq via /proc/sysrq-trigger.
+    # FIXME: obsolete now that systemd handles watchdogs?
+    '--set-val', 'magic_sysrq_enable', '0x0',
     *[arg
       for word in policy['MUST NOT'] | policy['SHOULD NOT']
       for arg in ('--disable', word)],
