@@ -57,24 +57,20 @@ subprocess.check_call(['make', 'syncconfig'])
 
 # Safety nets.
 
-if 0 == subprocess.call([
-        'grep', '.config', '-E',
-        # None of these should match.
-        # We do this *AS WELL AS* iterating over specific MUST NOT modules,
-        # because this (might) match new modules we didn't know to check for by name.
-        '-e', '^CONFIG_.*(WLAN|WIRELESS|WIMAX|RFKILL|WUSB|80211|RADIO|NFC|UWB|BT|802154)',
-        '-e', '^CONFIG_.*(STORAGE|MTD|MMC|MEMSTICK|NVME)',
-        '-e',  '^CONFIG_.*(ECRYPT|CRYPTOLOOP)',
-        # Also look for: CRYPTO DEBUG DIAG TEST DUMMY SERIAL INJECT
-        ]):
-    raise RuntimeError('ERROR: VERY naughty module(s) found -- see above.')
-
-
 enabled_words = {}
 for line in pathlib.Path('.config').read_text().splitlines():
     line = line.strip()
     if m := re.fullmatch(r'^CONFIG_\(.*\)=.*', line):
         enabled_words.add(m.group(1))
+# NOTE: also look for: CRYPTO DEBUG DIAG TEST DUMMY SERIAL INJECT
+naughty_substrings = [
+    # networking things
+    'WLAN', 'WIRELESS', 'WIMAX', 'RFKILL', 'WUSB', '80211', 'RADIO',
+    'NFC', 'UWB', 'BT', '802154',
+    # removable storage things
+    'STORAGE', 'MTD', 'MMC', 'MEMSTICK', 'NVME',
+    # encryption things
+    'ECRYPT', 'CRYPTOLOOP']
 
 # Every MUST should match!
 if disabled_MUST_words := policy['MUST'] - enabled_words:
@@ -82,6 +78,13 @@ if disabled_MUST_words := policy['MUST'] - enabled_words:
 # None of the MUST NOT should match.
 if enabled_MUST_NOT_words := policy['MUST NOT'] & enabled_words:
     raise RuntimeError('ERROR: NAUGHTY module(s) found!', enabled_MUST_NOT_words)
+# Nothing in the naughty keyword list should match.
+if enabled_naughty_words := {
+        word
+        for word in enabled_words
+        if any(s in word
+               for s in naughty_substrings)}:
+    raise RuntimeError('ERROR: VERY naughty module(s) found!', enabled_naughty_words)
 
 # Do the actual compile at last.
 
