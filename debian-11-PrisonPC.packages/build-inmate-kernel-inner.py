@@ -6,6 +6,9 @@ import pathlib
 import subprocess
 import time
 
+processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
+os.environ['MAKEFLAGS'] = f'j{processors_online}'
+
 parser = configparser.ConfigParser()
 parser.read('build-inmate-kernel.ini')
 config_arguments = [
@@ -97,7 +100,7 @@ if disabled_MUST_words := MUST_WORDS - enabled_words:
 #
 #       We never use that source package, but it was sort of a sanity check / safety net.
 #       I had to turn it off in 4.17.17 because it had a quilt problem (debian/patches/series).
-subprocess.check_call(['time', 'make', '-j8', 'bindeb-pkg'])
+subprocess.check_call(['make', 'bindeb-pkg'])
 
 # ls -hlS ../*deb
 # dcmd cp -rLv ../*.changes /usr/src/PrisonPC-built/
