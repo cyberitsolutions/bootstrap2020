@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import collections
 import configparser
 import logging
 import os
@@ -20,7 +19,10 @@ os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processo
 
 parser = configparser.ConfigParser()
 parser.read('build-inmate-kernel.ini')
-policy = collections.defaultdict(set)
+policy = {'SHOULD': set(),
+          'SHOULD NOT': set(),
+          'MUST': set(),
+          'MUST NOT': set()}
 for section in parser.sections():
     for key, value_str in parser[section].items():
         policy[key.upper()] |= {value.upper()
