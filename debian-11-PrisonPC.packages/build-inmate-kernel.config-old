@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 5.4.8 Kernel Configuration
+# Linux/x86 5.4.19 Kernel Configuration
 #
 
 #
@@ -25,7 +25,7 @@ CONFIG_INIT_ENV_ARG_LIMIT=32
 # CONFIG_HEADER_TEST is not set
 CONFIG_LOCALVERSION=""
 # CONFIG_LOCALVERSION_AUTO is not set
-CONFIG_BUILD_SALT="5.4.0-0.bpo.2-amd64"
+CONFIG_BUILD_SALT="5.4.0-0.bpo.4-amd64"
 CONFIG_HAVE_KERNEL_GZIP=y
 CONFIG_HAVE_KERNEL_BZIP2=y
 CONFIG_HAVE_KERNEL_LZMA=y
