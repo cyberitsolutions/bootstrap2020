@@ -134,7 +134,7 @@ if enabled_naughty_words := {
 #
 #       We never use that source package, but it was sort of a sanity check / safety net.
 #       I had to turn it off in 4.17.17 because it had a quilt problem (debian/patches/series).
-subprocess.check_call(['make', 'bindeb-pkg'])
+subprocess.check_call(['nice', 'make', 'bindeb-pkg'])
 
 # ls -hlS ../*deb
 # dcmd cp -rLv ../*.changes /usr/src/PrisonPC-built/
