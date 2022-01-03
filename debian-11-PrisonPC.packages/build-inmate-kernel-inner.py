@@ -74,7 +74,9 @@ subprocess.check_call([
     '--set-str', 'localversion', 'inmate',
     # Only allow magic sysrq via /proc/sysrq-trigger.
     # FIXME: obsolete now that systemd handles watchdogs?
-    '--set-val', 'magic_sysrq_enable', '0x0',
+    # NOTE: this was wrongly using "magic_sysrq_enable" and
+    #       therefore NEVER worked in the bootstrap/git Debian 7/8/9 era!
+    '--set-val', 'magic_sysrq_default_enable', '0x0',
     *[arg
       for word in policy['MUST NOT'] | policy['SHOULD NOT']
       for arg in ('--disable', word)],
