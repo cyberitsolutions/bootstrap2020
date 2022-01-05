@@ -72,6 +72,11 @@ subprocess.check_call([
     'scripts/config',
     '--set-str', 'build_salt', '',  # SHUT THE FUCK UP ABOUT THIS!
     '--set-str', 'localversion', 'inmate',
+    # Set some hardening values to their defaults, to avoid the prompt.
+    '--set-val', 'stackleak_track_min_size', '100',
+    '--set-val', 'kfence_sample_interval', '100',
+    '--set-val', 'kfence_num_objects', '255',
+    '--set-val', 'kfence_stress_test_faults', '0',
     # Only allow magic sysrq via /proc/sysrq-trigger.
     # FIXME: obsolete now that systemd handles watchdogs?
     # NOTE: this was wrongly using "magic_sysrq_enable" and

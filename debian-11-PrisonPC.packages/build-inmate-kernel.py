@@ -121,6 +121,8 @@ with tempfile.TemporaryDirectory() as td:
 
          # This include list is from Debian 9 and is probably out-of-date!
          # '--include=build-essential devscripts curl wget bc libncurses-dev lsb-release fakeroot',
+
+         '--include=devscripts',        # for "dcmd cp" in inner.py
          '--include=gcc-10-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
 
          # We call "apt build-dep", so this line is not strictly needed.
