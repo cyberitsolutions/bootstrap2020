@@ -28,7 +28,7 @@ for section in parser.sections():
         policy[key.upper()] |= {value.upper()
                                 for value in value_str.split()}
 # Sanity check.
-if overlap := ((policy['MUST'] | policy['SHOULD']) &
+if overlap := ((policy['MUST'] | policy['SHOULD']) &  # noqa: W504
                (policy['MUST NOT'] | policy['SHOULD NOT'])):
     logging.warning('SHOULD/MUST and SHOULD/MUST NOT overlap: %s', overlap)
 

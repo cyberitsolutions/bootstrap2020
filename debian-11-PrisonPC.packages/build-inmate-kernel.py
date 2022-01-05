@@ -81,6 +81,7 @@ def http_type(s: str) -> str:
     if s.startswith('http://'):
         return s
     raise NotImplementedError('Your apt-cacher-ng cannot cache https:// URLs', s)
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--menuconfig', action='store_true')
 parser.add_argument('--upload', action='store_true')
