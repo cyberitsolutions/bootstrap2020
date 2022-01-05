@@ -124,6 +124,7 @@ with tempfile.TemporaryDirectory() as td:
          # '--include=build-essential devscripts curl wget bc libncurses-dev lsb-release fakeroot',
 
          '--include=devscripts',        # for "dcmd cp" in inner.py
+         '--include=libdistro-info-perl',  # for "dch --create" in inner.py
          '--include=gcc-10-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
 
          # We call "apt build-dep", so this line is not strictly needed.
@@ -183,7 +184,7 @@ with tempfile.TemporaryDirectory() as td:
         # debsign here?
         package_version, = [
             path.name.split('_')[1]
-            for path in td.glob('*.changes')]
+            for path in td.glob('linux-upstream*.changes')]
         subprocess.check_call([
             'rsync', '-ai', '--info=progress2', '--protect-args',
             '--no-group',       # allow remote sgid dirs to do their thing

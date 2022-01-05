@@ -145,6 +145,61 @@ subprocess.check_call(['nice', 'make', 'bindeb-pkg'])
 # ls -hlS ../*deb
 # dcmd cp -rLv ../*.changes /usr/src/PrisonPC-built/
 
+
+############################################################
+# Generate stub metapackage
+############################################################
+package_name, _, _ = next(pathlib.Path('..').glob('linux-image-*_*_amd64.deb')).name.split('_')
+package_version = package_name.replace('linux-image-', '')
+root = pathlib.Path('../A/debian').resolve()
+root.mkdir(parents=True)
+os.chdir(root.parent)
+(root / 'source').mkdir()
+(root / 'source/format').write_text('3.0 (native)')
+(root / 'rules').write_text('#!/usr/bin/make -f\n%:\n\tdh $@\n')
+subprocess.check_call([
+    'dch',
+    '--create',
+    '--package', 'linux-image-inmate',
+    '--newversion', package_version,
+    '--distribution', 'bullseye-backports',
+    # Message copied from upstream .changes
+    'Custom built Linux kernel.'])
+(root / 'control').write_text(f"""Source: linux-image-inmate
+Section: metapackages
+Priority: optional
+Standards-Version: 4.3.0
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13)
+
+# I'm not sure if "Pre-" is strictly needed, but it won't hurt.
+Package: linux-image-inmate
+Pre-Depends: {package_name}
+Architecture: all
+Description:
+ I'm doing "make bindeb-pkg" to roll my own .debs from Debian sources (different .config).
+ It's working great, except
+  * linux-update-symlinks is not called by the postinst; and
+  * I want a "apt install linux-image-amd64-inmate" that points to the latest version in my PPA.
+ I can't see anything about how to do either of these in
+  * https://kernel-team.pages.debian.net/kernel-handbook/ nor
+  * https://wiki.debian.org/DebianKernel nor
+  * https://salsa.debian.org/kernel-team/linux/
+ Where should I be looking?
+ Or should I just give up and roll this by hand (which isn't too hard, honestly)?
+ No one answered, so I'm doing this by hand.
+""")
+(root / 'postinst').write_text(f"""#!/bin/sh -e
+linux-update-symlinks install {package_version} /boot/vmlinuz-{package_version}
+#DEBHELPER#
+""")
+subprocess.check_call(['dpkg-buildpackage'])
+
+
+############################################################
+# Put package & metapackage where outer .py can find them
+############################################################
 changes_paths = list(pathlib.Path('..').glob('*.changes'))
 destdir = pathlib.Path('/X')
 destdir.mkdir(parents=True, exist_ok=True)
