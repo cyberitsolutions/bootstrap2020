@@ -37,8 +37,7 @@ if overlap := ((policy['MUST'] | policy['SHOULD']) &  # noqa: W504
 # Apply config & policy
 ############################################################
 os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
-## TEMPORARILY DISABLED WHILE I AM UPGRADING FROM BUSTER-BACKPORTS TO BULLSEYE --- WILL DO BULLSEYE TO BULLSEYE-BACKPORTS AFTER.
-# subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
+subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
 # Are we building the current kernel, or
 # are we updating from config meant for an older version?
 config_current_path = pathlib.Path('/boot/build-inmate-kernel.config-current')
