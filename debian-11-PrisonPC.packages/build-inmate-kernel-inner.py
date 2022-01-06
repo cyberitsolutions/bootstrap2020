@@ -173,14 +173,17 @@ Maintainer: Trent W. Buck <twb@cyber.com.au>
 Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13)
 
-# I'm not sure if "Pre-" is strictly needed, but it won't hurt.
 Package: linux-image-inmate
-Pre-Depends: {package_name}
+Pre-Depends:
+ {package_name},
+ initramfs-tools (>= 0.120+deb8u2) | linux-initramfs-tool,
+ linux-base,
 Architecture: all
-Description:
+Description: workaround https://bugs.debian.org/1003194
  I'm doing "make bindeb-pkg" to roll my own .debs from Debian sources (different .config).
  It's working great, except
-  * linux-update-symlinks is not called by the postinst; and
+  * /vmlinuz is not created because upstream postinst lacks linux-update-symlinks; and
+  * /boot/initrd.img is not created because upstream control lacks Depends: linux-initramfs-tools; and
   * I want a "apt install linux-image-amd64-inmate" that points to the latest version in my PPA.
  I can't see anything about how to do either of these in
   * https://kernel-team.pages.debian.net/kernel-handbook/ nor
@@ -192,6 +195,7 @@ Description:
 """)
 (root / 'postinst').write_text(f"""#!/bin/sh -e
 linux-update-symlinks install {package_version} /boot/vmlinuz-{package_version}
+[ -e /boot/initrd.img-{package_version} ] || dpkg-reconfigure {package_name}
 #DEBHELPER#
 """)
 subprocess.check_call(['dpkg-buildpackage'])
