@@ -248,6 +248,8 @@ with tempfile.TemporaryDirectory() as td:
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--include=linux-image-cloud-amd64'
          if args.virtual_only else
+         '--include=linux-image-inmate'
+         if args.template.startswith('desktop-inmate') and args.physical_only else
          '--include=linux-image-amd64',
          '--include=live-boot',
          *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
