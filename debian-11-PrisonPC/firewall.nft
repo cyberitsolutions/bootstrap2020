@@ -51,8 +51,10 @@ table inet PrisonPC {
         # FIXME: why is this showing up in the logs?
         #        It should be covered under "ct state {established, related}"!
         ip saddr $PrisonPC  udp sport bootps  udp dport bootpc  log prefix "DHCP - not whitelisted?"  accept
-        ip saddr $PrisonPC_staff_network  tcp dport 5900  log prefix "VNC in: " level info  accept
-
+        ip saddr {
+            $PrisonPC,    # vncviewer -via tweak zodiac
+            127.0.0.1/8,  # vncviewer -via tweak,zodiac localhost
+            $PrisonPC_staff_network }  tcp dport 5900  log prefix "VNC in: " level info  accept
     }
 
     # Normally OUTPUT is default-allow; ours is default-deny.
