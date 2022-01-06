@@ -199,6 +199,17 @@ Description: workaround https://bugs.debian.org/1003194
 """)
 (root / 'postinst').write_text(f"""#!/bin/sh -e
 linux-update-symlinks install {kernel_version} /boot/vmlinuz-{kernel_version}
+# FIXME: this STILL runs into a problem:
+#     update-initramfs: Generating /boot/initrd.img-5.14.9inmate
+#     W: amd64-microcode: initramfs mode not supported, using early-initramfs mode
+#     W: intel-microcode: initramfs mode not supported, using early initramfs mode
+#     cp: cannot stat '/etc/fonts/fonts.conf': No such file or directory
+#
+# This happens because dpkg update-initramfs trigger runs before dpkg fontconfig trigger,
+# and WHEN PLYMOUTH IS INSTALLED, update-initramfs needs fontconfig to be finished.
+# But there is no way to declare "trigger A must run after trigger B" in dpkg.
+# So... fuck it, I give up.  I will just install inmate kernel package as a separate step.
+# That is, "--customize-hook=chroot $1 apt install -y" instead of "--include".
 [ -e /boot/initrd.img-{kernel_version} ] || dpkg-reconfigure {package_name}
 #DEBHELPER#
 """)

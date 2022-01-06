@@ -248,7 +248,8 @@ with tempfile.TemporaryDirectory() as td:
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--include=linux-image-cloud-amd64'
          if args.virtual_only else
-         '--include=linux-image-inmate'
+         # NOTE: can't --include= this because there are too many dpkg trigger problems.
+         '--customize-hook=chroot $1 apt install -y linux-image-inmate'
          if args.template.startswith('desktop-inmate') and args.physical_only else
          '--include=linux-image-amd64',
          '--include=live-boot',
