@@ -54,6 +54,15 @@ table inet PrisonPC {
             $PrisonPC,    # vncviewer -via tweak zodiac
             127.0.0.1/8,  # vncviewer -via tweak,zodiac localhost
             $PrisonPC_staff_network }  tcp dport 5900  log prefix "VNC in: " level info  accept
+        # I'm not sure if I *need* to accept these broadcast messages, but
+        # I'm 99% sure it won't hurt to do so.
+        # The daddr should be "$PrisonPC | 0.0.255.255", but that is bugged, so just allow both.
+        # The rest of this rule is tight enough that I'm not worried.
+        ip saddr $PrisonPC  ip daddr { 10.0.255.255, 10.128.255.255 }  udp sport ntp  udp dport ntp  accept
+        # We don't *need* to accept these messages (we didn't in Debian 9).
+        # I'm 90% sure it won't hurt to do so.
+        # It simply avoids them showing up when looking for "unexpected" packets.
+        ip saddr $PrisonPC  ip daddr { 224.0.0.1, 224.0.0.2 }  ip protocol igmp  accept
     }
 
     # Normally OUTPUT is default-allow; ours is default-deny.
