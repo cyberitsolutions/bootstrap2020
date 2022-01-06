@@ -149,8 +149,8 @@ subprocess.check_call(['nice', 'make', 'bindeb-pkg'])
 ############################################################
 # Generate stub metapackage
 ############################################################
-package_name, _, _ = next(pathlib.Path('..').glob('linux-image-*_*_amd64.deb')).name.split('_')
-package_version = package_name.replace('linux-image-', '')
+package_name, package_version, _ = next(pathlib.Path('..').glob('linux-image-*_*_amd64.deb')).name.split('_')
+kernel_version, _ = package_version.split('-')
 root = pathlib.Path('../A/debian').resolve()
 root.mkdir(parents=True)
 os.chdir(root.parent)
@@ -161,7 +161,11 @@ subprocess.check_call([
     'dch',
     '--create',
     '--package', 'linux-image-inmate',
-    '--newversion', package_version,
+    # NOTE: the replace() is because of this:
+    #           dpkg-source: error:
+    #           can't build with source format '3.0 (native)':
+    #           native package version may not have a revision
+    '--newversion', package_version.replace('-','.'),
     '--distribution', 'bullseye-backports',
     # Message copied from upstream .changes
     'Custom built Linux kernel.'])
@@ -194,8 +198,8 @@ Description: workaround https://bugs.debian.org/1003194
  No one answered, so I'm doing this by hand.
 """)
 (root / 'postinst').write_text(f"""#!/bin/sh -e
-linux-update-symlinks install {package_version} /boot/vmlinuz-{package_version}
-[ -e /boot/initrd.img-{package_version} ] || dpkg-reconfigure {package_name}
+linux-update-symlinks install {kernel_version} /boot/vmlinuz-{kernel_version}
+[ -e /boot/initrd.img-{kernel_version} ] || dpkg-reconfigure {package_name}
 #DEBHELPER#
 """)
 subprocess.check_call(['dpkg-buildpackage'])
