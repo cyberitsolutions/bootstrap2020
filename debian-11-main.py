@@ -587,6 +587,8 @@ if args.boot_test:
                 # Simulate a site-specific desktop image (typically not done for staff).
                 subprocess.check_call(['convert', 'rose:', testdir / 'site.dir/wallpaper.jpg'])
             (testdir / 'site.dir/etc/nftables.conf.d').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc/nftables.conf.d/11-PrisonPC-master-server-address.conf').write_text(
+                f'define PrisonPC = {master_address};')
             (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
                 pathlib.Path('debian-11-PrisonPC/firewall-boot-test.nft').read_text())
         subprocess.check_call([

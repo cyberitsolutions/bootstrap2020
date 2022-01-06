@@ -47,11 +47,11 @@ table inet PrisonPC {
         # NOTE: "PrisonPC-staff"/16 or PrisonPC-staff / 16 means
         #       "the /16 that includes host PrisonPC-staff",
         #       i.e. "the staff network".
-        ip saddr "PrisonPC" tcp dport ssh  accept
+        ip saddr $PrisonPC tcp dport ssh  accept
         # FIXME: why is this showing up in the logs?
         #        It should be covered under "ct state {established, related}"!
-        ip saddr "PrisonPC"  udp sport bootps  udp dport bootpc  log prefix "DHCP - not whitelisted?"  accept
-        ip saddr "PrisonPC-staff"/16  tcp dport 5900  log prefix "VNC in: " level info  accept
+        ip saddr $PrisonPC  udp sport bootps  udp dport bootpc  log prefix "DHCP - not whitelisted?"  accept
+        ip saddr $PrisonPC_staff_network  tcp dport 5900  log prefix "VNC in: " level info  accept
 
     }
 
@@ -81,7 +81,7 @@ table inet PrisonPC {
         ip daddr { 224.0.0.1, 224.0.0.2, 239.255.0.0/16 }  accept  comment "IPTV"
         # Prisoner machines allow initiation of connections from and to the
         # server, and (for clandestine monitoring) from the staff network.
-        ip daddr "PrisonPC"  meta l4proto . th dport {
+        ip daddr $PrisonPC  meta l4proto . th dport {
             udp . ntp,
             udp . bootps,
             udp . domain,
