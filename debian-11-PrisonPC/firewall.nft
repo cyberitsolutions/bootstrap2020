@@ -113,9 +113,18 @@ table inet PrisonPC {
     # Normally prelude is shared between INPUT and FORWARD.
     # Ours is shared between INPUT and OUTPUT.
     # Not a problem because does not use "ip daddr" &c.
+    #
+    # UPDATE: actually, "iiftype loopback" fails to match things like
+    #         "IN= OUT=lo SRC=127.0.0.1 DST=127.0.0.53"!
+    #         Add an oiftype as well, for OUTPUT.
+    #         Because I do not normally do that,
+    #         tighten it to also be 127/8<->127/8, out of paranoia.
+    #         Probably nothing else can happen there, because
+    #         this host isn't running VMs or containers or anything.
     chain prelude {
         ct state vmap { established: accept, related: accept, invalid: drop }
         iiftype loopback  accept
+        oiftype loopback  ip saddr 127/8  ip daddr 127/8  accept
         icmp type echo-request  accept
         icmpv6 type { echo-request, nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert }  accept
     }
