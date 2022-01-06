@@ -50,10 +50,7 @@ table inet PrisonPC {
         ip saddr $PrisonPC tcp dport ssh  accept
         # FIXME: why is this showing up in the logs?
         #        It should be covered under "ct state {established, related}"!
-        ip saddr {
-            $PrisonPC,    # vncviewer -via tweak zodiac
-            127.0.0.1/8,  # vncviewer -via tweak,zodiac localhost
-            $PrisonPC_staff_network }  tcp dport 5900  log prefix "VNC in: " level info  accept
+        ip saddr { $PrisonPC, $PrisonPC_staff_network }  tcp dport 5900  log prefix "VNC in: " level info  accept
         # I'm not sure if I *need* to accept these broadcast messages, but
         # I'm 99% sure it won't hurt to do so.
         # The daddr should be "$PrisonPC | 0.0.255.255", but that is bugged, so just allow both.
