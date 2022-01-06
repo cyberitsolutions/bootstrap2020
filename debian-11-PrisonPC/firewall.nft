@@ -50,7 +50,6 @@ table inet PrisonPC {
         ip saddr $PrisonPC tcp dport ssh  accept
         # FIXME: why is this showing up in the logs?
         #        It should be covered under "ct state {established, related}"!
-        ip saddr $PrisonPC  udp sport bootps  udp dport bootpc  log prefix "DHCP - not whitelisted?"  accept
         ip saddr {
             $PrisonPC,    # vncviewer -via tweak zodiac
             127.0.0.1/8,  # vncviewer -via tweak,zodiac localhost
@@ -96,6 +95,13 @@ table inet PrisonPC {
             tcp . ldaps,
             tcp . submission,
             tcp . imaps }  accept
+        # In theory DHCP DORA happens in the ramdisk, and they handoff to networkd.
+        # So that when firewall.nft and networkd start, they only "DHCP RO" (i.e. renew).
+        # In practice, I think networkd is still doing a full "DHCP DORA".
+        # The DHCPOFFER goes to $PrisonPC, but
+        # the DHCPDISCOVER is broadcast, so we need to allow that.
+        # This ought to allow me to remove the "DHCP NOT WHITELISTED?" rule from INPUT.
+        ip daddr 255.255.255.255  udp dport bootps  accept  comment "DHCPDISCOVER"
     }
 
     # Normally prelude is shared between INPUT and FORWARD.
