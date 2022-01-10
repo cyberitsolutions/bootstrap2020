@@ -1,0 +1,9 @@
+[Unit]
+DefaultDependencies=no
+Before=udev.service
+
+[Service]
+Type=notify
+ExecStart=/usr/local/sbin/usb-snitchd
+
+FailureAction=reboot
