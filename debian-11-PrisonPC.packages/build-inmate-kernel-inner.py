@@ -179,7 +179,7 @@ Build-Depends: debhelper-compat (= 13)
 
 Package: linux-image-inmate
 Pre-Depends:
- {package_name},
+ {package_name} (= {package_version}),
  initramfs-tools (>= 0.120+deb8u2) | linux-initramfs-tool,
  linux-base,
 Architecture: all
