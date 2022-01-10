@@ -126,6 +126,7 @@ with tempfile.TemporaryDirectory() as td:
          '--include=devscripts',        # for "dcmd cp" in inner.py
          '--include=libdistro-info-perl',  # for "dch --create" in inner.py
          '--include=gcc-10-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
+         '--include=zstd',               # for CONFIG_KERNEL_XZ
 
          # We call "apt build-dep", so this line is not strictly needed.
          # I put it here only because mmdebstrap installs much more quietly than apt --quiet.
