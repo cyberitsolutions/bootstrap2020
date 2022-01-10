@@ -223,3 +223,9 @@ changes_paths = list(pathlib.Path('..').glob('*.changes'))
 destdir = pathlib.Path('/X')
 destdir.mkdir(parents=True, exist_ok=True)
 subprocess.check_call(['dcmd', 'cp', '-rLvt', destdir, *changes_paths])
+# Backup the exact .ini and .config-old we used.
+# This is handy during development where the 10min build time makes it
+# easy to lose track of what, exactly, you built and tested!
+subprocess.check_call(['cp', '-rLvt', destdir,
+                       '/build-inmate-kernel.ini',
+                       '/boot/build-inmate-kernel.config-old'])
