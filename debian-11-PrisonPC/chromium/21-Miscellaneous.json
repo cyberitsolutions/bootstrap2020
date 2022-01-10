@@ -112,16 +112,21 @@
     //     ".exact.hostname.com"
     // ],
 
-    // The UPMC replacement will set this, elsewhere???
-    // "AutoLaunchProtocolsFromOrigins": [
-    //     {"protocol": "spotify",
-    //      "allowed_origins": [
-    //          "example.com",
-    //          "http://www.example.com:8080"]},
-    //     {"protocol": "teams",
-    //      "allowed_origins": [
-    //          "https://example.com",
-    //          "https://.mail.example.com"]}],
+    // This DOES NOT affect what is ALLOWED.
+    // This ONLY tells chromium not to pop up a
+    // "really run rtp://X/Y in external app?" prompt.
+    //
+    // NOTE: Chromium can't play multicast RTP/RTSP streams.
+    //       It only supports unicast HTTP HLS (w/ help from third-party js).
+    //       So EITHER we tell chromium "it's OK to open rtp:// in an external app",
+    //       OR we ship something like https://github.com/cyberitsolutions/stream-proxy
+    //       which can do ad-hoc conversion from mulicast RTP to unicast HTTP HLS.
+    //       HOWEVER, we ALREADY need vlc to play local DVDs, so "fuck it",
+    //       use vlc for this also.
+    //
+    "AutoLaunchProtocolsFromOrigins": [
+        {"protocol": "rtp",
+         "allowed_origins": ["https://PrisonPC"]}],
 
     // This is set in 00-Proxy.json because it's
     // 1) super important; and

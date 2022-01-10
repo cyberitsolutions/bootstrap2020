@@ -9,6 +9,11 @@
 
         "chrome://apps",                // for new-style New Tab Page
 
+        // Allow inmates to look at IPTV.
+        // This opens externally in VLC.
+        // See also AutoLaunchProtocolsFromOrigins in 21-Miscellaneous.json
+        "rtp://*",
+
         // Ron won't let me block file:// and wait for complaints. --twb, Jan 2014
         "file://*",
 

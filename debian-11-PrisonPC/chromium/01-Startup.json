@@ -60,6 +60,8 @@
     "PolicyListMultipleSourceMergeList": [
         // For *THIS* file, 01-Startup.json
         "WebAppInstallForceList",
+        // For *ANOTHER* file, 21-Miscellaneous.json!
+        "AutoLaunchProtocolsFromOrigins",
         // For *ANOTHER* file, 00-URLs.json!
         "URLAllowlist", "URLBlocklist"],
     // "NTP" means chrome://newtab (NOT Network Time Protocol).
