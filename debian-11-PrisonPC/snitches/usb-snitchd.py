@@ -16,9 +16,11 @@
 # I notice there's a DRIVER=mceusb attribute in some udev uevents...
 # could we leverage that? --twb, Oct 2015
 
+import pwd
 import pyudev
 import subprocess
 import systemd.daemon
+import systemd.login
 
 # FIXME: output from stderr is not reaching the journal.
 #
@@ -210,7 +212,7 @@ def main():
                      '--retry', '10',
                      '--retry-max-time', '60',
                      '-Fsubsystem=usb',
-                     '-Fuser={}'.format(prisonpc_active_user()),
+                     '-Fuser={}'.format(prisonpc_active_user().pw_name),
                      '-Fvendor={:04x}'.format(vendor),
                      '-Fproduct={:04x}'.format(model)],
                     universal_newlines=True)
@@ -223,14 +225,15 @@ def main():
 
 
 def prisonpc_active_user():
-    # Return the name of the logged-in user (or "nobody").
-    # See /etc/X11/xdm/Xstartup for details.
-    # FIXME: do it some fancy-pants systemd-logind way?
-    try:
-        with open('/run/prisonpc-active-user') as fh:
-            return fh.read()
-    except FileNotFoundError:
-        return 'nobody'
+    """Get the currently active session (ignores root)."""
+    # NOTE: Returns a pwd object, because sometimes a uid is needed, other times a username.
+    uids = [u for u in systemd.login.uids() if u != 0]
+    if not uids:
+        return pwd.getpwnam('nobody')
+    elif len(uids) == 1:
+        return pwd.getpwuid(uids[0])
+    else:
+        raise Exception(f"Only 1 active session allowed at a time, got: {uids}")
 
 
 try:
