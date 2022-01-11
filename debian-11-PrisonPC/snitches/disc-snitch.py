@@ -456,8 +456,8 @@ try:
     main()
 finally:
     print('<0>Snitching interrupted, systemd should now force a reboot!', file=sys.stderr, flush=True)
-## UPDATE: with this, python exits *BEFORE THE BACKTRACE PRINTS*
-## ARGHAR GHARGJAHEGJH!@#*&^!@*&#^!*&@#^
-#    exit(1)
-## Putting the exit *outside* the try/finally should be OK, though.
+
+# NOTE: if we exit() inside the "finally" block,
+#       python exits *BEFORE THE BACKTRACE PRINTS*!
+#       Therefore do it at the top level.
 exit(1)
