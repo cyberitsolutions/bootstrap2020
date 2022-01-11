@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+
 
 # This for the inmate user to reset there account.
 # NOTE: if you change this, also change prisonpc:reset_user_desktop_config.
@@ -9,11 +9,16 @@
 
 
 import errno
-import gtk
-import os.path
+import logging
+import os
+import pathlib
 import shutil
 import subprocess
 import sys
+
+import gi
+gi.require_version('Gtk', '3.0')
+import gi.repository.Gtk        # noqa: E402
 
 # Without this, users cannot log in while over quota, due to a bug in xdm.
 # --cjb, Aug 2014
@@ -48,15 +53,22 @@ import sys
 # Ref. http://sources.debian.net/src/xdm/1:1.1.11-3/xdm/auth.c/?hl=1500#L1344
 MAGIC_XDM_DIR = '.Xauthority-c'
 
-dialog = gtk.MessageDialog(type=gtk.MESSAGE_WARNING,
-                           buttons=gtk.BUTTONS_YES_NO)
-dialog.set_title('Factory Reset')
-dialog.label.set_markup(
+# FIXME: does GTK3 *really* not style the default button different from other buttons?
+#        I thought it was my code's fault, but even this styles the same:
+#            zenity --question --title=X --text='Is <b>X</b>?' --icon-name=dialog-warning --default-cancel
+#            zenity --question --title=X --text='Is <b>X</b>?' --icon-name=dialog-warning
+dialog = gi.repository.Gtk.MessageDialog(title='Factory Reset')
+dialog.add_button(gi.repository.Gtk.STOCK_NO, gi.repository.Gtk.ResponseType.NO)
+dialog.add_button(gi.repository.Gtk.STOCK_YES, gi.repository.Gtk.ResponseType.YES)
+label = gi.repository.Gtk.Label()
+label.set_markup(
     'All settings will be reset to PrisonPC defaults.\n'
     'Regular office documents will <i>not</i> be affected.\n'
     'You will be logged out.\n'
     '\n'
     '<b>Reset account to factory defaults?</b>\n')
+dialog.get_content_area().add(label)
+dialog.get_content_area().show_all()
 
 
 # NFSv3, like Windows, won't let you unlink open files.
@@ -72,42 +84,44 @@ dialog.label.set_markup(
 # Likewise "return False" instead of "raise". --twb, Sep 2016
 def handle_error(function, path, excinfo):
     _, exception, _ = excinfo
-    if (function == os.remove
-        and isinstance(exception, OSError)
-        and exception.errno == errno.EBUSY
-        and os.path.basename(path).startswith('.nfs')):
-        print exception, 'IGNORED - looks like a stale NFS inode.'
+    if ((function == os.remove
+         and isinstance(exception, OSError)  # noqa: W503
+         and exception.errno == errno.EBUSY  # noqa: W503
+         and pathlib.Path(path).name.startswith('.nfs'))):  # noqa: W503
+        logging.warning('Ignoring probable stale NFS inode: %s', exception)
         return
-    if (function == os.rmdir
-        and isinstance(exception, OSError)
-        and exception.errno == errno.ENOTEMPTY):
-        print exception, 'IGNORED - parent dir of a stale NFS inode?'
+    if ((function == os.rmdir
+         and isinstance(exception, OSError)        # noqa: W503
+         and exception.errno == errno.ENOTEMPTY)):  # noqa: W503
+        logging.warning('Ignoring probable parent dir stale NFS inode: %s', exception)
         return
     else:
         raise
 
 
-if gtk.RESPONSE_YES == dialog.run():
-    home = os.path.expanduser('~/')
-    assert (home.startswith('/home/'))
-    os.chdir(home)      # Easier than messing with os.path.join below.
-    for path in os.listdir('.'):  # FIXME: os.listdir() in python3.
-        if path.startswith('.'):  # Only remove hidden files!
-            if path != MAGIC_XDM_DIR:
-                # NOTE: os.walk was MUCH SLOWER than shutil.rmtree.
-                if os.path.isdir(path) and not os.path.islink(path):
-                    shutil.rmtree(path, onerror=handle_error)
-                else:
-                    # rmtree() refuses to remove symlinks and regular files,
-                    # so we have to repeat ourselves here.  SIGH.
-                    # Minimize duplication by re-using the handler.
-                    try:
-                        os.remove(path)
-                    except OSError:
-                        handle_error(os.remove, path, sys.exc_info())
+if gi.repository.Gtk.ResponseType.YES == dialog.run():
+    home = pathlib.Path.home()
+    if not home.is_relative_to('/home'):
+        raise RuntimeError('suspicious $HOME', home)
+    for path in home.glob('.*'):  # Only remove hidden files!
+        # FIXME: is this "magic" still useful in Debian 11???
+        if path.name == MAGIC_XDM_DIR:
+            logging.debug('Skipping magic XDM dir')
+            continue
+        # NOTE: os.walk was MUCH SLOWER than shutil.rmtree.
+        if path.is_dir() and not path.is_symlink():
+            shutil.rmtree(path, onerror=handle_error)
+        else:
+            # rmtree() refuses to remove symlinks and regular files,
+            # so we have to repeat ourselves here.  SIGH.
+            # Minimize duplication by re-using the handler.
+            try:
+                path.unlink()
+            except OSError:
+                handle_error(os.remove, path, sys.exc_info())
 
     # Just in case the user manually deleted it...
-    subprocess.check_call(['install', '-d', MAGIC_XDM_DIR])
+    subprocess.check_call(['install', '-d', home / MAGIC_XDM_DIR])
 
     # Force a logout in the simplest way:
     # force-kill any process we're allowed to.
