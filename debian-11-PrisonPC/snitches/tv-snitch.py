@@ -141,8 +141,8 @@ try:
 finally:
     print('<1>Something went wrong, trying to deny...', file=sys.stderr, flush=True)  # for syslog
     enact(drop=True, why='crash')
-## UPDATE: with this, python exits *BEFORE THE BACKTRACE PRINTS*
-## ARGHAR GHARGJAHEGJH!@#*&^!@*&#^!*&@#^
-#    exit(1)
-## Putting the exit *outside* the try/finally should be OK, though.
+
+# NOTE: if we exit() inside the "finally" block,
+#       python exits *BEFORE THE BACKTRACE PRINTS*!
+#       Therefore do it at the top level.
 exit(1)
