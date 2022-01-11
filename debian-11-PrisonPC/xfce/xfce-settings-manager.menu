@@ -76,7 +76,11 @@
     <Include>
       <And>
         <Category>Settings</Category>
-        <Category>X-XFCE-SettingsDialog</Category>
+        <!-- PrisonPC change.
+             By deleting this constraint, non-XFCE settings will appear here.
+             This means "Password" and "Factory Reset".
+          -->
+        <!-- <Category>X-XFCE-SettingsDialog</Category> -->
         <Not>
           <Or>
             <Category>X-XFCE-PersonalSettings</Category>
