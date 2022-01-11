@@ -4,10 +4,10 @@ Before=udev.service
 
 [Service]
 Type=notify
-ExecStart=bootstrap2020-disc-snitchd
+ExecStart=bootstrap2020-disc-snitch
 FailureAction=reboot
-RuntimeDirectory=disc-snitchd
-WorkingDirectory=/run/disc-snitchd
+RuntimeDirectory=disc-snitch
+WorkingDirectory=/run/disc-snitch
 
 # FIXME: add "systemd-analyze security" hardening here.
 
