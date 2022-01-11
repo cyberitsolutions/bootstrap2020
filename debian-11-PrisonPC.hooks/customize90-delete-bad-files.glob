@@ -2,7 +2,13 @@
 
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
-
+# From openssl & ssl-cert.  Not needed after packages are installed.
+**/*bin/c_rehash
+**/*bin/make-ssl-cert
+**/*bin/openssl
+**/openssl.cnf
+**/ssleay.cnf
+usr/lib/ssl/misc
 
 
 ## Inmates MUST NOT have clandestine comms
