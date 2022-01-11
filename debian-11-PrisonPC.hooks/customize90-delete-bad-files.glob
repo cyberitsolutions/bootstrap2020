@@ -83,6 +83,18 @@
 ## ========================================
 # util-linux provides mkfs.{bfs,cramfs,minix}
 **/*bin/mkfs.*
+# From usermode.
+# We want       Applications > Settings > Password (passwd GUI).
+# We don't want Applications > Settings > About Myself (chfn GUI).
+# We don't want Applications > System > Disk Management (sudo mount GUI).
+# The latter two don't actually WORK anyway, but we might as well remove them.
+# The "userpasswd" program needs "userhelper" privesc backdoor (instead of e.g. sudo).
+**/*bin/consolehelper
+**/*bin/consolehelper-gtk
+**/*bin/userinfo
+**/*bin/usermount
+/usr/share/applications/redhat-userinfo.desktop
+/usr/share/applications/redhat-usermount.desktop
 
 
 ## Inmates SHOULD NOT have development tools
