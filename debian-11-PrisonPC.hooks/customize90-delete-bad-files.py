@@ -98,7 +98,7 @@ if True:
          'find', '/', '-xdev', '-depth',
          '-print0'],
         text=True)
-    for path in find_stdout.split('\0'):
+    for path in find_stdout.strip('\0').split('\0'):
         path = pathlib.Path(path)
         matching_globs = [
             glob for glob in shitlist
