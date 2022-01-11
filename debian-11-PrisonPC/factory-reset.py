@@ -53,6 +53,10 @@ import gi.repository.Gtk        # noqa: E402
 # Ref. http://sources.debian.net/src/xdm/1:1.1.11-3/xdm/auth.c/?hl=1500#L1344
 MAGIC_XDM_DIR = '.Xauthority-c'
 
+# See also https://sources.debian.org/src/zenity/3.32.0-6/src/zenity.ui/#L879-L949
+# We do not use zenity because it pulls in webkitgtk, which
+# has no security support.
+#
 # FIXME: does GTK3 *really* not style the default button different from other buttons?
 #        I thought it was my code's fault, but even this styles the same:
 #            zenity --question --title=X --text='Is <b>X</b>?' --icon-name=dialog-warning --default-cancel
@@ -60,6 +64,9 @@ MAGIC_XDM_DIR = '.Xauthority-c'
 dialog = gi.repository.Gtk.MessageDialog(title='Factory Reset')
 dialog.add_button(gi.repository.Gtk.STOCK_NO, gi.repository.Gtk.ResponseType.NO)
 dialog.add_button(gi.repository.Gtk.STOCK_YES, gi.repository.Gtk.ResponseType.YES)
+hbox = gi.repository.Gtk.Box()
+# FIXME: explain why "6" somehow means "biggest icon".
+image = gi.repository.Gtk.Image(icon_name='dialog-warning', icon_size=6, yalign=0)
 label = gi.repository.Gtk.Label()
 label.set_markup(
     'All settings will be reset to PrisonPC defaults.\n'
@@ -67,7 +74,9 @@ label.set_markup(
     'You will be logged out.\n'
     '\n'
     '<b>Reset account to factory defaults?</b>\n')
-dialog.get_content_area().add(label)
+hbox.add(image)
+hbox.add(label)
+dialog.get_content_area().add(hbox)
 dialog.get_content_area().show_all()
 
 
