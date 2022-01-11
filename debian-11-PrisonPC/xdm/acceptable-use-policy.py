@@ -33,9 +33,7 @@ import urllib.request
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('Gdk', '3.0')
 import gi.repository.Gtk        # noqa: E402
-import gi.repository.Gdk        # noqa: E402
 
 
 stdout = subprocess.check_output(['xrdb', '-query'], text=True)
