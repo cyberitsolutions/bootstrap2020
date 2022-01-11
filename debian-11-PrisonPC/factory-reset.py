@@ -56,28 +56,16 @@ MAGIC_XDM_DIR = '.Xauthority-c'
 # See also https://sources.debian.org/src/zenity/3.32.0-6/src/zenity.ui/#L879-L949
 # We do not use zenity because it pulls in webkitgtk, which
 # has no security support.
-#
-# FIXME: does GTK3 *really* not style the default button different from other buttons?
-#        I thought it was my code's fault, but even this styles the same:
-#            zenity --question --title=X --text='Is <b>X</b>?' --icon-name=dialog-warning --default-cancel
-#            zenity --question --title=X --text='Is <b>X</b>?' --icon-name=dialog-warning
-dialog = gi.repository.Gtk.MessageDialog(title='Factory Reset')
-dialog.add_button(gi.repository.Gtk.STOCK_NO, gi.repository.Gtk.ResponseType.NO)
-dialog.add_button(gi.repository.Gtk.STOCK_YES, gi.repository.Gtk.ResponseType.YES)
-hbox = gi.repository.Gtk.Box()
-# FIXME: explain why "6" somehow means "biggest icon".
-image = gi.repository.Gtk.Image(icon_name='dialog-warning', icon_size=6, yalign=0)
-label = gi.repository.Gtk.Label()
-label.set_markup(
+dialog = gi.repository.Gtk.MessageDialog(
+    title='Factory Reset',
+    type=gi.repository.Gtk.MessageType.WARNING,
+    buttons=gi.repository.Gtk.ButtonsType.YES_NO)
+dialog.set_markup(
     'All settings will be reset to PrisonPC defaults.\n'
     'Regular office documents will <i>not</i> be affected.\n'
     'You will be logged out.\n'
     '\n'
     '<b>Reset account to factory defaults?</b>\n')
-hbox.add(image)
-hbox.add(label)
-dialog.get_content_area().add(hbox)
-dialog.get_content_area().show_all()
 
 
 # NFSv3, like Windows, won't let you unlink open files.
