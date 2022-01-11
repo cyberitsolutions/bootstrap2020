@@ -1,0 +1,12 @@
+[Unit]
+DefaultDependencies=no
+Before=udev.service
+
+[Service]
+Type=notify
+ExecStart=bootstrap2020-disc-snitchd
+FailureAction=reboot
+RuntimeDirectory=disc-snitchd
+WorkingDirectory=/run/disc-snitchd
+
+# FIXME: add "systemd-analyze security" hardening here.
