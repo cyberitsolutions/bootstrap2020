@@ -10,3 +10,6 @@ RuntimeDirectory=disc-snitchd
 WorkingDirectory=/run/disc-snitchd
 
 # FIXME: add "systemd-analyze security" hardening here.
+
+[Install]
+WantedBy=multi-user.target
