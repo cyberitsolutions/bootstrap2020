@@ -37,4 +37,7 @@ except FileNotFoundError:
 # Call the Debian's default X session.
 # This skips /etc/X11/xdm/Xsession.dpkg-dist, which
 # is just ". /etc/X11/Xsession".
+#
+# FIXME: this leaves an extra process dangling around in "ps faux".
+#        Is it reasonable to have this do os.exec instead, just to avoid that?
 subprocess.check_call(['/etc/X11/Xsession'])
