@@ -41,7 +41,6 @@
 import gtk.gdk
 import os
 import syslog
-import time
 import xdg.DesktopEntry
 import xdg.Menu
 
@@ -160,7 +159,7 @@ def main():
 
     lookup_table = create_lookup_table()
 
-    while time.sleep(10) is None:   # Infinite loop with sleep FIRST.
+    if True:
 
         window = screen.get_active_window()
 
@@ -169,7 +168,7 @@ def main():
             # If you open a window then close it,
             # instead of this, it reports xfdesktop4 as the active window.
             syslog.syslog('{} is using NO APPLICATION'.format(user))
-            continue
+            return
 
         # NOTE: python2 gdk can *SET* "wmclass_class" & "wmclass_name" separately,
         # but it can't *GET* them separately.
@@ -178,7 +177,7 @@ def main():
         if not atom:
             syslog.syslog(syslog.LOG_ERR,
                           "{} is using UNKNOWN APPLICATION".format(user))
-            continue
+            return
 
         _, _, wmclass = atom
         wmclass_class, wmclass_name = wmclass.strip('\0').split('\0')

@@ -1,0 +1,9 @@
+[Unit]
+Description=popularity contest
+
+[Timer]
+# Every ten seconds.
+OnCalendar=*:*:0/10
+
+[Install]
+WantedBy=timers.target
