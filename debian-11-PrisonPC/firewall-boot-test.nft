@@ -22,5 +22,5 @@ add rule inet PrisonPC OUTPUT  udp dport ntp  accept
 
 # When something is attempted and isn't allowed,
 # log it so that we can work out what it is.
-add rule inet PrisonPC INPUT  ip saddr 10.0.0.0/8  log prefix "FIXME"
-add rule inet PrisonPC OUTPUT ip saddr 10.0.0.0/8  log prefix "FIXME"
+add rule inet PrisonPC INPUT  log prefix " INPUT FIXME "
+add rule inet PrisonPC OUTPUT log prefix "OUTPUT FIXME "
