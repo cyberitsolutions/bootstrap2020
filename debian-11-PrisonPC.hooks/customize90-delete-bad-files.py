@@ -83,7 +83,6 @@ with args.shitlist_path.open() as f:
         if line.strip()
         if not line.startswith('#')]
 
-# ATTEMPT #4
 # Walk the filesystem exactly once, with -xdev.
 # Then, use python globbing to decide what to remove.
 if True:
@@ -105,51 +104,3 @@ if True:
                 shutil.rmtree(path_outside_chroot)
             else:
                 path_outside_chroot.unlink()
-
-
-# ATTEMPT #3
-# Actually we can cheat.
-# WALKING the extra filesystems isn't too expensive, and fork+exec is.
-# So instead let's just implement --one-file-system at the REMOVAL layer.
-# UPDATE: this can have heisenbugs during glob() because of /proc churn:
-#    OSError: [Errno 22] Invalid argument: '/tmp/mmdebstrap.pqh0aNdMXS/proc/4634/task/4634/net'
-if False:
-    print('Deleting bad files...', flush=True)
-    for glob in shitlist:
-        print('removing', glob, flush=True)
-        root_device = args.chroot_path.stat().st_dev
-        for path in args.chroot_path.glob(glob):
-            if path.stat().st_dev == root_device:
-                print(f'removed ‘{path}’', flush=True)
-                shutil.rmtree(path) if path.is_dir() else path.unlink()
-
-# ATTEMPT #2
-# So OK, let's try a way that can -xdev...
-# Expects regex(7) ERE, not glob(3).
-# We run O(n) finds, instead of O(1) find, only
-# so that we can print the pattern first.
-# That makes it much clearer when a pattern hasn't matched properly.
-if False:
-    print('Deleting bad files...', flush=True)
-    for regex in shitlist:
-        print('removing', regex, flush=True)
-        subprocess.check_call([
-            'chroot', args.chroot_path,
-            'find', '/', '-xdev', '-depth',
-            '-regextype', 'posix-egrep',
-            '-iregex', regex,
-            '-printf', r'removed %p\n',
-            '-exec', 'rm', '-vrf', '{}', '+'])
-
-# ATTEMPT #1
-# We cannot do this anymore, because mmdebstrap runs us while /sys is still mounted:
-#   Removing **/systemd/**/*@(crypt|password)*
-#   OSError: [Errno 22] Invalid argument:
-#   '/tmp/mmdebstrap.ZfV8BUDHUE/sys/firmware/efi/efivars/systemd'
-if False:
-    print('Deleting bad files...', flush=True)
-    for glob in shitlist:
-        print('removing', glob, flush=True)
-        for path in args.chroot_path.glob(glob):
-            print(f'removed ‘{path}’', flush=True)
-            shutil.rmtree(path) if path.is_dir() else path.unlink()
