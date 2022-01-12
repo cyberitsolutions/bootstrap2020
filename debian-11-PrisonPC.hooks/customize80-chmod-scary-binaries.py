@@ -22,7 +22,7 @@ args = parser.parse_args()
 subprocess.check_call([
     'chroot', args.chroot_path,
     'dpkg-statoverride', '--update', '--add',
-    'root', 'root', '0700',
+    'root', 'root', '0500',
     '/usr/bin/ssh-keygen'])
 
 # x11vnc is run by xdm (as root); not by anyone else.
@@ -32,5 +32,5 @@ subprocess.check_call([
 subprocess.check_call([
     'chroot', args.chroot_path,
     'dpkg-statoverride', '--update', '--add',
-    'root', 'root', '0700',
+    'root', 'root', '0500',
     '/usr/bin/x11vnc'])
