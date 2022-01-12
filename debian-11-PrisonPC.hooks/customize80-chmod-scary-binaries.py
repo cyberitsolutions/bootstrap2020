@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import collections
 import pathlib
 import subprocess
 
@@ -14,23 +15,20 @@ parser = argparse.ArgumentParser(
     description=__doc__,
     formatter_class=argparse.RawDescriptionHelpFormatter)
 parser.add_argument('chroot_path', type=pathlib.Path)
+parser.set_defaults(policy_path=pathlib.Path(
+    'debian-11-PrisonPC.hooks/customize80-chmod-scary-binaries.conf'))
 args = parser.parse_args()
 
-# When openssh-server is installed, we
-# need ssh-keygen to generate host keys as boot time.
-# We do not ever need it to generate user keys.
-subprocess.check_call([
-    'chroot', args.chroot_path,
-    'dpkg-statoverride', '--update', '--add',
-    'root', 'root', '0500',
-    '/usr/bin/ssh-keygen'])
+Policy = collections.namedtuple('Policy', 'mode owner group path')
 
-# x11vnc is run by xdm (as root); not by anyone else.
-# This is probably unnecessary, since
-# AFAIK non-root users cannot start X, so
-# starting x11vnc doesn't really get you anywhere.
-subprocess.check_call([
-    'chroot', args.chroot_path,
-    'dpkg-statoverride', '--update', '--add',
-    'root', 'root', '0500',
-    '/usr/bin/x11vnc'])
+policies = {
+    Policy(*line.split())
+    for line in args.policy_path.read_text().splitlines()
+    if line.strip()
+    if not line.startswith('#')}
+
+for policy in policies:
+    subprocess.check_call([
+        'chroot', args.chroot_path,
+        'dpkg-statoverride', '--update', '--add',
+        policy.owner, policy.group, policy.mode, policy.path])
