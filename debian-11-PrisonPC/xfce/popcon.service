@@ -1,0 +1,9 @@
+[Unit]
+Description=popularity contest
+Documentation=https://alloc.cyber.com.au/task/task.php?taskID=24174
+
+[Service]
+ExecStart=bootstrap2020-popularity-contest
+
+[Install]
+WantedBy=default.target
