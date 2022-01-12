@@ -85,22 +85,21 @@ with args.shitlist_path.open() as f:
 
 # Walk the filesystem exactly once, with -xdev.
 # Then, use python globbing to decide what to remove.
-if True:
-    find_stdout = subprocess.check_output(
-        ['chroot', args.chroot_path,
-         'find', '/', '-xdev', '-depth',
-         '-print0'],
-        text=True)
-    for path in find_stdout.strip('\0').split('\0'):
-        path = pathlib.Path(path)
-        matching_globs = [
-            glob for glob in shitlist
-            if path.match(glob)]
-        if matching_globs:
-            print(f'Removing ‘{path}’\t(matches {matching_globs})', flush=True)
-            # NOTE: "chroot_path / path" does the Wrong ThingTM as path is absolute.
-            path_outside_chroot = args.chroot_path.joinpath(*path.parts[1:])
-            if path_outside_chroot.is_dir():
-                shutil.rmtree(path_outside_chroot)
-            else:
-                path_outside_chroot.unlink()
+find_stdout = subprocess.check_output(
+    ['chroot', args.chroot_path,
+     'find', '/', '-xdev', '-depth',
+     '-print0'],
+    text=True)
+for path in find_stdout.strip('\0').split('\0'):
+    path = pathlib.Path(path)
+    matching_globs = [
+        glob for glob in shitlist
+        if path.match(glob)]
+    if matching_globs:
+        print(f'Removing ‘{path}’\t(matches {matching_globs})', flush=True)
+        # NOTE: "chroot_path / path" does the Wrong ThingTM as path is absolute.
+        path_outside_chroot = args.chroot_path.joinpath(*path.parts[1:])
+        if path_outside_chroot.is_dir():
+            shutil.rmtree(path_outside_chroot)
+        else:
+            path_outside_chroot.unlink()
