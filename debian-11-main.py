@@ -374,7 +374,12 @@ with tempfile.TemporaryDirectory() as td:
             '    at-spi2-core gnome-accessibility-themes'
             '    plymouth-themes',
             *(['--include='
-               '    chromium chromium-sandbox chromium-l10n'
+               # FIXME: chromium-sandbox REDUCES security.
+               #        It should be banned, not installed.
+               #        It is only existing as a workaround for kernels without user_ns.
+               #        https://bugs.debian.org/839277
+               #        https://bugs.debian.org/913116
+               '    chromium chromium-l10n'
                '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
                '    libreoffice-gtk3'
                '    libreoffice-help-en-gb libreoffice-l10n-en-gb'
