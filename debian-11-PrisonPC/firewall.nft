@@ -124,7 +124,7 @@ table inet PrisonPC {
     chain prelude {
         ct state vmap { established: accept, related: accept, invalid: drop }
         iiftype loopback  accept
-        oiftype loopback  ip saddr 127/8  ip daddr 127/8  accept
+        oiftype loopback  ip saddr 127.0.0.0/8  ip daddr 127.0.0.0/8  accept
         icmp type echo-request  accept
         icmpv6 type { echo-request, nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert }  accept
     }
