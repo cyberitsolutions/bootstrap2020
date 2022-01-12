@@ -76,12 +76,6 @@ parser.set_defaults(shitlist_path=(
     'customize90-delete-bad-files.glob'))
 args = parser.parse_args()
 
-# Accidentally deleting large parts of a normal OS is BAD BAD BAD.
-# Therefore start by checking if we're inside the build chroot.
-# FIXME: test something link /proc/self/exe.
-if not pathlib.Path('/etc/dpkg/dpkg.cfg.d/99mmdebstrap').exists:
-    raise RuntimeError('Running outside unshare(2) — something is very wrong!')
-
 with args.shitlist_path.open() as f:
     shitlist = [
         line.strip()
