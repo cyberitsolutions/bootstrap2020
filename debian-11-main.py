@@ -399,6 +399,7 @@ with tempfile.TemporaryDirectory() as td:
                '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
                '    libgtk-3-bin'  # gtk-launch (used by some .desktop files)
                '    python3-systemd python3-pyudev'  # for *-snitch.py
+               '    python3-xdg'                     # for popcon.py
                '    genisoimage lsdvd libcdio-utils'  # for disc-snitch.py
                '    dbus-x11'   # for root-notify-send (FIXME: remove)
                '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)

@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 # Goal: as a planner, Ron needs to know which apps are (un)popular,
 # so he can deprecate the useless ones & add more useful ones.
@@ -20,8 +20,6 @@
 #   2. they're not well-maintained; &
 #   3. they're not already installed.
 #
-# Point (3) is also why I used py2/gtk2 instead of py3/gtk3.
-#
 # Ref. https://developer.gnome.org/gdk3/2.90/gdk3-Windows.html
 # Ref. https://specifications.freedesktop.org/wm-spec/wm-spec-latest.html#idm140200472702304
 #
@@ -38,11 +36,15 @@
 # FIXME: crash ouput goes to .xsession-errors (or NOWHERE?!)
 #        This ought to be fixed sometime!
 
-import gtk.gdk
 import os
 import syslog
+
 import xdg.DesktopEntry
 import xdg.Menu
+
+import gi
+gi.require_version('Gdk', '3.0')
+import gi.repository.Gdk        # noqa: E402
 
 
 def create_lookup_table():
@@ -143,10 +145,6 @@ def main():
     # which ends up in ~p1234/.xsession-errors, NOT syslog!
     syslog.openlog('popularity-contest')
 
-    # Get the first screen of the first display.
-    screen = gtk.gdk.screen_get_default()
-    assert isinstance(screen, gtk.gdk.ScreenX11)
-
     # This application is launched by xdm AFTER the user logs in.
     # The $USER environment variable is set by xdm.
     # So unlike usb-snitchd, we can grab it & ignore /run/prisonpc-active-user
@@ -156,7 +154,7 @@ def main():
 
     if True:
 
-        window = screen.get_active_window()
+        window = gi.repository.Gdk.Display().get_default().get_default_screen().get_active_window()
 
         if not window:
             # This happens AFTER login and BEFORE opening any window.
