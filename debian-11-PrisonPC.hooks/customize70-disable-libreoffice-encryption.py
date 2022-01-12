@@ -205,15 +205,6 @@ for xcd_path in config_root.glob('**/*.xcd'):
         logging.info('Skipping localization file %s', xcd_path)
         continue
 
-    # if xcd_path.name.startswith('PrisonPC'):
-    #     logging.info('Skipping our own drop-in file %s', xcd_path)
-    #     continue
-
-    # at_least_one_change = False
-    # template_path = template_root / xcd_path.relative_to(config_root)
-    # if not same_checksum(xcd_path, template_path):
-    #     raise RuntimeError('Before editing, contents should be identical!', xcd_path, template_path)
-
     tree = xml.etree.ElementTree.parse(xcd_path)
     node_xpaths = {
         './/oor:component-data[@oor:name="Filter"]/node[@oor:name="Filters"]/node',  # odt, docx, &c
@@ -227,26 +218,23 @@ for xcd_path in config_root.glob('**/*.xcd'):
         name = node.attrib[f'{{{namespaces["oor"]}}}name']
         flags_node, = node.findall('./prop[@oor:name="Flags"]/value', namespaces=namespaces)
         old_flags = set(flags_node.text.split())
-        # remove encryption flags.
+        # Remove encryption flags.
         new_flags = old_flags - shit_flags
         # Remove read and/or write.
         if name not in read_write:
             new_flags -= {'EXPORT'}
         elif name not in read_write | read_only:
             new_flags -= {'IMPORT'}
-        # assert not (new_flags - old_flags), 'Cannot ADD flags!'
-        # logging.debug('%s: keep %s', name, new_flags)
         if old_flags != new_flags:
             logging.info('%s: kill %s', name, old_flags - new_flags)
             # Commit change back to in-memory XML structure
             flags_node.text = ' '.join(new_flags)
-            # at_least_one_change = True
 
     # Commit XML tree back to disk.
     with xcd_path.open('w') as f:
         tree.write(f, xml_declaration=True, encoding='unicode')
 
-    # Libreoffice segfaults without this (and register_namespace, above), because
+    # LibreOffice segfaults without this (and register_namespace, above), because
     # Python removes xmlns:xs= because xs: only appears in oor:type="xs:string".
     # Aaargh why can't I just do this as part of the same tree.write() above?
     # Why does this remove the DTD?
@@ -254,8 +242,6 @@ for xcd_path in config_root.glob('**/*.xcd'):
         xml.etree.ElementTree.canonicalize(
             from_file=xcd_path,
             qname_aware_attrs={f'{{{namespaces["oor"]}}}type'}))
-    # DEBUGGING:
-    # subprocess.call(['git', '--no-pager', 'diff', '-wU0', template_path, xcd_path])
 
-# DEBUGGING:
-# subprocess.call(['git', '--no-pager', 'diff', '--stat', '-w', template_root, config_root])
+if False:                       # DEBUGGING:
+    subprocess.call(['git', '--no-pager', 'diff', '--stat', '-w', template_root, config_root])

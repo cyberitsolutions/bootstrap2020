@@ -137,8 +137,10 @@ with org_path.open('w') as f:
         print(file=f)
         for policy_name in group['policies']:
             policy = policies[policy_name]
-            print(h2(policy['name'] +
-                     (' (DEPRECATED)' if policy.get('deprecated', False) else '') +
+            print(h2(policy['name'] +  # noqa: W504
+                     (' (DEPRECATED)'
+                      if policy.get('deprecated', False)
+                      else '') +  # noqa: W504
                      ' — ' + policy['caption']),
                   file=f)
             print('SYNOPSIS:', json.dumps(policy['example_value']), file=f)

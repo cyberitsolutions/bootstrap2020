@@ -72,7 +72,7 @@ bash and python globs lack "--one-file-system" or "-xdev".
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(shitlist_path=(
-    pathlib.Path(sys.argv[0]).parent /
+    pathlib.Path(sys.argv[0]).parent /  # noqa: W504
     'customize90-delete-bad-files.glob'))
 args = parser.parse_args()
 

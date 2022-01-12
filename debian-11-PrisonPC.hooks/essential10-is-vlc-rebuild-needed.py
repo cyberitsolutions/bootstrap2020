@@ -44,7 +44,9 @@ __doc__ = """ if Debian vlc is newer than PrisonPC vlc, halt and catch fire
                  release v=11,o=Debian,a=stable-security,n=bullseye-security,l=Debian-Security,c=main,b=amd64
                  origin deb.debian.org
 
-17:13 <twb> I can say "apt install vlc/bullseye" to pick between Debian bullseye and bullseye-backports, *but* my in-house repo is also n=bullseye
+17:13 <twb> I can say "apt install vlc/bullseye"
+            to pick between Debian bullseye and bullseye-backports, *but*
+            my in-house repo is also n=bullseye
 17:13 <twb> Can I say something like "apt install vlc/Debian:bullseye" ?
 17:14 <twb> This is wrong: apt install '?name(^vlc$)?origin(Debian)'
 17:14 <twb> This is wrong: apt install '?narrow(?name(^vlc$),?origin(Debian))'

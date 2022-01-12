@@ -165,7 +165,7 @@ subprocess.check_call([
     #           dpkg-source: error:
     #           can't build with source format '3.0 (native)':
     #           native package version may not have a revision
-    '--newversion', package_version.replace('-','.'),
+    '--newversion', package_version.replace('-', '.'),
     '--distribution', 'bullseye-backports',
     # Message copied from upstream .changes
     'Custom built Linux kernel.'])

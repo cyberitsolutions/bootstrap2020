@@ -100,9 +100,9 @@ def pipeline(conf, pattern_paths):
     procs.append(
         subprocess.Popen(
             ['journalctl', '--system', '--merge',
-             '--until', conf.until] +
-            (['--since', conf.since] if conf.since else []) +
-            conf.extra_journalctl_args,
+             '--until', conf.until,
+             *(['--since', conf.since] if conf.since else []),
+             *conf.extra_journalctl_args],
             stdout=subprocess.PIPE))
     for path in pattern_paths:
         procs.append(
@@ -177,9 +177,9 @@ def parse_args():
                                         if not p.endswith('.dpkg-old')
                                         if not p.endswith('.dpkg-dist')
                                         if not p.endswith('.dpkg-new')
-                                        if re.fullmatch(r'(^[a-z0-9]+$)', p)
-                                        or re.fullmatch(r'(^_?([a-z0-9_.]+-)+[a-z0-9]+$)', p)
-                                        or re.fullmatch(r'(^[a-zA-Z0-9_-]+$)', p)),
+                                        if (re.fullmatch(r'(^[a-z0-9]+$)', p) or  # noqa: W504
+                                            re.fullmatch(r'(^_?([a-z0-9_.]+-)+[a-z0-9]+$)', p) or  # noqa: W504
+                                            re.fullmatch(r'(^[a-zA-Z0-9_-]+$)', p))),
                                        # Move local-X files to the front of the list,
                                        # because they are probably the bulk of the messages, and
                                        # we want to ignore them in the first log.

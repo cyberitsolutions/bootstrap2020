@@ -44,7 +44,10 @@ with tempfile.TemporaryDirectory() as td:
          '--customize-hook=mkdir -p $1/X/Y',
          f'--customize-hook=sync-in {args.package_path} /X/Y',
          *(['--include=devscripts,ca-certificates',  # install uscan
-            '--customize-hook=chroot $1 sh -c "cd /X/Y && uscan --download-current-version && tar --strip-components=1 -xf ../*orig.tar.*"',
+            '--customize-hook=chroot $1 sh -c "'
+            '   cd /X/Y &&'
+            '   uscan --download-current-version &&'
+            '   tar --strip-components=1 -xf ../*orig.tar.*"',
             '--customize-hook=chroot $1 sh -c "cd /X/Y && uscan --report"']  # report newer version
            if (args.package_path / 'debian/watch').exists() else []),
          '--include=devscripts,lintian',
