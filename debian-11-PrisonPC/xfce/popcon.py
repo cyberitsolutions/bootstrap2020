@@ -120,11 +120,6 @@ def create_lookup_table():
                 key1 = entry.DesktopEntry.getName().lower()
                 key2 = entry.Filename[:-len('.desktop')].lower()
 
-                # Legacy KDE apps are in a subdir.
-                # e.g. 'kde4/kiten' must become 'kiten'.
-                if key2.startswith('kde4/'):
-                    key2 = key2[len('kde4/'):]
-
                 # FIXME: what happens with multi-menu paths?
                 value = menu.getPath()
                 if value:
