@@ -1,2 +1,0 @@
-#!/usr/sbin/nft --file
-include "/etc/nftables.conf.d/*.conf"
