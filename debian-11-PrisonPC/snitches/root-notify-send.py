@@ -51,6 +51,9 @@ For discussion of other (better) techniques, see
       Python script that does a similar system-to-session dbus proxy, but
       for a different kind of dbus event (screen locking).
 
+      UPDATE: "there's not much point if you can runuser or otherwise setuid()"
+              "original predates /run/user/*/bus, when session bus was random"
+
     • https://github.com/liske/needrestart-session
 
       Allegedly does something similar.
@@ -151,10 +154,18 @@ parser = argparse.ArgumentParser(
 args = parser.parse_args()
 body = sys.stdin.read()
 
-for path in pathlib.Path('/run/user/').glob('*/bus'):
-    if path.parent.name == '0':
-        continue                # skip the root user
+paths = {
+    path
+    for path in pathlib.Path('/run/user/').glob('*/bus')
+    # skip the root user, who gets a systemd/dbus user session if openssh-server is used.
+    if path.parent.name != '0'}
+
+if len(paths) == 0:
+    logging.info('No GUI users are logged in.  Cannot notify on the xdm login screen.')
+elif len(paths) == 1:
+    path, = paths
     os.environ['DBUS_SESSION_BUS_ADDRESS'] = f'unix:path={path}'
+    os.seteuid(path.stat().st_uid)  # equivalent of "runuser -u s123 -- notify-send ..."
     gi.repository.Notify.init('notify-send')
     notification = gi.repository.Notify.Notification.new(
         summary='System message',
@@ -163,7 +174,5 @@ for path in pathlib.Path('/run/user/').glob('*/bus'):
     notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
     notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
     notification.show()
-
-    # FIXME: how do we tear down notify here?
-    #        Probably this code is broken if >1 GUI user is logged in at once.
-    #        That should be impossible on PrisonPC, so ignore for now.
+else:
+    raise NotImplementedError('Cannot have multiple GUI users at once!', paths)
