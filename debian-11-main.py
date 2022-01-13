@@ -355,24 +355,13 @@ with tempfile.TemporaryDirectory() as td:
            if template_wants_disks and not args.virtual_only else []),
          *(['--include='
             '    xserver-xorg-core xserver-xorg-input-libinput'
-            '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
+            '    xfce4-session xfwm4 xfce4-panel'
             '    xdm'
             '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
             # Without "alsactl init" & /usr/share/alsa/init/default,
             # pipewire/pulseaudio use the kernel default (muted & 0%)!
             '    alsa-utils'
-            '    ir-keytable'   # infrared TV remote control
-            '    xfce4-xkb-plugin '  # basic foreign language input (e.g. Russian, but not Japanese)
-            '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
-            '    gvfs thunar-volman eject'  # Thunar trash://, DVD autoplay, DVD eject
-            '    xfce4-notifyd '     # xfce4-panel notification popups
-            # FIXME: use plocate (not mlocate) once PrisonPC master server upgrades!
-            '    catfish mlocate xfce4-places-plugin'  # "Find Files" tool
-            '    usermode'                             # password reset tool
-            '    librsvg2-common'    # SVG icons in GTK3 apps
-            '    gnome-themes-extra adwaita-qt'  # theming
-            '    at-spi2-core gnome-accessibility-themes'
-            '    plymouth-themes',
+            ,
             *(['--include='
                # FIXME: chromium-sandbox REDUCES security.
                #        It should be banned, not installed.
