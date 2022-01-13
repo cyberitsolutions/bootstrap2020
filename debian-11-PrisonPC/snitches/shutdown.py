@@ -50,7 +50,7 @@ parser.add_argument('--no-wall', action='store_true')
 parser.add_argument('-c', dest='cancel', action='store_true')
 # NOTE: in systemd's shutdown(8), time is optional!
 #       The default value is +1 (one minute from now).
-parser.add_argument('time', default='+1')
+parser.add_argument('time', nargs='?', default='+1')
 parser.add_argument('wall', nargs='*')
 args = parser.parse_args()
 
