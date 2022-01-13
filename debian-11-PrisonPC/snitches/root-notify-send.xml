@@ -1,0 +1,14 @@
+<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<!--
+     https://hauweele.net/~gawen/blog/?tag=session-bus
+     https://dbus.freedesktop.org/doc/dbus-api-design.html#security-policies
+     https://specifications.freedesktop.org/notification-spec/notification-spec-latest.html
+     This says "allow root to connect directly to /run/user/1234/bus and send messages.
+     FIXME: restrict it to only allow root to send notification messages.
+-->
+<busconfig>
+  <policy context="default">
+    <allow user="root" />
+  </policy>
+</busconfig>
