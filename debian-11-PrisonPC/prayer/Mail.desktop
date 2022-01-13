@@ -1,7 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Mail
-Icon=mail-unread
-Exec=chromium --app=http://webmail
-Categories=Network;Email;
