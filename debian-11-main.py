@@ -389,7 +389,6 @@ with tempfile.TemporaryDirectory() as td:
                '    python3-systemd python3-pyudev'  # for *-snitch.py
                '    python3-xdg'                     # for popcon.py
                '    genisoimage lsdvd libcdio-utils'  # for disc-snitch.py
-               '    dbus-x11'   # for root-notify-send (FIXME: remove)
                '    fonts-adf-universalis'      # UI font (FIXME: fonts-prisonpc-core later)
                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
                '    prayer-templates-prisonpc'
