@@ -58,8 +58,6 @@ def main():
     # So unlike usb-snitchd, we can grab it & ignore /run/prisonpc-active-user
     user = os.getenv('USER')
 
-    lookup_table = create_lookup_table()
-
     window = gi.repository.Gdk.Display().get_default().get_default_screen().get_active_window()
 
     if not window:
@@ -93,6 +91,7 @@ def main():
     #
     # Note that "rename-applications" only patches Name[en_AU]=.
     # So this script MUST run in that locale, or it will not "see" our app renames.
+    lookup_table = create_lookup_table()
     nice_app_name = lookup_table.get(wmclass_name.lower(), wmclass_name)
 
     # Modern apps are mostly single-window (like inkscape).
