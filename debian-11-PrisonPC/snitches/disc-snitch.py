@@ -32,9 +32,14 @@
 # I have elided the comments here.
 # FIXME: merge usb-snitchd & disc-snitchd?
 
+import pwd
+import urllib.parse
+import urllib.request
+
 import pyudev
 import subprocess
 import systemd.daemon
+import systemd.login
 import sys
 import os                       # for os.path.exists
 
@@ -153,14 +158,6 @@ def main():
             # since that output is near-useless. --twb, Sep 2016 (#30950)
             print('<3>', error, file=sys.stderr, flush=True)
             eject(device)
-
-
-def prisonpc_active_user():
-    try:
-        with open('/run/prisonpc-active-user') as fh:
-            return fh.read()
-    except FileNotFoundError:
-        return 'nobody'
 
 
 # NB: this is proof-of-concept code for the #24643 cleanup.
@@ -293,21 +290,29 @@ def ask_jessie_server_about(device):
     with open('payload-lucid.bin', 'w') as fh:
         fh.write(data_lucid(device))
 
-    return subprocess.check_output(
-        ['curl', '-sLSf', 'https://ppc-services/discokay',
-         '--retry', '10',
-         '--retry-max-time', '60',
-         '-Fuser={}'.format(prisonpc_active_user()),
-         '-Fdata=@payload-jessie.bin',
-         '-Fdata_pete=@payload-lucid.bin'] +
-        # Rather than having to join & split all the metadata,
-        # just pass them as individual fields.
-        # The server's method will get them as **kwargs.
-        # Then the server can evolve to use them later,
-        # without needing updates on the desktop side.
-        ['-F{}={}'.format(key, device[key])
-         for key in device],
-        universal_newlines=True)
+    from gzip import compress
+    from base64 import urlsafe_b64encode
+
+    active_uid, = systemd.login.uids() or (65534,)  # 65534 == 'nobody'
+    username = pwd.getpwuid(active_uid).pw_name
+
+    form_data = {
+        'user': username,
+        'label': device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
+        'data': data_jessie(device),
+        'data_pete': urlsafe_b64encode(compress(data_lucid(device).encode())),
+    }
+    # Rather than having to join & split all the metadata,
+    # just pass them as individual fields.
+    # The server's method will get them as **kwargs.
+    # Then the server can evolve to use them later,
+    # without needing updates on the desktop side.
+    # FIXME: What if the device fields overwrite the fields used above?
+    form_data.update({key: device[key] for key in device})
+    with urllib.request.urlopen('https://ppc-services/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
+        response = req.read()
+
+    return response
 
 
 def ask_lucid_server_about(device):
@@ -319,26 +324,9 @@ def ask_lucid_server_about(device):
     # which I strongly suspect is prone to injection attacks.
 
     # The shit server requires a UID, not a username.
-    from pwd import getpwnam
-    uid = getpwnam(prisonpc_active_user()).pw_uid
-
-    # The shit server gets the IP address from the request body (spoofable)
-    # rather than from the request headers (not spoofable).
-    # Copy-and-pasted from what-is-my-ip(1prisonpc).
-    from socket import socket, AF_INET, SOCK_DGRAM
-    s = socket(AF_INET, SOCK_DGRAM)
-    s.connect(('prisonpc', 0))
-    host_ip = s.getsockname()[0]
-    s.close()
-
-    # NB: relies on systemd RuntimeDirectory=disc-snitch.
-    with open('payload.bin', 'w') as fh:
-        fh.write(
-            '&'.join(['host_ip={}'.format(host_ip),
-                      'uid={}'.format(uid),
-                      'label={}'.format(
-                          device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)),
-                      'summary=']))
+    # This should never return more than a single UID, but if it does the script will crash.
+    # I did explicitly test while I was SSHed in as root, and that did not create a systemd login session.
+    uid, = systemd.login.uids() or (65534,)  # 65534 == 'nobody'
 
     # And this is where it gets tricky.
     #
@@ -355,17 +343,15 @@ def ask_lucid_server_about(device):
     from gzip import compress
     from base64 import urlsafe_b64encode
 
-    with open('payload.bin', 'ab') as fh:
-        fh.write(urlsafe_b64encode(compress(data_lucid(device).encode())))
+    form_data = {
+        'uid': uid,
+        'label': device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
+        'summary': urlsafe_b64encode(compress(data_lucid(device).encode())),
+    }
+    with urllib.request.urlopen('https://prisonpc/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
+        response = req.read()
 
-    return subprocess.check_output(
-        ['curl', '-sLSf',
-         '-d@payload.bin',
-         '--retry', '10',
-         '--retry-max-time', '60',
-         # FIXME: stupid FQDN.
-         'https://prisonpc/discokay'],
-        universal_newlines=True)
+    return response
 
 
 def eject(device):
