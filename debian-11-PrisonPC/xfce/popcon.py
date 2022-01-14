@@ -69,10 +69,16 @@ def main():
         syslog.syslog('{} is using NO APPLICATION'.format(user))
         return
 
-    # NOTE: python2 gdk can *SET* "wmclass_class" & "wmclass_name" separately,
-    # but it can't *GET* them separately.
-    # As a workaround, we directly query the pair and pull it apart.
-    atom = window.property_get('WM_CLASS')
+    # NOTE: this is broken in Debian 11 due to this bug:
+    #       https://gitlab.gnome.org/GNOME/gtk/-/issues/383
+    # ===> "TypeError: Could not caller allocate argument 6 of callable Gdk.property_get"
+    atom = gi.repository.Gdk.property_get(
+        window,
+        gi.repository.Gdk.Atom.intern_static_string('WM_CLASS'),
+        gi.repository.Gdk.Atom.intern_static_string('STRING'),
+        0,                # read from the 0th byte
+        1024,             # a "big enough" buffer
+        0)                # delete = False, i.e. don't delete WM_CLASS
     if not atom:
         syslog.syslog(syslog.LOG_ERR,
                       "{} is using UNKNOWN APPLICATION".format(user))
