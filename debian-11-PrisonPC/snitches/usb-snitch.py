@@ -152,8 +152,9 @@ def main():
             #       MODALIAS uses uppercase hexadecimal (02X); &
             #       ID_VENDOR_ID uses lowercase hexcadecimal (04x).
             dc, dsc, dp = [int(x) for x in device.properties['INTERFACE'].split('/')]
-            modalias = device.properties['MODALIAS'].replace('dc00dsc00dp00',
-                                                  'dc{:02X}dsc{:02X}dp{:02X}'.format(dc, dsc, dp))
+            modalias = device.properties['MODALIAS'].replace(
+                'dc00dsc00dp00',
+                'dc{:02X}dsc{:02X}dp{:02X}'.format(dc, dsc, dp))
 
             if device.properties['INTERFACE'] in _BORING_USB_INTERFACES:
                 print('<7>Boring:', modalias, file=sys.stderr, flush=True)
@@ -205,8 +206,8 @@ try:
 # UPDATE: this is handled by FailureAction=reboot in systemd.
 finally:
     print('<0>Snitching interrupted, systemd should now force a reboot!', file=sys.stderr, flush=True)
-## UPDATE: with this, python exits *BEFORE THE BACKTRACE PRINTS*
-## ARGHAR GHARGJAHEGJH!@#*&^!@*&#^!*&@#^
-#    exit(1)
-## Putting the exit *outside* the try/finally should be OK, though.
+
+# NOTE: if we exit() inside the "finally" block,
+#       python exits *BEFORE THE BACKTRACE PRINTS*!
+#       Therefore do it at the top level.
 exit(1)
