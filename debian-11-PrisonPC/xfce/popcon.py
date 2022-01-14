@@ -66,7 +66,7 @@ def main():
         # This happens AFTER login and BEFORE opening any window.
         # If you open a window then close it,
         # instead of this, it reports xfdesktop4 as the active window.
-        syslog.syslog('{} is using NO APPLICATION'.format(user))
+        syslog.syslog(f'{user} is using NO APPLICATION')
         return
 
     # NOTE: this is broken in Debian 11 due to this bug:
@@ -80,26 +80,32 @@ def main():
         1024,             # a "big enough" buffer
         0)                # delete = False, i.e. don't delete WM_CLASS
     if not atom:
-        syslog.syslog(syslog.LOG_ERR,
-                      "{} is using UNKNOWN APPLICATION".format(user))
+        syslog.syslog(
+            syslog.LOG_ERR,
+            f'{user} is using UNKNOWN APPLICATION')
         return
 
     _, _, wmclass = atom
     wmclass_class, wmclass_name = wmclass.strip('\0').split('\0')
 
-    acc = '{} is using '.format(user)  # ACCUMULATOR
+    # Using the lookup table, try to turn e.g. "soffice.bin" into
+    # something a human can understand, like "Office Suite".
+    #
+    # Note that "rename-applications" only patches Name[en_AU]=.
+    # So this script MUST run in that locale, or it will not "see" our app renames.
+    nice_app_name = lookup_table.get(wmclass_name.lower(), wmclass_name)
 
-    # FIXME: this REQUIRES LANG=en_AU.UTF-8 to see rename-applications changes.
-    # FIXME: is there a better way to find this than WM_CLASS?
-    # FIXME: should we also look up wmclass_class?
-    if wmclass_name.lower() in lookup_table:
-        acc += lookup_table[wmclass_name.lower()]
-    else:
-        acc += wmclass_name
+    # Modern apps are mostly single-window (like inkscape).
+    # They have something like WM_CLASS = FOO, foo.
+    # A few apps are multi-window (like really old gimp).
+    # They have something like WM_CLASS = FOO, "font chooser"
+    # We mostly don't care about that, EXCEPT FOT "chromium  --app".
+    # So if the window's "class" is anything beyond "the app",
+    # log that parenthetically.
     if wmclass_name.lower() != wmclass_class.lower():
-        acc += ' ({})'.format(wmclass_class)
+        nice_app_name += f' ({wmclass_class})'
 
-    syslog.syslog(acc)
+    syslog.syslog(f'{user} is using {nice_app_name}')
 
 
 def create_lookup_table():
