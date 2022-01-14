@@ -32,16 +32,17 @@
 # I have elided the comments here.
 # FIXME: merge usb-snitchd & disc-snitchd?
 
+import os
+import pathlib
 import pwd
+import subprocess
+import sys
 import urllib.parse
 import urllib.request
 
 import pyudev
-import subprocess
 import systemd.daemon
 import systemd.login
-import sys
-import os                       # for os.path.exists
 
 # When an exception is raised,
 # by default python prints the exception itself *AND*
@@ -117,7 +118,7 @@ def main():
         # FIXME: Pete's code used to skip in these circumstances.
         # I think that's a mistake, but preserving semantics for now.
         # Reconsider when implementing #24643! --twb, Nov 2015
-        if os.path.exists('/require-lucid-disc-snitch'):
+        if pathlib.Path('/require-lucid-disc-snitch').exists():
             if not device.properties.get('ID_CDROM_MEDIA', False):
                 print('<7>ID_CDROM_MEDIA missing or empty, not processing. (tray-open event?)', file=sys.stderr, flush=True)
                 continue
@@ -154,7 +155,7 @@ def main():
             device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)), file=sys.stderr, flush=True)
 
         try:
-            if os.path.exists('/require-lucid-disc-snitch'):
+            if pathlib.Path('/require-lucid-disc-snitch').exists():
                 answer = ask_lucid_server_about(device)
             else:
                 answer = ask_jessie_server_about(device)
@@ -228,7 +229,7 @@ def data_lucid(device):
     # Bypass ALL this ugliness unless explicitly enabled.
     # NB: This is separate from /require-lucid-disc-snitch,
     # because during migration we send data_lucid *AND* data_jessie.
-    if not os.path.exists('/require-lucid-disc-snitch-data'):
+    if not pathlib.Path('/require-lucid-disc-snitch-data').exists():
         return 'UNUSED'
 
     # NB: Pete used to run lsdvd when ID_CDROM_MEDIA_DVD=="1";
@@ -400,13 +401,13 @@ def lock(device):
     # Tell polkit the answer is "no".
     # NB: o.f.udisks2 is for jessie; o.f.udisks is for wheezy.
     # The latter is in case I backport this to wheezy without paying attention.
-    with open('/etc/polkit-1/localauthority/50-local.d/99-disc-snitchd.pkla', 'w') as fh:
-        fh.write('\n'.join(['[disc-snitchd]',
-                            'Identity=*',
-                            'Action=org.freedesktop.udisks2.eject-media;org.freedesktop.udisks.drive-eject',
-                            'ResultAny=no',
-                            'ResultInactive=no',
-                            'ResultActive=no']))
+    pathlib.Path('/etc/polkit-1/localauthority/50-local.d/99-disc-snitchd.pkla').write_text('\n'.join([
+        '[disc-snitchd]',
+        'Identity=*',
+        'Action=org.freedesktop.udisks2.eject-media;org.freedesktop.udisks.drive-eject',
+        'ResultAny=no',
+        'ResultInactive=no',
+        'ResultActive=no']))
 
     # Disable umount (except umount -l and umount -f).
     #
