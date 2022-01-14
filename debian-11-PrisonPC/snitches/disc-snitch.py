@@ -442,8 +442,8 @@ def lock(device):
     if not os.fork():
         # ME AM CHILD!
         from glob import glob
-        # NB: cannot handle more than ~1000 /media/*/ entries, due to ulimit.
-        for d in glob('/media/*/'):
+        # NB: cannot handle more than ~1000 /media/*/*/ entries, due to ulimit.
+        for d in glob('/media/*/*/'):
             os.open(d, 0)
         # Now all mountpoints are held open,
         # umount(8) will refuse to unmount them without -l or -f.
