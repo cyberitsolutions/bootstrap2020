@@ -117,7 +117,7 @@ def main():
 
         # FIXME: Pete's code used to skip in these circumstances.
         # I think that's a mistake, but preserving semantics for now.
-        # Reconsider when implementing #24643! --twb, Nov 2015
+        # Reconsider when implementing https://alloc.cyber.com.au/task/task.php?taskID=24643! --twb, Nov 2015
         if pathlib.Path('/require-lucid-disc-snitch').exists():
             if not device.properties.get('ID_CDROM_MEDIA', False):
                 print('<7>ID_CDROM_MEDIA missing or empty, not processing. (tray-open event?)', file=sys.stderr, flush=True)
@@ -162,7 +162,7 @@ def main():
             print('<7>Server said "{}".'.format(answer), file=sys.stderr, flush=True)
 
             # FIXME: in here, check what 'answer' is and allow/lock/eject.
-            if answer == 'yes':     # FIXME: remove after #24643.
+            if answer == 'yes':     # FIXME: remove after https://alloc.cyber.com.au/task/task.php?taskID=24643.
                 pass
             elif answer == 'allow':
                 pass
@@ -184,7 +184,7 @@ def main():
             eject(device)
 
 
-# NB: this is proof-of-concept code for the #24643 cleanup.
+# NB: this is proof-of-concept code for the https://alloc.cyber.com.au/task/task.php?taskID=24643 cleanup.
 # As at 15.09, it is not used.
 def data_jessie(device):
     return '\n'.join(
@@ -217,7 +217,7 @@ def data_jessie(device):
 #
 # That means we need to generate data the *OLD* way, as well as the
 # new way, and have the server migrate discs from the old corpus as
-# they're re-reported.  As at 15.09, that is not coded. (#24643)
+# they're re-reported.  As at 15.09, that is not coded. (https://alloc.cyber.com.au/task/task.php?taskID=24643)
 #
 # That means this output MUST BE BYTE-IDENTICAL to the old code.
 #
@@ -317,7 +317,7 @@ def prisonpc_active_user():
         raise Exception(f"Only 1 active session allowed at a time, got: {uids}")
 
 
-# NB: this is proof-of-concept code for the #24643 cleanup.
+# NB: this is proof-of-concept code for the https://alloc.cyber.com.au/task/task.php?taskID=24643 cleanup.
 # As at 15.09, it is not used.
 def ask_jessie_server_about(device):
     from gzip import compress
@@ -343,12 +343,7 @@ def ask_jessie_server_about(device):
 
 
 def ask_lucid_server_about(device):
-    # We are talking to a yukky Lucid server that predates #24643.
-    #
-    # FIXME: using curl -Fk1=v1 -Fk2=v2 doesn't work with this server.
-    # FIXME: using curl -dk1=v1 -dk2=v2 doesn't work either.
-    # As a workaround, continue doing it the Pete way,
-    # which I strongly suspect is prone to injection attacks.
+    # We are talking to a yukky Lucid server that predates https://alloc.cyber.com.au/task/task.php?taskID=24643.
 
     # And this is where it gets tricky.
     #
@@ -392,6 +387,8 @@ def lock(device):
     # instead of ejecting, it just tells udev the eject button was pressed.
     # This is meant to give the OS an opportunity to umount cleanly.
     # But we need udev to NOT follow up by actually ejecting the drive!
+    #
+    # FIXME: This is pretty fucked, why don't we just replace the rule with something that resets the RUN variable?
     subprocess.check_call(['sed', '-i', 's/--eject-media//',
                            '/lib/udev/rules.d/60-cdrom_id.rules'])
     subprocess.check_call(['udevadm', 'control', '--reload-rules'])
