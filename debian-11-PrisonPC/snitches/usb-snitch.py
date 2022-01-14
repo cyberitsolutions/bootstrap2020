@@ -1,5 +1,4 @@
-#!/usr/bin/python3 -u
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 
 # We've seen inmates charging contraband smartphones,
 # by plugging them into PrisonPC.
@@ -22,46 +21,6 @@ import subprocess
 import systemd.daemon
 import systemd.login
 
-# FIXME: output from stderr is not reaching the journal.
-#
-# You can see that stderr is connected to the journal's listener:
-#
-#     # NB: this requires a stock kernel.
-#     # Inmate kernel will give misleading results here.
-#
-#     root@het:~# ss -xap | grep 1831
-#     u_str  ESTAB  0  0  /run/systemd/journal/stdout 2633  * 1831  users:(("systemd-journal",pid=265,fd=15))
-#     u_str  ESTAB  0  0                            * 1831  * 2633  users:(("usb-snitchd",pid=248,fd=2),("usb-snitchd",pid=248,fd=1))
-#
-# ...but nothing appears in the journal, not even "Ready!":
-#
-#    root@het:~# journalctl -u usb-snitchd
-#    -- Logs begin at Thu 2015-10-29 11:09:38 AEDT, end at Thu 2015-10-29 11:30:34 AEDT. --
-#    root@het:~# journalctl | grep -e READY -e snitch
-#    root@het:~#
-#
-# On the master server,
-# I can see the HTTP requests arrive,
-# so it IS working.
-#
-# Since I don't have time to understand this properly,
-# I'm going to just use syslog(3) as a workaround.
-#
-# UPDATE: after fixing much of the rest of this script,
-# stdout from child programs (e.g. eject) appears to be landing in journal again.
-# I have NFI what happened, but >SHRUG<.  --twb, Nov 2015
-#
-# UPDATE: the problem is that in Python 3, stderr is block-buffered by default.
-# In Python 2 and EVERY OTHER LANGUAGE, stderr is unbuffered or line-buffered.
-# This means that rare errors from a daemon won't arrive until the
-# daemon terminates, or there are a whole lot of them.
-# Ref. http://www.gossamer-threads.com/lists/python/python/955679
-# WORKS: Calling sys.stderr.flush() after every print.
-# WORKS: Doing #!/usr/bin/python3 -u.  (I am doing this.)
-# FAILS: sys.stderr.line_buffering = True ==> AttributeError: readonly attribute
-#
-# NOTE: python -u is STILL LINE-BUFFERED.
-# According to PEP 3116, it unbuffered stderr is completely impossible.
 import sys
 
 # Maintaining a whitelist of USB keyboards and mice on the server was really tedious.
@@ -106,7 +65,7 @@ def main():
     # Likewise using pyudev's asynchronous MonitorObserver.
     # --twb, Oct 2015
     systemd.daemon.notify('READY=1')
-    print('<7>Ready!', file=sys.stderr)
+    print('<7>Ready!', file=sys.stderr, flush=True)
 
     # NB: this iteration is effectively an infinite loop.
     #
@@ -140,7 +99,8 @@ def main():
                          device.get('ID_VENDOR_FROM_DATABASE', None)),
               device.get('ID_MODEL',
                          device.get('ID_MODEL_FROM_DATABASE', None)),
-              file=sys.stderr)
+              file=sys.stderr,
+              flush=True)
 
         # The USB stack provides two kinds of objects: devices and interfaces.
         # A device can have zero or more interfaces.
@@ -196,7 +156,7 @@ def main():
                                                   'dc{:02X}dsc{:02X}dp{:02X}'.format(dc, dsc, dp))
 
             if device.properties['INTERFACE'] in _BORING_USB_INTERFACES:
-                print('<7>Boring:', modalias, file=sys.stderr)
+                print('<7>Boring:', modalias, file=sys.stderr, flush=True)
 
             else:
                 # NB: when udev was invoking this directly,
@@ -216,12 +176,12 @@ def main():
                      '-Fvendor={:04x}'.format(vendor),
                      '-Fproduct={:04x}'.format(model)],
                     universal_newlines=True)
-                print('<7>Answer:', modalias, answer, file=sys.stderr)
+                print('<7>Answer:', modalias, answer, file=sys.stderr, flush=True)
 
                 # As at 14.07, the server always returns 'OK'.
                 # If we see something else, log it but don't reboot.
                 if 'OK' != answer:
-                    print('<4>Suspicious answer "{}"!'.format(answer), file=sys.stderr)
+                    print('<4>Suspicious answer "{}"!'.format(answer), file=sys.stderr, flush=True)
 
 
 def prisonpc_active_user():
@@ -244,7 +204,7 @@ try:
 # and we should reboot.
 # UPDATE: this is handled by FailureAction=reboot in systemd.
 finally:
-    print('<0>Snitching interrupted, systemd should now force a reboot!', file=sys.stderr)
+    print('<0>Snitching interrupted, systemd should now force a reboot!', file=sys.stderr, flush=True)
 ## UPDATE: with this, python exits *BEFORE THE BACKTRACE PRINTS*
 ## ARGHAR GHARGJAHEGJH!@#*&^!@*&#^!*&@#^
 #    exit(1)
