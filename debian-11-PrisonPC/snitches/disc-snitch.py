@@ -64,6 +64,17 @@ sys.tracebacklimit = 1
 ID_FS_LABEL_UNKNOWN = 'UNKNOWN'
 
 
+def str_to_bool(s: str):
+    """Returns a boolean for the given string, follows the same semantics systemd does."""
+
+    if s.lower() in ('1', 'yes', 'true', 'on'):
+        return True
+    elif s.lower() in ('0', 'no', 'false', 'off'):
+        return False
+    else:
+        raise NotImplementedError(f"Unknown boolean value from string: {s}")
+
+
 def main():
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
@@ -90,6 +101,18 @@ def main():
             device.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
             print('<7>All tracks are CDDA, not processing.', file=sys.stderr, flush=True)
             continue
+
+        # Skip to next event if it's a blank disc.
+        # Staff need to insert blank discs to burn them.
+        if (str_to_bool(os.environ.get('ALLOW_BLANK_DISCS', 'no')) and
+            'blank' == device.get('ID_CDROM_MEDIA_STATE', None) and
+            # Paranoia -- a blank disc with tracks isn't blank!
+            '1' == device.get('ID_CDROM_MEDIA_TRACK_COUNT', None) and
+            not device.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', False) and
+            not device.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
+            print('<7>Blank disc, not processing.', file=sys.stderr)
+            continue
+
 
         # FIXME: Pete's code used to skip in these circumstances.
         # I think that's a mistake, but preserving semantics for now.
