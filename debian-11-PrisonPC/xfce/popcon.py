@@ -15,12 +15,9 @@
 # the _NET_WM_ACTIVE window, for the default screen of the default
 # display.
 #
-# I *didn't* use any of the simpler XCB or XLib wrapper libraries, because
-#   1. they're not widely adopted;
-#   2. they're not well-maintained; &
-#   3. they're not already installed.
-#
-# Ref. https://developer.gnome.org/gdk3/2.90/gdk3-Windows.html
+# Ref. https://developer-old.gnome.org/libwnck/stable/getting-started.html#Common_pitfalls
+# Ref. https://valadoc.org/libwnck-3.0/Wnck.Screen.force_update.html
+# Ref. https://lazka.github.io/pgi-docs/Wnck-3.0/classes/Window.html
 # Ref. https://specifications.freedesktop.org/wm-spec/wm-spec-latest.html#idm140200472702304
 #
 # NOTE: assumes a EWMH-compliant window manager (xfwm4 is).
@@ -43,8 +40,8 @@ import xdg.DesktopEntry
 import xdg.Menu
 
 import gi
-gi.require_version('Gdk', '3.0')
-import gi.repository.Gdk        # noqa: E402
+gi.require_version('Wnck', '3.0')
+import gi.repository.Wnck       # noqa: E402
 
 
 def main():
@@ -58,33 +55,31 @@ def main():
     # So unlike usb-snitchd, we can grab it & ignore /run/prisonpc-active-user
     user = os.getenv('USER')
 
-    window = gi.repository.Gdk.Display().get_default().get_default_screen().get_active_window()
+    try:
+        screen = gi.repository.Wnck.Screen.get_default()
+        screen.force_update()   # SIGH, THIS IS AWFUL AND WRONG
+        window = screen.get_active_window()
+        if not window:
+            # This happens AFTER login and BEFORE opening any window.
+            # If you open a window then close it,
+            # instead of this, it reports xfdesktop4 as the active window.
+            syslog.syslog(f'{user} is using NO APPLICATION')
+            return
 
-    if not window:
-        # This happens AFTER login and BEFORE opening any window.
-        # If you open a window then close it,
-        # instead of this, it reports xfdesktop4 as the active window.
-        syslog.syslog(f'{user} is using NO APPLICATION')
-        return
+        wmclass_class = window.get_class_group_name()
+        wmclass_name = window.get_class_instance_name()
+        if not (wmclass_class and wmclass_name):
+            syslog.syslog(
+                syslog.LOG_ERR,
+                f'{user} is using UNKNOWN APPLICATION')
+            return
 
-    # NOTE: this is broken in Debian 11 due to this bug:
-    #       https://gitlab.gnome.org/GNOME/gtk/-/issues/383
-    # ===> "TypeError: Could not caller allocate argument 6 of callable Gdk.property_get"
-    atom = gi.repository.Gdk.property_get(
-        window,
-        gi.repository.Gdk.Atom.intern_static_string('WM_CLASS'),
-        gi.repository.Gdk.Atom.intern_static_string('STRING'),
-        0,                # read from the 0th byte
-        1024,             # a "big enough" buffer
-        0)                # delete = False, i.e. don't delete WM_CLASS
-    if not atom:
-        syslog.syslog(
-            syslog.LOG_ERR,
-            f'{user} is using UNKNOWN APPLICATION')
-        return
-
-    _, _, wmclass = atom
-    wmclass_class, wmclass_name = wmclass.strip('\0').split('\0')
+    finally:
+        # wnck has REALLY dire warnings abuot what happens if you do not
+        # EXPLCITILY and MANUALLY clean up after yourself.
+        # Prooooobably doesn't affect us, but do it anyway because paranoia.
+        del screen, window
+        gi.repository.Wnck.shutdown()
 
     # Using the lookup table, try to turn e.g. "soffice.bin" into
     # something a human can understand, like "Office Suite".
