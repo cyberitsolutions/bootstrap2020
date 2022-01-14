@@ -60,42 +60,40 @@ def main():
 
     lookup_table = create_lookup_table()
 
-    if True:
+    window = gi.repository.Gdk.Display().get_default().get_default_screen().get_active_window()
 
-        window = gi.repository.Gdk.Display().get_default().get_default_screen().get_active_window()
+    if not window:
+        # This happens AFTER login and BEFORE opening any window.
+        # If you open a window then close it,
+        # instead of this, it reports xfdesktop4 as the active window.
+        syslog.syslog('{} is using NO APPLICATION'.format(user))
+        return
 
-        if not window:
-            # This happens AFTER login and BEFORE opening any window.
-            # If you open a window then close it,
-            # instead of this, it reports xfdesktop4 as the active window.
-            syslog.syslog('{} is using NO APPLICATION'.format(user))
-            return
+    # NOTE: python2 gdk can *SET* "wmclass_class" & "wmclass_name" separately,
+    # but it can't *GET* them separately.
+    # As a workaround, we directly query the pair and pull it apart.
+    atom = window.property_get('WM_CLASS')
+    if not atom:
+        syslog.syslog(syslog.LOG_ERR,
+                      "{} is using UNKNOWN APPLICATION".format(user))
+        return
 
-        # NOTE: python2 gdk can *SET* "wmclass_class" & "wmclass_name" separately,
-        # but it can't *GET* them separately.
-        # As a workaround, we directly query the pair and pull it apart.
-        atom = window.property_get('WM_CLASS')
-        if not atom:
-            syslog.syslog(syslog.LOG_ERR,
-                          "{} is using UNKNOWN APPLICATION".format(user))
-            return
+    _, _, wmclass = atom
+    wmclass_class, wmclass_name = wmclass.strip('\0').split('\0')
 
-        _, _, wmclass = atom
-        wmclass_class, wmclass_name = wmclass.strip('\0').split('\0')
+    acc = '{} is using '.format(user)  # ACCUMULATOR
 
-        acc = '{} is using '.format(user)  # ACCUMULATOR
+    # FIXME: this REQUIRES LANG=en_AU.UTF-8 to see rename-applications changes.
+    # FIXME: is there a better way to find this than WM_CLASS?
+    # FIXME: should we also look up wmclass_class?
+    if wmclass_name.lower() in lookup_table:
+        acc += lookup_table[wmclass_name.lower()]
+    else:
+        acc += wmclass_name
+    if wmclass_name.lower() != wmclass_class.lower():
+        acc += ' ({})'.format(wmclass_class)
 
-        # FIXME: this REQUIRES LANG=en_AU.UTF-8 to see rename-applications changes.
-        # FIXME: is there a better way to find this than WM_CLASS?
-        # FIXME: should we also look up wmclass_class?
-        if wmclass_name.lower() in lookup_table:
-            acc += lookup_table[wmclass_name.lower()]
-        else:
-            acc += wmclass_name
-        if wmclass_name.lower() != wmclass_class.lower():
-            acc += ' ({})'.format(wmclass_class)
-
-        syslog.syslog(acc)
+    syslog.syslog(acc)
 
 
 def create_lookup_table():
