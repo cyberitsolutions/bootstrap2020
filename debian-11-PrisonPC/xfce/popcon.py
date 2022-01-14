@@ -47,98 +47,6 @@ gi.require_version('Gdk', '3.0')
 import gi.repository.Gdk        # noqa: E402
 
 
-def create_lookup_table():
-    def kludge(acc):
-        # Work around gratuitous differences between WM_CLASS and .desktop.
-        # FIXME test these AMC-only or staff-only old popcon items:
-        #   advsys asunder audacity blobwars bocfel bomberclone
-        #   catfish.py dvdrip enigma exo-desktop-item-edit
-        #   exo-helper-1 exo-open freedroid git gnome-help gnomine
-        #   gvncviewer helper-dialog kbattleship kded4 kfourinline
-        #   khelpcenter knavalbattle librecad mousepad openttd perl
-        #   prboom prboom-plus thunar-volman thunar-volman-settings tk
-        #   vym warzone2100 wrapper x-session-manager xarchiver
-        #   xfce4-screenshooter xfce4-session-settings
-        #   xfce4-settings-editor xfce4-settings-manager
-        #   xfce4-terminal xfdesktop-settings xfwm4-tweaks-settings
-        #   xfwm4-workspace-settings yelp
-        #   "LibreOffice 5.1"
-        for src, dst in (('alienblaster', 'alienblaster.bin'),
-                         ('armagetronad', 'armagetronad.real'),
-                         ('criticalmass', 'critter'),
-                         ('celestia', 'celestia-gnome'),
-                         ('childsplay', 'mychildsplay'),
-                         ('chromium', 'chromium-browser'),
-                         ('dia', 'dia-normal'),
-                         ('freeciv-gtk', 'freeciv-gtk2'),
-                         ('frogatto', 'game'),  # FIXME: this might be too broad a match
-                         ('2048', 'gnome-2048'),
-                         ('gimp', 'gimp-2.8'),
-                         ('kiten', 'kitenkanjibrowser'),
-                         ('kiten', 'kitenradselect'),
-                         ('kobodeluxe', 'kobodl'),
-                         ('pspp', 'psppire'),
-                         ('catfish', 'catfish.py'),
-                         ('fretsonfire-game', 'fretsonfire.py'),
-                         ('fofix', 'fofix.py'),
-                         ('redhat-userpasswd', 'userpasswd'),
-                         ('supertux2', 'supertux'),
-                         ('numptyphysics', 'NPhysics'),
-                         ('xfce-display-settings', 'xfce4-display-settings'),
-                         ('xfce-keyboard-settings', 'xfce4-keyboard-settings'),
-                         ('xfce-mouse-settings', 'xfce4-mouse-settings'),
-                         ('xfce-ui-settings', 'xfce4-appearance-settings'),
-                         ('xfce-wm-settings', 'xfwm4-settings')):
-            if (src in acc) and (dst not in acc):
-                acc[dst] = acc[src]
-        for key, value in (
-                # FIXME: duplicate magic string in main().
-                ('xfdesktop', 'NO APPLICATION'),
-                ('scummvm', 'Point-and-Click Adventure Games'),
-                ('prboom-plus', 'DOOM clone (all campaigns)'),
-                ('soffice', 'LibreOffice'),
-                # Partly based on gargoyle-free:garglk/launcher.c.
-                ('git',    'Interactive Fiction Games (GLULX)'),
-                ('bocfel', 'Interactive Fiction Games (Inform)'),
-                ('volumeicon', 'Volume (systray applet)'),
-                ('xfce4-notifyd', 'Popup Notification'),
-                ('xfce4-panel', 'Taskbar')):
-            if key not in acc:
-                acc[key] = value
-
-    def walk(acc, menu):
-        # FIXME: for some reason, "for entry in menu.getEntries()" was walking over the Settings menu,
-        # but *NOT* over any other menus (e.g. Office).  But menu.getMenu('Office') worked!
-        # I gave up using the official API and instead just iterated over the internal Submenus attribute.
-        # I don't understand *WHY* this works, but it is good enough for now. --twb, Sep 2016
-        for entry in list(menu.getEntries()) + list(menu.Submenus):
-            if isinstance(entry, xdg.Menu.Separator):
-                continue
-            elif isinstance(entry, xdg.Menu.Menu):
-                walk(acc, entry)
-            elif isinstance(entry, xdg.Menu.MenuEntry):
-                assert entry.Filename.endswith('.desktop')
-
-                key1 = entry.DesktopEntry.getName().lower()
-                key2 = entry.Filename[:-len('.desktop')].lower()
-
-                # FIXME: what happens with multi-menu paths?
-                value = menu.getPath()
-                if value:
-                    value += ' > '
-                value += entry.DesktopEntry.getName()
-
-                acc[key1] = acc[key2] = value
-            else:
-                raise NotImplementedError(type(entry), entry)
-
-    acc = {}                    # accumulator
-    menu = xdg.Menu.parse('/etc/xdg/menus/xfce-applications.menu')
-    walk(acc, menu)
-    kludge(acc)
-    return acc
-
-
 def main():
     # Set the syslog service name (defaults: LOG_USER, LOG_INFO, 'python2', no PID).
     # FIXME: if this script crashes, the exception & backtrace go to stderr,
@@ -188,6 +96,100 @@ def main():
             acc += ' ({})'.format(wmclass_class)
 
         syslog.syslog(acc)
+
+
+def create_lookup_table():
+    acc = {}                    # accumulator
+    menu = xdg.Menu.parse('/etc/xdg/menus/xfce-applications.menu')
+    walk(acc, menu)
+    kludge(acc)
+    return acc
+
+
+def walk(acc, menu):
+    # FIXME: for some reason, "for entry in menu.getEntries()" was walking over the Settings menu,
+    # but *NOT* over any other menus (e.g. Office).  But menu.getMenu('Office') worked!
+    # I gave up using the official API and instead just iterated over the internal Submenus attribute.
+    # I don't understand *WHY* this works, but it is good enough for now. --twb, Sep 2016
+    for entry in list(menu.getEntries()) + list(menu.Submenus):
+        if isinstance(entry, xdg.Menu.Separator):
+            continue
+        elif isinstance(entry, xdg.Menu.Menu):
+            walk(acc, entry)
+        elif isinstance(entry, xdg.Menu.MenuEntry):
+            assert entry.Filename.endswith('.desktop')
+
+            key1 = entry.DesktopEntry.getName().lower()
+            key2 = entry.Filename[:-len('.desktop')].lower()
+
+            # FIXME: what happens with multi-menu paths?
+            value = menu.getPath()
+            if value:
+                value += ' > '
+            value += entry.DesktopEntry.getName()
+
+            acc[key1] = acc[key2] = value
+        else:
+            raise NotImplementedError(type(entry), entry)
+
+
+def kludge(acc):
+    # Work around gratuitous differences between WM_CLASS and .desktop.
+    # FIXME test these AMC-only or staff-only old popcon items:
+    #   advsys asunder audacity blobwars bocfel bomberclone
+    #   catfish.py dvdrip enigma exo-desktop-item-edit
+    #   exo-helper-1 exo-open freedroid git gnome-help gnomine
+    #   gvncviewer helper-dialog kbattleship kded4 kfourinline
+    #   khelpcenter knavalbattle librecad mousepad openttd perl
+    #   prboom prboom-plus thunar-volman thunar-volman-settings tk
+    #   vym warzone2100 wrapper x-session-manager xarchiver
+    #   xfce4-screenshooter xfce4-session-settings
+    #   xfce4-settings-editor xfce4-settings-manager
+    #   xfce4-terminal xfdesktop-settings xfwm4-tweaks-settings
+    #   xfwm4-workspace-settings yelp
+    #   "LibreOffice 5.1"
+    for src, dst in (('alienblaster', 'alienblaster.bin'),
+                     ('armagetronad', 'armagetronad.real'),
+                     ('criticalmass', 'critter'),
+                     ('celestia', 'celestia-gnome'),
+                     ('childsplay', 'mychildsplay'),
+                     ('chromium', 'chromium-browser'),
+                     ('dia', 'dia-normal'),
+                     ('freeciv-gtk', 'freeciv-gtk2'),
+                     ('frogatto', 'game'),  # FIXME: this might be too broad a match
+                     ('2048', 'gnome-2048'),
+                     ('gimp', 'gimp-2.8'),
+                     ('kiten', 'kitenkanjibrowser'),
+                     ('kiten', 'kitenradselect'),
+                     ('kobodeluxe', 'kobodl'),
+                     ('pspp', 'psppire'),
+                     ('catfish', 'catfish.py'),
+                     ('fretsonfire-game', 'fretsonfire.py'),
+                     ('fofix', 'fofix.py'),
+                     ('redhat-userpasswd', 'userpasswd'),
+                     ('supertux2', 'supertux'),
+                     ('numptyphysics', 'NPhysics'),
+                     ('xfce-display-settings', 'xfce4-display-settings'),
+                     ('xfce-keyboard-settings', 'xfce4-keyboard-settings'),
+                     ('xfce-mouse-settings', 'xfce4-mouse-settings'),
+                     ('xfce-ui-settings', 'xfce4-appearance-settings'),
+                     ('xfce-wm-settings', 'xfwm4-settings')):
+        if (src in acc) and (dst not in acc):
+            acc[dst] = acc[src]
+    for key, value in (
+            # FIXME: duplicate magic string in main().
+            ('xfdesktop', 'NO APPLICATION'),
+            ('scummvm', 'Point-and-Click Adventure Games'),
+            ('prboom-plus', 'DOOM clone (all campaigns)'),
+            ('soffice', 'LibreOffice'),
+            # Partly based on gargoyle-free:garglk/launcher.c.
+            ('git',    'Interactive Fiction Games (GLULX)'),
+            ('bocfel', 'Interactive Fiction Games (Inform)'),
+            ('volumeicon', 'Volume (systray applet)'),
+            ('xfce4-notifyd', 'Popup Notification'),
+            ('xfce4-panel', 'Taskbar')):
+        if key not in acc:
+            acc[key] = value
 
 
 if __name__ == '__main__':
