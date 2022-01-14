@@ -281,6 +281,18 @@ def data_lucid(device):
     return '====\n'.join([lsdvd, pvd, lslR])
 
 
+def prisonpc_active_user():
+    """Get the currently active session (ignores root)."""
+    # NOTE: Returns a pwd object, because sometimes a uid is needed, other times a username.
+    uids = [u for u in systemd.login.uids() if u != 0]
+    if not uids:
+        return pwd.getpwnam('nobody')
+    elif len(uids) == 1:
+        return pwd.getpwuid(uids[0])
+    else:
+        raise Exception(f"Only 1 active session allowed at a time, got: {uids}")
+
+
 # NB: this is proof-of-concept code for the #24643 cleanup.
 # As at 15.09, it is not used.
 def ask_jessie_server_about(device):
@@ -293,11 +305,8 @@ def ask_jessie_server_about(device):
     from gzip import compress
     from base64 import urlsafe_b64encode
 
-    active_uid, = systemd.login.uids() or (65534,)  # 65534 == 'nobody'
-    username = pwd.getpwuid(active_uid).pw_name
-
     form_data = {
-        'user': username,
+        'user': prisonpc_active_user().pw_name,
         'label': device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
         'data': data_jessie(device),
         'data_pete': urlsafe_b64encode(compress(data_lucid(device).encode())),
@@ -323,11 +332,6 @@ def ask_lucid_server_about(device):
     # As a workaround, continue doing it the Pete way,
     # which I strongly suspect is prone to injection attacks.
 
-    # The shit server requires a UID, not a username.
-    # This should never return more than a single UID, but if it does the script will crash.
-    # I did explicitly test while I was SSHed in as root, and that did not create a systemd login session.
-    uid, = systemd.login.uids() or (65534,)  # 65534 == 'nobody'
-
     # And this is where it gets tricky.
     #
     # The stack of shitty webservers we used in 2008 would reject data that was too long.
@@ -344,7 +348,7 @@ def ask_lucid_server_about(device):
     from base64 import urlsafe_b64encode
 
     form_data = {
-        'uid': uid,
+        'uid': prisonpc_active_user().pw_uid,
         'label': device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
         'summary': urlsafe_b64encode(compress(data_lucid(device).encode())),
     }
