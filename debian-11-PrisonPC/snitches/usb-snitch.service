@@ -4,6 +4,12 @@ Before=udev.service
 
 [Service]
 Type=notify
-ExecStart=/usr/local/sbin/usb-snitchd
-
+ExecStart=bootstrap2020-usb-snitch
 FailureAction=reboot
+RuntimeDirectory=usb-snitch
+WorkingDirectory=/run/usb-snitch
+
+# FIXME: add "systemd-analyze security" hardening here.
+
+[Install]
+WantedBy=multi-user.target
