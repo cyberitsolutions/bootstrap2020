@@ -296,12 +296,6 @@ def prisonpc_active_user():
 # NB: this is proof-of-concept code for the #24643 cleanup.
 # As at 15.09, it is not used.
 def ask_jessie_server_about(device):
-    # NB: relies on systemd RuntimeDirectory=disc-snitch.
-    with open('payload-jessie.bin', 'w') as fh:
-        fh.write(data_jessie(device))
-    with open('payload-lucid.bin', 'w') as fh:
-        fh.write(data_lucid(device))
-
     from gzip import compress
     from base64 import urlsafe_b64encode
 
