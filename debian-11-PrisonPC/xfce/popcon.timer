@@ -4,6 +4,7 @@ Description=popularity contest
 [Timer]
 # Every ten seconds.
 OnCalendar=*:*:0/10
+AccuracySec=1 second
 
 [Install]
 WantedBy=timers.target
