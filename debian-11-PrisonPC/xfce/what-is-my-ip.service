@@ -1,0 +1,20 @@
+[Unit]
+Description=What is my IP? (tray applet)
+Documentation=https://alloc.cyber.com.au/task/task.php?taskID=14973
+
+# XFCE doesn't fire graphical-session.target.
+# So we have to run this in default.target.
+# Batch jobs using OpenSSH also trigger default.target, which causes misleading reports.
+# So, as a hacky workaround, make this only fire if $DISPLAY is set.
+#
+# UPDATE: can't do this, because
+#         systemd starts this unit BEFORE dbus has provided the appropriate signal?
+#         <mike> I think I found telling things to start after dbus.service helped
+ConditionEnvironment=DISPLAY
+After=dbus.service
+
+[Service]
+ExecStart=bootstrap2020-what-is-my-ip
+
+[Install]
+WantedBy=default.target
