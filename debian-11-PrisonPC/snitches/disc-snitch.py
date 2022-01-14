@@ -84,21 +84,21 @@ def main():
     print('<7>Ready!', file=sys.stderr, flush=True)
 
     for device in iter(monitor.poll, None):
-        assert 'DEVNAME' in device
+        assert 'DEVNAME' in device.properties
 
         # Skip to next event when disc is *REMOVED*.
-        if 'remove' == device.get('ACTION', None):
+        if 'remove' == device.properties.get('ACTION', None):
             print('<7>Drive removed, not processing.', file=sys.stderr, flush=True)
             continue
-        if '1' == device.get('DISK_EJECT_REQUEST', None):
+        if '1' == device.properties.get('DISK_EJECT_REQUEST', None):
             print('<7>Disc eject request, not processing.', file=sys.stderr, flush=True)
             continue
 
         # Skip to next event if it's a music CD,
         # i.e. *ALL* tracks are audio tracks.
-        # FIXME: after #24643, this policy changes.
-        if (device.get('ID_CDROM_MEDIA_TRACK_COUNT', True) ==
-            device.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
+        # FIXME: after https://alloc.cyber.com.au/task/task.php?taskID=24643, this policy changes.
+        if (device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', True) ==
+            device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
             print('<7>All tracks are CDDA, not processing.', file=sys.stderr, flush=True)
             continue
 
@@ -118,7 +118,7 @@ def main():
         # I think that's a mistake, but preserving semantics for now.
         # Reconsider when implementing #24643! --twb, Nov 2015
         if os.path.exists('/require-lucid-disc-snitch'):
-            if not device.get('ID_CDROM_MEDIA', False):
+            if not device.properties.get('ID_CDROM_MEDIA', False):
                 print('<7>ID_CDROM_MEDIA missing or empty, not processing. (tray-open event?)', file=sys.stderr, flush=True)
                 continue
             # UPDATE: when the disc (or drive?) is damaged,
@@ -126,7 +126,7 @@ def main():
             # Therefore, skipping when ID_FS_TYPE is not set, is very dangerous.
             # What we expect to happen now, is for isoinfo to run and crash (therefore eject),
             # or to run and successfully fingerprint the disc.  --twb, Nov 2015
-            if not device.get('ID_FS_TYPE', False):
+            if not device.properties.get('ID_FS_TYPE', False):
                 print('<7>WARNING: ID_FS_TYPE not set, PROCESSING CONTINUES. (damaged disc?)', file=sys.stderr, flush=True)
                 # We *DO NOT* continue here, because sometimes a
                 # damaged disc will not be recognized by udev, but
@@ -140,18 +140,18 @@ def main():
             # The data_lucid method (isoinfo) can't handle unusual discs,
             # with a mix of audio/data tracks, or multiple data tracks.
             # In these cases, log & force an eject.
-            if (('0' != device.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '0')) and
-                ('0' != device.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', '0'))):
+            if (('0' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '0')) and
+                ('0' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', '0'))):
                 print('<7>Device has audio *and* data tracks, eject forced.', file=sys.stderr, flush=True)
                 eject(device)
                 continue
-            if '1' != device.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '1'):
+            if '1' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '1'):
                 print('<7>Device has multiple data tracks, eject forced.', file=sys.stderr, flush=True)
                 eject(device)
                 continue
 
         print('<7>Disc "{}" was inserted.'.format(
-            device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)), file=sys.stderr, flush=True)
+            device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)), file=sys.stderr, flush=True)
 
         try:
             if os.path.exists('/require-lucid-disc-snitch'):
@@ -193,8 +193,8 @@ def data_jessie(device):
         #
         # Since the server turns into a disc UUID,
         # we MUST only give data about the disc (not the drive).
-        sorted(['{}: {}'.format(key, device[key])
-                for key in device
+        sorted(['{}: {}'.format(key, device.properties[key])
+                for key in device.properties
                 if key.startswith('ID_CDROM_MEDIA_')
                 or key.startswith('ID_FS_')]) +
         ['',                    # blank separator line
@@ -204,7 +204,7 @@ def data_jessie(device):
                                   '--no-device-info',
                                   '--dvd',
                                   '--iso9660',
-                                  device['DEVNAME']],
+                                  device.properties['DEVNAME']],
                                  universal_newlines=True)])
 
 
@@ -248,7 +248,7 @@ def data_lucid(device):
     # disc, but isoinfo works OK, it'll be added as a candidate disc
     # instead of ejecting.  YUK.  --twb, Nov 2015
     try:
-        lsdvd = subprocess.check_output(['lsdvd', device['DEVNAME']],
+        lsdvd = subprocess.check_output(['lsdvd', device.properties['DEVNAME']],
                                         stderr=subprocess.DEVNULL,
                                         universal_newlines=True)
 
@@ -272,7 +272,7 @@ def data_lucid(device):
         lsdvd = ''              # Not a movie.
 
     pvd = subprocess.check_output(
-        ['isoinfo', '-d', '-i', device['DEVNAME']],
+        ['isoinfo', '-d', '-i', device.properties['DEVNAME']],
         stderr=subprocess.DEVNULL,
         universal_newlines=True)
 
@@ -293,7 +293,7 @@ def data_lucid(device):
          # NB: isoinfo -R on a non-RR disc will print one error line per file.
          ('' if 'NO Rock Ridge present' in pvd else 'R'),
          '-i',
-         device['DEVNAME']],
+         device.properties['DEVNAME']],
         stderr=subprocess.DEVNULL,
         universal_newlines=True)
     lslR = '\n'.join(lslR.splitlines()[:400])
@@ -324,7 +324,7 @@ def ask_jessie_server_about(device):
 
     form_data = {
         'user': prisonpc_active_user().pw_name,
-        'label': device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
+        'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
         'data': data_jessie(device),
         'data_pete': urlsafe_b64encode(compress(data_lucid(device).encode())),
     }
@@ -334,7 +334,7 @@ def ask_jessie_server_about(device):
     # Then the server can evolve to use them later,
     # without needing updates on the desktop side.
     # FIXME: What if the device fields overwrite the fields used above?
-    form_data.update({key: device[key] for key in device})
+    form_data.update({key: device.properties[key] for key in device.properties})
     with urllib.request.urlopen('https://ppc-services/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
         response = req.read()
 
@@ -366,7 +366,7 @@ def ask_lucid_server_about(device):
 
     form_data = {
         'uid': prisonpc_active_user().pw_uid,
-        'label': device.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
+        'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
         'summary': urlsafe_b64encode(compress(data_lucid(device).encode())),
     }
     with urllib.request.urlopen('https://prisonpc/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
@@ -376,7 +376,7 @@ def ask_lucid_server_about(device):
 
 
 def eject(device):
-    subprocess.check_call(['eject', '-m', device['DEVNAME']])
+    subprocess.check_call(['eject', '-m', device.properties['DEVNAME']])
 
 
 # FIXME: some of this is pretty shady;
@@ -385,7 +385,7 @@ def eject(device):
 # if it makes their computer act funny, I don't really care.
 def lock(device):
     # Disable the physical eject button.
-    subprocess.check_call(['eject', '-i1', device['DEVNAME']])
+    subprocess.check_call(['eject', '-i1', device.properties['DEVNAME']])
 
     # udev's defaults configure the eject button like the power button:
     # instead of ejecting, it just tells udev the eject button was pressed.
