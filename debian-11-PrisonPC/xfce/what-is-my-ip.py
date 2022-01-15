@@ -33,4 +33,20 @@ app = gi.repository.Gtk.StatusIcon(
     title='Network Settings',
     icon_name='network-transmit-receive-symbolic',
     tooltip_text=text)
+
+# Create an actionless context menu that simply displays the tooltip text,
+# for when the tooltips are just not quite working right,
+# and because it gives the impression that something's broken if it ignores click events.
+# If we want the menu_item to do anything, connect to its 'activate' signal.
+menu = gi.repository.Gtk.Menu()
+menu_item = gi.repository.Gtk.MenuItem()
+menu_item.set_label(text)
+menu.append(menu_item)
+menu.show_all()
+
+# Show on left click
+app.connect("activate", lambda icon: menu.popup(None, None, None, app, 0, gi.repository.Gtk.get_current_event_time()))
+# Show on right click
+app.connect("popup-menu", lambda icon, button, time: menu.popup(None, None, None, app, button, time))
+
 gi.repository.Gtk.main()
