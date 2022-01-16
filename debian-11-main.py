@@ -647,6 +647,9 @@ if args.boot_test:
 for host in args.upload_to:
     subprocess.check_call(
         ['rsync', '-aihh', '--info=progress2', '--protect-args',
+         # Don't share session with interactive SSH.
+         # This means you can still type fast while upload runs (maybe).
+         '--rsh=ssh -oControlMaster=no -oBatchMode=yes -oIPQoS=throughput',
          '--chown=0:0',  # don't use UID:GID of whoever built the images!
          # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
          f'--copy-dest=/srv/netboot/images/{args.template}-latest',
