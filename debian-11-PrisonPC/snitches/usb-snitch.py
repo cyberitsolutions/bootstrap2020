@@ -15,9 +15,11 @@
 # I notice there's a DRIVER=mceusb attribute in some udev uevents...
 # could we leverage that? --twb, Oct 2015
 
+import urllib.parse
+import urllib.request
+
 import pwd
 import pyudev
-import subprocess
 import systemd.daemon
 import systemd.login
 
@@ -38,6 +40,10 @@ _BORING_USB_INTERFACES = (
     '3/1/2',                    # HID Mouse    (Win95 compat mode)
     '9/0/0',                    # Hub (including on-motherboard)
 )
+
+
+SNITCHING_ENDPOINT = urllib.request.Request('https://prisonpc/snitch')
+SNITCHING_ENDPOINT.add_header('User-Agent', f'{sys.argv[0]} pretending to be curl because of old server code expecting curl')
 
 
 def main():
@@ -79,26 +85,26 @@ def main():
 
         # Put *something* in syslog (via stderr capture).
         print('<7>Event:',
-              device.get('INTERFACE', None),
-              device.get('PRODUCT', None),
-              device.get('DEVTYPE', None),
-              device.get('DEVPATH', None),
-              device.get('MODALIAS', None),
-              device.get('ACTION', None),
+              device.properties.get('INTERFACE', None),
+              device.properties.get('PRODUCT', None),
+              device.properties.get('DEVTYPE', None),
+              device.properties.get('DEVPATH', None),
+              device.properties.get('MODALIAS', None),
+              device.properties.get('ACTION', None),
               # These will probably NEVER work.
-              device.get('ID_USB_CLASS',
-                         device.get('ID_USB_CLASS_FROM_DATABASE', None)),
-              device.get('ID_USB_SUBCLASS',
-                         device.get('ID_USB_SUBCLASS_FROM_DATABASE', None)),
-              device.get('ID_USB_PROTOCOL',
-                         device.get('ID_USB_PROTOCOL_FROM_DATABASE', None)),
+              device.properties.get('ID_USB_CLASS',
+                                    device.get('ID_USB_CLASS_FROM_DATABASE', None)),
+              device.properties.get('ID_USB_SUBCLASS',
+                                    device.get('ID_USB_SUBCLASS_FROM_DATABASE', None)),
+              device.properties.get('ID_USB_PROTOCOL',
+                                    device.get('ID_USB_PROTOCOL_FROM_DATABASE', None)),
               # These work and mostly overlap,
               # so I'm only showing the "more accurate" one.
               # This is bad for 8087:0024, ID_MODEL is just "8087" — unhelpful!
-              device.get('ID_VENDOR',
-                         device.get('ID_VENDOR_FROM_DATABASE', None)),
-              device.get('ID_MODEL',
-                         device.get('ID_MODEL_FROM_DATABASE', None)),
+              device.properties.get('ID_VENDOR',
+                                    device.get('ID_VENDOR_FROM_DATABASE', None)),
+              device.properties.get('ID_MODEL',
+                                    device.get('ID_MODEL_FROM_DATABASE', None)),
               file=sys.stderr,
               flush=True)
 
@@ -152,7 +158,7 @@ def main():
             #       MODALIAS uses uppercase hexadecimal (02X); &
             #       ID_VENDOR_ID uses lowercase hexcadecimal (04x).
             dc, dsc, dp = [int(x) for x in device.properties['INTERFACE'].split('/')]
-            modalias = device.properties['MODALIAS'].replace(
+            modalias = device.properties.get('MODALIAS', '[no modalias]').replace(
                 'dc00dsc00dp00',
                 'dc{:02X}dsc{:02X}dp{:02X}'.format(dc, dsc, dp))
 
@@ -168,15 +174,15 @@ def main():
                 # FIXME: this is a bit ugly to stay 100% compatible with the server side.
                 # At some point, change this to just send modalias (or PRODUCT + INTERFACE) as-is.
                 vendor, model, _ = [int(x, 16) for x in device.properties['PRODUCT'].split('/')]
-                answer = subprocess.check_output(
-                    ['curl', '-sLSf', 'https://prisonpc/snitch',
-                     '--retry', '10',
-                     '--retry-max-time', '60',
-                     '-Fsubsystem=usb',
-                     '-Fuser={}'.format(prisonpc_active_user().pw_name),
-                     '-Fvendor={:04x}'.format(vendor),
-                     '-Fproduct={:04x}'.format(model)],
-                    universal_newlines=True)
+                form_data = {
+                    'subsystem': 'usb',
+                    'user': prisonpc_active_user().pw_name,
+                    'vendor': f'{vendor:04x}',
+                    'product': f'{model:04x}',
+                }
+                with urllib.request.urlopen(SNITCHING_ENDPOINT, data=urllib.parse.urlencode(form_data).encode()) as req:
+                    encoding = req.headers.get_content_charset()
+                    answer = req.read().decode(encoding)
                 print('<7>Answer:', modalias, answer, file=sys.stderr, flush=True)
 
                 # As at 14.07, the server always returns 'OK'.

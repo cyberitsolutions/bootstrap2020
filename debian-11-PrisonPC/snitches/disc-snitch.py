@@ -337,7 +337,8 @@ def ask_jessie_server_about(device):
     # FIXME: What if the device fields overwrite the fields used above?
     form_data.update({key: device.properties[key] for key in device.properties})
     with urllib.request.urlopen('https://ppc-services/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
-        response = req.read()
+        encoding = req.headers.get_content_charset()
+        response = req.read().decode(encoding)
 
     return response
 
@@ -366,7 +367,8 @@ def ask_lucid_server_about(device):
         'summary': urlsafe_b64encode(compress(data_lucid(device).encode())),
     }
     with urllib.request.urlopen('https://prisonpc/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
-        response = req.read()
+        encoding = req.headers.get_content_charset()
+        response = req.read().decode(encoding)
 
     return response
 
