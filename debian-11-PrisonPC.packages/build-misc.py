@@ -48,7 +48,7 @@ with tempfile.TemporaryDirectory() as td:
             '   cd /X/Y &&'
             '   uscan --download-current-version &&'
             '   tar --strip-components=1 -xf ../*orig.tar.*"',
-            '--customize-hook=chroot $1 sh -c "cd /X/Y && uscan --report"']  # report newer version
+            ]
            if (args.package_path / 'debian/watch').exists() else []),
          '--include=devscripts,lintian',
          '--customize-hook=chroot $1 sh -c "cd /X/Y && apt-get build-dep -y ./ && debuild -uc -us"',
