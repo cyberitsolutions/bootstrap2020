@@ -308,7 +308,7 @@ with tempfile.TemporaryDirectory() as td:
            if args.optimize != 'simplicity' and not args.virtual_only else []),
          *(['--include=ca-certificates publicsuffix']
            if args.optimize != 'simplicity' else []),
-         *(['--include=nfs-common',  # support NFSv4 (not just NFSv3)
+         *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
             f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']
            if not args.local_boot_only else []),
