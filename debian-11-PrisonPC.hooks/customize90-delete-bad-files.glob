@@ -118,6 +118,43 @@ usr/lib/pt_chown
 
 ## Inmates SHOULD NOT have development tools
 ## =========================================
+# From EVERYTHING.
+# Additional notes:
+#  • pygame examples includes a Space Invaders game.
+**/*.pod
+**/*bin/dh_*
+**/*bin/py3clean
+**/*bin/py3compile
+**/*bin/pydoc3*
+**/*bin/pygettext*
+**/lib/python*/cgitb.py*
+**/lib/python*/doctest.py*
+**/lib/python*/idlelib
+**/lib/python*/lib2to3
+**/lib/python*/pdb.py*
+**/lib/python*/test
+**/lib/python*/unittest
+**/lib/python*/venv
+**/pkgconfig
+**/pygame/docs
+**/pygame/examples
+**/pygame/tests
+usr/include
+usr/lib/debug
+usr/lib/valgrind
+usr/share/apport
+usr/share/bug
+usr/share/dh-python
+usr/share/gdb
+usr/share/lintian
+usr/src
+# This *is* used by libreoffice, but I'm 70% sure it's only used when gdb debugging...
+# https://codesearch.debian.net/search?q=libstdcxx+filetype%3Apython&literal=0
+usr/share/gcc/python
+# If you do a dev build with --optimize=speed (save 30s),
+# customize95-obfuscate-python.py warns about this harmless tree.
+# Remove it explicitly here just to avoid that needless warning.
+usr/share/doc/python3-uno/demo
 
 
 ## Useless & confusing menu items SHOULD be hidden (#30257)
