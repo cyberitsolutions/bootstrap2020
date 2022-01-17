@@ -6,6 +6,7 @@ Uploaders: Trent W. Buck <trentbuck@gmail.com>
 Build-Depends:
  debhelper-compat (= 13),
  libtirpc-dev,
+ pkg-config,
 Build-Conflicts:
  e2fslibs-dev,
  libdbus-1-dev,
