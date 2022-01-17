@@ -88,12 +88,35 @@ table inet PrisonPC {
         ip daddr { 224.0.0.1, 224.0.0.2, 239.255.0.0/16 }  accept  comment "IPTV"
         # Prisoner machines allow initiation of connections from and to the
         # server, and (for clandestine monitoring) from the staff network.
+        #
+        # NOTE: Linux in-kernel NFS4 server/client does not implement quota opcodes.
+        #       Therefore even though we're NFSv4-only (2049/tcp), we need NFSv3 rpc.quotad.
+        #       That means rpc.quotad on the server, and quota(1) on the client, and
+        #       hard-code the port on the server, and whitelist that port in the firewalls (and guestfwd).
+        #       We need to allow portmapper through, too.
+        #
+        #       https://datatracker.ietf.org/doc/html/rfc3010#section-5.8
+        #       https://datatracker.ietf.org/doc/html/rfc3010#page-182
+        #       https://github.com/torvalds/linux/search?q=FATTR4_WORD1_QUOTA_HARD
+        #
+        #       UPDATE: NFSv3 rquotad client is *HARD CODED* to use UDP, so
+        #       we cannot use TCP, and thus boot-test CANNOT use this feature.
+        #       https://sources.debian.org/src/quota/4.06-1/rquota_client.c/#L186
+        #
+        #       FIXME: mid-term fix is to go (server) kernel quota netlink -> system dbus,
+        #              then server system dbus -> server-side wss:// pub/sub server ->
+        #              desktop-side wss:// pub/sub client -> desktop-side user dbus notify.
+        #
+        #       FIXME: long-term fix is to switch to one ZFS dataset per $HOME, and
+        #       then instead of user quotas (quota), just use filesystem quotas (df).
         ip daddr $PrisonPC  meta l4proto . th dport {
             udp . ntp,
             udp . bootps,
             udp . domain,
             tcp . domain,
             tcp . nfs,
+            udp . portmapper,   # (for rpc.quotad)
+            udp . 32769,        # rpc.quotad
             tcp . 3128,         # squid
             tcp . 2514,         # rsyslog-relp
             tcp . ipp,

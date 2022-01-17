@@ -395,6 +395,7 @@ with tempfile.TemporaryDirectory() as td:
                 '--include=prisonpc-bad-package-conflicts-inmates'),
                '--include='
                '    nftables'
+               '    nfs-client-quota'          # for quota-reminder.py
                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
                '    gir1.2-wnck-3.0'            # for popcon.py
                '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)

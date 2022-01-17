@@ -2,3 +2,8 @@ Explanation: use VLC with screenshot support disabled
 Package: src:vlc
 Pin: release o=Cyber
 Pin-Priority: 500
+
+Explanation: use quota with server-side code disabled
+Package: src:quota
+Pin: release o=Cyber
+Pin-Priority: 500
