@@ -58,7 +58,7 @@ def main():
                 notification = gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body='Your storage quota is within limits.  Thank you.',
-                    icon='face-smile')
+                    icon='face-smile-symbolic')
                 notification.set_urgency(gi.repository.Notify.Urgency.LOW)
                 notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
                 notification.show()
@@ -77,7 +77,7 @@ def main():
                         f'Otherwise, after {time.ctime(data.grace)},'
                         ' you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
-                    icon='face-plain')
+                    icon='face-plain-symbolic')
                 notification.set_urgency(gi.repository.Notify.Urgency.NORMAL)
                 notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
                 notification.show()
@@ -94,7 +94,7 @@ def main():
                         'You must delete some files.\n'
                         'Until you do, you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
-                    icon='face-sad')
+                    icon='face-sad-symbolic')
                 notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
                 notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
                 notification.show()
