@@ -47,10 +47,7 @@ def main():
 
     while True:
         time.sleep(60)          # infinite loop, with sleep FIRST.
-
         data = get_quota()
-        print('data is', data, file=sys.stderr, flush=True)  # DEBUGGING
-
         if not data:
             if over != 'neither':
                 over = 'neither'
