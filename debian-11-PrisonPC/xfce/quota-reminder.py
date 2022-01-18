@@ -95,7 +95,7 @@ def main():
                         'You must delete some files.\n'
                         'Until you do, you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
-                    icon='face-plain')
+                    icon='face-sad')
                 notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
                 notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
                 notification.show()
