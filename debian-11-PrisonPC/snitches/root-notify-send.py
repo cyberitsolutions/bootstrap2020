@@ -171,7 +171,7 @@ elif len(paths) == 1:
     notification = gi.repository.Notify.Notification.new(
         summary='System message',
         body=body,
-        icon='dialog-error')
+        icon='dialog-error-symbolic')
     notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
     notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
     notification.show()
