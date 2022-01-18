@@ -1,0 +1,5 @@
+[Desktop Entry]
+Version=1.0
+Name=Storage Quota Reminder
+Exec=bootstrap2020-quota-reminder
+Type=application
