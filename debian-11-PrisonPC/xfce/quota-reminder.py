@@ -68,12 +68,11 @@ def main():
             # Report neither→soft, but NOT hard→soft.
             if over not in ('soft', 'hard'):
                 over = 'soft'
-                # FIXME: use numfmt(1)?
                 notification = gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body=(
-                        f'You have {data.used / 1024}MiB of files.\n'
-                        f'You may keep {data.soft / 1024}MiB of files.\n'
+                        f'You have {numfmt(data.used)} of files.\n'
+                        f'You may keep {numfmt(data.soft)} of files.\n'
                         'You must delete some files.\n'
                         f'Otherwise, after {time.ctime(data.grace)},'
                         ' you will not be able to create or edit files.\n'
@@ -90,8 +89,8 @@ def main():
                 notification = gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body=(
-                        f'You have {data.used / 1024}MiB of files.\n'
-                        f'You may keep {data.soft / 1024}MiB of files.\n'
+                        f'You have {numfmt(data.used)} of files.\n'
+                        f'You may keep {numfmt(data.soft)} of files.\n'
                         'You must delete some files.\n'
                         'Until you do, you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
@@ -143,6 +142,16 @@ def get_quota():
         soft=soft,
         hard=hard,
         grace=grace)
+
+
+def numfmt(n):
+    return subprocess.check_output(
+        ['numfmt',
+         '--from-unit=Ki',
+         '--to=iec-i',
+         '--suffix=B',
+         str(n)],
+        text=True).strip()
 
 
 if __name__ == '__main__':
