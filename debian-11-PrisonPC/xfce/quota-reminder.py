@@ -55,10 +55,13 @@ def main():
             if over != 'neither':
                 over = 'neither'
                 # State changed, display a notification.
-                gi.repository.Notify.Notification.new(
+                notification = gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body='Your storage quota is within limits.  Thank you.',
-                    icon='face-smile').show()
+                    icon='face-smile')
+                notification.set_urgency(gi.repository.Notify.Urgency.LOW)
+                notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
+                notification.show()
 
         elif 0 < data.grace and data.used < data.hard:
             # User is over soft (official) quota.
@@ -66,7 +69,7 @@ def main():
             if over not in ('soft', 'hard'):
                 over = 'soft'
                 # FIXME: use numfmt(1)?
-                gi.repository.Notify.Notification.new(
+                notification = gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body=(
                         f'You have {data.used / 1024}MiB of files.\n'
@@ -75,13 +78,16 @@ def main():
                         f'Otherwise, after {time.ctime(data.grace)},'
                         ' you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
-                    icon='face-plain').show()
+                    icon='face-plain')
+                notification.set_urgency(gi.repository.Notify.Urgency.NORMAL)
+                notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
+                notification.show()
 
         else:
             # User is over hard (secret) quota.
             if over != 'hard':
                 over = 'hard'
-                gi.repository.Notify.Notification.new(
+                notification = gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body=(
                         f'You have {data.used / 1024}MiB of files.\n'
@@ -89,7 +95,10 @@ def main():
                         'You must delete some files.\n'
                         'Until you do, you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
-                    icon='face-plain').show()
+                    icon='face-plain')
+                notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
+                notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
+                notification.show()
 
 
 # Check current user's quota for a given NFS filesystem.
