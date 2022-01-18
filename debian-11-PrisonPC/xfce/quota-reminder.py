@@ -53,17 +53,18 @@ def main():
 
         if not data:
             if over != 'neither':
+                over = 'neither'
                 # State changed, display a notification.
                 gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body='Your storage quota is within limits.  Thank you.',
                     icon='face-smile').show()
-                over = 'neither'
 
         elif 0 < data.grace and data.used < data.hard:
             # User is over soft (official) quota.
             # Report neither→soft, but NOT hard→soft.
             if over not in ('soft', 'hard'):
+                over = 'soft'
                 # FIXME: use numfmt(1)?
                 gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
@@ -75,11 +76,11 @@ def main():
                         ' you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
                     icon='face-plain').show()
-                over = 'soft'
 
         else:
             # User is over hard (secret) quota.
             if over != 'hard':
+                over = 'hard'
                 gi.repository.Notify.Notification.new(
                     summary='Storage Quota',
                     body=(
@@ -89,7 +90,6 @@ def main():
                         'Until you do, you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
                     icon='face-plain').show()
-                over = 'hard'
 
 
 # Check current user's quota for a given NFS filesystem.
