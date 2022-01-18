@@ -21,7 +21,7 @@ gi.repository.Notify.init("Terminal")
 gi.repository.Notify.Notification.new(
     summary='Not allowed',
     body='Your attempt to perform a blocked action has been reported.',
-    icon='dialog-warning').show()
+    icon='dialog-warning-symbolic').show()
 
 # https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html#Exit-Status says
 #   If a command is not found, the child process created to execute it returns a status of 127.
