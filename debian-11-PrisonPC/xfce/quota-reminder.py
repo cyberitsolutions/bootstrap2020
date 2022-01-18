@@ -89,7 +89,7 @@ def main():
                         'Until you do, you will not be able to create or edit files.\n'
                         'Go to Applications > File Manager to see your files.'),
                     icon='face-plain').show()
-                over = 'soft'
+                over = 'hard'
 
 
 # Check current user's quota for a given NFS filesystem.
@@ -123,11 +123,11 @@ def get_quota():
     #    <block data>     <inode data>
     #    1744* 65536 81920 0 297 0 0 0
     # We want the first four of those fields,
-    # i.e. words [-8:-5] of the output.
+    # i.e. words [-8:-4] of the output.
     # UPDATE: sometimes the first value has a * suffix to indicate over-quota-ness.
     used, soft, hard, grace = [
         int(word.strip('*'))
-        for word in result.stdout.split()[-8:-5]]
+        for word in result.stdout.split()[-8:-4]]
 
     return types.SimpleNamespace(
         used=used,
