@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import configparser
 import datetime
 import io
 import json
@@ -70,7 +71,15 @@ parser.add_argument('--template', default='main',
                              'datasafe3',
                              'desktop',
                              'desktop-inmate',
-                             'desktop-staff'
+                             'desktop-inmate-amc',
+                             'desktop-inmate-amc-library',
+                             'desktop-inmate-hcc-profile-a',
+                             'desktop-inmate-hcc-profile-b',
+                             'desktop-inmate-hcc-library',
+                             'desktop-inmate-hcc-games',
+                             'desktop-staff',
+                             'desktop-staff-amc',
+                             'desktop-staff-hcc',
                              ),
                     help=(
                         'main: small CLI image; '
@@ -80,7 +89,8 @@ parser.add_argument('--template', default='main',
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
                         'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
-                        'desktop-staff:  desktop w/ PrisonPC operational staff stuff.'
+                        'desktop-staff:  desktop w/ PrisonPC operational staff stuff;'
+                        '*-{amc,hcc}-*: site-specific stuff.'
                     ))
 group = parser.add_argument_group('optimization')
 group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
@@ -194,6 +204,18 @@ if subprocess.check_output(
         ' either run "systemctl enable --now systemd-resolved" on your host, or'
         ' make the /lib/systemd/resolv.conf line run much later.')
 
+# Use a separate declarative file for these long, boring lists.
+parser = configparser.ConfigParser()
+parser.read('debian-11-PrisonPC.site-apps.ini')
+if any('applications' != key.lower()
+       for section_dict in parser.values()
+       for key in section_dict):
+    raise NotImplementedError('Typo in .ini file?')
+site_apps = {
+    package_name
+    for section_name, section_dict in parser.items()
+    if args.template.startswith(section_name.lower())
+    for package_name in section_dict.get('applications', '').split()}
 
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
@@ -379,6 +401,7 @@ with tempfile.TemporaryDirectory() as td:
             # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
             '--essential-hook=chroot $1 apt install -y fontconfig-config',
             *(['--include='
+               f'{" ".join(site_apps)}'
                # FIXME: chromium-sandbox REDUCES security.
                #        It should be banned, not installed.
                #        It is only existing as a workaround for kernels without user_ns.
