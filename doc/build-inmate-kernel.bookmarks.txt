@@ -29,3 +29,5 @@ https://snapshot.debian.org/archive/debian/20211015T150402Z/pool/main/l/linux/li
 https://snapshot.debian.org/archive/debian/20211015T213729Z/pool/main/l/linux/linux-image-5.14.0-0.bpo.2-amd64-unsigned_5.14.9-2%7Ebpo11%2B1_amd64.deb
 https://snapshot.debian.org/archive/debian/20211020T084456Z/pool/main/l/linux/linux_5.10.70-1%7Ebpo10%2B1.dsc
 https://snapshot.debian.org/archive/debian/20211020T153334Z/pool/main/l/linux/linux-image-5.10.0-0.bpo.9-amd64-unsigned_5.10.70-1%7Ebpo10%2B1_amd64.deb
+https://snapshot.debian.org/archive/debian/20220106T085239Z/pool/main/l/linux/linux_5.15.5-2%7Ebpo11%2B1.dsc
+https://snapshot.debian.org/archive/debian/20220106T214044Z/pool/main/l/linux/linux-image-5.15.0-0.bpo.2-amd64-unsigned_5.15.5-2%7Ebpo11%2B1_amd64.deb
