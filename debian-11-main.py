@@ -376,6 +376,8 @@ with tempfile.TemporaryDirectory() as td:
             '    gnome-themes-extra adwaita-qt'  # theming
             '    at-spi2-core gnome-accessibility-themes'
             '    plymouth-themes',
+            # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
+            '--essential-hook=chroot $1 apt install -y fontconfig-config',
             *(['--include='
                # FIXME: chromium-sandbox REDUCES security.
                #        It should be banned, not installed.
