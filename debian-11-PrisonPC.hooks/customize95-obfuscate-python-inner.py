@@ -86,7 +86,7 @@ def obfuscate_executable(src: pathlib.Path, shebang) -> None:
         zip_path = td / '__main__.pyc.zip'
         final_path = td / '__main__.pyc.zip.py'
         shutil.copy2(src, py_path)
-        subprocess.check_call([compiler, '-m', 'compileall', py_path, '-b', '-q'])
+        subprocess.check_call([compiler, '-m', 'compileall', py_path.name, '-b', '-q'], cwd=py_path.parent)
         with zipfile.ZipFile(zip_path, mode='w', compression=zipfile.ZIP_STORED) as z:
             z.write(pyc_path, '__main__.pyc')
         # Prepend a shebang line
