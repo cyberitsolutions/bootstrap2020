@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+# NOTE: wget *MUST* download all URLs in a single run,
+# or --convert-links won't recognize links BETWEEN them.
+override_dh_auto_build:
+	wget --directory-prefix=doc --adjust-extension --convert-links --page-requisites --span-hosts --no-host-directories --no-directories --no-verbose $(URLs)
+URLs += https://inkscape.org/en/doc/keys091.html
+URLs += https://inkscape.org/en/learn/faq
+URLs += http://wiki.inkscape.org/wiki/index.php/Release_notes/0.91
+URLs += https://web.archive.org/web/20140629180107/http://en.flossmanuals.net/_booki/inkscape/inkscape.pdf
+# Workaround https://bugs.launchpad.net/inkscape-web/+bug/1654115
+URLs += --reject=keys.css
+# If we don't disable robots.txt, the CSS files (under /static/) aren't downloaded.  SIGH.
+URLs += --execute robots=off
+# Now that we disable robots.txt, some more boring images are 404.
+# If we don't reject them here, wget does exit(8) and the build fails.
+URLs += --reject=search.png
+URLs += --reject=bullet-pass.png
+URLs += --reject=none.svg

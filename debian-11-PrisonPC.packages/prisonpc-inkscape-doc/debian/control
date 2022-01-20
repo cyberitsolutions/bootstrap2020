@@ -1,0 +1,31 @@
+Source: prisonpc-inkscape-doc
+Section: doc
+Priority: optional
+Standards-Version: 3.9.6
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Build-Depends: debhelper (>= 10~), wget, ca-certificates
+
+Package: prisonpc-inkscape-doc
+Depends: ${misc:Depends}, python,
+# Inkscape itself needs this to parse the help extension files. (#30201)
+ python-lxml
+Pre-Depends: inkscape (>= 0.91~)
+Architecture: all
+Description: obsolete Inkscape help documentation
+ Problem:
+ .
+  * By default Inkscape's Help menu just opens a web browser.
+  * The URLs it points to aren't accessible at airgapped sites.
+  * conz doesn't like this.
+ .
+  * ALL inkscape help is for 0.48, and is nearly useless for 0.91.
+  * Inkscape's preferred manual is licensed "for personal use only":
+    http://tavmjong.free.fr/INKSCAPE
+ .
+  * The script that opens the browser is kinda buggy.
+ .
+ Kludge:
+ .
+  * Install crap old docmentation, and a wrapper script,
+    and tweak Inkscape's files to use it.
+

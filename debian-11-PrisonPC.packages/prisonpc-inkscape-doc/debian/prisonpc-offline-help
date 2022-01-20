@@ -1,0 +1,42 @@
+#!/usr/bin/python
+# -*- mode: python; coding: utf-8; indent-tabs-mode: nil; fill-column: 79 -*-
+# vim: ft=python fenc=utf-8 sts=4 sw=4 ts=4 tw=79 et :
+
+# The help menu in Inkscape 0.48 is a bit broken,
+# so we patch /usr/share/inkscape/extensions/inkscape_help_*.inx
+# to run this launcher instead.
+#
+# Inkscape calls this with one arg: --url=file://...,
+# the file is either HTML or PDF & we must open it.
+#
+# There are a few constraints:
+#  - output NOTHING, or inkscape will popup an annoying warning.
+#  - background the app, or inkscape will hang. (https://launchpad.net/bugs/781397)
+#  - delegate choice of app to xdg-open.
+
+import os
+import sys
+
+assert 2 == len(sys.argv)
+assert sys.argv[1].startswith('--url=')
+
+url = sys.argv[1][6:]           # chop off the --url= bit
+app = '/usr/bin/xdg-open'
+
+# FIXME: use subprocess.Popen insted of os.fork/exec/dup? --twb, May 2015
+if 0 == os.fork():
+    # child
+    if 0 == os.fork():
+        # child (double fork)
+        # FIXME: does this work with only one fork? --twb, Jun 2015
+
+        # Discard output, so inkscape won't pop up an annoying
+        # "chromium had non-empty stderr" modal dialog.
+        # FIXME: redirect stdin also? --twb, Jun 2015
+        stfu = os.open('/dev/null', os.O_WRONLY)
+        os.dup2(stfu, 1)        # stdout
+        os.dup2(stfu, 2)        # stderr
+        os.close(stfu)
+
+        # actually run the thing
+        os.execv(app, [app, url])
