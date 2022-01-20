@@ -1,27 +1,30 @@
 #!/usr/bin/python3
-# -*- mode: python; coding: utf-8; indent-tabs-mode: nil; fill-column: 79 -*-
-# vim: ft=python fenc=utf-8 sts=4 sw=4 ts=4 tw=79 et :
-
-# The help menu in Inkscape 0.48 is a bit broken,
-# so we patch /usr/share/inkscape/extensions/inkscape_help_*.inx
-# to run this launcher instead.
-#
-# Inkscape calls this with one arg: --url=file://...,
-# the file is either HTML or PDF & we must open it.
-#
-# There are a few constraints:
-#  - output NOTHING, or inkscape will popup an annoying warning.
-#  - background the app, or inkscape will hang. (https://launchpad.net/bugs/781397)
-#  - delegate choice of app to xdg-open.
-
 import os
-import sys
+import argparse
 
-assert 2 == len(sys.argv)
-assert sys.argv[1].startswith('--url=')
+__doc__ = """ suppress silly error popup from Inkscape help launcher
 
-url = sys.argv[1][6:]           # chop off the --url= bit
-app = '/usr/bin/xdg-open'
+The help menu in Inkscape is a bit broken,
+so we patch /usr/share/inkscape/extensions/inkscape_help_*.inx
+to run this launcher instead.
+
+Inkscape calls this with one arg: --url=file://...,
+the file is either HTML or PDF & we must open it.
+
+There are a few constraints:
+
+ • output NOTHING, or inkscape will popup an annoying warning.
+
+ • background the app, or inkscape will hang.
+   https://launchpad.net/bugs/781397
+
+ • delegate choice of app to xdg-open.
+"""
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--url', required=True)
+parser.set_defaults(app='/usr/bin/xdg-open')
+args = parser.parse_args()
 
 # FIXME: use subprocess.Popen insted of os.fork/exec/dup? --twb, May 2015
 if 0 == os.fork():
@@ -39,4 +42,4 @@ if 0 == os.fork():
         os.close(stfu)
 
         # actually run the thing
-        os.execv(app, [app, url])
+        os.execv(args.app, [args.app, args.url])
