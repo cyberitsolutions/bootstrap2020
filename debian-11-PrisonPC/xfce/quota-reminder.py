@@ -124,6 +124,14 @@ def get_quota():
     if result.returncode == 0:
         return False            # under quota
 
+    if not result.stdout.strip():
+        raise RuntimeError(
+            'quota(1) printed nothing;'
+            'most likely 111/udp or rpc.rquotad/udp is blocked;'
+            'this is unavoidable in --boot-test VMs;'
+            'if it happens on real hardware, it is a bug!',
+            result)
+
     # The last line of output will look like this:
     #    <block data>     <inode data>
     #    1744* 65536 81920 0 297 0 0 0
