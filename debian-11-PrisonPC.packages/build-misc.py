@@ -51,7 +51,7 @@ with tempfile.TemporaryDirectory() as td:
             ]
            if (args.package_path / 'debian/watch').exists() else []),
          '--include=devscripts,lintian',
-         '--customize-hook=chroot $1 sh -c "cd /X/Y && apt-get build-dep -y ./ && debuild -uc -us"',
+         '--customize-hook=chroot $1 sh -c "cd /X/Y && apt-get build-dep -y ./ && HOME=/root debuild -uc -us"',
          '--customize-hook=rm -rf $1/X/Y',
          f'--customize-hook=sync-out /X {td}',
          'bullseye',
