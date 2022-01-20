@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+# NOTE: this must be done here, rather than in debian/install,
+# because the latter helpfully prevents exactly this dirty trick.
+override_dh_install: /usr/share/kf5/kdoctools/customization
+	dh_install
+	mkdir -p debian/prisonpc-yelp4kde/$(<D)
+	cp -a $< debian/prisonpc-yelp4kde/$<

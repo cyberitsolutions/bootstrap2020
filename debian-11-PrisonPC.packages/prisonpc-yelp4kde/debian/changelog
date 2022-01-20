@@ -1,0 +1,18 @@
+prisonpc-yelp4kde (0~prisonpc5) stable; urgency=medium
+
+  * Update for stretch.
+
+ -- Trent W. Buck <twb@cyber.com.au>  Thu, 20 Jan 2022 18:27:34 +1100
+
+prisonpc-yelp4kde (0~prisonpc4) stable; urgency=medium
+
+  * Bump kde4libs from 4:4.14.2-5+deb8u1 to 4:4.14.2-5+deb8u2 due to DSA-
+    3849-1.
+
+ -- Trent W. Buck <twb@cyber.com.au>  Thu, 20 Jan 2022 18:27:34 +1100
+
+prisonpc-yelp4kde (0~prisonpc1) stable; urgency=medium
+
+  * Initial release.
+
+ -- Trent W. Buck <twb@cyber.com.au>  Thu, 20 Jan 2022 18:27:34 +1100

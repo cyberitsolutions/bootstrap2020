@@ -1,0 +1,13 @@
+#!/bin/sh
+if [ 1 = $# ]
+then
+    case $1 in
+        help:/*/index.html)
+            x=help:${1#help:/};
+            x=${x%/index.html};
+            exec yelp "$x";;
+    esac
+fi
+
+# Default case (probably never happens).
+exec yelp "$@"
