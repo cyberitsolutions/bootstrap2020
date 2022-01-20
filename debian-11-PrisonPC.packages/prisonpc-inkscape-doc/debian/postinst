@@ -1,9 +1,0 @@
-#!/bin/sh
-set -e
-sed -i /usr/share/inkscape/extensions/inkscape_help_*.inx        -e '/<command/ c <command reldir="extensions" interpreter="python">prisonpc-offline-help</command>'
-sed -i /usr/share/inkscape/extensions/inkscape_help_*.inx        -e '/url/ s|>.*<|>/usr/share/inkscape/doc/MISSING.html<|'
-sed -i /usr/share/inkscape/extensions/inkscape_help_keys.inx     -e '/url/ s|>.*<|>/usr/share/inkscape/doc/keys-1.1.x.html<|'
-sed -i /usr/share/inkscape/extensions/inkscape_help_faq.inx      -e '/url/ s|>.*<|>/usr/share/inkscape/doc/faq.html<|'
-sed -i /usr/share/inkscape/extensions/inkscape_help_relnotes.inx -e '/url/ s|>.*<|>/usr/share/inkscape/doc/1.1.html<|'
-sed -i /usr/share/inkscape/extensions/inkscape_help_manual.inx   -e '/url/ s|>.*<|>/usr/share/inkscape/doc/inkscape-manuals-readthedocs-io-en-latest.pdf<|'
-#DEBHELPER#

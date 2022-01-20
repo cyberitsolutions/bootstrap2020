@@ -5,7 +5,7 @@
 # NOTE: wget *MUST* download all URLs in a single run,
 # or --convert-links won't recognize links BETWEEN them.
 override_dh_auto_build:
-	wget2 --directory-prefix=doc --adjust-extension --convert-links --page-requisites --span-hosts --no-host-directories --no-directories --no-verbose $(URLs)
+	wget2 --directory-prefix=debian/prisonpc-inkscape-doc/usr/share/inkscape/doc/ --adjust-extension --convert-links --page-requisites --span-hosts --no-host-directories --no-directories --no-verbose $(URLs)
 
 URLs += https://inkscape.org/doc/keys-1.1.x.html
 URLs += https://inkscape.org/en/learn/faq

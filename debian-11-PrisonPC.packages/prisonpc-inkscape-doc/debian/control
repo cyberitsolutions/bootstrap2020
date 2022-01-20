@@ -11,9 +11,6 @@ Build-Depends:
 Package: prisonpc-inkscape-doc
 Depends:
  ${misc:Depends},
- python3,
-# Inkscape itself needs this to parse the help extension files. (#30201)
- python3-lxml
 Pre-Depends:
  inkscape (>= 1.1~),
 Architecture: all
