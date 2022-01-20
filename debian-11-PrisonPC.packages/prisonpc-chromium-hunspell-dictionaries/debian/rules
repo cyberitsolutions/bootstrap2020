@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 d := debian/prisonpc-chromium-hunspell-dictionaries/usr/share/prisonpc-chromium-hunspell-dictionaries/
 %:
 	dh $@

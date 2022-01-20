@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 %:
 	echo 'THIS IS NOT IN A USABLE STATE - SEE ALSO https://bugs.debian.org/1004062 '; exit 1
 	dh $@
