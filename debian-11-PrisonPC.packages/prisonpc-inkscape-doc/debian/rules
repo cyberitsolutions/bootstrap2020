@@ -1,14 +1,18 @@
 #!/usr/bin/make -f
 %:
 	dh $@
+
 # NOTE: wget *MUST* download all URLs in a single run,
 # or --convert-links won't recognize links BETWEEN them.
 override_dh_auto_build:
-	wget --directory-prefix=doc --adjust-extension --convert-links --page-requisites --span-hosts --no-host-directories --no-directories --no-verbose $(URLs)
-URLs += https://inkscape.org/en/doc/keys091.html
+	wget2 --directory-prefix=doc --adjust-extension --convert-links --page-requisites --span-hosts --no-host-directories --no-directories --no-verbose $(URLs)
+
+URLs += https://inkscape.org/doc/keys-1.1.x.html
 URLs += https://inkscape.org/en/learn/faq
-URLs += http://wiki.inkscape.org/wiki/index.php/Release_notes/0.91
-URLs += https://web.archive.org/web/20140629180107/http://en.flossmanuals.net/_booki/inkscape/inkscape.pdf
+URLs += https://wiki.inkscape.org/wiki/Release_notes/1.1
+URLs += https://readthedocs.org/projects/inkscape-manuals/downloads/pdf/latest
+# Use the filename suggested by upstream, i.e. "inkscape-manuals-readthedocs-io-en-latest.pdf" not "latest".
+URLs +=  --content-disposition
 # Workaround https://bugs.launchpad.net/inkscape-web/+bug/1654115
 URLs += --reject=keys.css
 # If we don't disable robots.txt, the CSS files (under /static/) aren't downloaded.  SIGH.
