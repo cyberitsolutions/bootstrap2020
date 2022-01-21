@@ -15,6 +15,7 @@
 # I notice there's a DRIVER=mceusb attribute in some udev uevents...
 # could we leverage that? --twb, Oct 2015
 
+import time
 import urllib.parse
 import urllib.request
 
@@ -178,15 +179,11 @@ def main():
                 # FIXME: this is a bit ugly to stay 100% compatible with the server side.
                 # At some point, change this to just send modalias (or PRODUCT + INTERFACE) as-is.
                 vendor, model, _ = [int(x, 16) for x in device.properties['PRODUCT'].split('/')]
-                form_data = {
-                    'subsystem': 'usb',
-                    'user': prisonpc_active_user().pw_name,
-                    'vendor': f'{vendor:04x}',
-                    'product': f'{model:04x}',
-                }
-                with urllib.request.urlopen(SNITCHING_ENDPOINT, data=urllib.parse.urlencode(form_data).encode()) as req:
-                    encoding = req.headers.get_content_charset()
-                    answer = req.read().decode(encoding)
+                answer = do_POST_with_retry(SNITCHING_ENDPOINT,
+                                            {'subsystem': 'usb',
+                                             'user': prisonpc_active_user().pw_name,
+                                             'vendor': f'{vendor:04x}',
+                                             'product': f'{model:04x}'})
                 print('<7>Answer:', modalias, answer, file=sys.stderr, flush=True)
 
                 # As at 14.07, the server always returns 'OK'.
@@ -197,8 +194,38 @@ def main():
                     systemd.daemon.notify('WATCHDOG=1')
 
 
+def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_delay=3):
+    """Equivalent to 'curl --retry N --retry-max-time N'."""
+    # FIXME: Put this in a library because it's dupliacted in disc-snitch & usb-snitch
+    retry_attempts = 0
+    start_time = time.monotonic()
+    while retry_attempts < retries and time.monotonic() < start_time + retry_max_time:
+        retry_attempts += 1
+        try:
+            with urllib.request.urlopen(url, data=urllib.parse.urlencode(post_data).encode()) as req:
+                encoding = req.headers.get_content_charset()
+                answer = req.read().decode(encoding)
+
+            return answer
+        except:  # noqa: E722
+            # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
+            exc_type, exc, exc_tb = sys.exc_info()
+            print(f"<5>Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}", file=sys.stderr, flush=True)
+
+            # Where previously Curl would take a while to fail,
+            # Python seems to immediately recognise there's no network and raise a
+            # urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
+            # This results in ~1000 retries before things actually succeed,
+            # and I have no idea how many attempts before the retry_max_time was reached.
+            if retry_delay:
+                time.sleep(retry_delay)
+    else:
+        raise TimeoutError("Retry limits exceeded while trying to snitch")
+
+
 def prisonpc_active_user():
     """Get the currently active session (ignores root)."""
+    # FIXME: Put this in a library because it's dupliacted in disc-snitch & usb-snitch
     # NOTE: Returns a pwd object, because sometimes a uid is needed, other times a username.
     uids = [u for u in systemd.login.uids() if u != 0]
     if not uids:

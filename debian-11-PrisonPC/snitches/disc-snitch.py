@@ -37,6 +37,7 @@ import pathlib
 import pwd
 import subprocess
 import sys
+import time
 import urllib.parse
 import urllib.request
 
@@ -309,8 +310,38 @@ def data_lucid(device):
     return '====\n'.join([lsdvd, pvd, lslR])
 
 
+def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_delay=3):
+    """Equivalent to 'curl --retry N --retry-max-time N'."""
+    # FIXME: Put this in a library because it's dupliacted in disc-snitch & usb-snitch
+    retry_attempts = 0
+    start_time = time.monotonic()
+    while retry_attempts < retries and time.monotonic() < start_time + retry_max_time:
+        retry_attempts += 1
+        try:
+            with urllib.request.urlopen(url, data=urllib.parse.urlencode(post_data).encode()) as req:
+                encoding = req.headers.get_content_charset()
+                answer = req.read().decode(encoding)
+
+            return answer
+        except:  # noqa: E722
+            # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
+            exc_type, exc, exc_tb = sys.exc_info()
+            print(f"<5>Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}", file=sys.stderr, flush=True)
+
+            # Where previously Curl would take a while to fail,
+            # Python seems to immediately recognise there's no network and raise a
+            # urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
+            # This results in ~1000 retries before things actually succeed,
+            # and I have no idea how many attempts before the retry_max_time was reached.
+            if retry_delay:
+                time.sleep(retry_delay)
+    else:
+        raise TimeoutError("Retry limits exceeded while trying to snitch")
+
+
 def prisonpc_active_user():
     """Get the currently active session (ignores root)."""
+    # FIXME: Put this in a library because it's dupliacted in disc-snitch & usb-snitch
     # NOTE: Returns a pwd object, because sometimes a uid is needed, other times a username.
     uids = [u for u in systemd.login.uids() if u != 0]
     if not uids:
@@ -340,9 +371,8 @@ def ask_jessie_server_about(device):
     # without needing updates on the desktop side.
     # FIXME: What if the device fields overwrite the fields used above?
     form_data.update({key: device.properties[key] for key in device.properties})
-    with urllib.request.urlopen('https://ppc-services/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
-        encoding = req.headers.get_content_charset()
-        response = req.read().decode(encoding)
+    response = do_POST_with_retry('https://ppc-services/discokay',
+                                  form_data)
 
     return response
 
@@ -365,14 +395,10 @@ def ask_lucid_server_about(device):
     from gzip import compress
     from base64 import urlsafe_b64encode
 
-    form_data = {
-        'uid': prisonpc_active_user().pw_uid,
-        'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
-        'summary': urlsafe_b64encode(compress(data_lucid(device).encode())),
-    }
-    with urllib.request.urlopen('https://prisonpc/discokay', data=urllib.parse.urlencode(form_data).encode()) as req:
-        encoding = req.headers.get_content_charset()
-        response = req.read().decode(encoding)
+    response = do_POST_with_retry('https://ppc-services/discokay',
+                                  {'uid': prisonpc_active_user().pw_uid,
+                                   'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
+                                   'summary': urlsafe_b64encode(compress(data_lucid(device).encode()))})
 
     return response
 
