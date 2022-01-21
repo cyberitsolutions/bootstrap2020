@@ -499,7 +499,8 @@ with tempfile.TemporaryDirectory() as td:
          *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
             '--customize-hook=echo x:x | chroot $1 chpasswd',
             '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
-            *(['--include=xfce4-terminal'] if template_wants_GUI else [])]
+            *(['--include=xfce4-terminal']
+              if template_wants_GUI and not args.template.startswith('desktop-inmate') else [])]
            if args.backdoor_enable else []),
          *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
             '--customize-hook=chroot $1 bash -i',
