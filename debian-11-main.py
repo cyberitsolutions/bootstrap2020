@@ -165,6 +165,9 @@ if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
 
+if args.boot_test and args.physical_only:
+    raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
+
 template_wants_GUI = args.template.startswith('desktop')
 template_wants_disks = args.template in {'dban', 'zfs', 'understudy', 'datasafe3'}
 template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
