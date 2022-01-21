@@ -84,7 +84,11 @@ def main():
     systemd.daemon.notify('READY=1')
     print('<7>Ready!', file=sys.stderr, flush=True)
 
-    for device in iter(monitor.poll, None):
+    while device := monitor.poll(timeout=60) or "Timed out polling udev":
+        systemd.daemon.notify('WATCHDOG=1')
+        if device == "Timed out polling udev":
+            continue
+
         assert 'DEVNAME' in device.properties
 
         # Skip to next event when disc is *REMOVED*.
@@ -163,9 +167,9 @@ def main():
 
             # FIXME: in here, check what 'answer' is and allow/lock/eject.
             if answer == 'yes':     # FIXME: remove after https://alloc.cyber.com.au/task/task.php?taskID=24643.
-                pass
+                systemd.daemon.notify('WATCHDOG=1')
             elif answer == 'allow':
-                pass
+                systemd.daemon.notify('WATCHDOG=1')
             elif answer == 'lock':
                 lock(device)
             else:
