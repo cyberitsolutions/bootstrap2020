@@ -189,6 +189,8 @@ def main():
                 # If we see something else, log it but don't reboot.
                 if 'OK' != answer:
                     print('<4>Suspicious answer "{}"!'.format(answer), file=sys.stderr, flush=True)
+                else:
+                    systemd.daemon.notify('WATCHDOG=1')
 
 
 def prisonpc_active_user():
