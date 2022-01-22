@@ -2,6 +2,7 @@
 import argparse
 import pathlib
 import subprocess
+import tempfile
 
 __doc__ = r""" convert help files to HTML (from XML); view with chromium
 
@@ -51,7 +52,12 @@ for path in (args.chroot_path / 'usr/share/doc/HTML/').glob('*/*/index.docbook')
     # As a workaround, make a symlink in advance.
     (newpath / 'index.html').symlink_to(f'{app_name}.html')
 
-build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools', 'kdoctools5'}
+build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools', 'kdoctools5',
+                      # We don't actually need these dependencies, but
+                      # if we don't "apt-mark auto" them, they don't uninstall.
+                      # Doesn't really matter, but feels a little ugly.
+                      'docbook-xsl', 'sgml-base', 'sgml-data', 'xml-core'}
+
 
 search_dirs = {
     'usr/share/help/',
@@ -68,6 +74,7 @@ search_dirs = {
 #        Most of the mallard docs have an empty "body" now.
 #        What's up with that?
 if search_dirs:
+    before_bytes = subprocess.check_output(['chroot', args.chroot_path, 'dpkg-query', '-W'])
     subprocess.check_call(['chroot', args.chroot_path, 'apt', 'install', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
@@ -92,4 +99,16 @@ if search_dirs:
         '-name', '*.xml', '-delete', ',',
         '-name', '*.page', '-delete'])
     subprocess.check_call(['chroot', args.chroot_path, 'apt-mark', 'auto', *build_dependencies])
-    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes'])
+    # FIXME: yuk
+    subprocess.check_call([
+        'chroot', args.chroot_path,
+        'apt', 'remove', '--assume-yes', '--purge', '--auto-remove', *build_dependencies])
+    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
+    after_bytes = subprocess.check_output(['chroot', args.chroot_path, 'dpkg-query', '-W'])
+
+    with tempfile.TemporaryDirectory() as td:
+        td = pathlib.Path(td)
+        (td / 'a').write_bytes(before_bytes)
+        (td / 'b').write_bytes(after_bytes)
+        # Make sure the list of installed packages hasn't been fucked up too much by us!
+        subprocess.check_call(['git', 'diff', '--no-index', td / 'a', td / 'b'])
