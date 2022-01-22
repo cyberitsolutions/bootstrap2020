@@ -29,12 +29,33 @@ parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
 
-build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools'}
+
+# Move KDE docs to the GNOME area.
+for path in (args.chroot_path / 'usr/share/doc/HTML/').glob('*/*/index.docbook'):
+    app_name = path.parent.name
+    lang_kde = path.parent.parent.name
+    lang_gnome = 'C' if lang_kde == 'en' else lang_kde
+    newpath = (args.chroot_path / 'usr/share/help' / lang_gnome / app_name)
+    newpath.parent.mkdir(parents=True, exist_ok=True)
+    path.parent.rename(newpath)
+    # KDE5 assumes somthing like
+    # xsltproc --path=/usr/share/kf5/kdoctools/customization
+    # Bodge this so yelp-build html wrapper Just Works (I hope).
+    # This WAS compatible with yelp in Debian 9.
+    # Only tested with yelp-build/chromium in Debian 11.
+    (newpath / 'dtd').symlink_to('/usr/share/kf5/kdoctools/customization/dtd')
+    (newpath / 'entities').symlink_to('/usr/share/kf5/kdoctools/customization/entities')
+    (newpath / lang_kde).symlink_to(f'/usr/share/kf5/kdoctools/customization/{lang_kde}')
+    # KDE apps create app_name/app_name.html, where
+    # GNOME apps create app_name/index.html.
+    # As a workaround, make a symlink in advance.
+    (newpath / 'index.html').symlink_to(f'{app_name}.html')
+
+build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools', 'kdoctools5'}
 
 search_dirs = {
     'usr/share/help/',
     'usr/share/gnome/help/',
-    'usr/share/doc/HTML/',
 }
 search_dirs = {
     p
