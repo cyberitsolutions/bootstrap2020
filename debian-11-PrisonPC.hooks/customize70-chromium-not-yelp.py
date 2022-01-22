@@ -29,7 +29,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
 
-build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl'}
+build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools'}
 
 search_dirs = {
     'usr/share/help/',
@@ -51,14 +51,14 @@ if search_dirs:
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
     # FIXME: use subprocess.check_call([..., path.name], cwd=path.parent) ?
-    docbook_command = ['xsltproc', '--nonet', '--xinclude', '/usr/share/yelp-xsl/xslt/docbook/html/db2html.xsl']
-    mallard_command = ['xsltproc', '--nonet', '--xinclude', '/usr/share/yelp-xsl/xslt/mallard/html/mal2html.xsl']
+    docbook_command = ['yelp-build', 'html']  # will hang for minutes unless docbook-xml is installed
+    mallard_command = ['yelp-build', 'html']
     subprocess.check_call([
         'chroot', args.chroot_path,
         'find', '-O3', *search_dirs, '-xdev',
         # If you find a top-level docbook or mallard file, render it in-place to HTML.
         '(', '-name', 'index.docbook', '-execdir', *docbook_command, '{}', '+', ')', ',',
-        '(', '-name', 'index.page', '-execdir', *mallard_command, '{}', '+', ')'])
+        '(', '-name', '*.page', '-execdir', *mallard_command, '{}', '+', ')'])
 
     # If you find ANY docbook or mallard file, delete it.
     # This walks the tree a second time.
