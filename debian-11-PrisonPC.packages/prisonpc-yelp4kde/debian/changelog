@@ -1,3 +1,9 @@
+prisonpc-yelp4kde (11.0) unstable; urgency=medium
+
+  * bump kdoctools5 version, drop kdoctools (KDE4)
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Sun, 23 Jan 2022 05:14:45 +1100
+
 prisonpc-yelp4kde (0~prisonpc5) stable; urgency=medium
 
   * Update for stretch.

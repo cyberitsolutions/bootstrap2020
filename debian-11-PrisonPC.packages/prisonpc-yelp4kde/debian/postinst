@@ -4,27 +4,9 @@ set -e
 # NOTE: for now, we only support install, not remove/purge.
 if [ "$1" = triggered ] || [ "$1" = configure ]
 then
-    # As at Debian 9, KDE manuals are installed in two places:
-    # /usr/share/doc/kde/HTML/en  (145 documents)
-    # /usr/share/doc/HTML/en      (220 documents)
-    #
-    # The latter seems to be the KDE5 standard.
-    # It's a pain to support both paths at once in the "yelpizing" code below,
-    # so instead simply replace /usr/share/doc/kde with a symlink. —twb, Jan 2018
-    #
-    # NOTE: we can't simply "mv /usr/share/doc/kde/HTML /usr/share/doc/",
-    #       because by the time this script runs,
-    #       there might already be a /usr/share/doc/HTML!
-    #       Just cheat and use tar (we don't have rsync).
-    if [ -d /usr/share/doc/kde -a ! -L /usr/share/doc/kde ]
-    then
-        tar -c -C /usr/share/doc/kde --remove-files HTML |
-        tar -x -C /usr/share/doc
-        rmdir /usr/share/doc/kde
-        # FIXME: I was going to create a backcompat symlink, but
-        #        that breaks bootstrap's "delete links to pruned files" code.
-        #ln -s . /usr/share/doc/kde
-    fi
+    # As at Debian 11, KDE manuals are installed in one place:
+    # /usr/share/doc/kde/HTML/en  (gone, KDE4 only)
+    # /usr/share/doc/HTML/en
 
     [ ! -d /usr/share/doc/HTML/ ] ||
     find /usr/share/doc/HTML/ -name index.docbook |
@@ -44,12 +26,14 @@ then
         ln -st "$newpath" /usr/share/kf5/kdoctools/customization/entities
         ln -st "$newpath" /usr/share/kf5/kdoctools/customization/"$lang"
 
+        # FIXME: is this line obsolete as at Debian 10?
         # NOTE: using regexp replacement on XML is morally wrong!
         # NOTE: no ^ because marble & kalzium have leading whitespace.
 	# FIXME: use python or xslt or something instead?
         sed -i 's/<book id="[^"]*"/<book id="index"/' "$newpath/index.docbook"
     done
 
+    # FIXME: I'm 60% sure pre-rendered HTML was a KDE4 thing, and this block is obsolete/useless.
     # The pre-rendered versions are no longer needed.
     [ ! -d /usr/share/doc/HTML/ ] ||
     find /usr/share/doc/HTML/ '(' -name index.cache.bz2 -o -name '*.html' -o -name '*.css' ')' -delete

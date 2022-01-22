@@ -35,7 +35,9 @@ Section: kde
 Priority: optional
 Standards-Version: 3.9.8
 Maintainer: Trent W. Buck <twb@cyber.com.au>
-Build-Depends: debhelper (>= 10~), kdoctools5 (= 5.28.0-1)
+Build-Depends:
+ debhelper-compat (= 13),
+ kdoctools5 (= 5.78.0-2),
 # This package puts two files in the customization/ directory that we embed.
 # It also provides .so's, so we can't simply Replace it.
 Build-Conflicts: libkf5kdelibs4support-data
@@ -47,15 +49,12 @@ Architecture: all
 # To avoid installing those libraries, we must also lie to dpkg, claiming we provide them.
 # See also build-ersatz-packages (prisonpc-ersatz-kde-junk).
 Provides:
- kdoctools (= 4:4.14.26-2),
- kdoctools5 (= 5.28.0-1),
- khelpcenter (= 4:16.08.3-1)
+ kdoctools5 (= 5.78.0-2),
+ khelpcenter (= 4:20.12.0-1)
 Conflicts:
- kdoctools,
  kdoctools5,
  khelpcenter
 Replaces:
- kdoctools,
  kdoctools5,
  khelpcenter
 Description: convert KDE manuals to work in yelp
