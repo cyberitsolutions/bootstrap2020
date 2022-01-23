@@ -499,6 +499,8 @@ with tempfile.TemporaryDirectory() as td:
          *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
             '--customize-hook=echo x:x | chroot $1 chpasswd',
             '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
+            '--include=strace',
+            '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf',
             *(['--include=xfce4-terminal']
               if template_wants_GUI and not args.template.startswith('desktop-inmate') else [])]
            if args.backdoor_enable else []),
