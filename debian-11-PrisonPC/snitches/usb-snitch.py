@@ -98,18 +98,18 @@ def main():
               device.properties.get('ACTION', None),
               # These will probably NEVER work.
               device.properties.get('ID_USB_CLASS',
-                                    device.get('ID_USB_CLASS_FROM_DATABASE', None)),
+                                    device.properties.get('ID_USB_CLASS_FROM_DATABASE', None)),
               device.properties.get('ID_USB_SUBCLASS',
-                                    device.get('ID_USB_SUBCLASS_FROM_DATABASE', None)),
+                                    device.properties.get('ID_USB_SUBCLASS_FROM_DATABASE', None)),
               device.properties.get('ID_USB_PROTOCOL',
-                                    device.get('ID_USB_PROTOCOL_FROM_DATABASE', None)),
+                                    device.properties.get('ID_USB_PROTOCOL_FROM_DATABASE', None)),
               # These work and mostly overlap,
               # so I'm only showing the "more accurate" one.
               # This is bad for 8087:0024, ID_MODEL is just "8087" — unhelpful!
               device.properties.get('ID_VENDOR',
-                                    device.get('ID_VENDOR_FROM_DATABASE', None)),
+                                    device.properties.get('ID_VENDOR_FROM_DATABASE', None)),
               device.properties.get('ID_MODEL',
-                                    device.get('ID_MODEL_FROM_DATABASE', None)),
+                                    device.properties.get('ID_MODEL_FROM_DATABASE', None)),
               file=sys.stderr,
               flush=True)
 
