@@ -58,11 +58,10 @@ for path in (args.chroot_path / 'usr/share/gnome/help/').glob('*/*/*.xml'):
     if path.stem == app_name:
         path.rename(path.parent / 'index.docbook')
 
-build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools', 'kdoctools5',
-                      # We don't actually need these dependencies, but
-                      # if we don't "apt-mark auto" them, they don't uninstall.
-                      # Doesn't really matter, but feels a little ugly.
-                      'docbook-xsl', 'sgml-base', 'sgml-data', 'xml-core'}
+build_dependencies = {'docbook-xml', 'yelp-tools', 'kdoctools5'}
+acceptable_risks = {
+    'canthappen 0.1-1',
+}
 
 
 search_dirs = {
@@ -74,12 +73,22 @@ search_dirs = {
     for p in search_dirs
     if (args.chroot_path / p).exists()}
 
+
+def packages():
+    stdout = subprocess.check_output(
+        ['chroot', args.chroot_path, 'dpkg-query', '--show'],
+        text=True)
+    return {line.strip().replace('\t', ' ')
+            for line in stdout.splitlines()}
+
+
 # To a first approximation, /usr/share/help is ONLY used by gnome-games.
 # To a first approximation, /usr/share/doc/HTML/ is ONLY used by KDE apps.
 # FIXME: --xinclude was enough to fix docbook, but not mallard.
 #        Most of the mallard docs have an empty "body" now.
 #        What's up with that?
 if search_dirs:
+    packages_old = packages()
     subprocess.check_call(['chroot', args.chroot_path, 'apt', 'install', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
@@ -111,3 +120,6 @@ if search_dirs:
     #       Therefore try to autoremove build-only stuff, but don't fash if some remain.
     subprocess.check_call(['chroot', args.chroot_path, 'apt-mark', 'auto', *build_dependencies])
     subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
+    packages_new = packages()
+    if problems := (packages_old ^ packages_new) - acceptable_risks:
+        raise RuntimeError('chromium-no-yelp made an unacceptable mess', problems)
