@@ -51,6 +51,13 @@ for path in (args.chroot_path / 'usr/share/doc/HTML/').glob('*/*/index.docbook')
     # As a workaround, make a symlink in advance.
     (newpath / 'index.html').symlink_to(f'{app_name}.html')
 
+# The old ghelp: stuff uses "A/zh_CN/A.xml", not "A/zh_CN/index.docbook".
+# Like with KDE, just rename it to the "new way".
+for path in (args.chroot_path / 'usr/share/gnome/help/').glob('*/*/*.xml'):
+    app_name = path.parent.parent.name
+    if path.stem == app_name:
+        path.rename(path.parent / 'index.docbook')
+
 build_dependencies = {'docbook-xml', 'xsltproc', 'yelp-xsl', 'yelp-tools', 'kdoctools5',
                       # We don't actually need these dependencies, but
                       # if we don't "apt-mark auto" them, they don't uninstall.
