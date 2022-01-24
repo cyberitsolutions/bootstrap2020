@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=KHelpCenter
-Comment=The KDE Help Center
-Icon=help-browser
-X-DocPath=khelpcenter/index.html
-Type=Service
-Terminal=false
-Exec=bootstrap2020-chromium-replaces-yelp %u
-X-KDE-StartupNotify=true
