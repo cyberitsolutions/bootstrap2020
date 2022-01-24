@@ -111,11 +111,11 @@ def main():
         # Skip to next event if it's a blank disc.
         # Staff need to insert blank discs to burn them.
         if (str_to_bool(os.environ.get('ALLOW_BLANK_DISCS', 'no')) and
-            'blank' == device.get('ID_CDROM_MEDIA_STATE', None) and
+            'blank' == device.properties.get('ID_CDROM_MEDIA_STATE', None) and
             # Paranoia -- a blank disc with tracks isn't blank!
-            '1' == device.get('ID_CDROM_MEDIA_TRACK_COUNT', None) and
-            not device.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', False) and
-            not device.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
+            '1' == device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', None) and
+            not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', False) and
+            not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
             print('<7>Blank disc, not processing.', file=sys.stderr)
             continue
 
