@@ -80,7 +80,11 @@ def main():
     # has finished reporting the first one, before (I hope) starting
     # to report the next one.
     # AFAIK all of them will *eventually* get handled.
-    for device in iter(monitor.poll, None):
+    while device := monitor.poll(timeout=60) or "Timed out polling udev":
+        systemd.daemon.notify('WATCHDOG=1')
+        if device == "Timed out polling udev":
+            continue
+
         # A wild device appears!
         # Try to tell the server.
 

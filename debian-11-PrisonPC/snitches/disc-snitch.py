@@ -85,7 +85,11 @@ def main():
     systemd.daemon.notify('READY=1')
     print('<7>Ready!', file=sys.stderr, flush=True)
 
-    for device in iter(monitor.poll, None):
+    while device := monitor.poll(timeout=60) or "Timed out polling udev":
+        systemd.daemon.notify('WATCHDOG=1')
+        if device == "Timed out polling udev":
+            continue
+
         assert 'DEVNAME' in device.properties
 
         # Skip to next event when disc is *REMOVED*.
