@@ -4,7 +4,7 @@ Pin: release a=bullseye-backports
 Pin-Priority: 500
 
 Explanation: use Linux 5.14+ (not 5.10)
-Package: src:linux-signed-amd64
+Package: src:linux src:linux-signed-amd64 src:zfs-linux
 Pin: release a=bullseye-backports
 Pin-Priority: 500
 
