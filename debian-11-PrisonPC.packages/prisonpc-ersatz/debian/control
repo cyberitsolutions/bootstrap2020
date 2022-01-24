@@ -373,6 +373,12 @@ Conflicts:
 #   ?source-package(^cjs$)
  cjs, libcjs0g, libcjs-dev,
 # FIXME: Do the stand-alone js VMs duktape/neko/rhino/mujs get security support, or do they count as "unmaintainable web engines" ?
+# For good measure, block www-browser (except chromium/firefox-esr), too.
+# Because of the exception, we cannot LITERALLY say www-browser here.
+ dillo, edbrowse, elinks, epiphany-browser, falkon, hv3, konqueror, links,
+ links2, lynx, midori, netrik, netsurf-fb, netsurf-gtk, qutebrowser,
+ sugar-browse-activity, surf, w3m, xemacs21-mule, xemacs21-mule-canna-wnn,
+ xemacs21-nomule,
 # X11 doesn't REALLY support screen locking:
 #   https://www.jwz.org/blog/2021/01/i-told-you-so-2021-edition/
 # Rather than pretend, we simply do not let inmate lock the screen.
