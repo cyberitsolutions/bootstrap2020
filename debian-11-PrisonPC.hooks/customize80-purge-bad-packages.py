@@ -38,6 +38,11 @@ args = parser.parse_args()
 #
 # We use apt first for --autoremove, then
 # we use dpkg to make sure apt did the Right Thing.
+#
+# UPDATE: By default Suggests relationships are ignored at install time, but honored at remove time!
+#         For example "aptitude install 'perl+&M'; aptitude autoremove" may or may not remove perl,
+#         depending on whether debconf was already installed.
+#         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
 subprocess.check_call([
     'chroot', args.chroot_path,
     'apt', 'purge', '--autoremove', '--assume-yes',

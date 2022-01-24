@@ -118,6 +118,11 @@ if search_dirs:
     #       Because of this, I cannot easily say "abort if build-only stuff is still installed".
     #       I also can't simply "dpkg --purge xml-core", because dia needs that.
     #       Therefore try to autoremove build-only stuff, but don't fash if some remain.
+    #
+    # UPDATE: By default Suggests relationships are ignored at install time, but honored at remove time!
+    #         For example "aptitude install 'perl+&M'; aptitude autoremove" may or may not remove perl,
+    #         depending on whether debconf was already installed.
+    #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
     subprocess.check_call(['chroot', args.chroot_path, 'apt-mark', 'auto', *build_dependencies])
     subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
     packages_new = packages()

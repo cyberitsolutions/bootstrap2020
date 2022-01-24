@@ -274,6 +274,7 @@ with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
+         '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'
          if args.virtual_only else
          # NOTE: can't --include= this because there are too many dpkg trigger problems.
