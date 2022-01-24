@@ -2,7 +2,6 @@
 import argparse
 import pathlib
 import subprocess
-import tempfile
 
 __doc__ = r""" convert help files to HTML (from XML); view with chromium
 
@@ -74,7 +73,6 @@ search_dirs = {
 #        Most of the mallard docs have an empty "body" now.
 #        What's up with that?
 if search_dirs:
-    before_bytes = subprocess.check_output(['chroot', args.chroot_path, 'dpkg-query', '-W'])
     subprocess.check_call(['chroot', args.chroot_path, 'apt', 'install', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
@@ -98,17 +96,11 @@ if search_dirs:
         '-name', 'index.docbook', '-delete',
         '-name', '*.xml', '-delete', ',',
         '-name', '*.page', '-delete'])
-    subprocess.check_call(['chroot', args.chroot_path, 'apt-mark', 'auto', *build_dependencies])
-    # FIXME: yuk
-    subprocess.check_call([
-        'chroot', args.chroot_path,
-        'apt', 'remove', '--assume-yes', '--purge', '--auto-remove', *build_dependencies])
-    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
-    after_bytes = subprocess.check_output(['chroot', args.chroot_path, 'dpkg-query', '-W'])
 
-    with tempfile.TemporaryDirectory() as td:
-        td = pathlib.Path(td)
-        (td / 'a').write_bytes(before_bytes)
-        (td / 'b').write_bytes(after_bytes)
-        # Make sure the list of installed packages hasn't been fucked up too much by us!
-        subprocess.check_call(['git', 'diff', '--no-index', td / 'a', td / 'b'])
+    # NOTE: after autoremoving, the set of installed packages will have changed slightly.
+    #       This is because of a cyclic dependency in {docbook-xml,docbook-xsl,sgml-core,xml-core}.
+    #       Because of this, I cannot easily say "abort if build-only stuff is still installed".
+    #       I also can't simply "dpkg --purge xml-core", because dia needs that.
+    #       Therefore try to autoremove build-only stuff, but don't fash if some remain.
+    subprocess.check_call(['chroot', args.chroot_path, 'apt-mark', 'auto', *build_dependencies])
+    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
