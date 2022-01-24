@@ -313,6 +313,7 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
             '--include=rsyslog-relp msmtp-mta',
             '--include=python3-dbus',  # for get-config-from-dnssd
+            '--include=debian-security-support',  # for customize90-check-support-status.py
             f'--essential-hook=tar-in {create_tarball("debian-11-main")} /',
             '--hook-dir=debian-11-main.hooks',
             ]
