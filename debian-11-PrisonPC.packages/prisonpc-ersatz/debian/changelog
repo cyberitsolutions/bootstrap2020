@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.12) bullseye; urgency=medium
+
+  * block ALL wackypants web engines
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 25 Jan 2022 01:10:02 +1100
+
 prisonpc-ersatz (11.11) bullseye; urgency=medium
 
   * block python2; block python3 dev.
