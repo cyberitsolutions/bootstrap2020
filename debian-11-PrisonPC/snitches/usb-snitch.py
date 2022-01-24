@@ -210,6 +210,8 @@ def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60):
             # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
             exc_type, exc, exc_tb = sys.exc_info()
             print(f"Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}")
+    else:
+        raise TimeoutError("Retry limits exceeded while trying to snitch")
 
 
 def prisonpc_active_user():
