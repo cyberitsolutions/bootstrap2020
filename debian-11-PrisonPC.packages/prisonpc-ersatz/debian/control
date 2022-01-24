@@ -76,7 +76,7 @@ Description: appease prayer
 Package: prisonpc-bad-package-conflicts-inmates
 Depends:
  ${misc:Depends},
- prisonpc-bad-package-conflicts-everyone,
+ prisonpc-bad-package-conflicts-everyone (= ${binary:Version}),
 Enhances:
  prisonpc-bad-package-conflicts-everyone,
 Architecture: all
