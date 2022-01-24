@@ -310,12 +310,13 @@ def data_lucid(device):
     return '====\n'.join([lsdvd, pvd, lslR])
 
 
-def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60):
+def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_delay=3):
     """Equivalent to 'curl --retry N --retry-max-time N'."""
     # FIXME: Put this in a library because it's dupliacted in disc-snitch & usb-snitch
     retry_attempts = 0
-    start_time = time.time()
-    while retry_attempts < retries and time.time() < start_time + retry_max_time:
+    start_time = time.monotonic()
+    while retry_attempts < retries and time.monotonic() < start_time + retry_max_time:
+        retry_attempts += 1
         try:
             with urllib.request.urlopen(url, data=urllib.parse.urlencode(post_data).encode()) as req:
                 encoding = req.headers.get_content_charset()
@@ -325,7 +326,15 @@ def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60):
         except:  # noqa: E722
             # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
             exc_type, exc, exc_tb = sys.exc_info()
-            print(f"Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}")
+            print(f"<5>Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}", file=sys.stderr, flush=True)
+
+            # Where previously Curl would take a while to fail,
+            # Python seems to immediately recognise there's no network and raise a
+            # urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
+            # This results in ~1000 retries before things actually succeed,
+            # and I have no idea how many attempts before the retry_max_time was reached.
+            if retry_delay:
+                time.sleep(retry_delay)
     else:
         raise TimeoutError("Retry limits exceeded while trying to snitch")
 
