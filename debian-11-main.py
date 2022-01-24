@@ -389,7 +389,7 @@ with tempfile.TemporaryDirectory() as td:
            if template_wants_disks and not args.virtual_only else []),
          *(['--include='
             '    xserver-xorg-core xserver-xorg-input-libinput'
-            '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar'
+            '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar galculator'
             '    xdm'
             '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
             # Without "alsactl init" & /usr/share/alsa/init/default,
