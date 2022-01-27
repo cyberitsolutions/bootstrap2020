@@ -36,5 +36,5 @@ tmpfs   /var/tmp        tmpfs   nosuid,noexec,nodev,size=32M,mode=0
 tmpfs   /run/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
 tmpfs   /run            tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
 tmpfs   /run/lock       tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
-pstore  /sys/fs/pstore  pstore  nosuid,noexec,noexec,ro
+pstore  /sys/fs/pstore  pstore  nosuid,noexec,nodev,ro
 devtmpfs /dev           devtmpfs nosuid,noexec,mode=0755
