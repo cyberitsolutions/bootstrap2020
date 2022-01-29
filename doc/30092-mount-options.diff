@@ -1,0 +1,75 @@
+This compares just the mount point and mount options between
+Debian 11 / Gnome 3 (mostly stock) and
+Debian 11 / XFCE (PrisonPC inmate desktop).
+
+In all cases, the hardening options should be NO WORSE.
+In all cases, user-writable mounpoints should be -o noexec.
+
+                  cat /proc/self/mountinfo|cut -d' ' -f5-6|sort >GNOME;
+ssh bootstrap2020 cat /proc/self/mountinfo|cut -d' ' -f5-6|sort >PrisonPC;
+git --no-pager diff --minimal --no-index a-prisonpc b-laptop > bootstrap2020/doc/30092-mount-options.diff
+
+Outstanding issues:
+
+ 1. instead of masking /lib/live/mount, can we just leave it inside the (shadowed away) initrd filesystem?
+    This involves patching /lib/live/scripts/9990-network.sh or something.
+
+ 2. binfmt_misc is definitely fucky.
+    systemd ships a unit that uses hardened settings.
+    Why isn't it used?
+
+Note: /run/user/1000/doc is a flatpak thing.
+
+
+diff --git 1/GNOME 2/PrisonPC
+index 940d9c2..698f405 100644
+--- 1/GNOME
++++ 2/PrisonPC
+@@ -1,30 +1,32 @@
+-/ rw,relatime
++/ rw,noatime
+-/boot rw,relatime
+-/boot/efi rw,relatime
+-/dev rw,nosuid,relatime
++/dev rw,nosuid,noexec,relatime
+ /dev/hugepages rw,relatime
+ /dev/mqueue rw,nosuid,nodev,noexec,relatime
+ /dev/pts rw,nosuid,noexec,relatime
+-/dev/shm rw,nosuid,nodev
++/dev/shm rw,nosuid,nodev,noexec
+-/home/twb rw,relatime
++/home/prisoners/p123 rw,nosuid,nodev,noexec,relatime
++/lib/live/mount rw,nosuid,nodev,noexec,relatime
++/lib/live/mount/medium ro,relatime
++/lib/live/mount/overlay rw,noatime
++/lib/live/mount/rootfs/filesystem.squashfs ro,noatime
+ /proc rw,nosuid,nodev,noexec,relatime
+-/proc/sys/fs/binfmt_misc rw,nosuid,nodev,noexec,relatime
+ /proc/sys/fs/binfmt_misc rw,relatime
+ /run rw,nosuid,nodev,noexec,relatime
++/run/live ro,nosuid,nodev,noexec,relatime
++/run/live/medium ro,relatime
++/run/live/overlay rw,noatime
++/run/live/rootfs/filesystem.squashfs ro,noatime
+ /run/lock rw,nosuid,nodev,noexec,relatime
+ /run/rpc_pipefs rw,relatime
+-/run/user/1000 rw,nosuid,nodev,relatime
++/run/user/10241 rw,nosuid,nodev,noexec,relatime
+-/run/user/1000/doc rw,nosuid,nodev,relatime
+-/run/user/1000/gvfs rw,nosuid,nodev,relatime
++/srv/share ro,nosuid,nodev,noexec,relatime
+ /sys rw,nosuid,nodev,noexec,relatime
+-/sys/firmware/efi/efivars rw,nosuid,nodev,noexec,relatime
+ /sys/fs/bpf rw,nosuid,nodev,noexec,relatime
+ /sys/fs/cgroup rw,nosuid,nodev,noexec,relatime
+ /sys/fs/fuse/connections rw,nosuid,nodev,noexec,relatime
+-/sys/fs/pstore rw,nosuid,nodev,noexec,relatime
++/sys/fs/pstore ro,nosuid,nodev,noexec,relatime
+ /sys/kernel/config rw,nosuid,nodev,noexec,relatime
+-/sys/kernel/debug rw,nosuid,nodev,noexec,relatime
+ /sys/kernel/security rw,nosuid,nodev,noexec,relatime
+ /sys/kernel/tracing rw,nosuid,nodev,noexec,relatime
+-/tmp rw,nosuid,nodev
++/tmp rw,nosuid,nodev,noexec,relatime
+-/var/tmp rw,relatime
++/var/tmp rw,nosuid,nodev,noexec,relatime
