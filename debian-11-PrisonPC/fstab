@@ -23,6 +23,10 @@
 #
 #   * /run/live is to hide overlayfs's underlying components from inmates.
 #     /lib/live/mount is the old path; as at Debian 11 both are still active.
+#
+#     NOTE: live-boot-hide-rootfs-components.sh now nerfs this better, but
+#           nerf here as well in case of regressions.
+#
 #   * /var/tmp needs -orw for systemd-timesyncd (NTP client).
 #   * /dev/shm needs -orw for chromium.
 #   * /dev/shm needs >32M for libreoffice.
