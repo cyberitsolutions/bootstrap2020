@@ -44,8 +44,10 @@
 # FIXME: crash output goes to .xsession-errors (or NOWHERE?!)
 #        This ought to be fixed sometime!
 
+import argparse
 import os
 import syslog
+import configparser
 
 import xdg.DesktopEntry
 import xdg.Menu
@@ -97,8 +99,10 @@ def main():
     #
     # Note that "rename-applications" only patches Name[en_AU]=.
     # So this script MUST run in that locale, or it will not "see" our app renames.
-    lookup_table = create_lookup_table()
-    nice_app_name = lookup_table.get(wmclass_name.lower(), wmclass_name)
+    lookup_table = configparser.ConfigParser()
+    lookup_table.read('/usr/share/bootstrap2020-popularity-contest.ini')
+    nice_app_name = lookup_table['wm_class2name'].get(
+        wmclass_name.lower(), wmclass_name)
 
     # Modern apps are mostly single-window (like Inkscape).
     # They have something like WM_CLASS = FOO, foo.
@@ -114,11 +118,13 @@ def main():
 
 
 def create_lookup_table():
-    acc = {}                    # accumulator
+    lookup_table = configparser.ConfigParser()
+    lookup_table['wm_class2name'] = {}
     menu = xdg.Menu.parse('/etc/xdg/menus/xfce-applications.menu')
-    walk(acc, menu)
-    kludge(acc)
-    return acc
+    walk(acc=lookup_table['wm_class2name'], menu=menu)
+    kludge(lookup_table)
+    with open('/usr/share/bootstrap2020-popularity-contest.ini', 'w') as f:
+        lookup_table.write(f)
 
 
 def walk(acc, menu):
@@ -134,8 +140,8 @@ def walk(acc, menu):
         elif isinstance(entry, xdg.Menu.MenuEntry):
             assert entry.Filename.endswith('.desktop')
 
-            key1 = entry.DesktopEntry.getName().lower()
-            key2 = entry.Filename[:-len('.desktop')].lower()
+            key1 = entry.DesktopEntry.getName()
+            key2 = entry.Filename[:-len('.desktop')]
 
             # FIXME: what happens with multi-menu paths?
             value = menu.getPath()
@@ -148,64 +154,24 @@ def walk(acc, menu):
             raise NotImplementedError(type(entry), entry)
 
 
-def kludge(acc):
-    # Work around gratuitous differences between WM_CLASS and .desktop.
-    # FIXME test these AMC-only or staff-only old popcon items:
-    #   advsys asunder audacity blobwars bocfel bomberclone
-    #   catfish.py dvdrip enigma exo-desktop-item-edit
-    #   exo-helper-1 exo-open freedroid git gnome-help gnomine
-    #   gvncviewer helper-dialog kbattleship kded4 kfourinline
-    #   khelpcenter knavalbattle librecad mousepad openttd perl
-    #   prboom prboom-plus thunar-volman thunar-volman-settings tk
-    #   vym warzone2100 wrapper x-session-manager xarchiver
-    #   xfce4-screenshooter xfce4-session-settings
-    #   xfce4-settings-editor xfce4-settings-manager
-    #   xfce4-terminal xfdesktop-settings xfwm4-tweaks-settings
-    #   xfwm4-workspace-settings yelp
-    #   "LibreOffice 5.1"
-    for src, dst in (('alienblaster', 'alienblaster.bin'),
-                     ('armagetronad', 'armagetronad.real'),
-                     ('criticalmass', 'critter'),
-                     ('celestia', 'celestia-gnome'),
-                     ('childsplay', 'mychildsplay'),
-                     ('chromium', 'chromium-browser'),
-                     ('dia', 'dia-normal'),
-                     ('freeciv-gtk', 'freeciv-gtk2'),
-                     ('frogatto', 'game'),  # FIXME: this might be too broad a match
-                     ('2048', 'gnome-2048'),
-                     ('gimp', 'gimp-2.8'),
-                     ('kiten', 'kitenkanjibrowser'),
-                     ('kiten', 'kitenradselect'),
-                     ('kobodeluxe', 'kobodl'),
-                     ('pspp', 'psppire'),
-                     ('catfish', 'catfish.py'),
-                     ('fretsonfire-game', 'fretsonfire.py'),
-                     ('fofix', 'fofix.py'),
-                     ('redhat-userpasswd', 'userpasswd'),
-                     ('supertux2', 'supertux'),
-                     ('numptyphysics', 'NPhysics'),
-                     ('xfce-display-settings', 'xfce4-display-settings'),
-                     ('xfce-keyboard-settings', 'xfce4-keyboard-settings'),
-                     ('xfce-mouse-settings', 'xfce4-mouse-settings'),
-                     ('xfce-ui-settings', 'xfce4-appearance-settings'),
-                     ('xfce-wm-settings', 'xfwm4-settings')):
-        if (src in acc) and (dst not in acc):
-            acc[dst] = acc[src]
-    for key, value in (
-            # FIXME: duplicate magic string in main().
-            ('xfdesktop', 'NO APPLICATION'),
-            ('scummvm', 'Point-and-Click Adventure Games'),
-            ('prboom-plus', 'DOOM clone (all campaigns)'),
-            ('soffice', 'LibreOffice'),
-            # Partly based on gargoyle-free:garglk/launcher.c.
-            ('git',    'Interactive Fiction Games (GLULX)'),
-            ('bocfel', 'Interactive Fiction Games (Inform)'),
-            ('volumeicon', 'Volume (systray applet)'),
-            ('xfce4-notifyd', 'Popup Notification'),
-            ('xfce4-panel', 'Taskbar')):
-        if key not in acc:
-            acc[key] = value
+def kludge(lookup_table):
+    lookup_table.read('/usr/share/bootstrap2020-popularity-contest-errata.ini')
+    # configparser handles wm_class2name overlaps implicitly.
+    # We now have to handle wm_class2desktop ourselves.
+    acc = lookup_table['wm_class2name']
+    for wm_class, desktop in lookup_table['wm_class2desktop'].items():
+        if (desktop in acc) and (wm_class not in acc):
+            acc[wm_class] = acc[desktop]
+    # We're done with wm_class2desktop so remove it.
+    # Only wm_class2name is needed at runtime.
+    del lookup_table['wm_class2desktop']
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--generate', action='store_true')
+    args = parser.parse_args()
+    if args.generate:
+        create_lookup_table()   # runs as root at SOE build time
+    else:
+        main()                  # runs as user after GUI login
