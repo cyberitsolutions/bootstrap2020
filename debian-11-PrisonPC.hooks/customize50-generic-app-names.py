@@ -51,7 +51,7 @@ for path in (args.chroot_path / 'usr/share/applications').glob('**/*.desktop'):
     # Rename GenericName[xx] to Name[xx].
     # i.e. hard-code equivalent of xfce4-panel's show-generic-names.
     for key, value in app['Desktop Entry'].items():
-        if key.startswith('GenericName'):
+        if key.startswith('GenericName') and value:
             new_key = 'Name' + key[len('GenericName'):]
             app['Desktop Entry'][new_key] = value
             del app['Desktop Entry'][key]
