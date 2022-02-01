@@ -132,7 +132,6 @@
     "RequireOnlineRevocationChecksForLocalAnchors": false,
     "BuiltinCertificateVerifierEnabled": false,
     "ForceEphemeralProfiles": true,
-    "KioskCRXManifestUpdateURLIgnored": true,
     "BackgroundModeEnabled": true,
     "RestrictSigninToPattern": ".*@example\\.com",
     "DisableSafeBrowsingProceedAnyway": true,
@@ -153,6 +152,9 @@
     "DnsOverHttpsTemplates": "https://dns.example.net/dns-query{?dns}",
     "AdditionalDnsQueryTypesEnabled": true,
     "FullscreenAllowed": true,
+    "FullscreenNotificationUrlExemptList": [
+        "*"
+    ],
     "SharedClipboardEnabled": true,
     "HideWebStoreIcon": true,
     "VariationsRestrictParameter": "restricted",
@@ -505,6 +507,51 @@
             ]
         }
     ],
+    "OnPrintEnterpriseConnector": [
+        {
+            "service_provider": "Google",
+            "enable": [
+                {
+                    "url_list": [
+                        "*.them.com",
+                        "*.others.com"
+                    ],
+                    "tags": [
+                        "dlp"
+                    ]
+                }
+            ],
+            "disable": [
+                {
+                    "url_list": [
+                        "*.us.com"
+                    ],
+                    "tags": [
+                        "dlp"
+                    ]
+                }
+            ],
+            "block_until_verdict": 0,
+            "block_large_files": true,
+            "require_justification_tags": [
+                "dlp"
+            ],
+            "custom_messages": [
+                {
+                    "message": "Custom message for potential sensitive data leaks.",
+                    "learn_more_url": "moreinfo.example.com",
+                    "language": "default",
+                    "tag": "dlp"
+                },
+                {
+                    "message": "Message pour une fuite de donn\u00e9es potentielle.",
+                    "learn_more_url": "moreinfo.example.com/fr",
+                    "language": "fr-CA",
+                    "tag": "dlp"
+                }
+            ]
+        }
+    ],
     "OnSecurityEventEnterpriseConnector": [
         {
             "service_provider": "Google",
@@ -641,5 +688,16 @@
         "hash": "842841a4c75a55ad050d686f4ea5f77e83ae059877fe9b6946aa63d3d057ed32"
     },
     "FastPairEnabled": true,
-    "CORSNonWildcardRequestHeadersSupport": true
+    "CORSNonWildcardRequestHeadersSupport": true,
+    "CopyPreventionSettings": {
+        "disable": [
+            "not-sensitive.example.com"
+        ],
+        "enable": [
+            "*"
+        ],
+        "minimum_data_size": 100
+    },
+    "UserAgentReduction": 0,
+    "DeviceLoginScreenWebUILazyLoading": true
 }

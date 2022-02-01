@@ -3,5 +3,6 @@
     "ReportDeviceLocation": false,
     "ReportDevicePrintJobs": false,
     "ReportDeviceNetworkTelemetryCollectionRateMs": 600000,
-    "ReportDeviceNetworkTelemetryEventCheckingRateMs": 60000
+    "ReportDeviceNetworkTelemetryEventCheckingRateMs": 60000,
+    "ReportDeviceAudioStatusCheckingRateMs": 600000
 }

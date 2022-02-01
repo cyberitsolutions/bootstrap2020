@@ -1371,7 +1371,7 @@ SYNOPSIS: {"abcdefghijklmnopabcdefghijklmnop": {"installation_mode": "allowed", 
 
        This policy maps an extension ID or an update URL to its specific setting only. A default configuration can be set for the special ID "*", which applies to all extensions without a custom configuration in this policy. With an update URL, configuration applies to extensions with the exact update URL stated in the extension manifest ( http://support.google.com/chrome/a?p=Configure_ExtensionSettings_policy ). If the 'override_update_url' flag is set to true, the extension is installed and updated using the "update" URL specified in the ExtensionInstallForcelist policy or in 'update_url' field in this policy. The flag 'override_update_url' is ignored if the 'update_url' is a Chrome Web Store url.
 
-       Note: For Windows® instances not joined to a Microsoft® Active Directory® domain, forced installation is limited to apps and extensions listed in the Chrome Web Store.
+       Note: For Microsoft® Windows® instances not joined to a Microsoft® Active Directory® domain and macOS instances not managed via MDM or joined to a domain via MCX, forced installation is limited to apps and extensions listed in the Chrome Web Store.
 
   features:
     dynamic_refresh: true
@@ -4265,6 +4265,7 @@ SYNOPSIS: false
  Setting the policy to enabled or leaving it unset has enrolled devices report device audio volume.
 
        Setting the policy to Disabled means enrolled devices don't record or report audio status.
+       Exception: System volume level information is controlled by ReportDeviceHardwareStatus for M95 and below.
 
   arc_support: This policy has no effect on the logging done by Android.
   default: true
@@ -4367,6 +4368,26 @@ SYNOPSIS: 60000
   - admin-sharing
   type: int
 
+** ReportDeviceAudioStatusCheckingRateMs — Audio telemetry collection rate in milliseconds.
+SYNOPSIS: 600000
+ Rate at which audio data is sampled and collected. The minimum allowed is 1 minute.
+
+       If not set, the default rate of 10 minutes applies.
+
+  arc_support: This policy has no effect on the logging done by Android.
+  default: 600000
+  device_only: true
+  features:
+    dynamic_refresh: true
+  schema:
+    minimum: 60000
+    type: integer
+  supported_chrome_os_management:
+  - google_cloud
+  tags:
+  - admin-sharing
+  type: int
+
 * DeviceUpdate — Device update settings
  Controls how and when Chrome OS updates are applied.
 
@@ -4407,7 +4428,7 @@ SYNOPSIS: 1
 * Other — Other
  Controls miscellaneous settings including USB, bluetooth, policy refresh, developer mode and others.
 
-** PromptOnMultipleMatchingCertificates — Prompt for the client certificate when multiple certificates match.
+** PromptOnMultipleMatchingCertificates — Prompt when multiple certificates match
 SYNOPSIS: true
  This policy controls whether the user is prompted to select a client certificate when more than one certificate matches AutoSelectCertificateForUrls.
        If this policy is set to Enabled, the user is prompted to select a client certificate whenever the auto-selection policy matches multiple certificates.
@@ -5494,15 +5515,15 @@ SYNOPSIS: true
   - admin-sharing
   type: main
 
-** HistoryClustersVisible — Show history clusters on the Chrome history page
+** HistoryClustersVisible — Show Journeys on the Chrome history page
 SYNOPSIS: false
- This policy controls the visibility of history clusters on the Chrome history page.
+ This policy controls the visibility of Journeys on the Chrome history page.
 
-       If the policy is set to Enabled, history clusters will be visible at chrome://history/journeys.
+       If the policy is set to Enabled, Journeys will be visible at chrome://history/journeys.
 
-       If the policy is set to Disabled, history clusters will not be visible at chrome://history/journeys.
+       If the policy is set to Disabled, Journeys will not be visible at chrome://history/journeys.
 
-       If the policy is left unset, history clusters will be visible at chrome://history/journeys by default and users can change the visibility of history clusters.
+       If the policy is left unset, Journeys will be visible at chrome://history/journeys by default and users can change the visibility of Journeys.
       
 
   default: null
@@ -5510,12 +5531,12 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: true
   items:
-  - caption: History clusters will be visible at chrome://history/journeys.
+  - caption: Journeys will be visible at chrome://history/journeys.
     value: true
-  - caption: History clusters will not be visible at chrome://history/journeys.
+  - caption: Journeys will not be visible at chrome://history/journeys.
     value: false
-  - caption: History clusters will be visible at chrome://history/journeys by default
-      and users can change the visibility of history clusters.
+  - caption: Journeys will be visible at chrome://history/journeys by default and users
+      can change the visibility of Journeys.
     value: null
   schema:
     type: boolean
@@ -6559,9 +6580,9 @@ SYNOPSIS: true
   - chrome.*:94-
   type: main
 
-** InsecurePrivateNetworkRequestsAllowed — Specifies whether to allow insecure websites to make requests to more-private network endpoints
+** InsecurePrivateNetworkRequestsAllowed — Specifies whether to allow websites to make requests to more-private network endpoints in an insecure manner
 SYNOPSIS: false
- Controls whether insecure websites are allowed to make requests to more-private network endpoints.
+ Controls whether websites are allowed to make requests to more-private network endpoints in an insecure manner.
 
            This policy relates to the Private Network Access specification. See https://wicg.github.io/private-network-access/ for more details.
 
@@ -6570,11 +6591,9 @@ SYNOPSIS: false
            2) Its IP address is private and the other is public.
            In the future, depending on spec evolution, this policy might apply to all cross-origin requests directed at private IPs or localhost.
 
-           A website is deemed secure if it meets the definition of a secure context in https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts. Otherwise, it will be treated as an insecure context.
+           When this policy is either not set or set to false, the default behavior for requests to more-private network endpoints will depend on the user's personal configuration for the BlockInsecurePrivateNetworkRequests, PrivateNetworkAccessSendPreflights, and PrivateNetworkAccessRespectPreflightResults feature flags, which may be set by field trials or on the command line.
 
-           When this policy is either not set or set to false, the default behavior for requests from insecure contexts to more-private network endpoints will depend on the user's personal configuration for the BlockInsecurePrivateNetworkRequests feature, which may be set by a field trial or on the command line.
-
-           When this policy is set to true, insecure websites are allowed to make requests to any network endpoint, subject to other cross-origin checks.
+           When this policy is set to true, websites are allowed to make requests to any network endpoint, subject to other cross-origin checks.
 
   features:
     dynamic_refresh: true
@@ -6593,15 +6612,13 @@ SYNOPSIS: false
   - system-security
   type: main
 
-** InsecurePrivateNetworkRequestsAllowedForUrls — Allow the listed sites to make requests to more-private network endpoints from insecure contexts.
+** InsecurePrivateNetworkRequestsAllowedForUrls — Allow the listed sites to make requests to more-private network endpoints in an insecure manner.
 SYNOPSIS: ["http://www.example.com:8080", "[*.]example.edu"]
- List of URL patterns. Private network requests initiated from insecure websites served by matching origins are allowed.
+ List of URL patterns. Requests initiated from websites served by matching origins are not subject to Private Network Access checks.
 
            If unset, this policy behaves as if set to the empty list.
 
            For origins not covered by the patterns specified here, the global default value will be used either from the InsecurePrivateNetworkRequestsAllowed policy, if it is set, or the user's personal configuration otherwise.
-
-           Note that this policy only affects insecure origins, so secure origins (e.g. https://example.com) included in this list will be ignored.
 
            For detailed information on valid URL patterns, please see https://cloud.google.com/docs/chrome-enterprise/policies/url-patterns.
 
@@ -7513,28 +7530,6 @@ SYNOPSIS: true
   - chrome.*:32-
   type: main
 
-** KioskCRXManifestUpdateURLIgnored — Use only policy-provided update URL when downloading and updating Kiosk Chrome apps
-SYNOPSIS: true
- Setting the policy will disable in-session Kiosk Chrome apps update (which uses update URL from the extension manifest) and leaves only CRX pre-fetching as the update mechanism.
-
-  default: false
-  device_only: true
-  features:
-    cloud_only: true
-    dynamic_refresh: true
-    unlisted: true
-  items:
-  - caption: 'New behaviour: Kiosk Chrome Apps will be only updated using update URL
-      from the policy'
-    value: true
-  - caption: 'Legacy behavior: Kiosk Chrome Apps will be updated by the extension system
-      using update URL from the extension manifest, as well as by caching manager using
-      update URL from the policy'
-    value: false
-  schema:
-    type: boolean
-  type: main
-
 ** BackgroundModeEnabled — Continue running background apps when Google Chrome is closed
 SYNOPSIS: true
  Setting the policy to Enabled turns background mode on. In background mode, a Google Chrome process is started on OS sign-in and keeps running when the last browser window is closed, allowing background apps and the browsing session to remain active. The background process displays an icon in the system tray and can always be closed from there.
@@ -7839,6 +7834,23 @@ SYNOPSIS: true
   supported_on:
   - chrome.linux:31-
   type: main
+
+** FullscreenNotificationUrlExemptList — List of URLs which are exempt from the full screen notification
+SYNOPSIS: ["*"]
+ Configure a list of URLs that are exempt from the full screen notification. The notification is shown when the device returns from sleep, low brightness or the lock screen and has a window in full screen mode. This is to make users aware that they are in full screen mode, which reduces the risk of phishing attacks.
+
+           This policy allows to disable the notification for specific URLs that will be considered trusted sources. It is set by specifying a list of URL patterns formatted according to this format ( https://www.chromium.org/administrators/url-blocklist-filter-format ). E.g., it is possible to disable the notifications altogether by specifying the wildcard character * matching all URLs.
+
+           Setting this policy to an empty list or leaving it unset means no URLs are exempt from the full screen notification.
+
+  features:
+    dynamic_refresh: true
+    per_profile: false
+  schema:
+    items:
+      type: string
+    type: array
+  type: list
 
 ** SharedClipboardEnabled — Enable the Shared Clipboard Feature
 SYNOPSIS: true
@@ -8591,10 +8603,8 @@ SYNOPSIS: "com.android.chrome.SupervisedUserProvider"
 SYNOPSIS: true
  Enables component updates for all components in Google Chrome when not set or set to enabled.
 
-       If set to disabled, updates to components are disabled. However, some components are exempt from this policy: updates to any component that does not contain executable code, or does not significantly alter the behavior of the browser, or is critical for its security will not be disabled.
-       Examples of such components include the certificate revocation lists and Safe Browsing data.
-       See https://developers.google.com/safe-browsing for more info on Safe Browsing.
-       Please note that setting this policy to disabled can potentially prevent the Google Chrome developers from providing critical security fixes in a timely manner and is thus not recommended.
+       If set to disabled, updates to components are disabled. However, some components are exempt from this policy: updates to any component that does not contain executable code and is critical for the security of the browser will not be disabled.
+       Examples of such components include the certificate revocation lists and subresource filters.
 
   features:
     dynamic_refresh: false
@@ -9699,7 +9709,7 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
 
        The block_password_protected field controls whether Chrome blocks or allows files that are password protected.
 
-       The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed (50+ MB).
+       The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed.
 
        The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.
 
@@ -9784,7 +9794,7 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
 
        The block_password_protected field controls whether Chrome blocks or allows files that are password protected.
 
-       The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed (50+ MB).
+       The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed.
 
        The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.
 
@@ -9937,6 +9947,89 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
     type: array
   supported_on:
   - chrome.*:84-
+  type: dict
+
+** OnPrintEnterpriseConnector — Configuration policy for the OnPrint Google Chrome Enterprise Connector
+SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*.them.com", "*.others.com"], "tags": ["dlp"]}], "disable": [{"url_list": ["*.us.com"], "tags": ["dlp"]}], "block_until_verdict": 0, "block_large_files": true, "require_justification_tags": ["dlp"], "custom_messages": [{"message": "Custom message for potential sensitive data leaks.", "learn_more_url": "moreinfo.example.com", "language": "default", "tag": "dlp"}, {"message": "Message pour une fuite de donn\u00e9es potentielle.", "learn_more_url": "moreinfo.example.com/fr", "language": "fr-CA", "tag": "dlp"}]}]
+ List of Google Chrome Enterprise Connectors services settings to be applied to the OnPrint Enterprise Connector, which triggers when a page or file is printed from Google Chrome.
+
+       The url_list, tags, enable and disable fields are used to determine if the connector should send data for analysis when printing is triggered on a specific page and what tags to include in the analysis request. The analysis occurs if at least 1 tag is to be included in the request.
+
+       The service_provider field identifies which analysis service provider the settings correspond to.
+
+       The block_until_verdict field being set to 1 means Google Chrome will wait to get a response from the analysis service before allowing the print preview dialog to be shown for the printed page. Any other integer value means Google Chrome shows the print preview dialog immediately.
+
+       The block_large_files fields controls whether Google Chrome blocks or allows files/pages that are too large to be analyzed.
+
+       The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.
+
+       The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The administrator is able to configure messages of up to 200 characters.
+
+       This policy can only be set from the Google Admin console.
+
+  features:
+    cloud_only: true
+    dynamic_refresh: true
+    per_profile: true
+  future_on:
+  - chrome.*
+  schema:
+    items:
+      properties:
+        block_large_files:
+          type: boolean
+        block_until_verdict:
+          enum:
+          - 0
+          - 1
+          type: integer
+        custom_messages:
+          items:
+            properties:
+              language:
+                type: string
+              learn_more_url:
+                type: string
+              message:
+                type: string
+              tag:
+                type: string
+            type: object
+          type: array
+        disable:
+          items:
+            properties:
+              tags:
+                items:
+                  type: string
+                type: array
+              url_list:
+                items:
+                  type: string
+                type: array
+            type: object
+          type: array
+        enable:
+          items:
+            properties:
+              tags:
+                items:
+                  type: string
+                type: array
+              url_list:
+                items:
+                  type: string
+                type: array
+            type: object
+          type: array
+        require_justification_tags:
+          items:
+            type: string
+          type: array
+        service_provider:
+          type: string
+      type: object
+    type: array
   type: dict
 
 ** OnSecurityEventEnterpriseConnector — Configuration policy for the OnSecurityEvent Chrome Enterprise Connector
@@ -10530,14 +10623,13 @@ SYNOPSIS: true
 SYNOPSIS: true
  When enabled the User-Agent Client Hints GREASE Update feature aligns the User-Agent GREASE algorithm with the latest spec.
        The updated spec may break some websites that restrict the characters that requests may contain. See the spec for more information: https://wicg.github.io/ua-client-hints/#grease
-       If this policy is enabled or not set the User-Agent Client Hints GREASE Update feature is enabled. If the policy is disabled the prior User-Agent GREASE algorithm is used.
+       If this policy is enabled or not set, the browser will decide which User-Agent GREASE algorithm to use. If the policy is disabled the prior User-Agent GREASE algorithm is used.
+       This policy is a temporary measure and will be removed in a future release.
 
   default: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - chrome.*
   items:
   - caption: Allow the updated User-Agent GREASE algorithm to be run.
     value: true
@@ -10545,6 +10637,8 @@ SYNOPSIS: true
     value: false
   schema:
     type: boolean
+  supported_on:
+  - chrome.*:98-
   type: main
 
 ** ShowFullUrlsInAddressBar — Show Full URLs
@@ -11452,5 +11546,99 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:97-103
+  type: main
+
+** CopyPreventionSettings — Allows blocking copying to the clipboard on specified URLs
+SYNOPSIS: {"disable": ["not-sensitive.example.com"], "enable": ["*"], "minimum_data_size": 100}
+ This policy blocks copying data to the clipboard on specific URLs.
+
+       The enable and disable URL lists control which sites are allowed to write to the clipboard. A clipboard write is blocked if the URL matches a pattern in 'enable' and doesn't match a pattern in 'disable'. A copy is not blocked if the URL does not match any pattern.
+
+       The origin matching patterns use a similar format to those for the 'URLBlocklist' policy, which are documented at http://www.chromium.org/administrators/url-blocklist-filter-format.
+
+       The minimum_data_size indicates the minimum amount of data in bytes that triggers the pattern check. This means that a clipboard write from a blocked URL would be allowed if the size of the copied data is smaller than the value specified in this field. The default value is 100 bytes if the field is unset.
+      
+
+  features:
+    cloud_only: true
+    dynamic_refresh: true
+    per_profile: true
+  future_on:
+  - chrome.*
+  schema:
+    properties:
+      disable:
+        items:
+          type: string
+        type: array
+      enable:
+        items:
+          type: string
+        type: array
+      minimum_data_size:
+        minimum: 0
+        type: integer
+    type: object
+  type: dict
+
+** UserAgentReduction — Enable or disable the User-Agent Reduction.
+SYNOPSIS: 0
+ The User-Agent HTTP request header is scheduled to be reduced. In order to facilitate testing and compatibility, this policy can enable the reduction feature for all websites, or disable the ability for origin trials or field trials to enable the feature.
+
+       To learn more about the User-Agent Reduction and its timeline, read here:
+
+       https://blog.chromium.org/2021/09/user-agent-reduction-origin-trial-and-dates.html
+      
+
+  default: 0
+  features:
+    dynamic_refresh: true
+    per_profile: true
+  items:
+  - caption: User Agent reduction will be controllable via Field-Trials and Origin-Trials.
+    name: Default
+    value: 0
+  - caption: User Agent reduction diabled, and not enabled by Field-Trials or Origin-Trials.
+    name: ForceDisabled
+    value: 1
+  - caption: User Agent reduction will be enabled for all origins.
+    name: ForceEnabled
+    value: 2
+  schema:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+  supported_on:
+  - chrome.*:98-
+  tags:
+  - website-sharing
+  type: int-enum
+
+** DeviceLoginScreenWebUILazyLoading — Load Login WebUI only when needed.
+SYNOPSIS: true
+ This policy controls whether the WebUI part of the sign-in screen will be always loaded at start or only before showing it. This policy applies to the sign-in screen.
+
+       If this policy is enabled, the WebUI part of the sign-in UI will be loaded only before showing it. This speeds up the login process.
+
+       If this policy is disabled, the WebUI part of the sign-in screen will always be loaded on boot (legacy behavior).
+
+       If unset, behavior will be controlled by kEnableLazyLoginWebUILoading feature.
+
+       This policy should be removed after kEnableLazyLoginWebUILoading is fully rolled out.
+
+  default: false
+  device_only: true
+  features:
+    dynamic_refresh: false
+    per_profile: false
+  items:
+  - caption: Enable Lazy Login WebUI loading.
+    value: true
+  - caption: Disable Lazy Login WebUI loading.
+    value: false
+  schema:
+    type: boolean
   type: main
 
