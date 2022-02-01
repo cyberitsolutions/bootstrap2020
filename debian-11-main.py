@@ -411,11 +411,6 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook=chroot $1 apt install -y fontconfig-config',
             *(['--include='
                f'{" ".join(site_apps)}'
-               # FIXME: chromium-sandbox REDUCES security.
-               #        It should be banned, not installed.
-               #        It is only existing as a workaround for kernels without user_ns.
-               #        https://bugs.debian.org/839277
-               #        https://bugs.debian.org/913116
                '    chromium chromium-l10n'
                '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
                '    libreoffice-gtk3'

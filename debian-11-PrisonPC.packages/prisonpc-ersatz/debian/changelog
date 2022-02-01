@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.14) bullseye; urgency=medium
+
+  * block chromium-sandbox (obsolete, dangerous)
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 02 Feb 2022 10:04:03 +1100
+
 prisonpc-ersatz (11.13) bullseye; urgency=medium
 
   * block all packages that self-identify as web browsers,

@@ -279,6 +279,12 @@ Conflicts:
 # We need thunar->udisks2->polkit for mounting/ejecting DVDs.
  sudo,
  sudo-ldap,
+# chromium-sandbox REDUCES security.
+# It should be banned, not installed.
+# It is only existing as a workaround for kernels without user_ns.
+# https://bugs.debian.org/839277
+# https://bugs.debian.org/913116
+ chromium-sandbox,
 # These are alternatives to the XFCE4 applications/start menu.
 # They provide easy ways to run an arbitrary shell command (i.e. Win+R).
 # There is no easy way to remove that feature while keeping the "nice menu" feature.
