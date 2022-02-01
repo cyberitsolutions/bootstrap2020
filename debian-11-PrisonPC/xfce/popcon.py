@@ -15,6 +15,17 @@
 # the _NET_WM_ACTIVE window, for the default screen of the default
 # display.
 #
+# UPDATE: actually we look at WM_CLASS=frobozz, then
+#         look at the XFCE start menu and see that
+#         /usr/share/applications/frobozz.desktop
+#         is visible as Applications > Games > Frobo Clone
+#         then we log THAT, rather than just "frobozz".
+#
+#         Sometimes there is not a 1:1 correspondence between
+#         WM_CLASS "frobozz", "Frobozz" and
+#         /usr/share/applications/frobozz-gtk.desktop.
+#         In such cases, we manually fudge it with a list of errata.
+#
 # Ref. https://developer-old.gnome.org/libwnck/stable/getting-started.html#Common_pitfalls
 # Ref. https://valadoc.org/libwnck-3.0/Wnck.Screen.force_update.html
 # Ref. https://lazka.github.io/pgi-docs/Wnck-3.0/classes/Window.html
@@ -30,7 +41,7 @@
 #       we DO NOT terminate the user's session.
 #       This IS NOT considered a security script.
 #
-# FIXME: crash ouput goes to .xsession-errors (or NOWHERE?!)
+# FIXME: crash output goes to .xsession-errors (or NOWHERE?!)
 #        This ought to be fixed sometime!
 
 import os
@@ -75,8 +86,8 @@ def main():
             return
 
     finally:
-        # wnck has REALLY dire warnings abuot what happens if you do not
-        # EXPLCITILY and MANUALLY clean up after yourself.
+        # wnck has REALLY dire warnings about what happens if you do not
+        # EXPLICITLY and MANUALLY clean up after yourself.
         # Prooooobably doesn't affect us, but do it anyway because paranoia.
         del screen, window
         gi.repository.Wnck.shutdown()
@@ -89,11 +100,11 @@ def main():
     lookup_table = create_lookup_table()
     nice_app_name = lookup_table.get(wmclass_name.lower(), wmclass_name)
 
-    # Modern apps are mostly single-window (like inkscape).
+    # Modern apps are mostly single-window (like Inkscape).
     # They have something like WM_CLASS = FOO, foo.
     # A few apps are multi-window (like really old gimp).
     # They have something like WM_CLASS = FOO, "font chooser"
-    # We mostly don't care about that, EXCEPT FOT "chromium  --app".
+    # We mostly don't care about that, EXCEPT FOR "chromium  --app".
     # So if the window's "class" is anything beyond "the app",
     # log that parenthetically.
     if wmclass_name.lower() != wmclass_class.lower():
