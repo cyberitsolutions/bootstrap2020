@@ -163,6 +163,13 @@ usr/share/doc/python3-uno/demo
 # Inmates don't (and can't) run x11vnc.
 # Appears because xfce4-panel only checks if $PATH/x11vnc *exists*, not if it is executable.
 /usr/share/applications/x11vnc.desktop
+# XFCE provides two Terminal Emulator menu items:
+# 1. Apps>Terminal Emulator runs "exo-open --launch TerminalEmulator" (inmates & staff)
+# 2. Apps>System>Terminal Emulator runs "xfce4-terminal" (only staff)
+# Hide the former, because
+# 1. inmates can't get a terminal emulator (prisonpc-bad-package-conflicts-inmates); and
+# 2. staff can click the latter.
+/usr/share/applications/xfce4-terminal-emulator.desktop
 # Some apps have a "server" or "engine" component.
 # Inmates never need to run this part directly.
 /usr/share/applications/org.freeciv.server.desktop
