@@ -8,6 +8,19 @@
         "chrome://settings/passwords",  // TESTING
 
         "chrome://apps",                // for new-style New Tab Page
+        // Observed in chromium=97.0.4692.99-1~deb11u2 on 2022-02-01:
+        //
+        //     <twb> mike: OK what is happening is this:
+        //     <twb> chrome://*new*tab* was blocked for months
+        //     <twb> But what has changed is, when you opened steam for the first time before, it went to the same place as the new tab still takes
+        //     <twb> which is https://PrisonPC for inmates and https://PPCAdm for staff
+        //     <twb> but something changed so now first window is a new tab
+        //     <twb> correction: new tab is also broken right now
+        //
+        // For now, unblock it while we wonder about what exactly the fuck is happening.
+        //
+        // fancy new tab page WITHOUT google search bar (PrisonPC default, somehow)
+        "chrome://new-tab-page-third-party",
 
         // Allow inmates to look at IPTV.
         // This opens externally in VLC.
