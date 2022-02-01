@@ -150,6 +150,18 @@ def walk(acc, menu):
             value += entry.DesktopEntry.getName()
 
             acc[key1] = acc[key2] = value
+
+            # Often we have filename mismatches.
+            # For example,
+            #     xfce-settings-manager.desktop
+            #     Exec=xfce4-settings-manager
+            # For example,
+            #     org.gnome.Quadrapassel.desktop
+            #     Exec=/usr/bin/quadrapassel %U
+            # Try to add those to the lookup table, too.
+            if key3 := entry.DesktopEntry.getExec().split()[0].split('/')[-1]:
+                acc[key3] = acc[key1]
+
         else:
             raise NotImplementedError(type(entry), entry)
 
