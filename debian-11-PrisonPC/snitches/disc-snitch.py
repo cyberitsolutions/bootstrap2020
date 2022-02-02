@@ -120,50 +120,11 @@ def main():
             continue
 
 
-        # FIXME: Pete's code used to skip in these circumstances.
-        # I think that's a mistake, but preserving semantics for now.
-        # Reconsider when implementing https://alloc.cyber.com.au/task/task.php?taskID=24643! --twb, Nov 2015
-        if pathlib.Path('/require-lucid-disc-snitch').exists():
-            if not device.properties.get('ID_CDROM_MEDIA', False):
-                print('<7>ID_CDROM_MEDIA missing or empty, not processing. (tray-open event?)', file=sys.stderr, flush=True)
-                continue
-            # UPDATE: when the disc (or drive?) is damaged,
-            # udev fails to find a filesystem---but vlc can still play the movie.
-            # Therefore, skipping when ID_FS_TYPE is not set, is very dangerous.
-            # What we expect to happen now, is for isoinfo to run and crash (therefore eject),
-            # or to run and successfully fingerprint the disc.  --twb, Nov 2015
-            if not device.properties.get('ID_FS_TYPE', False):
-                print('<7>WARNING: ID_FS_TYPE not set, PROCESSING CONTINUES. (damaged disc?)', file=sys.stderr, flush=True)
-                # We *DO NOT* continue here, because sometimes a
-                # damaged disc will not be recognized by udev, but
-                # WILL be playable in vlc.
-                #
-                # So: do nothing here.
-                # Either fingerprinting will fail (triggering fallback eject),
-                # or fingerprinting will continue as normal.
-                # # continue      # WRONG!
-
-            # The data_lucid method (isoinfo) can't handle unusual discs,
-            # with a mix of audio/data tracks, or multiple data tracks.
-            # In these cases, log & force an eject.
-            if (('0' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '0')) and
-                ('0' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', '0'))):
-                print('<7>Device has audio *and* data tracks, eject forced.', file=sys.stderr, flush=True)
-                eject(device)
-                continue
-            if '1' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '1'):
-                print('<7>Device has multiple data tracks, eject forced.', file=sys.stderr, flush=True)
-                eject(device)
-                continue
-
         print('<7>Disc "{}" was inserted.'.format(
             device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)), file=sys.stderr, flush=True)
 
         try:
-            if pathlib.Path('/require-lucid-disc-snitch').exists():
-                answer = ask_lucid_server_about(device)
-            else:
-                answer = ask_jessie_server_about(device)
+            answer = ask_jessie_server_about(device)
             print('<7>Server said "{}".'.format(answer), file=sys.stderr, flush=True)
 
             # FIXME: in here, check what 'answer' is and allow/lock/eject.
@@ -214,102 +175,6 @@ def data_jessie(device):
                                  universal_newlines=True)])
 
 
-# The output of cd-info is more robust and detailed than
-# the output from lsdvd + isoinfo.
-#
-# AMC has a large (~6000) corpus of known discs,
-# and we SHOULD NOT invalidate it.
-#
-# That means we need to generate data the *OLD* way, as well as the
-# new way, and have the server migrate discs from the old corpus as
-# they're re-reported.  As at 15.09, that is not coded. (https://alloc.cyber.com.au/task/task.php?taskID=24643)
-#
-# That means this output MUST BE BYTE-IDENTICAL to the old code.
-#
-# NB: "isoinfo dev=/dev/sr0" tries to take an exclusive lock,
-# but "isoinfo  -i /dev/sr0" doesn't.
-# The former has (and had!) problems if the GUI mounted the disc,
-# so we use the latter.  It seems to be working.  --twb, Oct 2015
-def data_lucid(device):
-    # Bypass ALL this ugliness unless explicitly enabled.
-    # NB: This is separate from /require-lucid-disc-snitch,
-    # because during migration we send data_lucid *AND* data_jessie.
-    if not pathlib.Path('/require-lucid-disc-snitch-data').exists():
-        return 'UNUSED'
-
-    # NB: Pete used to run lsdvd when ID_CDROM_MEDIA_DVD=="1";
-    # (i.e. when the *disc type* is a DVD, not a CD).
-    # But lsdvd only works when there are .VOB files (i.e. a movie).
-    # Pete ignored errors, so putting in a data DVD "worked";
-    # there lsdvd gave no stdout, and its stderr was thrown away.
-    #
-    # We care about errors, but we don't have a udev header to tell us
-    # when it's a MOVIE.  So run lsdvd ALWAYS, and if it crashes,
-    # pretend we didn't run it.  Syslog will fill with lsdvd errors,
-    # but we don't care.  --twb, Nov 2015 (#30332 - Problem 22).
-    # UPDATE: this generated 30MLOC / 10GiB of logs overnight.
-    # That's too much, so discard stderr from lsdvd. --twb, Jan 2016 (#30645)
-    #
-    # WARNING!!!  This means that if lsdvd fails to read a damaged
-    # disc, but isoinfo works OK, it'll be added as a candidate disc
-    # instead of ejecting.  YUK.  --twb, Nov 2015
-    try:
-        lsdvd = subprocess.check_output(['lsdvd', device.properties['DEVNAME']],
-                                        stderr=subprocess.DEVNULL,
-                                        universal_newlines=True)
-
-        # lsdvd is a shitty toy project we should never have used.
-        # It's output changed between wheezy & jessie.
-        # Specifically: there are fewer blank lines, &
-        # the track lengths milliseconds are different.
-        # We can't munge the latter from jessie to wheezy,
-        # so munge them both to a common denominator (by removing the milliseconds).
-        #
-        # I was loathe to "import re" just for this.
-        # From RTFS, it is clear I can just cut on character boundaries.
-        # http://sources.debian.net/src/lsdvd/0.17-1/ohuman.c/#L14
-        lsdvd = '\n'.join([
-            (line[0:27] + line[31:] if line.startswith('Title:') else line)
-            for line in lsdvd.splitlines()
-            if line != ''])
-        # Re-add the final newline that splitlines/join chomped.
-        lsdvd += '\n'
-    except subprocess.CalledProcessError:
-        lsdvd = ''              # Not a movie.
-
-    pvd = subprocess.check_output(
-        ['isoinfo', '-d', '-i', device.properties['DEVNAME']],
-        stderr=subprocess.DEVNULL,
-        universal_newlines=True)
-
-    # Get (roughly) the output of "ls -lR" of the disc's first ISO9660/UDF filesystem.
-    # For movies this is short, but for data discs it can be VERY long.
-    # Apparently Ron/Pete decreed that "the first 400 lines is enough".
-    # --twb, Dec 2014
-    #
-    # This used to just pipe into "head -400",
-    # but since isoinfo still blocks to generate the rest of the output,
-    # there is no harm in python collecting it all,
-    # THEN discarding lines 401 onwards.
-    lslR = subprocess.check_output(
-        ['isoinfo',
-         '-l' +
-         # NB: isoinfo -J on a non-Joliet disc will crash isoinfo.
-         ('' if 'NO Joliet present' in pvd else 'J') +
-         # NB: isoinfo -R on a non-RR disc will print one error line per file.
-         ('' if 'NO Rock Ridge present' in pvd else 'R'),
-         '-i',
-         device.properties['DEVNAME']],
-        stderr=subprocess.DEVNULL,
-        universal_newlines=True)
-    lslR = '\n'.join(lslR.splitlines()[:400])
-    # Re-add the final newline that splitlines/join chomped.
-    lslR += '\n'
-
-    # This dumb separator is inherited from Pete.
-    return '====\n'.join([lsdvd, pvd, lslR])
-
-
 def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_delay=3):
     """Equivalent to 'curl --retry N --retry-max-time N'."""
     # FIXME: Put this in a library because it's dupliacted in disc-snitch & usb-snitch
@@ -355,14 +220,10 @@ def prisonpc_active_user():
 # NB: this is proof-of-concept code for the https://alloc.cyber.com.au/task/task.php?taskID=24643 cleanup.
 # As at 15.09, it is not used.
 def ask_jessie_server_about(device):
-    from gzip import compress
-    from base64 import urlsafe_b64encode
-
     form_data = {
         'user': prisonpc_active_user().pw_name,
         'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
         'data': data_jessie(device),
-        'data_pete': urlsafe_b64encode(compress(data_lucid(device).encode())),
     }
     # Rather than having to join & split all the metadata,
     # just pass them as individual fields.
@@ -373,32 +234,6 @@ def ask_jessie_server_about(device):
     form_data.update({key: device.properties[key] for key in device.properties})
     response = do_POST_with_retry('https://ppc-services/discokay',
                                   form_data)
-
-    return response
-
-
-def ask_lucid_server_about(device):
-    # We are talking to a yukky Lucid server that predates https://alloc.cyber.com.au/task/task.php?taskID=24643.
-
-    # And this is where it gets tricky.
-    #
-    # The stack of shitty webservers we used in 2008 would reject data that was too long.
-    # So Pete decided the best solution was to gzip the data -- but only the summary(!).
-    # Since he's using curl -d instead of curl -F,
-    # that means he has to deal with escaping gzip's arbitrary bytes.
-    # So OF COURSE he invented his own way to do that.
-    #
-    # Since the server side is hard-coded to expect this exact format,
-    # we have to keep doing it here.  SIGH.
-
-    # Based closely on prisonpc:eric/eric-apps/discokay.py.
-    from gzip import compress
-    from base64 import urlsafe_b64encode
-
-    response = do_POST_with_retry('https://ppc-services/discokay',
-                                  {'uid': prisonpc_active_user().pw_uid,
-                                   'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
-                                   'summary': urlsafe_b64encode(compress(data_lucid(device).encode()))})
 
     return response
 
