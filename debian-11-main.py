@@ -169,6 +169,7 @@ if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
 
 template_wants_GUI = args.template.startswith('desktop')
+template_wants_DVD = args.template.startswith('desktop')
 template_wants_disks = args.template in {'dban', 'zfs', 'understudy', 'datasafe3'}
 template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
 template_wants_PrisonPC = (
@@ -562,6 +563,15 @@ if args.boot_test:
             (f'break={args.maybe_break}'
              if args.maybe_break else '')])
 
+        if template_wants_DVD:
+            dummy_DVD_path = testdir / 'dummy.iso'
+            subprocess.check_call([
+                'wget2',
+                '--quiet',
+                '--output-document', dummy_DVD_path,
+                '--http-proxy', apt_proxy,
+                'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso'])
+
         if template_wants_disks:
             dummy_path = testdir / 'dummy.img'
             size0, size1, size2 = 1, 64, 128  # in MiB
@@ -677,6 +687,9 @@ if args.boot_test:
                    common_boot_args]),
                '--drive', f'file={testdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
               if not args.netboot_only else []),
+            *(['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
+               '--boot', 'order=n']
+              if template_wants_DVD else []),
             *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
               if template_wants_disks else [])])
