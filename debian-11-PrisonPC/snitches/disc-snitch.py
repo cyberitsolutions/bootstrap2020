@@ -160,10 +160,7 @@ def main():
             device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)), file=sys.stderr, flush=True)
 
         try:
-            if pathlib.Path('/require-lucid-disc-snitch').exists():
-                answer = ask_lucid_server_about(device)
-            else:
-                answer = ask_jessie_server_about(device)
+            answer = ask_lucid_server_about(device)
             print('<7>Server said "{}".'.format(answer), file=sys.stderr, flush=True)
 
             # FIXME: in here, check what 'answer' is and allow/lock/eject.
@@ -189,31 +186,6 @@ def main():
             eject(device)
 
 
-# NB: this is proof-of-concept code for the https://alloc.cyber.com.au/task/task.php?taskID=24643 cleanup.
-# As at 15.09, it is not used.
-def data_jessie(device):
-    return '\n'.join(
-        # This content is directly visible by prison staff as a <PRE> block,
-        # when considering whether to approve/reject a disc.
-        # So, start with a nicely formatted list of metadata.
-        #
-        # Since the server turns into a disc UUID,
-        # we MUST only give data about the disc (not the drive).
-        sorted(['{}: {}'.format(key, device.properties[key])
-                for key in device.properties
-                if key.startswith('ID_CDROM_MEDIA_')
-                or key.startswith('ID_FS_')]) +
-        ['',                    # blank separator line
-         subprocess.check_output(['cd-info',
-                                  '--no-header',
-                                  '--no-cddb',
-                                  '--no-device-info',
-                                  '--dvd',
-                                  '--iso9660',
-                                  device.properties['DEVNAME']],
-                                 universal_newlines=True)])
-
-
 # The output of cd-info is more robust and detailed than
 # the output from lsdvd + isoinfo.
 #
@@ -231,12 +203,6 @@ def data_jessie(device):
 # The former has (and had!) problems if the GUI mounted the disc,
 # so we use the latter.  It seems to be working.  --twb, Oct 2015
 def data_lucid(device):
-    # Bypass ALL this ugliness unless explicitly enabled.
-    # NB: This is separate from /require-lucid-disc-snitch,
-    # because during migration we send data_lucid *AND* data_jessie.
-    if not pathlib.Path('/require-lucid-disc-snitch-data').exists():
-        return 'UNUSED'
-
     # NB: Pete used to run lsdvd when ID_CDROM_MEDIA_DVD=="1";
     # (i.e. when the *disc type* is a DVD, not a CD).
     # But lsdvd only works when there are .VOB files (i.e. a movie).
@@ -350,31 +316,6 @@ def prisonpc_active_user():
         return pwd.getpwuid(uids[0])
     else:
         raise Exception(f"Only 1 active session allowed at a time, got: {uids}")
-
-
-# NB: this is proof-of-concept code for the https://alloc.cyber.com.au/task/task.php?taskID=24643 cleanup.
-# As at 15.09, it is not used.
-def ask_jessie_server_about(device):
-    from gzip import compress
-    from base64 import urlsafe_b64encode
-
-    form_data = {
-        'user': prisonpc_active_user().pw_name,
-        'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
-        'data': data_jessie(device),
-        'data_pete': urlsafe_b64encode(compress(data_lucid(device).encode())),
-    }
-    # Rather than having to join & split all the metadata,
-    # just pass them as individual fields.
-    # The server's method will get them as **kwargs.
-    # Then the server can evolve to use them later,
-    # without needing updates on the desktop side.
-    # FIXME: What if the device fields overwrite the fields used above?
-    form_data.update({key: device.properties[key] for key in device.properties})
-    response = do_POST_with_retry('https://ppc-services/discokay',
-                                  form_data)
-
-    return response
 
 
 def ask_lucid_server_about(device):
