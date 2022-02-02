@@ -44,20 +44,16 @@
 # FIXME: crash output goes to .xsession-errors (or NOWHERE?!)
 #        This ought to be fixed sometime!
 
-import argparse
 import os
 import syslog
 import configparser
-
-import xdg.DesktopEntry
-import xdg.Menu
 
 import gi
 gi.require_version('Wnck', '3.0')
 import gi.repository.Wnck       # noqa: E402
 
 
-def main():
+if True:
     # Set the syslog service name (defaults: LOG_USER, LOG_INFO, 'python2', no PID).
     # FIXME: if this script crashes, the exception & backtrace go to stderr,
     # which ends up in ~p1234/.xsession-errors, NOT syslog!
@@ -77,7 +73,7 @@ def main():
             # If you open a window then close it,
             # instead of this, it reports xfdesktop4 as the active window.
             syslog.syslog(f'{user} is using NO APPLICATION')
-            return
+            exit()
 
         wmclass_class = window.get_class_group_name()
         wmclass_name = window.get_class_instance_name()
@@ -85,7 +81,7 @@ def main():
             syslog.syslog(
                 syslog.LOG_ERR,
                 f'{user} is using UNKNOWN APPLICATION')
-            return
+            exit()
 
     finally:
         # wnck has REALLY dire warnings about what happens if you do not
@@ -115,75 +111,3 @@ def main():
         nice_app_name += f' ({wmclass_class})'
 
     syslog.syslog(f'{user} is using {nice_app_name}')
-
-
-def create_lookup_table():
-    lookup_table = configparser.ConfigParser()
-    lookup_table['wm_class2name'] = {}
-    menu = xdg.Menu.parse('/etc/xdg/menus/xfce-applications.menu')
-    walk(acc=lookup_table['wm_class2name'], menu=menu)
-    kludge(lookup_table)
-    with open('/usr/share/bootstrap2020-popularity-contest.ini', 'w') as f:
-        lookup_table.write(f)
-
-
-def walk(acc, menu):
-    # FIXME: for some reason, "for entry in menu.getEntries()" was walking over the Settings menu,
-    # but *NOT* over any other menus (e.g. Office).  But menu.getMenu('Office') worked!
-    # I gave up using the official API and instead just iterated over the internal Submenus attribute.
-    # I don't understand *WHY* this works, but it is good enough for now. --twb, Sep 2016
-    for entry in list(menu.getEntries()) + list(menu.Submenus):
-        if isinstance(entry, xdg.Menu.Separator):
-            continue
-        elif isinstance(entry, xdg.Menu.Menu):
-            walk(acc, entry)
-        elif isinstance(entry, xdg.Menu.MenuEntry):
-            assert entry.Filename.endswith('.desktop')
-
-            key1 = entry.DesktopEntry.getName()
-            key2 = entry.Filename[:-len('.desktop')]
-
-            # FIXME: what happens with multi-menu paths?
-            value = menu.getPath()
-            if value:
-                value += ' > '
-            value += entry.DesktopEntry.getName()
-
-            acc[key1] = acc[key2] = value
-
-            # Often we have filename mismatches.
-            # For example,
-            #     xfce-settings-manager.desktop
-            #     Exec=xfce4-settings-manager
-            # For example,
-            #     org.gnome.Quadrapassel.desktop
-            #     Exec=/usr/bin/quadrapassel %U
-            # Try to add those to the lookup table, too.
-            if key3 := entry.DesktopEntry.getExec().split()[0].split('/')[-1]:
-                acc[key3] = acc[key1]
-
-        else:
-            raise NotImplementedError(type(entry), entry)
-
-
-def kludge(lookup_table):
-    lookup_table.read('/usr/share/bootstrap2020-popularity-contest-errata.ini')
-    # configparser handles wm_class2name overlaps implicitly.
-    # We now have to handle wm_class2desktop ourselves.
-    acc = lookup_table['wm_class2name']
-    for wm_class, desktop in lookup_table['wm_class2desktop'].items():
-        if (desktop in acc) and (wm_class not in acc):
-            acc[wm_class] = acc[desktop]
-    # We're done with wm_class2desktop so remove it.
-    # Only wm_class2name is needed at runtime.
-    del lookup_table['wm_class2desktop']
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--generate', action='store_true')
-    args = parser.parse_args()
-    if args.generate:
-        create_lookup_table()   # runs as root at SOE build time
-    else:
-        main()                  # runs as user after GUI login
