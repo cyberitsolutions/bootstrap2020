@@ -477,7 +477,7 @@ with tempfile.TemporaryDirectory() as td:
                '    python3-systemd python3-pyudev'  # for *-snitch.py
                '    python3-xdg'                     # for popcon.py
                '    libgs9'                          # for lawyers-make-bad-pdfs/compress.py
-               '    genisoimage lsdvd'  # for disc-snitch.py
+               '    libcdio-utils'  # for disc-snitch.py
                '    fonts-prisonpc'
                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
                '    prayer-templates-prisonpc'
