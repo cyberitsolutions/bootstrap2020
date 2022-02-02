@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import logging
+import os
 import pathlib
 import subprocess
 
@@ -33,6 +34,21 @@ try:
     pathlib.Path('~/.xsession-errors').expanduser().resolve().unlink()
 except FileNotFoundError:
     logging.info('~/.xsession-errors did not exist, so not removing.')
+
+# UPDATE: in debian-11-PrisonPC.hooks/customize20-disable-xinitrc.py
+#         we run
+#         update-alternatives --set x-session-manager /usr/bin/xfce4-session
+#         which skips harmful startxfce4 wrapper.
+#         The one thing we want from that to tell Chromium & Qt apps
+#         "this is an XFCE session, so please use the GTK theme"
+#         As a slightly messy workaround, do so here.
+# UPDATE: we need all four variables because of e.g.
+#         https://sources.debian.org/src/libreoffice/1:7.3.0%7Erc2-3/vcl/unx/generic/desktopdetect/desktopdetector.cxx/?hl=174#L174
+os.environ.update(
+    DESKTOP_SESSION='xfce',
+    XDG_CONFIG_DIRS='/etc/xdg',
+    XDG_CURRENT_DESKTOP='XFCE',
+    XDG_MENU_PREFIX='xfce-')
 
 # Call the Debian's default X session.
 # This skips /etc/X11/xdm/Xsession.dpkg-dist, which
