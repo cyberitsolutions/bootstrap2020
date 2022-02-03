@@ -116,7 +116,7 @@ def main():
             '1' == device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', None) and
             not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', False) and
             not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
-            print('<7>Blank disc, not processing.', file=sys.stderr)
+            print('<7>Blank disc, not processing.', file=sys.stderr, flush=True)
             continue
 
 
