@@ -4,7 +4,7 @@
 {"HomepageLocation": "https://PPCAdm/",
  "WebAppInstallForceList": [
     {"fallback_app_name": "PrisonPC Admin",
-     "url": "http://PPCAdm/",
+     "url": "https://PPCAdm/",
      "create_desktop_shortcut": true}],
 
  // In ppcadm, "Browse p123's home directory" just links to sftp://p123@inmates/p123.
