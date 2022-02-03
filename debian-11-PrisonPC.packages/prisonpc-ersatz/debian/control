@@ -168,6 +168,7 @@ Conflicts:
  ifupdown2,
  ifupdown-multi,
  mobile-broadband-provider-info,
+ modemmanager, usb-modeswitch, comgt, wvdial,
  modem-manager-gui,
  isc-dhcp-client,
  isc-dhcp-server,
