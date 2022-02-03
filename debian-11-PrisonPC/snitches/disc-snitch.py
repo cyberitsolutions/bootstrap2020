@@ -185,6 +185,13 @@ def main():
             print('<3>', error, file=sys.stderr, flush=True)
             eject(device)
 
+        # Now we use urllib instead of curl, we have to catch timeouts separately...
+        # If we do not do this, instead of just ejecting the drive,
+        # we crash, and systemd reboots the whole computer!
+        except TimeoutError as error:
+            print('<3>', error, file=sys.stderr, flush=True)
+            eject(device)
+
 
 # The output of cd-info is more robust and detailed than
 # the output from lsdvd + isoinfo.
@@ -289,18 +296,25 @@ def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_dela
                 answer = req.read().decode(encoding)
 
             return answer
-        except:  # noqa: E722
-            # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
-            exc_type, exc, exc_tb = sys.exc_info()
-            print(f"<5>Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}", file=sys.stderr, flush=True)
+        except urllib.error.HTTPError as e:
+            should_retry = (
+                e.code = 101 or        # OSError: [Errno 101] Network is unreachable ???
+                e.code == 408 or       # HTTP 408
+                (500 <= e.code < 600))  # HTTP 5xx
+            if not should_retry:
+                raise
+            else:
+                # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
+                exc_type, exc, exc_tb = sys.exc_info()
+                print(f"<5>Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}", file=sys.stderr, flush=True)
 
-            # Where previously Curl would take a while to fail,
-            # Python seems to immediately recognise there's no network and raise a
-            # urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
-            # This results in ~1000 retries before things actually succeed,
-            # and I have no idea how many attempts before the retry_max_time was reached.
-            if retry_delay:
-                time.sleep(retry_delay)
+                # Where previously Curl would take a while to fail,
+                # Python seems to immediately recognise there's no network and raise a
+                # urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
+                # This results in ~1000 retries before things actually succeed,
+                # and I have no idea how many attempts before the retry_max_time was reached.
+                if retry_delay:
+                    time.sleep(retry_delay)
     else:
         raise TimeoutError("Retry limits exceeded while trying to snitch")
 
