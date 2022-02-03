@@ -336,7 +336,7 @@ def ask_lucid_server_about(device):
     from gzip import compress
     from base64 import urlsafe_b64encode
 
-    response = do_POST_with_retry('https://ppc-services/discokay',
+    response = do_POST_with_retry('https://PrisonPC/discokay',
                                   {'uid': prisonpc_active_user().pw_uid,
                                    'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
                                    'summary': urlsafe_b64encode(compress(data_lucid(device).encode()))})
