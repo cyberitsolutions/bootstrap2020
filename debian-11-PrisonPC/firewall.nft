@@ -158,4 +158,15 @@ table inet PrisonPC {
     }
 
 
+    # FIXME: I'm seeing this in --boot-test VMs (which have a log-a-fixme rule):
+    #
+    #     OUTPUT FIXME
+    #     IN= OUT=enp0s1
+    #     SRC=fe80:0000:0000:0000:5054:00ff:fe12:3456
+    #     DST=ff02:0000:0000:0000:0000:0000:0000:0002
+    #     LEN=56 TC=0 HOPLIMIT=255 FLOWLBL=500728 PROTO=ICMPv6 TYPE=133 CODE=0
+    #
+    # That is https://en.wikipedia.org/wiki/Multicast_address#Notable_IPv6_multicast_addresses
+    # Should we do something about this?
+
 }
