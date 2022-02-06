@@ -89,7 +89,7 @@ def packages():
 #        What's up with that?
 if search_dirs:
     packages_old = packages()
-    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'install', '--assume-yes', *build_dependencies])
+    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'install', '--mark-auto', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
     # FIXME: use subprocess.check_call([..., path.name], cwd=path.parent) ?
@@ -123,7 +123,6 @@ if search_dirs:
     #         For example "aptitude install 'perl+&M'; aptitude autoremove" may or may not remove perl,
     #         depending on whether debconf was already installed.
     #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
-    subprocess.check_call(['chroot', args.chroot_path, 'apt-mark', 'auto', *build_dependencies])
     subprocess.check_call(['chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
     packages_new = packages()
     if problems := (packages_old ^ packages_new) - acceptable_risks:
