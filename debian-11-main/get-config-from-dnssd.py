@@ -93,7 +93,7 @@ if rr := lookup_service('relp'):
         'module(load="omrelp")\n'
         f'action(type="omrelp" target="{rr.target}" port="{rr.port}" template="RSYSLOG_SyslogProtocol23Format")\n')
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-journald.conf').write_text(
-        'module(load="imuxsock")\n')
+        'module(load="imjournal")\n')
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-kernel.conf').write_text(
         'module(load="imklog")\n'
         # FIXME: this is a dirty dirty kludge.
