@@ -717,18 +717,19 @@ for host in args.upload_to:
         f'cp -at /srv/netboot/images/{destdir.name}/ /srv/netboot/images/{args.template}-previous/site.dir'])
     subprocess.check_call(
         ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-latest'])
-    soes = set(subprocess.check_output(
-        ['ssh', host, 'tca get soes'],
-        text=True).strip().splitlines())
-    soes |= {f'{args.template}-latest',
-             f'{args.template}-previous'}
-    subprocess.run(
-        ['ssh', host, 'tca set soes'],
-        text=True,
-        check=True,
-        input='\n'.join(sorted(soes)))
-    # Sync /srv/netboot to /srv/tftp &c.
-    subprocess.check_call(['ssh', host, 'tca', 'commit'])
+    if host in ('tweak', 'tweak.prisonpc.com'):  # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
+        soes = set(subprocess.check_output(
+            ['ssh', host, 'tca get soes'],
+            text=True).strip().splitlines())
+        soes |= {f'{args.template}-latest',
+                 f'{args.template}-previous'}
+        subprocess.run(
+            ['ssh', host, 'tca set soes'],
+            text=True,
+            check=True,
+            input='\n'.join(sorted(soes)))
+        # Sync /srv/netboot to /srv/tftp &c.
+        subprocess.check_call(['ssh', host, 'tca', 'commit'])
 
 if args.remove_afterward:
     shutil.rmtree(destdir)
