@@ -43,7 +43,9 @@
     <property name="enabled" type="bool" value="false"/>
   </property>
   <property name="autoburn" type="empty">
-    <property name="enabled" type="bool" value="true"/>
+    <!-- Blank DVDs pop up prompts about "create blank dvd/cd", which is slightly annoying.  -->
+    <!-- Set enabled=false got rid of the prompt. -->
+    <property name="enabled" type="bool" value="false"/>
     <property name="data-cd-command" type="string" value="logger blank data cd detected"/>
     <property name="audio-cd-command" type="string" value="logger blank audio cd detected"/>
   </property>
