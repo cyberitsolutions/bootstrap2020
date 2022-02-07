@@ -24,6 +24,18 @@
 disable ssh.socket
 
 
+# We see rsyslogd eating /dev/log instead of /run/systemd/journal/syslog,
+# but ONLY when we use our get-config-from-dnssd stuff.
+# Is the REAL problem that we call "systemctl preset" which
+# enables BOTH syslog.socket AND rsyslog.service (directly), and
+# we only want rsyslog.service to start indirectly from syslog.socket?
+# i.e. exactly the same as the ssh problem.
+# Experimentally, assume that and try to fix it.
+# UPDATE: did not work because rsyslog.service needs an alias to syslog.service, or syslog.socket is pissy at us.
+# disable rsyslog.service
+enable syslog.socket
+
+
 # Some other things get enabled by preset-all.
 #
 # This search appears to show affected packages:

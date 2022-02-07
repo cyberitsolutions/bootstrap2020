@@ -87,13 +87,30 @@ def lookup_service_APT(service, protocol='tcp'):
         # https://salsa.debian.org/apt-team/apt/blob/master/doc/srv-records-support.md
         logging.warning('FIXME: add weight and priority handling')
 
-
-if rr := lookup_service('relp'):
+# NOTE: on a Debian 11 desktop-staff image on tweak.prisonpc.com,
+#       I noticed that /dev/log was a regular socket listened to by rsyslogd.
+#       It SHOULD be a symlink to /run/systemd/journal/dev-log.
+#       This meant that "logger test" appeared in tweak:/var/log/syslog but
+#       NOT in "journalctl --grep=test" on the desktop itself.
+#
+#       rsyslogd's imuxsock driver SHOULD auto-detect that /run/systemd/journal/syslog exists, and
+#       automatically listen to that instead of /dev/log.
+#       I confirmed that when /dev/log was a regular socket, "systemd-analyze plot" showed that
+#       all journald units were READY=1 *BEFORE* bootstrap2020-get-config-from-dnssd started, and
+#       bootstrap2020-get-config-from-dnssd was READY=1 *BEFORE* rsyslogd started.
+#       So it is not AT ALL clear why this is failing.
+#
+#       Until we understand this, try at least hard-coding the socket to be what is correct for our system.
+#       This should not be needed, but it definitely will not hurt.
+#
+#       https://www.rsyslog.com/doc/v8-stable/configuration/modules/imuxsock.html#coexistence-with-systemd
+#if rr := lookup_service('relp'):
+if rr := types.SimpleNamespace(target='example.com', port=2514):
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-RELP-to-logserv.conf').write_text(
         'module(load="omrelp")\n'
         f'action(type="omrelp" target="{rr.target}" port="{rr.port}" template="RSYSLOG_SyslogProtocol23Format")\n')
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-journald.conf').write_text(
-        'module(load="imuxsock")\n')
+        'module(load="imuxsock" SysSock.Name="/run/systemd/journal/syslog")\n')
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-kernel.conf').write_text(
         'module(load="imklog")\n'
         # FIXME: this is a dirty dirty kludge.

@@ -20,3 +20,15 @@ Before=rsyslog.service
 [Install]
 RequiredBy=msmtpd.service
 RequiredBy=rsyslog.service
+
+
+
+# There is a problem that I can't understand, where
+# rsyslog imuxsock thinks "is this system systemdized?" is "no".
+# This does not happen when rsyslog.conf is hard-coded.
+# This happens when get-config-from-dnssd is hooked in.
+# I *think* it is supposed to FIXME
+[Unit]
+DefaultDependencies=no
+After=systemd-journald.socket
+
