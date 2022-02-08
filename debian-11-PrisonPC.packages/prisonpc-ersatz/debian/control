@@ -259,6 +259,9 @@ Conflicts:
 # In theory an inmate could write a userland filesystem with fuse.
 # NOTE: staff need gvfs-fuse (thus fuse) for sftp:// in thunar.
  cuse,
+# Something to do with iPod portable music players.
+# I spotted it in /lib/udev/rules.d.  Fuck it, ban it.
+ usbmuxd,
 ## Inmates MUST NOT have containers (VMs)
 ## ======================================
  libvirt-daemon,
