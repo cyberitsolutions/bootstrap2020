@@ -1,10 +1,11 @@
-prisonpc-ersatz (11.16) bullseye; urgency=medium
+prisonpc-ersatz (11.18) bullseye; urgency=medium
 
   * block chromium-sandbox (obsolete, dangerous)
   * block modemmanager
   * block usbmuxd (3G/4G/5G USB modem crap)
+  * block (almost) all packages with custom udev rules.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Wed, 02 Feb 2022 10:04:03 +1100
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 08 Feb 2022 16:08:38 +1100
 
 prisonpc-ersatz (11.13) bullseye; urgency=medium
 

@@ -101,6 +101,8 @@ Conflicts:
 # Browse p123's home (sftp://)
  gvfs-backends,
  gvfs-fuse, fuse,
+# See -everyone stanza's comments re NNNNN-udev-audit.py.
+ libgphoto2-6,
 
 Package: prisonpc-bad-package-conflicts-everyone
 Depends:
@@ -259,9 +261,76 @@ Conflicts:
 # In theory an inmate could write a userland filesystem with fuse.
 # NOTE: staff need gvfs-fuse (thus fuse) for sftp:// in thunar.
  cuse,
-# Something to do with iPod portable music players.
-# I spotted it in /lib/udev/rules.d.  Fuck it, ban it.
- usbmuxd,
+# Block EVERYTHING doc/NNNNN-udev-audit.py finds creating custom udev rules,
+# except for a small set of things we actually want (e.g. udev & udisks2).
+#
+# Allow list:
+#
+#   util-linux          --- for everything (we don't need the udev hwclock part though)
+#   systemd             --- for everything
+#   udev                --- for everything
+#   udisks2             --- for DVD drive
+#   upower              --- for case power button (eventually)
+#   xserver-xorg-core   --- for video
+#   pulseaudio          --- for audio
+#   libinput-bin        --- for keyboard and mouse
+#   ir-keytable         --- for infrared TV remote control
+#   libmtp-common	--- DO NOT WANT, but needs to be nerfed as vlc & gvfs Depends on it via libmtp9
+#   libwacom-common     --- DO NOT WANT, but xserver-xorg-input-libinput Depends on it (harmless, though)
+#   dmsetup             --- DO NOT WANT, but NFSv4 client Depends on it
+#   libgphoto2-6        --- DO NOT WANT, but gvfs-backends Depends on it (staff-only, for sftp:// in thunar)
+#   e2fsprogs           --- DO NOT WANT, but already handled as prisonpc-ersatz-e2fsprogs
+#
+ 0xffff, air-quality-sensor, alsa-firmware-loaders, amazon-ec2-utils,
+ android-sdk-platform-tools-common, antpm, aoetools, argyll,
+ autorandr, avarice, avrdude, awesfx, battery-stats, bcache-tools,
+ beep, bilibop-rules, bilibop-udev, bluez, boinc-client, bolt,
+ bottlerocket, bridge-utils, brightness-udev, btrfs-progs, bumblebee,
+ casync, ceph-common, ceph-osd, ckb-next, cloud-init, colord,
+ concordance-common, console-setup-linux, crda, dahdi, dahdi-linux,
+ dfu-util, digimend-dkms, direwolf, dlm-controld, dmraid, dmrconfig,
+ docker.io, drbd-utils, driverctl, eegdev-plugins-free,
+ ekeyd, elogind, esptool, feedbackd, flashrom, fpga-icestorm, fwupd,
+ g15daemon, g810-led, galileo, galileo-daemon,
+ garmin-forerunner-tools, gcpegg, gdm3, gfs2-utils,
+ gnome-settings-daemon-common, gobi-loader, goldencheetah, gpsd,
+ gr-fcdproplus, guestfsd, hdmi2usb-udev, hdparm, heimdall-flash,
+ hylafax-server, hyperv-daemons, i2c-tools, ifplugd, ifrename,
+ ifupdown, iio-sensor-proxy, infnoise, inputattach, ipheth-utils,
+ ipp-usb, isight-firmware-tools, joystick, kdump-tools,
+ kinect-audio-setup, knxd, kodi-peripheral-xarcade, kpartx,
+ laptop-mode-tools, lcdproc, ledger-wallets-udev, libacsccid1,
+ libairspy0, libairspyhf1, libam7xxx0.1, libasedrive-usb, libbladerf2,
+ libbmusb6, libccid, libcomedi0, libdjconsole-data, libffado2,
+ libfprint-2-2, libfreenect0.5, libgaminggear0, libgpod-common,
+ libhackrf0, libhamlib4, libifd-cyberjack6, libiio0,
+ libirecovery-common, libkf5bluezqt-data, libmirisdr0, libnfc6,
+ libnitrokey-common, libnjb5, libnxt, libopenni-sensor-pointclouds0,
+ libopenni-sensor-primesense0, libopenni2-0, libopenobex2,
+ libosmosdr0, libpsm2-2-compat, librem5-tweaks, librtlsdr0,
+ libsane-hpaio, libsane1, libsigrok4, libticables2-7, libvpb1,
+ libx52pro0, libxtrxll0, libyubikey-udev, light, limesuite-udev,
+ liquidctl, lomoco, ltunify, lvm2, madfuload, madwimax,
+ mate-settings-daemon-common, mdadm, mdevctl, media-player-info,
+ midisport-firmware, minidisc-utils, mobile-tweaks-common,
+ modemmanager, moosefs-chunkserver, msi-keyboard, mspdebug, mt-st,
+ mtkbabel, mu-editor, multipath-tools, mustang-plug, mutter-common,
+ nbc, netscript-2.4, network-manager, nqc, nut-ipmi, nut-server,
+ nvidia-kernel-common, nvme-cli, ocfs2-tools, ofono, ola, open-iscsi,
+ open-vm-tools, opencpn, openocd, openrazer-driver-dkms, osspd,
+ pcmciautils, pipewire-bin, ponyprog, printer-driver-foo2zjs,
+ projecteur, python3-btchip, qemu-guest-agent, qlcplus,
+ qthid-fcd-controller, razercfg, rdma-core, rear, scanbd, scdaemon,
+ sg3-utils-udev, solaar, spectools, spice-vdagent, spice-webdavd,
+ srptools, steam-devices, stlink-tools, sunxi-tools, swupdate,
+ system-config-printer-udev, t2n, teensy-loader-cli,
+ thunderbolt-tools, tlp, tlp-rdw, tpb, tpm-udev, trezor, triggerhappy,
+ tucnak, ubertooth, udftools, udisks2-zram, uhd-host,
+ ukui-power-manager, ukui-settings-daemon, usb-modeswitch-data,
+ usbauth, usbmuxd, usbrelay, voctomix-outcasts, w1retap, waagent,
+ x2gothinclient-smartcardrules, x2gothinclient-usbmount,
+ xperia-flashtool, xpra, xr-hardware, xserver-xorg-input-wacom,
+ xtrx-dkms, zfsutils-linux,
 ## Inmates MUST NOT have containers (VMs)
 ## ======================================
  libvirt-daemon,
