@@ -66,11 +66,11 @@ for path in (args.chroot_path / 'usr/share/applications').glob('**/*.desktop'):
     if path.stem == 'crack-attack':
         app['Desktop Entry']['Exec'] = 'crack-attack --solo'
 
-    # FIXME: is this still needed/useful in Debian 11?
     # Xsession.d makes apps cache to /run/user/1234/cache;
     # This moves it back to ~/.cache for xmoto only.
     # Without this, xmoto is ALWAYS slow to start.
     # https://alloc.cyber.com.au/task/task.php?taskID=32799
+    # UPDATE: this IS still useful in Debian 11.
     if path.stem == 'xmoto':
         app['Desktop Entry']['Exec'] = 'env -u XDG_CACHE_HOME xmoto'
 
