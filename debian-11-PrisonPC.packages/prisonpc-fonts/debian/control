@@ -29,6 +29,8 @@ Depends:
 # UI font family — DejaVu
  fonts-dejavu-core,
  fonts-dejavu-extra,
+# Color Emoji family — Noto Color Emoji
+ fonts-noto-color-emoji,
 # Print font family — Liberation 2
 # Replaces Adobe family (Helvetica/Times/Courier)
 # Replaces MS XP family (Arial/TimesNewRoman/CourierNew)
