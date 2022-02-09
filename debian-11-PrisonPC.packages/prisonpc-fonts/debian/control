@@ -47,7 +47,22 @@ Depends:
 # NOTE: fonts-noto-cjk not installed ∵ huge install footprint.
 # NOTE: fonts-noto-unhinted not installed ∵ no demand.
  fonts-noto-hinted,
- fonts-noto-mono
-Provides:  fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
-Conflicts: fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
-Replaces:  fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
+ fonts-noto-mono,
+Provides:
+ fonts-croscore,
+ fonts-droid-fallback,
+ fonts-freefont-ttf,
+ fonts-liberation,
+ fonts-linuxlibertine,
+Conflicts:
+ fonts-croscore,
+ fonts-droid-fallback,
+ fonts-freefont-ttf,
+ fonts-liberation,
+ fonts-linuxlibertine,
+Replaces:
+ fonts-croscore,
+ fonts-droid-fallback,
+ fonts-freefont-ttf,
+ fonts-liberation,
+ fonts-linuxlibertine,
