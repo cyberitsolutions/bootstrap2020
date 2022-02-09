@@ -42,6 +42,8 @@ Depends:
  fonts-crosextra-carlito,
  fonts-crosextra-caladea,
  fonts-inconsolata,
+ fonts-courier-prime,
+ fonts-comic-neue,
 # Fallback font family — Noto
 # Replaces Droid Sans Fallback
 # NOTE: fonts-noto-cjk not installed ∵ huge install footprint.
