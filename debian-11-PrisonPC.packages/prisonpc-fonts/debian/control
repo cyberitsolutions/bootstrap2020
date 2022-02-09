@@ -31,15 +31,15 @@ Depends:
  fonts-dejavu-extra,
 # Color Emoji family — Noto Color Emoji
  fonts-noto-color-emoji,
-# Print font family — Liberation 2
+# PDF font family — Liberation 2
 # Replaces Adobe family (Helvetica/Times/Courier)
-# Replaces MS XP family (Arial/TimesNewRoman/CourierNew)
+# Replaces Windows XP family (Arial/TimesNewRoman/CourierNew)
 # Replaces GNU Freefont family
 # Replaces Liberation 1 family
 # Replaces CrOS Core family
  fonts-liberation2,
 # Print font family extras
-# Replaces MS Vista family (Cambria/Calibri/Consolas)
+# Replaces Windows Vista family (Cambria/Calibri/Consolas)
 # https://en.wikipedia.org/wiki/Category:Windows_Vista_typefaces
  fonts-crosextra-carlito,
  fonts-crosextra-caladea,
@@ -52,6 +52,9 @@ Depends:
 # NOTE: fonts-noto-unhinted not installed ∵ no demand.
  fonts-noto-core,
  fonts-noto-mono,
+# Dingbats / Webdings / Wingdings — Noto
+# Noto provides this as "NotoSansSymbols-Regular.ttf" et al.
+# Replaces fonts-opensymbol (Libreoffice).
 Provides:
  fonts-croscore,
  fonts-droid-fallback,
@@ -59,6 +62,7 @@ Provides:
  fonts-lato,
  fonts-liberation,
  fonts-linuxlibertine,
+ fonts-opensymbol (= 111:1),
 Conflicts:
  fonts-croscore,
  fonts-droid-fallback,
@@ -66,6 +70,7 @@ Conflicts:
  fonts-lato,
  fonts-liberation,
  fonts-linuxlibertine,
+ fonts-opensymbol,
 Replaces:
  fonts-croscore,
  fonts-droid-fallback,
@@ -73,6 +78,7 @@ Replaces:
  fonts-lato,
  fonts-liberation,
  fonts-linuxlibertine,
+ fonts-opensymbol,
 
 
 Package: fonts-prisonpc
