@@ -50,7 +50,7 @@ Depends:
 # Replaces Droid Sans Fallback
 # NOTE: fonts-noto-cjk not installed ∵ huge install footprint.
 # NOTE: fonts-noto-unhinted not installed ∵ no demand.
- fonts-noto-hinted,
+ fonts-noto-core,
  fonts-noto-mono,
 Provides:
  fonts-croscore,
