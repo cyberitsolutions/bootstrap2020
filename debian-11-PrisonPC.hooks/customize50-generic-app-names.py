@@ -74,6 +74,13 @@ for path in (args.chroot_path / 'usr/share/applications').glob('**/*.desktop'):
     if path.stem == 'xmoto':
         app['Desktop Entry']['Exec'] = 'env -u XDG_CACHE_HOME xmoto'
 
+    # https://alloc.cyber.com.au/task/task.php?taskID=30698
+    # https://bugs.debian.org/685198
+    # https://sources.debian.org/src/audacity/2.4.2%7Edfsg0-5/src/AudacityApp.cpp/#L1155
+    # UPDATE: this IS still useful in Debian 11.
+    if path.stem == 'audacity':
+        app['Desktop Entry']['Exec'] = 'sh -c "export TMPDIR=$XDG_CACHE_HOME; exec audacity"'
+
     # Write out the entire .desktop file, as-amended.
     with path.open('w') as f:
         app.write(f, space_around_delimiters=False)
