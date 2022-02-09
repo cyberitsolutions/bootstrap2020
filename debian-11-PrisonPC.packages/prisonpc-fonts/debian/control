@@ -66,3 +66,56 @@ Replaces:
  fonts-freefont-ttf,
  fonts-liberation,
  fonts-linuxlibertine,
+
+
+Package: fonts-prisonpc
+Architecture: all
+Multi-Arch: foreign
+Description: shorthand for both font packages
+ FIXME: detailed description here.
+Depends:
+ ${misc:Depends},
+ fonts-prisonpc-core,
+ fonts-prisonpc-extra,
+# NOTE: in Debian 9, opendyslexic was in "prisonpc-core-fonts".
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5934461
+# gives experimental evidence that OpenDyslexic DOES NOT HELP.
+# Despite this, AMC insisted that we provide it.
+# I suspect it was an inmate making excuses:
+# "I can't do my homework because I don't have a dyslexic font."
+# https://alloc.cyber.com.au/task/task.php?taskID=34172
+# Ron told me to make it available for all sites.
+ fonts-opendyslexic,
+
+
+Package: fonts-prisonpc-extra
+Architecture: all
+Multi-Arch: foreign
+Description: decorative fonts
+ These fonts were chosen fairly arbitrarily, long ago (in 2014).
+ .
+ I think the intent was just to fill out the Fonts drop-down in LibreOffice with
+ some "play" fonts -- the moral equivalent of Comic Sans and Charybdis.
+Depends:
+ ${misc:Depends},
+ fonts-beteckna,
+ fonts-breip,
+ fonts-cabin,
+ fonts-cantarell,
+ fonts-century-catalogue,
+ fonts-comfortaa,
+ fonts-dancingscript,
+ fonts-dosis,
+ fonts-ecolier-court,
+ fonts-fanwood,
+ fonts-jura,
+ fonts-levien-museum,
+ fonts-lindenhill,
+ fonts-lobster,
+ fonts-opendin,
+# Not available in Debian 11.
+#fonts-pecita,
+ fonts-play,
+ fonts-prociono,
+ fonts-quattrocento,
+ fonts-rufscript,
