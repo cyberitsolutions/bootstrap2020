@@ -54,18 +54,21 @@ Provides:
  fonts-croscore,
  fonts-droid-fallback,
  fonts-freefont-ttf,
+ fonts-lato,
  fonts-liberation,
  fonts-linuxlibertine,
 Conflicts:
  fonts-croscore,
  fonts-droid-fallback,
  fonts-freefont-ttf,
+ fonts-lato,
  fonts-liberation,
  fonts-linuxlibertine,
 Replaces:
  fonts-croscore,
  fonts-droid-fallback,
  fonts-freefont-ttf,
+ fonts-lato,
  fonts-liberation,
  fonts-linuxlibertine,
 

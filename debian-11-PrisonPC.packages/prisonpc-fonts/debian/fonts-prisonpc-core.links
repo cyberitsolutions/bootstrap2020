@@ -77,3 +77,24 @@
 
 /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf                       /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf
 /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf                       /usr/share/fonts-droid-fallback/truetype/DroidSansFallback.ttf
+
+
+# Lato has several weights, but it's unlikely any apps ACTUALLY care about those weights.
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf              /usr/share/fonts/truetype/lato/Lato-Hairline.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf              /usr/share/fonts/truetype/lato/Lato-Light.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf              /usr/share/fonts/truetype/lato/Lato-Medium.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf              /usr/share/fonts/truetype/lato/Lato-Regular.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf              /usr/share/fonts/truetype/lato/Lato-Semibold.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf              /usr/share/fonts/truetype/lato/Lato-Thin.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf      /usr/share/fonts/truetype/lato/Lato-HairlineItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf      /usr/share/fonts/truetype/lato/Lato-Italic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf      /usr/share/fonts/truetype/lato/Lato-LightItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf      /usr/share/fonts/truetype/lato/Lato-MediumItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf      /usr/share/fonts/truetype/lato/Lato-SemiboldItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf      /usr/share/fonts/truetype/lato/Lato-ThinItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf         /usr/share/fonts/truetype/lato/Lato-Black.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf         /usr/share/fonts/truetype/lato/Lato-Bold.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf         /usr/share/fonts/truetype/lato/Lato-Heavy.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf  /usr/share/fonts/truetype/lato/Lato-BlackItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf  /usr/share/fonts/truetype/lato/Lato-BoldItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf  /usr/share/fonts/truetype/lato/Lato-HeavyItalic.ttf
