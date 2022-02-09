@@ -9,6 +9,21 @@ Build-Depends: debhelper-compat (= 13)
 
 # https://alloc.cyber.com.au/task/task.php?taskID=31276
 Package: fonts-prisonpc-core
+Architecture: all
+Multi-Arch: foreign
+Description: core PrisonPC fonts
+ This package ensures the best implementation of core fonts are installed.
+ .
+ This package also prevents other implementations of core fonts from being
+ installed, and provides compatibility symlinks for same.
+ .
+ This is necessary because legacy apps like upmc, minetest, childsplay and
+ gargoyle-free do not use fontconfig to find the system default font, but
+ instead hard-code the path to a specific font file.
+ .
+ Having multiple copies of identical-looking fonts is confusing for end users,
+ and can cause regressions if they create a document with FreeSans on a Games
+ SOE, then try to print it on a Work SOE.
 Depends:
  ${misc:Depends},
 # UI font family — DejaVu
@@ -36,27 +51,3 @@ Depends:
 Provides:  fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
 Conflicts: fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
 Replaces:  fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
-Architecture: all
-Description: core PrisonPC fonts
- This package ensures the best implementation of core fonts are installed.
- .
- Tinos (CrOS Core) covers about 2.5k codepoints.
- FreeSerif (GNU FreeFont) covers about 10.5k codepoints.
- Droid Sans Fallback covers about 50k codepoints.
- This package also prevents other implementations of core fonts from being
- installed, and provides compatibility symlinks for same.
- .
- We install Droid Sans Fallback,
- so there is no need to provide FreeFont to provide a "fallback font".
- This is necessary because legacy apps like upmc, minetest, childsplay and
- gargoyle-free do not use fontconfig to find the system default font, but
- instead hard-code the path to a specific font file.
- .
- Our recommended usage is:
- .
-  * DejaVu Sans / Serif / Sans Mono for screen UI elements.
-  * CrOS Core Tinos / Arimo / Cousine for printing & office docs.
-  * Droid Sans Fallback for any codepoints note covered above.
- .
- NOTE: As at Jul 2016, Droid Sans Fallback is called "Noto Sans Mono".
- The references to Droid above are because Jessie predates this change.
