@@ -8,8 +8,9 @@ Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13)
 
 # https://alloc.cyber.com.au/task/task.php?taskID=31276
-Package: prisonpc-core-fonts
-Depends: ${misc:Depends},
+Package: fonts-prisonpc-core
+Depends:
+ ${misc:Depends},
 # UI font family — DejaVu
  fonts-dejavu-core,
  fonts-dejavu-extra,
