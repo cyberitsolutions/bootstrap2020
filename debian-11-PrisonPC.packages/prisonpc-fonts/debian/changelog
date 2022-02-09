@@ -1,3 +1,9 @@
+prisonpc-fonts (0~prisonpc5) stretch; urgency=medium
+
+  * Stretch upgrade; expand font metapackage.
+
+ -- Trent W. Buck <twb@cyber.com.au>  Fri, 12 Jan 2018 00:00:00 +1100
+
 prisonpc-fonts (0~prisonpc2) jessie; urgency=medium
 
   * use a separate package; start small

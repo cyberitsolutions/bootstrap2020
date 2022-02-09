@@ -8,22 +8,48 @@ Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13)
 
 # https://alloc.cyber.com.au/task/task.php?taskID=31276
-Package: prisonpc-ersatz-freefont
-Depends: ${misc:Depends}, fonts-dejavu-core
-Provides:  fonts-freefont-ttf
-Conflicts: fonts-freefont-ttf
-Replaces:  fonts-freefont-ttf
-Recommends: fonts-croscore, fonts-noto-mono | fonts-droid
+Package: prisonpc-core-fonts
+Depends: ${misc:Depends},
+# UI font family — DejaVu
+ fonts-dejavu-core,
+ fonts-dejavu-extra,
+# Print font family — Liberation 2
+# Replaces Adobe family (Helvetica/Times/Courier)
+# Replaces MS XP family (Arial/TimesNewRoman/CourierNew)
+# Replaces GNU Freefont family
+# Replaces Liberation 1 family
+# Replaces CrOS Core family
+ fonts-liberation2,
+# Print font family extras
+# Replaces MS Vista family (Cambria/Calibri/Consolas)
+# https://en.wikipedia.org/wiki/Category:Windows_Vista_typefaces
+ fonts-crosextra-carlito,
+ fonts-crosextra-caladea,
+ fonts-inconsolata,
+# Fallback font family — Noto
+# Replaces Droid Sans Fallback
+# NOTE: fonts-noto-cjk not installed ∵ huge install footprint.
+# NOTE: fonts-noto-unhinted not installed ∵ no demand.
+ fonts-noto-hinted,
+ fonts-noto-mono
+Provides:  fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
+Conflicts: fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
+Replaces:  fonts-linuxlibertine, fonts-freefont-ttf, fonts-liberation, fonts-croscore, fonts-droid-fallback
 Architecture: all
-Description: appease python-pygame
- This stub package lets us remove fonts-freefont-ttf without apt knowing.
+Description: core PrisonPC fonts
+ This package ensures the best implementation of core fonts are installed.
  .
  Tinos (CrOS Core) covers about 2.5k codepoints.
  FreeSerif (GNU FreeFont) covers about 10.5k codepoints.
  Droid Sans Fallback covers about 50k codepoints.
+ This package also prevents other implementations of core fonts from being
+ installed, and provides compatibility symlinks for same.
  .
  We install Droid Sans Fallback,
  so there is no need to provide FreeFont to provide a "fallback font".
+ This is necessary because legacy apps like upmc, minetest, childsplay and
+ gargoyle-free do not use fontconfig to find the system default font, but
+ instead hard-code the path to a specific font file.
  .
  Our recommended usage is:
  .
