@@ -79,6 +79,9 @@ Depends:
  prisonpc-bad-package-conflicts-everyone (= ${binary:Version}),
 Enhances:
  prisonpc-bad-package-conflicts-everyone,
+# This "replaces" helps if you are bisecting old bootstrap2020 commits.
+# It isn't needed for anything normal.
+Replaces: prisonpc-bad-package-conflicts,
 Architecture: all
 Description:
  Most bad packages can be banned for everyone.

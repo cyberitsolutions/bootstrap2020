@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.19) bullseye; urgency=medium
+
+  * add a Replaces to try to make bisecting old bootstrap2020 commits easier.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 09 Feb 2022 12:35:01 +1100
+
 prisonpc-ersatz (11.18) bullseye; urgency=medium
 
   * block chromium-sandbox (obsolete, dangerous)
