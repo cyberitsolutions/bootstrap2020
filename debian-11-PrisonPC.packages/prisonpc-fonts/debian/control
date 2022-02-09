@@ -1,0 +1,35 @@
+Source: prisonpc-fonts
+Section: metapackages
+Priority: optional
+Standards-Version: 4.3.0
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13)
+
+# https://alloc.cyber.com.au/task/task.php?taskID=31276
+Package: prisonpc-ersatz-freefont
+Depends: ${misc:Depends}, fonts-dejavu-core
+Provides:  fonts-freefont-ttf
+Conflicts: fonts-freefont-ttf
+Replaces:  fonts-freefont-ttf
+Recommends: fonts-croscore, fonts-noto-mono | fonts-droid
+Architecture: all
+Description: appease python-pygame
+ This stub package lets us remove fonts-freefont-ttf without apt knowing.
+ .
+ Tinos (CrOS Core) covers about 2.5k codepoints.
+ FreeSerif (GNU FreeFont) covers about 10.5k codepoints.
+ Droid Sans Fallback covers about 50k codepoints.
+ .
+ We install Droid Sans Fallback,
+ so there is no need to provide FreeFont to provide a "fallback font".
+ .
+ Our recommended usage is:
+ .
+  * DejaVu Sans / Serif / Sans Mono for screen UI elements.
+  * CrOS Core Tinos / Arimo / Cousine for printing & office docs.
+  * Droid Sans Fallback for any codepoints note covered above.
+ .
+ NOTE: As at Jul 2016, Droid Sans Fallback is called "Noto Sans Mono".
+ The references to Droid above are because Jessie predates this change.

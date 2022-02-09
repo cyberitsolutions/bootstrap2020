@@ -1,0 +1,7 @@
+prisonpc-fonts (0~prisonpc2) jessie; urgency=medium
+
+  * use a separate package; start small
+  * semi-replay old Debian 8 / 9 changes
+
+ -- Trent W. Buck <twb@cyber.com.au>  Fri, 12 Aug 2016 14:44:42 +1000
+

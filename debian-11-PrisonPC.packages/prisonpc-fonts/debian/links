@@ -1,0 +1,35 @@
+# As at upmc=0.4prisonpc11, upmc tries & fails to use "Sans",
+# the fontconfig (system-wide) default font.
+# It actually silently falls back to the pygame default font,
+# which is this:
+#
+#    /usr/lib/python2.7/dist-packages/pygame/freesansbold.ttf ->
+#    /usr/share/fonts/truetype/freefont/FreeSansBold.ttf
+#
+# Because I can't be arsed fixing UPMC right now,
+# create that symlink (& others, for paranoia) pointing at their DejaVu equivalents.
+#
+# Note that in terms of coverage, Droid Sans Fallback > FreeSans > DejaVu Sans.
+# But DejaVu Sans looks better onscreen &
+# I don't think we care too much about non-Latin in UPMC,
+# so I'm using DejaVu here.  --twb, Aug 2016 (#31276)
+#
+# NOTE: vlc also requires FreeFont, but it is only used by "gui skins2" plugin,
+# and we delete that and keep only "gui qt4" plugin.
+#
+# NOTE: DejaVu packs Roman & Italic versions in the same .ttf;
+# FreeFont does not.  This probably means italic will "break"
+# in apps using these FreeFont paths directly.
+
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf                 /usr/share/fonts/truetype/freefont/FreeSans.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf                 /usr/share/fonts/truetype/freefont/FreeSansOblique.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf            /usr/share/fonts/truetype/freefont/FreeSansBold.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf            /usr/share/fonts/truetype/freefont/FreeSansBoldOblique.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf             /usr/share/fonts/truetype/freefont/FreeMono.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf             /usr/share/fonts/truetype/freefont/FreeMonoOblique.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf        /usr/share/fonts/truetype/freefont/FreeMonoBold.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf        /usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf                /usr/share/fonts/truetype/freefont/FreeSerif.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf                /usr/share/fonts/truetype/freefont/FreeSerifItalic.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf           /usr/share/fonts/truetype/freefont/FreeSerifBold.ttf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf           /usr/share/fonts/truetype/freefont/FreeSerifBoldItalic.ttf
