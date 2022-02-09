@@ -92,6 +92,36 @@ Package: fonts-prisonpc-extra
 Architecture: all
 Multi-Arch: foreign
 Description: decorative fonts
+ A newly-chosen set of arbitrary fonts.
+ This time, I've taken them all from a single foundry.
+ As a result, they are all at least recently updated and reasonably consistent.
+ These are loose clones of existing popular fonts, which works well for us.
+ .
+ FIXME: I think a couple of these fonts overlap with "core" fonts, so
+ we should probably skip those ones.
+Depends:
+ ${misc:Depends},
+ fonts-adf-accanthis,
+ fonts-adf-baskervald,
+ fonts-adf-berenis,
+ fonts-adf-gillius,
+ fonts-adf-ikarius,
+ fonts-adf-irianis,
+ fonts-adf-libris,
+ fonts-adf-mekanus,
+ fonts-adf-oldania,
+ fonts-adf-romande,
+ fonts-adf-solothurn,
+ fonts-adf-switzera,
+ fonts-adf-tribun,
+ fonts-adf-universalis,
+ fonts-adf-verana,
+
+
+Package: fonts-prisonpc-extra-debian9
+Architecture: all
+Multi-Arch: foreign
+Description: decorative fonts
  These fonts were chosen fairly arbitrarily, long ago (in 2014).
  .
  I think the intent was just to fill out the Fonts drop-down in LibreOffice with
