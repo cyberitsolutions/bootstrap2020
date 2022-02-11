@@ -55,6 +55,7 @@ Depends:
 Provides:
  fonts-croscore,
  fonts-droid-fallback,
+ fonts-freefont-otf,
  fonts-freefont-ttf,
  fonts-lato,
  fonts-liberation,
@@ -62,6 +63,7 @@ Provides:
 Conflicts:
  fonts-croscore,
  fonts-droid-fallback,
+ fonts-freefont-otf,
  fonts-freefont-ttf,
  fonts-lato,
  fonts-liberation,
@@ -69,6 +71,7 @@ Conflicts:
 Replaces:
  fonts-croscore,
  fonts-droid-fallback,
+ fonts-freefont-otf,
  fonts-freefont-ttf,
  fonts-lato,
  fonts-liberation,

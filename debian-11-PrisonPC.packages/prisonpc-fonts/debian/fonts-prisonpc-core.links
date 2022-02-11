@@ -23,6 +23,7 @@
 # UPDATE: INCORRECT!  The Oblique/Italic versions are packaged
 # separately, in dejavu-fonts-extra. —twb, Jan 2018
 
+# fonts-freefont-ttf
 /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf                 /usr/share/fonts/truetype/freefont/FreeSans.ttf
 /usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf         /usr/share/fonts/truetype/freefont/FreeSansOblique.ttf
 /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf            /usr/share/fonts/truetype/freefont/FreeSansBold.ttf
@@ -35,6 +36,20 @@
 /usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf         /usr/share/fonts/truetype/freefont/FreeSerifItalic.ttf
 /usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf           /usr/share/fonts/truetype/freefont/FreeSerifBold.ttf
 /usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf     /usr/share/fonts/truetype/freefont/FreeSerifBoldItalic.ttf
+
+# fonts-freefont-otf
+/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf                 /usr/share/fonts/opentype/freefont/FreeSans.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf         /usr/share/fonts/opentype/freefont/FreeSansOblique.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf            /usr/share/fonts/opentype/freefont/FreeSansBold.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf     /usr/share/fonts/opentype/freefont/FreeSansBoldOblique.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf             /usr/share/fonts/opentype/freefont/FreeMono.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf     /usr/share/fonts/opentype/freefont/FreeMonoOblique.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf        /usr/share/fonts/opentype/freefont/FreeMonoBold.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf /usr/share/fonts/opentype/freefont/FreeMonoBoldOblique.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf                /usr/share/fonts/opentype/freefont/FreeSerif.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf         /usr/share/fonts/opentype/freefont/FreeSerifItalic.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf           /usr/share/fonts/opentype/freefont/FreeSerifBold.otf
+/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf     /usr/share/fonts/opentype/freefont/FreeSerifBoldItalic.otf
 
 # A handful of packages depend on fonts-liberation instead of fonts-liberation2.
 # Liberation 2.x is based on CrOSCore which is based on Liberation 1.x.
