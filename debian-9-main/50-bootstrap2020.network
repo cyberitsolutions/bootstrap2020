@@ -1,0 +1,19 @@
+# NOTE: this is used by USB (but not PXE) boots.
+#       See usr/share/initramfs-tools/scripts/init-bottom/bootstrap2020
+
+# NOTE: if you have more than one ethernet port, this will try them all (good).
+#       But the system won't move from "booting" to "booted" until they are ALL up (bad!)
+#       Since most devices have only one wired ethernet, this is "good enough for now".
+
+[Match]
+Type=ether
+Name=en*
+[Network]
+DHCP=yes
+
+# If the DHCP server says "your name is foo.example.com",
+# allow this host to do "ping bar" to mean "bar.example.com".
+[DHCP]
+UseDomains=yes
+[IPv6AcceptRA]
+UseDomains=yes

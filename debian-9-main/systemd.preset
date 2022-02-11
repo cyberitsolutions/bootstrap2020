@@ -1,0 +1,47 @@
+# -*- conf -*-
+#
+# Instead of having to manually call
+#     systemctl enable foo bar baz quux
+# in the debian-11-main.py, we can just do
+#     systemctl preset-all
+# This is MOSTLY the same as
+#     systemctl enable '*'
+#
+# Except you can add some overrides.
+
+
+# Debian defaults to ifupdown (CLI) or network-manager (GUI).
+# We want to use systemd-networkd which is not enabled by default.
+# Fortunately, the preset-all defaults do the Right Thing, so
+# we don't need anything special here.
+#
+# The same goes for all our own units.
+
+
+# Workaround https://bugs.debian.org/997852
+# If openssh-server is used, don't
+# enable BOTH up-front .service and on-demand .socket.
+disable ssh.socket
+
+
+# Some other things get enabled by preset-all.
+#
+# This search appears to show affected packages:
+#
+#     https://codesearch.debian.net/search?q=dh_.*systemd.*--no-enable&literal=0&page=2&perpkg=1
+#
+# I am 90% sure these are all harmless.
+#
+#    /etc/systemd/system/multi-user.target.wants/msmtpd.service                           → /lib/systemd/system/msmtpd.service.
+#    /etc/systemd/system/sockets.target.wants/systemd-networkd.socket                     → /lib/systemd/system/systemd-networkd.socket.
+#    /etc/systemd/system/dbus-org.freedesktop.network1.service                            → /lib/systemd/system/systemd-networkd.service.
+#    /etc/systemd/system/multi-user.target.wants/systemd-networkd.service                 → /lib/systemd/system/systemd-networkd.service.
+#    /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service → /lib/systemd/system/systemd-networkd-wait-online.service.
+#    /etc/systemd/system/multi-user.target.wants/remote-cryptsetup.target                 → /lib/systemd/system/remote-cryptsetup.target.
+#    /etc/systemd/system/ctrl-alt-del.target                                              → /lib/systemd/system/reboot.target.
+#
+# In datasafe3 template:
+#
+#    /etc/systemd/system/mdmonitor.service.wants/mdmonitor-oneshot.timer                  → /lib/systemd/system/mdmonitor-oneshot.timer.
+#    /etc/systemd/system/mdmonitor.service.wants/mdcheck_start.timer                      → /lib/systemd/system/mdcheck_start.timer.
+#    /etc/systemd/system/sysinit.target.wants/mdadm-shutdown.service                      → /lib/systemd/system/mdadm-shutdown.service.

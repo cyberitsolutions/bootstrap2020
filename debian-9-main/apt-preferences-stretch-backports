@@ -1,0 +1,19 @@
+Explanation: use LibreOffice 7.2+ (not 7.0)
+Package: src:libreoffice
+Pin: release a=stretch-backports
+Pin-Priority: 500
+
+Explanation: use Linux 5.14+ (not 5.10)
+Package: src:linux src:linux-signed-amd64 src:zfs-linux
+Pin: release a=stretch-backports
+Pin-Priority: 500
+
+Explanation: use newest microcode (stable, security, or backports)
+Package: src:amd64-microcode src:intel-microcode src:iucode-tool
+Pin: release a=stretch-backports
+Pin-Priority: 500
+
+Explanation: use Inkscape 1.1 (not 1.0)
+Package: src:inkscape
+Pin: release a=stretch-backports
+Pin-Priority: 500
