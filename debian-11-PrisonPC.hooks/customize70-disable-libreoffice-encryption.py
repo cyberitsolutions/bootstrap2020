@@ -132,6 +132,18 @@ read_write = frozenset({
     "jpg_Import",                     # jpg
     "PNG - Portable Network Graphic",  # png
     "png_Import",                      # png
+
+    # NOTE: "File > Print > Print to file..." works without these.
+    #       "File > Export as PDF..." needs these.
+    #       "File > Export as PDF..." has "Security > Choose paswords...".
+    #       Therefore we cannot allow these (as at Debian 11 / LibreOffice 7.3).
+    #DANGEROUS# "calc_pdf_Export",
+    #DANGEROUS# "draw_pdf_Export",
+    #DANGEROUS# "impress_pdf_Export",
+    #DANGEROUS# "math_pdf_Export",
+    #DANGEROUS# "writer_globaldocument_pdf_Export",
+    #DANGEROUS# "writer_pdf_Export",
+    #DANGEROUS# "writer_web_pdf_Export",
 })
 read_only = frozenset({
     # OLD Microsoft formats can be read, but
