@@ -1,2 +1,1 @@
-{"name": "etc/systemd/system/systemd-networkd-wait-online.service.d/bootstrap2020-one-nic-is-enough.conf",
- "mode": 292}
+../debian-11-main/systemd-networkd-wait-online-any.service.conf.tarinfo

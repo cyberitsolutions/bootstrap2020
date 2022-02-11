@@ -1,2 +1,1 @@
-{"name": "etc/systemd/system/apt-daily-upgrade.service.d/bootstrap2020-restart-vulnerable-services.conf",
- "mode": 292}
+../debian-11-main/unattended-upgrades-restart-vulnerable-services.conf.tarinfo

@@ -1,2 +1,1 @@
-{"name": "etc/systemd/system/bootstrap2020-ethernet-speed-check.service",
- "mode": 292}
+../debian-11-main/ethernet-speed-check.service.tarinfo

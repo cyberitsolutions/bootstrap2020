@@ -1,2 +1,1 @@
-{"name": "etc/systemd/network/50-bootstrap2020.link",
- "mode": 292}
+../debian-11-main/wake-on-lan.link.tarinfo

@@ -1,2 +1,1 @@
-{"name": "etc/systemd/system/bootstrap2020-openssh-keygen.service",
- "mode": 292}
+../debian-11-main/openssh-keygen.service.tarinfo
