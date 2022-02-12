@@ -1,29 +1,17 @@
-* [EASY] override upstream's default aliases for
-  "Sans", "Serif", "Monospace" and "System-UI".
-  Make them always use (say) Noto even if something else is installed.
-
-  Currently we are tweaking individual apps to use "ADF Universalis" (i.e. Futura) by hand.
-
-  I definitely want the title bar to be something semi-condensed and geometric.
-  I'm sick of DejaVu.
-  The GNOME default is Cantarell which is semi-condensed and humanist.
-
-* [EASY] make sure "fantasy" alias (rarely used) points to Comic Sans.
-  Yes, this really is a legitimate choice for "fantasy".
-
-* [EASY] DejaVu replaces font DejaVu was based on
-
-  ttf-bitstream-vera,
-
-  This avoids mess caused by e.g. frogatto.
-
-* [EASY] Noto replaces all these:
+* [HARD] Noto replaces all these:
 
   fonts-roboto,
   fonts-roboto-fontface,
   fonts-roboto-hinted,
   fonts-roboto-slab,
   fonts-roboto-unhinted,
+
+  UPDATE: actually this is hard if we want to handle "thin" and "condensed", because
+  that means we need fonts-noto-extra, e.g.
+
+    /usr/share/fonts-roboto-fontface/fonts/roboto/Roboto-Thin.ttf
+    -->
+    /usr/share/fonts/truetype/noto/NotoSans-Thin.ttf
 
 * [HARD] Noto replaces all these:
 
