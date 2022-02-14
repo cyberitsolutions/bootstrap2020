@@ -47,7 +47,7 @@ stylesheet_str = f'''
        I'm not too worried about this because
        (unlike color) this is pretty much set-and-forget. */
     /* font: {xresources['xlogin.Login.face']}; */
-    font-family: System-UI;
+    font-family: Universalis ADF Std;
     font-size: 18pt;
 }}
 '''

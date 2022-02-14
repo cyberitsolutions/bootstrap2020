@@ -1,10 +1,12 @@
-prisonpc-fonts (11.9) bullseye; urgency=medium
+prisonpc-fonts (11.10) bullseye; urgency=medium
 
   * Force Noto to be the system-wide default font family.
   * Except for UI elements -- use Futura for those.
+    NOTE: the System-UI alias for Futura works in GTK3, but
+          is bugged in xdm and fc-match?
   * Nerf Vera.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Sat, 12 Feb 2022 13:08:29 +1100
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 14 Feb 2022 12:31:38 +1100
 
 prisonpc-fonts (11.6) bullseye; urgency=medium
 
