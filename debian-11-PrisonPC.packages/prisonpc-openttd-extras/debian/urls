@@ -1,0 +1,89 @@
+## NOT LEGAL TO REDISTIBUTE:
+##http://us.binaries.openttd.org/bananas/newgrf/av8_Aviators_Aircraft_Set-2.21.tar.gz
+##http://us.binaries.openttd.org/bananas/basemusic/Modern_Motion-1.tar.gz
+##http://us.binaries.openttd.org/bananas/newgrf/eGRVTS2-188.tar.gz
+##http://us.binaries.openttd.org/bananas/scenario/Australia-1.0.tar.gz
+
+## CRASHES ON LOAD:
+##http://us.binaries.openttd.org/bananas/gamescript/Simple_City_Builder-2015.10.04.tar.gz
+
+## Needs OpenTTD 1.7+
+##http://us.binaries.openttd.org/bananas/newgrf/FIRS_Industry_Replacement_Set_3-3.0.0alpha9.tar.gz
+
+## Needs something newer than OpenTTD 1.4...
+##http://us.binaries.openttd.org/bananas/scenario/Australia_and_Timor_v_1.1-1.1.tar.gz
+##http://us.binaries.openttd.org/bananas/scenario/Australia_and_Timor_in_1930-1.6.0.tar.gz
+##http://us.binaries.openttd.org/bananas/scenario/South_East_Australia-0.1.tar.gz
+
+## BROKEN - MAYBE SOLVABLE
+#http://us.binaries.openttd.org/bananas/scenario/Beginner_Tutorial-17.tar.gz
+#    http://us.binaries.openttd.org/bananas/ai/Beginner_Tutorial__Ship_AI-17.tar.gz
+#    http://us.binaries.openttd.org/bananas/gamescript/Beginner_Tutorial__Game_Script-17.tar.gz
+#    http://us.binaries.openttd.org/bananas/newgrf/Manual_Industries-2r5.tar.gz
+#    import("util.superlib", "SuperLib", 27);
+#    ...we only have SuperLib-40!
+
+## BROKEN - MAYBE SOLVABLE
+#http://us.binaries.openttd.org/bananas/scenario/New_South_Wales__Aus-1.tar.gz
+#    wants "ttrs3_02awin.GRF" ?
+#    This appears to be from "TTRS 3.02".
+#    Where is "TTRS"?
+#    This scenario was written "for OpenTTD 0.7" --- that's ancient!
+#    UPDATE: I notice there's a "Total Town Replacement Set 3.14" further down.  That's probably what TTRS is.
+
+## BROKEN - MAYBE SOLVABLE
+#http://us.binaries.openttd.org/bananas/gamescript/Industry_Constructor-3-2.tar.gz
+#    import("util.superlib", "SuperLib", 36);
+#    ...we only have SuperLib-40!
+
+
+http://us.binaries.openttd.org/bananas/ai/AdmiralAI-25.tar.gz
+http://us.binaries.openttd.org/bananas/ai/NoCAB-2.1.4.tar.gz
+http://us.binaries.openttd.org/bananas/basemusic/Doom_I_Soundtrack-1.2.tar.gz
+http://us.binaries.openttd.org/bananas/basemusic/Scott_Joplin_Anthology-2.0.0.tar.gz
+http://us.binaries.openttd.org/bananas/scenario/Victoria_SEAustralia-v2.tar.gz
+http://us.binaries.openttd.org/bananas/heightmap/AustralianContinent-1.0.tar.gz
+http://us.binaries.openttd.org/bananas/heightmap/Australia_Victoria-2.0.tar.gz
+http://us.binaries.openttd.org/bananas/heightmap/Central_and_East_Australia-1.tar.gz
+http://us.binaries.openttd.org/bananas/newgrf/2cc_TrainsInNML-2.0alpha1.tar.gz
+http://us.binaries.openttd.org/bananas/newgrf/Aussie_Town_Names-0.1.tar.gz
+http://us.binaries.openttd.org/bananas/newgrf/Australian_Aboriginal_Town_Names-1.0.tar.gz
+http://us.binaries.openttd.org/bananas/newgrf/FSMaglev_Track-1.2.tar.gz
+http://us.binaries.openttd.org/bananas/newgrf/OpenGFX_Trains-0.3.0.tar.gz
+http://us.binaries.openttd.org/bananas/newgrf/Australian_Industries-2.1.tar.gz
+http://us.binaries.openttd.org/bananas/scenario/WAC_World_with_Aus_Centered-4.2.tar.gz
+    http://us.binaries.openttd.org/bananas/newgrf/Total_Town_Replacement_Set-3.14.tar.gz
+
+## NOTE: dependency resolution is tedious, so
+##       just fetch ALL ailibrary & gslibrary URLs.
+##       All of them together are only 3MiB (uncompressed).
+http://us.binaries.openttd.org/bananas/ailibrary/AILib.Direction-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/AILib.String-2.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/AILibCommon-2.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/AILibList-3.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/AIToyLib-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Graph.AyStar-6-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Lib.Event-2.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/MinchinWebs_MetaLibrary-9.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Pathfinder.Rail-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Pathfinder.Road-4-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Queue.BinaryHeap-1-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Queue.FibonacciHeap-3.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Queue.PriorityQueue-2.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/SCPClientNoCarGoal-1.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/Script_Communication_for_AI-45.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/SuperLib-40.tar.gz
+http://us.binaries.openttd.org/bananas/ailibrary/cEngineLib-9.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/FGCargoMonitor-4.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/FGVersionController-2.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/GSToyLib-1.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/Graph.AyStar-6-2.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/IndustryStabilizeLib-1.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/MinchinWebs_MetaLibrary_GS-9.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/Pathfinder.Road-4-2.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/Queue.BinaryHeap-1-2.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/Queue.FibonacciHeap-2-2.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/Script_Communication_for_GS-45.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/SuperLib_for_NoGo-40.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/Text-1.tar.gz
+http://us.binaries.openttd.org/bananas/gslibrary/TileLabels-1.tar.gz

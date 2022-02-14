@@ -1,0 +1,29 @@
+Source: prisonpc-openttd-extras
+Section: games
+Priority: optional
+Standards-Version: 3.9.6
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Build-Depends: debhelper (>= 10~), wget, ca-certificates
+
+Package: prisonpc-openttd-extras
+Depends: ${misc:Depends},
+# These aren't strictly our dependencies,
+# but listing them here allows us to elide them from the main build script.
+# NOTE: openttd-opensfx requires the jessie/non-free repo!!!
+ openttd,
+ openttd-opengfx,
+ openttd-openmsx,
+ openttd-opensfx,
+# These are used by OpenTTD to play the music files above.
+ timidity,
+ freepats
+Enhances: openttd
+Architecture: all
+Description: OpenTTD (Transport Tycoon Deluxe) extra plugins
+ OpenTTD has a built-in plugin manager called "bananas".
+ Plugins are fetched from content.openttd.org:3980 (*not* HTTP/S).
+ As that is blocked on PrisonPC for security reasons,
+ provide a subset of plugins as a regular Debian package.
+ .
+ Depends on some Debian packages that Debian openttd only Recommends.
+ This is simpler than listing them directly in the SOE build scripts.

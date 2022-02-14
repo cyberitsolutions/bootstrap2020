@@ -1,0 +1,11 @@
+prisonpc-openttd-extras (0~prisonpc2) stable; urgency=medium
+
+  * Add new packages, use content.openttd.org.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 14 Feb 2022 14:55:11 +1100
+
+prisonpc-openttd-extras (0~prisonpc1) stable; urgency=medium
+
+  * Initial release.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 14 Feb 2022 14:55:08 +1100
