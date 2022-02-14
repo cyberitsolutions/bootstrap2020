@@ -1,17 +1,20 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 
 # Qonk is a fun little game,
 # but help text isn't available in-game.
 # This wrapper script provides a quick-and-dirty introduction.
 
-import gtk
 import os
 
-dialog = gtk.MessageDialog(type=gtk.MESSAGE_INFO,
-                           buttons=gtk.BUTTONS_OK)
-dialog.set_title('Qonk Help')
-dialog.label.set_markup(
+import gi
+gi.require_version('Gtk', '3.0')
+import gi.repository.Gtk        # noqa: E402
+
+dialog = gi.repository.Gtk.MessageDialog(
+    title='Qonk',
+    message_type=gi.repository.Gtk.MessageType.WARNING,
+    buttons=gi.repository.Gtk.ButtonsType.OK_CANCEL)
+dialog.set_markup(
     'Admiral, the central Earth government has finally collapsed.\n'
     'The Solar System is divided between warring factions.\n'
     'It is only be a matter of time until another faction builds enough\n'
@@ -36,19 +39,15 @@ dialog.label.set_markup(
     '\n'
     '<b>Are you ready, Admiral?</b>\n')
 
-if gtk.RESPONSE_OK == dialog.run():
+if gi.repository.Gtk.ResponseType.OK == dialog.run():
     # NOTE: we use os.execvp() instead of subprocess.call(),
     # because it's easier than actually cleaning up Python/GTK properly.
     #
     # NOTE: qonk doesn't include a frame rate limiter,
     # so it will consume 100% of one CPU and run at anything up to 700 FPS.
-    # This is pretty hard on the hardware, so we prefix with a couple
-    # of options to at least allow all other processes to preempt it.
+    # This is pretty hard on the hardware, so we nice(1) to
+    # at least allow all other processes to preempt it.
     #
     # NOTE: passing 6 1 to qonk means it starts with a 6 planet system and 1 enemy.
     # This bypasses the initial menu screen, but you can still get to it with the Escape key.
-    os.execvp('nice',
-              ['nice', '-n19',
-               'ionice', '-c3',
-               'chrt', '--idle', '0',
-               '/usr/games/qonk', '6', '1'])
+    os.execvp('nice', ['nice', '/usr/games/qonk', '6', '1'])
