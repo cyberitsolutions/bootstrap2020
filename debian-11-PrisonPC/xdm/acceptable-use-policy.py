@@ -59,7 +59,13 @@ data = urllib.request.urlopen(
 # Apparently you have to set margin here instead of in CssProvider,
 # even though margins are pretty basic part of REAL CSS.
 # This is probably in pixels, where the font is in points.
-label = gi.repository.Gtk.Label(label=data, margin=18)
+#
+# NOTE: in GTK2 we had wrap=True here.
+#       in GTK3, wrap=True makes the window as tall as possible.
+#       This makes the label align near the center (not bottom) of the screen.
+#       This makes the aup draw over the top of the login prompt.
+#       The former issue is tolerable; the latter issue is not.
+label = gi.repository.Gtk.Label(label=data, margin=18, wrap=False)
 window = gi.repository.Gtk.Window()
 window.get_style_context().add_provider(
     css_provider,
