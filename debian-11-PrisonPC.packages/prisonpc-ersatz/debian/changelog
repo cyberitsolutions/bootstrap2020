@@ -1,3 +1,10 @@
+prisonpc-ersatz (11.20) bullseye; urgency=medium
+
+  * Debian Security now EXPLICITLY supports webkit2gtk and wpewebkit browser engines.
+    Therefore, stop blacklisting them.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 14 Feb 2022 13:28:25 +1100
+
 prisonpc-ersatz (11.19) bullseye; urgency=medium
 
   * add a Replaces to try to make bisecting old bootstrap2020 commits easier.

@@ -417,14 +417,16 @@ Conflicts:
 # You should assume all other browser engines are insecure.
 # https://www.debian.org/releases/stable/arm64/release-notes/ch-information.en.html
 # NOTE: cannot rely on check-support-status due to https://bugs.debian.org/1004293
-#   ?source-package(^webkit2gtk$)
- gir1.2-javascriptcoregtk-4.0, gir1.2-webkit2-4.0, libjavascriptcoregtk-4.0-18,
- libjavascriptcoregtk-4.0-bin, libjavascriptcoregtk-4.0-dev,
- libwebkit2gtk-4.0-37, libwebkit2gtk-4.0-dev, libwebkit2gtk-4.0-doc,
- webkit2gtk-driver,
-#   ?source-package(webkit2-sharp)
- libwebkit2-sharp-4.0-cil, libwebkit2-sharp-4.0-cil-dev,
- monodoc-webkit2-sharp-4.0-manual,
+# UPDATE: upstream has now clarified this:
+#           "The webkit2gtk and wpewebkit engines ARE covered by security support."
+# SAFE: #   ?source-package(^webkit2gtk$)
+# SAFE: gir1.2-javascriptcoregtk-4.0, gir1.2-webkit2-4.0, libjavascriptcoregtk-4.0-18,
+# SAFE: libjavascriptcoregtk-4.0-bin, libjavascriptcoregtk-4.0-dev,
+# SAFE: libwebkit2gtk-4.0-37, libwebkit2gtk-4.0-dev, libwebkit2gtk-4.0-doc,
+# SAFE: webkit2gtk-driver,
+# SAFE: #   ?source-package(webkit2-sharp)
+# SAFE:  libwebkit2-sharp-4.0-cil, libwebkit2-sharp-4.0-cil-dev,
+# SAFE:  monodoc-webkit2-sharp-4.0-manual,
 #   ?source-package(^pyqt5webengine$)
  python3-pyqt5.qtwebengine, python3-pyqt5.qtwebengine-dbg,
 #   ?source-package(^qtwebengine-opensource-src$)
@@ -434,8 +436,8 @@ Conflicts:
  qtpdf5-doc-html, qtpdf5-examples, qtwebengine5-dev, qtwebengine5-dev-tools,
  qtwebengine5-doc, qtwebengine5-doc-html, qtwebengine5-examples,
  qtwebengine5-private-dev,
-#   ?source-package(^wpewebkit$)
- libwpewebkit-1.0-3, libwpewebkit-1.0-dev, libwpewebkit-1.0-doc, wpewebkit-driver,
+# SAFE: #   ?source-package(^wpewebkit$)
+# SAFE:  libwpewebkit-1.0-3, libwpewebkit-1.0-dev, libwpewebkit-1.0-doc, wpewebkit-driver,
 #   ?source-package(^tkhtml1$)
  tk-html1,
 #   ?source-package(^khtml$)
@@ -444,8 +446,8 @@ Conflicts:
  libkf5webkit-dev, libkf5webkit5,
 #   ?source-package(^qtwebkit-opensource-src$)
  libqt5webkit5, libqt5webkit5-dev, qml-module-qtwebkit,
-#   ?source-package(^libgtk3-webkit2-perl$)
- libgtk3-webkit2-perl,
+# SAFE: #   ?source-package(^libgtk3-webkit2-perl$)
+# SAFE:  libgtk3-webkit2-perl,
 #   ?source-package(^wkhtmltopdf$)
  wkhtmltopdf,
 #   ?source-package(^mozjs78$)
@@ -461,6 +463,7 @@ Conflicts:
  links2, lynx, midori, netrik, netsurf-fb, netsurf-gtk, qutebrowser,
  sugar-browse-activity, surf, w3m, xemacs21-mule, xemacs21-mule-canna-wnn,
  xemacs21-nomule,
+ cog, wapua,
 # X11 doesn't REALLY support screen locking:
 #   https://www.jwz.org/blog/2021/01/i-told-you-so-2021-edition/
 # Rather than pretend, we simply do not let inmate lock the screen.
