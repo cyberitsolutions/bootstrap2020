@@ -16,7 +16,7 @@ Depends: ${misc:Depends},
  openttd,
 # OpenTTD needs these to play music.
  timidity,
- freepats,
+ fluid-soundfont-gm,
 Conflicts:
  openttd-opengfx,
  openttd-openmsx,
