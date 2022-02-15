@@ -58,7 +58,7 @@ MAGIC_XDM_DIR = '.Xauthority-c'
 # has no security support.
 dialog = gi.repository.Gtk.MessageDialog(
     title='Factory Reset',
-    type=gi.repository.Gtk.MessageType.WARNING,
+    message_type=gi.repository.Gtk.MessageType.WARNING,
     buttons=gi.repository.Gtk.ButtonsType.YES_NO)
 dialog.set_markup(
     'All settings will be reset to PrisonPC defaults.\n'
