@@ -4,8 +4,6 @@ import subprocess
 import pathlib
 import tempfile
 
-os.environ['http_proxy'] = 'http://localhost:3142'  # DEBUGGING
-
 # URL paths and local paths differ, so we need a transform.
 bananas2local = {
     'ai': 'ai',
