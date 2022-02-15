@@ -13,16 +13,18 @@ Build-Depends:
 
 Package: prisonpc-openttd-extras
 Depends: ${misc:Depends},
-# These aren't strictly our dependencies,
-# but listing them here allows us to elide them from the main build script.
-# NOTE: openttd-opensfx requires the jessie/non-free repo!!!
  openttd,
+# OpenTTD needs these to play music.
+ timidity,
+ freepats,
+Conflicts:
  openttd-opengfx,
  openttd-openmsx,
  openttd-opensfx,
-# These are used by OpenTTD to play the music files above.
- timidity,
- freepats
+Replaces:
+ openttd-opengfx,
+ openttd-openmsx,
+ openttd-opensfx,
 Enhances: openttd
 Architecture: all
 Description: OpenTTD (Transport Tycoon Deluxe) extra plugins
@@ -33,3 +35,6 @@ Description: OpenTTD (Transport Tycoon Deluxe) extra plugins
  .
  Depends on some Debian packages that Debian openttd only Recommends.
  This is simpler than listing them directly in the SOE build scripts.
+ .
+ Includes versions of opengfx/openmsx/opensfx that are newer in BaNaNaS than in Debian.
+ Therefore conflict with the packages in Debian, since they are now useless.
