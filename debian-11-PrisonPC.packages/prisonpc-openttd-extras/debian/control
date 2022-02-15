@@ -3,7 +3,7 @@ Section: games
 Priority: optional
 Standards-Version: 3.9.6
 Maintainer: Trent W. Buck <twb@cyber.com.au>
-Build-Depends: debhelper (>= 10~), wget, ca-certificates
+Build-Depends: debhelper (>= 10~), wget2, ca-certificates, python3
 
 Package: prisonpc-openttd-extras
 Depends: ${misc:Depends},
