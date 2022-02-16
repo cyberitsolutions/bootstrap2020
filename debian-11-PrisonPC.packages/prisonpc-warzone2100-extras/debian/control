@@ -1,18 +1,25 @@
 Source: prisonpc-warzone2100-addons
 Section: games
 Priority: optional
-Standards-Version: 3.9.6
+Standards-Version: 4.3.0
 Maintainer: Trent W. Buck <twb@cyber.com.au>
-Build-Depends: debhelper (>= 10~), wget, ca-certificates
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Rules-Requires-Root: no
+Build-Depends:
+ ca-certificates,
+ debhelper-compat (= 13),
+ wget2,
 
 Package: prisonpc-warzone2100-addons
 # NOTE: P-D (not D) ∵ postinst edits warzone2100.desktop.
-Pre-Depends: warzone2100
+Pre-Depends:
+ warzone2100,
 Depends: ${misc:Depends},
  python3,
- warzone2100-music
+ warzone2100-music,
 Enhances: warzone2100
 Architecture: all
 Description: Warzone2100 addons
  There are a bunch of third-party addons at https://addons.wz2100.net/.
  This package provides them pre-downloaded.
+ We also include better textures from https://sourceforge.net/projects/artrev2100/.

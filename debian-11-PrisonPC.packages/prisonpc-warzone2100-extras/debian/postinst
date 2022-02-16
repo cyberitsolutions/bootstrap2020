@@ -1,3 +1,4 @@
+# -*- sh -*-
 # Maps can be loaded from the in-game GUI.
 # Mods can be loaded only from the CLI.
 # As a shitty kludge, patch warzone2100's menu item to always load the new graphics package.
