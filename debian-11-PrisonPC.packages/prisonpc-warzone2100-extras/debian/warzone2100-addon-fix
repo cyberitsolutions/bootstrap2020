@@ -10,8 +10,8 @@ We can place warzone2100 addons in
 /usr/share/games/warzone2100/mods/Y.wz.
 
 Warzone2100 FINDS these files, but it READS from
-~/.warzone2100-$VERSION/maps/X.wz and
-~/.warzone2100-$VERSION/mods/Y.wz.
+~/.local/share/warzone2100-$VERSION/maps/X.wz and
+~/.local/share/warzone2100-$VERSION/mods/Y.wz.
 This is a bug in warzone2100.
 
 As a workaround, symlink the latter to the former.
@@ -32,11 +32,12 @@ proc = subprocess.run(
 if proc.returncode != 1:
     raise RuntimeError('warzone2100 --version should always exit(1)!')
 
+# Example: Warzone 2100 - Version: 3.3.0, Built: 2020-10-16
 version = re.fullmatch(
-    r'Warzone 2100 - Version: (\d+\.\d+)\.\d+, Built:\w{3} \d+ 20\d\d',
+    r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
     proc.stdout.strip()).group(1)
 
-root_path = pathlib.Path.home() / f'.warzone2100-{version}'
+root_path = pathlib.Path.home() / f'.local/share/warzone2100-{version}'
 maps_path = root_path / 'maps'
 mods_path = root_path / 'mods'
 
