@@ -4,5 +4,5 @@ D := debian/prisonpc-warzone2100-addons/usr/share/games/warzone2100
 %:
 	dh $@
 override_dh_auto_install:
-	wget2 --content-disposition -P $D/mods/global -i debian/mods-global.urls
-	wget2 --content-disposition -P $D/maps        -i debian/maps.urls
+	wget2 -P $D/mods/global 'https://master.dl.sourceforge.net/project/artrev2100/ARmod_3.3.0.wz'
+	wget2 -P $D/maps -i debian/maps.urls --content-disposition
