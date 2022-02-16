@@ -1,50 +1,53 @@
 #!/usr/bin/python3
-
-# We can place warzone2100 addons in
-# /usr/share/games/warzone2100/maps/X.wz and
-# /usr/share/games/warzone2100/mods/Y.wz.
-#
-# Warzone2100 FINDS these files, but it READS from
-# ~/.warzone2100-$VERSION/maps/X.wz and
-# ~/.warzone2100-$VERSION/mods/Y.wz.
-# This is a bug in warzone2100.
-#
-# As a workaround, symlink the latter to the former.
-#
-# NOTE: this breaks map auto-download for online play.
-# PrisonPC does not allow online play, so we don't care.
-# —twb, Sep 2017 (#31556)
-
-import subprocess
+import pathlib
 import re
-import os.path
+import subprocess
+
+__doc__ = """ work around warzone2100 bug
+
+We can place warzone2100 addons in
+/usr/share/games/warzone2100/maps/X.wz and
+/usr/share/games/warzone2100/mods/Y.wz.
+
+Warzone2100 FINDS these files, but it READS from
+~/.warzone2100-$VERSION/maps/X.wz and
+~/.warzone2100-$VERSION/mods/Y.wz.
+This is a bug in warzone2100.
+
+As a workaround, symlink the latter to the former.
+
+NOTE: this breaks map auto-download for online play.
+PrisonPC does not allow online play, so we don't care.
+—twb, Sep 2017
+https://alloc.cyber.com.au/task/task.php?taskID=31556
+
+"""
 
 # FIXME: in Python3.5+ use subprocess.run instead of the try/except shit!
-try:
-    stdout = subprocess.check_output(['/usr/games/warzone2100', '--version'])
-except subprocess.CalledProcessError as e:
-    assert 1 == e.returncode, 'warzone2100 --version should always exit(1)!'
-    stdout = e.output
+proc = subprocess.run(
+    ['/usr/games/warzone2100', '--version'],
+    stdout=subprocess.PIPE,
+    text=True,
+    check=False)
+if proc.returncode != 1:
+    raise RuntimeError('warzone2100 --version should always exit(1)!')
 
 version = re.fullmatch(
-    rb'Warzone 2100 - Version: (\d+\.\d+)\.\d+, Built:\w{3} \d+ 20\d\d',
-    stdout.strip()).group(1).decode()
-assert float(version), 'Version isn’t MAJOR.MINOR!'
+    r'Warzone 2100 - Version: (\d+\.\d+)\.\d+, Built:\w{3} \d+ 20\d\d',
+    proc.stdout.strip()).group(1)
 
-root_path = os.path.expanduser('~/.warzone2100-{}'.format(version))
-maps_path = os.path.join(root_path, 'maps')
-mods_path = os.path.join(root_path, 'mods')
+root_path = pathlib.Path.home() / f'.warzone2100-{version}'
+maps_path = root_path / 'maps'
+mods_path = root_path / 'mods'
 
-# NOTE: this mess of if/then is a bit wishy-washy, but
-#       it covers the most likely cases.
-#       For the rest, there use factory-reset.
-if not os.path.isdir(root_path):
-    os.mkdir(root_path)
-if not os.path.islink(maps_path):
-    if os.path.isdir(maps_path):
-        os.rmdir(maps_path)
-    os.symlink('/usr/share/games/warzone2100/maps', maps_path)
-if not os.path.lexists(mods_path):
-    if os.path.isdir(mods_path):
-        os.rmdir(mods_path)
-    os.symlink('/usr/share/games/warzone2100/mods', mods_path)
+root_path.mkdir(exist_ok=True)
+for path in (maps_path, mods_path):
+    # If someone ran warzone before this script,
+    # remove the empty dir warzone2100 made.
+    # We don't bother with unlikely edge-cases.
+    # If a user runs into that, they can factory-reset.
+    if path.is_dir():
+        path.rmdir()
+    if not path.is_symlink():
+        path.symlink_to(
+            pathlib.Path('/usr/share/games/warzone2100') / path.name)
