@@ -1,0 +1,6 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+override_dh_auto_install:
+	wget -nv --content-disposition -P debian/prisonpc-warzone2100-addons/usr/share/games/warzone2100/mods/global -i debian/mods-global.urls
+	wget -nv --content-disposition -P debian/prisonpc-warzone2100-addons/usr/share/games/warzone2100/maps -i debian/maps.urls

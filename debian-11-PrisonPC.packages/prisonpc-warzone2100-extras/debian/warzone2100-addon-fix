@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+
+# We can place warzone2100 addons in
+# /usr/share/games/warzone2100/maps/X.wz and
+# /usr/share/games/warzone2100/mods/Y.wz.
+#
+# Warzone2100 FINDS these files, but it READS from
+# ~/.warzone2100-$VERSION/maps/X.wz and
+# ~/.warzone2100-$VERSION/mods/Y.wz.
+# This is a bug in warzone2100.
+#
+# As a workaround, symlink the latter to the former.
+#
+# NOTE: this breaks map auto-download for online play.
+# PrisonPC does not allow online play, so we don't care.
+# —twb, Sep 2017 (#31556)
+
+import subprocess
+import re
+import os.path
+
+# FIXME: in Python3.5+ use subprocess.run instead of the try/except shit!
+try:
+    stdout = subprocess.check_output(['/usr/games/warzone2100', '--version'])
+except subprocess.CalledProcessError as e:
+    assert 1 == e.returncode, 'warzone2100 --version should always exit(1)!'
+    stdout = e.output
+
+version = re.fullmatch(
+    rb'Warzone 2100 - Version: (\d+\.\d+)\.\d+, Built:\w{3} \d+ 20\d\d',
+    stdout.strip()).group(1).decode()
+assert float(version), 'Version isn’t MAJOR.MINOR!'
+
+root_path = os.path.expanduser('~/.warzone2100-{}'.format(version))
+maps_path = os.path.join(root_path, 'maps')
+mods_path = os.path.join(root_path, 'mods')
+
+# NOTE: this mess of if/then is a bit wishy-washy, but
+#       it covers the most likely cases.
+#       For the rest, there use factory-reset.
+if not os.path.isdir(root_path):
+    os.mkdir(root_path)
+if not os.path.islink(maps_path):
+    if os.path.isdir(maps_path):
+        os.rmdir(maps_path)
+    os.symlink('/usr/share/games/warzone2100/maps', maps_path)
+if not os.path.lexists(mods_path):
+    if os.path.isdir(mods_path):
+        os.rmdir(mods_path)
+    os.symlink('/usr/share/games/warzone2100/mods', mods_path)
