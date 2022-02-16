@@ -1,5 +1,6 @@
-prisonpc-warzone2100-addons (11.1) bullseye; urgency=medium
+prisonpc-warzone2100-addons (11.4) bullseye; urgency=medium
 
+  * Workaround https://bugs.debian.org/1005865
   * Fix regexp for new `warzone --version`.
   * Bump artrev2100 (HD textures) to a version compatible with Debian 11 / Warzone2100 3.3.
   * Upgrade packaging to make use of Debian 11 features.
@@ -10,7 +11,7 @@ prisonpc-warzone2100-addons (11.1) bullseye; urgency=medium
     So don't even bother to check any of these maps again.
     Just keep the old list we had before.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Wed, 16 Feb 2022 19:19:51 +1100
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 16 Feb 2022 21:40:24 +1100
 
 prisonpc-warzone2100-addons (0~prisonpc2) stable; urgency=medium
 
