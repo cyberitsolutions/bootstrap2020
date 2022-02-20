@@ -28,4 +28,5 @@ Architecture: all
 Description: Warzone2100 addons
  There are a bunch of third-party addons at https://addons.wz2100.net/.
  This package provides them pre-downloaded.
- We also include better textures from https://sourceforge.net/projects/artrev2100/.
+ We also include better textures from
+  https://sourceforge.net/projects/artrev2100/.
