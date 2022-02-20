@@ -2,6 +2,7 @@
 import pathlib
 import re
 import subprocess
+import logging
 
 __doc__ = """ work around warzone2100 bug
 
@@ -21,6 +22,10 @@ PrisonPC does not allow online play, so we don't care.
 —twb, Sep 2017
 https://alloc.cyber.com.au/task/task.php?taskID=31556
 
+UPDATE 2022: in Debian 11 / warzone2100 3.3, symlinking the whole directory no longer works.
+I think the warzone2100 code is doing stat() instead of lstat(), so treating a symlink as "not a directory".
+Let's try symlinking individual files.
+
 """
 
 # FIXME: in Python3.5+ use subprocess.run instead of the try/except shit!
@@ -37,18 +42,14 @@ version = re.fullmatch(
     r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
     proc.stdout.strip()).group(1)
 
-root_path = pathlib.Path.home() / f'.local/share/warzone2100-{version}'
-maps_path = root_path / 'maps'
-mods_path = root_path / 'mods'
-
-root_path.mkdir(exist_ok=True)
-for path in (maps_path, mods_path):
-    # If someone ran warzone before this script,
-    # remove the empty dir warzone2100 made.
-    # We don't bother with unlikely edge-cases.
-    # If a user runs into that, they can factory-reset.
-    if path.is_dir():
-        path.rmdir()
-    if not path.is_symlink():
-        path.symlink_to(
-            pathlib.Path('/usr/share/games/warzone2100') / path.name)
+src_root = pathlib.Path('/usr/share/games/warzone2100/')
+dst_root = pathlib.Path.home() / f'.local/share/warzone2100-{version}'
+for subdir_name in {'maps', 'mods/global'}:
+    srcs = (src_root / subdir_name).glob('*.wz')
+    dst = dst_root / subdir_name
+    dst.mkdir(exist_ok=True, parents=True)
+    for src in srcs:
+        try:
+            (dst / src.name).symlink_to(src)
+        except FileExistsError:
+            logging.debug('already exists -- assuming already correct', src)
