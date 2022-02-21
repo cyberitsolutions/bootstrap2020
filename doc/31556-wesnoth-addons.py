@@ -15,6 +15,12 @@
 # 16:56 <twb> yumi: thanks
 # 16:59 <twb> Ah and that has file size, and a description in a tooltip
 # 17:00 <twb> So I have to do some magic to merge the "status: finished" stuff from the wiki page and the download size & .tbz URL from the addons page.
+#
+# UPDATE 2022: you need something like this:
+#     mmdebstrap --aptopt='Acquire::http::Proxy "http://localhost:3142"' --dpkgopt=force-unsafe-io --variant=apt testing /dev/null --customize-hook='chroot $1 bash; false' --include=wesnoth-1.14-tools,python3,sqlite3
+#
+# NOTE: wesnoth-1.16-tools is NOT WORKING in Debian 12, so I don't know what the fuck we do there:
+#           ModuleNotFoundError: No module named 'wesnoth.campaignserver_client'
 
 import sqlite3
 import subprocess

@@ -1,0 +1,3760 @@
+    filename = Legend_of_the_Invincibles
+        size = 13877358
+   timestamp = 1525687355
+   downloads = 58324
+        type = campaign
+     version = 3.2.7
+dependencies = 
+ description = Sometimes, people don't embrace the tempting powers of darkness because of desires to rule, but merely for survival. Can the dark powers be used to fight against dark schemes with no limits or will they eventually corrupt its users?
+
+A massive 200 scenarios long campaign divided into 2 parts, each of them consisting of five substories. The chapters offer a varied character development and changing strategies throughout. Although preserving the traditional Wesnoth gameplay, there are also many powerful items to collect, as well as a level-up system for all units that goes beyond the L3 limit. Your recalls will be all the more unique and fun to use due to the many power-ups obtained throughout this campaign.
+
+Also contains two coop multiplayer scenarios related to the campaign.
+
+The campaign has two spin-offs, 'The Beautiful Child' and 'Affably Evil'. The campaign 'Kill the King' is also related.
+      status = 
+  DL_per_day = 42.0899335697022
+   megabytes = 13.2344799041748
+
+    filename = A_Beastly_Tale
+        size = 528768
+   timestamp = 1538098565
+   downloads = 23421
+        type = campaign
+     version = 2.0.3
+dependencies = 
+ description = When a small village is beset by troubles, its fate rests in the hands of a young woodsman and the animals he befriends.
+
+In this campaign you will mostly control a small force of various creatures against a variety of enemies.
+
+(Intermediate level, 5 scenarios.)
+      status = 
+  DL_per_day = 18.8567099934475
+   megabytes = 0.5042724609375
+
+    filename = Affably_Evil
+        size = 3155927
+   timestamp = 1525687461
+   downloads = 25156
+        type = campaign
+     version = 1.0.0h
+dependencies = Legend_of_the_Invincibles
+ description = Follow the story of Krux, an evil nobleman's son. He is a nice guy, but he is not a good guy. He hates killing (dead men are bad servants), high taxes (poor men die easily and pay no taxes then) and injustice (as long as it has not concern himself or his allies). He works for his family, a deceitful and fraudulent noble house, fighting bandits (who are actually resistance), cruel despots (who are actually nobles who oppose him), false conspiracy stories (that contain too much truth) and prefers to have his enemies survive the combat (for slave work).
+
+Consists of 9 classical scenarios and a free roam mode where 12 quests have to be completed. Experimentally changed the role of recalls (received through story), separating them from the usual recruits (that cannot be recalled), giving them an RPG-like progression. Uses Legend of the Invincibles as resources and will not run without having it installed (minimal version is 3.1.14, otherwise it will not run). The campaign is a prequel to Legend of the Invincibles, but the order in which they are played does not really matter.
+      status = 
+  DL_per_day = 18.1540241807657
+   megabytes = 3.00972652435303
+
+    filename = A_Magicians_Tale
+        size = 6043004
+   timestamp = 1522791428
+   downloads = 29467
+        type = campaign
+     version = 3.1.7
+dependencies = 
+ description = A campaign in which the protagonists are an unlikely group of magicians, of every race, with unusual abilities.
+The magicians special skills of the wizards are all activated by opening the item menu (right click on the character's tile).
+It is no possible to recruit supporters in the usual way, but they can be choiced, hired, evovek and/or encountered in many different way.
+Because the entire campaign is set in winter is used a twelve turns day, with a small prevalence of night turns.
+(Medium Difficult, 10 battle scenarios, 5 dialogue and others things scenarios.)
+
+A little note: the author no longer has an account for the wesnoth.org forum, so, if you have something to say about this campaign you can write it in the website page below, but it's better you don't wait for an answer.
+Moreover I suggest to evaluate well what you write; if what you write doesn't like or doesn't interest the administrator of the site, the discussion will be locked.
+
+Last note: The author will no longer take care of the maintenance of this campaign.
+Who wants to take it in charge can write an email to this address: argesilao2019@yahoo.com
+and I will send him the server.pbl file of the campaign; this file, inserted in the campaign folder downloaded here, will allow him to modify the add-ons at will.
+      status = 
+  DL_per_day = 20.7628546919009
+   megabytes = 5.76305770874023
+
+    filename = A_Group_in_a_War
+        size = 484323
+   timestamp = 1525258018
+   downloads = 20562
+        type = campaign
+     version = 0.2.1d
+dependencies = Tamanegi_Jukebox
+ description = You are the leader of a small troop. Lead your troop to finish the war. 
+
+A simple RPG style campaign. There are some strange features in the gameplay, so the first time players should not choose Hard level.
+
+UMC Music Books (especially 1 and 8-11) are not required but recommended.
+      status = 
+  DL_per_day = 14.7856928738668
+   megabytes = 0.461886405944824
+
+    filename = A_Fiery_Birth
+        size = 1104384
+   timestamp = 1527355300
+   downloads = 19440
+        type = campaign
+     version = 1.2
+dependencies = 
+ description = A scholar of the Great Academy journeys to the land of the Drakes to discover their secret origins.
+
+This is a campaign designed to give players experience in the Drake/Saurian faction. The first level is a bonus level with a fire dragon. 9 scenarios.
+      status = 
+  DL_per_day = 14.2272226757339
+   megabytes = 1.05322265625
+
+    filename = To_Lands_Unknown
+        size = 10993461
+   timestamp = 1521903065
+   downloads = 31437
+        type = campaign
+     version = 3.1.3
+dependencies = Era_of_Magic,To_Lands_Unknown_Resources_1,To_Lands_Unknown_Resources_2
+ description = Hear the story of Mehir, a young city guard from al-Kamija - an isolated city in the middle of the Great Desert, where people and jinns live together. Reveal Mehir's destiny, visit many exotic places during his journey, encounter strange nations and learn about their intentions.
+
+This is the most visually sophisticated add-on ever created for the Battle for Wesnoth. It has the following features:
+- multihex terrain visuals (images covering entire maps to simulate height for example)
+- animated cutscenes (video clips)
+- more than 200 unique animated units (all from the Era of Magic add-on)
+- a completely different universe, not BfW related
+- funny moments and turning points
+- a special gameplay mode offering an alternative story progression
+
+(25 scenarios, some of which are dialog-only - Requires 'Era of Magic' add-on)
+
+If you encounter any bugs, please notify the campaign author, so the patch can be delivered.
+
+If you have problems with downloading this add-on, try using add-on server web interface:
+http://addons.wesnoth.org
+      status = 
+  DL_per_day = 21.9916184546214
+   megabytes = 10.4841814041138
+
+    filename = Genesis
+        size = 3579044
+   timestamp = 1524194001
+   downloads = 18961
+        type = campaign
+     version = 0.2.11
+dependencies = Genesis_Resources
+ description = This campaign is the prequel to Invasion from the Unknown and After the Storm.
+
+In the cycle before our own, the civilization of the First Gods was eradicated by a cataclysmic force that was beyond their control. On the brink of utter destruction, the few survivors harnessed the ten aspects of creation to end their cycle and shape the development of a new universe. In the process, however, many errors were introduced into the fabric of the new worlds, which would eventually resurface when the Guardians of the new universe began to unveil the secrets of their creation.
+
+(Expert level, Episode 1 - 23 scenarios)
+
+Wesnoth 1.14.0 or later required.
+
+Discussion thread in the Wesnoth.org forums: http://forums.wesnoth.org/viewtopic.php?f=8&t=43023
+      status = 
+  DL_per_day = 13.5147686365609
+   megabytes = 3.41324234008789
+
+    filename = A_Few_Logs
+        size = 599887
+   timestamp = 1580249104
+   downloads = 7770
+        type = campaign
+     version = 1.2.2
+dependencies = 
+ description = A young dwarf scout is set out on an expedition in search of suppliesm but they are obtained only at great cost. Ported to 1.11 by Turuk.
+      status = 
+  DL_per_day = 10.3023374358038
+   megabytes = 0.572096824645996
+
+    filename = A_Little_Adventure
+        size = 2906896
+   timestamp = 1521648713
+   downloads = 16244
+        type = campaign
+     version = 4.1.1
+dependencies = 
+ description = As the title says, this is just a little adventure in the wild lands east of the town of Amoran: the rebirth of the Amber Road. You don't know what the Amber Road is? Uhm... well, it's time to learn about it!
+(easy level - 6 scenarios plus one epilogue)
+
+A little note: the original author no longer has an account for the wesnoth.org forum, so any feedback should be directed to the issues section of the GitHub repo for it:
+
+https://github.com/cooljeanius/A_Little_Adventure
+
+The new maintainer may also be contacted as egallager#0504 on Discord.
+      status = 
+  DL_per_day = 11.3400669354711
+   megabytes = 2.77223205566406
+
+    filename = Elvish_Dynasty
+        size = 1647712
+   timestamp = 1526585912
+   downloads = 11909
+        type = campaign
+     version = 0.12.1b
+dependencies = Irdya_Dragon
+ description = You are the new sovereign of an elvish kingdom. Lead your people to glory!
+
+This is a true RPG campaign, most excellent sequel of awesome Ooze Mini Campaign.
+      status = 
+  DL_per_day = 8.65920454365665
+   megabytes = 1.57138061523437
+
+    filename = A_goblin_adventure
+        size = 720177
+   timestamp = 1558558048
+   downloads = 7698
+        type = campaign
+     version = 1.5.0
+dependencies = 
+ description = All your wolves are gone, and you have to find them back ! 
+
+Short campaign - 5 levels (1 dialog-only)
+
+3 new goblin units are evolving in this campaign alongside the mainline ones.
+
+The campaign need some balance, especially about turn counts and economic stuff.
+
+Except the Goblin Archer and the portraits wich are from some different campaigns and eras, Artwork is from myself. 
+Story pictures are from wesnoth.
+      status = 
+  DL_per_day = 7.65778387170045
+   megabytes = 0.686814308166504
+
+    filename = A_Northern_Village
+        size = 30654
+   timestamp = 1538098618
+   downloads = 7809
+        type = campaign
+     version = 2.0.0
+dependencies = 
+ description = Can you save a peaceful village from certain destruction at the hands of a rampaging monster?
+
+Your forces will include fencers, cavalrymen and unusual allies.
+_(Intermediate level, 5 scenarios, approx. playing time 1-2 hours.)
+      status = 
+  DL_per_day = 6.28718334246641
+   megabytes = 0.0292339324951172
+
+    filename = An_Independence_War
+        size = 588192
+   timestamp = 1537689421
+   downloads = 8095
+        type = campaign
+     version = 0.3.2y
+dependencies = Tamanegi_Jukebox
+ description = Fight against the world to save your people.
+This is a sequel to A Group in a War campaign.
+
+Intermediate to Expert level (containing very strange features).
+The game system is completely different from the standard of BfW.
+Main units in this campaign are troops which consist of multiple units.
+
+Tamanegi Jukebox addon is required.
+UMC Music Books (1-12) and West's Chronicles (I and II) are not required but recommended to install.
+      status = 
+  DL_per_day = 6.49269036233894
+   megabytes = 0.560943603515625
+
+    filename = Invasion_from_the_Unknown
+        size = 9047776
+   timestamp = 1528699795
+   downloads = 19333
+        type = campaign
+     version = 2.1.13
+dependencies = IftU_Music
+ description = Long after the Fall, the last forest elves on the Great Continent are forced to abandon their secluded home and forge an unprecedented alliance in hopes of retaliating against the great evil that has befallen Irdya. But even then, they will require more than one ancient power to aid them in their quest...
+
+(Intermediate level, 24 scenarios.)
+
+Although not strictly required, players are advised to become familiar with the stories, characters, and historical events presented in Descent into Darkness and Under the Burning Suns before playing this campaign.
+
+Requires Wesnoth 1.14.3 or later (on 1.14.x), or Wesnoth 1.15.12 or later (on 1.15.x).
+
+NOTE: Support for Wesnoth 1.15.x is experimental, and you MUST report all issues in the campaign’s discussion thread.
+
+Discussion threads in the Wesnoth.org forums:
+
+ • Main discussion thread: ‹https://r.wesnoth.org/t43309›
+ • Feedback thread: ‹https://r.wesnoth.org/t43307›
+      status = 
+  DL_per_day = 14.3119065985993
+   megabytes = 8.62863159179688
+
+    filename = The_Beautiful_Child
+        size = 764828
+   timestamp = 1525687471
+   downloads = 8024
+        type = campaign
+     version = 1.0.1f
+dependencies = Legend_of_the_Invincibles
+ description = Brothers of Light, an order of White Mages, spreads good news that a superior being was born to bring everyone into a greater society and demands additional tithes to raise the child in a way suitable for such a being. However, the news of the supreme child look like a pretty lie to justify the increase in tithing, so that they could peculate more. Help start a rebellion against this corrupted order and its fanaticised allies and learn the truth behind it.
+
+Consists of 8 classical scenarios, a free roam mode where 15 quests have to be completed and 2 talk-only scenarios. Experimentally changed the role of recalls, separating them from the usual recruits and giving them an RPG-like progression. Dialogues have options. Uses Legend of the Invincibles as resources and will not run without having it installed (minimal version is 3.1.20, otherwise some bugs will appear).
+      status = 
+  DL_per_day = 5.79058285074759
+   megabytes = 0.729396820068359
+
+    filename = Kromire
+        size = 255587
+   timestamp = 1547435440
+   downloads = 5029
+        type = campaign
+     version = 1.4.4
+dependencies = Era_of_Myths
+ description = A vampire campaign!
+      status = 
+  DL_per_day = 4.43480075681936
+   megabytes = 0.243746757507324
+
+    filename = An_Undead_Incursion
+        size = 555173
+   timestamp = 1538098648
+   downloads = 5713
+        type = campaign
+     version = 3.0.2
+dependencies = 
+ description = When undead forces enter the home of the elves it is up to a druid and her court to repel them. This short and easy adventure is set shortly after the mainline campaign An Orcish Incursion.
+
+All three scenarios are complete and balanced and I have no plans to add more, although I am happy to consider alterations based on player requests.
+
+Feedback is welcome in the Scenario and Campaign Development forum topic entitled My First Campaign - An Undead Incursion.	
+(Novice level, 3 scenarios.)
+      status = 
+  DL_per_day = 4.59965276946876
+   megabytes = 0.529454231262207
+
+    filename = Grnk
+        size = 885304
+   timestamp = 1524103046
+   downloads = 6898
+        type = campaign
+     version = 2.3.0
+dependencies = 
+ description = All his life, puny little goblin Grnk the Frail had been dreaming about leaving the orcs and starting a better life. When he finally arrives in the human town of Shmaltupp, he realizes that the world is not as black and white as he had imagined. He also discovers that he is no ordinary goblin. Follow Grnk the Frail on his path to becoming Grnk the Mighty.
+
+Single player campaign with RPG elements in two parts.
+Part 1: 13 scenarios — complete
+Part 2: 16 scenarios — complete
+
+Difficulty: intermediate to expert level
+      status = 
+  DL_per_day = 4.91297799748091
+   megabytes = 0.844291687011719
+
+    filename = Attack_of_the_Undead
+        size = 37405
+   timestamp = 1612797827
+   downloads = 1440
+        type = campaign
+     version = 1.3.6
+dependencies = 
+ description = Play as a mage to protect your city from the undead.
+
+(Novice level, 4 scenarios.)
+      status = 
+  DL_per_day = 3.81480755253156
+   megabytes = 0.0356721878051758
+
+    filename = Aldur_The_Great
+        size = 93694
+   timestamp = 1638721501
+   downloads = 299
+        type = campaign
+     version = 1.12.01-2
+dependencies = 
+ description = Story about Aldur.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 3.86135670331829
+   megabytes = 0.0893535614013672
+
+    filename = Cities_of_the_Frontier
+        size = 1112787
+   timestamp = 1543595789
+   downloads = 4659
+        type = campaign
+     version = 0.6.1-6
+dependencies = 
+ description = Settle a new town north of the Great River. This campaign makes numerous changes to standard Wesnoth gameplay, adding new strategic elements and replayability. Focuses on gold management, strategic construction, and city defense. 
+ 
+That was originaly end of life on Wesnoth 1.11, but ported to 1.14 by request of Seivn. With help of gnombat, he told the name of it. It was originally Complete, playable, and winnable in its current state, but a few more features are planned.
+ 
+However currently it has some minor bugs. I might fix them in future or not.. It should be playable but you could let me know if there is a major bug that makes it unplayable and I might do something about it. 
+ 
+esci if you ever come back feel free to ask for password and it's all yours.
+ 
+Very interesting project if you like to build (ANL, A new land, Undead Empire, New Settlers, Civ)
+ 
+Playable from main Wesnoth menu, through the Campaigns. Single player only.
+
+      status = 
+  DL_per_day = 3.95357888877252
+   megabytes = 1.06123638153076
+
+    filename = A_Vision_Blinded
+        size = 4389837
+   timestamp = 1526483086
+   downloads = 9716
+        type = campaign
+     version = 1.0.25a
+dependencies = 
+ description = Defend the northern forest against what appeared like a routine orcish raid, and unravel the greater conspiracies that lie below its waves.
+ 
+You fight with Elfes against Dwarves, Orcs, Humans and Undead.
+Later in the campaign you can recruit Trolls, Humans and Woses.
+ 
+14 scenarios total.
+1 of them is dialogue only.
+
+You can find (or share your) replays of this campaign here: 
+https://wiki.wesnoth.org/Player_UMC_Replays#A_Vision_Blinded
+
+      status = 
+  DL_per_day = 7.05853471574811
+   megabytes = 4.18647480010986
+
+    filename = AI-demos
+        size = 211587
+   timestamp = 1525810695
+   downloads = 4180
+        type = campaign
+     version = 0.14.15
+dependencies = 
+ description = AI Development and Demonstration Campaign
+
+Home of a number of AI development projects, most notably two MP AIs dubbed 'Ron' and 'Fred' as well as several test and demo scenarios. This is also where the Micro AIs were developed. As the latter have now been moved into mainline, they are no longer part of this add-on.
+      status = 
+  DL_per_day = 3.01963785499392
+   megabytes = 0.201785087585449
+
+    filename = Story_of_Wose
+        size = 329586
+   timestamp = 1525288000
+   downloads = 4265
+        type = campaign
+     version = 0.9.0
+dependencies = 
+ description = The trees are not always what they seem.
+      status = 
+  DL_per_day = 3.0676354272932
+   megabytes = 0.31431770324707
+
+    filename = Cleansing_the_Forest
+        size = 15761
+   timestamp = 1586444273
+   downloads = 1864
+        type = campaign
+     version = 1.0
+dependencies = 
+ description = Short 4 scenario campaign where you lead a bunch of elves to fight undead. 
+      status = 
+  DL_per_day = 2.73115780909826
+   megabytes = 0.0150308609008789
+
+    filename = Invasion-of-the-Undead
+        size = 17975
+   timestamp = 1530220695
+   downloads = 3463
+        type = campaign
+     version = 1.0.2
+dependencies = 
+ description = Undead invade the land of your home, and you find they ravage neighboring lands as well. Find the necromancer behind this and put an end to him.
+
+
+Novice level, 5 scenarios.
+      status = 
+  DL_per_day = 2.59745073874937
+   megabytes = 0.0171422958374023
+
+    filename = Dungeons_of_Wesnoth
+        size = 1385555
+   timestamp = 1526417206
+   downloads = 5349
+        type = campaign
+     version = 0.61 Beta
+dependencies = 
+ description = A heavily wounded lich discovers the magic to build an own dungeon lair and different dungeons rooms which will allow him to call new units, to place traps and to research spells. His new opponent is a overmotivated paladin, who can build a village with different buildings which will unlock new units and abilities. Guide them on their way. This is Parody Dungeon Defence Game, in the style of Dungeon Keeper and preform of a multiplayer campaign. This is a very fast paced campaign, and needs some balancing as well as overwork of techtrees and buildingtrees. 4 Scenarios.
+
+0.6 - added two, :p, new dungeon levels and a little bit of storyline, as well as some fixes and funny descriptions.
+0.61 - added some options, when you jump to a new level, added cheat mode and additional dialogues, design improvements
+      status = 
+  DL_per_day = 3.88382039498839
+   megabytes = 1.32136821746826
+
+    filename = Galuldur
+        size = 1192725
+   timestamp = 1522527306
+   downloads = 5230
+        type = campaign
+     version = 1.3.0
+dependencies = 
+ description = While the belligerence of orcs is nothing new, their intensifying attacks on a fledgling colony of elves in Pindir Forest begin to show signs of a deeper malice, forcing Galuldur, the young son of the colony's adventurous founder Galur, to venture out of his forest's friendly trees in search of help. His simple errand quickly turns into a frantic quest to unearth the roots of the mysterious evil threatening his people. As you lead him through unknown lands, Galuldur, forced to match wits with unexpected adversaries at nearly every turn in a desperate attempt to save his world, quickly learns that the world is neither a friendly nor a simple place.
+
+Intermediate level. 8 or 9 scenarios depending on choices made in game. Complete.
+      status = 
+  DL_per_day = 3.67720950551887
+   megabytes = 1.13747119903564
+
+    filename = An_Innocent_Man
+        size = 2715880
+   timestamp = 1642444161
+   downloads = 172
+        type = campaign
+     version = 1.1-1
+dependencies = 
+ description = Owercyn is accused of theft and sent into temporary exile. This is the story of his struggle to return home and clear his name, and the unexpected adventures he has in the process.
+
+Intermediate level, 12 scenarios.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 5.00763066567238
+   megabytes = 2.59006500244141
+
+    filename = Knalgans_Of_Steel
+        size = 27808
+   timestamp = 1580270524
+   downloads = 1839
+        type = campaign
+     version = 1.1
+dependencies = 
+ description = Criminals and dwarves get together for a heist.
+
+This is a campaign designed to give players experience in the Knalgan faction, including both outlaws and dwarves. 10 scenarios.
+      status = 
+  DL_per_day = 2.43915423936789
+   megabytes = 0.026519775390625
+
+    filename = Sanctuary
+        size = 24260
+   timestamp = 1565283895
+   downloads = 2227
+        type = campaign
+     version = 1.1.6
+dependencies = 
+ description = Four heroes holding their well-fortified sanctuary against a flood of enemies, four scenarios, each on the same map. In the first scenario, all level 0 and level 1 units can appear as enemies, in the second all level 2 units, in the third all level 3 units, and in the fourth all level 4 and 5 units.
+
+If desired, a custom “Battle Mage” unit with quite a number of AMLAs can be recruited (fully functional, but without any new graphics).
+
+_(Intermediate level, 4 scenarios.)
+      status = 
+  DL_per_day = 2.40132097813574
+   megabytes = 0.0231361389160156
+
+    filename = Prinzessin_Nilwyn
+        size = 20026
+   timestamp = 1638333155
+   downloads = 196
+        type = campaign
+     version = 1.3.0-2
+dependencies = 
+ description = This campaign is about an elven princess, getting kidnapped. Your task is to liberate her. This campaign is finished and tested. (Medium Difficulty, 7 Scenarios) I'm happy about any feedback: write an email to anagkai_wesnoth@keraunos.de
+ -version 1.2.2: fixed some spelling misstakes and gave the scenarios english ids
+ -version 1.3.0: superior balancing changes, small storyline changes, some changes on maps
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.39232496312496
+   megabytes = 0.0190982818603516
+
+    filename = Bitter_Revenge
+        size = 561806
+   timestamp = 1598979696
+   downloads = 1549
+        type = campaign
+     version = 1.1.6
+dependencies = 
+ description = Amidst the strife and turmoil of the first Dark Age of Wesnoth, a time of transient monarchies and conspiracies against the Crown, the boy Darith witnesses the murder of his father by a general of Wesnoth. Follow Darith's quest for retribution in this treacherous tale of betrayal, deceit, love, remorse, and vengeance.
+
+(Hard level, 11 playable scenarios)
+      status = 
+  DL_per_day = 2.88235103580075
+   megabytes = 0.53577995300293
+
+    filename = Hive_Mind
+        size = 11117
+   timestamp = 1530218268
+   downloads = 3088
+        type = campaign
+     version = 0.1.1
+dependencies = 
+ description = All the drakes have linked together into a hive mind in an effort to accelerate their evolution. You have learned about this, and after a long journey to the hive, you are ready to destroy the hive mind, but what will it take?
+
+Not focused on killing enemy leaders.
+
+(Novice level, 2 scenarios.)
+      status = 
+  DL_per_day = 2.31613020190267
+   megabytes = 0.0106019973754883
+
+    filename = Saving_Elensefar
+        size = 630849
+   timestamp = 1618417953
+   downloads = 906
+        type = campaign
+     version = 2.3.2
+dependencies = 
+ description = Meneldur, elvish mariner of Elensefar, is driven to sea by the same orcs who attacked the city. He must gather an army willing to fight for him to regain Elensefar, his adopted homeland.
+
+(Expert level, 4 - 22 scenarios.)
+      status = 
+  DL_per_day = 2.89986170548028
+   megabytes = 0.601624488830566
+
+    filename = A_Rough_Life
+        size = 5361917
+   timestamp = 1531488864
+   downloads = 9727
+        type = campaign
+     version = 1.2.8
+dependencies = 
+ description = A young thief dreams of greatness and finds himself plunged into an unwitting adventure that takes him far from home and all he knew.
+      status = 
+  DL_per_day = 7.37702949488798
+   megabytes = 5.11352252960205
+
+    filename = Hair_to_the_Throne
+        size = 342833
+   timestamp = 1628474156
+   downloads = 504
+        type = campaign
+     version = 0.2.0
+dependencies = 
+ description = A short, humorous campaign centered around Konrad after the events of Heir to the Throne.
+      status = 
+  DL_per_day = 2.57093729018619
+   megabytes = 0.326951026916504
+
+    filename = TWoD
+        size = 42236
+   timestamp = 1556886297
+   downloads = 2299
+        type = campaign
+     version = 0.6beta
+dependencies = 
+ description =  Save The Grey Empire and fight enemies.
+RPG campaign with free move and big world. (Incomplete)
+The World Of Death RPG. Public Beta 3 
+      status = 
+  DL_per_day = 2.24380106544448
+   megabytes = 0.0402793884277344
+
+    filename = Birth_of_a_Lich
+        size = 4022137
+   timestamp = 1527874835
+   downloads = 8215
+        type = campaign
+     version = 1.1.0
+dependencies = 
+ description = The life story of the dreaded lich Malifor,his struggle as a mage outcast, the orcish conquest of the northlands and his transformation to quench the thirst for revenge
+_(Intermediate level, 14 scenarios)
+      status = 
+  DL_per_day = 6.03874745540673
+   megabytes = 3.83580875396729
+
+    filename = Mercenary_Band
+        size = 50336
+   timestamp = 1558976314
+   downloads = 2175
+        type = campaign
+     version = 0.7
+dependencies = War_Of_Legends
+ description = Before the Fall, a new group of humans entered the continent. They were the Aragwaith mercenaries, powerful warriors who settled many disputes within Wesnoth.
+Designed to be relatively easy, though you may get a lot of cannon fodder killed. Tested on Easy and Normal modes.
+Uses the Aragwaith faction from War of Legends + a few other units.
+
+Changes: I have reduced the number of revenants in S11 and I have added a reminder that S12 is the last scenario, aside from the epilogue. 
+      status = 
+  DL_per_day = 2.17410725720751
+   megabytes = 0.048004150390625
+
+    filename = peasant_uprising
+        size = 14969
+   timestamp = 1523022494
+   downloads = 2896
+        type = campaign
+     version = 0.0.4
+dependencies = 
+ description = The fourth test version of the Peasant Uprising campaign, with two scenarios, Triple Siege and Revenge of the Redbrains. Both scenarios are playable, but with some rough edges.
+      status = 
+  DL_per_day = 2.0444140467249
+   megabytes = 0.0142755508422852
+
+    filename = The_Final_Exam
+        size = 67826
+   timestamp = 1526402642
+   downloads = 2881
+        type = campaign
+     version = 2.6.1
+dependencies = 
+ description = Young mage Erika must find a magic book to become a true mage. But will it really be her final exam?
+(4 scenarios, for beginner and WML coders)
+- easy to play
+- easy to modify
+- easy to learn basics of WML
+- easy to translate
+
+Ported to 1.14 by Xara.
+      status = 
+  DL_per_day = 2.09159043653366
+   megabytes = 0.0646839141845703
+
+    filename = The_Emperor
+        size = 36106
+   timestamp = 1563608237
+   downloads = 1950
+        type = campaign
+     version = 0.1.4
+dependencies = Legend_of_the_Invincibles
+ description = Follow the story of Xeltar, and see how he conquers the world... First five scenarios playable
+1.14 Version requiered!
+      status = 
+  DL_per_day = 2.05956819358278
+   megabytes = 0.0344333648681641
+
+    filename = White_Troll
+        size = 965261
+   timestamp = 1532870602
+   downloads = 3823
+        type = campaign
+     version = 1.0.5
+dependencies = 
+ description = The tale of a Troll Whelp, born white and with extraordinary magical powers, rejected by his clan, adopted by elves, desired by a ruthless human commander.
+Intermediate level, 8 scenarios.
+      status = 
+  DL_per_day = 2.93498940254675
+   megabytes = 0.920544624328613
+
+    filename = Ghostly_Calls
+        size = 89814
+   timestamp = 1637948174
+   downloads = 180
+        type = campaign
+     version = 1.4.3-1
+dependencies = 
+ description = A slightly humorous undead campaign. Lead Ahab through his adventures in necromancy Novice-Intermediate levels. 13 scenarios. Complete.
+Changes:
+1.4: WML fixes
+1.3: AI bug fixes and a continuity problem with John Dee’s death
+1.2: Fixed an error with drake unit types.
+1.1: Fixed an objectives error.
+Please give feedback at the Wesnoth forums (Add-on Feedback).
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.08370792824606
+   megabytes = 0.0856533050537109
+
+    filename = Swamp_Witch_Curse
+        size = 48715
+   timestamp = 1527950571
+   downloads = 2775
+        type = campaign
+     version = 1.0.2
+dependencies = Era_of_Four_Moons
+ description = A farie tale for the Era of Four Moons, complete at 9 scenarios long. Protect a cursed princess as she works her way through a small adventure.
+      status = 
+  DL_per_day = 2.04118429860354
+   megabytes = 0.0464582443237305
+
+    filename = Resurrection
+        size = 255843
+   timestamp = 1564086985
+   downloads = 2103
+        type = campaign
+     version = 1.0.4
+dependencies = 
+ description = The Captain of an advance reconnaissance troop finds himself in a tricky situation against an army much larger than his small group.
+      status = 
+  DL_per_day = 2.23424077723295
+   megabytes = 0.243990898132324
+
+    filename = Home_of_the_Undead
+        size = 257762
+   timestamp = 1540039454
+   downloads = 2691
+        type = campaign
+     version = 1.0.0
+dependencies = 
+ description = Follow Henry and his people of undead from the summer solstice festivities to an epic adventure of defending their home. This is a humorous campaign containing custom advancements for Soulless. (Intermediate level, 12 scenarios.) This campaign is finished and tested for easy and medium difficulty. For suggestions and bug reports, please write an email to anagkai_wesnoth@keraunos.de
+      status = 
+  DL_per_day = 2.20648421030574
+   megabytes = 0.245820999145508
+
+    filename = Salt_Wars
+        size = 35426
+   timestamp = 1527677905
+   downloads = 2710
+        type = campaign
+     version = 1.0.2
+dependencies = Era_of_Four_Moons
+ description = A short easy campaign for the Era of Four Moons.
+      status = 
+  DL_per_day = 1.98875621935425
+   megabytes = 0.0337848663330078
+
+    filename = Missing_Scepter
+        size = 932338
+   timestamp = 1642870162
+   downloads = 83
+        type = campaign
+     version = 0.8.1-1
+dependencies = 
+ description = Warlock Homz must locate a missing scepter and stop a plot by his nemesis to over-run the world with an army of undead.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.82149644126014
+   megabytes = 0.88914680480957
+
+    filename = Dreams_of_Urduk
+        size = 28645
+   timestamp = 1583860340
+   downloads = 1386
+        type = campaign
+     version = 0.4
+dependencies = Wild_Era
+ description = It is a time before men arrived on the continent later to be known as Evrosia. There, only the orcs possess language, though it is primitive at best. There is no history, for there are none to keep it. But soon, all of that may change.
+    
+(Intermediate level, 5 scenarios.)
+      status = 
+  DL_per_day = 1.94553330764642
+   megabytes = 0.027318000793457
+
+    filename = in_defence_of_gaer_derole
+        size = 273149
+   timestamp = 1543005538
+   downloads = 2572
+        type = campaign
+     version = 0.3.2
+dependencies = 
+ description = As orcs pour south across the great river, the humans along the coast, west of Elensefar, are in turmoil. After the elves and a corrupted King Haldric I refuse to send aid, the various settlements and villages band together, creating the capital of Gaer Derole. Korald, Lord of Gaer Derole, is faced with a dilemma. Flee and let the orcs prowl the countryside, dismembering all who they come across, or fight back in an attempt to save the lives of those who the orcs would cause harm? Korald chooses the latter.
+
+*Any questions or concerns? Send an email to elivarasloa@gmail.com, or find me on discord at Elivaras#3544.*
+
+(( Note: Format for date is DD/MM/YYYY ))
+
+Update 0.3.2 (23/11/2018) Includes: 
+    -Cutscene and a story introduction added to the first scenario
+    -Music added to all scenarios
+
+Note: Three playable scenarios currently exist. More may come at a later date.
+      status = 
+  DL_per_day = 2.16999246940524
+   megabytes = 0.260495185852051
+
+    filename = Purger_of_Evil
+        size = 147698
+   timestamp = 1533177545
+   downloads = 2644
+        type = campaign
+     version = 0.1.8.5
+dependencies = UMC_Terrain_Pack, Purger_of_Evil_Music
+ description = The world is full of those who wish for nothing but themselves. Those who have a great lust of power, worship, and fear. When Lieutenant James D. Archer of the Everglade Army finds himself driven deep into a conspiracy of 'World Domination,' it becomes his responsibility and his alone to stop it.
+
+A campaign that takes you all over the world, including Wesnoth. Requires the UMC terrain pack (It's under GNU GPL, right? So I do have a right to use it!) and the Purger of Evil Music add-on, which contains several music clips from the UMC music books and will contain some of my own custom composed music in the future.
+
+Eight out of an unknown number of scenarios complete, with one dialogue only scenario.
+
+Update 0.1.8.5: Fixed a glitch in scenario 7-2.
+      status = 
+  DL_per_day = 2.03540012167587
+   megabytes = 0.14085578918457
+
+    filename = Revolution
+        size = 169707
+   timestamp = 1528733785
+   downloads = 2722
+        type = campaign
+     version = 0.11.2
+dependencies = 
+ description = Four brothers attempt to escape slavery but end up leading the rebels in the 2nd civil war of Wesnoth.  Not yet finshed.  If you find any problems please email me at caleb.elkevizth@gmail.com *note* Dying Slaves turn back into Slaves once at full health.  Recent updates : Massive changes to story, this now fits in with the official Wesnoth timeline; Fixed tons bugs in the first 4 scenarios thanks to white_haired_uncle
+      status = 
+  DL_per_day = 2.0156395026528
+   megabytes = 0.161845207214355
+
+    filename = War_of_the_Dragon
+        size = 240742
+   timestamp = 1547460924
+   downloads = 2360
+        type = campaign
+     version = 1.4.4
+dependencies = Era_of_Myths
+ description = This campaign is a sequel to Count Kromire.
+
+Not finished.
+      status = 
+  DL_per_day = 2.08169671349926
+   megabytes = 0.229589462280273
+
+    filename = Unite_the_Clans
+        size = 10331
+   timestamp = 1617445322
+   downloads = 596
+        type = campaign
+     version = 1.5
+dependencies = 
+ description = Aimed to be a minimalist campaign. A young warchief have to unite all local clans and defend against invading knights, whose aim is to prevent the orcs from gaining power in this region.
+      status = 
+  DL_per_day = 1.84129065985089
+   megabytes = 0.00985240936279297
+
+    filename = Galis_Contract
+        size = 69596
+   timestamp = 1583847791
+   downloads = 1351
+        type = campaign
+     version = 0.4.3
+dependencies = Imperial_Era
+ description = 951-952 SI
+
+The Thunderblades were forged centuries ago - a monument to the skill of the dwarven craftsmen and the magic of the Sidhe stormlords. But now, Alfhelm the Wise, king of men, travels east, and he desires a new weapon - one that can overpower the legendary swords of the Sidhe. The dwarf Gali will gladly make one for him, for a fair price, but there are some who would object.
+
+(Intermediate level, 7 scenarios.)
+      status = 
+  DL_per_day = 1.89601712208406
+   megabytes = 0.0663719177246094
+
+    filename = Strange_Alliance
+        size = 14445
+   timestamp = 1617403639
+   downloads = 586
+        type = campaign
+     version = 0.6
+dependencies = 
+ description = Humans are getting more powerful every day. To better combat their foes, they need more lumber and metals to craft their homes and weapons. Protect your homeland against them and find allies to help you, so a strange alliance can begin.
+      status = 
+  DL_per_day = 1.80770220728229
+   megabytes = 0.0137758255004883
+
+    filename = the_home
+        size = 77414
+   timestamp = 1532880836
+   downloads = 2397
+        type = campaign
+     version = 0.8.0
+dependencies = 
+ description = A huge invasion of Orcs is flooding the land. The Humans are caught off guard. When the trouble arrives at a peaceful valley near Raevengal, Ruben and his friends must flee. Will they find a way to stop the Orcs?
+
+18/24 scenarios finished so far.
+
+Some balancing may be needed. I'd be happy about every volunteer who wants to test this campaign.
+      status = 
+  DL_per_day = 1.84038959022085
+   megabytes = 0.0738277435302734
+
+    filename = Return_from_the_Abyss
+        size = 3310364
+   timestamp = 1521901355
+   downloads = 7031
+        type = campaign
+     version = 1.1.10b
+dependencies = RftA_Music
+ description = After taking part to a disastrous expedition, Khafir and his men are lost and isolated from their people, thousands of miles away from home, bound by a pact sealed with a powerful dwarvish king. Help him escape from the depth of Irdya and finding his way back, in an adventure across two worlds during the rise of a sinister force in the Great Continent. 
+	
+Finished (19 playable scenarios).
+      status = 
+  DL_per_day = 4.91843778352108
+   megabytes = 3.15700912475586
+
+    filename = For_Power
+        size = 1389696
+   timestamp = 1525614278
+   downloads = 4268
+        type = campaign
+     version = 0.6.5.2
+dependencies = 
+ description = Sometimes the fate has a quite interesting sense of humor. Some people wish to be good but it has something different prepared for them. It was also the case of a young mage Clare from the Northlands.
+She only wanted to protect her home village from the still more aggressive orcs but just one event completely changed her whole life. It has become very thrilling and much longer but everything has its price. She had to do many a thing what she did not like. Watch with your own eyes what happened and how she dealt with it. Watch her path to power but also her descent.
+work in progress (chapters 1 to 5 are completed, some scenarios from chapter 6 are present)
+git repository: https://github.com/irdyansages/For_Power
+      status = 
+  DL_per_day = 3.07815402580057
+   megabytes = 1.3253173828125
+
+    filename = RebirthInNature
+        size = 2251183
+   timestamp = 1529715261
+   downloads = 5208
+        type = campaign
+     version = 0.7.19
+dependencies = 
+ description = A one-character RPG campaign (hack-slash style).
+
+Rebirth in Nature:
+Follow the voyage of Aucrin, one of the Naart, in a quest to recover his people from many hostile lands, where every living being is in constant struggle, surrounded by permanent war and without long-lasting safety.
+      status = 
+  DL_per_day = 3.88923674816145
+   megabytes = 2.14689540863037
+
+    filename = Marauding_Thieves
+        size = 195875
+   timestamp = 1612561493
+   downloads = 730
+        type = campaign
+     version = 2.1.0-1
+dependencies = 
+ description = Marauding Thieves is a singleplayer campaign that takes a totally different approach to Wesnoth gameplay. Here, stealth and evasion count for more than brute strength. Why charge at a guard when you can sneak past, assassinate him from the shadows or simply plant a bomb behind his back? Combat is for losers!
+
+    The campaign takes place across a series of missions which are selected by the player on a world map of Wesnoth. There are four mission types with a variety of unique objectives (loot the chests, rescue the prisoners, blow the bridge!). With a variety of special stealth options and hiding abilities at your disposal, your ragtag team of thieves must take on the combined might of the royal empire. You will be outnumbered and overpowered, but you have the skillz.
+
+This is a fork of 'Den of Thieves' by Bob_The_Mighty & jb.
+
+To play the original multiplayer version with 2 or 3 players, please download their copy instead.
+Marauding Thieves is the Single Player variation. It should be started from the 'Campaigns' button found at the main screen, and not from the Multiplayer setup screens.
+      status = 
+  DL_per_day = 1.91998252435998
+   megabytes = 0.186800956726074
+
+    filename = Autumn_Kingdoms_Prologue
+        size = 294508
+   timestamp = 1616086957
+   downloads = 682
+        type = campaign
+     version = 0.1.10
+dependencies = 
+ description = All kingdoms fall. Join Captain Aldehar as he witnesses the rise of a revolution, and the changing of an era. Incomplete: 12 scenarios of 17. Version 0.1.10.
+
+Ported to Wesnoth version 1.14; original creator unreachable since 2009. All contributions and fixes are welcome.
+
+CAUTION: Has bugs. If you encounter any, feel free to report them.
+
+Feedback and bug reports: https://www.github.com/sio-k/Autumn_Kingdoms_Prologue/issues
+Repository: https://www.github.com/sio-k/Autumn_Kingdoms_Prologue 
+      status = 
+  DL_per_day = 2.00938214997629
+   megabytes = 0.280864715576172
+
+    filename = BloodLust
+        size = 1762027
+   timestamp = 1620504498
+   downloads = 981
+        type = campaign
+     version = 0.6.3
+dependencies = 
+ description = Welcome to a world ruled with god-like living weapons!
+Our hero will learn the existence of these weapons, and make an alliance with one of the most powerful of them, to start an adventure that will lead to many surprises.
+
+(Advanced level, 5 scenarios that can played many times, second part to come...)
+      status = 
+  DL_per_day = 3.40295497375187
+   megabytes = 1.68039989471436
+
+    filename = Mercenary_Band_Updated
+        size = 53725
+   timestamp = 1625396861
+   downloads = 406
+        type = campaign
+     version = 0.9.2
+dependencies = War_Of_Legends
+ description = Before the Fall, a new group of humans entered the continent. The mercenary Aragwaithi bands came across the vast sea, and were involved in settling many disputes before the Fall. This is the story of one such band.
+	Feedback is welcome and necessary. This campaign is very rough around the edges. It is also practically fractal in its vast quantities of edges, and <sarcasm>definitely not</sarcasm> an excuse for a campaign with the Aragwaith as the main faction. If you find the campaign hard, I recommend that you mostly recruit Guards (level 2/3 swordsmen) and a few leadership units (level 2/3/4 spearmen).
+	V 0.9.2: removed some bugs and buglike occurences.
+	(Intermediate difficulty; 12 scenarios + 1 epilogue)
+      status = 
+  DL_per_day = 1.75261158781911
+   megabytes = 0.0512361526489258
+
+    filename = Roar_of_the_Woses
+        size = 422452
+   timestamp = 1641976765
+   downloads = 83
+        type = campaign
+     version = 1.2.13-1
+dependencies = 
+ description = Fight to save a swamp as the saurian Kylix, gathering allies along the way. 11 playable scenarios + 1 dialog.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.08766917989291
+   megabytes = 0.402881622314453
+
+    filename = Ashen_Hearts
+        size = 5684959
+   timestamp = 1521443994
+   downloads = 10147
+        type = campaign
+     version = 2.41
+dependencies = 
+ description = In the ancient Heartfang mountains, a once powerful population of drakes has begun to weaken due to a mysterious force dimming their inner fire. Guide Herkarth, the heir of the Menor kings, and his companion Uluthur on a journey to delve into drakes' past and reignite the flames of their ashen hearts. (Expert difficulty, 8 scenarios)
+      status = 
+  DL_per_day = 7.07200429582528
+   megabytes = 5.42159938812256
+
+    filename = Kings_Quest
+        size = 266265
+   timestamp = 1564075403
+   downloads = 1788
+        type = campaign
+     version = 1.0.1
+dependencies = 
+ description = King Mario's kindom is under attack by a group of Orcs. Mario must protect his kingdom at all costs!
+      status = 
+  DL_per_day = 1.89931225001887
+   megabytes = 0.25393009185791
+
+    filename = Comrades_in_Arms
+        size = 1951410
+   timestamp = 1642429686
+   downloads = 119
+        type = campaign
+     version = 1.0.1-1
+dependencies = 
+ description = The adventures of Bronna, a human brought up by elves, and her best friend Trithsil, a dwarf.
+
+Intermediate level, 15 scenarios.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 3.44776476758371
+   megabytes = 1.86100959777832
+
+    filename = Revenge_of_the_Five
+        size = 874854
+   timestamp = 1530225826
+   downloads = 3211
+        type = campaign
+     version = 1.0.1
+dependencies = 
+ description = Five very different heroes, well, soon-to-be heroes, are brought together by Fate. They have all been hurt by the Necro-Twins, and after they meet they go together to seek their revenge. 
+
+Focuses on chill gameplay.
+
+Novice level, 4 scenarios.
+      status = 
+  DL_per_day = 2.40854341578383
+   megabytes = 0.834325790405273
+
+    filename = Rally_For_Roanic
+        size = 821446
+   timestamp = 1642356970
+   downloads = 83
+        type = campaign
+     version = 0.4.1-2
+dependencies = 
+ description = Follow Commander Roanic as he aids in thwarting the collapse of a vulnerable nation. Play as loyalists battling mostly orcs and outlaws.  This campaign is mostly skirmish type scenarios played on smaller scaled maps.  All scenarios are working and playable.  14 scenarios total (11 playable and 3 dialog only).
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.34750175296629
+   megabytes = 0.783391952514648
+
+    filename = PantherLord
+        size = 734146
+   timestamp = 1527695072
+   downloads = 3057
+        type = campaign
+     version = 1.0.3a
+dependencies = Era_of_Four_Moons
+ description = An Era of Four Moon campaign complete at 12 combat scenarios in length. Expert Level. An outcast of your people for your unusual companion you find yourself called back into their service to fight off imperialist encroachment.
+      status = 
+  DL_per_day = 2.2437322412653
+   megabytes = 0.700136184692383
+
+    filename = The_Rise_Of_Wesnoth_Alternative
+        size = 121218
+   timestamp = 1572604337
+   downloads = 1385
+        type = campaign
+     version = 1.1.0
+dependencies = 
+ description = Lead Prince Haldric through the destruction of the Green Isle and across the Ocean to establish the very kingdom of Wesnoth itself. The confrontation with Lich-Lord Jevyan awaits...
+
+UMC version of The Rise of Wesnoth campaign with the next changes:
+- Early finish bonus gives points, which may be used to upgrade main characters.
+- Gold carryover is 5% - 10% instead of 40%. Starting gold is increased. This is done to improve balance.
+- Besides Easy, Normal and Challenging there are two additional difficulties inserted between the existing.
+
+(Hard level, 20 scenarios.)
+      status = 
+  DL_per_day = 1.64356795605615
+   megabytes = 0.115602493286133
+
+    filename = The_Goblin_Rebellion
+        size = 42551
+   timestamp = 1548738242
+   downloads = 1745
+        type = campaign
+     version = 0.3.5
+dependencies = 
+ description = Lead a goblin tribe out of the frying pan and into the fire. 
+
+Goblin campaign with a new unit line. Short (4 scenarios). Mostly complete, but needs polishing.
+      status = 
+  DL_per_day = 1.55955791423818
+   megabytes = 0.0405797958374023
+
+    filename = Leader_of_the_Drakes
+        size = 15354
+   timestamp = 1615235688
+   downloads = 530
+        type = campaign
+     version = 1.0.2b
+dependencies = 
+ description = Leader of the Drakes is killed by assassins. Orcs are coming to the islands, that the drakes call home. Who will be the next leader? Who will save drakes from enemy invasion? 3 scenarios, medium difficulty.
+      status = 
+  DL_per_day = 1.5174921189296
+   megabytes = 0.0146427154541016
+
+    filename = The_Final_Exam_NEW
+        size = 180219
+   timestamp = 1617536986
+   downloads = 539
+        type = campaign
+     version = 3.1
+dependencies = 
+ description = Young mage Erinna must find a magic book to become a true mage. But will it really be her final exam?
+      status = 
+  DL_per_day = 1.67066992322745
+   megabytes = 0.171870231628418
+
+    filename = Forgotten_Legacy
+        size = 525100
+   timestamp = 1521916127
+   downloads = 2827
+        type = campaign
+     version = 0.6.1a
+dependencies = 
+ description = This is a campaign focusing on the saurian faction. It is focused mainly on storyline and diversity. Most of the saurian units are new custom ones so don't expect to be playing on familiar territory. 
+
+At this time, the campaign has only 5 completed scenarios
+      status = 
+  DL_per_day = 1.97782488964289
+   megabytes = 0.500774383544922
+
+    filename = undead_dwarves
+        size = 10728
+   timestamp = 1621983521
+   downloads = 388
+        type = campaign
+     version = 0.1
+dependencies = 
+ description = Works fine, only 2 scenarios so far.
+      status = 
+  DL_per_day = 1.43088664118662
+   megabytes = 0.0102310180664063
+
+    filename = Up_From_Slavery
+        size = 651258
+   timestamp = 1584284787
+   downloads = 1441
+        type = campaign
+     version = 0.3.0
+dependencies = Imperial_Era
+ description = The year is...
+    
+Well, the orcs don't know exactly what year it is. They are captives in the imperial city of Lavinium, gladiators performing for the emperor Optus Maximus. All it will take, however, is one orc to lead his people to freedom. The Samnis called Sparxus may be that orc.
+
+(Intermediate level, 7 scenarios.)
+      status = 
+  DL_per_day = 2.03678226996399
+   megabytes = 0.621088027954102
+
+    filename = Dwarf_Dwarfson_Dwarvenminer
+        size = 533375
+   timestamp = 1638718795
+   downloads = 149
+        type = campaign
+     version = 0.1
+dependencies = 
+ description = Play as a dwarfenminer and mine ore and gold. Upgrade your equipment in a city and mine even more ore in procedual generated levels.
+This add-on is part of the WML Code Advent Calendar II and every part of the development is documented so other user can use parts and piece of code this campaign.
+
+Still under development.
+      status = 
+  DL_per_day = 1.92344326465409
+   megabytes = 0.508666038513184
+
+    filename = wildpeasantsvsdevouringcorpses
+        size = 745421
+   timestamp = 1526419731
+   downloads = 2907
+        type = campaign
+     version = 0.52 Beta
+dependencies = 
+ description = My first multiplayer campaign. Build up a dungeon or a village and defeat the enemy hero. Gather ressources by crafted buildings and research new ones. Unlock powerful spells and summon a variety of units to help your cause. Build tricky traps and barricades or transform the land in the way you think. Its your choice to find a unique way to play and win.
+      status = 
+  DL_per_day = 2.11076938990073
+   megabytes = 0.710888862609863
+
+    filename = WML_Guide
+        size = 348609
+   timestamp = 1540063452
+   downloads = 2091
+        type = campaign
+     version = 0.9.5
+dependencies = 
+ description = This simple campaign can be played, but it is not really intended for that. Instead, it is intended to be studied as an example of Wesnoth Markup Language. Almost every line of code is explained in the code files themselves. To find the code, use the blue [ i ] icon on the bottom left of the Wesnoth main screen to open your add-ons folder, then open WML_Guide. The code is in _main.cfg, and three other .cfg files in the scenarios and units folders.
+
+Feel free to use this add-on as the foundation of your own campaign!
+      status = 
+  DL_per_day = 1.7149050473885
+   megabytes = 0.332459449768066
+
+    filename = Wild_Frontiers
+        size = 2595235
+   timestamp = 1579075699
+   downloads = 2934
+        type = campaign
+     version = 3.3.1
+dependencies = 
+ description = Settle a new town north of the Great River.
+
+A town-building Wesnoth campaign, requiring you to balance the building of new villages against the need to defend them.
+
+This campaign is more focused on gold management, strategic construction, and town defenses.
+
+Install the add-on 'Ultimate_Random_Maps' for additional maps.
+
+Wild Frontiers is a fork of 'Cities of the Frontier' v0.6.1 by esci.
+
+https://github.com/virtualghetto/Wild_Frontiers
+      status = 
+  DL_per_day = 3.82141287699895
+   megabytes = 2.47500896453857
+
+    filename = The_Dark_Alliance
+        size = 846783
+   timestamp = 1599410381
+   downloads = 1134
+        type = campaign
+     version = 1.0.5
+dependencies = 
+ description = Prince Terhar lived two years with elves. Little did he expect what would happen when he returned back to Weldyn.
+
+NOTE: Your recruit list will change in almost every scenario.
+
+(Hard level, 10 or 11 playable scenarios depending on the branch you take.)
+      status = 
+  DL_per_day = 2.12988249425654
+   megabytes = 0.807555198669434
+
+    filename = Anthalia
+        size = 1361359
+   timestamp = 1642270171
+   downloads = 95
+        type = campaign
+     version = 1.1.1-1
+dependencies = Legend_of_the_Invincibles
+ description = A sandbox campaign.  No recruiting.  No Text, no talking, no narration. 
+
+        Legend of the Invincibles dependency, if you don't like LotI item system and AMLAs, you won't like this.
+
+        8-33 scenarios, exploration based.
+
+        Special Thanks to:Dugi for LotI and the rest of the Wesnoth community for massive amounts of code and art to pick from, if I used something you made and want specific credit, please PM me.
+
+        May still be buggy, haven't tested a ton.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.61266397187949
+   megabytes = 1.2982931137085
+
+    filename = Raajal
+        size = 1496421
+   timestamp = 1527333759
+   downloads = 3673
+        type = campaign
+     version = 1.2.2
+dependencies = 
+ description = An Arch Mage with the power of resurrection seeks a new apprentice.
+(20 story and 7 gameplay scenarios)
+
+This campaign features puzzles and some non-standard mechanics.
+
+Ported from Wesnoth 1.4
+      status = 
+  DL_per_day = 2.68760574627797
+   megabytes = 1.42709827423096
+
+    filename = Wrath_of_the_Lich_Lords
+        size = 1370366
+   timestamp = 1531076700
+   downloads = 3370
+        type = campaign
+     version = 0.6.0
+dependencies = 
+ description = For centuries the Lich Lords of the Old Continent were ignoring their southern neighbors, but now they decided to launch a full-scale invasion on Dunefolk territory. Can you save Dunefolk from unrelenting doom?
+10 scenarios (including 1 dialog-only) out of 17 planned.
+      status = 
+  DL_per_day = 2.54661972021678
+   megabytes = 1.30688285827637
+
+    filename = Quickie_Fight
+        size = 52409
+   timestamp = 1607631631
+   downloads = 533
+        type = campaign
+     version = 1.0.19
+dependencies = 
+ description = Training skirmishes. Nothing fancy.
+Install the add-on 'Ultimate_Random_Maps' for additional maps.
+      status = 
+  DL_per_day = 1.21892545667023
+   megabytes = 0.0499811172485352
+
+    filename = Invasion_of_Arendia
+        size = 2770779
+   timestamp = 1576527424
+   downloads = 3026
+        type = campaign
+     version = 0.15.10
+dependencies = Imperial_Era,Era_of_Myths
+ description = Play as a band of outlaws who are forced into action when their country is invaded.
+
+Intermediate level, 13 playable scenarios and 2 dialog scenarios so far.
+
+https://forums.wesnoth.org/viewtopic.php?f=8&t=8736
+      status = 
+  DL_per_day = 3.79543875614856
+   megabytes = 2.64242076873779
+
+    filename = Tactics_Puzzles
+        size = 336072
+   timestamp = 1535747438
+   downloads = 1863
+        type = campaign
+     version = 0.3.6
+dependencies = 
+ description = A collection of Wesnoth tactics puzzles, inspired by the ones in chess. In these puzzles, everyone is given a 100% chance to hit, and you have to achieve some goal like killing an enemy leader without losing any of your own units. In order to do that you'll have to make optimal use of hexes, leadership or illuminates, etc.
+
+Has 7 puzzles so far, will add more later!
+      status = 
+  DL_per_day = 1.46778049684221
+   megabytes = 0.320503234863281
+
+    filename = Our_Longest_Year
+        size = 818005
+   timestamp = 1570880677
+   downloads = 1572
+        type = campaign
+     version = 2.0.3
+dependencies = 
+ description = An adventure for two friends (may be played solo, handling both sides). There are two factions controlled by the player(s): humans and elves. They are allied and must cooperate to win.
+ 
+(10-12 battles; complete)
+ 
+WARNING! If you have a verison earlier than 2.0, the save files will not be compatible.
+      status = 
+  DL_per_day = 1.82233688574228
+   megabytes = 0.780110359191895
+
+    filename = Alfhelm_the_Wise
+        size = 4373227
+   timestamp = 1585697637
+   downloads = 3601
+        type = campaign
+     version = 0.7.1
+dependencies = Imperial_Era
+ description = 938-952 SI
+    
+This is the tale of Alfhelm, called by some the Wise, son of Alfric Conqueror. This is the tale of his victories over his enemies, and his rise to power in the clans of Marauderdom. This is the tale of his journey south and his destruction of the Lavinian Empire. And this is the tale of his meeting with destiny in the dark forests far to the east of his homeland.
+    
+(Intermediate level, 15 scenarios.)
+      status = 
+  DL_per_day = 5.21026212294221
+   megabytes = 4.17063426971436
+
+    filename = Children_of_the_Dust
+        size = 3020902
+   timestamp = 1581209211
+   downloads = 2854
+        type = campaign
+     version = 1.0.3a
+dependencies = 
+ description = In the aftermath of the Fall, the millennary civilization of the dwarves is on its knees. Strongholds who resisted entire eras have vanished together with their inhabitants, the very same mountains and caves that protected them for so long finally collapsed and became their grave. The few survivors are scattered around the continent and in disarray, hunted by old and new enemies and abandoned by their old allies.
+
+But dwarves are no folk to give up easily, nor to wallow in self-pity. Help Walhort and his fellows escape destruction, reclaim their spot in this new, hostile, world, and lay the foundation on which dwarves could build their future and, one day, flourish again. (10 playable scenarios)
+      status = 
+  DL_per_day = 3.84074278882963
+   megabytes = 2.88095664978027
+
+    filename = Return_of_Sir_Charles
+        size = 1000780
+   timestamp = 1619463220
+   downloads = 567
+        type = campaign
+     version = 1.1
+dependencies = 
+ description = An inquisitive young man starts messing around with his sister's grimoires and tries to summon a wyvern; instead, he gets Sir Charles Davenport, who then has to be returned to his own world.  Intermediate level, 15 scenarios.
+      status = 
+  DL_per_day = 1.88791891900641
+   megabytes = 0.954418182373047
+
+    filename = Pax_Romana
+        size = 3029138
+   timestamp = 1525971575
+   downloads = 5239
+        type = campaign
+     version = 0.4.4
+dependencies = 
+ description = Follow a young Roman plebeian named Vespasian in his rise to the rank of Emperor of Rome. This campaign contains 18 scenarios. Many atwork comes from the Imperial Era (mainly Turin's sprites). I'd like to thank UnwiseOwl for allowing me to use them. The language of the texts is not of high quality since I've always been English-challenged.
+      status = 
+  DL_per_day = 3.78975868739421
+   megabytes = 2.8888111114502
+
+    filename = Battle_Against_Time
+        size = 1501632
+   timestamp = 1598814050
+   downloads = 1237
+        type = campaign
+     version = 1.0.5
+dependencies = 
+ description = Rescue a fellow Orcish Warchief before he is executed.
+
+NOTE: This is not a normal campaign. You will start with a defined number of turns and will only have that many turns to play through the whole campaign. There is no finish bonus and gold carryover is always 100%.
+
+(Hard level, 4 playable scenarios)
+      status = 
+  DL_per_day = 2.29360469869978
+   megabytes = 1.43206787109375
+
+    filename = Phantom_Blood
+        size = 1441471
+   timestamp = 1564087968
+   downloads = 2089
+        type = campaign
+     version = 1.0.1
+dependencies = 
+ description =  After 100 years of being frozen in time, the dark wizards, Dio and Rhambo Brando have returned and kidnapped the Celestial known as Chelta! Her brother Kakyoin is not pleased by this, so he gathers a team of warriors to save her and to stop the wizards! Help our hero stop them once and for all and save his sister.
+      status = 
+  DL_per_day = 2.21939391339984
+   megabytes = 1.37469387054443
+
+    filename = Dwarvish_Kingdom
+        size = 1313247
+   timestamp = 1619717547
+   downloads = 622
+        type = campaign
+     version = 0.0.3
+dependencies = 
+ description = King Mardon of Garhme has recieved news: an old outpost on the frontier of Dwarvish civilization has fallen, with the cause only assumed to be trolls. Join his general and advisor in an expedition to free the outpost and investigate the inner ancient tunnels of Garhme. [Portraits from The Sceptre of Fire, Northern Rebirth, The Earth's Gut, and Invasion from the Unknown. The Alchemist line is from TEG, I believe the flamethrower line is from Extended Era, the Dwarvish Spearman sprite is from Obscured Folklore Era, and the Dwarvish Mage sprite is from Into the Underworld.
+
+(Intermediate level, 3/11 scenarios finished - 3 or 4 should be dialogue only.)
+(I am in the Wesnoth discord server - contact me there or on the forums.)
+      status = 
+  DL_per_day = 2.09155007278867
+   megabytes = 1.25240993499756
+
+    filename = The_Rulers_of_Irdya
+        size = 1208828
+   timestamp = 1524648436
+   downloads = 2764
+        type = campaign
+     version = 0.1.6.1
+dependencies = Reign_of_the_Lords
+ description = This is the tale of the rising storm that threatens the land of wesnoth and the entire world Irdya.
+
+The story begins following the a young lieutenant at a border outpost rich with gold mines. Orcish warbanners are seen on the horizon and the land is decending into chaos.
+
+Currently in progress, 1 long scenario with many choices and differnt paths.
+
+Version 0.1.6 - This new release adds new events, heroes, and weapons throughout the map. The story has been improved and a few bugs and balance issues have been fixed. Scenario 2 soon to come!
+      status = 
+  DL_per_day = 1.97750052590456
+   megabytes = 1.15282821655273
+
+    filename = Eliador
+        size = 2108104
+   timestamp = 1575780463
+   downloads = 2263
+        type = campaign
+     version = 1.4.3
+dependencies = 
+ description = A peaceful island is about to be invaded by unknadd-ons foes travelling towards the eastern shore. It is up to a family of outlaws to warn the island’s inhabitants before it’s too late.
+
+A campaign with some RPG elements, Puzzle scenarios, and a female heroine.
+
+Novice level, 9 scenarios are waiting to be played.
+
+Prequel / Sequel to »The Heist«
+      status = 
+  DL_per_day = 2.80797742636795
+   megabytes = 2.01044464111328
+
+    filename = The_Rising_Underworld
+        size = 2026103
+   timestamp = 1528769977
+   downloads = 3678
+        type = campaign
+     version = 1.2.3
+dependencies = 
+ description = A series of raids on Wesnoth's Eastern flank is frighteningly reminiscent of the Eastern Invasion. This time, however, Wesnoth cannot hope to withstand the undead invasion alone, so the new king, Reginald, embarks on a desperate quest to gather allies. As Lich Lord Malidron said himself, the Underworld is Rising...
+-
+Intermediate level, 20 scenarios.
+Complete but imperfectly balanced--all feedback welcome on the Wesnoth forums.
+
+Author's note: I wrote most of this campaign while I was fairly young, so the story is pretty cliche, yet self-aggrandizing. Plenty of the scenarios are creative and fun, though, so I would still recommend giving it a play-through.
+      status = 
+  DL_per_day = 2.72440205084257
+   megabytes = 1.93224239349365
+
+    filename = A_Simple_Campaign
+        size = 528753
+   timestamp = 1638667917
+   downloads = 101
+        type = campaign
+     version = 0.2.9-1
+dependencies = 
+ description = This is a stub of a campaign, intended to make life easier in creating a campaign. Contains about the bare minimum that's needed for a campaign and some helpful comments.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 1.29397416173936
+   megabytes = 0.504258155822754
+
+    filename = The_Dark_HordesI
+        size = 969006
+   timestamp = 1581189561
+   downloads = 1234
+        type = campaign
+     version = 0.1.2
+dependencies = 
+ description = Lead fugitive dark sorcerer Gwiti Ha'atel to mastery of the undead hordes. A presquel of The Dark Master and many others campaigns.
+      status = 
+  DL_per_day = 1.66013541323409
+   megabytes = 0.924116134643555
+
+    filename = Exploration_of_Life_and_Death
+        size = 1602132
+   timestamp = 1533800308
+   downloads = 2924
+        type = campaign
+     version = 0.02.04
+dependencies = 
+ description = For people who like mages and sages and such. Incomplete, but currently has 8 playable scenarios.
+      status = 
+  DL_per_day = 2.26350901310478
+   megabytes = 1.52791213989258
+
+    filename = Multiplayer
+        size = 203939
+   timestamp = 1607470421
+   downloads = 378
+        type = campaign
+     version = 0.0
+dependencies = 
+ description = For Jacob
+      status = 
+  DL_per_day = 0.86078070294297
+   megabytes = 0.194491386413574
+
+    filename = Tale_of_Vaniyera
+        size = 1880792
+   timestamp = 1525301400
+   downloads = 3345
+        type = campaign
+     version = 0.11.7
+dependencies = Imperial_Era
+ description = 115-116 SI
+
+The expansionist Lavinian Legion, led by the Imperator himself, has invaded the northern forests of the Sidhe. It is up to the young Vaniyera to push its armies back from the border...
+
+(Easy level appropriate for imperial era beginners; Hard is a challenge. 5 scenarios.)
+      status = 
+  DL_per_day = 2.40618646886108
+   megabytes = 1.79366302490234
+
+    filename = ArchiveDC
+        size = 1169294
+   timestamp = 1637964900
+   downloads = 147
+        type = campaign
+     version = 1.0.3
+dependencies = 
+ description = As a Khalifate scholar, you have always been engrossed in history. You have heard of the land of Wesnoth, and you yearn to learn more. From asking around town to searching through the library, you have cobbled together these tales. What could you possibly imagine to find inside?
+
+Each tale is a single-player mini campaign, between 1-3 scenarios. You can access these tales from the campaign menu.
+(Contains 4 Tales)
+
+Atreides ported from 1.12 to 1.14/16. Completely debugged. Any bugs you find are only in your head. Kidding of course, please report them to me or on the forum and they will be squashed.
+      status = 
+  DL_per_day = 1.70551687871934
+   megabytes = 1.11512565612793
+
+    filename = Black_Cross_of_Aleron
+        size = 2503152
+   timestamp = 1533423636
+   downloads = 3859
+        type = campaign
+     version = 2.0.3
+dependencies = 
+ description = Dark forces are stirring in the land of Sharnough. An elvish school for druids on the isle of Aleron comes under attack by goblins. It seems more than just a routine raid; is there something more sinister behind this attack?
+
+(mild spoilers for first scenario may follow)
+
+In The Black Cross of Aleron, you control Eärendil, the surviving teacher at the school, and the many and varied initiates. Not all of these are ordinary students; many have been experimenting with other forms of magic, while others are simply overachievers in some area of study. Unfortunately, they are not especially good at combat, at least initially. Together with a very small contingent of surviving guards, it is up to these students to save the land of Sharnough from disaster.
+      status = 
+  DL_per_day = 2.97725770214486
+   megabytes = 2.38719177246094
+
+    filename = Saving_Elensefar_Redux
+        size = 1239477
+   timestamp = 1636812822
+   downloads = 167
+        type = campaign
+     version = 1.1.1
+dependencies = 
+ description = Elensefar has been overrun by orcs, now you had to gather an army to sucessfull retake it.
+
+Non-linear seafaring campaign — small armies, tiny maps and refreshing new game mechanics.
+
+Saving Elensefar was orginally by turin and trewe. Saving Elensefar Redux is a fork from the latest available version by trewe.
+      status = 
+  DL_per_day = 1.6779684078442
+   megabytes = 1.18205738067627
+
+    filename = Talentless_Mage
+        size = 1818332
+   timestamp = 1598977953
+   downloads = 1089
+        type = campaign
+     version = 1.1.4
+dependencies = 
+ description = Humorous and silly campaign about mage apprentice who has managed to learn only one simple spell in thirty years.
+
+Hard level, 10 playable scenarios)
+      status = 
+  DL_per_day = 2.02631533438362
+   megabytes = 1.73409652709961
+
+    filename = Crin_of_Crenlyn
+        size = 2289578
+   timestamp = 1552062344
+   downloads = 2646
+        type = campaign
+     version = 1.0
+dependencies = 
+ description = Dark forces pursue a young man during the reign of Queen Asheviere.  Nineteen battle and five dialog scenarios. Difficult level has not been tested.
+      status = 
+  DL_per_day = 2.4490171596944
+   megabytes = 2.18351173400879
+
+    filename = Rebellion_in_the_North
+        size = 3363262
+   timestamp = 1642284981
+   downloads = 117
+        type = campaign
+     version = 1.1.12-1
+dependencies = 
+ description = A great orcish uprising tends to destabilise the Northlands. As the future Lord Protector of the Northern Alliance can you crush the rebellion and establish peace again?
+
+(Intermediate level, 29 scenarios, all complete and balanced.)
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 3.23294244519416
+   megabytes = 3.20745658874512
+
+    filename = Mage_of_Runes
+        size = 2128068
+   timestamp = 1560207465
+   downloads = 1968
+        type = campaign
+     version = 0.4.1
+dependencies = 
+ description = Aside the normal magic of mages there also exist another type of magic based on magic runes carved into crystals. A few beings become able to use this magic not only for themselves. They also were able to use this magic to support their allies.
+This campaign includes a rune spell system. All Rune Mages in this campaign have their own rune inventory which allows them to use spells on themselves or allied units they are linked with. These spells only last or a few turns and should be used with caution.
+The campaign is in an early stage of development it includes three level of difficulty which might be not well balanced. So far 30 Scenarios are playable including five story scenario.
+      status = 
+  DL_per_day = 1.99561695968797
+   megabytes = 2.02948379516602
+
+    filename = The_Young_Khan
+        size = 2322730
+   timestamp = 1530790947
+   downloads = 2788
+        type = campaign
+     version = 0.0.4
+dependencies = 
+ description = (Dunefolk campaign set in 673 YW. 10 of 17 planned combat scenarios done, 2 exposition-only scenarios) Survive the near-destruction of your tribe and lead it to unprecedented greatness.
+      status = 
+  DL_per_day = 2.10156538280624
+   megabytes = 2.21512794494629
+
+    filename = Fairytales_of_the_Empire
+        size = 1805186
+   timestamp = 1559649157
+   downloads = 1524
+        type = campaign
+     version = 0.0.2
+dependencies = 
+ description = This campaign depicts the story of a boy sent by his father on a journey to become the next heir to the throne. [1 scenario so far]. Changelog: 1. I changed the name from Harap Alb to Fairytales of the Empire and added more events to the map.
+      status = 
+  DL_per_day = 1.53532596100854
+   megabytes = 1.72155952453613
+
+    filename = Two_sides_of_one_coin
+        size = 1796002
+   timestamp = 1603621917
+   downloads = 713
+        type = campaign
+     version = 0.1.6
+dependencies = My_Era
+ description = Its my first Campaign. 
+	3 Scenarios. More to come.
+	Fixed some minor display bugs and added units 
+	corresponding to the campaign story.
+	Added turn limits.
+	
+	About a Story told from the point of view of the two 
+	sides of nations beeing at war with each other.
+	
+	As this Campaing progresses in work many things can
+	and will change. If you have some ideas or are not
+	satisfied with some things please send me an email 
+	with your suggestions.
+
+	The amount of scenarios and or difficulties are 
+	things to change in the future. Also some characters
+	can be changed or will dissapear in this progress.
+	Any similarites with real persons is not intentional.
+ 
+	uses Ressources from my MP ERA.
+				
+	-Bug reporting:lightningbold@d-reves.de
+	-Report accepted languages:english, german, portuguese
+      status = 
+  DL_per_day = 1.47411783356614
+   megabytes = 1.71280097961426
+
+    filename = Inky_Quest
+        size = 4025229
+   timestamp = 1528908531
+   downloads = 4839
+        type = campaign
+     version = 1.5.8
+dependencies = 
+ description = The Cuttlefish Campaign
+Are the cuttlefish mere beasts or something more? What stories would they tell if they could speak? This story provides one possible answer.The easiest difficulty provides hints for novice players.
+(Beginner level, 12 scenarios)
+      status = 
+  DL_per_day = 3.58865147989291
+   megabytes = 3.83875751495361
+
+    filename = Voyage_of_a_Drake
+        size = 3563439
+   timestamp = 1533184178
+   downloads = 4026
+        type = campaign
+     version = 1.0.6
+dependencies = 
+ description = Once there was a small village called Raplice. It was an ordinary village, full of ordinary people with ordinary lives. But when Voadar's life suddenly turned upside down, the young drake was forced to explore the community, unearth its hairy secrets, and rally the citizens to set things right.
+
+Voyage of a Drake is a Wesnoth RPG unlike any other. Instead of focusing on collecting items or leveling skill trees, this campaign is about interacting with complicated NPCs and completing puzzles, mini-games, and boss fights. Come prepared for a few hours of unique gameplay and rich, abundant dialog.
+
+All feedback welcome on the forums.
+      status = 
+  DL_per_day = 3.09947247029595
+   megabytes = 3.39836025238037
+
+    filename = Burning_Souls
+        size = 2668091
+   timestamp = 1639852897
+   downloads = 135
+        type = campaign
+     version = 1.4.8-1
+dependencies = 
+ description = All hope for the island of Bilheld seems to be slipping away from its inhabitants. But an unsuspecting drake is about to lead his people on a journey for peace, and a life without war. However, the journey will be difficult...
+
+(Expert level, 15 scenarios.)
+
+There's a thread on the forums where you can witness the development of this campaign.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.09825873667339
+   megabytes = 2.54448986053467
+
+    filename = Trapped
+        size = 3202414
+   timestamp = 1526417995
+   downloads = 3493
+        type = campaign
+     version = 1.12
+dependencies = 
+ description = This a short, replayable RPG about a streetkid trapped in an underground arena for illegal bloodsport. It contains various rpg elements, different endings and different descriptions, skills, equipable weapons, armors, shields and abilities for each character. Also includes two fractions, a reputation and hiring system, infinite arenarounds, 5 additional, optional scenarios, extended missions for each fraction, more troops to hire and a rightclick helpmenu. Each difficulty reprents a unique character with different endings, different dialogues and abilities.
+
+1.12 fixed free movement for and teleport for Thief and Footpad, repaired extra income skill
+      status = 
+  DL_per_day = 2.53622632110815
+   megabytes = 3.0540599822998
+
+    filename = Elvish_Incursion_P1
+        size = 3467793
+   timestamp = 1548114702
+   downloads = 3033
+        type = campaign
+     version = 1.2.1
+dependencies = 
+ description = Far to the south of Wesnoth, the lone survivor of a brutal raid struggles to survive long enough to exact revenge.
+
+This is a short little prelude to my main campaign which I hope is coming soon. 
+
+This campaign has RPG elements, with tweaked heroes and a custom AMLA. You do not often have any extra troops.
+It is mostly character/plot-driven (the plot needs work), but I tried to make each individual scenario as interesting gameplay-wise as possible as well. This is my best attempt.
+
+If you have anything worth mentioning (whether it be bugs or suggestions), please share on the forums.
+(Pretty much complete, though it has slight balance errors still. If you spot errors, please report them. Any feedback at all will be recieved gratefully.)
+
+Changelog:
+v1.2.1
+Mostly minor tweaks to dialogue.
+Survivability for low-level characters has been increased just slightly by increasing their hitpoints by 5.
+Scenario 7 was made considerably harder, adding level 2 recruits for the dragon and making him less suicidal (hopefully). Has not been tested on easy or hard levels. Further testing will take place as time allows.
+-----
+v1.2
+Again, changes have been made to scenario 1. If you still experience frustration when playing this scenario, please let me know on the forums. Your feedback is the only thing bringing be back to (try to) make improvements.
+-----
+v1.1.1
+Adjusted Scenario 1's balance: Made it easier, as it had always been one of the hardest scenarios.
+Tweaked starting position in Scenario 4, and a bit of dialogue. Again, to accomodate different strategies.
+-----
+v1.1
+Adjusted Scenario 1's balance. May still be a bit unbalanced.
+Changed some dialogue in Scenario 4, to accomadate different strategies.
+Added an Unclear Fog macro for Scenario 1.
+      status = 
+  DL_per_day = 2.69330973824603
+   megabytes = 3.30714511871338
+
+    filename = The_Founding_of_Borstep
+        size = 4424940
+   timestamp = 1523175738
+   downloads = 4957
+        type = campaign
+     version = 1.1.6a
+dependencies = 
+ description = The ruler of your tribe has become decadent and weak. Take over, and lead your people to a better home — whether it is already occupied or not. Anyone who stands in your way will learn the power of orcs!
+
+Expert level, 10 scenarios.
+
+• Small to medium maps.
+• An interesting twist to the gameplay in a few scenarios.
+• Nightmare level available.
+      status = 
+  DL_per_day = 3.50375184722504
+   megabytes = 4.21995162963867
+
+    filename = Across_the_Ocean
+        size = 6226929
+   timestamp = 1639818651
+   downloads = 328
+        type = campaign
+     version = 0.5.3-2
+dependencies = 
+ description = A campaign of Saurian adventures, 17 playable scenarios and a few others, playable all.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 5.06677732601413
+   megabytes = 5.93846225738525
+
+    filename = Bears_Campaign
+        size = 2101165
+   timestamp = 1547870203
+   downloads = 1236
+        type = campaign
+     version = 0.5.2
+dependencies = 
+ description = *Formerly known as ''Kalbruk's Journey''*
+A danger approaches Wesnoth from a seemingly impossible direction. Life in the Frozen North goes on as normal, no one suspecting a thing - except for the Great Continent's unknown saviors: a sleuth a bears. After one bear receives a premonition, the sleuth divides over the next course of action. Some follow the guidance of their gods, others renounce their beliefs and follow a strongman. However, what the bears don't know is that no matter their direction, they'll all have to face whatever it is that's coming.
+
+*This campaign is a work in progress with 5/14 complete scenarios.*
+      status = 
+  DL_per_day = 1.09481915452495
+   megabytes = 2.00382709503174
+
+    filename = NX-RPG
+        size = 2997346
+   timestamp = 1638384753
+   downloads = 153
+        type = campaign
+     version = 0.5.3-1
+dependencies = NX-Music
+ description = A shadow lengthens across the land; a faceless evil plots to overthrow the Empire. No one holds all the pieces. The fate of a kingdom rests in the hands of a despairing few, but will they be able to tell friend from foe?
+
+(Intermediate level, Episode 1, 6 scenarios of 12 complete. Requires Wesnoth 1.12 or later)
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 1.88119064089441
+   megabytes = 2.85849189758301
+
+    filename = Xalzar_Quest
+        size = 3620156
+   timestamp = 1545811389
+   downloads = 2839
+        type = campaign
+     version = 1.2.6
+dependencies = 
+ description = After the Saurgrath's destruction by the elves, a saurian named Xalzar leads what remains of his people in search of a new home.
+
+(Single Player - Intermediate difficult - 4 scenarios)
+
+A little note: the author no longer has an account for the wesnoth.org forum, so, if you have something to say about this campaign you can write it in the website page below, but it's better you don't wait for an answer.
+Moreover I suggest to evaluate well what you write; if what you write doesn't like or doesn't interest the administrator of the site, the discussion will be locked.
+(vuolsi così colà dove si puote quel che si vuole, e più non dimandare -Inf. III 95-96-)
+
+Last note: The author will no longer take care of the maintenance of this campaign.
+Who wants to take it in charge can write an email to this address: argesilao2019@yahoo.com
+and I will send him the server.pbl file of the campaign; this file, inserted in the campaign folder downloaded here, will allow him to modify the add-ons at will.
+
+Replays at the page: https://wiki.wesnoth.org/Player_UMC_Replays#Xalzar_Quest
+      status = 
+  DL_per_day = 2.46273702326285
+   megabytes = 3.45244979858398
+
+    filename = Lich_Terror
+        size = 3122262
+   timestamp = 1532377269
+   downloads = 2506
+        type = campaign
+     version = 0.2.0
+dependencies = 
+ description = Hi guys, it's pawles22 here! We're slowly making progress with this campaign, so stay tuned for more! :)
+
+Horian is a sergeant in a town of Wolfstead. The once peaceful town is attacked by massive undead armies and nobody can figure out where are they coming from. Will Horian save his hometown from undead monsters' attacks?
+
+We value any feedback! Thanks to anyone who wants to share their opinion with us! :)
+
+If you encounter any errors or problems, please let us know on the Wesnoth Forums!
+
+(Intermediate level, 4 scenarios)
+
+---What's new in 0.2.0---
+
+- added two new playable scenarios!
+- after campaign completion the game should now award a proper wreath/laurel
+- added macros for bigmap and journey
+- small changes, mostly in the first scenario (such as slight changes in gold and/or income for both sides, additional dialogues etc.)
+
+      status = 
+  DL_per_day = 1.91550682263683
+   megabytes = 2.97762107849121
+
+    filename = Rebellion_in_the_fields
+        size = 3269589
+   timestamp = 1621366705
+   downloads = 534
+        type = campaign
+     version = 1.0.0
+dependencies = 
+ description = An experienced shepherd leads the rebellion in Dulatus Hills. (intermediate) 7 scenarios
+      status = 
+  DL_per_day = 1.91879530317358
+   megabytes = 3.11812305450439
+
+    filename = The_Return_of_the_Darks
+        size = 3314820
+   timestamp = 1593004617
+   downloads = 1171
+        type = campaign
+     version = 0.3.1[unfinished]
+dependencies = 
+ description = The Darks are an forgotten species who lives in a other dimension and had great magic abilities.
+But now their knowledge got lost and they have to return to Wesnoth where they came from.
+      status = 
+  DL_per_day = 1.93054481566694
+   megabytes = 3.16125869750977
+
+    filename = Marbuss_Escape
+        size = 3999614
+   timestamp = 1600473677
+   downloads = 1328
+        type = campaign
+     version = 1.1.1
+dependencies = 
+ description = Many years passed, since orcs incited fear in hearts of elves, humans and dwarves. Many, since they dared to set foot on lands of Wesnoth. Many, since they were rolling in wealth. Among surviving orcish clans, there was also a certain Marbus's clan, too small to have a name, history or future. Will he successfully lead orcs through wild North, controlled by blood-thirsty, dark powers?
+
+Created by members of wesnoth.com.pl community and some friends.
+      status = 
+  DL_per_day = 2.55327131545237
+   megabytes = 3.81432914733887
+
+    filename = The_Heist
+        size = 2963561
+   timestamp = 1575347564
+   downloads = 1180
+        type = campaign
+     version = 1.4.3
+dependencies = 
+ description = An old add-on ported from the 1.4 server.
+
+»A plot to steal a king’s treasure goes awry.«
+
+
+Bonus content: Backgammon
+      status = 
+  DL_per_day = 1.45512200605422
+   megabytes = 2.82627201080322
+
+    filename = La_Couronne_De_Liest
+        size = 2695211
+   timestamp = 1605800807
+   downloads = 531
+        type = campaign
+     version = 0.1
+dependencies = 
+ description = Cette campagne à été imaginée en s'inspirant de l'époqe des croisades et de la chute des templiers (donc rien à voir avec l'univers de Wesnoth),
+Seuls la première et la dernière carte sont terminées, certaines scene d'intro sont des croquis et seul un personnage est animé (j'avais un délai de 3 semaines et pas le temps de tout faire)
+La campagne est en revanche 100% jouable et gagnable
+      status = 
+  DL_per_day = 1.15822416433219
+   megabytes = 2.57035350799561
+
+    filename = Pelican_Flight
+        size = 3392556
+   timestamp = 1526845257
+   downloads = 2471
+        type = campaign
+     version = 0.0.5
+dependencies = 
+ description =    As Borduria falls into chaos, and threatens the stability of its neighbour and hereditary enemy, Syldavia, the governments of both countries decide to join their forces, but the obstacles to this unthinkable alliance are many: the corruption in the Bordurian government, the doubts of the Syldavian public opinion and... the fact that the Syldavian infantry is much more experienced in parade than war.
+   This campaign is mainly composed of modern warfare skirmishes (~20 v 20 units) with a few bigger battles (~40 v 40 units). The recruiting and game mechanics differ from regular wesnoth. Difficulty: expert because of the inhabitual features, but globally unbalanced.
+   Note: the campaign is not complete yet.
+      status = 
+  DL_per_day = 1.80062949465463
+   megabytes = 3.23539352416992
+
+    filename = Epic_Between_the_Tides
+        size = 5033079
+   timestamp = 1529595895
+   downloads = 4510
+        type = campaign
+     version = 2.0.10
+dependencies = 
+ description = The epic of a small community of Nereids, that had to become much stronger to survive the terrible threat that the western winds brought them, in the form of a small fleet with red and white sails. 
+(medium level, 11 battle scenarios and 2 interlude scenarios.)
+
+A little note: the author no longer has an account for the wesnoth.org forum, so, if you have something to say about this campaign you can write it in the website page below, but it's better you don't wait for an answer.
+Moreover I suggest to evaluate well what you write; if what you write doesn't like or doesn't interest the administrator of the site, the discussion will be locked.
+(vuolsi così colà dove si puote quel che si vuole, e più non dimandare -Inf. III 95-96-)
+
+Last note: The author will no longer take care of the maintenance of this campaign.
+Who wants to take it in charge can write an email to this address: argesilao2019@yahoo.com
+and I will send him the server.pbl file of the campaign; this file, inserted in the campaign folder downloaded here, will allow him to modify the add-ons at will.
+      status = 
+  DL_per_day = 3.36451221372486
+   megabytes = 4.79991817474365
+
+    filename = The_Underdog
+        size = 3265833
+   timestamp = 1533372762
+   downloads = 2065
+        type = campaign
+     version = 0.1.1
+dependencies = 
+ description = Orcish campaigh, medium lenght (10 playable scenarios). Intermediate difficulty. Needs playtesting. Artwork is also missing.
+
+Rise from the rabble, destroy the ones who mistreaded you and show the world how much do you worth. Lead those who were overlooked and neglected to victory and triumph over the strong.
+      status = 
+  DL_per_day = 1.59244506133264
+   megabytes = 3.11454105377197
+
+    filename = The_North_Wind
+        size = 3535656
+   timestamp = 1525149671
+   downloads = 2461
+        type = campaign
+     version = 0.3.0
+dependencies = 
+ description = Wesnoth's army was occupied fighting Mal Ravanal in the East, but there were whisperings of an orcish attack in the north. Konrad II must send Deoran, now an experienced rider and commander, with a small band of knights to hold off the orcs....
+
+This campaign features unique gameplay characteristics such as zero recruitment, no non-death loss conditions, and a 24-turn time-of-day cycle.
+(1 playable scenario of 6)
+
+NOTE: this add-on includes assets licensed under Creative Commons terms; see ASSET_LICENSING for details.
+      status = 
+  DL_per_day = 1.76805795733471
+   megabytes = 3.37186431884766
+
+    filename = Earth_and_Forest
+        size = 4620855
+   timestamp = 1585759119
+   downloads = 1904
+        type = campaign
+     version = 1.0
+dependencies = 
+ description = 8 scenario campaign where you play as Olurf the arcanister (the dwarf from Kaboom, not Legend of Wesmere) and fight elves, picking up various allies on the way.
+
+This scenario features different types of runes on a few tiles in each map which produce different effects when you move a unit onto them. I don't know of any other campaigns that do this, so feedback on how well they fit into the strategy of the game would be appreciated.
+
+I don't think the scenarios are particularly well balanced, none of them are very difficult. The first scenario is rather long, so I made up for it by making the scenario at the end really short :)
+      status = 
+  DL_per_day = 2.75772386595317
+   megabytes = 4.4067907333374
+
+    filename = Two_Brothers_Voice
+        size = 5078078
+   timestamp = 1527891726
+   downloads = 4297
+        type = campaign
+     version = 1.0
+dependencies = 
+ description = The Tale of Two Brothers modified to allow voice acting. YOU MUST ALSO DOWNLOAD A VOICE PACK THIS ALONE DOES NOT INCLUDE THE VOICE ACTING.
+
+NEW RELEASE! This scenario is now complete! It features voice acting for all the characters and story text!
+      status = 
+  DL_per_day = 3.15912688476536
+   megabytes = 4.84283256530762
+
+    filename = Legend_of_Far_North
+        size = 4465271
+   timestamp = 1621320546
+   downloads = 672
+        type = campaign
+     version = 1.1.1
+dependencies = 
+ description = Tale of Karun the Black Eye, greatest of the orcs, depicting his struggle for orcish unity, his long war with the humans, his successes and his tragic death 
+_(Intermediate level, 18 scenarios.)
+      status = 
+  DL_per_day = 2.4100372392528
+   megabytes = 4.25841426849365
+
+    filename = Shattered_Loyalty
+        size = 4050489
+   timestamp = 1564077104
+   downloads = 1872
+        type = campaign
+     version = 1.0.5
+dependencies = 
+ description = A traitorous king sells his kingdom for gold and saftey. His most loyal subject seeks to save his kingdom.
+
+(Normal difficulty level only, 4 scenarios.)
+      status = 
+  DL_per_day = 1.98858327212124
+   megabytes = 3.86284732818604
+
+    filename = Epical
+        size = 5281010
+   timestamp = 1526419676
+   downloads = 4330
+        type = campaign
+     version = 1.12
+dependencies = 
+ description = Epical is a Science Fiction / Cyberpunk Campaign in a near future of the real world. The young hacker Dimitri makes a discovery, that will change his life forever. It features two fully animated factions.
+      status = 
+  DL_per_day = 3.14400661637112
+   megabytes = 5.03636360168457
+
+    filename = The_Wolves_Last_Path
+        size = 4027574
+   timestamp = 1534634174
+   downloads = 2428
+        type = campaign
+     version = 0.1.3
+dependencies = TWLP_Music
+ description = What's the secret of immortal power and glory? What does it take to become a hero, a legend, or at least a reputable man? Dysagrest has never woken up early enough in the morning to find it out, nor has his boss, a wealthy and unpredictable merchant dwarf, ever encouraged him in this direction. However, chance can forge fate just as well as the strongest will, and may surprise the unwary sailors even in the most quiet waters. The cold and harsh north is certainly not what a traveler would call calm waters, yet it is there, hundreds of miles away from any place he used to call home, that Dysagrest will have to come to terms with his past... 
+
+Incomplete (10 playable scenarios)
+      status = 
+  DL_per_day = 1.89369661297465
+   megabytes = 3.84099388122559
+
+    filename = Life_of_Mechzen
+        size = 5611123
+   timestamp = 1598450444
+   downloads = 1792
+        type = campaign
+     version = 1.5.3
+dependencies = 
+ description = The young villager Mechzen has decided to leave his home on a quest to study in the great academy of Aldiun and become a renown Magi. However he will encounter many obstacles during his crazy adventure throughout the great continent. He requires your help.
+	
+_(Expert level, 18 scenarios.)  If you are having any issues of any kind while playing this campaign, please report them to me at the threat with the same name on the Wesnoth forums.
+      status = 
+  DL_per_day = 3.29694113550574
+   megabytes = 5.35118389129639
+
+    filename = Captured_by_a_Nightmare
+        size = 7250959
+   timestamp = 1556585906
+   downloads = 4880
+        type = campaign
+     version = 1.3.1
+dependencies = 
+ description = The First Dark Age of Wesnoth. Orcs are aggressively increasing their power on the Great Continent. However, not all of their campaigns were successful. You will witness the disastrous one. A small orcish settlement in the Heart Mountains is attacked by superior dwarvish forces. Orcs are doomed to be exterminated. Play this campaign and take part in the further story.
+(Hard level, 12 scenarios)
+
+Replays on the page: https://wiki.wesnoth.org/Player_UMC_Replays#Captured_by_a_Nightmare
+      status = 
+  DL_per_day = 4.74672439518363
+   megabytes = 6.91505336761475
+
+    filename = Kaboom
+        size = 4217927
+   timestamp = 1585512372
+   downloads = 1195
+        type = campaign
+     version = 1.2
+dependencies = 
+ description = 5 scenario campaign where you control a bunch of dwarves fighting mostly under frozen conditions.
+
+There may be rough edges here and there, but it's playable. I am not aware of any bugs in it.
+      status = 
+  DL_per_day = 1.7236894781285
+   megabytes = 4.02252864837646
+
+    filename = The_Revival_of_Halstead
+        size = 4854164
+   timestamp = 1556687816
+   downloads = 2266
+        type = campaign
+     version = 1.2.2
+dependencies = 
+ description = This is the tale of Blenry, son of Sir Gerrick of Westin. Aspiring to be more than merely an aristocratic member of the Royal Court, he is called upon to perform a great task, one that shall prove to be far more crucial than any would have presumed. Join him in his battles as he thwarts the nefarious plans of the enemies of Wesnoth. 
+_ 
+(Intermediate level, 11 scenarios.)
+      status = 
+  DL_per_day = 2.20664592398339
+   megabytes = 4.62929153442383
+
+    filename = Doreldos_Fight_to_Liberty
+        size = 5060811
+   timestamp = 1595139992
+   downloads = 1344
+        type = campaign
+     version = 1.0.15
+dependencies = 
+ description = 'We the sons and daughters of our blessed land Doreldos hereby tell our long story of struggle against the foreigners who came in the guise of merchants and tried to enslave us, but were ultimately driven out from here by virtue of our united stand. We document our tale in the hope that our children, and the children of their children after them can derive inspiration and guidance from this...'
+_(Intermediate level, 47 scenarios divided into 3 episodes)
+      status = 
+  DL_per_day = 2.30987551669127
+   megabytes = 4.82636547088623
+
+    filename = Tales_of_the_Rubies
+        size = 4840509
+   timestamp = 1556909883
+   downloads = 2115
+        type = campaign
+     version = 1.0.8
+dependencies = 
+ description = It doesn't matter how powerful a magical artifact can be, or how precious a jewel can be, it is useless and worthless as long as it remains hidden in a hole in the ground.
+In 25 YW king Haldric II, decides it's time for the Ruby of Fire to cease to be useless.
+
+(difficult level - 9 battle scenarios, 4 dialogues and other things scenarios)
+
+A little note: the author no longer has an account for the wesnoth.org forum, so, if you have something to say about this campaign you can write it in the website page below, but it's better you don't wait for an answer.
+Moreover I suggest to evaluate well what you write; if what you write doesn't like or doesn't interest the administrator of the site, the discussion will be locked.
+(vuolsi così colà dove si puote quel che si vuole, e più non dimandare -Inf. III 95-96-)
+      status = 
+  DL_per_day = 2.06476902097106
+   megabytes = 4.6162691116333
+
+    filename = The_Thelien_Attack
+        size = 4638614
+   timestamp = 1554020624
+   downloads = 1882
+        type = campaign
+     version = 1.3
+dependencies = 
+ description = It is said the Elvish Invasion of the Far North had been crushed by the might of Great Chief Kapou’e, Son of the Black-Eye. Little known was the part played by the Saurians of the Black Marshes. This is their yarn, perhaps the most significant in the downfall of the last of Landar's Elves.  
+_ 
+(Hard level, 6 scenarios.)
+      status = 
+  DL_per_day = 1.7792178780339
+   megabytes = 4.42372703552246
+
+    filename = The_Three_Sisters_Saga
+        size = 7438863
+   timestamp = 1525977848
+   downloads = 6072
+        type = campaign
+     version = 3.2.3
+dependencies = 
+ description = For fifty years the life of the settlers of the islands called The Three Sisters has passed peaceful; the descendants of those who rebelled to the Queen Ashviere, and for their rebellion were forced to flee from the Mainland, have now completely colonized the island of Wessild, and begin to turn their attention to the other two sisters, Ansaldid and Boresild; but also someone else began to be interested in the three islands.
+
+(medium level, 9 battle scenarios, 2 interlude scenarios and 1 epilogue.)
+
+A little note: the author no longer has an account for the wesnoth.org forum, so, if you have something to say about this campaign you can write it in the website page below, but it's better you don't wait for an answer.
+Moreover I suggest to evaluate well what you write; if what you write doesn't like or doesn't interest the administrator of the site, the discussion will be locked.
+(vuolsi così colà dove si puote quel che si vuole, e più non dimandare -Inf. III 95-96-)
+
+Last note: The author will no longer take care of the maintenance of this campaign.
+Who wants to take it in charge can write an email to this address: argesilao2019@yahoo.com
+and I will send him the server.pbl file of the campaign; this file, inserted in the campaign folder downloaded here, will allow him to modify the add-ons at will.
+      status = 
+  DL_per_day = 4.39256029257478
+   megabytes = 7.09425258636475
+
+    filename = RevengeOfKumakatok
+        size = 5279913
+   timestamp = 1530217003
+   downloads = 2868
+        type = campaign
+     version = 1.0.2
+dependencies = 
+ description = As you fight savage Quenoth elves, they curse you in the name of a dark diety they began worshipping long ago. The ancient diety has been awoken and you must save your people.
+
+(Novice level, 3 scenarios.)
+      status = 
+  DL_per_day = 2.15109730354209
+   megabytes = 5.03531742095947
+
+    filename = Two_Brothers_With_A_Third_Difficulty
+        size = 6590495
+   timestamp = 1604388777
+   downloads = 1591
+        type = campaign
+     version = 1.0.3
+dependencies = 
+ description = A Tale of Two Brothers only had 2 difficulties when I played it in 1.14. From looking at the code, it looked like the numbers for EASY and HARD all had midpoints between them that would make for a good NORMAL difficulty, so I went and created just such a difficulty. I also went and made some other changes, too: since the mainline tutorial suggests playing A Tale of Two Brothers directly after finishing the tutorial, I went and made the EASY difficulty here more tutorial-like, because as it stood, the mainline A Tale of Two Brothers never felt like as good of a followup to the tutorial as The South Guard or An Orcish Incursion did. Also, the Dark Adept Muff Toras has some new roles to play on all 3 difficulties. There are a few other new surprises to find as well, so be sure to try all 3 difficulties!
+
+(Rookie level, 4 scenarios.)
+
+While the maintainer now has an account on the forums, his preference is still that feedback should be directed to the add-on's source repository on GitHub:
+
+https://github.com/cooljeanius/Two_Brothers_With_A_Third_Difficulty
+
+The maintainer may also be contacted as egallager#0504 on Discord.
+      status = 
+  DL_per_day = 3.35086048648545
+   megabytes = 6.28518581390381
+
+    filename = Weshack
+        size = 6054644
+   timestamp = 1640373239
+   downloads = 157
+        type = campaign
+     version = 0.8.3
+dependencies = 
+ description = Wesnoth hack and slash SP campaign.
+
+Weshack is a fork from Wesband by Ken Oh,Exasperation,Dovolente,TL
+
+      status = 
+  DL_per_day = 2.69220151102906
+   megabytes = 5.7741584777832
+
+    filename = After_the_Storm
+        size = 16125040
+   timestamp = 1592704834
+   downloads = 7500
+        type = campaign
+     version = 0.10.18
+dependencies = AtS_Music,IftU_Music
+ description = This campaign is the immediate sequel to Invasion from the Unknown (IftU).
+
+After the Emperor of Chaos was defeated, the free civilizations of the Great Continent hoped that his followers would abandon the ongoing war. Meanwhile, Galas and his unlikely band of heroes head back to the northern lands to request aid for their next journey.
+
+(Intermediate level, three separate episodes with 13 scenarios each.)
+
+Requires Wesnoth 1.14.3 or later (on 1.14.x), or Wesnoth 1.15.12 or later (on 1.15.x).
+
+NOTE: Support for Wesnoth 1.15.x is experimental, and you MUST report all issues in the campaign’s discussion thread.
+
+Discussion threads in the Wesnoth.org forums:
+
+ • Main discussion thread: ‹https://r.wesnoth.org/t32091›
+ • Feedback thread: ‹https://r.wesnoth.org/t39495›
+      status = 
+  DL_per_day = 12.2943919472643
+   megabytes = 15.3780364990234
+
+    filename = An_Orcish_Incursion_Voice
+        size = 6467691
+   timestamp = 1558848413
+   downloads = 3019
+        type = campaign
+     version = 0.8
+dependencies = An_Orcish_Incursion_English_Sound_Pack
+ description = An Orcish Incursion modified to allow voice acting. YOU MUST ALSO DOWNLOAD A VOICE PACK THIS ALONE DOES NOT INCLUDE THE VOICE ACTING.
+      status = 
+  DL_per_day = 3.01330196456402
+   megabytes = 6.16807079315186
+
+    filename = Up_the_River_Bork
+        size = 5059278
+   timestamp = 1621492218
+   downloads = 430
+        type = campaign
+     version = 0.2.2
+dependencies = 
+ description = In the times of my ancestors such as Rualsha and Brubar, the orcs knew greatness and might. After they were defeated by the elves the orcs knew nothing great, only wars and distrust which coursed through the clans. The army of Kalenz, which responded to threats of orcish presence in the north, pressed north and threatened even more chaos amongst the orcs. In this time greatness, found its way to Tirzag. I will tell his story.
+      status = 
+  DL_per_day = 1.55320491911771
+   megabytes = 4.82490348815918
+
+    filename = The_Elf_the_Dwarf_and_the_Mage
+        size = 5904298
+   timestamp = 1619031577
+   downloads = 693
+        type = campaign
+     version = 1.2.1
+dependencies = 
+ description = A dwarf falls out of the sky!  Novice-level campaign with steampunk elements.
+      status = 
+  DL_per_day = 2.26970098613677
+   megabytes = 5.63077735900879
+
+    filename = Sand_In_The_Wind
+        size = 6036114
+   timestamp = 1521465880
+   downloads = 3397
+        type = campaign
+     version = 1.1
+dependencies = 
+ description = A four-scenario Dunefolk campaign.
+      status = 
+  DL_per_day = 2.36797483082782
+   megabytes = 5.7564868927002
+
+    filename = The_Earths_Gut
+        size = 5941509
+   timestamp = 1608078006
+   downloads = 831
+        type = campaign
+     version = 0.3.1
+dependencies = 
+ description = 515YW, you are the young dwarven leader Hamel. Your tribe in the Knalga caverns near Dwarven Doors gets under pressure from its enemies, while resources are getting rare at the same time. Guide your people on your quest for more and better minerals, to be able to forge new armor and weapons and resist your opponents.
+The campaign focuses on 'dwarvish dungeon crawling' and the developer intention is to make it playable for newbies on easy while to keep it challenging for experienced players on hard. (Beginner level, 22 scenarios (unfinished))
+Requires BfW 1.14 or greater. Requires 'The Hammer of Thursagan' to be installed (which is part of mainline now, so it should already be there unless you've deleted it or something).
+Former working title: 'Dwarven Kingdom'
+      status = 
+  DL_per_day = 1.92314811040059
+   megabytes = 5.66626453399658
+
+    filename = Return_of_the_Monster
+        size = 6169491
+   timestamp = 1639230890
+   downloads = 150
+        type = campaign
+     version = 0.10.0-2
+dependencies = 
+ description = A naga campaign, involving with some monsters, 16 game-play and 2 dialogue scenarios, and playable all.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.09678134356442
+   megabytes = 5.88368511199951
+
+    filename = AfterEI
+        size = 13248672
+   timestamp = 1572722287
+   downloads = 7441
+        type = campaign
+     version = 1.0.4
+dependencies = AfterEIMusic1,AfterEIMusic2
+ description = The mainline campaign The Eastern Invasion (EI) ended wih the destruction of the lich lord Mal-Ravanal.
+A few months later a noble and a mage journey to Mal-Ravanal's capital.
+
+Easy novice/intermediate campaign in 3 parts.  No RPG.  Complete.
+Tested on NORMAL, may be unbalanced on EASY/HARD.
+
+33 playable scenarios (28-30 will actually be played depending on choices made).
+Knowledge of EI not required.  No spoilers: may safely be played before EI.
+
+Dependencies: additional music (two add-ons).
+
+Changelog
+
+1.0.1  Tweaked dialogue and removed unused stuff.
+
+1.0.2  Fixed stuff accidentally broken in 1.0.1...
+
+1.0.3  Wrote work-around for fatal issue in scenario 21.
+Many thanks to 'braindamagedzombie' for discovering and detailed reporting of this bug.
+(At time of writing not sure if this is a fault in this campaign or a deeper issue.)
+Also fixed several logfile warnings and amended some deprecated code.
+
+1.0.4	Fixed bug in scenario 18 (Straw Men) on HARD plus a few minor tweaks.
+Many thanks to Belbo for letting me know.
+Hopefully I've not broken anything else!
+      status = 
+  DL_per_day = 8.84450100464985
+   megabytes = 12.6349182128906
+
+    filename = Northern_Rebirth_Remake
+        size = 7156337
+   timestamp = 1586812115
+   downloads = 1841
+        type = campaign
+     version = 1.2.10a
+dependencies = Irdya_Dragon
+ description = People of Dwarven Doors are fighting for freedom! While this combat becomes harder there are spreading some dangerous rumors about darkness in their leaders' heart.
+
+Return to Northern Rebirth once more!
+Face foes you know, now more deceitful than ever!
+Ally with your sworn enemies! Rise against your friends!
+Your hero, your journey! It is up to you what weapon do you use, which path do you take! 
+
+This is an unofficial fork of a mainline campaign Northern Rebirth by Taurus. It features complete alternate branch, brings improvements to core scenarios - many of them posted on Northern Rebirth forum - and fixes numerous issues still remaining in version of a campaign shipped with the game. New branch has 12 scenarios (3 first scenarios are the same for both branches).
+      status = 
+  DL_per_day = 2.71439038819275
+   megabytes = 6.82481479644775
+
+    filename = The_Battle_for_the_Clarinet
+        size = 6343562
+   timestamp = 1530217834
+   downloads = 2484
+        type = campaign
+     version = 1.0.0
+dependencies = 
+ description = A King goes on a long journey to be able to find his one prized possession: The Contrabass Clarinet.
+
+Focuses on unusual maps with some intersting hints and battles.
+
+Novice level, 2 scenarios.
+      status = 
+  DL_per_day = 1.86309771559373
+   megabytes = 6.04969215393066
+
+    filename = Merry_Christmas
+        size = 6050397
+   timestamp = 1613966266
+   downloads = 499
+        type = campaign
+     version = 1.4.0
+dependencies = 
+ description = Christmas-Themed Mini-Campaign
+
+Santa's elves have run out of Christmas trees during decorating and must travel to the Lintanir Forest for more. The guardians of the woods are not well pleased with this and will seek to oppose you. Can you gather enough trees to save Christmas in time?
+
+Three difficulty levels based on a time limit. Unlike most campaigns the time limit is for the whole campaign not a single scenario. If you waste too much time on one scenario you may be doomed no matter how quickly you do the others.
+
+Features a unique modify terrain ability. Alter the landscape to favour your side.
+      status = 
+  DL_per_day = 1.37105672838801
+   megabytes = 5.77010822296143
+
+    filename = Thrugbad_The_Good
+        size = 8415096
+   timestamp = 1642638099
+   downloads = 97
+        type = campaign
+     version = 1.1-1
+dependencies = 
+ description = Thrugbad the goblin is fed up with the way the orcs treat him, so he starts trying to build a better life.  He could not possibly predict how things would turn out.
+
+15 scenarios, novice level.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 3.02153122209271
+   megabytes = 8.02526092529297
+
+    filename = Rise_of_the_Elementalist
+        size = 9311104
+   timestamp = 1607094438
+   downloads = 1542
+        type = campaign
+     version = 5.1.2
+dependencies = 
+ description = Part 1: Tragedy and loss leads a young mage down a unique path to explore the magic of the world.
+Part 2: The demon awakes from his imprisonment with revenge on his mind. Can you conquer the world?
+Part 3: Kil'rathacar is gaining strength and immortal, is there any way to stop him?
+
+Intermidiate difficulty
+
+17 scenarios in part 1, 8 scenarios in part 2, 15 scenarios in part 3.
+
+Forum: http://forum.wesnoth.org/viewtopic.php?t=30509
+      status = 
+  DL_per_day = 3.4769833010912
+   megabytes = 8.8797607421875
+
+    filename = The_Unnamed
+        size = 6980788
+   timestamp = 1612880833
+   downloads = 458
+        type = campaign
+     version = 1.14.14
+dependencies = 
+ description = Die Geschichte beschreibt die Reise von Prinz Arthur, der sich aufmachte, um die lägendere Gruppe der Unbenannten wieder zu vereinen. Wird er es rechtzeitig schaffen, bevor seine Heimat von Untoten ganz zerstört wurde.
+
+Hinweise: Die Kampange wurde noch nicht oft getestet und könnte daher noch etwas unausbalanciert sein. 
+
+Nur in Deutsch verfügbar.
+      status = 
+  DL_per_day = 1.21641664483362
+   megabytes = 6.65739822387695
+
+    filename = Brave_Wings
+        size = 9169649
+   timestamp = 1638602305
+   downloads = 208
+        type = campaign
+     version = 1.1.6-2
+dependencies = 
+ description = A Drake Campaign, intermediate level, 14 playable scenarios and Epilogue.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.63914153885601
+   megabytes = 8.74485874176025
+
+    filename = Stranger_In_Wesnoth
+        size = 8973160
+   timestamp = 1618926937
+   downloads = 637
+        type = campaign
+     version = 1.3.1
+dependencies = 
+ description = Intermediate-level campaign featuring the adventures of a bemused spy who landed in Wesnoth from a completely different universe.  15 scenarios.
+      status = 
+  DL_per_day = 2.07804800139551
+   megabytes = 8.55747222900391
+
+    filename = Northern_Forces
+        size = 10567267
+   timestamp = 1641706709
+   downloads = 149
+        type = campaign
+     version = 0.5.0-2
+dependencies = 
+ description = This is a human / bone soldier campaign, – 19 scenarios (2 story-only), all playable.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 3.47457803239496
+   megabytes = 10.0777311325073
+
+    filename = Legends_of_Idaamub
+        size = 9894849
+   timestamp = 1564162622
+   downloads = 2140
+        type = campaign
+     version = 0.4.0
+dependencies = Legend_of_the_Invincibles,War_of_Legends
+ description = Dark times await Idaamub. After a long period of peace between races, orcs have begun to attack peasant villages. But, in the shadows, a dark presence pull the strings. Travel through Idaamub to prevent it from falling into chaos. 
+
+Some big maps and long scenarios.
+
+(Not balanced yet, first three chapters complete (21 scenarios))
+      status = 
+  DL_per_day = 2.27566632372983
+   megabytes = 9.43646335601807
+
+    filename = The_Unstoppable_Legion
+        size = 9715532
+   timestamp = 1638209527
+   downloads = 172
+        type = campaign
+     version = 0.9.4
+dependencies = 
+ description = Epic horseback campaign. The land of Suveran is falling to the invincible armies of Zharagorn. Only Viktor, a patrol guard, and Deuterus, last of the great druids, can stop them.
+
+Currently 19 playable scenarios, full campaign will have 22.
+
+Features:
+
+- Command a force primarily on horseback. Use your speed and mobility to outflank and defeat enemies.
+- New unit line of Bowrider (derived from Imperial Era). Archer unit on horseback, ideal for hit-and-run.
+- New alternate advancements for Cavalryman: Holibars, highly-mobile unit with enhanced defence in villages; and Cataphracts, heavily armoured units that can withstand high damage.
+- Secondary force of dwarves joining later in the campaign, featuring alternate advancements for Dwarvish Fighter and Dwarvish Thunderer.
+- New hero units of Mounted Noble, Dwarvish Prince, all with custom advancements after reaching maximum level
+- Switch between mounted force and dwarven force as the terrain dictates, including dismounting and remounting your main characters.
+- Fight the dark legion: a new fanatical force (dervide from Chaos units in extended era) of humans corrupted by the darkest of magic, served an equally fanatical legion of undead.
+- Alternate paths that affect the whole campaign: an early decision on which path to take may have repercussions later.
+- Ever-changing alliances and enemies: fight alongside outlaws, merfolk, loyalists, woses, orcs, elves, villagers and more; fight against nearly as many.
+- Plus ... the twist you never saw coming.
+
+This upload was part of the vghetto port project and is now back under development of the original author.
+      status = 
+  DL_per_day = 2.06335090419472
+   megabytes = 9.26545333862305
+
+    filename = The_Sojournings_of_Grog
+        size = 11429667
+   timestamp = 1530436211
+   downloads = 4887
+        type = campaign
+     version = 3.5.0
+dependencies = 
+ description = Campaign describing what happens to Grog after UTBS. (21 scenarios, of which 18 are playable and 3 are dialogue only). Installation of UMC Music Pack is not mandatory, but recommended.
+      status = 
+  DL_per_day = 3.6724041429284
+   megabytes = 10.9001798629761
+
+    filename = Heir_To_The_Throne_Revised
+        size = 11703825
+   timestamp = 1540854897
+   downloads = 4290
+        type = campaign
+     version = 1.0.1
+dependencies = 
+ description = A revision of the Heir to the Throne campaign. I changed (improved, I hope) some of the dialog, characterization for protagonists, fixed plot inconsistencies, and made various other changes. Intended to give even veteran players a refreshing take on the HttT story and characters. Note that changes were made according to my subjective tastes and might not be in the direction the developers had in mind for the fully-polished HttT.
+      status = 
+  DL_per_day = 3.54501728460854
+   megabytes = 11.1616373062134
+
+    filename = Five_Fates
+        size = 13106480
+   timestamp = 1526418670
+   downloads = 6363
+        type = campaign
+     version = 1.08
+dependencies = 
+ description = Five unique heroes try to recover a mysterious artifact. On their way they have to defeat five guardians with great powers. Each hero has an unique amla path allowing you to develop 20 unique skills and spells. On the way you can find random loot and make decisions that influence the dungeons. After your quest you can optionally continue your journey in the world of wesnoth and maximising your character.
+
+You can buy or find a variety of Weapons, Shields, Helmets, Armors, Rings, Shoes and Amulets. Those can be equipped in the rightclick Heromenu, that allows you to equip and unequip items, review your Skilltree and have access on consumables such as healing herbs, potions, unidentified flasks and portalscrolls.
+
+Beside the recruiting of units you can hire mercenaries. Those are expensive, but offer to summon unique and loyal units. Each character can develop up to four different right click spells allowing you to summon units, damaging, slowing or poisoning your enemies, or to teleport yourself. 
+
+Different traps and will endanger you, while secret passages allow you to take an alternative way or to discover a variety of secrets. Enemies will now cast spells. Cheat Mode, Tutorial and Skip Story Buttons are available. 
+
+0.23 'Shadows over Elensefar': This update contains a lot of wording changes. Typos and some words almost everywhere have been corrected - there is still alot to be done. Thanks to the helpers in the Wesnoth Forum. Why calling this update 'Shadows over Elensefar'? Yes Elensefar in the Worldmap is in Danger, the orcs are up for something! Right! I created 7 Random missions that can be done for the cityguards of different cities in the Worldmap. Deliver Parcels, Scout Areas, Destroy Orcish Outposts/Watchtowers, Take out random generated Banditcamps and Monsternests and finally destroy the secret superweapon of the orcs! You can now buy 'true' teleport scrolls and use them from your menu. Dwarven Bombs have to be used from the Consumables Menu as well.
+0.231 Bugfix repairing a pick and lockpick bug, portalscroll will now work as intended and allows you to teleport back, from where you came. Teleport Scroll light price reduce.
+0.24 Added a variety of spells. Each character will now be able to cast at least 6 spells and can transform into one being of great power. Bugs Missions solved, changing maps for encounters, monsternests and banditcamps. Added more items and equipment. Bosses spawn a randomloot when defeated. Details see forum.
+0.241 Avoidgiving Objects repaired, Werhare spell added to spellshop as well as repairing graphics and little phonetic-notmothertongue-related mistakes. Randomencounters now work on every terrain.
+0.242 Small Bugfix: Repaired Maps within the Banditcamp and Monsternest
+0.99 A big jump, but the story and development of Five Fates will finally come to an end: bugfixes,enemy spellcasting,randomgenerated dungeons in 6 different side mission, new powerful enemies, negative stats, new items with the opportunity to use items on allies, two additional endings (bossfight and worldconquer), new equipment with specials and abilites, improved worldmap and encounters
+1.00 Bugfixes: enchanted spell concept that will now work with animations and fires last breath events, repaired picturepathes - dwarvish machine, Path to Trader replaced (required Trader to be installed), bandage repaired, enemy will just attack your side with spells
+1.01 Bugfixes and Performance Upgrade: Repaired Skillpath of Bowmaid, Repaired Pictures, Reduced Save File Size
+1.02 Bugfixes: Portal Animation added, fixed scavenger bug which blocked the airship entrance, world conquer image and text changes, manaconsumption of arrowrain and other massiveeffectspells fixed
+1.03 Bugfixes: Randomdungeon macro upgraded, Harmspell1 Spells have been repaired, Added Ford to the Worldmap.
+1.04 Bugfix: repaired Detect Hidden spell in the hope of getting rid of save game corruptions, thanks to herlaziness
+1.05 Ported to 12.0, small changes to make it work, there might be issues with graphics
+1.06 Ported to 14.1, added tutorial and hints, smaller text corrections repaired graphics
+1.07 Ported to 14.1, smaller grammar and wording changes, improved portrait graphics and decisions
+1.08 various bugfixes, added smaller skilltree option for smaller devices, repaired random dungeons
+      status = 
+  DL_per_day = 4.62012585903915
+   megabytes = 12.4993133544922
+
+    filename = The_Garardine_Ascendancy
+        size = 12744046
+   timestamp = 1545428835
+   downloads = 4047
+        type = campaign
+     version = 1.1.7
+dependencies = 
+ description = In the 417 YW, ending years of strife and division, Garard I seizes the throne and becomes king of Wesnoth, beginning the Garardine Dynasty.
+A concise phrase that hide a lot of events, as well as the long and difficult road that the young Garard, born count of Dan Tonk, had to travel to reach the throne of Wesnoth.
+If you want to travel that long road, here is its beginning.
+
+(Expert Difficult, 23 battle scenarios, 5 dialogue and others things scenarios.)
+
+A little note: the author no longer has an account for the wesnoth.org forum, so, if you have something to say about this campaign you can write it in the website page below, but it's better you don't wait for an answer.
+Moreover I suggest to evaluate well what you write; if what you write doesn't like or doesn't interest the administrator of the site, the discussion will be locked.
+(vuolsi così colà dove si puote quel che si vuole, e più non dimandare -Inf. III 95-96-)
+
+Last note: The author will no longer take care of the maintenance of this campaign.
+Who wants to take it in charge can write an email to this address: argesilao2019@yahoo.com
+and I will send him the server.pbl file of the campaign; this file, inserted in the campaign folder downloaded here, will allow him to modify the add-ons at will.
+      status = 
+  DL_per_day = 3.49720402848257
+   megabytes = 12.1536693572998
+
+    filename = The_Rod_of_Justice
+        size = 12740833
+   timestamp = 1612342123
+   downloads = 1161
+        type = campaign
+     version = 1.0.1
+dependencies = TRoJ_Music
+ description = A young mage, an embittered lich who once served as part of Wesnoth's High Council of Archmagi, and a mysterious faerie embark on a search for the only artifact that can save their home from a fearsome Demon Lord. Takes place after the Fall of Wesnoth, around the year 120 DE. 26 playable scenarios, 5 of which are story-only.
+      status = 
+  DL_per_day = 3.03330523205418
+   megabytes = 12.1506052017212
+
+    filename = hunted_outlaws
+        size = 12971568
+   timestamp = 1525472183
+   downloads = 4226
+        type = campaign
+     version = 0.3.1
+dependencies = Reign_of_the_Lords
+ description = Lead a band of outlaws to the domain of a loyalist city. These owtlaws will be hunted no longer!
+Reign of the Lords is needed to play this campaign. This campaign uses an era called reign of the lords, only the main add-on needs to be installed...
+Note, this campaign is still a work in progress. There are most likely a bunch of bugs and such.
+      status = 
+  DL_per_day = 3.04425204521052
+   megabytes = 12.3706512451172
+
+    filename = From_Rocks_And_Blood
+        size = 12497464
+   timestamp = 1607711984
+   downloads = 1109
+        type = campaign
+     version = 1.0.6
+dependencies = 
+ description = Campaign occuring in UTBS universe. 
+
+You are going to lead a troll clan surviving in the Dar Naal mountains.
+
+23 scenarios campaign (including 5 scenarios dialog-only).
+
+8 new troll units.
+
+Most of the artwork is from myself and from my other campaign A_Goblin_Adventure. 
+
+Dialogs and story.txt are going to be improved to be more lyrical.
+
+Please be free to leave feedback to improve this campaign !
+      status = 
+  DL_per_day = 2.54159384578298
+   megabytes = 11.9185104370117
+
+    filename = Legend_of_the_Invincibles_beta
+        size = 13522011
+   timestamp = 1547310210
+   downloads = 3192
+        type = campaign
+     version = 3.2.6.184.g8ea1e28
+dependencies = 
+ description = This is a daily build version of Legend of the Invincibles. It contains the latest changes, but also the latest bugs. Use this only for testing or if you have problems with the main version and you know it has been already fixed but not uploaded.
+      status = 
+  DL_per_day = 2.81125741682739
+   megabytes = 12.8955945968628
+
+    filename = Danse_Macabre
+        size = 19176680
+   timestamp = 1525287519
+   downloads = 8678
+        type = campaign
+     version = 1.3.2
+dependencies = 
+ description = Undead campaign featuring a zombie named Macabre. 12 playable scenarios, expert level. For all undead lovers! If you have any feedback, please visit my thread on the Wesnoth Forums.
+      status = 
+  DL_per_day = 6.24169604755901
+   megabytes = 18.2883071899414
+
+    filename = A_Song_of_Fire
+        size = 22574215
+   timestamp = 1577737715
+   downloads = 7306
+        type = campaign
+     version = 1.0.3
+dependencies = War_of_Legends,ASoF_Music
+ description = In a long-forgotten era, at the heart of the Great Continent, an ancestral evil is awakened, threatening to destroy the whole world. Follow young Myra in the war that will alter the future of Irdya and its peoples forever. (Part I of the Dragon Trilogy; SP Campaign, 36 scenarios, including 5 dialog-only; requires War of Legends; installation of the ASoF Music add-on is not obligatory, but recommended.)
+      status = 
+  DL_per_day = 9.32762481562918
+   megabytes = 21.5284490585327
+
+    filename = Chyrospitals
+        size = 17260408
+   timestamp = 1589128572
+   downloads = 2692
+        type = campaign
+     version = 1.3.3
+dependencies = 
+ description = Part I : The Fields of Blood
+A wind of Ice has come from the Hearth Mountains changing North Wesnoth in an icecold desert. The kingdom no longer exists and life reorganizes itself around smaller communities. But those small villages find themselves faced with a new threath: a horrific army composed of various artificially created monsters starts raiding the land in search of flesh for the enigmatic Chyrospital.
+Lead Aegir, a lone dwarf who finds himself in charge of the refugees. Seek help from various allies, travel through the remains of the Wesnoth Kingdom and face a completely new foe. 
+(Intermediate level, 10 scenarios + 1 dialogue)
+
+Part II : The Sands of Revenge
+War and deceit has thinned the numbers of Aegir's army, but it has hardenned the survivors even more! Soon the flight will end, help will come from the south and the free people of Wesnoth will have revenge !
+(Intermediate level, 4 scenarios (incomplete))
+
+Having played A Tale of Two Brothers will give the storyline more depht but is not required. Uses the 1.14 version of Wesnoth so will probably be buggy on older versions.
+
+Note: This campaign features a completely new faction against which you will fight most of the time. Designed for those who have enough of fighting hordes of orcs or undead (you won't find any). I'm not an artist so the artwork might not be splendid. Im working to improve it. Soft difficulty should fit novicer players, while challenging is really meant for players who have played Wesnoth a lot. I'm working on Part II right now. Thanks for any feedback whether related to story, typo, art or balance !
+      status = 
+  DL_per_day = 4.13247145419185
+   megabytes = 16.460807800293
+
+    filename = Science_Miracle
+        size = 14855120
+   timestamp = 1610035977
+   downloads = 752
+        type = campaign
+     version = 0.1.0
+dependencies = 
+ description = 	
+	6 Scenarios. More to come.	
+	Recruitment in this campaign is disabled.
+	Added new Scenario. Added new possible units.
+	Added a Dog. 
+	About a little Girl?...
+	Fixed the animation for medic.
+	
+	6th Scenario implemented.
+	Added some more units and changed some terrains.
+	
+	Any feedback or bugs report to: 
+	lightningbold@d-reves.de
+      status = 
+  DL_per_day = 1.83664461157997
+   megabytes = 14.1669464111328
+
+    filename = Son_Of_The_Black_Eye_Easy_Edition
+        size = 15172053
+   timestamp = 1603681216
+   downloads = 994
+        type = campaign
+     version = 1.3.0
+dependencies = 
+ description = Son of the Black Eye was originally designed as an expert-level campaign. In that state, it was too hard for me. While I respect the designers' decisions to make it hard, I also think players deserve an easier campaign of mainline quality where they get to play as orcs. This is my attempt to make it easy enough for even beginners to be able to handle. Note that my edits are primarily designed only to make the main objectives easier; optional objectives (such as killing enemy leaders in survival missions) still ought to be difficult. 
+
+(18 scenarios.)
+
+While the maintainer now has an account on the forums, his preference is still that feedback should be directed to the add-on's source repository on GitHub:
+
+https://github.com/cooljeanius/Son_Of_The_Black_Eye_Easy_Edition
+
+The maintainer may also be contacted as egallager#0504 on Discord.
+      status = 
+  DL_per_day = 2.05800178746634
+   megabytes = 14.4691972732544
+
+    filename = COTS
+        size = 17792523
+   timestamp = 1552515159
+   downloads = 4891
+        type = campaign
+     version = 0.3.2
+dependencies = 
+ description = A new recruit in the imperial army, jumps on the first opportunity to transfer to the borders to fight bandits. Eager to change the world and itching for a some action. Little does he realise just how much action he'll get.
+      status = 
+  DL_per_day = 4.54895281296148
+   megabytes = 16.9682722091675
+
+    filename = Carved_in_Stone
+        size = 21551603
+   timestamp = 1523476659
+   downloads = 10834
+        type = campaign
+     version = 1.4
+dependencies = Heroes
+ description = During the glorious Silver Age of Wesnoth - an age of prosperity and civilization - seemingly endless series of orcish attacks were led against dwarvish settlements, that were newly founded in the Northlands. But times have changed. One day the orcish attacks suddenly stopped. Accompany our dwarvish heroes led by Uthain, a wise adventurer, on their journey through the vast plains of the southwestern Northlands; bring the evil doings of orcs and trolls to light and disclose their secrets. (Easy difficulty, 8 scenarios)
+      status = 
+  DL_per_day = 7.67668494690533
+   megabytes = 20.5532102584839
+
+    filename = Kill_the_King
+        size = 18484247
+   timestamp = 1525687449
+   downloads = 6263
+        type = campaign
+     version = 1.0.0c
+dependencies = Legend_of_the_Invincibles
+ description = The current situation in the kingdom is not exactly the best, mainly because the king's incompetence. Lead a troupe of bards on their quest to rouse a rebellion to remove the king and replace him with somebody more suitable.
+
+This is a very short campaign that should not be taken seriously in any case. Many elements of the story are quite far fetched just to keep it funny. I hold no responsibility for any offences taken.
+
+Sorry for the size of the download, but this story seriously needed some rock music :D
+      status = 
+  DL_per_day = 4.51974248879361
+   megabytes = 17.6279516220093
+
+    filename = The_Ice_Age
+        size = 16905717
+   timestamp = 1567802682
+   downloads = 2461
+        type = campaign
+     version = 1.6.1
+dependencies = 
+ description = Follow young Jobath and his friends on an ice age journey that takes them through the Second Shadow War, and beyond the world's ending. (around 30 scenarios, relatively easy)
+      status = 
+  DL_per_day = 2.73976083477829
+   megabytes = 16.1225481033325
+
+    filename = The_Dark_Master
+        size = 16256752
+   timestamp = 1581027207
+   downloads = 1525
+        type = campaign
+     version = 0.1.2
+dependencies = 
+ description = A story about Argan, The most powerful Master of Darkness before the fall.
+      status = 
+  DL_per_day = 2.04645257867236
+   megabytes = 15.5036468505859
+
+    filename = Palms_amid_Blue_Dunes
+        size = 17095594
+   timestamp = 1624107351
+   downloads = 589
+        type = campaign
+     version = 1.1.0
+dependencies = 
+ description = Seeking access to spices, the dunefolk began building trading outposts on an island in the Sleepless Sea. But communications stopped and when news of a goblin attack arrived, the city-state of Serrul had to act. An expedition was sent, only to uncover that the unorganized goblins are just the tip of many factors...
+
+(Intermediate Level, 12 scenarios.)
+
+Features in this campaign include:
+-> The developmental dunefolk faction from 1.15.2!
+-> New types of ships, able to transport other units!
+-> 8.1 MB of Matthias Westlund's music!
+-> Refreshing maps in a tropical setting!
+
+      status = 
+  DL_per_day = 2.38868506336308
+   megabytes = 16.3036289215088
+
+    filename = Soldier_of_Wesnoth
+        size = 21738315
+   timestamp = 1557582763
+   downloads = 6808
+        type = campaign
+     version = 4.0.2
+dependencies = 
+ description = 697 YW. More than two decades after King Konrad II died leaving no heir, three noble Houses vie for the control of the kingdom, which, still feeling the damages of Mal-Ravanal's invasion, sees its glory and power slowly fade away. Meanwhile, in the southern province of Kerlath, a young peasant called Addraryn sets out to join Weldyn's Army, in order to be able to marry the fair Elywen. However, his travel will suffer some very unexpected twists which will lead him to the main stages of the Second Civil War. Journey across Wesnoth, witness its decadence, meet old heroes and save the kingdom from the enemies within and from the formidable Lion of the Desert... (SP campaign, 31 scenarios, Intermediate Level)
+      status = 
+  DL_per_day = 6.69722991017013
+   megabytes = 20.7312726974487
+
+    filename = Bad_Moon_Rising
+        size = 24153487
+   timestamp = 1521426641
+   downloads = 12490
+        type = campaign
+     version = 1.11.4
+dependencies = Archaic_Era,Archaic_Resources,Archaic_Sounds
+ description = An expedition to gather treasure from the cold north sets off compounding disaster.  Follow a prisoner of the undead in his quest for revenge, then join a rebellion, learn to get along with the natives, and save the world.
+
+SP Campaign in three parts, though Part 1 is very quick and is an introduction to the inventory/equipment system.  
+Long campaign, design is a bit more like old JRPGs in Parts 2 and 3.  Requires 'Archaic Era', 'Archaic Resources', and 'Archaic Sounds' add-ons
+
+Known problems:  
+ - Has some issues with GUI widget size and scrollbars at smaller resolutions  
+ - The state of some translations is questionable.
+
+If you have any comments, either good or bad, please leave a note at the forums.wesnoth.org link.
+      status = 
+  DL_per_day = 8.70375195171557
+   megabytes = 23.0345602035522
+
+    filename = Swamplings
+        size = 19788861
+   timestamp = 1525687369
+   downloads = 5930
+        type = campaign
+     version = 1.2.0i
+dependencies = 
+ description = Banished by orcs, a tribe of lowly swamp goblins endure in the deadly mire of Pogo Bog. Situated before the founding of Wesnoth, this is the story of the goblins' struggle against the intrigues and betrayals of the greater races, and the rise of the first wolf rider.
+
+14 scenarios. Complete. Contains French, German and Russian translations.
+
+Fixed the showstopper bug in last scenario for 1.14.
+      status = 
+  DL_per_day = 4.27942759849425
+   megabytes = 18.8721284866333
+
+    filename = Antar
+        size = 21230620
+   timestamp = 1545163688
+   downloads = 6557
+        type = campaign
+     version = 1.13.45
+dependencies = 
+ description = With enemies pressing on all sides, Lord Rheor is called away to relieve his neighbour Lord Othar. His son, Lord Antar is left in command of the little shire.
+But evil strikes in the form of Baron Malbeth, and soon, realising the hordes of Orcs and Undead cannot be defeated with what forces he has ...
+ 
+ 
+* Intermediate level (the first scenario is rather difficult and meant for experts, not for beginners)
+* 13 scenarios
+* You play with Humans, Elves and Dwarves against Orcs and Undead.
+* The campaign is finished and full playable
+
+This update contains some bug fixes, many thanks to Konrad Schwede (Konrad2), and a few minor changes.
+And a big thank you to White_Haired_Uncle for reporting (via PM) a hard-to-find bug.
+      status = 
+  DL_per_day = 5.65122707956651
+   megabytes = 20.2470970153809
+
+    filename = The_Devils_Flute
+        size = 18652791
+   timestamp = 1639916154
+   downloads = 153
+        type = campaign
+     version = 0.1.4c-1
+dependencies = 
+ description = Creona, the well-known assassin, gets a strange job from a strange person. So, in fact, it's no surprise that things take a strange turn...
+
+Level: ranging from easy to nightmare, 10 scenarios (2 text-only)
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 2.40539860886034
+   megabytes = 17.7886877059937
+
+    filename = The_War_of_Terrador
+        size = 19925638
+   timestamp = 1628042423
+   downloads = 719
+        type = campaign
+     version = 1.4.1
+dependencies = 
+ description = A small colony on the outer rim of the Gamma Quadrant has cut all communications with the Core Worlds. Central Command, headed by Admiral Joseph Flameslash Gerinian, has sent a young Captain by the name of Ryter Millinski to investigate.
+
+Follow Ryter's tale of how the Great War began and ended, and the horrors during it.
+
+(Intermediate level, 16 scenarios, 1 of which is dialogue only.)
+
+The new maintainer's preference is that feedback should be directed to the add-on's source repository on GitHub:
+
+https://github.com/cooljeanius/The_War_of_Terrador
+
+The maintainer may also be contacted as egallager#0504 on Discord.
+      status = 
+  DL_per_day = 3.57650298062065
+   megabytes = 19.0025691986084
+
+    filename = ASanguineTale
+        size = 26997194
+   timestamp = 1548523603
+   downloads = 11305
+        type = campaign
+     version = 3.0.0
+dependencies = 
+ description = In the chaos after Wesnoth fell, scattered refugees fought for resources and preyed upon one another.  The last of the Green Magi, Ani Essu, led an exodus of a dozen races to a fertile ground, the Northern Highlands.  Betrayed and murdered by those she saved, her work collapses as the refugees war with one another once again.  Two generations later, the heir to Ani's legacy, Princess Anea, is prophesied to complete the legacy or destroy it.  Is she a hero or a villain?  Only you can decide. 
+
+Ani's Legacy - The main campaign, a non-linear campaign with eighteen different endings reachable by different user choices.  A playthrough can be from seven to twenty-six scenarios, and there are a total of 144 reachable scenarios.  After beating the campaign the first time, starting the campaign again will show you a map of the story arcs as hints about how to reach other endings.
+
+Ani's Quest - The prequel campaign.  Despite their flaws, Ani and her band of anti-heroes lead Wesnoth refugees to the Northern Highlands.  This campaign is meant to be played after Ani's Legacy, to avoid spoilers at the end.  This is a mostly-linear campaign with an 18 scenario playthrough, and has a total of 22 reachable scenarios.
+
+Xenoi - a multiplayer faction, which shows up as an enemy or ally in Ani's Legacy depending on user choices.  They are also briefly seen in Ani's Quest.
+
+Both campaigns are complete and playable.  However, the developer plans on adding more story arcs and endings to Ani's Legacy, more units to the Xenoi faction, and other finishing touches.  Most work on this add-on will go towards the Apocalesus campaign, currently hidden by an DWT_ENABLE_DEBUG macro.
+      status = 
+  DL_per_day = 10.0812287863075
+   megabytes = 25.7465305328369
+
+    filename = Castle_of_evil_spirit
+        size = 20404556
+   timestamp = 1527687451
+   downloads = 4854
+        type = campaign
+     version = 0.7.3
+dependencies = add_creature_pack
+ description = There is a crumbling castle abandoned long ago. Rumor says that a evil spirits  appears in the castle and eats the soul of the approaching person. (not balanced)
+      status = 
+  DL_per_day = 3.5624374401892
+   megabytes = 19.459300994873
+
+    filename = Trinity
+        size = 21317032
+   timestamp = 1548045959
+   downloads = 4409
+        type = campaign
+     version = 1.5.11
+dependencies = Archaic_Resources,Archaic_Era,Archaic_Sounds
+ description = Wesnoth is under assault from horrors from the north and lands beyond.  Sequel (and conclusion) to Bad Moon Rising, though it can be played on its own. 
+
+SP Campaign, complete but there may be some bugs, and some revision may be needed (based on feedback).  The last half has been massively revised from the version available in BfW 1.10; the campaign has been split into two campaigns.  Requires the add-ons Archaic_Era and Archaic_Resources.
+
+Please see the forum post in the link below for more information.
+
+      status = 
+  DL_per_day = 3.91243610065966
+   megabytes = 20.3295059204102
+
+    filename = Alariels_Journey
+        size = 21420400
+   timestamp = 1637938264
+   downloads = 337
+        type = campaign
+     version = 1.0.2-1
+dependencies = Alariels_Journey_Music,UMC_Terrain_Pack
+ description = (14 scenarios: Beginner - Intermediate): Alariel, last of the ellyllon, must obtain the light of a fallen star from the Land of Eternal night to save the Enchanted Forest.
+
+Part Princess Bride, part Stardust, and all Wesnoth. You don't gotta like it, you just gotta play it!
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 3.89599129086022
+   megabytes = 20.4280853271484
+
+    filename = AFriendshipTested
+        size = 28411365
+   timestamp = 1602725318
+   downloads = 5076
+        type = campaign
+     version = 3.4
+dependencies = 
+ description = 
+An old alliance worn down by years of disputes is thorougly tested when Orcs attack one's home. Play as the Hollians on the journey to find a new home.
+Takes place around ~675 YW.
+11 scenarios are playable. More planned for future. 
+
+      status = 
+  DL_per_day = 10.2741303954972
+   megabytes = 27.0951890945435
+
+    filename = dawn_of_thunder
+        size = 23806135
+   timestamp = 1526126295
+   downloads = 7152
+        type = campaign
+     version = 0.1.9.5
+dependencies = 
+ description = It is 1171 YW. Wesnoth rises in power and evil turns upon other targets. Follow the story of Fiannon and Naia in their desperate tries to protect the whole of Irdya. 18 scenarios, 2 talking only, unfinished. I recommend the latest version of Wesnoth, other versions may have bugs.
+      status = 
+  DL_per_day = 5.18028440624261
+   megabytes = 22.7032995223999
+
+    filename = Flight_Freedom
+        size = 23416505
+   timestamp = 1525752934
+   downloads = 6197
+        type = campaign
+     version = 5.3.3 (BFW 1.14.0+)
+dependencies = 
+ description = Flight to Freedom chronicles the story of the drake hero Malakar, and his desperate cross-country flight out of slavery. This classic campaign is back for BFW 1.14!
+(Expert level, 20 scenarios)
+      status = 
+  DL_per_day = 4.47456050432973
+   megabytes = 22.3317193984985
+
+    filename = way-of-dragon
+        size = 23476661
+   timestamp = 1532523288
+   downloads = 4626
+        type = campaign
+     version = 1.12.3
+dependencies = 
+ description = The story is about how to become a dragon, when depends on it fate of the world ...
+      status = 
+  DL_per_day = 3.5405412051523
+   megabytes = 22.3890886306763
+
+    filename = A_New_Order
+        size = 34292557
+   timestamp = 1533430355
+   downloads = 17147
+        type = campaign
+     version = 1.4.0
+dependencies = Akladian_Music
+ description = The old kingdom of Wesnoth has fallen before barbarian hordes. The occupying barbarians are on the brink of civil war, the seeds of Wesnothian rebellion are kept alive by old legends, while bandits and Dunefolk mercenaries roam the land. Can Gawen Hagarthen unite these disparate factions against a common foe?
+      status = 
+  DL_per_day = 13.2298784485146
+   megabytes = 32.7039308547974
+
+    filename = Way_of_Dragon
+        size = 23476406
+   timestamp = 1639083709
+   downloads = 117
+        type = campaign
+     version = 1.012-2
+dependencies = 
+ description = The story is about how to become a dragon, when depends on it fate of the world ...
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 1.59745060233881
+   megabytes = 22.3888454437256
+
+    filename = Estorc_and_the_spectral_force_Mod
+        size = 25928103
+   timestamp = 1586105493
+   downloads = 2679
+        type = campaign
+     version = 3.1.0
+dependencies = Estorc_and_the_spectral_force_Music_1,Estorc_and_the_spectral_force_Music_2
+ description = EN : This campaign is translated in English at 30 % !  
+
+Thanks to DM DOKURO for the musics ! Unit inspired by the Dragon of Atlantis's universe !
+
+FR : Cette Campagne est Française, mais pour la soutenir vous pouvez la traduire en Anglais !
+
+Merci à DM DOKURO pour les musiques ! Les unités sont inspirés de l'univers de Dragon of Atlantis
+      status = 
+  DL_per_day = 3.90288390782908
+   megabytes = 24.7269659042358
+
+    filename = Diplomatic_Mission
+        size = 25321389
+   timestamp = 1605267836
+   downloads = 1368
+        type = campaign
+     version = 0.1
+dependencies = 
+ description = This story is about a Dark Elven Prince, sent on a diplomatic mission for a reason he doesn't understand.
+      status = 
+  DL_per_day = 2.9442838169711
+   megabytes = 24.1483583450317
+
+    filename = Forgotten_Conflicts
+        size = 26478180
+   timestamp = 1558112660
+   downloads = 3398
+        type = campaign
+     version = 1.3.1
+dependencies = 
+ description = These are tales long lost in the shadows of the past. Some of valor, others of loss and betrayal. Knitting together fragments of the past, the battles shall reveal the strife of ones disregarded by the keepers of our lore.
+_ 
+(Expert level, 12 scenarios.)
+      status = 
+  DL_per_day = 3.36300250957822
+   megabytes = 25.2515602111816
+
+    filename = War_of_the_Jewel
+        size = 29446500
+   timestamp = 1577738233
+   downloads = 3709
+        type = campaign
+     version = 1.0.4
+dependencies = War_of_Legends,ASoF_Music
+ description = Part IV: City of the Sun - Centuries have passed since the refugees of the Last War, led by Myra of Hiera'Shirsha and the Exodus Heroes, have established a new city for themselves in the faraway Netjer-Ta, the golden Maat'Kare; although they are constantly combatting foes who threaten to conquer them, the Maat'Karians have experienced times of relative comfort. However, this age of peace is soon to end, when the ancient evil that nearly destroyed their ancestors reappears at the very heart of their civilization, attracting upon itself the greedy eyes of darkly neighbours... And, in this brewing storm, the young Akhen Wadjet, Myra's last heir, will be forced to overcome his fears and doubts to protect the legacy his ancestor gave her own life for...
+(Part II of the Dragon Trilogy; SP Campaign, parts IV and V done with 28 scenarios, including 1 dialogue-only; can be played on its own, though previous knowledge of A Song of Fire's plot and events can be helpful; requires War of Legends; installation of the ASoF Music add-on is not obligatory, but recommended.
+      status = 
+  DL_per_day = 4.7353442723472
+   megabytes = 28.0823707580566
+
+    filename = Mountain_Witch
+        size = 30002221
+   timestamp = 1521895221
+   downloads = 7437
+        type = campaign
+     version = 1.2.4
+dependencies = 
+ description = Young witche Hana and dancer Sally helped the last elf survive. There was a surprising fact in the shadow of the elves extinction. To solve the mystery of the extinction of the elves, three people go on a journey to find the treasure of the elves. Please use the new summoning method and medicine preparation to lead the witch to victory.
+      status = 
+  DL_per_day = 5.20219104851931
+   megabytes = 28.6123476028442
+
+    filename = Oath_of_Allegiance
+        size = 38954558
+   timestamp = 1521447229
+   downloads = 18217
+        type = campaign
+     version = 1.16.33
+dependencies = Heroes
+ description = Accompany Ilriel, an elvish druid of the Southwoods of Wesnoth, and take part in an unforeseen and unintentional adventure that leads to lands far away. (Intermediate difficulty, 22 scenarios, 3 of them dialogue-only)
+      status = 
+  DL_per_day = 12.6967639937552
+   megabytes = 37.1499614715576
+
+    filename = Zombies_Introduction
+        size = 31207245
+   timestamp = 1546635907
+   downloads = 3648
+        type = campaign
+     version = 2.0.0fix
+dependencies = 
+ description = Who said a zombie cannot be a good soldier? In this campaign you will learn how to use zombies effectively. Play on the side of a young peasant with a plague staff who dreams to become a lich! Collect 6 types of zombies from enemies of different races. A campaign with 5 scenarios in length but with 6 different ways to pass it.
+      status = 
+  DL_per_day = 3.19093268564488
+   megabytes = 29.7615480422974
+
+    filename = A_Song_of_the_Winds
+        size = 38435758
+   timestamp = 1612416995
+   downloads = 2840
+        type = campaign
+     version = 1.0.4
+dependencies = War_of_Legends,ASoF_Music
+ description = Every era has its heroes and heroines. Before the song of Myra, the odyssey of Akhen Wadjet and the aria of Tenma Yozora, there was the song of the winds that echoed in the mountains and halls at the heart of the Great Continent. Follow young Maat of Hiera'Shirsha and Prince Abhai of Garet-Desh in the war that set the stage for one of the greatest upheavals Irdya has ever witnessed. (Prequel to the Dragon Trilogy; SP campaign, 43 scenarios, including some dialogue-only)
+      status = 
+  DL_per_day = 7.43680890050634
+   megabytes = 36.6551952362061
+
+    filename = A_Whim_of_Fate
+        size = 39317989
+   timestamp = 1546802746
+   downloads = 6651
+        type = campaign
+     version = 1.0.2fix
+dependencies = 
+ description = There are 3 main things in this campaign: zombies, teleportations and a love story. A complete campaign in 3 independent chapters: 3,5 and 8 scenarios in each chapter. This expert-level campaign will require much of creativity from your tactical skills. Many heroes to advance and a deep storyline with dramatic twists.
+      status = 
+  DL_per_day = 5.82752215248082
+   megabytes = 37.4965562820435
+
+    filename = The_Fall_of_Wesnoth
+        size = 40038261
+   timestamp = 1640007190
+   downloads = 290
+        type = campaign
+     version = 1.0.8-2
+dependencies = 
+ description = As the beloved human empire of Wesnoth becomes lazy and arrogant in it's peaceful state of happiness, Emperor Dantair demands the creation of another sun in a desperate hope for the destruction of evil. Or is it all for a different purpose? A man named Alitar sees it that way, and now he must survive the most evil inhabited lands if he is to stop chaos from rising, and Wesnoth from falling...
+
+This is the story of The Fall of Wesnoth.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 4.63604905597119
+   megabytes = 38.18346118927
+
+    filename = Trader
+        size = 50117434
+   timestamp = 1526417516
+   downloads = 11764
+        type = campaign
+     version = 1.16.16
+dependencies = 
+ description = Strange Legacy: The Orc invasion came without warning and with a brutality that caught the Human Alliance completely off guard and unprepared for. Before the year was over the Orcs controlled half of the Northland. The Winter finally halted their advance. Meh, what's the big deal. I never cared much for politics or policy. But when my uncle was gone, I started into the greatest adventure of my life.
+
+This campaign is a classical rpg that offers a variety of options, you will just control one hero and bring him to fortune. You can trade, pickpocket, be a bard, bounty- or treasurehunter, or working as a craftsman selling your goods. You can also run a building and upgrade it or doing random generated missions. There are a lot of ways to make a fortune. But the world around isn't always friendly and it will react on your character level. You might encounter thieves, orcs, bandits or wild animals and therefore you will need a proper equipment to defend yourself.
+
+Equip your charcter with: helmets, armors, shoes, shields, instruments, rings, amulets, ranged or meleeweapons or learn more than 80 powerful spells to gain an advantage. Hire one of 35 mercs to defend your load and recall them using your warhorn. Try to conquer an enemy town to gain a constant tax income. Encounter all kind of enemies each on changing maps, according to the terrain - even your ship might be attacked by naga warriors or dangerous pirates. Follow the storyline with 34 missions that will force you to explore the world of Strange legacy. A new amla system will allow you to create a character in the way you like him, allowing you to solve the game differently each time you play and the difficulty is increasing with each level up. 
+For the most recent changes check the forum thread. Equip your uncles house with furniture allowing you to craft weapons, armors and cook food. If you like to have a classic RPG try out the RPG Mode. Have fun! 
+(1.0 decent bug fixes and essential new features
+1.01 bugfixes, details see forum
+1.02 bandage and junkstore bug fixed)
+1.03 spell changes, ability changes, performance upgrades
+1.04 repaired outpost scenario, small corrections to the text, you will now not encounter an army, when you are on a mission
+1.05 massive performance upgrade, bug fixes: storymission upgrade outpost, snow upgrade of elves can now be found in a workshop, small corrections to the text, embedded encounters and npc movement directly into the scenarios, encounters are now randomevents, intromission changes!
+1.06 a slightly more balanced version featuring a dynamic market, a different load upgrade system and a crafting system based on consumables, instead of goods that require space. This update will make trading a little harder and increases the sense of own buildings.
+1.07 several bugfixes, randomdungeons integrated, changed starting scenario to reduce redundancy and added a playable tutorial.
+1.071 smaller bugfixes concerning helpmenu and loner ability
+1.072 bugfixes concerning version 11.7 compatibility
+1.08 leaner code of helpmenu, selloption consumables, improved advanced randomdungeons and encounters, heal wound temple option will heal wounded stats, recipes added, seasons added, marketreset repaired)
+1.09 smaller bugfixes: fixed several bugs and replacing unnecessary macros for better performance, glas and sand prices repaired, goldgain when ending turn repaired, swampcity added, ratmissions changed, added bridgebuilding mission, added 16 unique mercs, Swampcity Scenario, Infinite Dungeons with Random Places of Interest, higher effect of the level on the game difficulty
+1.091 infinite turns in infinite dungeons, tavern upgrade changed, challenges added, randomsummonscroll added, slight text changes, indenting, halos added for loot and points of interest, changes to treasurehunting and randomloot
+1.092 repaired: shipencounter bug, sewerage bug, randomspawn id, enemyspellcasting, changes: drunk can be healed by sleeping and by temple curing wounds, added: sage which can identify flask, new graphics for elementals, demon, orcorcunits, spells, added new units: toads from era of magic, Fatalblade, Deathblade, Medusa
+1.093 repaired: several bugfixes, changes: cheaper ingredients and improved crafting macro, slight balancing changes, scattered images different obstacles in dungeons and more places of interest, new monsters: mummies,snakes,flies,panther, new consumeables: movementpotions,attackpotions, different new skills requiring exhaustion
+1.100 repaired: several bugfixes (last reported see bugfixes), improved cutscences and music, overlay for hero unit (equipped armors,weapons will show - thanks dugi for the better approach), additional storymissions with really hard quests, added consumables: full mana potion, stamina potion, greaterwarhorn, added ability to destroy walls with picks and bombs, added wisp that can have 11 levels and unlocks up to 10 different spells in infinite dungeons, new spells added: Stonebridge, Gap, Earthshaker, Swampcreation, Entrap, Flyswarm, abilities: smash,rangedshot,wound,whirlwind,cripple,netattack
+1.101 repaired: several bugfixes, text changes and balancing issues, dynamic market has less effect and it is again a little easier to trade, the level does no longer effect of enemies in an encounter has this caused still winable, but annyoing battles
+1.102 repaired: elvenspells in elvencity, capturing towns works again, new spell woodcreation added
+1.103 repaired: all transformspell related bugs, swampdungeon and randomdungeon ship bug, boxmission bugs, added: throwaway all goods of a type button
+1.104 repaired: several smaller bugs, modified shipupgrades and battles
+1.105 new bardspells, changed crafting, changed trading prices, new monsters, repaired: several bugs in all parts of the game
+1.1051 repaired stamina related bugs with bards and pickpocket ability, text changes, dogs, price balancing to improve crafting, food and consumables
+1.1052 repaired ship menu
+1.1053 repaired infinite dungeon issues, improved code and behaviour, grammar fixes
+1.11 repaired crafting issues, random dungeon fix, balancing issues, slight performance improvement, new missions and elements
+1.12 repaired several issues, balancing, price changes, new elements such as units, negative states, placesofinterest, improvement of cities and maps
+1.13 repaired: boarded encounter, armorspecials, pocket thiefing without stamina, projectile animation enemy spellcasting new features: wolffaction, portraits for john and wolf faction, spellcasting
+1.13.1 repaired: ranged special, ranged damage, treasure hunting, increased scholar income
+1.13.2 repaired: goods mission, bareskin, treasure after encounter, added enemies with hitchance, eliminated moving carts and objects, added magic and marksman attack specials
+1.14 bugfixes: global events, famegain, market-balancing, camping, textcorrection added: citywalls, icons and portraits, equip units, unlimited numeric inventory, buildingworkers, additional dungeons events, faction system
+1.14.1 bugfixes: dark wisp and wicked wisps will now spawn, darkwood and volcano will now increase in level, number of equipment (rings,amulet,helmet,boots), furniture will now be useable and some furniture can be crafted
+1.14.2 bugfixes: reputationgain saurians repaired, added explaintextes to delivering, put reputations into the status, repaired book of crafting
+1.14.3 bugfixes: equip/unequip torch will no longer cause problems, repaired orphan options, levelup equipment works now (basic magic)
+1.14.4 bugfixes: wispbuying, ghostarmor, ellipse, desk, macro for factiondelivery, upgraded factiondelivery, added factions orcs, khalifate, nomads, game reacts on reputation and fame
+1.15.1 bugfixes: damagegain + several others, overworked factions, added RPG difficulty, overworked faction ambushes, added dark temples and options for darksiders, added 5 different chooseable randomevents + chanceincrease...
+1.15.2 bugfixes: herorpg changes, leftweapon, double spell bug, waterbased encounters, cast spells will now work on fields again, traps will show and work again.
+1.15.3 bugfixes: avoid/damageup armorspecial, scmitar/rapier/armor overlays, new races/heroclasses, new equipment, overworked herographics, overworked inventory hide/show equipment, randomnpcs and randomattacker, castle
+1.15.4 bugfixes: repaired various bugs, wording corrections, balancing, increased mission rewards, blood altar, new skills, new missions, infinite dungeon changes: new factions/traps/random encounters based on dungeon ...
+1.15.5 bugfixes: Infinite Dungeons lockpick and shovel problem, you can no longer equip a npc two times, strange legacy amla - wardog repair, reduced goldincome by pickpocket and singing, added books and thief/bardequipment
+1.15.51 bugfix: repaired fishingground naga catcher spawn
+1.15.6 multiple buy, vampirecity and castle scenarios, bugfixes such as becharm, see complete list in the forum
+1.15.7 bugfixes, weapons special changes, manageable village, graphic changes, race/class based upgrades
+1.16 bank and treasure vault, temple fix, reduced selling prices for consumables
+1.16.1 bug fix concering sandcave, corrected some minor typo
+1.16.2 seasons, weather effect, three new scenarios and global events, duels, more/upgraded randomevents, npc equipable weapons, complete list in the forum
+1.16.2.1 several fixes
+1.16.2.2 several fixes
+1.16.3 many bugfixes, several new features such as escorts, assassinationmissions, balancing, encounter changes
+1.16.3.1 bugfixes, added randompotion effect
+1.16.3.2 bugfixes
+1.16.4 bugfixes for version 1.14, mapchanges with new terrainelements, overworked randomdungeon with different sizes and new typesofinterest
+1.16.5 bugfixed achievements, changed the achievement picture
+1.16.5.1 fixed treasurehunt, fixed duel, improved duel
+1.16.5.2 fixed transformations, fixed merman/guards, wording corrections/changes, new class paladin and new female hero
+1.16.5.4 fixed spellprojectile bug and some minor issues, craft own weapons and create own spells, alchemy and mining skill, collect materials from worldmap
+1.16.6 updated performance, improved helpmenu, crafting customizable bows, armors and equipment, new monsternests and scavenging, experience for actions, overworked graphics, halloween content
+1.16.6.1 you can place pumpkins via right click, fixed all problems with error messages, wording and portrait correction
+1.16.6.2 repaired random dungeons, hindered random missions and nests to be spawned on cities, credited Mik3art
+1.16.6.3 bugfixes
+1.16.6.4 bugfixes, create unique Summon Spells, added the ascension as random event, drop wintertrees on snow, winter effects more areas and cities, improved movement
+1.16.7 bug and glitchfixes, bargaining update, sell/buy all changes, armies, townupgrades, skill spells, sea encounter changes
+1.16.7.1 bugfixes reported by Stahlrohr
+1.16.7.2 bugfixes / changes pickpocket and thiefguild quest
+1.16.7.3 fixed Mr. Caufield Bug (extrastrikes by equipment now work as intended)
+1.16.7.4 fixed several wordings and smaller bugs, added bank-robber scenario
+1.16.8 added: mounts, disguises, decorations, third sewer level with infinite exploration, fixed + improved infinite dungeons
+1.16.9 repaired glitches in overlay, church, overworked miracles, added new mounts, halloween ends, areatraps, randomtraps
+1.16.9.1 added Twilight gods, balancing, bugfixes
+1.16.9.2 increased performance, RPG Mode Difficulty, simplified trade, prod + global event changes, added hidden temples
+1.16.10 less source code, sounds integrated, city markets, faction diplomacy, new spells and equipment, archaelogy, various improvements
+1.16.11 bugfixes, illusion and haircuts, new drawbacks for rpg and difficulties
+1.16.12 fixed broken saved games in 1.15. BoW version
+1.16.13 many fixes such as haggling and carousing, new spells, recipes, carvan concept and balancing changes
+1.16.14 basic fixes, new options for wildlifeskills, monsternest spawn on every worldmap, season changes for all worldmaps
+1.16.15 increased number of overlays, fixed several bugs, some 1.15 related bugs, various changes for translation, german translation
+1.16.16 fixes, improved options as vampire, poison weapons, crafting changes
+      status = 
+  DL_per_day = 8.54166800426602
+   megabytes = 47.7957096099854
+
+    filename = Aria_of_the_Dragon_Slayer
+        size = 50530458
+   timestamp = 1577737952
+   downloads = 5016
+        type = campaign
+     version = 1.0.5
+dependencies = War_of_Legends,ASoF_Music
+ description = Part VII: Awakening from Legend - In ancient times, the fate of Irdya was changed in a great war against the dragons; and, in that war, the heroines Maat and Myra of Hiera'Shirsha stopped the Sky Dragon Svarballi and, unable to destroy him, locked him in a mighty prison. Now, five millennia after that war, as humans rule Irdya and two suns shine in the sky, the one with the power to finally slay the Sky Dragon may have been born as a peasant girl in the outskirts of civilization... Follow Tenma Yozora through the last days of Irdya's Golden Age and through the path to becoming the prophesied Dragon-Slayer...
+
+(Part III of the Dragon Trilogy, SP Campaign with 51 scenarios, including 3 dialogue-only. Requires War of Legends; instalation of the ASoF Music Pack is not obligatory, but recommended)
+      status = 
+  DL_per_day = 6.40398712412359
+   megabytes = 48.1895999908447
+
+    filename = Library_Of_Kratemaqht
+        size = 52266524
+   timestamp = 1526144029
+   downloads = 5918
+        type = campaign
+     version = 1.1.2
+dependencies = 
+ description = An ancient story from a time when dragons could still alter the course of human civilization on the old continent... For good or ill.
+      status = 
+  DL_per_day = 4.2871198984423
+   megabytes = 49.8452415466309
+
+    filename = Zwei_Brueder_Sprachausgabe
+        size = 53760265
+   timestamp = 1585755541
+   downloads = 1303
+        type = campaign
+     version = 0.60
+dependencies = 
+ description = Ein teuflischer Magier bedroht das Dorf Maghre und seine Bewohner! Der Magier des Dorfes ruft seinen Bruder zu Hilfe, aber nicht alles läuft wie geplant! Könnt ihr helfen? 
+
+BITTE BEACHTET: Diese Kampagne beruht auf dem Original 'Die Geschichte zweier Brüder' (A tale of two brothers) und 'A tale of two brothers + voices'. Die Kampagne beinhaltet bereits die Sprachpakete und ist daher etwas größer. Dafür müsst ihr nichts zusätzlich herunterladen und die Aktualisierung erfolgt automatisch. Die Größe beträgt derzeit 50 MB. 
+
+Dies ist noch eine Betaversion, sie beinhaltet den größten Teil der Sprachausgabe, z.T. wird leider noch auf englisch gesprochen. Sie wird nach und nach verbessert.
+
+0.50 Erstveröffentlichung
+0.51 Vervollständigung der Sounddateien des Magierbruders
+0.60 Alle fehlenden Sprachdateien wurden ergänzt: Knago-Brek, Muff-Toras, Elfenhauptmann und Schurken.
+      status = 
+  DL_per_day = 1.88713166035191
+   megabytes = 51.2697839736938
+
+    filename = The_Ravagers
+        size = 66228277
+   timestamp = 1546292361
+   downloads = 11129
+        type = campaign
+     version = 1.3.7
+dependencies = WhiteWolf_Music_Pack,Akladian_Music
+ description = One night, a shadowy stranger entered the Midnight Boozer in Weldyn, calling himself Nightranger. While passing time in the inn and enjoying a few good drinks, his quick paced tale will take you to the cruel Northlands, where orcish warchiefs rise and fall, and the people are kept as slaves or worse. Witness the descructive power of the savagest alliance ever forged between orcs and dark elves, and learn of his damnation by having brought justice to those with unforgivable sins.
+
+
+The Ravagers, revised and grander than ever, is now available for Wesnoth version 1.14.0 or newer.
+      status = 
+  DL_per_day = 9.70087893260808
+   megabytes = 63.1602067947388
+
+    filename = Estorc_and_the_spectral_force_Music_2
+        size = 64610047
+   timestamp = 1586193872
+   downloads = 2465
+        type = campaign
+     version = 1.1.3
+dependencies = 
+ description = The Music of Estorc Mod !
+      status = 
+  DL_per_day = 3.59647890368321
+   megabytes = 61.6169424057007
+
+    filename = dracula_campaign
+        size = 68009215
+   timestamp = 1605905636
+   downloads = 1022
+        type = campaign
+     version = 0.1
+dependencies = 
+ description = Cette campagne à été imaginée en s'inspirant de l'époqe médiévale et de la légende du comte Dracula et le lien avec l'univers de Wesnoth est très faible.
+Cette campagne ne comprend qu'une seule et grande carte scénariée (j'avais un délai de 3 semaines, j'ai disons eu un projet un peu ambitieux au vu de mes connaissances de code de Wesnoth et je n'ai pas réalisé à quel point le code allait me prendre du temps, et étant donné que je suis en formation de GameArt j'ai du me refocaliser sur le graphisme).
+Suite à un souci de timing, cette campagne n'est jouable qu'à 15%, mais avec l'aide de la console du jeu vous pouvez tentez d'avancer et de terminer la partie.
+      status = 
+  DL_per_day = 2.23511495271775
+   megabytes = 64.8586416244507
+
+    filename = War_of_Life_and_Death
+        size = 77254680
+   timestamp = 1597433496
+   downloads = 4329
+        type = campaign
+     version = 0.1.6.2 (Pre-Alpha)
+dependencies = 
+ description = 647 YW - The Silver Age of Wesnoth - This tells the tale of the Elvish Lord Ardonath, as he defends the Great Northern Forest in a Grand Alliance as it stands against an invasion of the Dead.
+
+(Intermediate level, 15 scenarios, 4 dialogue only, work in progress)
+
+This campaign includes several hundred custom units most of which were taken from (or derived from) the Reign of the Lords Era add-on by The_Gnat and some of the mainline campaigns. A huge thanks goes to The_Gnat for letting me use his fantastic Era for this campaign. I highly recommend trying out the Reign of the Lords add-on for yourself.
+
+This campaign shall see you fight with, and against, a wide variety of factions with changing objectives and use of custom items you can find in certain scenarios. With custom units providing a wide range of choices of advancements for your units, and unique AMLAs for certain heroes, you should not worry about running out of ways to strengthen your army.
+
+This campaign includes repeated references to mainline campaign lore, so it is recommended (althought not strictly necessary) to first play Northern Rebirth and Eastern Invasion. There are also some minor references to The Legend of Wesmere, The Hammer of Thursagan, Heir to the Throne, and eventually, Delfador's Memoirs.
+
+This is a work in progress with Chapters 1 and 2, as well as the first two scenarios of Chapter 3, completed so far. 5 Chapters are planned for in total. Released for Pre-Alpha testing.
+      status = 
+  DL_per_day = 7.79572496697257
+   megabytes = 73.6758041381836
+
+    filename = Estorc_and_the_spectral_force_Music_1
+        size = 73466370
+   timestamp = 1586192537
+   downloads = 2838
+        type = campaign
+     version = 1.1.3
+dependencies = 
+ description = The Music of Estorc Mod !
+      status = 
+  DL_per_day = 4.14059920206696
+   megabytes = 70.0629901885986
+
+    filename = Amaranthine_Stone
+        size = 87876062
+   timestamp = 1638481202
+   downloads = 491
+        type = campaign
+     version = 1.0.9-2
+dependencies = TAS_Music
+ description = (11 scenarios: Beginner - Intermediate): It has been a thousand years since the elves have withdrawn from the world. Returning to the birthplace of their race, Aranaathe, they have dwelt in seclusion. Now, the drakes have launched a surprise attack and stolen the elves' most sacred artifact, the Amaranthine Stone. Imbued with the light of creation itself, if it is not returned the world will fall into darkness and Aranaathe shall perish.
+
+11 playable scenarios plus three story
+
+Note: The Amaranthine Stone add-on contains additional UMC music and is not required for the campaign to function. It is recommended for those whose gaming experience is enhanced by the music of Wesnoth.
+
+This upload is part of vghetto port project.
+
+      status = 
+  DL_per_day = 6.12103731428349
+   megabytes = 83.8051433563232
+
+    filename = Napoleonic_Wars
+        size = 87871393
+   timestamp = 1535443706
+   downloads = 5404
+        type = campaign
+     version = 0.2.0
+dependencies = 
+ description = 11 scenarios and a tutorial following the career of Napoleon Bonaparte. Is about 98% complete and released for beta-testing.
+      status = 
+  DL_per_day = 4.24582819419081
+   megabytes = 83.8006906509399
+
+    filename = Potlot_mystic
+        size = 87642284
+   timestamp = 1582538650
+   downloads = 2714
+        type = campaign
+     version = 1.5.7
+dependencies = 
+ description = This is a campaign that tells about the adventures of Acho Potlot and a magical heirloom in the form of a pencil known as the Potlot Mystic. acho has a duty to Collecting the twelve Zodiac magical heirlooms that fall from the Heaven kingdom. where in his adventures later, Acho will meet with the owner from the twelve zodiac heirlooms and making one by one from them as his partner. let's follow the story of acho with his potlot. Only On...
+_______the Potlot Mystic_________
+
+Note = Recommended to play on game version 1.14.11
+
+      status = 
+  DL_per_day = 3.72956707014897
+   megabytes = 83.5821952819824
+
+    filename = Tunnel_Rats
+        size = 103057632
+   timestamp = 1525823983
+   downloads = 8900
+        type = campaign
+     version = 1.8.10c beta
+dependencies = Halfelven, Sharifs
+ description = Orc raids pressing hard at the borders, an unexpected foe from the desert arises
+and rumors of the Walking Dead spread in awful fright.
+It is said that when one sees national defense-golems, times are tough!
+
+Facing the destruction of your home, you volunteer to seek and destroy missions
+to safe your loved ones from a sneaking up threat.
+
+In this Epyllion, you can choose between a male and a female main character.
+
+Novice to Intermediate level, SP campaign, 9 tutorical scenarios so far
+Note: beta release
+      status = 
+  DL_per_day = 6.43008686612864
+   megabytes = 98.2834167480469
