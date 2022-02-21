@@ -7,12 +7,12 @@ e := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.14/images/misc/
 override_dh_auto_install:
 	debian/rules.py
 	# Save about 0.5% space by losslessly re-encoding the images.
-	du -sch $d | grep total$
-	find $d -iname '*.png'  -execdir pngcrush -q {} _ \; -execdir mv _ {} \; -printf .
-	find $d -iname '*.jpg'  -execdir jpegoptim -q {} + -printf .
-	find $d -iname '*.jpeg' -execdir jpegoptim -q {} + -printf .
-	hardlink -pot $d
-	du -sch $d | grep total$
+	# du -sch $d | grep total$
+	# find $d -iname '*.png'  -execdir pngcrush -q {} _ \; -execdir mv _ {} \; -printf .
+	# find $d -iname '*.jpg'  -execdir jpegoptim -q {} + -printf .
+	# find $d -iname '*.jpeg' -execdir jpegoptim -q {} + -printf .
+	# hardlink -pot $d
+	# du -sch $d | grep total$
 	## Avoid duplicate copies of GPL licenses. —twb, Dec 2016
 	## The file sizes are slightly different because
 	##  1. literal tabs vs. spaces; and

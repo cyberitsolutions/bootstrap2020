@@ -8,10 +8,10 @@ Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
  python3,
-# We use these to make the .deb a little smaller.
- hardlink,
- jpegoptim,
- pngcrush,
+# # We use these to make the .deb a little smaller.
+#  hardlink,
+#  jpegoptim,
+#  pngcrush,
 ##SLOW METHOD##
 # wesnoth-1.14-tools
 ##FAST METHOD##
