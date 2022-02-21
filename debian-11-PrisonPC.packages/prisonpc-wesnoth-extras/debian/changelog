@@ -1,3 +1,9 @@
+prisonpc-wesnoth-addons (11.0) bullseye; urgency=medium
+
+  * Debian 11.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 21 Feb 2022 14:17:27 +1100
+
 prisonpc-wesnoth-1.14-addons (0~prisonpc2~draft1645409838) stable; urgency=medium
 
   * Bump for Debian 10 / Wesnoth 1.14.

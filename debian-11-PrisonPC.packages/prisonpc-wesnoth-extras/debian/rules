@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
-d := debian/prisonpc-wesnoth-1.14-addons/usr/share/games/wesnoth/1.14/data/add-ons/
-e := debian/prisonpc-wesnoth-1.14-addons/usr/share/games/wesnoth/1.14/images/misc/
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+d := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.14/data/add-ons/
+e := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.14/images/misc/
 %:
 	dh $@
 override_dh_auto_install:
@@ -42,7 +43,7 @@ $d/%: $d
 #	/usr/share/games/wesnoth/1.14/data/tools/wesnoth_addon_manager --campaigns-dir $(@D) --download $(@F)
 ## THIS WORKS, AND IS MUCH FASTER.
 ## Using wget (not curl) only because buildroot adds proxy to /root/.wgetrc by default.
-	env $(shell apt-config shell http_proxy Acquire::http::Proxy) wget -nv -O- http://files.wesnoth.org/addons/1.14/$(@F).tar.bz2 | tar -C $(@D) -jx
+	env $(shell apt-config shell http_proxy Acquire::http::Proxy) wget2 -O- http://files.wesnoth.org/addons/1.14/$(@F).tar.bz2 | tar -C $(@D) -jx
 
 ###DID NOT WORK#### Tell dget (curl) and wget to use the same HTTP proxy as apt (if there is one).
 ###DID NOT WORK###include use-apt-proxy.mk
