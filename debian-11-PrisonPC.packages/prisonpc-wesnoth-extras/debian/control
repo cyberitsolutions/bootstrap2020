@@ -26,6 +26,7 @@ Depends: ${misc:Depends},
 # We can and should bump to 1.16 for Debian 12 (or Debian 11bpo).
  wesnoth (>= 1:1.14~),
  wesnoth (<< 1:1.16~),
+ wesnoth-music,
 Enhances: wesnoth
 Architecture: all
 Description: Wesnoth addons
