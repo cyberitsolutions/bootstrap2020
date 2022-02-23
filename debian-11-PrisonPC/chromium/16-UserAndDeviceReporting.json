@@ -3,7 +3,6 @@
 // This causes our policy analysis script to mistakenly think they apply to us.
 // I'm 90% sure they don't.
 {
-    // "ReportDeviceAudioStatus": false,
     // "ReportDeviceLocation": false,
     // "ReportDevicePrintJobs": false,
     // "ReportDeviceNetworkTelemetryCollectionRateMs": 600000,

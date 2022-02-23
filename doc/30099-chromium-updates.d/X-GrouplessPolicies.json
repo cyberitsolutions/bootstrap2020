@@ -152,9 +152,6 @@
     "DnsOverHttpsTemplates": "https://dns.example.net/dns-query{?dns}",
     "AdditionalDnsQueryTypesEnabled": true,
     "FullscreenAllowed": true,
-    "FullscreenNotificationUrlExemptList": [
-        "*"
-    ],
     "SharedClipboardEnabled": true,
     "HideWebStoreIcon": true,
     "VariationsRestrictParameter": "restricted",
@@ -216,13 +213,14 @@
     "MediaRouterCastAllowAllIPs": false,
     "NTPCustomBackgroundEnabled": true,
     "NTPCardsVisible": true,
+    "NTPMiddleSlotAnnouncementVisible": true,
     "WebRtcUdpPortRange": "10000-11999",
     "WebRtcLocalIpsAllowedUrls": [
         "https://www.example.com",
         "*example.com*"
     ],
-    "WebRestrictionsAuthority": "com.android.chrome.SupervisedUserProvider",
     "ComponentUpdatesEnabled": true,
+    "PhoneHubCameraRollAllowed": true,
     "BrowserNetworkTimeQueriesEnabled": true,
     "CloudPolicyOverridesPlatformPolicy": false,
     "CloudUserPolicyOverridesCloudMachinePolicy": false,
@@ -231,7 +229,6 @@
     "SitePerProcess": true,
     "SharedArrayBufferUnrestrictedAccessAllowed": false,
     "SandboxExternalProtocolBlocked": true,
-    "CrossOriginWebAssemblyModuleSharingEnabled": true,
     "DisplayCapturePermissionsPolicyEnabled": true,
     "DefaultDownloadDirectory": "/home/${user_name}/Downloads",
     "AbusiveExperienceInterventionEnforce": true,
@@ -316,6 +313,7 @@
             }
         }
     ],
+    "CloudProfileReportingEnabled": true,
     "EnterpriseHardwarePlatformAPIEnabled": true,
     "SignedHTTPExchangeEnabled": true,
     "ContextAwareAccessSignalsAllowlist": [
@@ -699,5 +697,7 @@
         "minimum_data_size": 100
     },
     "UserAgentReduction": 0,
+    "ForceMajorVersionToMinorPositionInUserAgent": 0,
+    "OriginAgentClusterDefaultEnabled": false,
     "DeviceLoginScreenWebUILazyLoading": true
 }

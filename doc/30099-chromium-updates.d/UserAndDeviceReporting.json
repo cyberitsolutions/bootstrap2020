@@ -1,5 +1,4 @@
 {
-    "ReportDeviceAudioStatus": false,
     "ReportDeviceLocation": false,
     "ReportDevicePrintJobs": false,
     "ReportDeviceNetworkTelemetryCollectionRateMs": 600000,

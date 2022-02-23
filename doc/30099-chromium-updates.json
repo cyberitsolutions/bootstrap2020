@@ -534,7 +534,8 @@
                 "DeviceLoginScreenAutoSelectCertificateForUrls",
                 "DeviceShowNumericKeyboardForPassword",
                 "DeviceFamilyLinkAccountsAllowed",
-                "DeviceLoginScreenPromptOnMultipleMatchingCertificates"
+                "DeviceLoginScreenPromptOnMultipleMatchingCertificates",
+                "DeviceRunAutomaticCleanupOnLogin"
             ],
             "type": "group"
         },
@@ -573,6 +574,7 @@
                 "ReportDeviceSystemInfo",
                 "ReportDevicePrintJobs",
                 "ReportDeviceLoginLogout",
+                "ReportCRDSessions",
                 "ReportUploadFrequency",
                 "ReportArcStatusEnabled",
                 "HeartbeatEnabled",
@@ -672,7 +674,8 @@
                 "SuggestedContentEnabled",
                 "DeviceShowLowDiskSpaceNotification",
                 "WebXRImmersiveArEnabled",
-                "PromptOnMultipleMatchingCertificates"
+                "PromptOnMultipleMatchingCertificates",
+                "DeviceKeylockerForStorageEncryptionEnabled"
             ],
             "type": "group"
         },
@@ -831,7 +834,7 @@
                 "QuickAnswersEnabled",
                 "QuickAnswersDefinitionEnabled",
                 "QuickAnswersTranslationEnabled",
-                "QuickAnswersUnitConverstionEnabled"
+                "QuickAnswersUnitConversionEnabled"
             ],
             "type": "group"
         },
@@ -907,6 +910,15 @@
             "policies": [
                 "DeviceBorealisAllowed",
                 "UserBorealisAllowed"
+            ],
+            "type": "group"
+        },
+        {
+            "caption": "Projector",
+            "desc": "Controls policies for Projector.",
+            "name": "Projector",
+            "policies": [
+                "ProjectorEnabled"
             ],
             "type": "group"
         },
@@ -992,7 +1004,8 @@
             },
             "supported_on": [
                 "chrome.*:58-",
-                "chrome_os:58-"
+                "chrome_os:58-",
+                "ios:99-"
             ],
             "tags": [],
             "type": "string"
@@ -3712,6 +3725,9 @@
                 "dynamic_refresh": false,
                 "per_profile": false
             },
+            "future_on": [
+                "android"
+            ],
             "id": 15,
             "items": [
                 {
@@ -5003,7 +5019,7 @@
             "desc": "Setting the policy specifies which HTTP authentication schemes Google Chrome supports.\n\n      Leaving the policy unset employs all 4 schemes.\n\n      Valid values:\n\n      * basic\n\n      * digest\n\n      * ntlm\n\n      * negotiate\n\n      Note: Separate multiple values with commas.",
             "example_value": "basic,digest,ntlm,negotiate",
             "features": {
-                "dynamic_refresh": false,
+                "dynamic_refresh": true,
                 "per_profile": false
             },
             "id": 26,
@@ -6009,7 +6025,7 @@
         {
             "arc_support": "This policy also controls access to Android Developer Options. If you set this policy to 'DeveloperToolsDisallowed' (value 2), users cannot access Developer Options. If you set this policy to another value or leave it unset, users can access Developer Options by tapping seven times on the build number in the Android settings app.",
             "caption": "Control where Developer Tools can be used",
-            "desc": "Setting the policy to 0 (the default) means you can access the developer tools and the JavaScript console, but not in the context of extensions installed by enterprise policy. Setting the policy to 1 means you can access the developer tools and the JavaScript console in all contexts, including that of extensions installed by enterprise policy. Setting the policy to 2 means you can't acess developer tools, and you can't inspect website elements.\n\n      This setting also turns off keyboard shortcuts and menu or context menu entries to open developer tools or the JavaScript console.",
+            "desc": "Setting the policy to 0 (the default) means you can access the developer tools and the JavaScript console, but not in the context of extensions installed by enterprise policy. Setting the policy to 1 means you can access the developer tools and the JavaScript console in all contexts, including that of extensions installed by enterprise policy. Setting the policy to 2 means you can't acess developer tools, and you can't inspect website elements.\n\n      This setting also turns off keyboard shortcuts and menu or context menu entries to open developer tools or the JavaScript console.\n\n      As of Google Chrome version 99, this setting also controls entry points for the 'View page source' feature. If you set this policy to 'DeveloperToolsDisallowed' (value 2), users cannot access source viewing via keyboard shortcut or the context menu. To fully block source viewing, you must also add 'view-source:*' to the URLBlocklist policy.",
             "example_value": 2,
             "features": {
                 "dynamic_refresh": true,
@@ -10360,7 +10376,7 @@
                 "chrome_os:86-",
                 "android:86-",
                 "webview_android:86-",
-                "ios:91-"
+                "ios:98-"
             ],
             "tags": [
                 "filtering"
@@ -10399,7 +10415,7 @@
                 "chrome_os:86-",
                 "android:86-",
                 "webview_android:86-",
-                "ios:91-"
+                "ios:98-"
             ],
             "tags": [],
             "type": "list"
@@ -11524,9 +11540,6 @@
             "features": {
                 "dynamic_refresh": true
             },
-            "future_on": [
-                "chrome_os"
-            ],
             "id": 873,
             "items": [
                 {
@@ -11548,6 +11561,9 @@
             },
             "supported_chrome_os_management": [
                 "google_cloud"
+            ],
+            "supported_on": [
+                "chrome_os:96-"
             ],
             "tags": [
                 "admin-sharing"
@@ -11756,7 +11772,7 @@
         {
             "arc_support": "This policy has no effect on the logging done by Android.",
             "caption": "Network telemetry collection rate in milliseconds.",
-            "default": 600000,
+            "default": 3600000,
             "desc": "Rate at which network data is sampled and collected. The minimum allowed is 1 minute.\n\n      If not set, the default rate of 10 minutes applies.",
             "device_only": true,
             "example_value": 600000,
@@ -11787,7 +11803,7 @@
         {
             "arc_support": "This policy has no effect on the logging done by Android.",
             "caption": "Network events checking rate in milliseconds.",
-            "default": 60000,
+            "default": 600000,
             "desc": "Rate at which network data is polled and checked for events. The minimum allowed is 1 minute.\n\n      If not set, the default rate of 1 minute applies.",
             "device_only": true,
             "example_value": 60000,
@@ -12461,6 +12477,46 @@
             ],
             "supported_on": [
                 "chrome_os:96-"
+            ],
+            "tags": [
+                "admin-sharing"
+            ],
+            "type": "main"
+        },
+        {
+            "arc_support": "This policy has no effect on the logging done by Android.",
+            "caption": "Report CRD sessions",
+            "default": false,
+            "desc": "Report CRD sessions events on enrolled devices for affiliated users.\n\n      If the policy is Disabled or left unset, the information will not be reported.\n      If Enabled, the CRD events will be reported, if the user is affiliated",
+            "device_only": true,
+            "example_value": false,
+            "features": {
+                "dynamic_refresh": true
+            },
+            "id": 939,
+            "items": [
+                {
+                    "caption": "Report Chrome Remote Desktop events",
+                    "value": true
+                },
+                {
+                    "caption": "Do not report CRD sessions events",
+                    "value": false
+                }
+            ],
+            "name": "ReportCRDSessions",
+            "owners": [
+                "lbaraz@google.com",
+                "cros-reporting-team@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_chrome_os_management": [
+                "google_cloud"
+            ],
+            "supported_on": [
+                "chrome_os:99-"
             ],
             "tags": [
                 "admin-sharing"
@@ -14135,7 +14191,7 @@
         },
         {
             "caption": "Enable virtual keyboard",
-            "desc": "Setting the policy to Enabled keeps the on-screen virtual keyboard (a Chrome\u00a0OS input device) on. Setting the policy to Disabled keeps this keyboard off.\n\n      If you set the policy, users can't change it. (They can turn an accessibility on-screen keyboard that takes precedence over the virtual keyboard on or off. See the VirtualKeyboardEnabled policy.)\n\n      If not set, the keyboard is off, but users can change it.\n\n       Note: Heuristic rules might also factor into keyboard display.",
+            "desc": "Controls the on-screen keyboard, acting as a supplementary policy to the VirtualKeyboardEnabled policy.\n\n      If the VirtualKeyboardEnabled policy is True or if the Enable on-screen keyboard Chrome OS setting is on, this policy has no effect.\n\n      If the VirtualKeyboardEnabled policy is False or not set and the Enable on-screen keyboard Chrome OS setting is off, this policy has the following effect:\n      If this policy is not set, the on-screen keyboard is displayed when the device is in tablet mode.\n      If this policy is set to True, the on-screen keyboard is always displayed.\n      If this policy is set to False, the on-screen keyboard is never displayed.\n\n      The on-screen keyboard may change to a compact layout depending on the input method.\n\n      If you set the policy, users can't change it.",
             "example_value": false,
             "features": {
                 "dynamic_refresh": true,
@@ -14399,7 +14455,7 @@
             "type": "string-enum"
         },
         {
-            "caption": "Configure the camera, browser settings, os settings, scanning, web store, canvas and explore features to be disabled",
+            "caption": "Configure the camera, browser settings, os settings, scanning, web store, canvas, explore and crosh features to be disabled",
             "desc": "Allows you to set a list of Google Chrome OS features to be disabled.\n\n      Disabling any of these features means that the user can't access it from the UI and will see it as \"disabled by admin\". The user experience of disabled features is decided by SystemFeaturesDisableMode\n\n      If the policy is left not set, all Google Chrome OS features will be enabled by default and the user can use any of them.\n\n      Note: The scanning feature is currently disabled by default via a feature flag. If the user enables the feature via the feature flag, the feature can still be disabled by this policy.",
             "example_value": [
                 "camera",
@@ -14455,6 +14511,11 @@
                     "caption": "Explore (supported since version 91)",
                     "name": "explore",
                     "value": "explore"
+                },
+                {
+                    "caption": "Crosh (supported since version 99)",
+                    "name": "crosh",
+                    "value": "crosh"
                 }
             ],
             "name": "SystemFeaturesDisableList",
@@ -14473,7 +14534,8 @@
                         "web_store",
                         "canvas",
                         "google_news",
-                        "explore"
+                        "explore",
+                        "crosh"
                     ],
                     "type": "string"
                 },
@@ -14657,8 +14719,8 @@
             "type": "main"
         },
         {
-            "caption": "List of URLs which are exempt from the full screen notification",
-            "desc": "Configure a list of URLs that are exempt from the full screen notification. The notification is shown when the device returns from sleep, low brightness or the lock screen and has a window in full screen mode. This is to make users aware that they are in full screen mode, which reduces the risk of phishing attacks.\n\n          This policy allows to disable the notification for specific URLs that will be considered trusted sources. It is set by specifying a list of URL patterns formatted according to this format ( https://www.chromium.org/administrators/url-blocklist-filter-format ). E.g., it is possible to disable the notifications altogether by specifying the wildcard character * matching all URLs.\n\n          Setting this policy to an empty list or leaving it unset means no URLs are exempt from the full screen notification.",
+            "caption": "List of URLs which are allowed to remain in full screen mode without showing a notification",
+            "desc": "Configure a list of URLs that are allowed to stay in full screen mode without showing a notification when the device returns from the lock screen.\n\n          Normally, full screen mode is turned off when returning from the lock screen in order to reduce the risk of phishing attacks. This policy allows to specify URLs that will be considered trusted sources which are permitted to continue full screen mode on unlock. It is set by specifying a list of URL patterns formatted according to this format ( https://www.chromium.org/administrators/url-blocklist-filter-format ). E.g., it is possible to always keep full screen mode on unlock and disable the notifications altogether by specifying the wildcard character * matching all URLs.\n\n          Setting this policy to an empty list or leaving it unset means no URLs are allowed to continue full screen mode without a notification.",
             "example_value": [
                 "*"
             ],
@@ -14666,11 +14728,8 @@
                 "dynamic_refresh": true,
                 "per_profile": false
             },
-            "future_on": [
-                "chrome_os"
-            ],
             "id": 930,
-            "name": "FullscreenNotificationUrlExemptList",
+            "name": "KeepFullscreenWithoutNotificationUrlAllowList",
             "owners": [
                 "aninak@chromium.org",
                 "file://ash/session/OWNERS"
@@ -14681,6 +14740,9 @@
                 },
                 "type": "array"
             },
+            "supported_on": [
+                "chrome_os:99-"
+            ],
             "tags": [],
             "type": "list"
         },
@@ -15792,7 +15854,7 @@
         },
         {
             "caption": "Enable on-screen keyboard",
-            "desc": "Setting the policy to True keeps the on-screen keyboard on. Setting the policy to False keeps the on-screen keyboard off.\n\n      If you set the policy, users can't change it. If not set, the on-screen keyboard is off at first, but users can turn it on any time.",
+            "desc": "Setting the policy to True keeps the on-screen keyboard on. Setting the policy to False keeps the on-screen keyboard off unless other factors turn it on. See the TouchVirtualKeyboardEnabled policy as an example of these factors.\n\n      If you set the policy, users can't change it. If not set, the on-screen keyboard is off at first, but users can turn it on any time.",
             "example_value": true,
             "features": {
                 "can_be_recommended": true,
@@ -19332,6 +19394,42 @@
             "type": "main"
         },
         {
+            "caption": "Show the middle slot announcement on the New Tab Page",
+            "default": true,
+            "desc": "This policy controls the visibility of the middle slot announcement on the New Tab Page.\n\n      If the policy is set to Enabled, the New Tab Page will show the middle slot announcement if it is available.\n\n      If the policy is set to Disabled, the New Tab Page will not show the middle slot announcement even if it is available.\n      ",
+            "example_value": true,
+            "features": {
+                "dynamic_refresh": true,
+                "per_profile": true
+            },
+            "id": 941,
+            "items": [
+                {
+                    "caption": "New Tab Page will show the middle slot announcement if it is available",
+                    "value": true
+                },
+                {
+                    "caption": "New Tab Page will not show the middle slot announcement even if it is available",
+                    "value": false
+                }
+            ],
+            "name": "NTPMiddleSlotAnnouncementVisible",
+            "owners": [
+                "danpeng@google.com",
+                "tiborg@chromium.org",
+                "chrome-desktop-ntp@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_on": [
+                "chrome.*:99-",
+                "chrome_os:99-"
+            ],
+            "tags": [],
+            "type": "main"
+        },
+        {
             "caption": "Restrict the range of local UDP ports used by WebRTC",
             "desc": "If the policy is set, the UDP port range used by WebRTC is restricted to the specified port interval (endpoints included).\n\n      If the policy is not set, or if it is set to the empty string or an invalid port range, WebRTC is allowed to use any available local UDP port.",
             "example_value": "10000-11999",
@@ -19383,32 +19481,6 @@
             ],
             "tags": [],
             "type": "list"
-        },
-        {
-            "caption": "Set an external source of URL restrictions",
-            "desc": "When this policy is set to a non-empty string the WebView will read URL restrictions from the content provider with the given authority name.",
-            "example_value": "com.android.chrome.SupervisedUserProvider",
-            "features": {
-                "dynamic_refresh": true,
-                "per_profile": false
-            },
-            "future_on": [
-                "webview_android"
-            ],
-            "id": 341,
-            "name": "WebRestrictionsAuthority",
-            "owners": [
-                "file://components/policy/resources/OWNERS",
-                "hendrich@chromium.org"
-            ],
-            "schema": {
-                "type": "string"
-            },
-            "tags": [
-                "filtering",
-                "admin-sharing"
-            ],
-            "type": "string"
         },
         {
             "caption": "Enable component updates in Google Chrome",
@@ -20762,6 +20834,44 @@
             "type": "main"
         },
         {
+            "caption": "Allow recent photos and videos taken on the phone to be accessed via Phone Hub.",
+            "default": true,
+            "desc": "If this setting is enabled, users who have already opted in to Phone Hub will be able to view and download recent photos and videos taken on their phone on Chrome OS.\n\n      If this setting is disabled, users will not be allowed to use this feature. If the PhoneHubAllowed policy is disabled, users also will not be allowed to use this feature.\n\n      If this policy is left not set, the default is allowed for both enterprise-managed users and non-managed users.",
+            "example_value": true,
+            "features": {
+                "dynamic_refresh": true,
+                "per_profile": true
+            },
+            "future_on": [
+                "chrome_os"
+            ],
+            "id": 936,
+            "items": [
+                {
+                    "caption": "Allows users who have opted in to Phone Hub to access recent photos and videos taken on their phone",
+                    "value": true
+                },
+                {
+                    "caption": "Disallows users who have opted in to Phone Hub to access recent photos and videos taken on their phone",
+                    "value": false
+                }
+            ],
+            "name": "PhoneHubCameraRollAllowed",
+            "owners": [
+                "jasonsun@google.com",
+                "jonmann@google.com",
+                "better-together-dev@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "tags": [
+                "local-data-access",
+                "google-sharing"
+            ],
+            "type": "main"
+        },
+        {
             "caption": "Allow Phone Hub notifications to be enabled.",
             "desc": "If this setting is enabled, users who have already opted in to Phone Hub, will be able to send/receive their phone's notifications on Chrome OS.\n\n      If this setting is disabled, users will not be allowed to use this feature. If the PhoneHubAllowed policy is disabled, users also will not be allowed to use this feature.\n\n      If this policy is left not set, the default is allowed for both enterprise-managed users and non-managed users.",
             "example_value": true,
@@ -20808,6 +20918,44 @@
             },
             "supported_on": [
                 "chrome_os:89-"
+            ],
+            "tags": [
+                "local-data-access",
+                "google-sharing"
+            ],
+            "type": "main"
+        },
+        {
+            "caption": "Allow Eche to be enabled.",
+            "default": true,
+            "desc": "If this setting is enabled, users will be able to launch the Eche application, for example by clicking on a Phone Hub notification.\n\n      If this setting is disabled, users will not be able to launch the Eche application.\n\n      If this policy is left not set, the default is allowed for both enterprise-managed users and non-managed users.",
+            "example_value": false,
+            "features": {
+                "dynamic_refresh": true,
+                "per_profile": true
+            },
+            "id": 937,
+            "items": [
+                {
+                    "caption": "Allows users to click on Phone Hub notification to launch Eche application.",
+                    "value": true
+                },
+                {
+                    "caption": "Disallows users to click on Phone Hub notification to launch Eche application.",
+                    "value": false
+                }
+            ],
+            "name": "EcheAllowed",
+            "owners": [
+                "andychou@google.com",
+                "dhnishi@google.com",
+                "exo-core@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_on": [
+                "chrome_os:99-"
             ],
             "tags": [
                 "local-data-access",
@@ -21692,7 +21840,7 @@
             ],
             "name": "SharedArrayBufferUnrestrictedAccessAllowed",
             "owners": [
-                "bbudge@chromium.org",
+                "arthursonzogni@chromium.org",
                 "vahl@chromium.org"
             ],
             "schema": {
@@ -21747,6 +21895,7 @@
         {
             "caption": "Specifies whether WebAssembly modules can be sent cross-origin",
             "default": false,
+            "deprecated": true,
             "desc": "\n      Specifies whether WebAssembly modules can be sent to another window or worker cross-origin. Cross-origin WebAssembly module sharing will be deprecated as part of the efforts to deprecate document.domain, see https://github.com/mikewest/deprecating-document-domain. This policy allows to re-enable cross-origin WebAssembly module sharing to offer a longer transition period in the deprecation process.\n\n      When set to True, sites can send WebAssembly modules also cross-origin without restrictions.\n\n      When set to False or not set, sites can only send WebAssembly modules to windows and workers in the same origin.",
             "device_only": false,
             "example_value": true,
@@ -21775,8 +21924,8 @@
                 "type": "boolean"
             },
             "supported_on": [
-                "chrome.*:94-",
-                "chrome_os:94-"
+                "chrome.*:94-98",
+                "chrome_os:94-98"
             ],
             "tags": [
                 "system-security"
@@ -24106,7 +24255,7 @@
         },
         {
             "caption": "Configure list of force-installed Web Apps",
-            "desc": "Setting the policy specifies a list of web apps that install silently, without user interaction, and which users can't uninstall or turn off.\n\n      Each list item of the policy is an object with a mandatory member:\n      url (the URL of the web app to install)\n\n      and 5 optional members:\n      - default_launch_container\n      (for how the web app opens\u2014a new tab is the default)\n\n      - create_desktop_shortcut\n      (True if you want to create Linux and\n      Microsoft\u00ae Windows\u00ae desktop shortcuts).\n\n      - fallback_app_name\n      (Starting with Google Chrome version 90,\n      allows you to override the app name if it is not a\n      Progressive Web App (PWA), or the app name that is temporarily\n      installed if it is a PWA but authentication is required before the\n      installation can be completed. If both\n      custom_name and\n      fallback_app_name are provided,\n      the latter will be ignored.)\n\n      - custom_name\n      (Starting with Google Chrome\n      version 96, allows you to permanently override the app name for all web\n      apps and PWAs. Currently only supported on\n      Google Chrome OS.)\n\n      - custom_icon\n      (Starting with Google Chrome\n      version 96, allows you to override the app icon of installed apps. The\n      icons have to be square, maximal 1 MB in size, and in one of the following\n      formats: jpeg, png, gif, webp, ico. The hash value has to be the SHA256\n      hash of the icon file. Currently only supported on\n      Google Chrome OS.)\n\n      See PinnedLauncherApps for pinning apps to the Google Chrome OS shelf.",
+            "desc": "Setting the policy specifies a list of web apps that install silently, without user interaction, and which users can't uninstall or turn off.\n\n      Each list item of the policy is an object with a mandatory member:\n      url (the URL of the web app to install)\n\n      and 5 optional members:\n      - default_launch_container\n      (for how the web app opens\u2014a new tab is the default)\n\n      - create_desktop_shortcut\n      (True if you want to create Linux and\n      Microsoft\u00ae Windows\u00ae desktop shortcuts).\n\n      - fallback_app_name\n      (Starting with Google Chrome version 90,\n      allows you to override the app name if it is not a\n      Progressive Web App (PWA), or the app name that is temporarily\n      installed if it is a PWA but authentication is required before the\n      installation can be completed. If both\n      custom_name and\n      fallback_app_name are provided,\n      the latter will be ignored.)\n\n      - custom_name\n      (Starting with Google Chrome\n      version 99, allows you to permanently override the app name for all web\n      apps and PWAs. Currently only supported on\n      Google Chrome OS.)\n\n      - custom_icon\n      (Starting with Google Chrome\n      version 99, allows you to override the app icon of installed apps. The\n      icons have to be square, maximal 1 MB in size, and in one of the following\n      formats: jpeg, png, gif, webp, ico. The hash value has to be the SHA256\n      hash of the icon file. Currently only supported on\n      Google Chrome OS.)\n\n      See PinnedLauncherApps for pinning apps to the Google Chrome OS shelf.",
             "example_value": [
                 {
                     "url": "https://www.google.com/maps",
@@ -24385,7 +24534,8 @@
         },
         {
             "caption": "Enables Google Chrome cloud reporting",
-            "desc": "This policy controls Google Chrome cloud reporting which uploads information about the browser operation to Google Admin console.\n\n      When this policy is left unset or set to False, there is no data collected or uploaded.\n      When this policy is set to True, the data is collected and uploaded to Google Admin console.\n\n      For Google Chrome, this policy is only effective when the machine is enrolled with CloudManagementEnrollmentToken.\n      For Google Chrome OS, this policy is always effective.",
+            "default": false,
+            "desc": "This policy controls Google Chrome cloud reporting which uploads information about the browser operation to Google Admin console.\n\n      When this policy is left unset or set to Disabled, there is no data collected or uploaded.\n      When this policy is set to Enabled, the data is collected and uploaded to Google Admin console.\n\n      For Google Chrome, this policy is only effective when the machine is enrolled with CloudManagementEnrollmentToken.\n      For Google Chrome OS, this policy is always effective.",
             "example_value": true,
             "features": {
                 "dynamic_refresh": true,
@@ -24393,10 +24543,20 @@
                 "cloud_only": true
             },
             "id": 493,
+            "items": [
+                {
+                    "caption": "Enable managed browser cloud reporting",
+                    "value": true
+                },
+                {
+                    "caption": "Disable managed browser cloud reporting",
+                    "value": false
+                }
+            ],
             "name": "CloudReportingEnabled",
             "owners": [
                 "zmin@chromium.org",
-                "pastarmovj@chromium.org"
+                "file://components/enterprise/browser/reporting/OWNERS"
             ],
             "schema": {
                 "type": "boolean"
@@ -24407,6 +24567,46 @@
                 "ios:88-",
                 "android:97-"
             ],
+            "tags": [
+                "admin-sharing",
+                "google-sharing"
+            ],
+            "type": "main"
+        },
+        {
+            "caption": "Enable Google Chrome cloud reporting for managed profile",
+            "default": false,
+            "desc": "\n      This policy controls Google Chrome cloud reporting for a particular managed profile.\n\n      When this policy is left unset or set to Disabled, there is no data collected or uploaded.\n      When this policy is set to Enabled, the data is collected and uploaded to Google Admin console.\n\n      The report contains profile state and usage information, including but not limited to OS version, browser version, installed extensions and applied policies.\n\n      This policy can only be set as cloud user policy.\n      ",
+            "example_value": true,
+            "features": {
+                "dynamic_refresh": true,
+                "per_profile": true,
+                "cloud_only": true
+            },
+            "future_on": [
+                "chrome.*",
+                "chrome_os",
+                "android"
+            ],
+            "id": 942,
+            "items": [
+                {
+                    "caption": "Enable managed profile cloud reporting",
+                    "value": true
+                },
+                {
+                    "caption": "Disable managed profile cloud reporting",
+                    "value": false
+                }
+            ],
+            "name": "CloudProfileReportingEnabled",
+            "owners": [
+                "zmin@chromium.org",
+                "file://components/enterprise/browser/reporting/OWNERS"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
             "tags": [
                 "admin-sharing",
                 "google-sharing"
@@ -25620,7 +25820,7 @@
                     "value": false
                 }
             ],
-            "name": "QuickAnswersUnitConverstionEnabled",
+            "name": "QuickAnswersUnitConversionEnabled",
             "owners": [
                 "updowndota@google.com"
             ],
@@ -26851,7 +27051,7 @@
         },
         {
             "caption": "Configuration policy for the OnFileDownloaded Chrome Enterprise Connector",
-            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnFileDownloaded Enterprise Connector, which triggers when a file is downloaded in Chrome.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send a file for analysis when it is downloaded from a specific page and what tags to include in the analysis request for that file. A tag corresponding to an 'enable' pattern will be included in the analysis request if the page URL matches a pattern associated to that tag as long as no 'disable' pattern with that same tag matches the page URL. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Chrome will wait to get a response from the analysis service before giving the user access to the downloaded file. Any other integer value means Chrome gives the user access to the file immediately.\n\n      The block_password_protected field controls whether Chrome blocks or allows files that are password protected.\n\n      The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.\n\n      This policy can only be set from the Google Admin console.",
+            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnFileDownloaded Enterprise Connector, which triggers when a file is downloaded in Chrome.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send a file for analysis when it is downloaded from a specific page and what tags to include in the analysis request for that file. A tag corresponding to an 'enable' pattern will be included in the analysis request if the page URL matches a pattern associated to that tag as long as no 'disable' pattern with that same tag matches the page URL. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Chrome will wait to get a response from the analysis service before giving the user access to the downloaded file. Any other integer value means Chrome gives the user access to the file immediately.\n\n      The block_password_protected field controls whether Chrome blocks or allows files that are password protected.\n\n      The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.\n\n      This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.",
             "example_value": [
                 {
                     "service_provider": "Google",
@@ -26918,7 +27118,6 @@
                 "per_profile": true,
                 "cloud_only": true
             },
-            "future": true,
             "id": 696,
             "name": "OnFileDownloadedEnterpriseConnector",
             "owners": [
@@ -27022,7 +27221,7 @@
         },
         {
             "caption": "Configuration policy for the OnFileAttached Chrome Enterprise Connector",
-            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnFileAttached Enterprise Connector, which triggers when a file is attached to Chrome.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send a file for analysis when it is attached to a specific page and what tags to include in the analysis request for that file. A tag corresponding to an 'enable' pattern will be included in the analysis request if the page URL matches a pattern associated to that tag as long as no 'disable' pattern with that same tag matches the page URL. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Chrome will wait to get a response from the analysis service before giving the page access to the file. Any other integer value means Chrome gives the page access to the file immediately.\n\n      The block_password_protected field controls whether Chrome blocks or allows files that are password protected.\n\n      The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.\n\n      This policy can only be set from the Google Admin console.",
+            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnFileAttached Enterprise Connector, which triggers when a file is attached to Chrome.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send a file for analysis when it is attached to a specific page and what tags to include in the analysis request for that file. A tag corresponding to an 'enable' pattern will be included in the analysis request if the page URL matches a pattern associated to that tag as long as no 'disable' pattern with that same tag matches the page URL. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Chrome will wait to get a response from the analysis service before giving the page access to the file. Any other integer value means Chrome gives the page access to the file immediately.\n\n      The block_password_protected field controls whether Chrome blocks or allows files that are password protected.\n\n      The block_large_files fields controls whether Chrome blocks or allows files that are too large to be analyzed.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.\n\n      This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.",
             "example_value": [
                 {
                     "service_provider": "Google",
@@ -27089,7 +27288,6 @@
                 "per_profile": true,
                 "cloud_only": true
             },
-            "future": true,
             "id": 693,
             "name": "OnFileAttachedEnterpriseConnector",
             "owners": [
@@ -27192,7 +27390,7 @@
         },
         {
             "caption": "Configuration policy for the OnBulkDataEntry Chrome Enterprise Connector",
-            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnBulkDataEntry Enterprise Connector, which triggers when data is entered in Chrome from the clipboard or by drag and dropping web content.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send data for analysis when it is entered in a specific page and what tags to include in the analysis request for that data. A tag corresponding to an 'enable' pattern will be included in the analysis request if the page URL matches a pattern associated to that tag as long as no 'disable' pattern with that same tag matches the page URL. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Chrome will wait to get a response from the analysis service before giving the page access to the data. Any other integer value means Chrome gives the page access to the data immediately.\n\n      The minimum_data_size field indicates the minimum size (in bytes) data entered in Chrome must equal or surpass to be scanned. The default value is 100 bytes if the field is unset.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.\n\n      This policy can only be set from the Google Admin console.",
+            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnBulkDataEntry Enterprise Connector, which triggers when data is entered in Chrome from the clipboard or by drag and dropping web content.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send data for analysis when it is entered in a specific page and what tags to include in the analysis request for that data. A tag corresponding to an 'enable' pattern will be included in the analysis request if the page URL matches a pattern associated to that tag as long as no 'disable' pattern with that same tag matches the page URL. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Chrome will wait to get a response from the analysis service before giving the page access to the data. Any other integer value means Chrome gives the page access to the data immediately.\n\n      The minimum_data_size field indicates the minimum size (in bytes) data entered in Chrome must equal or surpass to be scanned. The default value is 100 bytes if the field is unset.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.\n\n      This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.",
             "example_value": [
                 {
                     "service_provider": "Google",
@@ -27258,7 +27456,6 @@
                 "per_profile": true,
                 "cloud_only": true
             },
-            "future": true,
             "id": 697,
             "name": "OnBulkDataEntryEnterpriseConnector",
             "owners": [
@@ -27359,7 +27556,7 @@
         },
         {
             "caption": "Configuration policy for the OnPrint Google Chrome Enterprise Connector",
-            "desc": "List of Google Chrome Enterprise Connectors services settings to be applied to the OnPrint Enterprise Connector, which triggers when a page or file is printed from Google Chrome.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send data for analysis when printing is triggered on a specific page and what tags to include in the analysis request. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Google Chrome will wait to get a response from the analysis service before allowing the print preview dialog to be shown for the printed page. Any other integer value means Google Chrome shows the print preview dialog immediately.\n\n      The block_large_files fields controls whether Google Chrome blocks or allows files/pages that are too large to be analyzed.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The administrator is able to configure messages of up to 200 characters.\n\n      This policy can only be set from the Google Admin console.",
+            "desc": "List of Google Chrome Enterprise Connectors services settings to be applied to the OnPrint Enterprise Connector, which triggers when a page or file is printed from Google Chrome.\n\n      The url_list, tags, enable and disable fields are used to determine if the connector should send data for analysis when printing is triggered on a specific page and what tags to include in the analysis request. The analysis occurs if at least 1 tag is to be included in the request.\n\n      The service_provider field identifies which analysis service provider the settings correspond to.\n\n      The block_until_verdict field being set to 1 means Google Chrome will wait to get a response from the analysis service before allowing the print preview dialog to be shown for the printed page. Any other integer value means Google Chrome shows the print preview dialog immediately.\n\n      The block_large_files fields controls whether Google Chrome blocks or allows files/pages that are too large to be analyzed.\n\n      The require_justification_tags field is used to determine for which tags the connector should require the user to enter a justification to bypass a scan that results in a bypassable warning. If the field is not set, it's assumed that a justification is not required.\n\n      The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The administrator is able to configure messages of up to 200 characters.\n\n      This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.",
             "example_value": [
                 {
                     "service_provider": "Google",
@@ -27512,7 +27709,7 @@
         },
         {
             "caption": "Configuration policy for the OnSecurityEvent Chrome Enterprise Connector",
-            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnSecurityEvent Enterprise Connector, which triggers when a security event occurs in Chrome. This includes negative verdicts from analysis Enterprise Connectors, password reuse, navigations to unsafe pages and other security sensitive user actions.\n\n      The service_provider field identifies which reporting service provider the settings correspond to and the enabled_event_names field identifies which events are enabled for this provider.\n\n      This policy can only be set from the Google Admin console.",
+            "desc": "List of Chrome Enterprise Connectors services settings to be applied to the OnSecurityEvent Enterprise Connector, which triggers when a security event occurs in Chrome. This includes negative verdicts from analysis Enterprise Connectors, password reuse, navigations to unsafe pages and other security sensitive user actions.\n\n      The service_provider field identifies which reporting service provider the settings correspond to and the enabled_event_names field identifies which events are enabled for this provider.\n\n      This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.",
             "example_value": [
                 {
                     "service_provider": "Google",
@@ -27527,7 +27724,6 @@
                 "per_profile": true,
                 "cloud_only": true
             },
-            "future": true,
             "id": 699,
             "name": "OnSecurityEventEnterpriseConnector",
             "owners": [
@@ -27562,7 +27758,7 @@
         {
             "caption": "Check Safe Browsing status of URLs in real time",
             "default": 0,
-            "desc": "This policy controls checking URLs in real time to identify unsafe URLs.\n\n      If this policy is left not set or set to \u2018Disabled\u2019, the consumer Safe Browsing checks will be applied. Consumer Safe Browsing checks can still include real time lookups, depending on the value of the \u201cMake searches and browsing better\u201d setting and the value of the UrlKeyedAnonymizedDataCollectionEnabled policy.\n\n      If this policy is set to \u2018Enabled\u2019, URLs will be sent to be scanned in real time under enterprise ToS. It will result in Chrome sending URLs to Google Cloud or third parties of your choosing to check them in real time. The consumer version of Safe Browsing real time lookup will be switched off.\n\n      This policy can only be set from the Google Admin console.",
+            "desc": "This policy controls checking URLs in real time to identify unsafe URLs.\n\n      If this policy is left not set or set to \u2018Disabled\u2019, the consumer Safe Browsing checks will be applied. Consumer Safe Browsing checks can still include real time lookups, depending on the value of the \u201cMake searches and browsing better\u201d setting and the value of the UrlKeyedAnonymizedDataCollectionEnabled policy.\n\n      If this policy is set to \u2018Enabled\u2019, URLs will be sent to be scanned in real time under enterprise ToS. It will result in Chrome sending URLs to Google Cloud or third parties of your choosing to check them in real time. The consumer version of Safe Browsing real time lookup will be switched off.\n\n      This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.",
             "example_value": 1,
             "features": {
                 "dynamic_refresh": true,
@@ -27629,7 +27825,7 @@
         {
             "caption": "Block Browser Legacy Extension Points",
             "default": true,
-            "desc": "Setting the policy to Enabled or leaving it unset will enable ProcessExtensionPointDisablePolicy to block legacy extension points in the Browser process.\n\n      Setting the policy to Disabled has a detrimental effect on Google Chrome's security and stability as unknown and potentially hostile code can load inside Google Chrome's browser process. Only turn off the policy if there are compatibility issues with third-party software that must run inside Google Chrome's browser process.\n\n      Note: Read more about Process mitigation policies ( https://chromium.googlesource.com/chromium/src/+/HEAD/docs/design/sandbox.md#Process-mitigation-policies ).",
+            "desc": "Setting the policy to Enabled or leaving it unset will permit Google Chrome to apply the additional extension point security mitigation to block legacy extension points in the Browser process.\n\n      Setting the policy to Disabled has a detrimental effect on Google Chrome's security and stability as unknown and potentially hostile code can load inside Google Chrome's browser process. Only turn off the policy if there are compatibility issues with third-party software that must run inside Google Chrome's browser process.\n\n      Note: Read more about Process mitigation policies ( https://chromium.googlesource.com/chromium/src/+/HEAD/docs/design/sandbox.md#Process-mitigation-policies ).",
             "example_value": false,
             "features": {
                 "dynamic_refresh": false,
@@ -30873,7 +31069,7 @@
         },
         {
             "caption": "Web App management settings",
-            "desc": "Setting the policy controls web app management settings for Google Chrome.\n\n      This policy allows an admin to specify settings for web apps installed through WebAppInstallForceList. A default configuration can be set using the special ID \"*\", which applies to all web apps without a custom configuration in this policy.\n\n      The \"run_on_os_login\" field specifies if a web app can be run during OS login. If this field is set to \"blocked\", the web app will not run during OS login and the user will not be able to enable this later. If this field is set to \"run_windowed\", the web app will run during OS login and the user will not be able to disable this later. If this field is set to \"allowed\", the user will be able to configure the web app to run at OS login. The default configuration only allows the \"allowed\" and \"blocked\" values.\n      ",
+            "desc": "This policy allows an admin to specify settings for installed web apps.\n\n      This policy maps a Web App ID to its specific setting. See https://developer.chrome.com/blog/pwa-manifest-id/ for instructions on how to determine the id for an installed web app.\n      A default configuration can be set using the special ID \"*\", which applies to all web apps without a custom configuration in this policy.\n\n      The \"run_on_os_login\" field specifies if a web app can be run during OS login. If this field is set to \"blocked\", the web app will not run during OS login and the user will not be able to enable this later. If this field is set to \"run_windowed\", the web app will run during OS login and the user will not be able to disable this later. If this field is set to \"allowed\", the user will be able to configure the web app to run at OS login. The default configuration only allows the \"allowed\" and \"blocked\" values.\n      ",
             "example_value": {
                 "https://foo.example": {
                     "run_on_os_login": "allowed"
@@ -32457,7 +32653,7 @@
                     "value": 0
                 },
                 {
-                    "caption": "User Agent reduction diabled, and not enabled by Field-Trials or Origin-Trials.",
+                    "caption": "User Agent reduction disabled, and not enabled by Field-Trials or Origin-Trials.",
                     "name": "ForceDisabled",
                     "value": 1
                 },
@@ -32492,6 +32688,93 @@
             "type": "int-enum"
         },
         {
+            "caption": "Freeze User-Agent string major version at 99",
+            "default": 0,
+            "desc": "This policy controls whether the User-Agent string major\n      version should be frozen at 99.\n\n      The User-Agent request header lets websites identify the application,\n      operating system, vendor, and/or version of the requesting user agent.\n      Some websites make assumptions about how this header is formatted and may\n      encounter issues with version strings that include three digits in the\n      major position (e.g. 100.0.0.0).\n\n      Setting the policy to 'Default' or leaving it unset will default to\n      browser settings for the User-Agent string major version.\n      If set to 'ForceDisabled', the User-Agent string will not freeze the\n      major version.\n      If set to 'ForceEnabled', the User-Agent string will always report the\n      major version as 99 and include the browser's major version in the minor\n      position. For example, browser version 101.0.0.0 would send a User-Agent\n      request header that reports version 99.101.0.0.\n\n      This policy is temporary and will be deprecated in the future. Note that\n      if this policy and\n      User-Agent Reduction are\n      both enabled, the User-Agent version string will always be 99.0.0.0.",
+            "example_value": 0,
+            "features": {
+                "per_profile": true,
+                "dynamic_refresh": true
+            },
+            "id": 949,
+            "items": [
+                {
+                    "caption": "Default to browser settings for User-Agent string version.",
+                    "name": "Default",
+                    "value": 0
+                },
+                {
+                    "caption": "The User-Agent string will not freeze the major version.",
+                    "name": "ForceDisabled",
+                    "value": 1
+                },
+                {
+                    "caption": "The User-Agent string will freeze the major version as 99 and include the browser's major version in the minor position.",
+                    "name": "ForceEnabled",
+                    "value": 2
+                }
+            ],
+            "name": "ForceMajorVersionToMinorPositionInUserAgent",
+            "owners": [
+                "eliason@chromium.org",
+                "abeyad@chromium.org",
+                "miketaylr@chromium.org"
+            ],
+            "schema": {
+                "enum": [
+                    0,
+                    1,
+                    2
+                ],
+                "type": "integer"
+            },
+            "supported_on": [
+                "chrome_os:99-",
+                "chrome.*:99-",
+                "android:99-",
+                "webview_android:99-"
+            ],
+            "tags": [
+                "website-sharing"
+            ],
+            "type": "int-enum"
+        },
+        {
+            "caption": "Allows origin-keyed agent clustering by default.",
+            "default": true,
+            "desc": "This policy allows origin-keyed agent clustering by default.\n\n      The Origin-Agent-Cluster: HTTP header controls whether a document is\n      isolated in an origin-keyed agent cluster, or in a site-keyed agent\n      cluster. This has security implications since an origin-keyed agent\n      cluster allows isolating documents by origin. The developer-visible\n      consequence of this is that the document.domain accessor can no longer\n      be set.\n\n      The default behaviour - when no Origin-Agent-Cluster: header has been set\n      - changes in M101 from site-keyed to origin-keyed. If this policy\n      is enabled or not set, the browser will follow this new default from that\n      version on. If this policy is disabled this change is reversed and\n      documents without Origin-Agent-Cluster: headers will be assigned to\n      site-keyed agent clusters. As a consequence, the document.domain accessor\n      remains settable by default. This matches the legacy behaviour.\n      ",
+            "example_value": false,
+            "features": {
+                "per_profile": true,
+                "dynamic_refresh": true
+            },
+            "id": 933,
+            "items": [
+                {
+                    "caption": "By default, documents may be put in origin-keyed agent clusters. document.domain is not settable for such documents.",
+                    "value": true
+                },
+                {
+                    "caption": "By default, documents are put in site-keyed agent clusters. document.domain remains settable.",
+                    "value": false
+                }
+            ],
+            "name": "OriginAgentClusterDefaultEnabled",
+            "owners": [
+                "vogelheim@chromium.org",
+                "chrome-security-owp-team@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_on": [
+                "chrome.*:101-",
+                "chrome_os:101-"
+            ],
+            "tags": [],
+            "type": "main"
+        },
+        {
             "caption": "Load Login WebUI only when needed.",
             "default": false,
             "desc": "This policy controls whether the WebUI part of the sign-in screen will be always loaded at start or only before showing it. This policy applies to the sign-in screen.\n\n      If this policy is enabled, the WebUI part of the sign-in UI will be loaded only before showing it. This speeds up the login process.\n\n      If this policy is disabled, the WebUI part of the sign-in screen will always be loaded on boot (legacy behavior).\n\n      If unset, behavior will be controlled by kEnableLazyLoginWebUILoading feature.\n\n      This policy should be removed after kEnableLazyLoginWebUILoading is fully rolled out.",
@@ -32524,6 +32807,110 @@
             "schema": {
                 "type": "boolean"
             },
+            "tags": [],
+            "type": "main"
+        },
+        {
+            "caption": "Enable Projector",
+            "default": false,
+            "desc": "This policy gives Projector permission to create and transcribe screen recording and upload to Drive.\n\n      If the policy is enabled, Projector will be enabled.\n      If the policy is disabled, Projector will be disabled.\n      If the policy is not set, Projector will by default disabled.",
+            "example_value": true,
+            "features": {
+                "dynamic_refresh": true,
+                "per_profile": true
+            },
+            "id": 935,
+            "items": [
+                {
+                    "caption": "Enable Projector",
+                    "value": true
+                },
+                {
+                    "caption": "Disable Projector",
+                    "value": false
+                }
+            ],
+            "name": "ProjectorEnabled",
+            "owners": [
+                "llin@google.com",
+                "cros-projector@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_on": [
+                "chrome_os:99-"
+            ],
+            "tags": [
+                "google-sharing"
+            ],
+            "type": "main"
+        },
+        {
+            "caption": "Controls use of AES Keylocker for user storage encryption if supported",
+            "default": false,
+            "desc": "This policy controls whether the AES Keylocker implementation is enabled for user storage encryption for dm-crypt user homes on Chrome OS, if supported.\n\n       This policy only applies to user homes which use dm-crypt) for encryption. Legacy user homes (those which do not use dm-crypt) do not support the use of AES Keylocker and will default to using AESNI.\n\n       If the policy value changes, existing dm-crypt user homes will be accessed using the encryption implementation configured by the policy because the AES implementations are compatible.\n       If the policy is disabled or not set, user storage encryption for dm-crypt user homes will default to using AESNI.",
+            "device_only": true,
+            "example_value": true,
+            "features": {
+                "dynamic_refresh": true,
+                "per_profile": false
+            },
+            "id": 938,
+            "items": [
+                {
+                    "caption": "Use AES Keylocker as the encryption algorithm for user storage encryption, if supported",
+                    "value": true
+                },
+                {
+                    "caption": "Do not use AES Keylocker as the encryption algorithm for user storage encryption",
+                    "value": false
+                }
+            ],
+            "name": "DeviceKeylockerForStorageEncryptionEnabled",
+            "owners": [
+                "sarthakkukreti@chromium.org"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_on": [
+                "chrome_os:99-"
+            ],
+            "tags": [],
+            "type": "main"
+        },
+        {
+            "caption": "Control automatic cleanup during login",
+            "default": false,
+            "desc": "When this policy is set to true, automatic cleanup is executed during login to ensure enough free disk space is available.\n      Cleanup will only run when strictly necessary, but will still impact the login time.\n      Setting the policy to false (the default) ensures the login time is not affected.",
+            "device_only": true,
+            "example_value": true,
+            "features": {
+                "dynamic_refresh": false,
+                "per_profile": false
+            },
+            "id": 940,
+            "items": [
+                {
+                    "caption": "Run automatic disk cleanup during login",
+                    "value": true
+                },
+                {
+                    "caption": "Do not run automatic disk cleanup during login",
+                    "value": false
+                }
+            ],
+            "name": "DeviceRunAutomaticCleanupOnLogin",
+            "owners": [
+                "vsavu@google.com"
+            ],
+            "schema": {
+                "type": "boolean"
+            },
+            "supported_on": [
+                "chrome_os:99-"
+            ],
             "tags": [],
             "type": "main"
         }
@@ -32846,7 +33233,8 @@
                 "ReportUserIDData",
                 "ReportExtensionsAndPluginsData",
                 "CloudExtensionRequestEnabled",
-                "CloudReportingEnabled"
+                "CloudReportingEnabled",
+                "CloudProfileReportingEnabled"
             ]
         },
         {

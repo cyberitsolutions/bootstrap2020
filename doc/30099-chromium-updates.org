@@ -926,7 +926,7 @@ SYNOPSIS: "basic,digest,ntlm,negotiate"
        Note: Separate multiple values with commas.
 
   features:
-    dynamic_refresh: false
+    dynamic_refresh: true
     per_profile: false
   schema:
     type: string
@@ -4015,16 +4015,22 @@ SYNOPSIS: true
 SYNOPSIS: true
  This policy controls Google Chrome cloud reporting which uploads information about the browser operation to Google Admin console.
 
-       When this policy is left unset or set to False, there is no data collected or uploaded.
-       When this policy is set to True, the data is collected and uploaded to Google Admin console.
+       When this policy is left unset or set to Disabled, there is no data collected or uploaded.
+       When this policy is set to Enabled, the data is collected and uploaded to Google Admin console.
 
        For Google Chrome, this policy is only effective when the machine is enrolled with CloudManagementEnrollmentToken.
        For Google Chrome OS, this policy is always effective.
 
+  default: false
   features:
     cloud_only: true
     dynamic_refresh: true
     per_profile: false
+  items:
+  - caption: Enable managed browser cloud reporting
+    value: true
+  - caption: Disable managed browser cloud reporting
+    value: false
   schema:
     type: boolean
   supported_on:
@@ -4260,31 +4266,6 @@ SYNOPSIS: 0
 * UserAndDeviceReporting — User and device reporting
  Controls what kind of user and device information is reported.
 
-** ReportDeviceAudioStatus — Report device audio status
-SYNOPSIS: false
- Setting the policy to enabled or leaving it unset has enrolled devices report device audio volume.
-
-       Setting the policy to Disabled means enrolled devices don't record or report audio status.
-       Exception: System volume level information is controlled by ReportDeviceHardwareStatus for M95 and below.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  default: true
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Report audio status
-    value: true
-  - caption: Do not report audio status
-    value: false
-  schema:
-    type: boolean
-  supported_chrome_os_management:
-  - google_cloud
-  tags:
-  - admin-sharing
-  type: main
-
 ** ReportDeviceLocation — Report device location
 SYNOPSIS: false
  Report the geographic location of the device.
@@ -4335,7 +4316,7 @@ SYNOPSIS: 600000
        If not set, the default rate of 10 minutes applies.
 
   arc_support: This policy has no effect on the logging done by Android.
-  default: 600000
+  default: 3600000
   device_only: true
   features:
     dynamic_refresh: true
@@ -4355,7 +4336,7 @@ SYNOPSIS: 60000
        If not set, the default rate of 1 minute applies.
 
   arc_support: This policy has no effect on the logging done by Android.
-  default: 60000
+  default: 600000
   device_only: true
   features:
     dynamic_refresh: true
@@ -6435,6 +6416,8 @@ SYNOPSIS: 2
 
        This setting also turns off keyboard shortcuts and menu or context menu entries to open developer tools or the JavaScript console.
 
+       As of Google Chrome version 99, this setting also controls entry points for the 'View page source' feature. If you set this policy to 'DeveloperToolsDisallowed' (value 2), users cannot access source viewing via keyboard shortcut or the context menu. To fully block source viewing, you must also add 'view-source:*' to the URLBlocklist policy.
+
   arc_support: This policy also controls access to Android Developer Options. If you
     set this policy to 'DeveloperToolsDisallowed' (value 2), users cannot access Developer
     Options. If you set this policy to another value or leave it unset, users can access
@@ -7835,23 +7818,6 @@ SYNOPSIS: true
   - chrome.linux:31-
   type: main
 
-** FullscreenNotificationUrlExemptList — List of URLs which are exempt from the full screen notification
-SYNOPSIS: ["*"]
- Configure a list of URLs that are exempt from the full screen notification. The notification is shown when the device returns from sleep, low brightness or the lock screen and has a window in full screen mode. This is to make users aware that they are in full screen mode, which reduces the risk of phishing attacks.
-
-           This policy allows to disable the notification for specific URLs that will be considered trusted sources. It is set by specifying a list of URL patterns formatted according to this format ( https://www.chromium.org/administrators/url-blocklist-filter-format ). E.g., it is possible to disable the notifications altogether by specifying the wildcard character * matching all URLs.
-
-           Setting this policy to an empty list or leaving it unset means no URLs are exempt from the full screen notification.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    items:
-      type: string
-    type: array
-  type: list
-
 ** SharedClipboardEnabled — Enable the Shared Clipboard Feature
 SYNOPSIS: true
  Enable the Shared Clipboard feature which allows users to send text between Chrome Desktops and an Android device when Sync is enabled and the user is Signed-in.
@@ -8552,6 +8518,30 @@ SYNOPSIS: true
   - chrome.*:88-
   type: main
 
+** NTPMiddleSlotAnnouncementVisible — Show the middle slot announcement on the New Tab Page
+SYNOPSIS: true
+ This policy controls the visibility of the middle slot announcement on the New Tab Page.
+
+       If the policy is set to Enabled, the New Tab Page will show the middle slot announcement if it is available.
+
+       If the policy is set to Disabled, the New Tab Page will not show the middle slot announcement even if it is available.
+      
+
+  default: true
+  features:
+    dynamic_refresh: true
+    per_profile: true
+  items:
+  - caption: New Tab Page will show the middle slot announcement if it is available
+    value: true
+  - caption: New Tab Page will not show the middle slot announcement even if it is available
+    value: false
+  schema:
+    type: boolean
+  supported_on:
+  - chrome.*:99-
+  type: main
+
 ** WebRtcUdpPortRange — Restrict the range of local UDP ports used by WebRTC
 SYNOPSIS: "10000-11999"
  If the policy is set, the UDP port range used by WebRTC is restricted to the specified port interval (endpoints included).
@@ -8585,20 +8575,6 @@ SYNOPSIS: ["https://www.example.com", "*example.com*"]
   - chrome.*:79-
   type: list
 
-** WebRestrictionsAuthority — Set an external source of URL restrictions
-SYNOPSIS: "com.android.chrome.SupervisedUserProvider"
- When this policy is set to a non-empty string the WebView will read URL restrictions from the content provider with the given authority name.
-
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  tags:
-  - filtering
-  - admin-sharing
-  type: string
-
 ** ComponentUpdatesEnabled — Enable component updates in Google Chrome
 SYNOPSIS: true
  Enables component updates for all components in Google Chrome when not set or set to enabled.
@@ -8613,6 +8589,32 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:54-
+  type: main
+
+** PhoneHubCameraRollAllowed — Allow recent photos and videos taken on the phone to be accessed via Phone Hub.
+SYNOPSIS: true
+ If this setting is enabled, users who have already opted in to Phone Hub will be able to view and download recent photos and videos taken on their phone on Chrome OS.
+
+       If this setting is disabled, users will not be allowed to use this feature. If the PhoneHubAllowed policy is disabled, users also will not be allowed to use this feature.
+
+       If this policy is left not set, the default is allowed for both enterprise-managed users and non-managed users.
+
+  default: true
+  features:
+    dynamic_refresh: true
+    per_profile: true
+  items:
+  - caption: Allows users who have opted in to Phone Hub to access recent photos and
+      videos taken on their phone
+    value: true
+  - caption: Disallows users who have opted in to Phone Hub to access recent photos
+      and videos taken on their phone
+    value: false
+  schema:
+    type: boolean
+  tags:
+  - local-data-access
+  - google-sharing
   type: main
 
 ** BrowserNetworkTimeQueriesEnabled — Allow queries to a Google time service
@@ -8804,7 +8806,7 @@ SYNOPSIS: true
   - system-security
   type: main
 
-** CrossOriginWebAssemblyModuleSharingEnabled — Specifies whether WebAssembly modules can be sent cross-origin
+** CrossOriginWebAssemblyModuleSharingEnabled (DEPRECATED) — Specifies whether WebAssembly modules can be sent cross-origin
 SYNOPSIS: true
 
        Specifies whether WebAssembly modules can be sent to another window or worker cross-origin. Cross-origin WebAssembly module sharing will be deprecated as part of the efforts to deprecate document.domain, see https://github.com/mikewest/deprecating-document-domain. This policy allows to re-enable cross-origin WebAssembly module sharing to offer a longer transition period in the deprecation process.
@@ -8826,7 +8828,7 @@ SYNOPSIS: true
   schema:
     type: boolean
   supported_on:
-  - chrome.*:94-
+  - chrome.*:94-98
   tags:
   - system-security
   type: main
@@ -9508,13 +9510,13 @@ SYNOPSIS: [{"url": "https://www.google.com/maps", "default_launch_container": "w
 
        - custom_name
        (Starting with Google Chrome
-       version 96, allows you to permanently override the app name for all web
+       version 99, allows you to permanently override the app name for all web
        apps and PWAs. Currently only supported on
        Google Chrome OS.)
 
        - custom_icon
        (Starting with Google Chrome
-       version 96, allows you to override the app icon of installed apps. The
+       version 99, allows you to override the app icon of installed apps. The
        icons have to be square, maximal 1 MB in size, and in one of the following
        formats: jpeg, png, gif, webp, ico. The hash value has to be the SHA256
        hash of the icon file. Currently only supported on
@@ -9560,6 +9562,38 @@ SYNOPSIS: [{"url": "https://www.google.com/maps", "default_launch_container": "w
   supported_on:
   - chrome.*:75-
   type: dict
+
+** CloudProfileReportingEnabled — Enable Google Chrome cloud reporting for managed profile
+SYNOPSIS: true
+
+       This policy controls Google Chrome cloud reporting for a particular managed profile.
+
+       When this policy is left unset or set to Disabled, there is no data collected or uploaded.
+       When this policy is set to Enabled, the data is collected and uploaded to Google Admin console.
+
+       The report contains profile state and usage information, including but not limited to OS version, browser version, installed extensions and applied policies.
+
+       This policy can only be set as cloud user policy.
+      
+
+  default: false
+  features:
+    cloud_only: true
+    dynamic_refresh: true
+    per_profile: true
+  future_on:
+  - chrome.*
+  items:
+  - caption: Enable managed profile cloud reporting
+    value: true
+  - caption: Disable managed profile cloud reporting
+    value: false
+  schema:
+    type: boolean
+  tags:
+  - admin-sharing
+  - google-sharing
+  type: main
 
 ** EnterpriseHardwarePlatformAPIEnabled — Enables managed extensions to use the Enterprise Hardware Platform API
 SYNOPSIS: true
@@ -9715,13 +9749,12 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
 
        The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.
 
-       This policy can only be set from the Google Admin console.
+       This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.
 
   features:
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future: true
   schema:
     items:
       properties:
@@ -9800,13 +9833,12 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
 
        The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.
 
-       This policy can only be set from the Google Admin console.
+       This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.
 
   features:
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future: true
   schema:
     items:
       properties:
@@ -9883,13 +9915,12 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*"], "tags":
 
        The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The message field contains the text to show the user and should have at most 200 characters. The learn_more_url field contains an admin-provided URL that will be clickable by the user to get more customer-provided information about why the action was blocked. The language field is optional and contains the language of the message. An empty language field or a value of 'default' indicates a message to be used when the user's language doesn't have a message. The tag field specifies for which type of scans the message is displayed. The custom_messages list can have zero or more entries, where each entry is required to have non-empty message and tag fields.
 
-       This policy can only be set from the Google Admin console.
+       This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.
 
   features:
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future: true
   schema:
     items:
       properties:
@@ -9965,7 +9996,7 @@ SYNOPSIS: [{"service_provider": "Google", "enable": [{"url_list": ["*.them.com",
 
        The custom_messages, message, learn_more_url, language and tag fields are used to configure a message to show the user when a warning is shown after a scan had a non-clean verdict. The administrator is able to configure messages of up to 200 characters.
 
-       This policy can only be set from the Google Admin console.
+       This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.
 
   features:
     cloud_only: true
@@ -10038,13 +10069,12 @@ SYNOPSIS: [{"service_provider": "Google", "enabled_event_names": ["passwordChang
 
        The service_provider field identifies which reporting service provider the settings correspond to and the enabled_event_names field identifies which events are enabled for this provider.
 
-       This policy can only be set from the Google Admin console.
+       This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.
 
   features:
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future: true
   schema:
     items:
       properties:
@@ -10068,7 +10098,7 @@ SYNOPSIS: 1
 
        If this policy is set to ‘Enabled’, URLs will be sent to be scanned in real time under enterprise ToS. It will result in Chrome sending URLs to Google Cloud or third parties of your choosing to check them in real time. The consumer version of Safe Browsing real time lookup will be switched off.
 
-       This policy can only be set from the Google Admin console.
+       This policy requires additional setup to take effect, please visit https://support.google.com/chrome/a?p=chrome_enterprise_connector_policies_setting for more information.
 
   default: 0
   features:
@@ -11005,9 +11035,10 @@ SYNOPSIS: [{"service_provider": "Google", "enterprise_id": "1234567890", "domain
 
 ** WebAppSettings — Web App management settings
 SYNOPSIS: {"https://foo.example": {"run_on_os_login": "allowed"}, "https://bar.example": {"run_on_os_login": "blocked"}, "https://foobar.example": {"run_on_os_login": "run_windowed"}, "*": {"run_on_os_login": "blocked"}}
- Setting the policy controls web app management settings for Google Chrome.
+ This policy allows an admin to specify settings for installed web apps.
 
-       This policy allows an admin to specify settings for web apps installed through WebAppInstallForceList. A default configuration can be set using the special ID "*", which applies to all web apps without a custom configuration in this policy.
+       This policy maps a Web App ID to its specific setting. See https://developer.chrome.com/blog/pwa-manifest-id/ for instructions on how to determine the id for an installed web app.
+       A default configuration can be set using the special ID "*", which applies to all web apps without a custom configuration in this policy.
 
        The "run_on_os_login" field specifies if a web app can be run during OS login. If this field is set to "blocked", the web app will not run during OS login and the user will not be able to enable this later. If this field is set to "run_windowed", the web app will run during OS login and the user will not be able to disable this later. If this field is set to "allowed", the user will be able to configure the web app to run at OS login. The default configuration only allows the "allowed" and "blocked" values.
       
@@ -11598,7 +11629,7 @@ SYNOPSIS: 0
   - caption: User Agent reduction will be controllable via Field-Trials and Origin-Trials.
     name: Default
     value: 0
-  - caption: User Agent reduction diabled, and not enabled by Field-Trials or Origin-Trials.
+  - caption: User Agent reduction disabled, and not enabled by Field-Trials or Origin-Trials.
     name: ForceDisabled
     value: 1
   - caption: User Agent reduction will be enabled for all origins.
@@ -11615,6 +11646,95 @@ SYNOPSIS: 0
   tags:
   - website-sharing
   type: int-enum
+
+** ForceMajorVersionToMinorPositionInUserAgent — Freeze User-Agent string major version at 99
+SYNOPSIS: 0
+ This policy controls whether the User-Agent string major
+       version should be frozen at 99.
+
+       The User-Agent request header lets websites identify the application,
+       operating system, vendor, and/or version of the requesting user agent.
+       Some websites make assumptions about how this header is formatted and may
+       encounter issues with version strings that include three digits in the
+       major position (e.g. 100.0.0.0).
+
+       Setting the policy to 'Default' or leaving it unset will default to
+       browser settings for the User-Agent string major version.
+       If set to 'ForceDisabled', the User-Agent string will not freeze the
+       major version.
+       If set to 'ForceEnabled', the User-Agent string will always report the
+       major version as 99 and include the browser's major version in the minor
+       position. For example, browser version 101.0.0.0 would send a User-Agent
+       request header that reports version 99.101.0.0.
+
+       This policy is temporary and will be deprecated in the future. Note that
+       if this policy and
+       User-Agent Reduction are
+       both enabled, the User-Agent version string will always be 99.0.0.0.
+
+  default: 0
+  features:
+    dynamic_refresh: true
+    per_profile: true
+  items:
+  - caption: Default to browser settings for User-Agent string version.
+    name: Default
+    value: 0
+  - caption: The User-Agent string will not freeze the major version.
+    name: ForceDisabled
+    value: 1
+  - caption: The User-Agent string will freeze the major version as 99 and include the
+      browser's major version in the minor position.
+    name: ForceEnabled
+    value: 2
+  schema:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+  supported_on:
+  - chrome.*:99-
+  tags:
+  - website-sharing
+  type: int-enum
+
+** OriginAgentClusterDefaultEnabled — Allows origin-keyed agent clustering by default.
+SYNOPSIS: false
+ This policy allows origin-keyed agent clustering by default.
+
+       The Origin-Agent-Cluster: HTTP header controls whether a document is
+       isolated in an origin-keyed agent cluster, or in a site-keyed agent
+       cluster. This has security implications since an origin-keyed agent
+       cluster allows isolating documents by origin. The developer-visible
+       consequence of this is that the document.domain accessor can no longer
+       be set.
+
+       The default behaviour - when no Origin-Agent-Cluster: header has been set
+       - changes in M101 from site-keyed to origin-keyed. If this policy
+       is enabled or not set, the browser will follow this new default from that
+       version on. If this policy is disabled this change is reversed and
+       documents without Origin-Agent-Cluster: headers will be assigned to
+       site-keyed agent clusters. As a consequence, the document.domain accessor
+       remains settable by default. This matches the legacy behaviour.
+      
+
+  default: true
+  features:
+    dynamic_refresh: true
+    per_profile: true
+  items:
+  - caption: By default, documents may be put in origin-keyed agent clusters. document.domain
+      is not settable for such documents.
+    value: true
+  - caption: By default, documents are put in site-keyed agent clusters. document.domain
+      remains settable.
+    value: false
+  schema:
+    type: boolean
+  supported_on:
+  - chrome.*:101-
+  type: main
 
 ** DeviceLoginScreenWebUILazyLoading — Load Login WebUI only when needed.
 SYNOPSIS: true

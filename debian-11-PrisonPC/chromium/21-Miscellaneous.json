@@ -352,15 +352,17 @@
     // "New Tab page won't allow users to customize the background."
     "NTPCustomBackgroundEnabled": false,
 
+    // I think this means "show ads?" and defaults to "yes, show ads".
+    // Added in Chromium 99, which is not in Debian yet, so cannot test.
+    // Blocking it pro-actively out of paranoia.
+    "NTPMiddleSlotAnnouncementVisible": false,
+
     // This is about the SOURCE port on the local computer.
     // We use stateful firewalls, so this is not interesting.
     // "WebRtcUdpPortRange": "10000-11999",
 
     // I don't know what this is.
     "WebRtcLocalIpsAllowedUrls": [],
-
-    // I don't know what tihs is.
-    // "WebRestrictionsAuthority": "com.android.chrome.SupervisedUserProvider",
 
     // This tells chrome://components "don't try to download first-party stuff from google".
     // This stuff is mostly important things!
@@ -397,7 +399,6 @@
     // These are "re-enable insecure old behaviour?" options.  Force the secure defaults.
     "SharedArrayBufferUnrestrictedAccessAllowed": false,
     "SandboxExternalProtocolBlocked": true,
-    "CrossOriginWebAssemblyModuleSharingEnabled": false,
     "DisplayCapturePermissionsPolicyEnabled": true,
     "AbusiveExperienceInterventionEnforce": true,
     "OverrideSecurityRestrictionsOnInsecureOrigin": [],
