@@ -498,6 +498,9 @@ Conflicts:
  python3-apt,
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
+# certutil lets inmates manipulate who Chromium trusts.
+ libnss3-tool,
+ gnutls-bin,
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # libc-dev should be enough to block most compiler stuff.
