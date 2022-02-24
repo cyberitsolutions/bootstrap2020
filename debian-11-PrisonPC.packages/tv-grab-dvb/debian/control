@@ -1,13 +1,15 @@
 Source: tv-grab-dvb
-Section: FIXME
-Priority: FIXME
-Maintainer: Trent W. Buck <trentbuck@gmail.com>
+Section: video
+Priority: extra
+Maintainer: Trent W. Buck <twb@cyber.com.au>
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.5
+Standards-Version: 3.9.4
 Homepage: http://bryars.eu/projects/tv_grab_dvb/
 
 Package: tv-grab-dvb
 Architecture: any
-Depends: ${misc:Depends}
-Description: FIXME
- FIXME
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: dump DVB EPG info in xmltv format
+ A small program to extract EPG data from a DVB stream.
+ .
+ This project isn't maintained.
