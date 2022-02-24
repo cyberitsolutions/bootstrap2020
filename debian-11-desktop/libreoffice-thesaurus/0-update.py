@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Create symlinks to simulate missing dictionaries.xcu.
+__doc__ = """ create symlinks to simulate missing dictionaries.xcu
 
 LibreOffice provides spelling/hyphenation/thesaurus dictionaries for different language varieties (xx_YY).
 When another variety is similar, and no dedicated dictionary is available, they are aliased together.
@@ -34,18 +34,34 @@ This script tries to fully automate that process, so that
 ---Trent W. Buck, Aug 2019, https://bugs.debian.org/929923
 """
 
-import sys
-import glob
-import pprint
-import types
+import json
+import pathlib
 import re
+import subprocess
+import tempfile
+import types
 
 import lxml.etree
 
+# FIXME: this branch name should automatically match the version of LibreOffice we ship.
+version = 'libreoffice-7-3-0'
 
-def main() -> None:
+
+def checkout():
+    subprocess.check_call(
+        ['git', 'clone',
+         '--depth=1',            # go faster
+         '--branch', version,    # just the commit we want.
+         # 'https://git.libreoffice.org/dictionaries',  # canonical, but VERY slow
+         'https://github.com/LibreOffice/dictionaries/',  # faster mirror
+         ],
+        cwd=temporary_directory)
+
+
+def generate() -> None:
     for d in xcu2dicts():
-        for f, l in zip(d.files, d.locales):
+        for f in d.files:
+          for locale in d.locales:
             # Expand the "%origin%" variable to whatever it should be.
             f = f.replace('%origin%',
                           {'DICT_SPELL': '/usr/share/hunspell',
@@ -63,19 +79,20 @@ def main() -> None:
                 r'.*'
                 r'((?:_v2)?\.(?:dic|aff|dat|idx))',
                 f).group(1)
-            symlink_src_path = (
-                prefix +
-                IETF_locale_to_glibc_locale(l) +
-                suffix)
+            symlink_src_path = ''.join([
+                prefix,
+                IETF_locale_to_glibc_locale(locale),
+                suffix])
 
-            # FIXME: needs to use f'-p{package}', like helper.py:generate_installs().
             if symlink_dst_path != symlink_src_path:
-                print('',       # indent for make
-                      'dh_link',
-                      symlink_dst_path,
-                      symlink_src_path,
-                      '# ' + l,   # comment
-                      sep='\t')
+                tarinfo_path = (
+                    pathlib.Path(
+                        symlink_src_path.replace('/usr/share/', '').replace('/', '-')
+                    ).with_suffix('.tarinfo'))
+                tarinfo_path.write_text(json.dumps({
+                    'name': str(pathlib.Path(symlink_src_path).relative_to('/')),
+                    'linkpath': str(pathlib.Path(symlink_dst_path).relative_to(
+                        pathlib.Path(symlink_src_path).parent))}))
 
 
 # The upstream XCU use RFC 5646 notation (kmr-Latn-TR).
@@ -102,19 +119,19 @@ def IETF_locale_to_glibc_locale(lo_locale: str) -> str:
 #                locales={'af-NA', 'af-ZA'})]
 def xcu2dicts() -> list:
     acc = []                    # accumulator
-    for xcu_path in glob.glob('dictionaries/*/dictionaries.xcu'):
-        xcu_obj = lxml.etree.parse(xcu_path)
+    for xcu_path in temporary_directory.glob('dictionaries/*/dictionaries.xcu'):
+        xcu_obj = lxml.etree.parse(str(xcu_path))
         nsmap = xcu_obj.getroot().nsmap
         for d in xcu_obj.xpath('//node[@oor:name="Dictionaries"]/node', namespaces=nsmap):
             format, = d.xpath('./prop[@oor:name="Format"]/value/text()', namespaces=nsmap)
             files = {
-                l
+                location
                 for value in d.xpath('./prop[@oor:name="Locations"]/value/text()', namespaces=nsmap)
-                for l in value.split()}
+                for location in value.split()}
             locales = {
-                l
+                locale
                 for value in d.xpath('./prop[@oor:name="Locales"]/value/text()', namespaces=nsmap)
-                for l in value.split()}
+                for locale in value.split()}
 
             acc.append(types.SimpleNamespace(
                 format=format,
@@ -123,5 +140,15 @@ def xcu2dicts() -> list:
     return acc
 
 
+# Remove *.tarinfo which was probably created by a previous run.
+def cleanup():
+    for path in pathlib.Path.cwd().glob('*.tarinfo'):
+        path.unlink()
+
+
 if __name__ == '__main__':
-    main()
+    cleanup()
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        temporary_directory = pathlib.Path(temporary_directory)
+        checkout()
+        generate()
