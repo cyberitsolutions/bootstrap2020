@@ -33,6 +33,8 @@ os.environ['SOURCE_DATE_EPOCH'] = subprocess.check_output(
 # Makes errors/warnings much easier to see.
 os.environ['DEB_BUILD_OPTIONS'] = 'terse'
 
+watch_path = (args.package_path / 'debian/watch')
+
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
@@ -44,12 +46,13 @@ with tempfile.TemporaryDirectory() as td:
          '--customize-hook=mkdir -p $1/X/Y',
          f'--customize-hook=sync-in {args.package_path} /X/Y',
          *(['--include=devscripts,ca-certificates',  # install uscan
+            '--include= ' + ('subversion' if 'mode=svn' in watch_path.read_text() else ' '),
             '--customize-hook=chroot $1 sh -c "'
             '   cd /X/Y &&'
             '   uscan --download-current-version &&'
             '   tar --strip-components=1 -xf ../*orig.tar.*"',
             ]
-           if (args.package_path / 'debian/watch').exists() else []),
+           if watch_path.exists() else []),
          '--include=devscripts,lintian',
          '--customize-hook=chroot $1 sh -c "cd /X/Y && apt-get build-dep -y ./ && HOME=/root debuild -uc -us"',
          '--customize-hook=rm -rf $1/X/Y',
