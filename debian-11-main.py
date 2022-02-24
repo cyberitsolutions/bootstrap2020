@@ -419,7 +419,7 @@ with tempfile.TemporaryDirectory() as td:
                '    libreoffice-lightproof-en'
                '    hunspell-en-au hunspell-en-gb hunspell-en-us'
                '    hyphen-en-gb hyphen-en-us'
-               '    mythes-en-us'
+               '    mythes-en-us'  # https://bugs.debian.org/929923 (Debian mythes-en-au is from openoffice 2.1!)
                '    vlc'
                f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
                ] if args.apps else []),
