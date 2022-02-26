@@ -67,6 +67,7 @@ parser.add_argument('--template', default='main',
                     choices=('main',
                              'dban',
                              'zfs',
+                             'tvserver',
                              'understudy',
                              'datasafe3',
                              'desktop',
@@ -85,6 +86,7 @@ parser.add_argument('--template', default='main',
                         'main: small CLI image; '
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
+                        'tvserver: turn free-to-air DVB-T into rtp:// IPTV;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4; '
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
@@ -357,6 +359,15 @@ with tempfile.TemporaryDirectory() as td:
             if args.virtual_only else
             '--include=linux-headers-amd64']
            if args.template == 'zfs' else []),
+         *([
+            '--include='
+            '    dvblast'        # DVB-T → rtp://
+            '    ffmpeg'         # DVD | DVB-T → .ts
+            '    multicat'       # .ts → rtp://
+            '    tv-grab-dvb python3-psycopg2 python3-lxml'  # DVB-T → XML → postgres (EPG)
+            '    w-scan'  # Used at new sites to find frequency MHz.
+            ]
+           if args.template == 'tvserver' else []),
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
             '    quota ']    # no slow quotacheck on failover
@@ -529,7 +540,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
            if args.template == 'datasafe3' else []),
          *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye desktop']  # noqa: E501
-           if template_wants_PrisonPC else []),
+           if template_wants_PrisonPC or args.template == 'tvserver' else []),
          ])
 
 subprocess.check_call(
