@@ -17,6 +17,7 @@ import types
 
 import hyperlink                # URL validation
 import requests                 # FIXME: h2 support!
+import pypass                   # for tvserver PSKs
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2021 Trent W. Buck"
@@ -623,6 +624,35 @@ if args.boot_test:
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
 
+        if args.template == 'tvserver':
+            # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
+            # containing a specific password file.
+            tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
+            tvserver_tar_path = testdir / 'prisonpc-persist.tar'
+            with tarfile.open(tvserver_tar_path, 'w') as t:
+                for name in {'pgpass', 'msmtp-psk'}:
+                    with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
+                        f.write(
+                            pypass.PasswordStore().get_decrypted_password(
+                                f'PrisonPC/tvserver/{name}').encode())
+                        f.flush()
+                        member = tarfile.TarInfo()
+                        member.name = name
+                        member.mode = (
+                            0o0444 if  name == 'msmtp-psk' else  # FIXME: yuk
+                            0o0400)
+                        member.size = f.tell()
+                        f.seek(0)
+                        t.addfile(member, f)
+            subprocess.check_call(
+                ['genext2fs',
+                 '--volume-label=prisonpc-persist'
+                 '--block-size=1024',
+                 '--size-in-blocks=1024',  # 1MiB
+                 '--number-of-inodes=128',
+                 '--tarball', tvserver_tar_path,
+                 tvserver_ext2_path])
+
         if args.netboot_only:
             subprocess.check_call(['cp', '-t', testdir, '--',
                                    '/usr/lib/PXELINUX/pxelinux.0',
@@ -705,6 +735,9 @@ if args.boot_test:
             *(['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
                '--boot', 'order=n']
               if template_wants_DVD else []),
+            *(['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
+               '--boot', 'order=n']  # don't try to boot off the dummy disk
+              if args.template == 'tvserver' else []),
             *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
               if template_wants_disks else [])])
