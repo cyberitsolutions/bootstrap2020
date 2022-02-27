@@ -189,6 +189,10 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
     logging.warning('prisonpc.tca3 server code expects OpenSSH')
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
+if args.template == 'tvserver' and args.virtual_only:
+    # The error message is quite obscure:
+    #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
+    raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
 if template_wants_PrisonPC and args.boot_test and not (args.netboot_only and have_smbd):
     raise NotImplementedError(
         'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
@@ -365,6 +369,12 @@ with tempfile.TemporaryDirectory() as td:
             '--include=linux-headers-amd64']
            if args.template == 'zfs' else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-tvserver")} /',
+            # workarounds for garbage hardware
+            *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
+              '--hook-dir=debian-11-PrisonPC-tvserver.hooks',
+              '--include=build-essential git patchutils libproc-processtable-perl',  # driver
+              '--include=wget2 ca-certificates bzip2',  # firmware
+              '--include=linux-headers-cloud-amd64' if args.virtual_only else '--include=linux-headers-amd64'),
             '--include='
             '    dvblast'        # DVB-T → rtp://
             '    ffmpeg'         # DVD | DVB-T → .ts
