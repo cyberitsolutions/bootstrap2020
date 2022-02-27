@@ -106,5 +106,5 @@ if rr := lookup_service('smtp'):
         'account default\n'
         f'host {rr.target}\n'
         f'port {rr.port}\n'
-        'syslog LOG_MAIL\n '
+        'syslog LOG_MAIL\n'
         'auto_from on\n')
