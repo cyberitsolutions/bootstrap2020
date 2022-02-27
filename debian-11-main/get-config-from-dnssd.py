@@ -108,3 +108,15 @@ if rr := lookup_service('smtp'):
         f'port {rr.port}\n'
         'syslog LOG_MAIL\n'
         'auto_from on\n')
+
+    # FIXME: this hack is currently specific to PrisonPC TV server.
+    # We ought to make this a little more generic, though.
+    # What's the least-wrong way to get a username in here?
+    #
+    # NOTE: apparmor severely limits what msmtp can do.
+    #       But it allows "cat", and that cat runs unconfined.
+    tvserver_path = pathlib.Path('/etc/prisonpc-persist/msmtp-psk')
+    if tvserver_path.exists():
+        with pathlib.Path('/etc/msmtprc').open('a') as f:
+            print('user', 'tvserver', file=f)  # FIXME: don't hard-code this!
+            print('passwordeval cat --', tvserver_path, file=f)
