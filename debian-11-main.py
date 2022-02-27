@@ -557,6 +557,58 @@ if args.reproducible:
     (destdir / 'B2SUMS').write_bytes(subprocess.check_output(['b2sum', *destdir.glob('*')]))
     subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
+
+def maybe_dummy_DVD(testdir: pathlib.Path) -> list:
+    if not template_wants_DVD:
+        return []               # add no args to qemu cmdline
+    dummy_DVD_path = testdir / 'dummy.iso'
+    subprocess.check_call([
+        'wget2',
+        '--quiet',
+        '--output-document', dummy_DVD_path,
+        '--http-proxy', apt_proxy,
+        'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso'])
+    return (                    # add these args to qemu cmdline
+        ['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
+         '--boot', 'order=n'])  # don't try to boot off the dummy disk
+
+
+def maybe_tvserver_ext2(testdir: pathlib.Path) -> list:
+    if not args.template == 'tvserver':
+        return []               # add no args to qemu cmdline
+    # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
+    # containing a specific password file.
+    tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
+    tvserver_tar_path = testdir / 'prisonpc-persist.tar'
+    with tarfile.open(tvserver_tar_path, 'w') as t:
+        for name in {'pgpass', 'msmtp-psk'}:
+            with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
+                f.write(
+                    pypass.PasswordStore().get_decrypted_password(
+                        f'PrisonPC/tvserver/{name}').encode())
+                f.flush()
+                member = tarfile.TarInfo()
+                member.name = name
+                member.mode = (
+                    0o0444 if  name == 'msmtp-psk' else  # FIXME: yuk
+                    0o0400)
+                member.size = f.tell()
+                f.seek(0)
+                t.addfile(member, f)
+    subprocess.check_call(
+        ['genext2fs',
+         '--volume-label=prisonpc-persist'
+         '--block-size=1024',
+         '--size-in-blocks=1024',  # 1MiB
+         '--number-of-inodes=128',
+         '--tarball', tvserver_tar_path,
+         tvserver_ext2_path])
+    tvserver_tar_path.unlink()
+    return (                    # add these args to qemu cmdline
+        ['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
+         '--boot', 'order=n'])  # don't try to boot off the dummy disk
+
+
 if args.boot_test:
     # PrisonPC SOEs are hard-coded to check their IP address.
     # This is not boot-time configurable for paranoia reasons.
@@ -578,15 +630,6 @@ if args.boot_test:
              'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
             (f'break={args.maybe_break}'
              if args.maybe_break else '')])
-
-        if template_wants_DVD:
-            dummy_DVD_path = testdir / 'dummy.iso'
-            subprocess.check_call([
-                'wget2',
-                '--quiet',
-                '--output-document', dummy_DVD_path,
-                '--http-proxy', apt_proxy,
-                'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso'])
 
         if template_wants_disks:
             dummy_path = testdir / 'dummy.img'
@@ -623,36 +666,6 @@ if args.boot_test:
                         input='\n'.join([
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
-
-        if args.template == 'tvserver':
-            # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
-            # containing a specific password file.
-            tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
-            tvserver_tar_path = testdir / 'prisonpc-persist.tar'
-            with tarfile.open(tvserver_tar_path, 'w') as t:
-                for name in {'pgpass', 'msmtp-psk'}:
-                    with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
-                        f.write(
-                            pypass.PasswordStore().get_decrypted_password(
-                                f'PrisonPC/tvserver/{name}').encode())
-                        f.flush()
-                        member = tarfile.TarInfo()
-                        member.name = name
-                        member.mode = (
-                            0o0444 if  name == 'msmtp-psk' else  # FIXME: yuk
-                            0o0400)
-                        member.size = f.tell()
-                        f.seek(0)
-                        t.addfile(member, f)
-            subprocess.check_call(
-                ['genext2fs',
-                 '--volume-label=prisonpc-persist'
-                 '--block-size=1024',
-                 '--size-in-blocks=1024',  # 1MiB
-                 '--number-of-inodes=128',
-                 '--tarball', tvserver_tar_path,
-                 tvserver_ext2_path])
-
         if args.netboot_only:
             subprocess.check_call(['cp', '-t', testdir, '--',
                                    '/usr/lib/PXELINUX/pxelinux.0',
@@ -732,12 +745,8 @@ if args.boot_test:
                    common_boot_args]),
                '--drive', f'file={testdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
               if not args.netboot_only else []),
-            *(['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
-               '--boot', 'order=n']
-              if template_wants_DVD else []),
-            *(['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
-               '--boot', 'order=n']  # don't try to boot off the dummy disk
-              if args.template == 'tvserver' else []),
+            *maybe_dummy_DVD(testdir),
+            *maybe_tvserver_ext2(testdir),
             *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
               if template_wants_disks else [])])
