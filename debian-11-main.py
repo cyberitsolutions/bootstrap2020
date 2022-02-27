@@ -177,6 +177,10 @@ template_wants_big_uptimes = args.template in {'understudy', 'datasafe3'}
 template_wants_PrisonPC = (
     args.template.startswith('desktop-inmate') or  # noqa: W504
     args.template.startswith('desktop-staff'))
+template_wants_PrisonPC_or_tvserver = (  # UGH!
+    template_wants_PrisonPC or args.template == 'tvserver')
+template_wants_PrisonPC_staff_network = (   # UGH!
+    args.template.startswith('desktop-staff') or args.template == 'tvserver')
 
 if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
     raise NotImplementedError('datasafe3 only supports OpenSSH')
@@ -359,7 +363,7 @@ with tempfile.TemporaryDirectory() as td:
             if args.virtual_only else
             '--include=linux-headers-amd64']
            if args.template == 'zfs' else []),
-         *([
+         *([f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-tvserver")} /',
             '--include='
             '    dvblast'        # DVB-T → rtp://
             '    ffmpeg'         # DVD | DVB-T → .ts
@@ -540,7 +544,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
            if args.template == 'datasafe3' else []),
          *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye desktop']  # noqa: E501
-           if template_wants_PrisonPC or args.template == 'tvserver' else []),
+           if template_wants_PrisonPC_or_tvserver else []),
          ])
 
 subprocess.check_call(
@@ -558,7 +562,7 @@ if args.boot_test:
     # Therefore, qemu needs to use compatible IP addresses.
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
-        if args.template.startswith('desktop-staff') else
+        if template_wants_PrisonPC_staff_network else
         ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
     with tempfile.TemporaryDirectory(dir=destdir) as testdir:
         testdir = pathlib.Path(testdir)
@@ -640,7 +644,7 @@ if args.boot_test:
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
         # This is a quick-and-dirty way to achieve that (FIXME: do better).
-        if template_wants_PrisonPC:
+        if template_wants_PrisonPC_or_tvserver:
             (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
@@ -686,9 +690,9 @@ if args.boot_test:
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222}
                    for host in {'prisonpc-staff.lan'
-                                if args.template.startswith('desktop-staff') else
+                                if template_wants_PrisonPC_staff_network else
                                 'prisonpc-inmate.lan'}]
-                  if template_wants_PrisonPC else []),
+                  if template_wants_PrisonPC_or_tvserver else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
