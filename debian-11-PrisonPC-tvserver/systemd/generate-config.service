@@ -1,0 +1,12 @@
+[Service]
+Type=oneshot
+ExecStart=tvserver-generate-config
+
+[Unit]
+# From /lib/systemd/system/rc-local.service
+After=network.target
+# From /lib/systemd/system/rc-local.service.d/debian.conf
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
