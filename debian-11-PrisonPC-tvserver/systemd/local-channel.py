@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import argparse
-import os
 import subprocess
 
-import psycopg2
-import psycopg2.extras
+import tvserver
 
 # FIXME: absolute minimalist argparse usage.
 # FIXME: in python3 + psycopg2.7, use type=ipaddress.ip_address.
@@ -13,14 +11,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('address')
 args = parser.parse_args()
 
-os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
-conn = psycopg2.connect(host='prisonpc',
-                        dbname='epg',
-                        user='tvserver')
-
 while True:
     # Find out what the programme to play next.
-    with conn, conn.cursor() as cur:
+    with tvserver.cursor() as cur:
         cur.execute(
             'SELECT local_programmes_play_item(%s, 0)',
             (args.address,))
@@ -43,7 +36,7 @@ while True:
     # Rotate the schedule forward one programme,
     # i.e. pop the current programme off the head of the queue, and
     # push it onto the tail of the queue.
-    with conn, conn.cursor() as cur:
+    with tvserver.cursor() as cur:
         cur.execute(
             'SELECT local_programmes_play_item(%s, 1)',
             (args.address,))

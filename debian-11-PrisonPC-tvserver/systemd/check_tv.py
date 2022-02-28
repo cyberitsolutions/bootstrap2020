@@ -20,13 +20,13 @@
 # then check if the success/total ratio is above a minimum threshhold.
 
 
-import ipaddress
-import os
 import subprocess
 import sys
 import syslog
 import traceback
 import functools
+
+import tvserver
 
 # Check each adapter for working signal ATTEMPTS times (at 1Hz).
 # If at least MIN_OK checks passed, adapter is OK.
@@ -77,25 +77,9 @@ def my_error_handler(type, value, tb):
     # We need sys.exit() because exit() just raises another exception!
     sys.exit(NAGIOS_EX_UNKNOWN)
 
+
 # Register our handler as the global fallback exception handler.
 sys.excepthook = my_error_handler
-
-
-# BEGIN COPY-PASTE FROM update-config ################################
-# FIXME: abstract this crap out into a shared library.
-import socket
-import psycopg2
-import psycopg2.extras
-os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
-conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
-                        connection_factory=psycopg2.extras.DictConnection)
-cur = conn.cursor()
-ip = ipaddress.IPv4Address(socket.gethostbyname('_outbound'))  # https://github.com/systemd/systemd/releases/tag/v249
-query = "SELECT card, name FROM stations" \
-        " WHERE host IN (%s,'255.255.255.255')" \
-        " ORDER BY card"
-cur.execute(query, [ip])
-# END COPY-PASTE FROM update-config ##################################
 
 
 # Convert the psycopg cursor into a simple list of tuples, e.g.
@@ -108,24 +92,22 @@ cur.execute(query, [ip])
 # each of which can tune into a single station (e.g. SBS).
 # Each station carries multiple channels (e.g. SBS 1, SBS 2, NITV).
 # When our TV database schema says "card", it means adapter or tuner number.
-adapters_to_check = list(cur)
+with tvserver.cursor() as cur:
+    adapters_to_check = tvserver.get_cards(cur)
 
 # There MUST be at least one adapter configured.
 # If not, something is seriously wrong.
 if not adapters_to_check:
     print(NAGIOS_MSG[NAGIOS_EX_CRITICAL],
-          '- No adapters configured for tv server ({}) in epg stations table'.format(ip))
+          f'- No adapters configured for tv server ({tvserver.my_ip_addresses}) in epg stations table')
     exit(NAGIOS_EX_CRITICAL)
 
 
 results = []     # accumulator
-for adapter, station_name in adapters_to_check:
+for row in adapters_to_check:
     # FIXME: run the femon processes in parallel,
     # so the total runtime is ATTEMPTS, not n*ATTEMPTS! --twb, Nov 2016
-    output = subprocess.check_output(['femon',
-                                      '-c{}'.format(ATTEMPTS),
-                                      '-a{}'.format(adapter)],
-                                     text=True)
+    output = subprocess.check_output(['femon', f'-c{ATTEMPTS}', f'-a{row.card}'], text=True)
     # The number of 'FE_HAS_LOCK' strings is
     # the number of times femon detected signal.
     hits = output.count("FE_HAS_LOCK")
@@ -139,7 +121,7 @@ for adapter, station_name in adapters_to_check:
         adapter_status = NAGIOS_EX_OK
 
     results.append(
-        (adapter, station_name, hits, adapter_status))
+        (row.card, row.name, hits, adapter_status))
 
 
 # Since the nagios results are all simple numbers,

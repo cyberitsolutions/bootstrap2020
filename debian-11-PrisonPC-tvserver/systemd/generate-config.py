@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 
-import ipaddress
-import socket
-import os
-import psycopg2
-import psycopg2.extras
 import subprocess
+
+import tvserver
+
 
 # UPDATE: in the database on the PrisonPC master server,
 # each station is assigned to a single TV server.
@@ -23,12 +21,7 @@ import subprocess
 # The end result is poor TV quality on the inmate desktops.
 # --russm, Oct 2015
 
-# get a DB connection
-os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
-conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
-                        connection_factory = psycopg2.extras.DictConnection)
-cur = conn.cursor()
-ip = ipaddress.IPv4Address(socket.gethostbyname('_outbound'))  # https://github.com/systemd/systemd/releases/tag/v249
+
 
 ## FIXME: abstract the common parts of the unit files into a single function.
 
@@ -62,17 +55,16 @@ ip = ipaddress.IPv4Address(socket.gethostbyname('_outbound'))  # https://github.
 ## systemd won't let us output only to console (as Wheezy was doing).
 ## Therefore, simply discard that output completely (StandardOutput=null).
 
-
-with open('/run/systemd/system/tvserver.target', 'w') as fh_target:
-    fh_target.write('[Unit]\n')  # the Wants= below *MUST* be in this section.
+with tvserver.cursor() as cur:
+  with open('/run/systemd/system/tvserver.target', 'w') as fh_target:  # FIXME: reindent
+    print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
 
     ### TV tuners
-    query = "SELECT frequency, name, card FROM stations WHERE host IN (%s,'255.255.255.255') ORDER BY card"
-    cur.execute(query, [ip])
-    for frequency, name, card in cur:
-        open("/run/dvblast-%d.conf" % card, "w").close() # create an empty config file
-        with open('/run/systemd/system/tvserver-dvblast%d.service' % card, 'w') as fh:
-            fh.write('\n'.join([
+    for row in tvserver.get_cards(cur):
+        print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
+        open("/run/dvblast-{row.card}.conf", "w").close() # create an empty config file
+        with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
+            print(
                 ## This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
                 ## The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
                 ## --twb, Jan 2016 (#30682)
@@ -81,48 +73,44 @@ with open('/run/systemd/system/tvserver.target', 'w') as fh_target:
                 'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
                 'StandardOutput=null',  # see FIXME above.
                 'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
-                f'ExecStartPre=rm -fv /run/dvblast-{card}.sock',
-                f'ExecStart=dvblast -a {card} -f {frequency} -b 7 -C -e -M "{name}" -c /run/dvblast-{card}.conf -r /run/dvblast-{card}.sock']))
-        fh_target.write('Wants=tvserver-dvblast%d.service\n' % card)
+                f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
+                f'ExecStart=dvblast -a {row.card} -f {row.frequency} -b 7 -C -e -M "{row.name}" -c /run/dvblast-{row.card}.conf -r /run/dvblast-{row.card}.sock',
+                sep='\n',
+                file=fh)
 
     ### Local Channels
-    query = "SELECT address, name FROM local_channels WHERE host IN (%s,'255.255.255.255') ORDER BY address"
-    cur.execute(query, [ip])
-    for address, name in cur:
-        fh_target.write('Wants=tvserver-local-channel@{}.service\n'.format(address))
     with open('/run/systemd/system/tvserver-local-channel@.service', 'w') as fh:
-        fh.write('\n'.join([
+        print(
             '[Unit]', 'After=srv-tv.mount',  # for /srv/tv/recorded/{unavailable,interstitial}.ts
             '[Service]',
             'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
-            'ExecStart=tvserver-local-channel %I']))
+            'ExecStart=tvserver-local-channel %I',
+            sep='\n',
+            file=fh)
+    for row in tvserver.get_local_channels(cur):
+        print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
+        # If NOBODY has watched a TV channel for a while,
+        # the FIRST person to start watching has to wait ~20s for... something.
+        # Other consumers only have to wait ~2s.
+        # So: the tvserver always watches itself. (#25414)
+        #
+        # We know (via djk) that multicat on the tvserver fixes things.
+        # Therefore it's *not* IGMP snooping on the switches.
+        # We have no idea what it is.
+        # --twb, Jun 2015
+        print(f'Wants=tvserver-multicat@{row.address.ip}.service', file=fh_target)
 
-    # If NOBODY has watched a TV channel for a while,
-    # the FIRST person to start watching has to wait ~20s for... something.
-    # Other consumers only have to wait ~2s.
-    # So: the tvserver always watches itself. (#25414)
-    #
-    # We know (via djk) that multicat on the tvserver fixes things.
-    # Therefore it's *not* IGMP snooping on the switches.
-    # We have no idea what it is.
-    # --twb, Jun 2015
-    query = "SELECT address FROM local_channels WHERE host IN (%s,'255.255.255.255') ORDER BY address"
-    cur.execute(query, [ip])
-    for (address,) in cur:
-        fh_target.write('Wants=tvserver-multicat@{}.service\n'.format(address))
-    # root@tweak:~# sudo -u postgres psql epg
-    # epg=# select sid from channels;
-    # <russm> that's a 16-bit field, the IP address is 239.255.x.y,
-    #         where the first 8 bits are x and the second 8 bits are y.
-    query = "SELECT sid FROM channels"
-    cur.execute(query)
-    for (sid,) in cur:
-        fh_target.write('Wants=tvserver-multicat@239.255.{}.{}.service\n'.format(sid >> 8, sid % (2**8)))
+    for row in tvserver.get_sids(cur):
+        print(f'Wants=tvserver-multicat@{row.multicast_address.ip}.service',
+              file=fh_target)
     with open('/run/systemd/system/tvserver-multicat@.service', 'w') as fh:
-            fh.write('\n'.join([
-                '[Service]',
-                'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
-                "ExecStart=multicat -U @%I:1234 /dev/null\n"]))
+        print('[Service]',
+              'Restart=always',
+              'RestartSec=30s',
+              'StartLimitBurst=0',
+              "ExecStart=multicat -U @%I:1234 /dev/null",
+              sep='\n',
+              file=fh)
 
 
 # tell init about the processes it needs to manage

@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 import argparse
-import os
 import pathlib
-import psycopg2
-import psycopg2.extras
 import subprocess
+
+import tvserver
 
 parser = argparse.ArgumentParser()
 parser.add_argument('multicast_group')
@@ -12,13 +11,6 @@ parser.add_argument('duration_27mhz', type=int)
 parser.add_argument('target_file', type=pathlib.Path)
 args = parser.parse_args()
 
-
-def db_conn():
-    # get a DB connection
-    os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
-    conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
-                            connection_factory = psycopg2.extras.DictConnection)
-    return conn
 
 def rm_noerror(path):
     try:
@@ -71,17 +63,28 @@ except:
     rm_noerror(args.target_file.with_suffix('.raw.aux'))
     rm_noerror(args.target_file.with_suffix('.ts'))
     rm_noerror(args.target_file.with_suffix('.ts.aux'))
-    conn = db_conn()
-    cur = conn.cursor()
-    query = "INSERT INTO failed_recording_log (programme) VALUES (%s)"
-    cur.execute(query, (args.target_file.name,))
-    conn.commit()
+    # Log to the database that the recording failed.
+    with tvserver.cursor() as cur:
+        cur.execute(
+            "INSERT INTO failed_recording_log (programme) VALUES (%(path)s)",
+            {'path': args.target_file.name})
     raise
 
-# get a DB connection
-conn = db_conn()
-cur = conn.cursor()
-
-query = "INSERT INTO local_media (media_id, path, name, duration_27mhz, expires_at) VALUES (uuid_generate_v5(uuid_ns_url(), 'file://' || %s), %s, %s, %s, (SELECT now() + lifetime::interval FROM local_media_lifetimes WHERE standard = 't' LIMIT 1))"
-cur.execute(query, (args.target_file, args.target_file, args.target_file.name, args.duration_27mhz))
-conn.commit()
+# Log to the database that the recording succeeded.
+insert_query = """
+INSERT INTO local_media (media_id,
+                         path,
+                         name,
+                         duration_27mhz,
+                         expires_at)
+VALUES (uuid_generate_v5(uuid_ns_url(), 'file://' || %(path)s),
+        %(path)s,
+        %(name)s,
+        %(duration_27mhz)s,
+        (SELECT now() + lifetime::interval FROM local_media_lifetimes WHERE standard = 't' LIMIT 1))
+"""
+with tvserver.cursor() as cur:
+    cur.execute(insert_query, {
+        'path': args.target_file,
+        'name': args.target_file.name,
+        'duration_27mhz': args.duration_27mhz})
