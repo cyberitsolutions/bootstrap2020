@@ -31,6 +31,21 @@ parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
 
 
+# NOTE: without new open-source driver but no firmware,
+#       /dev/dvb/adapter0..7 exist, but "check_tv" says it can't get a signal, and
+#       dmesg is full of complaints about missing firmware.
+# With old closed-source driver, there was firmware available for OTHER cards, but our card worked without any firmware.
+# For now, give up and just try providing ALL the non-free closed-source firmware blobs and hope for the best... --twb, Oct 2019
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'wget2', '--directory-prefix=/tmp',
+    'https://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2'])
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'tar', '--directory=/lib/firmware',
+    '--extract', '--file=/tmp/tbs-tuner-firmwares_v1.0.tar.bz2'])
+
+
 # Compile (much!) faster by running up to 1 compiler per CPU core.
 os.environ['MAKEFLAGS'] = 'j' + subprocess.check_output(['getconf', '_NPROCESSORS_ONLN'], text=True).strip()
 
@@ -74,20 +89,6 @@ for modules_path in modules_paths:
 subprocess.check_call([
     'chroot', args.chroot_path,
     'update-initramfs', '-ukall'])
-
-# NOTE: without new open-source driver but no firmware,
-#       /dev/dvb/adapter0..7 exist, but "check_tv" says it can't get a signal, and
-#       dmesg is full of complaints about missing firmware.
-# With old closed-source driver, there was firmware available for OTHER cards, but our card worked without any firmware.
-# For now, give up and just try providing ALL the non-free closed-source firmware blobs and hope for the best... --twb, Oct 2019
-subprocess.check_call([
-    'chroot', args.chroot_path,
-    'wget2', '--directory-prefix=prefix=/tmp',
-    'https://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2'])
-subprocess.check_call([
-    'chroot', args.chroot_path,
-    'tar', '--directory=/lib/firmare',
-    '--extract', '--file=/lib/firmware/tbs-tuner-firmwares_v1.0.tar.bz2'])
 
 
 # # We don't bother with this step anymore.

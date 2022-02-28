@@ -376,6 +376,8 @@ with tempfile.TemporaryDirectory() as td:
               '--include=wget2 ca-certificates bzip2',  # firmware
               '--include=linux-headers-cloud-amd64' if args.virtual_only else '--include=linux-headers-amd64'),
             '--include='
+            # FIXME: dvblast 2.2 works, dvblast 3.0 FAILS.  Does dvblast 3.4 work???
+            #        https://alloc.cyber.com.au/task/task.php?taskID=31579
             '    dvblast'        # DVB-T → rtp://
             '    ffmpeg'         # DVD | DVB-T → .ts
             '    multicat'       # .ts → rtp://
