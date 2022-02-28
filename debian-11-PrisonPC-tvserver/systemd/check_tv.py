@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 # Summary
 # =======
@@ -27,7 +26,7 @@ import subprocess
 import sys
 import syslog
 import traceback
-from functools import reduce
+import functools
 
 # Check each adapter for working signal ATTEMPTS times (at 1Hz).
 # If at least MIN_OK checks passed, adapter is OK.
@@ -145,9 +144,10 @@ for adapter, station_name in adapters_to_check:
 
 # Since the nagios results are all simple numbers,
 # the worst result is simply the highest.
-worst_status = reduce(max,
-                      (adapter_status
-                       for _, _, _, adapter_status in results))
+worst_status = functools.reduce(
+    max,
+    (adapter_status
+     for _, _, _, adapter_status in results))
 
 
 # NOTE: Nagios treats the first like of stdout as an overall summary.
