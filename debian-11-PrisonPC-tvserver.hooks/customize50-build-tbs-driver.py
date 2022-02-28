@@ -79,6 +79,16 @@ for modules_path in modules_paths:
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}', 'allyesconfig'])
+    # EXPERIMENTAL: try to reduce the build time by skipping shit we definitely DO NOT WANT.
+    # NOTE: no "make syncconfig", so we won't detect badness???
+    # shitlist = ('MEDIA_USB_SUPPORT', 'LIRC')
+    # subprocess.check_call([
+    #     'chroot', args.chroot_path,
+    #     'sh', '-c', "cd /tmp/media_build/v4l && /tmp/media/scripts/config " +
+    #     ' '.join((word
+    #               for module in shitlist
+    #               for word in ('--disable', module)))])
+    # subprocess.check_call(['chroot', args.chroot_path, 'bash'])  # DEBUGGING
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}'])
