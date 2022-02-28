@@ -2,6 +2,7 @@
 
 # find and start recording programmes that should be recorded
 
+import ipaddress
 import socket
 import os
 import errno
@@ -35,7 +36,7 @@ conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
 cur = conn.cursor()
 
 # Not using mac address so that hosts can be replaced without rewriting the config
-ip = socket.gethostbyname('_outbound')  # https://github.com/systemd/systemd/releases/tag/v249
+ip = ipaddress.IPv4Address(socket.gethostbyname('_outbound'))  # https://github.com/systemd/systemd/releases/tag/v249
 
 def sanitize_path_component(string):
     #return re.sub('[^/\x00]+', ' ', string)

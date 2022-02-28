@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import ipaddress
 import socket
 import os
 import psycopg2
@@ -27,7 +28,7 @@ os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
 conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
                         connection_factory = psycopg2.extras.DictConnection)
 cur = conn.cursor()
-ip = socket.gethostbyname('_outbound')  # https://github.com/systemd/systemd/releases/tag/v249
+ip = ipaddress.IPv4Address(socket.gethostbyname('_outbound'))  # https://github.com/systemd/systemd/releases/tag/v249
 
 ## FIXME: abstract the common parts of the unit files into a single function.
 

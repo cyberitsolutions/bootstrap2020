@@ -2,6 +2,7 @@
 
 # update the channel config every minute to account for program blacklisting
 
+import ipaddress
 import socket
 import os
 import psycopg2
@@ -30,7 +31,7 @@ conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
 cur = conn.cursor()
 
 # Not using mac address so that hosts can be replaced without rewriting the config
-ip = socket.gethostbyname('_outbound')  # https://github.com/systemd/systemd/releases/tag/v249
+ip = ipaddress.IPv4Address(socket.gethostbyname('_outbound'))  # https://github.com/systemd/systemd/releases/tag/v249
 
 
 card_sids = {}
