@@ -95,19 +95,12 @@ with open('/run/systemd/system/tvserver.target', 'w') as fh_target:
     cur.execute(query, [ip])
     for address, name in cur:
         fh_target.write('Wants=tvserver-local-channel@{}.service\n'.format(address))
-    cur.execute(
-        "select 't' FROM pg_catalog.pg_tables"
-        "  WHERE schemaname = 'public'"
-        "    AND tablename = '_schema_versions'")
-    master_server_is_lucid = cur.rowcount == 0
     with open('/run/systemd/system/tvserver-local-channel@.service', 'w') as fh:
         fh.write('\n'.join([
             '[Unit]', 'After=srv-tv.mount',  # for /srv/tv/recorded/{unavailable,interstitial}.ts
             '[Service]',
             'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
-            'ExecStart=tvserver-local-channel.lucid %I'
-            if master_server_is_lucid else
-            'ExecStart=tvserver-local-channel.stretch %I']))
+            'ExecStart=tvserver-local-channel %I']))
 
     # If NOBODY has watched a TV channel for a while,
     # the FIRST person to start watching has to wait ~20s for... something.
