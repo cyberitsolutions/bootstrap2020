@@ -81,7 +81,8 @@ with tvserver.cursor() as cur:
     ### Local Channels
     with open('/run/systemd/system/tvserver-local-channel@.service', 'w') as fh:
         print(
-            '[Unit]', 'After=srv-tv.mount',  # for /srv/tv/recorded/{unavailable,interstitial}.ts
+            '[Unit]', 'RequiresMountsFor=/srv/tv',  # for /srv/tv/recorded/{unavailable,interstitial}.ts
+            'RequiresMountsFor=/etc/prisonpc-persist',   # Needs PGPASSFILE=/etc/prisonpc-persist/pgpass to talk to postgres.
             '[Service]',
             'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
             'ExecStart=tvserver-local-channel %I',
