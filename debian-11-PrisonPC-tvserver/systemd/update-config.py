@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # update the channel config every minute to account for program blacklisting
 
@@ -74,7 +74,7 @@ cur.execute(query, [ip])
 for card, sid in cur:
     card_sids[card].append(sid)
 
-for card in card_sids.keys():
+for card in list(card_sids.keys()):
     sids = card_sids[card]
     dvblast_conf = open("/run/dvblast-%d.conf" % card, "w")
     for sid in sids:

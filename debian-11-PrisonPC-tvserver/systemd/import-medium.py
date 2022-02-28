@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """Components of the PrisonPC IPTV system"""
 
@@ -20,12 +20,12 @@ DB_NAME='epg'
 DB_USER='tvserver'
 
 def usage():
-    print "usage: %s cmd <opts>" % sys.argv[0]
-    print ""
-    print "    expire"
-    print "        NO LONGER SUPPORTED"
-    print "    media_import <filename>"
-    print "        import a media file for use in local channels"
+    print("usage: %s cmd <opts>" % sys.argv[0])
+    print("")
+    print("    expire")
+    print("        NO LONGER SUPPORTED")
+    print("    media_import <filename>")
+    print("        import a media file for use in local channels")
 
 def media_import(conn, source_path):
     cur = conn.cursor()

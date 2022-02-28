@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Summary
@@ -20,12 +20,13 @@
 # To ignore temporary problems, we have femon check repeatedly,
 # then check if the success/total ratio is above a minimum threshhold.
 
-from __future__ import print_function, division
+
 import os
 import subprocess
 import sys
 import syslog
 import traceback
+from functools import reduce
 
 # Check each adapter for working signal ATTEMPTS times (at 1Hz).
 # If at least MIN_OK checks passed, adapter is OK.
@@ -127,7 +128,8 @@ for adapter, station_name in adapters_to_check:
     # so the total runtime is ATTEMPTS, not n*ATTEMPTS! --twb, Nov 2016
     output = subprocess.check_output(['femon',
                                       '-c{}'.format(ATTEMPTS),
-                                      '-a{}'.format(adapter)])
+                                      '-a{}'.format(adapter)],
+                                     text=True)
     # The number of 'FE_HAS_LOCK' strings is
     # the number of times femon detected signal.
     hits = output.count("FE_HAS_LOCK")
