@@ -87,7 +87,9 @@ with open('/run/systemd/system/tvserver.target', 'w') as fh_target:
                 '[Service]',
                 'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
                 'StandardOutput=null',  # see FIXME above.
-                "ExecStart=tvserver-dvblast-wrapper -a %d -f %d -b 7 -C -e -M '%s' -c /run/dvblast-%d.conf" % (card, frequency, name, card)]))
+                'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
+                f'ExecStartPre=rm -fv /run/dvblast-{card}.sock',
+                f'ExecStart=dvblast -a {card} -f {frequency} -b 7 -C -e -M "{name}" -c /run/dvblast-{card}.conf -r /run/dvblast-{card}.sock']))
         fh_target.write('Wants=tvserver-dvblast%d.service\n' % card)
 
     ### Local Channels
