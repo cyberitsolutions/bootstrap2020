@@ -1,13 +1,16 @@
 #!/usr/bin/python3
-
-"""Components of the PrisonPC IPTV system"""
-
-import subprocess
+import argparse
 import datetime
-import glob
-import os
-import time
 import fcntl
+import os
+import pathlib
+import subprocess
+
+import psycopg2
+import psycopg2.extras
+
+__doc__ = """ import a media file for use in local channels """
+
 
 # media import work directories
 DONE_ROOT='/srv/tv/iptv-queue/done/'
@@ -19,13 +22,6 @@ IMPORT_LOCKFILE='/srv/tv/recorded/lock'
 DB_NAME='epg'
 DB_USER='tvserver'
 
-def usage():
-    print("usage: %s cmd <opts>" % sys.argv[0])
-    print("")
-    print("    expire")
-    print("        NO LONGER SUPPORTED")
-    print("    media_import <filename>")
-    print("        import a media file for use in local channels")
 
 def media_import(conn, source_path):
     cur = conn.cursor()
@@ -55,26 +51,18 @@ def get_db_conn():
                             connection_factory = psycopg2.extras.DictConnection)
     return conn
 
-if __name__ == "__main__":
-    import sys
-    import psycopg2
-    import psycopg2.extras
 
-    if len(sys.argv) < 2:
-        usage()
-        raise SystemExit(1)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('paths', type=pathlib.Path, nargs='+')
+args = parser.parse_args()
 
-    # FIXME: broken during Debian 11 migration...
-    if sys.argv[1] == "media_import" and len(sys.argv) >= 3:
-        try:
-            with open(IMPORT_LOCKFILE, "w") as lockfile:
-                fcntl.flock(lockfile, fcntl.LOCK_EX|fcntl.LOCK_NB )
-                conn = get_db_conn()
-                for path in sys.argv[2:]:
-                    media_import(conn, path)
-        except IOError as e:
-            if e.errno != 11:
-                raise
-    else:
-        usage()
-        raise SystemExit(1)
+try:
+    with open(IMPORT_LOCKFILE, "w") as lockfile:
+        fcntl.flock(lockfile, fcntl.LOCK_EX|fcntl.LOCK_NB)
+        conn = get_db_conn()
+        for path in args.paths:
+            media_import(conn, path)
+except IOError as e:
+    if e.errno != 11:
+        raise
+    # FIXME: logging.debug here.

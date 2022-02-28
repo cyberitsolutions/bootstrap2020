@@ -1,15 +1,17 @@
 #!/usr/bin/python3
-
+import argparse
 import os
-import sys
-import subprocess
+import pathlib
 import psycopg2
 import psycopg2.extras
+import subprocess
 
-if len(sys.argv) != 4:
-    sys.stderr.write("usage: %s <multicast_group> <duration_27mhz> <target_file>\n" % sys.argv[0])
-    exit(1)
-multicast_group, duration_27mhz, target_file = sys.argv[1:]
+parser = argparse.ArgumentParser()
+parser.add_argument('multicast_group')
+parser.add_argument('duration_27mhz', type=int)
+parser.add_argument('target_file', type=pathlib.Path)
+args = parser.parse_args()
+
 
 def db_conn():
     # get a DB connection
@@ -20,23 +22,32 @@ def db_conn():
 
 def rm_noerror(path):
     try:
-        os.remove(path)
+        path.unlink()
     except:
         pass
 
-try:
-    os.makedirs(os.path.dirname(target_file))
-except OSError as exc:
-    if os.path.isdir(os.path.dirname(target_file)):
-        pass
-    else: raise
+args.target_file.parent.mkdir(parents=True, exist_ok=True)
 
-multicat_cmd = ["multicat","-d",str(duration_27mhz),"@%s:1234" % multicast_group,"%s.raw.ts" % target_file]
-avconv_cmd = ["avconv","-y","-i","%s.raw.ts" % target_file,"-async","500","-vf","yadif","-q","4","%s.ts" % target_file]  # FIXME: broken in Debian 11
-ingests_cmd = ["ingests","-p","8192","%s.ts" % target_file]
-lasts_cmd = ["lasts","%s.aux" % target_file]
+multicat_cmd = [
+    'multicat',
+    '-d', str(args.duration_27mhz),
+    '@{args.multicast_group}:1234',
+    args.target_file.with_suffix('.raw.ts')]
+avconv_cmd = [
+    'ffmpeg', '-y',
+    '-i', args.target_file.with_suffix('.raw.ts'),
+    '-async','500',
+    '-vf', 'yadif',
+    '-q', '4',
+    args.target_file.with_suffix('.ts')]
+ingests_cmd = [
+    'ingests',
+    '-p', '8192',
+    args.target_file.with_suffix('.ts')]
+lasts_cmd = [
+    'lasts', args.target_file.with_suffix('.aux')]
 
-errfile = open("%s.err" % target_file, "w")
+errfile = args.target_file.with_suffix('.err').open('w')  # FIXME with/as
 errfile.write("%s\n%s\n%s\n%s\n" % (" ".join(multicat_cmd), " ".join(avconv_cmd), " ".join(ingests_cmd), " ".join(lasts_cmd)))
 errfile.flush()
 try:
@@ -49,19 +60,21 @@ try:
         raise subprocess.CalledProcessError(0, multicat_cmd, multicat_output)
     subprocess.check_call(avconv_cmd, stderr=errfile, close_fds=True)
     subprocess.check_call(ingests_cmd, stderr=errfile, close_fds=True)
-    duration_27mhz = int(subprocess.check_output(lasts_cmd, close_fds=True))
-    os.remove("%s.raw.ts" % target_file)
-    os.remove("%s.raw.aux" % target_file)
+    args.duration_27mhz = int(subprocess.check_output(lasts_cmd, close_fds=True))
+    args.target_file.with_suffix('.raw.ts').unlink()
+    args.target_file.with_suffix('.raw.aux').unlink()
 except:
+    # FIXME: instead of this manual cleanup shit,
+    #        just use tempfile.TemporaryDirectory(prefix='/srv/tv/...')!
     # clean up
-    rm_noerror("%s.raw.ts" % target_file)
-    rm_noerror("%s.raw.aux" % target_file)
-    rm_noerror("%s.ts" % target_file)
-    rm_noerror("%s.ts.aux" % target_file)
+    rm_noerror(args.target_file.with_suffix('.raw.ts'))
+    rm_noerror(args.target_file.with_suffix('.raw.aux'))
+    rm_noerror(args.target_file.with_suffix('.ts'))
+    rm_noerror(args.target_file.with_suffix('.ts.aux'))
     conn = db_conn()
     cur = conn.cursor()
     query = "INSERT INTO failed_recording_log (programme) VALUES (%s)"
-    cur.execute(query, (os.path.basename(target_file),))
+    cur.execute(query, (args.target_file.name,))
     conn.commit()
     raise
 
@@ -70,5 +83,5 @@ conn = db_conn()
 cur = conn.cursor()
 
 query = "INSERT INTO local_media (media_id, path, name, duration_27mhz, expires_at) VALUES (uuid_generate_v5(uuid_ns_url(), 'file://' || %s), %s, %s, %s, (SELECT now() + lifetime::interval FROM local_media_lifetimes WHERE standard = 't' LIMIT 1))"
-cur.execute(query, (target_file, target_file, os.path.basename(target_file), duration_27mhz))
+cur.execute(query, (args.target_file, args.target_file, args.target_file.name, args.duration_27mhz))
 conn.commit()
