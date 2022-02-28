@@ -86,15 +86,11 @@ sys.excepthook = my_error_handler
 import socket
 import psycopg2
 import psycopg2.extras
-import contextlib
 os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
 conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
                         connection_factory=psycopg2.extras.DictConnection)
 cur = conn.cursor()
-with contextlib.closing(
-        socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as s:
-    s.connect(('prisonpc', 0))
-    ip = s.getsockname()[0]
+ip = socket.gethostbyname('_outbound')  # https://github.com/systemd/systemd/releases/tag/v249
 query = "SELECT card, name FROM stations" \
         " WHERE host IN (%s,'255.255.255.255')" \
         " ORDER BY card"

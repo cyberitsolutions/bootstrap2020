@@ -30,11 +30,7 @@ conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
 cur = conn.cursor()
 
 # Not using mac address so that hosts can be replaced without rewriting the config
-# This is a slightly awful way to retrieve the address, but nothing else seems to work right
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('prisonpc', 0))
-ip = s.getsockname()[0]
-s.close()
+ip = socket.gethostbyname('_outbound')  # https://github.com/systemd/systemd/releases/tag/v249
 
 
 card_sids = {}

@@ -27,15 +27,7 @@ os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
 conn = psycopg2.connect(host='prisonpc', dbname='epg', user='tvserver',
                         connection_factory = psycopg2.extras.DictConnection)
 cur = conn.cursor()
-
-# Determine our IP address by opening a connection to prisonpc,
-# then checking the connection's source IP.
-# NB: this will fail if DNS isn't ready yet.
-# FIXME: this is awful. --twb, Jun 2015
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('prisonpc', 0))
-ip = s.getsockname()[0]
-s.close()
+ip = socket.gethostbyname('_outbound')  # https://github.com/systemd/systemd/releases/tag/v249
 
 ## FIXME: abstract the common parts of the unit files into a single function.
 
