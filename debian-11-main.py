@@ -743,7 +743,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128, 631, 2222}
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
                    for host in {'prisonpc-staff.lan'
                                 if template_wants_PrisonPC_staff_network else
                                 'prisonpc-inmate.lan'}]
