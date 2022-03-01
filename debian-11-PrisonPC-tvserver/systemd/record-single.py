@@ -73,20 +73,5 @@ with tempfile.TemporaryDirectory(
         raise
 
 # Log to the database that the recording succeeded.
-insert_query = """
-INSERT INTO local_media (media_id,
-                         path,
-                         name,
-                         duration_27mhz,
-                         expires_at)
-VALUES (uuid_generate_v5(uuid_ns_url(), 'file://' || %(path)s),
-        %(path)s,
-        %(name)s,
-        %(duration_27mhz)s,
-        (SELECT now() + lifetime::interval FROM local_media_lifetimes WHERE standard = 't' LIMIT 1))
-"""
-with tvserver.cursor() as cur:
-    cur.execute(insert_query, {
-        'path': args.target_file,
-        'name': args.target_file.name,
-        'duration_27mhz': args.duration_27mhz})
+tvserver.tell_database_about_local_medium(
+    args.target_file, args.duration_27mhz)

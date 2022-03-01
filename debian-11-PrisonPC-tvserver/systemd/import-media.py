@@ -39,9 +39,8 @@ def media_import(vob_path):
 
     # Tell the database.
     # Site staff can than queue the ripped DVD to a local channel.
-    query = "INSERT INTO local_media (media_id, path, name, duration_27mhz, expires_at) VALUES (uuid_generate_v5(uuid_ns_url(), 'file://'::text || %s), %s, %s, %s, (SELECT now() + lifetime::interval FROM local_media_lifetimes WHERE standard = 't' LIMIT 1))"
-    with tvserver.cursor() as cur:
-        cur.execute(query, (ts_path.with_suffix(''), ts_path.with_suffix(''), ts_path.name, duration_27mhz))
+    tvserver.tell_database_about_local_medium(
+        ts_path, duration_27mhz)
 
     # Transcoding worked; remove the raw .vob.
     # It used to be moved to /srv/tv/iptv-queue/done/.

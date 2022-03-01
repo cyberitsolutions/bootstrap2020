@@ -1,6 +1,7 @@
 import contextlib
 import ipaddress
 import os
+import pathlib
 import socket
 
 import psycopg2
@@ -84,3 +85,30 @@ def get_sids(cur):
 
 def sid2multicast_address(sid: int) -> ipaddress.IPv4Address:
     return ipaddress.IPv4Address('239.255.0.0') + sid
+
+
+def tell_database_about_local_medium(
+        ts_path: pathlib.Path,
+        duration_27mhz: int) -> None:
+    insert_query = """
+    INSERT INTO local_media (media_id,
+                             path,
+                             name,
+                             duration_27mhz,
+                             expires_at)
+    VALUES (uuid_generate_v5(uuid_ns_url(), 'file://' || %(path)s),  -- media_id
+            %(path)s,                                                -- path
+            %(name)s,                                                -- name
+            %(duration_27mhz)s,                                      -- duration_27mhz
+            (SELECT now() + lifetime::interval                       -- expires_at
+             FROM local_media_lifetimes
+             WHERE standard = 't'   -- use the default expiry
+             ORDER BY 1 DESC,       -- use biggest default expiry (just in case)
+             LIMIT 1))
+    """
+    with cursor() as cur:
+        cur.execute(
+            insert_query,
+            {'path': ts_path.with_suffix(''),  # '/path/to/foo' sans '.ts'
+             'name': ts_path.stem,             # 'foo'
+             'duration_27mhz': duration_27mhz})
