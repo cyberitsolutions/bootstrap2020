@@ -53,8 +53,7 @@ def sanitize_path_component(string):
 
 with tvserver.cursor() as cur:
     cur.execute(query, {'my_ip_addresses': tvserver.my_ip_addresses})
-    # fetchall() so we can then re-use the cursor inside the loop
-    for station, channel, sid, title, start, remaining, crid_series in cur.fetchall():
+    for station, channel, sid, title, start, remaining, crid_series in cur:
         station = sanitize_path_component(station)
         channel = sanitize_path_component(channel)
         title = sanitize_path_component(title)
@@ -65,11 +64,6 @@ with tvserver.cursor() as cur:
 
         if os.path.exists("%s.raw.ts"%recording_file):
             continue
-
-        # don't remove record markers for an entire series
-        # query = "delete from statuses where crid_series = %s and status = 'R'"
-        # cur.execute(query, (crid_item,))
-        # conn.commit()
 
         errfile = open(os.path.join(recording_base_path, "recordings.err"), "a")
         duration_27mhz = remaining * 27000000
