@@ -1,5 +1,4 @@
-# import any ready media files
 [Service]
 Type=oneshot
 # This was "iptv import-media"
-ExecStart=find /srv/tv/iptv-queue/inbound -xdev -type f -mmin +2 -iname "*.vob" -exec tvserver-import-medium {} +
+ExecStart=tvserver-import-medium
