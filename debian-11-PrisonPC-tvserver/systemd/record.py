@@ -25,6 +25,17 @@ import tvserver
 # The end result is poor TV quality on the inmate desktops.
 # --russm, Oct 2015
 
+# FIXME: instead of this approach, we should make systemd in charge.
+#        For each card sys⋯dvb0.device,
+#            udev tells systemd to start record@sys⋯dvb0.timer.
+#            record@sys⋯dvb0.timer runs every minute.
+#            record@sys⋯dvb0.service says
+#               postgres, should I start recording this minute?
+#               if not, just exit
+#               if so, run multicat/ffmpeg/lasts and wait for them to exit
+#        systemd's default rules ensure they do not overlap within one TV server.
+#        We'd still need the "if raw.ts exists, skip" in case another TV server is running.
+
 recording_base_path = pathlib.Path('/srv/tv/recorded')
 
 query = """
