@@ -36,6 +36,19 @@ import tvserver
 #        systemd's default rules ensure they do not overlap within one TV server.
 #        We'd still need the "if raw.ts exists, skip" in case another TV server is running.
 
+# https://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap03.html#tag_03_266
+# A POSIX path component cannot contain '/' or '\0'.
+# Python pathlib.PosixPath() does not actually enforce this AT ALL.
+# We don't expect legitimate use of '\0'.
+# We expect legitimate use of '/' in TV programme names, e.g.
+#    "Adventure Time S1E1 (Hats are Cool / The Problem With Ferrets)"
+#
+#
+# It would be sort of nice if we could say something like this, and
+# have // normalize the right-hand-side to be a PATH COMPONENT (not path).
+#
+#     root_path // station // channel // title
+
 recording_base_path = pathlib.Path('/srv/tv/recorded')
 
 query = """
@@ -59,9 +72,14 @@ SELECT s.name as station,
 """
 
 
+# This deals with '/' but not '\0'.
 def sanitize_path_component(string):
-    #return re.sub('[^/\x00]+', ' ', string)
-    return re.sub('[ /\x00]+', ' ', string)
+    return ' '.join(pathlib.Path(string).parts)
+
+
+# This deals with '/' and '\0' but is ugly.
+def sanitize_path_component(string):
+    return string.replace('\0', ' ').replace('/', ' ')
 
 
 with tvserver.cursor() as cur:
