@@ -34,44 +34,43 @@ with tempfile.TemporaryDirectory(
         dir=args.target_file.parent,
         prefix='tvserver-record.') as tempdir:
     tempdir = pathlib.Path(tempdir)
-    multicat_cmd = [
-        'multicat',
-        '-d', str(args.duration_27mhz),
-        f'@{args.multicast_group}:1234',
-        'raw.ts']
-    avconv_cmd = [
-        'ffmpeg', '-y',
-        '-i', 'raw.ts',
-        '-async','500',
-        '-vf', 'yadif',
-        '-q', '4',
-        'compressed.ts']
-    ingests_cmd = ['ingests', '-p', '8192', 'compressed.ts']
-    lasts_cmd = ['lasts', 'compressed.aux']
-    with args.target_file.with_suffix('.err').open('w') as errfile:
-        print(multicat_cmd, avconv_cmd, ingests_cmd, lasts_cmd,
-              sep='\n', file=errfile, flush=True)
-        try:
-            multicat_output = subprocess.check_output(multicat_cmd, cwd=tempdir, stderr=subprocess.STDOUT)
-            # Why is this here?  We think because multicat sucks at signalling errors.
-            # So, if multicat says ANYTHING on stdout or stderr, and it isn't "debug: ...", raise an error.
-            # ---twb, Oct 2018
-            if any(line.strip() and not line.startswith('debug')
-                   for line in multicat_output.splitlines()):
-                raise subprocess.CalledProcessError(0, multicat_cmd, multicat_output)
-            subprocess.check_call(avconv_cmd, cwd=tempdir, stderr=errfile)
-            subprocess.check_call(ingests_cmd, cwd=tempdir, stderr=errfile)
-            args.duration_27mhz = int(subprocess.check_output(lasts_cmd, cwd=tempdir, stderr=errfile))
-            # Everything worked, so move the compressed.ts and compress.aux to their final location.
-            (tempdir / 'compressed.ts').rename(args.target_file.with_suffix('.ts'))
-            (tempdir / 'compressed.aux').rename(args.target_file.with_suffix('.aux'))
-        except:
-            # Log to the database that the recording failed.
-            with tvserver.cursor() as cur:
-                cur.execute(
-                    "INSERT INTO failed_recording_log (programme) VALUES (%(path)s)",
-                    {'path': args.target_file.name})
-            raise
+    try:
+        multicat_output = subprocess.check_output(
+            ['multicat',
+             '-d', str(args.duration_27mhz),
+             f'@{args.multicast_group}:1234',
+             'raw.ts'],
+            cwd=tempdir,
+            stderr=subprocess.STDOUT)
+        # We can't trust multicat to exit(-1)? --twb, Oct 2018
+        if any(line.strip()
+               for line in multicat_output.splitlines()
+               if not line.startswith('debug')):
+            raise RuntimeError('multicat succeded, but printed non-debug line(s)', multicat_output)
+        subprocess.check_call(
+            ['ffmpeg', '-y',
+             '-i', 'raw.ts',
+             '-async', '500',
+             '-vf', 'yadif',
+             '-q', '4',
+             'compressed.ts'],
+            cwd=tempdir)
+        subprocess.check_call(
+            ['ingests', '-p', '8192', 'compressed.ts'],
+            cwd=tempdir)
+        args.duration_27mhz = int(subprocess.check_output(
+            ['lasts', 'compressed.aux'],
+            cwd=tempdir))
+        # Everything worked, so move the compressed.ts and compress.aux to their final location.
+        (tempdir / 'compressed.ts').rename(args.target_file.with_suffix('.ts'))
+        (tempdir / 'compressed.aux').rename(args.target_file.with_suffix('.aux'))
+    except:
+        # Log to the database that the recording failed.
+        with tvserver.cursor() as cur:
+            cur.execute(
+                "INSERT INTO failed_recording_log (programme) VALUES (%(path)s)",
+                {'path': args.target_file.name})
+        raise
 
 # Log to the database that the recording succeeded.
 insert_query = """
