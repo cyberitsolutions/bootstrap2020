@@ -3,7 +3,6 @@
 # find and start recording programmes that should be recorded
 
 import os
-import errno
 import re
 import subprocess
 
@@ -27,15 +26,32 @@ import tvserver
 
 recording_base_path = "/srv/tv/recorded"
 
+query = """
+SELECT s.name as station,
+       c.name as channel,
+       c.sid,
+       p.title,
+       p.start,
+       extract(epoch from p.stop - now()) as remaining,
+       st.crid_series
+  FROM statuses st
+  JOIN programmes p USING (crid_series)
+  JOIN channels c USING (sid)
+  JOIN stations s USING (frequency)
+ WHERE host IN %(my_ip_addresses)s
+   AND c.enabled
+   AND st.status = 'R'
+   AND p.start < now() + '1 minute'::interval
+   AND p.stop > now()
+"""
+
+
 def sanitize_path_component(string):
     #return re.sub('[^/\x00]+', ' ', string)
     return re.sub('[ /\x00]+', ' ', string)
 
+
 with tvserver.cursor() as cur:
-    query = """
-        SELECT s.name as station, c.name as channel, c.sid, p.title, p.start, extract(epoch from p.stop - now()) as remaining, st.crid_series
-          FROM statuses st JOIN programmes p USING (crid_series) JOIN channels c USING (sid) JOIN stations s USING (frequency)
-         WHERE host IN %(my_ip_addresses)s AND c.enabled AND st.status = 'R' AND p.start < now() + '1 minute'::interval AND p.stop > now()"""
     cur.execute(query, {'my_ip_addresses': tvserver.my_ip_addresses})
     # fetchall() so we can then re-use the cursor inside the loop
     for station, channel, sid, title, start, remaining, crid_series in cur.fetchall():
