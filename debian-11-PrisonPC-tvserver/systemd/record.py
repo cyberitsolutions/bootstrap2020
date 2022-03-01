@@ -2,10 +2,9 @@
 
 # find and start recording programmes that should be recorded
 
-import os
-import re
-import subprocess
+import logging
 import pathlib
+import subprocess
 
 import tvserver
 
@@ -49,7 +48,41 @@ import tvserver
 #
 #     root_path // station // channel // title
 
-recording_base_path = pathlib.Path('/srv/tv/recorded')
+
+# 14:07 <nedbat> twb: this is because the file names are made from song titles?
+# 14:07 <twb> nedbat: TV shows, but yes
+# 14:08 <twb> nedbat: and when you say it like that,
+#                     the OBVIOUS thing is to stop using path names but instead
+#                     make a content-oriented filesystem like git.
+# 14:09 <twb> so like pathname = hashlib.sha3(title.encode('UTF-8')
+# 14:11 <nedbat> twb: that would work great
+# 14:11 <nedbat> twb: but people like to see their stuff in names they can read
+# 14:12 <SnoopJ> It does neatly solve your filesystem headache by lifting the problem an abstraction-step-up
+# 14:12 <twb> Normal humans don't interact directly with the files
+# 14:13 <twb> This all happens inside a MythTV / Kodi type system.  They just see stuff in a web browser UI.
+# 14:13 <twb> It would just make life more annoying for me personally, when I have to wangle the raw files after a screw-up
+
+
+# https://bugs.python.org/issue22147
+class myPath_ANAL(pathlib.PosixPath):  # can't inherit from pathlib.Path because _flavour is missing
+    def __floordiv__(self, path_component):
+        if '\0' in path_component:
+            raise ValueError('NUL byte is forbidden in POSIX paths', path_component)
+        if '/' in path_component:
+            raise ValueError('/ is forbidden in POSIX path components', path_component)
+        return self / path_component
+
+
+# Make myPath('a') // 'b/c' work like Path('a') / 'b/c', except
+#
+#  1. Replace NULL with ZERO-WIDTH NO-BREAK SPACE.
+#  2. Replace SOLIDUS with BIG SOLIDUS (would FULLWIDTH SOLIDUS be better?)
+class myPath(pathlib.PosixPath):
+    def __floordiv__(self, path_component):
+        return self / path_component.replace('\0', '﻿').replace('/', '⧸')
+
+
+recording_base_path = myPath('/srv/tv/recorded')
 
 query = """
 SELECT s.name as station,
@@ -72,23 +105,10 @@ SELECT s.name as station,
 """
 
 
-# This deals with '/' but not '\0'.
-def sanitize_path_component(string):
-    return ' '.join(pathlib.Path(string).parts)
-
-
-# This deals with '/' and '\0' but is ugly.
-def sanitize_path_component(string):
-    return string.replace('\0', ' ').replace('/', ' ')
-
-
 with tvserver.cursor() as cur:
     cur.execute(query, {'my_ip_addresses': tvserver.my_ip_addresses})
     for row in cur:
-        station = sanitize_path_component(row.station)
-        channel = sanitize_path_component(row.channel)
-        title = sanitize_path_component(row.title)
-        recording_path = recording_base_path / station / channel / title / f'{title} - {start.date()}'
+        recording_path = recording_base_path // row.station // row.channel // row.title // f'{row.title} - {row.start.date()}'
 
         if recording_path.with_suffix('.raw.ts').exists():
             logging.warning('Is another TV server already recording this?  Skipping!')
