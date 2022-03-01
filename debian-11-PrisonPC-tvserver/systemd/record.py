@@ -5,6 +5,7 @@
 import os
 import re
 import subprocess
+import pathlib
 
 import tvserver
 
@@ -24,15 +25,16 @@ import tvserver
 # The end result is poor TV quality on the inmate desktops.
 # --russm, Oct 2015
 
-recording_base_path = "/srv/tv/recorded"
+recording_base_path = pathlib.Path('/srv/tv/recorded')
 
 query = """
 SELECT s.name as station,
        c.name as channel,
-       c.sid,
+       '239.255.0.0'::INET + c.sid AS multicast_address,
        p.title,
        p.start,
        extract(epoch from p.stop - now()) as remaining,
+       extract(epoch from p.stop - now()) * 27000000 AS duration_27mhz,
        st.crid_series
   FROM statuses st
   JOIN programmes p USING (crid_series)
@@ -53,22 +55,17 @@ def sanitize_path_component(string):
 
 with tvserver.cursor() as cur:
     cur.execute(query, {'my_ip_addresses': tvserver.my_ip_addresses})
-    for station, channel, sid, title, start, remaining, crid_series in cur:
-        station = sanitize_path_component(station)
-        channel = sanitize_path_component(channel)
-        title = sanitize_path_component(title)
-        recording_dir = os.path.join(recording_base_path, station, channel, title)
-        recording_file = os.path.join(recording_dir, "%s - %s" % (title, re.sub(' [0-9:+]+', '', str(start))))
-        sid_hi = sid / 256
-        sid_lo = sid % 256
+    for row in cur:
+        station = sanitize_path_component(row.station)
+        channel = sanitize_path_component(row.channel)
+        title = sanitize_path_component(row.title)
+        recording_path = recording_base_path / station / channel / title / f'{title} - {start.date()}'
 
-        if os.path.exists("%s.raw.ts"%recording_file):
-            continue
+        if recording_path.with_suffix('.raw.ts').exists():
+            logging.warning('Is another TV server already recording this?  Skipping!')
 
-        errfile = open(os.path.join(recording_base_path, "recordings.err"), "a")
-        duration_27mhz = remaining * 27000000
-        subprocess.Popen(["record-single", "239.255.%d.%d"%(sid_hi,sid_lo), "%d"%(duration_27mhz,), recording_file], close_fds=True, stderr=errfile)
-        errfile.close()
+        with (recording_base_path / 'recordings.err').open('a') as f:
+            subprocess.Popen(["record-single", row.multicast_address, str(row.duration_27mhz), recording_path], close_fds=True, stderr=f)
 
 
 # :vim: ts=4 sw=4 expandtab
