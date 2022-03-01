@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import pathlib
 import subprocess
 
 import tvserver
@@ -20,7 +21,6 @@ import tvserver
 # they'll both try to serve the content.
 # The end result is poor TV quality on the inmate desktops.
 # --russm, Oct 2015
-
 
 
 ## FIXME: abstract the common parts of the unit files into a single function.
@@ -61,8 +61,10 @@ with tvserver.cursor() as cur:
 
     ### TV tuners
     for row in tvserver.get_cards(cur):
+        dvblast_conf_path = pathlib.Path(f'/run/dvblast-{row.card}.conf')
+        dvblast_sock_path = dvblast_conf_path.with_suffix('.sock')
         print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
-        open("/run/dvblast-{row.card}.conf", "w").close() # create an empty config file
+        dvblast_conf_path.write_text('')  # create an empty config file
         with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
             print(
                 ## This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
@@ -74,7 +76,7 @@ with tvserver.cursor() as cur:
                 'StandardOutput=null',  # see FIXME above.
                 'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
                 f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
-                f'ExecStart=dvblast -a {row.card} -f {row.frequency} -b 7 -C -e -M "{row.name}" -c {dvblast_conf_path} -r {dvblast_sock_path}',
+                f'ExecStart=dvblast --adapter {row.card} --frequency {row.frequency} --bandwidth 7 --dvb-compliance --epg-passthrough --network-name "{row.name}" --config-file {dvblast_conf_path} --remote-socket {dvblast_sock_path}',
                 sep='\n',
                 file=fh)
 
