@@ -9,6 +9,10 @@ import psycopg2.extras
 # It allows you to send/receive ipaddress.IPv4Address objects.
 # This is MUCH SAFER than using str objects like '1.2.3.4/24'.
 # http://initd.org/psycopg/docs/extras.html#networking-data-types
+#
+# UPDATE: this understands the subclass ``ipaddress.IPv4Interface``, but
+#         NOT the parent class ``ipaddress.IPv4Address``.
+#         I guess just use the former everywhere...
 psycopg2.extras.register_ipaddress()
 
 # Implicitly tell psycopg2 where to read the pre-shared key from.
@@ -16,11 +20,13 @@ os.environ['PGPASSFILE'] = '/etc/prisonpc-persist/pgpass'
 
 # I wanted to use a frozenset here, but
 # psycopg2 doesn't know how to adapter it (by default).
-my_ip_addresses = [
+# UPDATE: frozenset(), set(), and list() all do the Wrong Thing.
+#         We need tuple() if we want to use "WHERE host IN %s".
+my_ip_addresses = (
     # This is a "wildcard" value in the EPG database.
-    ipaddress.IPv4Address('255.255.255.255'),
+    ipaddress.IPv4Interface('255.255.255.255'),
     # https://github.com/systemd/systemd/releases/tag/v249
-    ipaddress.IPv4Address(socket.gethostbyname('_outbound'))]
+    ipaddress.IPv4Interface(socket.gethostbyname('_outbound')))
 
 
 @contextlib.contextmanager
