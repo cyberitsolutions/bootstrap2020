@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-# update the channel config every minute to account for program blacklisting
+__doc__ = """ update the channel config every minute to account for program blacklisting """
 
-import os
 import pathlib
+import subprocess
 
 import tvserver
 
@@ -67,6 +67,8 @@ for card, sids in card_sids.items():
         for sid in sids:
             print(f'{tvserver.sid2multicast_address(sid)}:1234', 1, sid, file=f)
 
-os.system("/usr/bin/pkill -HUP dvblast")
+# Instruct all dvblast processes to reread their config files.
+# FIXME: should probably be "systemctl reload dvblast@{card}.service".
+subprocess.check_call(['pkill', '-HUP', 'dvblast'])
 
 # :vim: ts=4 sw=4 expandtab
