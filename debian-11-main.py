@@ -381,6 +381,8 @@ with tempfile.TemporaryDirectory() as td:
             '    dvblast'        # DVB-T → rtp://
             '    ffmpeg'         # DVD | DVB-T → .ts
             '    multicat'       # .ts → rtp://
+            '    dvb-apps'       # femon (for check_tv.py - FIXME: use dvblast3?)
+            '    procps'         # pkill (for update-config.py - FIXME: use systemctl reload)
             '    tv-grab-dvb python3-psycopg2 python3-lxml'  # DVB-T → XML → postgres (EPG)
             '    w-scan'  # Used at new sites to find frequency MHz.
             ]
