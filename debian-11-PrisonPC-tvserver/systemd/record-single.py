@@ -43,16 +43,16 @@ with args.target_file.with_suffix('.err').open('w') as errfile:
     print(multicat_cmd, avconv_cmd, ingests_cmd, lasts_cmd,
           sep='\n', file=errfile, flush=True)
     try:
-        multicat_output = subprocess.check_output(multicat_cmd, close_fds=True, stderr=subprocess.STDOUT)
+        multicat_output = subprocess.check_output(multicat_cmd, stderr=subprocess.STDOUT)
         # Why is this here?  We think because multicat sucks at signalling errors.
         # So, if multicat says ANYTHING on stdout or stderr, and it isn't "debug: ...", raise an error.
         # ---twb, Oct 2018
         if any(line.strip() and not line.startswith('debug')
                for line in multicat_output.splitlines()):
             raise subprocess.CalledProcessError(0, multicat_cmd, multicat_output)
-        subprocess.check_call(avconv_cmd, stderr=errfile, close_fds=True)
-        subprocess.check_call(ingests_cmd, stderr=errfile, close_fds=True)
-        args.duration_27mhz = int(subprocess.check_output(lasts_cmd, close_fds=True))
+        subprocess.check_call(avconv_cmd, stderr=errfile)
+        subprocess.check_call(ingests_cmd, stderr=errfile)
+        args.duration_27mhz = int(subprocess.check_output(lasts_cmd))
         args.target_file.with_suffix('.raw.ts').unlink()
         args.target_file.with_suffix('.raw.aux').unlink()
     except:

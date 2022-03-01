@@ -30,9 +30,9 @@ def media_import(cur, source_path):
     # Do include all video tracks.
     # Only include audio tracks with the metadata language tag set to eng
     # FIXME: What about files that have no language metadata on any audio tracks?
-    subprocess.check_call(["ffmpeg", "-i", source_path, "-ac", "2", "-q", "4", "-sn", "-map", "v", "-map", "a:m:language:eng", target_ts], close_fds=True)
-    subprocess.check_call(["ingests","-p","8192",target_ts], close_fds=True)
-    duration_27mhz = int(subprocess.check_output(["lasts",target_aux], close_fds=True))
+    subprocess.check_call(["ffmpeg", "-i", source_path, "-ac", "2", "-q", "4", "-sn", "-map", "v", "-map", "a:m:language:eng", target_ts])
+    subprocess.check_call(["ingests","-p","8192",target_ts])
+    duration_27mhz = int(subprocess.check_output(["lasts",target_aux]))
     os.rename(source_path, done_path)
     query = "INSERT INTO local_media (media_id, path, name, duration_27mhz, expires_at) VALUES (uuid_generate_v5(uuid_ns_url(), 'file://'::text || %s), %s, %s, %s, (SELECT now() + lifetime::interval FROM local_media_lifetimes WHERE standard = 't' LIMIT 1))"
     cur.execute(query, (target_basepath, target_basepath, programme_name, duration_27mhz))

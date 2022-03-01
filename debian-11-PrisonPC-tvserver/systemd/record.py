@@ -114,7 +114,7 @@ with tvserver.cursor() as cur:
             logging.warning('Is another TV server already recording this?  Skipping!')
 
         with (recording_base_path / 'recordings.err').open('a') as f:
-            subprocess.Popen(["record-single", row.multicast_address, str(row.duration_27mhz), recording_path], close_fds=True, stderr=f)
+            subprocess.Popen(["record-single", row.multicast_address, str(row.duration_27mhz), recording_path], stderr=f)
 
 
 # :vim: ts=4 sw=4 expandtab

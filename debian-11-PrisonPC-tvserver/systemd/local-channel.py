@@ -30,8 +30,7 @@ while True:
         ['multicat',
          '-t', '2',
          '{}.ts'.format(next_programme_path or '/srv/tv/recorded/unavailable'),
-         '{}:1234'.format(args.address)],
-        close_fds=True)
+         '{}:1234'.format(args.address)])
 
     # Rotate the schedule forward one programme,
     # i.e. pop the current programme off the head of the queue, and
