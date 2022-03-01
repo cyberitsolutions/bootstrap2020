@@ -74,20 +74,11 @@ with tvserver.cursor() as cur:
                 'StandardOutput=null',  # see FIXME above.
                 'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
                 f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
-                f'ExecStart=dvblast -a {row.card} -f {row.frequency} -b 7 -C -e -M "{row.name}" -c /run/dvblast-{row.card}.conf -r /run/dvblast-{row.card}.sock',
+                f'ExecStart=dvblast -a {row.card} -f {row.frequency} -b 7 -C -e -M "{row.name}" -c {dvblast_conf_path} -r {dvblast_sock_path}',
                 sep='\n',
                 file=fh)
 
     ### Local Channels
-    with open('/run/systemd/system/tvserver-local-channel@.service', 'w') as fh:
-        print(
-            '[Unit]', 'RequiresMountsFor=/srv/tv',  # for /srv/tv/recorded/{unavailable,interstitial}.ts
-            'RequiresMountsFor=/etc/prisonpc-persist',   # Needs PGPASSFILE=/etc/prisonpc-persist/pgpass to talk to postgres.
-            '[Service]',
-            'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
-            'ExecStart=tvserver-local-channel %I',
-            sep='\n',
-            file=fh)
     for row in tvserver.get_local_channels(cur):
         print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
         # If NOBODY has watched a TV channel for a while,
@@ -104,14 +95,6 @@ with tvserver.cursor() as cur:
     for row in tvserver.get_sids(cur):
         print(f'Wants=tvserver-multicat@{row.multicast_address.ip}.service',
               file=fh_target)
-    with open('/run/systemd/system/tvserver-multicat@.service', 'w') as fh:
-        print('[Service]',
-              'Restart=always',
-              'RestartSec=30s',
-              'StartLimitBurst=0',
-              "ExecStart=multicat -U @%I:1234 /dev/null",
-              sep='\n',
-              file=fh)
 
 
 # tell init about the processes it needs to manage
