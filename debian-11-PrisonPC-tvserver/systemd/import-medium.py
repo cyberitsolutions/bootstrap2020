@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import argparse
+import errno
 import fcntl
+import logging
 import pathlib
 import subprocess
 
@@ -58,7 +60,11 @@ try:
         with tvserver.cursor() as cur:
             for path in args.paths:
                 media_import(cur, path)
+# If file is locked, do nothing.
+# Compare C implementation:
+# https://github.com/util-linux/util-linux/blob/master/sys-utils/flock.c#L281-L287
 except IOError as e:
-    if e.errno != 11:
+    if e.errno == errno.EWOULDBLOCK:  # flock(2) raises this
+        logging.warning('failed to get lock: %s; giving up', lockfile_path)
+    else:
         raise
-    # FIXME: logging.debug here.
