@@ -61,9 +61,14 @@ with tvserver.cursor() as cur:
 
     ### TV tuners
     for row in tvserver.get_cards(cur):
+        # FIXME: make units use RuntimeDirectory=dvblast-%I and then store the .sock and .conf under that.
+        #        In that way, they will automatially be reaped when the unit ends.
         dvblast_conf_path = pathlib.Path(f'/run/dvblast-{row.card}.conf')
         dvblast_sock_path = dvblast_conf_path.with_suffix('.sock')
+        print(f'Wants=tvserver-epg-scan@{row.card}.timer', file=fh_target)
         print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
+        # FIXME: until update-config runs, dvblast will tune the tuner, but not broadcast anything.
+        #        The equivalent of update-config should run here.
         dvblast_conf_path.write_text('')  # create an empty config file
         with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
             print(
