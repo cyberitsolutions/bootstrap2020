@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-import pprint
-import re
-import pathlib
-import datetime
 import argparse
+import datetime
+import logging
+import pathlib
 import subprocess
 
 import lxml.etree
@@ -90,6 +89,7 @@ def exactly_one(matches: list):
         raise RuntimeError('An xpath should have returned exactly one match, but we got this...', matches)
     return matches[0]
 
+
 def one_or_fallback(matches: list, fallback_value):
     if len(matches) > 1:
         raise RuntimeError('An xpath should have returned one match or no matches, but we got this...', matches)
@@ -107,30 +107,76 @@ group.add_argument('--xml-file', type=pathlib.Path)
 args = parser.parse_args()
 
 if args.xml_file:
-    obj = lxml.etree.parse(args.xml_file)
+    obj = lxml.etree.parse(str(args.xml_file))
 else:
     # Run tv_grab_dvb directly, ourselves.
     obj = lxml.etree.fromstring(subprocess.check_output([
         'tv_grab_dvb', '-st30', '-eISO-8859-1',
         f'-i/dev/dvb/adapter{args.adapter}/demux0']))
 
+programmes = []         # accumulator (so we can cursor.executemany())
+
 for programme in obj.xpath('/tv/programme'):
+    # These first two values are separate because
+    # they are referred two twice.
     start = datetime.datetime.strptime(programme.get('start'), tv_grab_dvb_timestamp_format)
     title = exactly_one(programme.xpath('./title[@lang="en"]/text()'))
-    parameters = {
+    programmes.append({
         'channel': programme.get('channel'),
         'sid': int(strip(programme.get('channel'), suffix='.dvb.guide')),
         'start': start,
         'stop': datetime.datetime.strptime(programme.get('stop'), tv_grab_dvb_timestamp_format),
         'title': title,
-        'sub-title': one_or_fallback(
+        'sub_title': one_or_fallback(
             programme.xpath('./sub-title[@lang="en"]/text()'),
             fallback_value=''),
-        'crid-series': one_or_fallback(
-            programme.xpath('./sub-title[@lang="en"]/text()'),
+        'crid_series': one_or_fallback(
+            programme.xpath('./crid[@type="series"]/text()'),
             fallback_value=f'crid://PrisonPC/{title}'),
-        'crid-item': one_or_fallback(
-            programme.xpath('./sub-title[@lang="en"]/text()'),
-            fallback_value=f'crid://PrisonPC/{start}/{title}'),
-        }
+        'crid_item': one_or_fallback(
+            programme.xpath('./crid[@type="item"]/text()'),
+            fallback_value=f'crid://PrisonPC/{start}/{title}')})
 
+with tvserver.cursor() as cur:
+
+    # Occasionally, a channel's sid changes, or is just wrong in the EPG due to a typo.
+    # When this happens, we WOULD get a foreign key constraint issue.
+    # To avoid this we can EITHER insert a fake channel into the channels table, or
+    # we can avoid inserting the broken programmes.
+    # Since the programmes are probably broken (and thus undesirable), do the latter.
+    #
+    # We COULD just add ON CONFLICT DO NOTHING to the INSERT INTO programmes.
+    # That would ignore several other kinds of errors (probably a bad thing).
+    #
+    # https://alloc.cyber.com.au/task/task.php?taskID=25325
+    cur.execute('SELECT DISTINCT sid FROM channels')
+    known_sids = {row.sid for row in cur}
+    old_len = len(programmes)
+    programmes = [programme for programme in programmes
+                  if programme['sid'] in known_sids]
+    if old_len != len(programmes):
+        logging.warning(
+            '%s: Unable to insert %s (of %s) programmes;'
+            ' the database did not recognize their sid',
+            args.xml_file or f'card {args.adapter}',
+            old_len - len(programmes),
+            len(programmes))
+
+    # Once a programme has ended, we do not need it in the database.  Remove it.
+    # Note: in Debian 9, this tried to only remove entries from the channel we're currently scanning.
+    # I see no point doing this.  We might as well just prune it completely.
+    cur.execute('DELETE FROM programmes WHERE stop < now()')
+
+    # Typically the EPG has about 7 days of programming.
+    # This script runs hourly.
+    # So there will be considerable overlap.
+    # Delete rows that overlap with the rows we're about to insert.
+    cur.executemany(
+        "DELETE FROM programmes WHERE sid = %(sid)s AND (start, stop) OVERLAPS (%(start)s, %(stop)s)",
+        programmes)
+
+    # Finally, insert all the new programmes we just read from the TV card.
+    cur.executemany(
+        "INSERT INTO programmes (channel,     sid,     start,     stop,     title,     sub_title,     crid_series,     crid_item)"  # noqa: E501
+        "VALUES               (%(channel)s, %(sid)s, %(start)s, %(stop)s, %(title)s, %(sub_title)s, %(crid_series)s, %(crid_item)s)",  # noqa: E501
+        programmes)
