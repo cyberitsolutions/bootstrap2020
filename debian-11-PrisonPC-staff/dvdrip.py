@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import os
+import pathlib
 import sys
 import shutil
 import subprocess
@@ -13,10 +14,10 @@ import gi.repository
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
 
-GLADE_FILE = "/usr/local/share/dvdrip/dvdrip.glade"
+GLADE_FILE = pathlib.Path("/usr/local/share/dvdrip/dvdrip.glade")
 
 # NB: RIP_TEMP is a literal magic string - rather than using the automatic dvdbackup name. --twb, Mar 2016
-RIP_TEMP = "RIP_TEMP"
+RIP_TEMP = pathlib.Path("RIP_TEMP")
 
 
 class DVDBackup:
@@ -25,8 +26,8 @@ class DVDBackup:
         self.dvdbackup = "/usr/bin/dvdbackup"
         self.eject = "/usr/bin/eject"
         self.device = "/dev/dvd"
-        self.dvdrip_target_root_directory = "/srv/tv/iptv-queue/.ripped"
-        self.dvdrip_target_directory = tempfile.mkdtemp(dir=self.dvdrip_target_root_directory)
+        self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
+        self.dvdrip_target_directory = pathlib.Path(tempfile.mkdtemp(dir=self.dvdrip_target_root_directory))
         self.rip_cmd = [self.dvdbackup,
                         "-i", self.device,
                         "-o", self.dvdrip_target_directory,
@@ -65,9 +66,9 @@ class DVDBackup:
                 progressfunc(percentage)
         self.dvdbackup_process.wait()
         self.dvdbackup_process = None
-        open(os.path.join(self.dvdrip_target_directory, RIP_TEMP, 'rip-complete'), 'w+')
-        os.rename(os.path.join(self.dvdrip_target_directory, RIP_TEMP),
-                  os.path.join(self.dvdrip_target_root_directory, self.dvd_title))
+        open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
+        os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
+                  self.dvdrip_target_root_directory.joinpath(self.dvd_title))
         return True
 
     def dvdbackup_cancel(self):
@@ -86,7 +87,7 @@ class DVDRipApp:
     def __init__(self):
         self.error = None
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(GLADE_FILE)
+        self.builder.add_from_file(os.fspath(GLADE_FILE))
         self.builder.connect_signals(self)
         self.dvd_scanning = False
         self.dvd_ripping = False
@@ -192,6 +193,7 @@ class DVDRipApp:
 
 
 if __name__ == "__main__":
+    # FIXME: just use argparse ffs
     if len(sys.argv) == 1:
         dvdrip = DVDRipApp()
         Gtk.main()
