@@ -13,20 +13,25 @@ import gi.repository
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
 
-GLADE_FILE="/usr/local/share/dvdrip/dvdrip.glade"
+GLADE_FILE = "/usr/local/share/dvdrip/dvdrip.glade"
 
 # NB: RIP_TEMP is a literal magic string - rather than using the automatic dvdbackup name. --twb, Mar 2016
 RIP_TEMP = "RIP_TEMP"
 
+
 class DVDBackup:
-    def __init__(self,host_application=None):
+    def __init__(self, host_application=None):
         self.host_application = host_application
         self.dvdbackup = "/usr/bin/dvdbackup"
         self.eject = "/usr/bin/eject"
         self.device = "/dev/dvd"
         self.dvdrip_target_root_directory = "/srv/tv/iptv-queue/.ripped"
         self.dvdrip_target_directory = tempfile.mkdtemp(dir=self.dvdrip_target_root_directory)
-        self.rip_cmd = [self.dvdbackup, "-i", self.device, "-o", self.dvdrip_target_directory, "-n", RIP_TEMP, "--feature", "--progress"]
+        self.rip_cmd = [self.dvdbackup,
+                        "-i", self.device,
+                        "-o", self.dvdrip_target_directory,
+                        "-n", RIP_TEMP,
+                        "--feature", "--progress"]
         self.dvdbackup_process = None
         self.dvd_present = False
         self.dvd_title = None
@@ -40,27 +45,29 @@ class DVDBackup:
             if match:
                 self.dvd_present = True
                 self.dvd_title = match.group(1)
-        except:
+        except subprocess.CalledProcessError:  # FIXME: Is this all the original code was expecting?
             return False
         return True
 
     def dvdbackup_rip(self, progressfunc):
         # The host_application isn't set when using --test.
-        if self.host_application != None:
+        if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
         progressfunc(0.005)
         self.dvd_title += ' ' + datetime.now().replace(microsecond=0).isoformat(' ')
-        self.dvdbackup_process = subprocess.Popen(self.rip_cmd, bufsize=0, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+        self.dvdbackup_process = subprocess.Popen(self.rip_cmd, bufsize=0,
+                                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in self.dvdbackup_process.stdout:
-            match = re.match('Copying Title, part (\d+)/(\d+): \d+% done .(\d+)/(\d+) MiB.', line)
+            match = re.match(r'Copying Title, part (\d+)/(\d+): \d+% done .(\d+)/(\d+) MiB.', line)
             if match:
-                (partno,parts,mbno,mbs) = (float(match.group(1)),float(match.group(2)),float(match.group(3)),float(match.group(4)))
-                percentage = (partno-1)/parts + mbno/mbs/parts
+                (partno, parts, mbno, mbs) = (float(m) for m in match.groups())
+                percentage = (partno - 1) / parts + mbno / mbs / parts
                 progressfunc(percentage)
         self.dvdbackup_process.wait()
         self.dvdbackup_process = None
         open(os.path.join(self.dvdrip_target_directory, RIP_TEMP, 'rip-complete'), 'w+')
-        os.rename(os.path.join(self.dvdrip_target_directory, RIP_TEMP), os.path.join(self.dvdrip_target_root_directory, self.dvd_title))
+        os.rename(os.path.join(self.dvdrip_target_directory, RIP_TEMP),
+                  os.path.join(self.dvdrip_target_root_directory, self.dvd_title))
         return True
 
     def dvdbackup_cancel(self):
@@ -72,7 +79,7 @@ class DVDBackup:
             self.dvdbackup_process = None
 
     def dvdbackup_eject(self):
-        subprocess.call([self.eject,self.device])
+        subprocess.call([self.eject, self.device])
 
 
 class DVDRipApp:
@@ -88,12 +95,12 @@ class DVDRipApp:
             self.dvdbackup = DVDBackup(host_application=self)
         except OSError as e:
             self.error = e
-            if   e.errno == 2:  # No such file or directory
+            if e.errno == 2:  # No such file or directory
                 self.get_object("progressbar").set_text("IPTV queue directory does not exist")
-            elif e.errno == 13: # Permission denied
+            elif e.errno == 13:  # Permission denied
                 self.get_object("progressbar").set_text("Permission denied when attempting to write to the IPTV queue")
             else:
-                self.get_object("progressbar").set_text("Unknown error") # Never actually seen because the raise kills the app
+                self.get_object("progressbar").set_text("Unknown error")  # Never actually seen because the raise kills the app
                 raise e
             self.get_object("progressbar").set_fraction(0)
             self.get_object("button_rescan").set_sensitive(False)
@@ -103,7 +110,7 @@ class DVDRipApp:
             # and start a rescan on launch
             self.doStartRescan()
 
-    def get_object(self,object_name):
+    def get_object(self, object_name):
         return self.builder.get_object(object_name)
 
     def timeout_progress_scanning(self, user_data):
