@@ -8,8 +8,10 @@ import threading
 import tempfile
 import re
 from datetime import datetime
-from gi.repository import Gtk, GObject
-GObject.threads_init()
+
+import gi.repository
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
 
 GLADE_FILE="/usr/local/share/dvdrip/dvdrip.glade"
 
@@ -190,7 +192,7 @@ if __name__ == "__main__":
         # Don't bring up a GUI (or rip), just run the backend ripper's report.
         dvdbackup = DVDBackup()
         dvdbackup.dvdbackup_info()
-        print repr(dvdbackup.dvd_present)
-        print repr(dvdbackup.dvd_title)
+        print(dvdbackup.dvd_present)
+        print(dvdbackup.dvd_title)
     else:
         raise SystemExit(1)
