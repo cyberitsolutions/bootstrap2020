@@ -76,7 +76,8 @@ with tvserver.cursor() as cur:
                 'StandardOutput=null',  # see FIXME above.
                 'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
                 f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
-                f'ExecStart=dvblast --adapter {row.card} --frequency {row.frequency} --bandwidth 7 --dvb-compliance --epg-passthrough --network-name "{row.name}" --config-file {dvblast_conf_path} --remote-socket {dvblast_sock_path}',
+                # NOTE: in theory "--network-name" works, but in practice we seem to need "-M".
+                f'ExecStart=dvblast --adapter {row.card} --frequency {row.frequency} --bandwidth 7 --dvb-compliance --epg-passthrough -M "{row.name}" --config-file {dvblast_conf_path} --remote-socket {dvblast_sock_path}',
                 sep='\n',
                 file=fh)
 
