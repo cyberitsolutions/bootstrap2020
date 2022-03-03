@@ -4,6 +4,7 @@ import datetime
 import logging
 import pathlib
 import subprocess
+import tempfile
 
 import lxml.etree
 
@@ -109,10 +110,16 @@ args = parser.parse_args()
 if args.xml_file:
     obj = lxml.etree.parse(str(args.xml_file))
 else:
-    # Run tv_grab_dvb directly, ourselves.
-    obj = lxml.etree.fromstring(subprocess.check_output([
-        'tv_grab_dvb', '-st30', '-eISO-8859-1',
-        f'-i/dev/dvb/adapter{args.adapter}/demux0']))
+    with tempfile.TemporaryDirectory() as td:
+        # tv_grab_dvb emits a harmless warning if "channels.conf" is missing:
+        #     No [cst]zap channels.conf to produce channel info
+        # Create an empty one so it does not complain.
+        (pathlib.Path(td) / 'channels.conf').write_text('')
+        # Run tv_grab_dvb directly, ourselves.
+        obj = lxml.etree.fromstring(subprocess.check_output(
+            ['tv_grab_dvb', '-st30', '-eISO-8859-1',
+             f'-i/dev/dvb/adapter{args.adapter}/demux0'],
+            cwd=td))
 
 programmes = []         # accumulator (so we can cursor.executemany())
 
