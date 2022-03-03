@@ -18,6 +18,17 @@
 # is to run the femon command and check if "FE_HAS_LOCK" appears.
 # To ignore temporary problems, we have femon check repeatedly,
 # then check if the success/total ratio is above a minimum threshhold.
+#
+# FIXME: this runs from systemd as well.
+#        It would be nice if the log priorities were correct in that case, i.e.
+#
+#            CRITICAL - at least one TV adapter has no signal ['C31']
+#            OK 100% (adapter 0 found signal 3 times in 3) ABC
+#
+#        becomes
+#
+#            <3>CRITICAL - at least one TV adapter has no signal ['C31']
+#            <6>OK 100% (adapter 0 found signal 3 times in 3) ABC
 
 
 import subprocess
