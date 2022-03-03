@@ -30,7 +30,7 @@ table inet PrisonPC {
         #             https://alloc.cyber.com.au/task/task.php?taskID=31648
         #
         # https://en.wikipedia.org/wiki/Multicast_address
-        ip daddr 239.255.0.0/16  jump television
+        ip daddr 239.255.0.0/16  udp dport 1234  jump television
         jump prelude
         # Prisoner machines allow initiation of connections from and to the
         # server, and (for clandestine monitoring) from staff desktops.

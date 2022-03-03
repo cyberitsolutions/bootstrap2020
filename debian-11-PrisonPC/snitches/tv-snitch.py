@@ -37,7 +37,9 @@ def enact(drop, why=None):
         text=True,
         input=';'.join([
             'flush chain inet PrisonPC television',
-            'add rule inet PrisonPC television drop' if drop else '']))
+            'add rule inet PrisonPC television drop'
+            if drop else
+            'add rule inet PrisonPC television accept']))
 
     # FIXME: use python3-nftables (not subprocess + nft)?
     #        https://ral-arturo.org/2020/11/22/python-nftables-tutorial.html
@@ -51,10 +53,12 @@ def enact(drop, why=None):
                     {'flush': {'chain': {'protocol': 'inet',
                                          'table': 'PrisonPC',
                                          'name': 'television'}}},
-                    *([{'add': {'chain': {'protocol': 'inet',
-                                          'table': 'PrisonPC',
-                                          'name': 'television',
-                                          'expr': [{'drop': None}]}}}] if drop else [])]})
+                    {'add': {'chain': {'protocol': 'inet',
+                                       'table': 'PrisonPC',
+                                       'name': 'television',
+                                       'expr': [{'drop': None}
+                                                if drop else
+                                                {'accept': None}]}}}]})
             if error:
                 raise RuntimeError(error)
 
