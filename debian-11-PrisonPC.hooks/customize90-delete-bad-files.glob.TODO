@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# NB: most of these entries CANNOT be done in dpkg.cfg path-excludes=<glob>,
-# because their files are referenced during package installation.
-# See also doc/NNNNN-mksquashfs-exclude-vs-dpkg-exclude.txt
-# --twb, Sep 2015
-
 # This workflow can help find badness in an app's *dependencies*:
 #
 #     # find / -xdev -exec touch -hd @0 {} +
