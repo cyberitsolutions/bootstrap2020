@@ -15,9 +15,6 @@
 ## ========================================
 removing **/systemd/**/*@(crypt|password)*
 removing **/*bin/systemd-*password*
-# From libpam-mount.  Mounting $HOME requires libcryptmount.so & pm-varrun; exclude the rest.
-removing **/*bin/*mount.crypt*
-removing **/*bin/pmt-*
 # From kde-runtime-data, blame KDE Edu apps.  "KWallet" is a password manager based on GPG.
 removing **/*bin/*kwalletd
 removing usr/share/kde*/**/kwalletd*
