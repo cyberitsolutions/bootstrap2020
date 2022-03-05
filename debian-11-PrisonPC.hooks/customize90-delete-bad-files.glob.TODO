@@ -1,0 +1,653 @@
+#!/bin/bash
+set -eEu -o pipefail
+shopt -s failglob
+trap 'echo >&2 "$0:${LINENO}: unknown error"' ERR
+
+
+# For documentation on bash globbing, see
+#  * bash(1) § Pathname Expansion
+#  * http://mywiki.wooledge.org/glob
+
+
+# This is a list of files to *EXCLUDE* from the built SOE.
+# Exclusions that *ALL* SOEs need remain in ./bootstrap (to simplify merges).
+# The ones below are for PrisonPC Desktop SOEs.
+# I moved them into a separate file because they'd grown to half the script.
+# --twb, Sep 2015
+#
+# NB: most of these entries CANNOT be done in dpkg.cfg path-excludes=<glob>,
+# because their files are referenced during package installation.
+# See also doc/NNNNN-mksquashfs-exclude-vs-dpkg-exclude.txt
+# --twb, Sep 2015
+#
+# Because mksquashfs exclusion syntax was painful to work with,
+# this is now a regular bash script.
+# See also doc/NNNNN-mksquashfs-exclude-vs-bash-glob.txt
+# --twb, Dec 2015
+
+
+# This workflow can help find badness in an app's *dependencies*:
+#
+#     # find / -xdev -exec touch -hd @0 {} +
+#     # apt install shit-app
+#     # find / -not -newermt @0 -exec ls -hlds --color {} +
+#
+# To find if anything mentions a scary-lookling library (e.g. /usr/bin/enable-backdoor),
+#
+#     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
+
+
+# Accidentally deleting large parts of a normal OS is BAD BAD BAD.
+# Therefore start by checking if we're inside the build chroot.
+[[ -e etc/debian_chroot ]]
+
+# Enable advanced globbing & DISABLE failglob (Cyber BCP),
+# so we can purge files in a branch & install them later.
+shopt -s globstar extglob nullglob
+shopt -u failglob
+
+# This wrapper exists primarily so I can toggle --verbose easily.
+# Also by being 8 characters long, the command & the output line up.
+removing () { rm -vrf -- "$@"; }
+
+# Because AMC's requested games are *SO BLOODY HUGE*,
+# we fill an 8GiB tmpfs.  About 2GiB are these debs.
+# Reclaim their space so we might have room for the squashfs.
+removing **/cache/**/*.deb
+
+
+## Inmates MUST NOT have unnecessary crypto
+## ========================================
+removing **/systemd/**/*@(crypt|password)*
+removing **/*bin/systemd-*password*
+# From gnupg, blame apt.  Not needed after apt-key trust database is set up.
+removing **/*bin/@(lspgpot|gpgsplit|gpg-zip|gpg)
+removing **/gnupg
+removing **/udev/rules.d/*gnupg.rules
+# From openssl & ssl-cert.  Not needed after packages are installed.
+removing **/*bin/@(c_rehash|openssl|make-ssl-cert)
+removing etc/ssl/!(certs|private)
+removing usr/lib/ssl/!(certs|private)
+removing **/ssleay.cnf
+# From libpam-mount.  Mounting $HOME requires libcryptmount.so & pm-varrun; exclude the rest.
+removing **/*bin/*mount.crypt*
+removing **/*bin/pmt-*
+# From kde-runtime-data, blame KDE Edu apps.  "KWallet" is a password manager based on GPG.
+removing **/*bin/*kwalletd
+removing usr/share/kde*/**/kwalletd*
+
+# FIXME: put this in the right place.
+# From kde4libs and associated villains.
+# Notes: (see also https://api.kde.org/frameworks/)
+#   phonon - the thing KDE apps use to make a "bong" noise when a popup window appears.
+#   kcm - KDE control panels stuff.  Has things like SSL, terminal, text editor in there.
+#   drkonqi - report crash to KDE over http
+#   knotify - we use xfce-notifyd instead.
+#   plasma - the "KDE desktop" itself, as opposed to KDE apps.  We use XFCE instead.
+#   attica - downloading user-generated content from web forums
+removing usr/*bin/knotify*
+removing usr/lib/**/*knotify*
+removing usr/lib/kde4/libexec/@(drkonqi|kdeeject|kdesu|kdesud|khc_mansearch.pl|ksendbugmail)
+removing usr/lib/kde4/plugins/marble/*/QtMobilityPositionProviderPlugin.so  # KDE4 / Jessie
+removing usr/lib/**/marble/plugins/libQtPositioningPositionProviderPlugin.so  # KDE5 / Stretch
+removing usr/lib/**/marble/plugins/libAprsPlugin.so
+removing usr/share/dbus-1/services/org.kde.knotify.service
+removing usr/share/kde*/**/*@(phonon|drkonqi|kcm_|knotify)*
+removing usr/share/kde4/servicetypes/ktexteditor*.desktop
+removing usr/lib/kde4/imports/
+removing usr/lib/kde4/platformimports/
+removing usr/lib/kde4/*thumbnail.so
+# FIXME: do we really need ALL of desktop|file|ghelp|help|trash ?
+removing usr/share/kde4/services/!(desktop|file|ghelp|help|trash).protocol
+removing usr/lib/kde4/kio_!(desktop|file|ghelp|help|trash).so
+removing usr/share/kde4/services/*thumbnail.desktop
+removing usr/share/kde4/services/plasma*.desktop
+removing usr/share/kde4/services/qimageioplugins/!(bmp|gif|jpeg|png|svg+xml|svg+xml-compressed|xcf).desktop
+removing usr/share/kde4/services/searchproviders/
+removing usr/bin/meinproc4      # renders KDE docbook variant to HTML
+removing usr/lib/libkwalletbackend.so*
+removing usr/lib/kde4/libkdeinit/libkdeinit4_kwalletd.so
+removing usr/lib/kde4/plugins/kauth
+removing usr/lib/kde4/librenaudioplugin.so
+removing usr/lib/kde4/kcm_emoticons.so
+removing usr/lib/kde4/krossqts.so
+removing usr/lib/kde4/krosskjs.so
+removing usr/lib/kde4/emoticonstheme_*.so
+removing usr/lib/kde4/plugins/script/libkrossqtsplugin.so*
+removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/kde3supportwidgets.so
+removing usr/bin/kross
+removing usr/bin/kjscmd
+removing usr/lib/kde4/libkmanpart.so
+removing usr/lib/kde4/libkdeinit/libkdeinit4_khelpcenter.so
+removing usr/lib/kde4/kcm_attica.so
+removing usr/lib/attica_kde.so
+removing usr/bin/plasma-remote-helper
+removing usr/bin/plasmapkg
+removing usr/lib/kde4/imports/org/kde/plasma
+removing usr/lib/kde4/plasma-kpart.so
+removing usr/lib/kde4/plasma_*.so
+removing usr/share/kde4/apps/plasma
+removing usr/share/kde4/services/plasma-*.desktop
+removing usr/share/kde4/servicetypes/plasma-*.desktop
+removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/*
+removing usr/lib/kde*/kcm_*.so
+removing usr/lib/kde*/kcmspellchecking.so
+removing usr/bin/kcmshell4
+removing etc/dbus-1/system.d/org.kde.kcontrol.kcmremotewidgets.conf
+removing usr/share/dbus-1/system-services/org.kde.*.service
+removing usr/share/kde4/apps/kcmlocale/
+removing usr/lib/libkcmutils.so*
+removing etc/dbus-1/system.d/org.kde.auth.conf
+removing usr/share/kde4/apps/kio_!(desktop|file|ghelp|help|trash)/
+removing usr/lib/kde4/kio_!(desktop|file|ghelp|help|trash).so
+## FIXME: UNTESTED
+removing usr/lib/**/kf5/kio/!(desktop|file|ghelp|help|trash).so
+removing **/*bin/@(kde-cp|kde-mv|kde-open|kde4)
+removing **/*bin/protocoltojson  # blame kio
+removing **/*bin/pykig.py        # blame kig
+removing **/*bin/@(dvipdf|eps2eps|font2c|gsbj|gsdj|gsdj500|gslj|gslp|gsnd|pdf2dsc|pdf2ps|pfbtopfa|pphs|printafm|ps2ascii|ps2epsi|ps2pdf|ps2pdf12|ps2pdf13|ps2pdf14|ps2pdfwr|ps2ps|ps2ps2|ps2txt|wftopfa)  # thin shims around bin/gs — not really useful to remove?
+
+removing **/*bin/kcookiejar5
+removing usr/share/dbus-1/services/org.kde.kcookiejar5.service
+removing usr/share/dbus-1/services/org.kde.kpasswdserver.service
+removing usr/lib/**/kf5/kiod/kpasswdserver.so
+removing usr/share/katepart
+removing usr/share/apps/konsole
+removing usr/share/doc/HTML/*/kioslave5
+removing usr/share/kf5/kjava
+removing usr/share/kservices5/!(kcmtrash|khtml|cache|cookies|data|khtmlimage).protocol  # FIXME: this is likely to break things.
+removing usr/share/man          # FIXME: isn't this a noop?
+
+
+# removing **/*bin/kded4
+# removing usr/lib/kde*/kded_*.so
+# removing usr/lib/kconf_update_bin/
+# removing usr/lib/kde*/plugins/phonon_platform
+# removing usr/lib/**/qt4/plugins/phonon_backend
+# removing usr/share/kde4/services/
+# removing usr/share/kde4/servicetypes/
+# removing usr/share/polkit-1/actions/org.kde.*.policy
+# removing usr/lib/kde4/libkdeinit/*
+# removing usr/lib/kde4/libexec/*
+# removing usr/share/kde4/apps/konqueror/
+# removing usr/share/kde4/apps/konqsidebartng/
+# removing usr/share/kde4/apps/kconf_update/
+# removing usr/share/kde4/apps/kcharselect/
+# removing usr/share/kde4/apps/kdeui/
+# removing usr/share/kde4/apps/kdewidgets/
+# removing usr/lib/kde4/libexec/@(kioexec|kioslave|kio_http_cache_cleaner)
+# removing usr/bin/kioclient
+# removing usr/share/kde4/apps/ksgmltools2/  # removing this will probably break khelpcenter4.
+# removing usr/share/kde4/apps/ksmserver/
+# removing usr/lib/kde4/platformimports/
+# removing usr/share/mime/inode/vnd.kde.*.xml
+# removing usr/bin/solid-hardware
+# removing usr/share/kde4/apps/solid/
+# removing usr/lib/kde4/kded_solid*.so
+# removing usr/lib/libsolid.so*
+# removing usr/share/kde4/services/kded/solid*.desktop
+# removing usr/share/kde4/config.kcfg/
+# removing usr/share/kde4/config/!(ui)
+# removing usr/share/kde4/services/*.protocol
+# removing usr/share/kde4/services/qimageiopluginsx
+# removing usr/share/kde4/services/searchproviders/
+# removing usr/bin/kbuildsycoca4
+
+# FIXME: broke Kalzium somehow (hung for ages without any output, then said something about QStateMachine::postEvent).  Investigate.
+#removing usr/share/kde4/config/!(ui)
+
+## FIXME: this is enough to break khelpcenter.  Refine?
+##   khelpcenter(673): No ksycoca4 database available!
+## Probably need to keep at least libkdeinit4_kbuildsycoca4.so
+# removing usr/*bin/kdeinit*
+# removing usr/lib/kde4/libexec/*kdeinit*
+# removing usr/lib/kde4/libkdeinit/libkdeinit4_!(khelpcenter|kbuildsycoca4).so
+
+
+## CANNOT REMOVE — KDE apps need these
+## ---------------------------------------
+: removing usr/lib/libktexteditor.so*  # FIXME: uncomment once kalzium & kig & step are gone!
+: removing usr/lib/libkdeui.so.*       # FIXME: uncomment once all KDE apps are gone!
+: removing usr/lib/libsolid.so*        # FIXME: uncomment once all KDE apps are gone!
+: removing usr/lib/libphonon.so*       # FIXME: uncomment once all KDE apps are gone!
+: removing usr/lib/kde4/libkdeinit/libkdeinit4_kbuildsycoca4.so  # FIXME: uncomment once khelpcenter4 is gone!
+: removing usr/share/kde4/config/ui/   # FIXME: uncomment once kalzium & step are gone!
+: removing usr/lib/kde4/libexec/klauncher  # FIXME: uncomment once khelpcenter4 is gone!
+
+
+## Inmates MUST NOT have clandestine comms
+## =======================================
+# From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
+removing **/*bin/@(dbclient|dropbearkey)
+removing usr/lib/dropbear
+# From openssh-client & openssh-sftp-server.  openssh-server needs ssh-keygen at boot time; exclude the rest.
+removing **/*bin/@(scp|sftp|slogin|ssh|ssh-add|ssh-agent|ssh-argv0|ssh-copy-id|ssh-keyscan)
+removing usr/lib/openssh
+# From x11vnc-data.  This is a Java-based VNC client!
+removing usr/share/x11vnc
+# From libreoffice 5.1+.  Some kind of FTP/SSH/WebDAV/SMB/CMIS client. (#31791)
+removing usr/lib/libreoffice/**/placeedit.ui
+
+
+## Inmates MUST NOT have writable local media (DVD, USB)
+## =====================================================
+# NB: when p123 logs in, systemd-logind grants write access (ACL
+# user:p123:rw) to all devices tagged "uaccess" in udev. (#30098)
+removing **/udev/rules.d/*@(uaccess|seat-late).rules
+# From genisoimage, blame Pete.  Lucid-era disc snitching needs isoinfo; exclude the rest.
+removing **/*bin/@(devdump|dirsplit|genisoimage|geteltorito|isodump|isovfy|mkzftree)
+
+
+## Inmates MUST NOT have containers (VMs)
+## ======================================
+removing **/*bin/@(machinectl|systemd-nspawn)
+removing **/systemd/**/*@(machine|nspawn|container)*
+# Remove the related dbus service, so error messages are more obvious.
+removing **/dbus-1/**/org.freedesktop.machine1.*
+
+
+## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
+## ===========================================================
+removing **/systemd/**/*@(getty|console|debug|emergency|rescue|autovt|shell)*
+# From util-linux & sysvinit-utils.  We only want GUI & SSH logins.
+removing **/*bin/*@(getty|sulogin)*
+# From gimp.
+removing **/gimp/**/plug-ins/@(python-console.py|pyconsole.py|script-fu)
+# From dia.
+removing usr/lib/**/dia/libpython_plugin.so
+# From scribus.
+removing usr/lib/scribus/plugins/libscriptplugin.so
+# From planner (né Mr Project).  I *think* this lets you add python-backed menu items to planner GUI. —twb, Oct 2018
+removing usr/lib/planner/plugins/libpython-plugin.so
+
+
+## Inmates SHOULD NOT have a text editor
+## =====================================
+## NOTE: this is a workaround to make it harder to WRITE scripts,
+## since we haven't set up SELinux to stop them EXECUTING scripts.
+# NOTE: libktexteditor.so (KDE Kate) is discussed elsewhere for now.
+# From libgtksourceview2.0-common, blame pspp. (#31748)
+# NOTE: this merely breaks syntax highlighting, not the editor itself.
+removing usr/share/gtksourceview-*/
+# NOTE: This makes psppire crash when trying to open Syntax Editor,
+# but any other application can still use libgtksourceview!
+removing usr/share/pspp/syntax-editor.ui
+## CANNOT REMOVE — pspp needs this
+: removing usr/lib/libgtksourceview*
+
+
+## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
+## ================================================================
+## NB: systemd-user-sessions is needed, see pam_nologin(8).
+removing **/systemd/**/user*  # user* NOT *user* because multi-user.target
+removing etc/pam.d/systemd-user
+
+
+## Inmates SHOULD NOT be have miscellaneous scary things
+## =====================================================
+removing **/systemd/**/*@(sleep|suspend|hibernate)*
+removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
+# Unlocked web browsers.
+removing **/webkitgtk*/**/@(GtkLauncher|MiniBrowser)
+# An HTML5 web server / app server.
+# https://developer.gnome.org/gtk3/stable/gtk-broadway.html
+removing **/*bin/broadwayd
+# Locks session when police jiggler inserted.
+removing **/udev/rules.d/*seat.rules
+# From gimp.  Screenshots lead to ersatz child porn?
+removing **/gimp/**/plug-ins/screenshot
+
+
+## Inmates SHOULD NOT be able to use VLC for evil
+## ==============================================
+## See also https://kb/PrisonPC+VLC+Functional+Requirements
+## See also Alloc tasks #30713, #30675, #30910
+## This includes screenshots & recording to local files.
+## This includes SFTP, HTTP, VNC, RDP clients.
+## This includes RTP, HTTP servers.
+## FIXME: this lockdown NOT FINISHED:
+##
+##   audio_filter  control      misc           video_chroma
+##   audio_mixer   demux        packetizer     video_filter
+##   codec         meta_engine  stream_filter
+##
+## FIXME: recompile vlc with --disable-foo ?
+##
+## FIXME: j-b on #videolan says ./configure --disable-sout *WILL*
+##        disable Video > Take Snapshot.
+##        Failing that, we need to remove all png, jpg and tiff encoders,
+##        and possibly more.  Ref. Tools > Preferences > Video > Format.
+##
+# These exist outside the "plugins" hierarchy.
+removing usr/lib/vlc/**/*@(lua|vdpau)*
+# These plugin "capabilities" are not required.
+# Additional notes:
+#   stream_out:   Movie recording
+removing usr/lib/vlc/plugins/@(access_output|stream_out|mux|services_discovery|video_splitter|visualization)/
+# These plugin "capabilities" require only a small whitelist.
+# Additional notes:
+#  * cdda:        Music CDs
+#  * dvdread:     Movie DVDs
+#  * dvdnav:      Movie DVD menus
+#  * rtp:         IPTV
+#  * filesystem:  file:///srv/share/tv/Foo/Bar.avi
+#  * xcb_xv:      draws the actual video inside qvlc/cvlc/upmc windows.
+#  * xcb_window:  creates a window for xcb_xv to draw into, in cvlc/upmc (not qvlc).
+#  * qt4:         "native" GUI (not ncurses, not "skinnable")
+#  * freetype:    Subtitles
+removing usr/lib/vlc/plugins/access/!(lib@(cdda|dvdread|dvdnav|rtp|filesystem)_plugin.so)
+removing usr/lib/vlc/plugins/audio_output/!(libalsa_plugin.so)
+removing usr/lib/vlc/plugins/video_output/!(lib@(xcb_window|xcb_xv)_plugin.so)
+removing usr/lib/vlc/plugins/gui/!(libqt4_plugin.so)
+removing usr/lib/vlc/plugins/text_renderer/!(libfreetype_plugin.so)
+
+
+## Inmates SHOULD NOT have packaging tools
+## =======================================
+# From apt & dpkg &c.  Not needed after packages are installed.
+# NB: adduser(8) needs the Debian::* perl modules we exclude here.
+removing **/*bin/@(apt|dpkg|debconf)@(|-*)
+removing **/*bin/gpgv
+removing etc/@(apt|dpkg|debconf.conf)
+removing usr/lib/@(apt|dpkg)
+removing usr/share/@(dpkg|debconf|debhelper)
+removing usr/share/perl5/@(Debconf|Debian)
+removing var/cache/@(apt|debconf)
+removing var/lib/@(apt|dpkg)
+removing **/systemd/**/*apt-daily*
+# From systemd & init-system-helpers.  Not needed after packages are installed.
+removing **/systemd/**/*system-update*
+removing **/*deb-systemd*
+
+
+## Inmates SHOULD NOT have diagnostic tools
+## ========================================
+# From busybox & klibc-utils.  Not needed after ramdisk built.
+removing **/*bin/busybox
+removing **/klibc
+removing **/lib/klibc*.so
+# From libc-bin.  (FIXME: remove more).
+removing **/*bin/@(ldd|pldd|catchsegv)
+# From util-linux.  (FIXME: remove more).
+removing **/*bin/@(blkdiscard|resizepart|runuser|utmpdump|wdctl)
+removing etc/pam.d/runuser*
+# From coreutils.  (FIXME: remove more).
+removing **/*bin/shred
+# From parted (blame udisks2).
+removing **/*bin/@(parted|partprobe)
+# From iproute2.  xdm/Xsetup needs ip; exclude the rest.
+removing etc/iproute2
+removing usr/lib/tc
+removing **/*bin/@(arpd|bridge|ctstat|lnstat|nstat|routef|routel|rtacct|rtmon|rtstat|ss|tc)
+# From acl.  Not needed after systemd installs (for /var/log/journal).
+removing **/*bin/@(chacl|getfacl|setfacl)
+# From systemd.
+removing **/*bin/@(loginctl|systemd-analyze|systemd-cgls|systemd-cgtop|systemd-delta|systemd-detect-virt|systemd-path)
+# From passwd.  Note Xstartup calls usermod at runtime, and many packages need adduser at install time.
+# Inmates can access chpasswd via Applications > Settings > Password Reset ("usermode" package)
+removing **/*bin/@(chage|chfn|chsh|expiry|gpaswd|passwd|chgpasswd|chpasswd|cpgr|cppw|groupadd|groupdel|groupmems|groupmod|grpck|grpconv|grpunconv|newusers|pwck|pwunconv|useradd|userdel|vigr|vipw)
+removing etc/pam.d/@(chfn|chsh|newusers|passwd)
+
+
+## Inmates SHOULD NOT have development tools
+## =========================================
+# From EVERYTHING.
+# Additional notes:
+#  * pygame examples includes a Space Invaders game.
+removing **/*.pod
+removing **/*bin/@(dh_*|pdb*)
+removing **/@(debpython|dh_python2|dh_python3)
+removing **/pkgconfig
+removing **/pygame/@(tests|examples|docs)
+removing usr/@(include|src)
+removing usr/lib/@(debug|valgrind)
+removing usr/share/@(apport|bug|dh-python|gdb|lintian)
+removing usr/bin/@(pybuild|pyclean|pycompile)
+removing **/*bin/@(pdb|pydoc|pygettext)@(|[23]*)
+removing **/*bin/@(2to3|2to3-[23]*)
+removing **/lib/python*/@(pdb|doctest|cgitb).@(py|pyc)
+removing **/lib/python*/@(test|lib2to3|venv|unittest|idlelib)/
+
+# UPMC → pygame → numpy → unittest.
+# FIXME: when "emcee" replaces "UPMC", remove this crappy code.
+# UPDATE: As at Apr 2019 / Stretch, (parts of) python-numpy (Python2) are used by:
+#   childsplay
+#   solarwolf   (via python-pygame)
+#   upmc        (via python-pygame)
+#   ghextris    (via python-glade)
+#   dia         (via python-gtk2)
+#   gcompris    (via python-gtk2)
+#   gimp        (via python-gtk2)
+#   lybniz      (via python-gtk2)
+# Mock just enough of "import unittest" so that "import numpy" works.
+mkdir usr/lib/python2.7/unittest
+echo >usr/lib/python2.7/unittest/case.py 'class SkipTest: pass'
+echo >usr/lib/python2.7/unittest/__init__.py 'class TestCase: pass'
+# Or better yet, just mock out numpy's own testing!
+# UPDATE: "import pygame" worked OK with this, but
+#         I can't be arsed testing all of the above apps for regression.
+#         Therefore, go back to just mocking unittest instead of pruning numpy.
+# removing **/lib/python*/numpy/testing
+# removing **/lib/python*/dist-packages/numpy/testing
+# removing **/numpy/**/@(tests|testing|testutils|f2py_testing|distutils)
+# removing **/numpy/**/core/@(setup.py|setup_common.py)
+# removing **/*bin/f2py*
+# mkdir usr/lib/python2.7/dist-packages/numpy/testing
+# echo >usr/lib/python2.7/dist-packages/numpy/testing/__init__.py 'class Tester: pass'
+# mkdir usr/lib/python2.7/dist-packages/numpy/testing/nosetester
+# echo >usr/lib/python2.7/dist-packages/numpy/testing/nosetester/__init__.py 'class _numpy_tester: bench = test = None'
+
+
+# Python's built-in webserver capabilities
+# Python2's SocketServer is needed for logging.config.
+removing **/lib/python*/@(BaseHTTPServer|CGIHTTPServer|SimpleHTTPServer|SimpleXMLRPCServer|DocXMLRPCServer|xmlrpc/server).@(py|pyc)
+removing **/lib/python*/wsgiref/
+
+
+## Useless & confusing menu items SHOULD be hidden (#30257)
+## ========================================================
+# From EVERYTHING (especially XFCE4 packages).
+# Additional notes:
+#  * uca.xml makes Thunar show "Open Terminal Here" in right-click (context) menu.
+#  * for Apps > Settings > Foo, when Foo is locked down in xfconf,
+#    we also delete the underlying binary (just in case).
+#  * ceferino* aren't useful without an xterm.
+#  * libreoffice-math doesn't start properly. (#30257)
+removing **/Thunar/@(sendto|uca.xml)
+removing **/@(kmailservice|knetattach|ktelnetservice|ktelnetservice5)@(|.desktop)
+removing **/thunar-volman-settings@(|.desktop)
+removing **/xfce4-mime-settings@(|.desktop)
+removing **/xfce4-settings-editor@(|.desktop)
+removing **/@(xfce4-session-settings|xfce-session-settings.desktop)
+removing **/@(xfce4-settings-manager|xfce-settings-manager.desktop)
+removing **/@(xfdesktop-settings|xfce-backdrop-settings.desktop)
+removing **/@(xfwm4-tweaks-settings|xfce-wmtweaks-settings.desktop)
+removing **/@(xfwm4-workspace-settings|xfce-workspaces-settings.desktop)
+removing **/@(ThunarBulkRename|Thunar-bulk-rename.desktop)
+removing usr/games/@(ceferinosetup|ceferinoeditor)
+removing usr/share/applications/exo-mail-reader.desktop
+removing usr/share/applications/exo-preferred-applications.desktop
+removing usr/share/applications/exo-terminal-emulator.desktop
+removing usr/share/applications/freeciv-gtk3.desktop
+removing usr/share/applications/freeciv-server.desktop
+removing usr/share/applications/gcompris-edit.desktop
+removing usr/share/applications/kde4/Help.desktop  # khelpcenter4
+removing usr/share/applications/kde4/marble_*.desktop
+removing usr/share/applications/libreoffice-math.desktop
+removing usr/share/applications/libreoffice-startcenter.desktop
+removing usr/share/applications/mono-runtime-terminal.desktop
+removing usr/share/applications/mono-runtime.desktop
+removing usr/share/applications/panel-desktop-handler.desktop
+removing usr/share/applications/panel-preferences.desktop
+removing usr/share/applications/prboom-plus.desktop
+removing usr/share/applications/python*.desktop
+removing usr/share/applications/scummvm.desktop
+removing usr/share/applications/x11vnc.desktop
+## Current gnome-games (at least) try to do someting like
+## "xdg-open help:gnome-mines" from their Help menu.
+## For this to work, mimeinfo.cache needs
+## x-scheme-handler/help:yelp.desktop (the default) and
+## yelp.desktop needs to exist.
+## To prevent yelp appearing in the Apps menu,
+## we rely on "OnlyShowIn=GNOME;Unity;" in yelp.desktop (default).
+## —twb, Dec 2016 (#31606)
+#removing usr/share/applications/yelp.desktop
+# From usermode.  We *ONLY* need GUI password reset utility (userpasswd).
+# UPDATE: ...and userpasswd needs userhelper. --twb, Feb 2016 (#30794)
+removing **/*bin/@(consolehelper|consolehelper-gtk|userinfo|usermount)
+removing usr/share/applications/redhat-@(userinfo|usermount).desktop
+# From OpenJDK 7 &c (for libreoffice-base & ganttproject). (#31178)
+# FIXME: this is *NOT* comprehensive; remove more!
+# http://docs.oracle.com/javase/7/docs/technotes/guides/security/PolicyGuide.html
+removing **/*bin/policytool
+removing usr/share/applications/openjdk-*-policytool.desktop
+removing usr/lib/jvm/**/man
+# From libexo-helpers.  Invisible to user, but they annoy me.
+removing usr/share/xfce4/helpers/@(caja|nautilus|pcmanfm|rodent|rox-filer|xfe).desktop
+removing usr/share/xfce4/helpers/@(balsa|evolution|icedove|kmail|mozilla-mailer|mutt|muttng|opera-mailer|sylpheed-claws|sylpheed|thunderbird).desktop
+removing usr/share/xfce4/helpers/@(aterm|debian-x-terminal-emulator|eterm|gnome-terminal|nxterm|sakura|urxvt|xfce4-terminal|xterm).desktop
+removing usr/share/xfce4/helpers/@(dillo|encompass|epiphany|firefox|galeon|icecat|iceweasel|jumanji|konqueror|links|lynx|midori|mozilla-browser|netscape-navigator|opera-browser|w3m).desktop
+
+
+## Useless & confusing "under the hood" files MAY be removed
+## =========================================================
+# From libmtp9.  Generates log spam because we don't install libmtp-runtime. (#30098)
+removing **/udev/rules.d/*libmtp.rules
+# From ure (i.e. LibreOffice) & kdelibs5-data.  Java is ALWAYS BAD.
+# Additional notes:
+#  * libreoffice/help/*/*.jar are DOCUMENTATION (NOT CODE); we don't exclude them.
+removing usr/lib/ure/share/java
+removing usr/share/@(java|maven-repo)
+removing usr/share/kde4/apps/kjava
+# From EVERYTHING.  Integration for systems we don't use (e.g. cron, upstart).
+# Additional notes:
+#  * /etc/network is for ifupdown.
+#  * /usr/share/menu is for pre-XDG Apps menus.
+#  * /usr/lib/mime is for mailcap; modern GUIs use XDG (.desktop) instead.
+#  * sizecustomize.py is for Apport (ubuntu bug reporting).
+#  * sysctl.* are nothing but comments.
+#  * /usr/share/appdata is for installing packages (ref. http://people.freedesktop.org/~hughsient/appdata/).
+removing **/*emacsen-common*
+removing etc/@(bash_completion.d|emacs|init|logcheck|network|ppp|ufw)
+removing etc/@(cron*|logrotate*)
+removing **/python*/sitecustomize.py
+removing etc/sysctl.conf
+removing etc/sysctl.d/99-sysctl.conf
+removing usr/lib/mime
+removing usr/**/share/emacs
+removing usr/share/@(appdata|bash-completion|menu|upstart|zsh)
+# From systemd & udev - ifupdown integration is not used. (#30095)
+removing **/systemd/**/ifup@.service
+removing **/udev/@(dsl-modem.agent|net.agent|logger.agent|hotplug.functions)
+removing **/udev/rules.d/*persistent-net-generator.rules
+removing **/udev/rules.d/*networking.rules
+removing **/udev/write_net_rules
+# From quota.  quota-reminder needs quota(1); exclude the rest of the package (which expects an NFS *server*).
+removing **/*bin/@(convertquota|edquota|quota_nld|quotacheck|quotaoff|quotaon|quotastats|quotasync|quot|repquota|rpc.rquotad|setquota|warnquota|xqmstats)
+removing etc/@(quotagrpadmins|quotatab|warnquota.conf)
+removing usr/share/quota
+removing var/lib/quota
+# From tar.
+removing **/*bin/@(tarcat|rmt-tar)
+removing etc/rmt
+# From perl.
+removing **/*bin/zipdetails
+# From debianutils & sensible-utils & adduser.
+removing **/*bin/@(installkernel|add-shell|remove-shell|select-editor|sensible-editor|sensible-pager|adduser|deluser)
+# Harmless because xscreensaver &c not installed.
+removing **/*bin/xflock4
+# Harmless because overridden by overlay/.../xsettings.xml
+removing etc/xdg/xfce4/Xft.xrdb
+# Harmless because disabled in Xsession.options.
+removing etc/X11/Xsession.d/*@(gpg-agent|ssh-agent|xsessionrc)
+# From faenza-icon-theme - icons for a GNOME IM client.
+removing **/emesene
+# These are all symlinks to qtchooser, which automatically switches between Qt3/4/5 (a bit like linux32).
+# They're useless on PrisonPC due to prisonpc-ersatz-kde-junk.
+removing **/*bin/@(qtchooser|assistant|designer|lconvert|linguist|lrelease|lupdate|moc|pixeltool|qcollectiongenerator|qdbus|qdbuscpp2xml|qdbusviewer|qdbusxml2cpp|qdoc|qdoc3|qglinfo|qhelpconverter|qhelpgenerator|qlalr|qmake|qml|qml1plugindump|qmlbundle|qmlimportscanner|qmlmin|qmlplugindump|qmlprofiler|qmlscene|qmltestrunner|qmlviewer|qtconfig|qtdiag|qtpaths|rcc|uic|uic3|xmlpatterns|xmlpatternsvalidator)
+# From systemd.  These units are meaningless for PrisonPC desktops.
+# Additional notes:
+#   quota: only the NFS *server* needs rpc.quotad & quotacheck -anug.
+#   readahead: see doc/30144-readahead-and-mksquashfs-sort.txt.
+#   random-seed: persistent entropy across reboots (but we're diskless).
+#   networkd & resolved: see doc/30134-systemd-networkd.txt
+#     UPDATE: removing these causes the desktop to reboot when I try to SSH in.
+#   alsa: persistent mixer levels across reboots (but we're diskless).
+#         The ACTUAL WORKING mixer initialization is triggered from
+#         /lib/udev/rules.d/90-alsa-restore.rules
+#         which reads from /usr/share/alsa/init/. (#30110)
+#   systemd-journal-flush: moves /run/journal/* to /var/log/journal/.
+removing **/systemd/**/*@(mqueue|sys-kernel|binfmt|fsck|random|backlight|rfkill|quota|readahead|alsa|network|resolve|systemd-journal-flush)*
+removing usr/share/alsa/utils.sh
+# From systemd - get/set the hostname (& icon). --twb, Feb 2016 (#30645)
+# Only used by the GTK3 File Picker Dialog sidebar, where its absence is harmless.
+removing **/systemd/**/*@(systemd-hostnamed|org.freedesktop.hostname1)**
+removing **/*bin/hostnamectl
+removing **/dbus-1/**/org.freedesktop.hostname1.*
+# From plymouth & systemd.  Never needed (no systemd in Debian ramdisks).
+removing **/lib/**/plymouth/*-initrd
+removing **/systemd/**/*@(initrd|switch-root)*
+removing **/systemd/**/plymouth-start.service
+# From busybox & klibc-utils & live-boot.  Not needed after ramdisk built.
+removing **/*bin/*initramfs
+removing **/@(initramfs|initramfs-tools)
+removing **/lib/live/boot
+# From mlocate.  Desktop side only needs locate, not updatedb.
+removing etc/updatedb.conf
+removing **/*bin/updatedb*
+# From pspp.  Only GUI part (psppire) is needed.
+removing usr/*bin/@(pspp|pspp-*)
+# From intel-microcode and iucode-tool.
+# These files are compiled into the ramdisk and loaded by the kernel itself (CONFIG_MICROCODE_INTEL=y).
+# Therefore remove them so inmates can't guess what microcode version is in use.
+removing lib/firmware/intel-ucode
+removing **/*bin/iucode[_-]tool
+
+
+## sysvinit compatibility MAY be removed
+## -------------------------------------
+## Because it's the first release to default to systemd,
+## Debian 8 (Jessie) ships with a lot of backwards compatibility for sysvinit.
+## This can be very confusing.
+##
+## Since ./bootstrap converts the jobs we care about to native units (to better lock it down),
+## we can delete *all* this infrastructure.
+##
+## Additional notes:
+##   * etc/default/acpid convinces systemd-native unit acpid.service to start.
+##   * etc/default/locale tells systemd we use en_AU.UTF-8.
+##   * etc/default/keyboard tells Xorg we use QWERTY keyboards.
+##     Xorg depends on keyboard-configuration JUST to get this file.
+##     That pulls in sysvinit jobs console-setup & keyboard-setup,
+##     which run "setupcon --save" and "setupcon -k".
+##     Since setupcon ("kbd" package) isn't installed, they're NOOPs.
+##     This doesn't matter because we only use X, not fbcon.
+removing **/*insserv*
+removing **/*-rc.d
+removing **/systemd/**/*@(sysv|insserv)*
+removing etc/@(init.d|rc?.d)
+removing **/lib/@(init|lsb|startpar)
+removing etc/default/!(acpid|keyboard|locale)
+removing **/systemd/**/*debian-fixup*     # for Wheezy upgrades
+removing **/systemd/**/halt-local.service  # for BSD's halt.local
+removing **/systemd/**/*rc?local*          # for /etc/rc.local
+# Legacy support for /etc/X11/default-display-manager.
+# (Debianism from 215-7 to 224-1, http://bugs.debian.org/771287)
+removing **/systemd/**/*default-display-manager*
+removing etc/X11/default-display-manager
+# Upstream says: "This exists mostly for compatibility with SysV/LSB units"
+removing **/systemd/**/@(rpcbind|nss-lookup|mail-transport-agent).target
+# Ref. systemd/debian/systemd.links.
+# Upstream says: "These are all services which have native implementations
+#                 So we mask them by linking against /dev/null or create an alias"
+# We've removed /etc/init.d/, so these links can go.
+removing **/systemd/**/@(urandom|procps|rc.local|module-init-tools|kmod|x11-common|hostname|rmnologin|bootmisc|fuse|botlogd|stop-bootlogd-single|stop-bootlogd|hwclock|hwclockfirst|mountkernfs|mountdevsubfs|mountall|mountall-bootclean|mountnfs|mountnfs-bootclean|umountfs|umountnfs|umountroot|checkfs|checkroot|checkroot-bootclean|cryptdisks|cryptdisks-early|single|killprocs|sendsigs|halt|reboot|motd|bootlogs|bootlogd).service
+# Upstream says: "this is a hack for jessie; the next Debian release will enable timesyncd by default. (Closes: #755722)"
+# We enable timesyncd.
+# Ref. http://lists.freedesktop.org/archives/systemd-devel/2011-May/002526.html
+# FIXME: confirm that the hardware clock is kept up to date.
+removing **/systemd/**/*hwclock-save*
+# YAGNI workarounds for non-UTC hardware clock (NOOP on systemd anyway).
+removing **/udev/rules.d/*hwclock.rules
+removing **/*bin/hwclock
+removing **/udev/hwclock-set
