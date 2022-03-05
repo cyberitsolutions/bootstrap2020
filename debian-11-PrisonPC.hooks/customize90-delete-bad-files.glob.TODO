@@ -15,10 +15,6 @@
 ## ========================================
 removing **/systemd/**/*@(crypt|password)*
 removing **/*bin/systemd-*password*
-# From gnupg, blame apt.  Not needed after apt-key trust database is set up.
-removing **/*bin/@(lspgpot|gpgsplit|gpg-zip|gpg)
-removing **/gnupg
-removing **/udev/rules.d/*gnupg.rules
 # From openssl & ssl-cert.  Not needed after packages are installed.
 removing **/*bin/@(c_rehash|openssl|make-ssl-cert)
 removing etc/ssl/!(certs|private)
