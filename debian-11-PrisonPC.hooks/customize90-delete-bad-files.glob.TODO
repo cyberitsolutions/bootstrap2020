@@ -11,10 +11,6 @@
 #     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
 
 
-# Accidentally deleting large parts of a normal OS is BAD BAD BAD.
-# Therefore start by checking if we're inside the build chroot.
-[[ -e etc/debian_chroot ]]
-
 # Because AMC's requested games are *SO BLOODY HUGE*,
 # we fill an 8GiB tmpfs.  About 2GiB are these debs.
 # Reclaim their space so we might have room for the squashfs.

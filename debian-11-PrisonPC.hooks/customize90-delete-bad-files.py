@@ -90,6 +90,9 @@ parser.set_defaults(shitlist_path=(
     'customize90-delete-bad-files.glob'))
 args = parser.parse_args()
 
+if args.chroot_path.resolve() == '/':
+    raise RuntimeError('Refusing to trash your rootfs!')
+
 with args.shitlist_path.open() as f:
     shitlist = [
         line.strip()
