@@ -15,11 +15,6 @@
 ## ========================================
 removing **/systemd/**/*@(crypt|password)*
 removing **/*bin/systemd-*password*
-# From openssl & ssl-cert.  Not needed after packages are installed.
-removing **/*bin/@(c_rehash|openssl|make-ssl-cert)
-removing etc/ssl/!(certs|private)
-removing usr/lib/ssl/!(certs|private)
-removing **/ssleay.cnf
 # From libpam-mount.  Mounting $HOME requires libcryptmount.so & pm-varrun; exclude the rest.
 removing **/*bin/*mount.crypt*
 removing **/*bin/pmt-*
