@@ -11,12 +11,6 @@
 #     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
 
 
-# Because AMC's requested games are *SO BLOODY HUGE*,
-# we fill an 8GiB tmpfs.  About 2GiB are these debs.
-# Reclaim their space so we might have room for the squashfs.
-removing **/cache/**/*.deb
-
-
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
 removing **/systemd/**/*@(crypt|password)*
