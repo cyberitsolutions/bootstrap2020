@@ -1,30 +1,9 @@
 #!/bin/bash
-set -eEu -o pipefail
-shopt -s failglob
-trap 'echo >&2 "$0:${LINENO}: unknown error"' ERR
 
-
-# For documentation on bash globbing, see
-#  * bash(1) § Pathname Expansion
-#  * http://mywiki.wooledge.org/glob
-
-
-# This is a list of files to *EXCLUDE* from the built SOE.
-# Exclusions that *ALL* SOEs need remain in ./bootstrap (to simplify merges).
-# The ones below are for PrisonPC Desktop SOEs.
-# I moved them into a separate file because they'd grown to half the script.
-# --twb, Sep 2015
-#
 # NB: most of these entries CANNOT be done in dpkg.cfg path-excludes=<glob>,
 # because their files are referenced during package installation.
 # See also doc/NNNNN-mksquashfs-exclude-vs-dpkg-exclude.txt
 # --twb, Sep 2015
-#
-# Because mksquashfs exclusion syntax was painful to work with,
-# this is now a regular bash script.
-# See also doc/NNNNN-mksquashfs-exclude-vs-bash-glob.txt
-# --twb, Dec 2015
-
 
 # This workflow can help find badness in an app's *dependencies*:
 #
@@ -32,7 +11,7 @@ trap 'echo >&2 "$0:${LINENO}: unknown error"' ERR
 #     # apt install shit-app
 #     # find / -not -newermt @0 -exec ls -hlds --color {} +
 #
-# To find if anything mentions a scary-lookling library (e.g. /usr/bin/enable-backdoor),
+# To find if anything mentions a scary-looking library (e.g. /usr/bin/enable-backdoor),
 #
 #     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
 
@@ -40,15 +19,6 @@ trap 'echo >&2 "$0:${LINENO}: unknown error"' ERR
 # Accidentally deleting large parts of a normal OS is BAD BAD BAD.
 # Therefore start by checking if we're inside the build chroot.
 [[ -e etc/debian_chroot ]]
-
-# Enable advanced globbing & DISABLE failglob (Cyber BCP),
-# so we can purge files in a branch & install them later.
-shopt -s globstar extglob nullglob
-shopt -u failglob
-
-# This wrapper exists primarily so I can toggle --verbose easily.
-# Also by being 8 characters long, the command & the output line up.
-removing () { rm -vrf -- "$@"; }
 
 # Because AMC's requested games are *SO BLOODY HUGE*,
 # we fill an 8GiB tmpfs.  About 2GiB are these debs.
