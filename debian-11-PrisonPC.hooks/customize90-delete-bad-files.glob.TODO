@@ -139,9 +139,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 # From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
 removing **/*bin/@(dbclient|dropbearkey)
 removing usr/lib/dropbear
-# From openssh-client & openssh-sftp-server.  openssh-server needs ssh-keygen at boot time; exclude the rest.
-removing **/*bin/@(scp|sftp|slogin|ssh|ssh-add|ssh-agent|ssh-argv0|ssh-copy-id|ssh-keyscan)
-removing usr/lib/openssh
 # From x11vnc-data.  This is a Java-based VNC client!
 removing usr/share/x11vnc
 # From libreoffice 5.1+.  Some kind of FTP/SSH/WebDAV/SMB/CMIS client. (#31791)
