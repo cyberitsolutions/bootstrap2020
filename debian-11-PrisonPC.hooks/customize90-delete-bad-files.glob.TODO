@@ -22,8 +22,6 @@
 #   plasma - the "KDE desktop" itself, as opposed to KDE apps.  We use XFCE instead.
 #   attica - downloading user-generated content from web forums
 removing usr/lib/kde4/libexec/@(kdeeject|kdesu|kdesud|khc_mansearch.pl|ksendbugmail)
-removing usr/lib/kde4/plugins/marble/*/QtMobilityPositionProviderPlugin.so  # KDE4 / Jessie
-removing usr/lib/**/marble/plugins/libQtPositioningPositionProviderPlugin.so  # KDE5 / Stretch
 removing usr/lib/**/marble/plugins/libAprsPlugin.so
 removing usr/share/kde*/**/*@(phonon|kcm_)*
 removing usr/share/kde4/servicetypes/ktexteditor*.desktop
