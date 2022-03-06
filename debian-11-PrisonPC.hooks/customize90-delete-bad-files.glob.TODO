@@ -378,12 +378,6 @@ removing usr/share/applications/prboom-plus.desktop
 removing usr/share/applications/python*.desktop
 removing usr/share/applications/scummvm.desktop
 removing usr/share/applications/x11vnc.desktop
-# From OpenJDK 7 &c (for libreoffice-base & ganttproject). (#31178)
-# FIXME: this is *NOT* comprehensive; remove more!
-# http://docs.oracle.com/javase/7/docs/technotes/guides/security/PolicyGuide.html
-removing **/*bin/policytool
-removing usr/share/applications/openjdk-*-policytool.desktop
-removing usr/lib/jvm/**/man
 
 
 ## Useless & confusing "under the hood" files MAY be removed
