@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.21) unstable; urgency=medium
+
+  * block kwallet/kf5-wallet and seahorse/gcr.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 07 Mar 2022 05:42:26 +1100
+
 prisonpc-ersatz (11.20) bullseye; urgency=medium
 
   * Debian Security now EXPLICITLY supports webkit2gtk and wpewebkit browser engines.

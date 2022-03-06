@@ -13,9 +13,6 @@
 
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
-# From kde-runtime-data, blame KDE Edu apps.  "KWallet" is a password manager based on GPG.
-removing **/*bin/*kwalletd
-removing usr/share/kde*/**/kwalletd*
 
 # FIXME: put this in the right place.
 # From kde4libs and associated villains.
@@ -46,7 +43,6 @@ removing usr/share/kde4/services/plasma*.desktop
 removing usr/share/kde4/services/qimageioplugins/!(bmp|gif|jpeg|png|svg+xml|svg+xml-compressed|xcf).desktop
 removing usr/share/kde4/services/searchproviders/
 removing usr/bin/meinproc4      # renders KDE docbook variant to HTML
-removing usr/lib/libkwalletbackend.so*
 removing usr/lib/kde4/libkdeinit/libkdeinit4_kwalletd.so
 removing usr/lib/kde4/plugins/kauth
 removing usr/lib/kde4/librenaudioplugin.so

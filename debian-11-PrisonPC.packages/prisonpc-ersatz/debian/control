@@ -73,6 +73,23 @@ Description: appease prayer
  so we don't need logrotate.
  This also lets us avoid installing cron.
 
+Package: prisonpc-ersatz-kwallet5
+Depends: ${misc:Depends}
+Provides:  libkf5wallet-bin, libkf5wallet5 (= 5.78.0-2),
+Conflicts: libkf5wallet-bin, libkf5wallet5,
+Replaces:  libkf5wallet-bin, libkf5wallet5,
+Architecture: all
+Description: appease kio
+ In KDE4, every KDE app depended on "kdelibs", which was *every* KDE library.
+ So even if you didn't use any apps that (say) opened files, you still had the
+ whole KDE SFTP driver.
+ .
+ KDE5 is much nicer, but "kio" library still pulls in kwallet (KDE password manager).
+ We don't need this, so spoof it away.
+ .
+ Note that kwallet probably doesn't actually WORK without gpg.
+ We already nerf gpg/gnupg, so this is probably harmless either way.
+
 Package: prisonpc-bad-package-conflicts-inmates
 Depends:
  ${misc:Depends},
@@ -113,6 +130,7 @@ Depends:
  prisonpc-ersatz-gpg (= ${binary:Version}),
  prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
  prisonpc-ersatz-logrotate (= ${binary:Version}),
+ prisonpc-ersatz-kwallet5 (= ${binary:Version}),
 Conflicts:
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
@@ -142,6 +160,20 @@ Conflicts:
  pinentry,
 # askpass-gnome &c provide GUI password prompts, mostly for ssh
  ssh-askpass,
+# GNOME password manager is not needed.
+# FIXME: gvfs-libs needs libgcr-base-3-1 and libgck-1-0 so we can't Conflicts (only Provides).
+# FIXME: libgnutls30 needs libp11-kit0 so we can't Conflicts (only Provies).
+ gcr, gir1.2-gck-1, gir1.2-gcr-3, libgcr-ui-3-1,
+ gnome-keyring, libpam-gnome-keyring, gnome-keyring-pkcs11,
+ seahorse, caja-seahorse, seahorse-nautilus,
+ libcryptui0a, gir1.2-cryptui-0.0, seahorse-daemon,
+ libp11-3, p11-kit, p11-kit-modules, libpam-p11,
+# KDE password manager is not needed.
+ kwalletcli,
+ libkf5wallet-data, libkwalletbackend5-5,
+ libpam-kwallet-common, libpam-kwallet5,
+ signon-kwallet-extension,
+ kwalletmanager, remmina-plugin-kwallet,
 # zip/bullseye only supports weak encryption, but
 # later versions might adopt strong encryption.
 # https://en.wikipedia.org/wiki/ZIP_(file_format)#Encryption
