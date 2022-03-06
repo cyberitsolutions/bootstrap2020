@@ -158,21 +158,6 @@ removing usr/lib/scribus/plugins/libscriptplugin.so
 removing usr/lib/planner/plugins/libpython-plugin.so
 
 
-## Inmates SHOULD NOT have a text editor
-## =====================================
-## NOTE: this is a workaround to make it harder to WRITE scripts,
-## since we haven't set up SELinux to stop them EXECUTING scripts.
-# NOTE: libktexteditor.so (KDE Kate) is discussed elsewhere for now.
-# From libgtksourceview2.0-common, blame pspp. (#31748)
-# NOTE: this merely breaks syntax highlighting, not the editor itself.
-removing usr/share/gtksourceview-*/
-# NOTE: This makes psppire crash when trying to open Syntax Editor,
-# but any other application can still use libgtksourceview!
-removing usr/share/pspp/syntax-editor.ui
-## CANNOT REMOVE — pspp needs this
-: removing usr/lib/libgtksourceview*
-
-
 ## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
 ## ================================================================
 ## NB: systemd-user-sessions is needed, see pam_nologin(8).
