@@ -296,22 +296,8 @@ removing etc/pam.d/@(chfn|chsh|newusers|passwd)
 
 ## Inmates SHOULD NOT have development tools
 ## =========================================
-# From EVERYTHING.
-# Additional notes:
-#  * pygame examples includes a Space Invaders game.
-removing **/*.pod
-removing **/*bin/@(dh_*|pdb*)
-removing **/@(debpython|dh_python2|dh_python3)
-removing **/pkgconfig
-removing **/pygame/@(tests|examples|docs)
-removing usr/@(include|src)
-removing usr/lib/@(debug|valgrind)
-removing usr/share/@(apport|bug|dh-python|gdb|lintian)
-removing usr/bin/@(pybuild|pyclean|pycompile)
-removing **/*bin/@(pdb|pydoc|pygettext)@(|[23]*)
+removing **/debpython
 removing **/*bin/@(2to3|2to3-[23]*)
-removing **/lib/python*/@(pdb|doctest|cgitb).@(py|pyc)
-removing **/lib/python*/@(test|lib2to3|venv|unittest|idlelib)/
 
 # UPMC → pygame → numpy → unittest.
 # FIXME: when "emcee" replaces "UPMC", remove this crappy code.
