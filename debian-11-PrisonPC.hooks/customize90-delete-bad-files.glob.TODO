@@ -21,7 +21,7 @@
 #   kcm - KDE control panels stuff.  Has things like SSL, terminal, text editor in there.
 #   plasma - the "KDE desktop" itself, as opposed to KDE apps.  We use XFCE instead.
 #   attica - downloading user-generated content from web forums
-removing usr/lib/kde4/libexec/@(kdeeject|kdesu|kdesud|khc_mansearch.pl|ksendbugmail)
+removing usr/lib/kde4/libexec/@(kdeeject|kdesu|kdesud|khc_mansearch.pl)
 removing usr/lib/**/marble/plugins/libAprsPlugin.so
 removing usr/share/kde*/**/*@(phonon|kcm_)*
 removing usr/share/kde4/servicetypes/ktexteditor*.desktop

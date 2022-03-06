@@ -535,6 +535,8 @@ Conflicts:
  gnutls-bin,
 # drkonqi - report crash to KDE over http
  drkonqi,
+# libkf5xmlgui-bin includes ksendbugemail, which sounds undesirable.
+ libkf5xmlgui-bin,
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # libc-dev should be enough to block most compiler stuff.
