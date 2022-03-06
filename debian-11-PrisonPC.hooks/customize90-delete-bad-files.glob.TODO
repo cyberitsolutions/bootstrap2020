@@ -388,10 +388,6 @@ removing usr/share/applications/prboom-plus.desktop
 removing usr/share/applications/python*.desktop
 removing usr/share/applications/scummvm.desktop
 removing usr/share/applications/x11vnc.desktop
-# From usermode.  We *ONLY* need GUI password reset utility (userpasswd).
-# UPDATE: ...and userpasswd needs userhelper. --twb, Feb 2016 (#30794)
-removing **/*bin/@(consolehelper|consolehelper-gtk|userinfo|usermount)
-removing usr/share/applications/redhat-@(userinfo|usermount).desktop
 # From OpenJDK 7 &c (for libreoffice-base & ganttproject). (#31178)
 # FIXME: this is *NOT* comprehensive; remove more!
 # http://docs.oracle.com/javase/7/docs/technotes/guides/security/PolicyGuide.html
