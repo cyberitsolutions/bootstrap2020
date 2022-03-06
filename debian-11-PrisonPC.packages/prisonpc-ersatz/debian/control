@@ -533,6 +533,8 @@ Conflicts:
 # certutil lets inmates manipulate who Chromium trusts.
  libnss3-tool,
  gnutls-bin,
+# drkonqi - report crash to KDE over http
+ drkonqi,
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # libc-dev should be enough to block most compiler stuff.
