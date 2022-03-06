@@ -134,12 +134,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 # removing usr/lib/kde4/libkdeinit/libkdeinit4_!(khelpcenter|kbuildsycoca4).so
 
 
-## Inmates MUST NOT have clandestine comms
-## =======================================
-# From libreoffice 5.1+.  Some kind of FTP/SSH/WebDAV/SMB/CMIS client. (#31791)
-removing usr/lib/libreoffice/**/placeedit.ui
-
-
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
 # NB: when p123 logs in, systemd-logind grants write access (ACL

@@ -37,6 +37,11 @@ usr/lib/ssl/misc
 **/*bin/dbclient
 **/*bin/dropbearkey
 usr/lib/dropbear
+# From libreoffice (File > Open Remote… > Add Service) — some kind of FTP/SSH/WebDAV/SMB/CMIS client.
+# Removing this makes LibreOffice crash when you try to access that dialogue.
+# Still present as at Debian 11 / LibreOffice 7.3.
+# https://alloc.cyber.com.au/task/task.php?taskID=31791
+**/libreoffice/**/placeedit.ui
 
 
 ## Inmates MUST NOT have writable local media (DVD, USB)
