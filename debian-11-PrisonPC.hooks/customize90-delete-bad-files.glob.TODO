@@ -407,11 +407,6 @@ removing usr/share/applications/redhat-@(userinfo|usermount).desktop
 removing **/*bin/policytool
 removing usr/share/applications/openjdk-*-policytool.desktop
 removing usr/lib/jvm/**/man
-# From libexo-helpers.  Invisible to user, but they annoy me.
-removing usr/share/xfce4/helpers/@(caja|nautilus|pcmanfm|rodent|rox-filer|xfe).desktop
-removing usr/share/xfce4/helpers/@(balsa|evolution|icedove|kmail|mozilla-mailer|mutt|muttng|opera-mailer|sylpheed-claws|sylpheed|thunderbird).desktop
-removing usr/share/xfce4/helpers/@(aterm|debian-x-terminal-emulator|eterm|gnome-terminal|nxterm|sakura|urxvt|xfce4-terminal|xterm).desktop
-removing usr/share/xfce4/helpers/@(dillo|encompass|epiphany|firefox|galeon|icecat|iceweasel|jumanji|konqueror|links|lynx|midori|mozilla-browser|netscape-navigator|opera-browser|w3m).desktop
 
 
 ## Useless & confusing "under the hood" files MAY be removed
