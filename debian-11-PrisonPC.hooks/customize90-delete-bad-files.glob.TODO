@@ -147,17 +147,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 # removing usr/lib/kde4/libkdeinit/libkdeinit4_!(khelpcenter|kbuildsycoca4).so
 
 
-## CANNOT REMOVE — KDE apps need these
-## ---------------------------------------
-: removing usr/lib/libktexteditor.so*  # FIXME: uncomment once kalzium & kig & step are gone!
-: removing usr/lib/libkdeui.so.*       # FIXME: uncomment once all KDE apps are gone!
-: removing usr/lib/libsolid.so*        # FIXME: uncomment once all KDE apps are gone!
-: removing usr/lib/libphonon.so*       # FIXME: uncomment once all KDE apps are gone!
-: removing usr/lib/kde4/libkdeinit/libkdeinit4_kbuildsycoca4.so  # FIXME: uncomment once khelpcenter4 is gone!
-: removing usr/share/kde4/config/ui/   # FIXME: uncomment once kalzium & step are gone!
-: removing usr/lib/kde4/libexec/klauncher  # FIXME: uncomment once khelpcenter4 is gone!
-
-
 ## Inmates MUST NOT have clandestine comms
 ## =======================================
 # From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
