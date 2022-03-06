@@ -136,9 +136,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 
 ## Inmates MUST NOT have clandestine comms
 ## =======================================
-# From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
-removing **/*bin/@(dbclient|dropbearkey)
-removing usr/lib/dropbear
 # From libreoffice 5.1+.  Some kind of FTP/SSH/WebDAV/SMB/CMIS client. (#31791)
 removing usr/lib/libreoffice/**/placeedit.ui
 

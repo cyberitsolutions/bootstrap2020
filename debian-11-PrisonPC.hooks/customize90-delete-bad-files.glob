@@ -33,6 +33,10 @@ usr/lib/ssl/misc
 /usr/lib/openssh
 **/*bin/ssh-copy-id
 **/systemd/**/*ssh-agent*
+# From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
+**/*bin/dbclient
+**/*bin/dropbearkey
+usr/lib/dropbear
 
 
 ## Inmates MUST NOT have writable local media (DVD, USB)
