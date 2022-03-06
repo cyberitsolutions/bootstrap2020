@@ -429,11 +429,6 @@ removing etc/updatedb.conf
 removing **/*bin/updatedb*
 # From pspp.  Only GUI part (psppire) is needed.
 removing usr/*bin/@(pspp|pspp-*)
-# From intel-microcode and iucode-tool.
-# These files are compiled into the ramdisk and loaded by the kernel itself (CONFIG_MICROCODE_INTEL=y).
-# Therefore remove them so inmates can't guess what microcode version is in use.
-removing lib/firmware/intel-ucode
-removing **/*bin/iucode[_-]tool
 
 
 ## sysvinit compatibility MAY be removed
