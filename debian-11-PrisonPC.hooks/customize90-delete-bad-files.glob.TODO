@@ -228,15 +228,13 @@ removing usr/lib/vlc/plugins/text_renderer/!(libfreetype_plugin.so)
 ## =======================================
 # From apt & dpkg &c.  Not needed after packages are installed.
 # NB: adduser(8) needs the Debian::* perl modules we exclude here.
-removing **/*bin/@(apt|dpkg|debconf)@(|-*)
-removing **/*bin/gpgv
-removing etc/@(apt|dpkg|debconf.conf)
-removing usr/lib/@(apt|dpkg)
+removing **/*bin/@(dpkg|debconf)@(|-*)
+removing etc/@(dpkg|debconf.conf)
+removing usr/lib/dpkg
 removing usr/share/@(dpkg|debconf|debhelper)
 removing usr/share/perl5/@(Debconf|Debian)
-removing var/cache/@(apt|debconf)
-removing var/lib/@(apt|dpkg)
-removing **/systemd/**/*apt-daily*
+removing var/cache/debconf
+removing var/lib/dpkg
 # From systemd & init-system-helpers.  Not needed after packages are installed.
 removing **/systemd/**/*system-update*
 removing **/*deb-systemd*
@@ -387,7 +385,7 @@ removing **/*bin/xflock4
 # Harmless because overridden by overlay/.../xsettings.xml
 removing etc/xdg/xfce4/Xft.xrdb
 # Harmless because disabled in Xsession.options.
-removing etc/X11/Xsession.d/*@(gpg-agent|ssh-agent|xsessionrc)
+removing etc/X11/Xsession.d/*@(ssh-agent|xsessionrc)
 # From faenza-icon-theme - icons for a GNOME IM client.
 removing **/emesene
 # These are all symlinks to qtchooser, which automatically switches between Qt3/4/5 (a bit like linux32).
