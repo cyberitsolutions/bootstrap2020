@@ -9,6 +9,11 @@
 **/openssl.cnf
 **/ssleay.cnf
 usr/lib/ssl/misc
+# From systemd.  This replaces "cryptsetup" and does LUKS (encrypted disks).
+**/systemd/**/*cryptsetup*
+**/systemd/**/*cryptdisks*
+# From systemd.  This is used to prompt for LUKS (et al) decrypt passphrase.
+**/systemd/**/*password*
 
 
 ## Inmates MUST NOT have clandestine comms

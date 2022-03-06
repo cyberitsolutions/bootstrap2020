@@ -13,8 +13,6 @@
 
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
-removing **/systemd/**/*@(crypt|password)*
-removing **/*bin/systemd-*password*
 # From kde-runtime-data, blame KDE Edu apps.  "KWallet" is a password manager based on GPG.
 removing **/*bin/*kwalletd
 removing usr/share/kde*/**/kwalletd*
