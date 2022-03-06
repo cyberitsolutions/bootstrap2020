@@ -358,7 +358,6 @@ removing **/lib/python*/wsgiref/
 #    we also delete the underlying binary (just in case).
 #  * ceferino* aren't useful without an xterm.
 #  * libreoffice-math doesn't start properly. (#30257)
-removing **/Thunar/@(sendto|uca.xml)
 removing **/@(kmailservice|knetattach|ktelnetservice|ktelnetservice5)@(|.desktop)
 removing **/thunar-volman-settings@(|.desktop)
 removing **/xfce4-mime-settings@(|.desktop)
@@ -368,7 +367,6 @@ removing **/@(xfce4-settings-manager|xfce-settings-manager.desktop)
 removing **/@(xfdesktop-settings|xfce-backdrop-settings.desktop)
 removing **/@(xfwm4-tweaks-settings|xfce-wmtweaks-settings.desktop)
 removing **/@(xfwm4-workspace-settings|xfce-workspaces-settings.desktop)
-removing **/@(ThunarBulkRename|Thunar-bulk-rename.desktop)
 removing usr/games/@(ceferinosetup|ceferinoeditor)
 removing usr/share/applications/exo-mail-reader.desktop
 removing usr/share/applications/exo-preferred-applications.desktop
