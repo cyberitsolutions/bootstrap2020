@@ -387,6 +387,8 @@ Conflicts:
 # We need thunar->udisks2->polkit for mounting/ejecting DVDs.
  sudo,
  sudo-ldap,
+# kde-cli-tools provides kdesu, the KDE equivalent of pkexec
+ kde-cli-tools, libkf5su5, libkf5su-bin, libkf5su-data,
 # chromium-sandbox REDUCES security.
 # It should be banned, not installed.
 # It is only existing as a workaround for kernels without user_ns.
