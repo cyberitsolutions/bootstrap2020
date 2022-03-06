@@ -608,6 +608,28 @@ Conflicts:
  pipx,
  python3-pip,
  python-dev-is-python3,
+# apt-file search -l bin/dh_
+# ...except python3-numpy (for solarwolf)
+# ...except xml-core (for dia)
+ apache2-dev, autotools-dev, bash-completion, cli-common-dev, cme,
+ config-package-dev, debhelper, dh-acc, dh-ada-library, dh-apparmor,
+ dh-autoreconf, dh-buildinfo, dh-cmake, dh-consoledata, dh-di,
+ dh-dist-zilla, dh-elpa, dh-fortran-mod, dh-golang, dh-linktree,
+ dh-lisp, dh-lua, dh-make, dh-ocaml, dh-octave, dh-octave-autopkgtest,
+ dh-perl6, dh-php, dh-python, dh-r, dh-rebar, dh-runit,
+ dh-strip-nondeterminism, dh-sysuser, dh-vim-addon, dh-virtualenv,
+ dh-xsp, dictionaries-common-dev, dkms, doxygen, dpatch, gem2deb,
+ germinate, gnome-pkg-tools, gnustep-make, gobject-introspection,
+ haskell-devscripts-minimal, kodi-addons-dev-common, libdbi-perl,
+ libgstreamer1.0-dev, libimager-perl, libva-dev, libxine2-dev, mkdocs,
+ mozilla-devscripts, pdl, perl-openssl-defaults, pidgin-dev,
+ pkg-kde-tools, pkg-php-tools, postgresql-server-dev-all, ppp-dev,
+ pyppd, python-ply, python3-ply, python3-sip-dev,
+ quilt, scour, sphinx-common, tex-common, uwsgi-dev, vagrant, vdr-dev,
+ xserver-xorg-dev, yorick-dev, zathura-dev,
+# Noticed this at the same time (cpan2deb)...
+ pypi2deb,
+ dh-make-perl,
 # Noticed this one at the same time...
 # NOTE: dracut needs pkg-config (WTF, why?)
  pkg-config,
