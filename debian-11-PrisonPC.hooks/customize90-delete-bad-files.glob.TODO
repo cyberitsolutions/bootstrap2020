@@ -23,13 +23,7 @@
 #   attica - downloading user-generated content from web forums
 removing usr/lib/**/marble/plugins/libAprsPlugin.so
 removing usr/share/kde*/**/*@(phonon|kcm_)*
-removing usr/share/kde4/servicetypes/ktexteditor*.desktop
 # FIXME: do we really need ALL of desktop|file|ghelp|help|trash ?
-removing usr/share/kde4/services/!(desktop|file|ghelp|help|trash).protocol
-removing usr/share/kde4/services/*thumbnail.desktop
-removing usr/share/kde4/services/plasma*.desktop
-removing usr/share/kde4/services/qimageioplugins/!(bmp|gif|jpeg|png|svg+xml|svg+xml-compressed|xcf).desktop
-removing usr/share/kde4/services/searchproviders/
 removing usr/bin/meinproc4      # renders KDE docbook variant to HTML
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/kde3supportwidgets.so
 removing usr/bin/kross
@@ -37,19 +31,14 @@ removing usr/bin/kjscmd
 removing usr/lib/attica_kde.so
 removing usr/bin/plasma-remote-helper
 removing usr/bin/plasmapkg
-removing usr/share/kde4/apps/plasma
-removing usr/share/kde4/services/plasma-*.desktop
-removing usr/share/kde4/servicetypes/plasma-*.desktop
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/*
 removing usr/lib/kde*/kcm_*.so
 removing usr/lib/kde*/kcmspellchecking.so
 removing usr/bin/kcmshell4
 removing etc/dbus-1/system.d/org.kde.kcontrol.kcmremotewidgets.conf
 removing usr/share/dbus-1/system-services/org.kde.*.service
-removing usr/share/kde4/apps/kcmlocale/
 removing usr/lib/libkcmutils.so*
 removing etc/dbus-1/system.d/org.kde.auth.conf
-removing usr/share/kde4/apps/kio_!(desktop|file|ghelp|help|trash)/
 ## FIXME: UNTESTED
 removing usr/lib/**/kf5/kio/!(desktop|file|ghelp|help|trash).so
 removing **/*bin/@(kde-cp|kde-mv|kde-open|kde4)
@@ -74,32 +63,12 @@ removing usr/share/man          # FIXME: isn't this a noop?
 # removing usr/lib/kconf_update_bin/
 # removing usr/lib/kde*/plugins/phonon_platform
 # removing usr/lib/**/qt4/plugins/phonon_backend
-# removing usr/share/kde4/services/
-# removing usr/share/kde4/servicetypes/
 # removing usr/share/polkit-1/actions/org.kde.*.policy
-# removing usr/share/kde4/apps/konqueror/
-# removing usr/share/kde4/apps/konqsidebartng/
-# removing usr/share/kde4/apps/kconf_update/
-# removing usr/share/kde4/apps/kcharselect/
-# removing usr/share/kde4/apps/kdeui/
-# removing usr/share/kde4/apps/kdewidgets/
 # removing usr/bin/kioclient
-# removing usr/share/kde4/apps/ksgmltools2/  # removing this will probably break khelpcenter4.
-# removing usr/share/kde4/apps/ksmserver/
 # removing usr/share/mime/inode/vnd.kde.*.xml
 # removing usr/bin/solid-hardware
-# removing usr/share/kde4/apps/solid/
 # removing usr/lib/libsolid.so*
-# removing usr/share/kde4/services/kded/solid*.desktop
-# removing usr/share/kde4/config.kcfg/
-# removing usr/share/kde4/config/!(ui)
-# removing usr/share/kde4/services/*.protocol
-# removing usr/share/kde4/services/qimageiopluginsx
-# removing usr/share/kde4/services/searchproviders/
 # removing usr/bin/kbuildsycoca4
-
-# FIXME: broke Kalzium somehow (hung for ages without any output, then said something about QStateMachine::postEvent).  Investigate.
-#removing usr/share/kde4/config/!(ui)
 
 ## FIXME: this is enough to break khelpcenter.  Refine?
 ##   khelpcenter(673): No ksycoca4 database available!
@@ -317,7 +286,6 @@ removing **/udev/rules.d/*libmtp.rules
 #  * libreoffice/help/*/*.jar are DOCUMENTATION (NOT CODE); we don't exclude them.
 removing usr/lib/ure/share/java
 removing usr/share/@(java|maven-repo)
-removing usr/share/kde4/apps/kjava
 # From EVERYTHING.  Integration for systems we don't use (e.g. cron, upstart).
 # Additional notes:
 #  * /etc/network is for ifupdown.
