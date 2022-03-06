@@ -388,15 +388,6 @@ removing usr/share/applications/prboom-plus.desktop
 removing usr/share/applications/python*.desktop
 removing usr/share/applications/scummvm.desktop
 removing usr/share/applications/x11vnc.desktop
-## Current gnome-games (at least) try to do someting like
-## "xdg-open help:gnome-mines" from their Help menu.
-## For this to work, mimeinfo.cache needs
-## x-scheme-handler/help:yelp.desktop (the default) and
-## yelp.desktop needs to exist.
-## To prevent yelp appearing in the Apps menu,
-## we rely on "OnlyShowIn=GNOME;Unity;" in yelp.desktop (default).
-## —twb, Dec 2016 (#31606)
-#removing usr/share/applications/yelp.desktop
 # From usermode.  We *ONLY* need GUI password reset utility (userpasswd).
 # UPDATE: ...and userpasswd needs userhelper. --twb, Feb 2016 (#30794)
 removing **/*bin/@(consolehelper|consolehelper-gtk|userinfo|usermount)
