@@ -244,10 +244,6 @@ removing **/*deb-systemd*
 
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
-# From busybox & klibc-utils.  Not needed after ramdisk built.
-removing **/*bin/busybox
-removing **/klibc
-removing **/lib/klibc*.so
 # From libc-bin.  (FIXME: remove more).
 removing **/*bin/@(ldd|pldd|catchsegv)
 # From util-linux.  (FIXME: remove more).
@@ -420,10 +416,6 @@ removing **/dbus-1/**/org.freedesktop.hostname1.*
 removing **/lib/**/plymouth/*-initrd
 removing **/systemd/**/*@(initrd|switch-root)*
 removing **/systemd/**/plymouth-start.service
-# From busybox & klibc-utils & live-boot.  Not needed after ramdisk built.
-removing **/*bin/*initramfs
-removing **/@(initramfs|initramfs-tools)
-removing **/lib/live/boot
 # From mlocate.  Desktop side only needs locate, not updatedb.
 removing etc/updatedb.conf
 removing **/*bin/updatedb*
