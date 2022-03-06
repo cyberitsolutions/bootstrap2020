@@ -296,7 +296,6 @@ removing etc/pam.d/@(chfn|chsh|newusers|passwd)
 
 ## Inmates SHOULD NOT have development tools
 ## =========================================
-removing **/debpython
 
 # UPMC → pygame → numpy → unittest.
 # FIXME: when "emcee" replaces "UPMC", remove this crappy code.

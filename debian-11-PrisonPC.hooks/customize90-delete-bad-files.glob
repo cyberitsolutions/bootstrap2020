@@ -162,6 +162,12 @@ usr/share/dh-python
 usr/share/gdb
 usr/share/lintian
 usr/src
+# I'm 80% sure only py3compile and py3clean need "debpython", so
+# once packages are installed, debpython can go.
+#
+#    https://codesearch.debian.net/search?q=from.debpython.import
+#    https://codesearch.debian.net/search?q=import.debpython
+usr/share/python3/debpython
 # This *is* used by libreoffice, but I'm 70% sure it's only used when gdb debugging...
 # https://codesearch.debian.net/search?q=libstdcxx+filetype%3Apython&literal=0
 usr/share/gcc/python
