@@ -20,17 +20,13 @@
 #   phonon - the thing KDE apps use to make a "bong" noise when a popup window appears.
 #   kcm - KDE control panels stuff.  Has things like SSL, terminal, text editor in there.
 #   drkonqi - report crash to KDE over http
-#   knotify - we use xfce-notifyd instead.
 #   plasma - the "KDE desktop" itself, as opposed to KDE apps.  We use XFCE instead.
 #   attica - downloading user-generated content from web forums
-removing usr/*bin/knotify*
-removing usr/lib/**/*knotify*
 removing usr/lib/kde4/libexec/@(drkonqi|kdeeject|kdesu|kdesud|khc_mansearch.pl|ksendbugmail)
 removing usr/lib/kde4/plugins/marble/*/QtMobilityPositionProviderPlugin.so  # KDE4 / Jessie
 removing usr/lib/**/marble/plugins/libQtPositioningPositionProviderPlugin.so  # KDE5 / Stretch
 removing usr/lib/**/marble/plugins/libAprsPlugin.so
-removing usr/share/dbus-1/services/org.kde.knotify.service
-removing usr/share/kde*/**/*@(phonon|drkonqi|kcm_|knotify)*
+removing usr/share/kde*/**/*@(phonon|drkonqi|kcm_)*
 removing usr/share/kde4/servicetypes/ktexteditor*.desktop
 removing usr/lib/kde4/imports/
 removing usr/lib/kde4/platformimports/
