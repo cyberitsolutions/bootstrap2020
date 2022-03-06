@@ -143,14 +143,6 @@ removing **/udev/rules.d/*@(uaccess|seat-late).rules
 removing **/*bin/@(devdump|dirsplit|genisoimage|geteltorito|isodump|isovfy|mkzftree)
 
 
-## Inmates MUST NOT have containers (VMs)
-## ======================================
-removing **/*bin/@(machinectl|systemd-nspawn)
-removing **/systemd/**/*@(machine|nspawn|container)*
-# Remove the related dbus service, so error messages are more obvious.
-removing **/dbus-1/**/org.freedesktop.machine1.*
-
-
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
 removing **/systemd/**/*@(getty|console|debug|emergency|rescue|autovt|shell)*
