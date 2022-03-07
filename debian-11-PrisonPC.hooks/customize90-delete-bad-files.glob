@@ -169,11 +169,11 @@ usr/lib/pt_chown
 **/*bin/py3compile
 **/*bin/pydoc3*
 **/*bin/pygettext*
-**/lib/python*/cgitb.py*
-**/lib/python*/doctest.py*
+**/lib/python*/**/cgitb.*
+**/lib/python*/**/doctest.*
+**/lib/python*/**/pdb.*
 **/lib/python*/idlelib
 **/lib/python*/lib2to3
-**/lib/python*/pdb.py*
 **/lib/python*/test
 **/lib/python*/unittest
 **/lib/python*/venv
