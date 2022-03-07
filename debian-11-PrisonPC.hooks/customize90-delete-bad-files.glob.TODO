@@ -159,12 +159,6 @@ removing **/*bin/@(ldd|pldd|catchsegv)
 removing **/*bin/@(blkdiscard|resizepart|utmpdump|wdctl)
 # From coreutils.  (FIXME: remove more).
 removing **/*bin/shred
-# From iproute2.  xdm/Xsetup needs ip; exclude the rest.
-removing etc/iproute2
-removing usr/lib/tc
-removing **/*bin/@(arpd|bridge|ctstat|lnstat|nstat|routef|routel|rtacct|rtmon|rtstat|ss|tc)
-# From acl.  Not needed after systemd installs (for /var/log/journal).
-removing **/*bin/@(chacl|getfacl|setfacl)
 # From systemd.
 removing **/*bin/@(loginctl|systemd-analyze|systemd-cgls|systemd-cgtop|systemd-delta|systemd-detect-virt|systemd-path)
 # From passwd.  Note Xstartup calls usermod at runtime, and many packages need adduser at install time.

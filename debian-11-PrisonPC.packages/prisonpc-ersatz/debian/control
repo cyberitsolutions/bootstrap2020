@@ -561,6 +561,14 @@ Conflicts:
  drkonqi,
 # libkf5xmlgui-bin includes ksendbugemail, which sounds undesirable.
  libkf5xmlgui-bin,
+# iproute2 includes super useful "ip" and "ss" debugging tools.
+# In Debian 9, we used it.  In Debian 11 we don't.
+ iproute2,
+# acl includes rarely-used debugging "getfacl" and "setfacl".
+# In Debian 9 systemd's postinst used these.
+# In Debian 11, systemd-tmpfiles does this via C code.
+# So we can just block this package entirely.
+ acl,
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # libc-dev should be enough to block most compiler stuff.
