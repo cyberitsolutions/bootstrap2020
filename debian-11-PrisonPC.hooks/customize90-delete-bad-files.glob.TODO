@@ -263,12 +263,6 @@ removing etc/sysctl.d/99-sysctl.conf
 removing usr/lib/mime
 removing usr/**/share/emacs
 removing usr/share/@(appdata|bash-completion|menu|upstart|zsh)
-# From systemd & udev - ifupdown integration is not used. (#30095)
-removing **/systemd/**/ifup@.service
-removing **/udev/@(dsl-modem.agent|net.agent|logger.agent|hotplug.functions)
-removing **/udev/rules.d/*persistent-net-generator.rules
-removing **/udev/rules.d/*networking.rules
-removing **/udev/write_net_rules
 # From quota.  quota-reminder needs quota(1); exclude the rest of the package (which expects an NFS *server*).
 removing **/*bin/@(convertquota|edquota|quota_nld|quotacheck|quotaoff|quotaon|quotastats|quotasync|quot|repquota|rpc.rquotad|setquota|warnquota|xqmstats)
 removing etc/@(quotagrpadmins|quotatab|warnquota.conf)
