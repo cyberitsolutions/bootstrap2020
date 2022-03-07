@@ -315,8 +315,5 @@ removing **/dbus-1/**/org.freedesktop.hostname1.*
 removing **/lib/**/plymouth/*-initrd
 removing **/systemd/**/*@(initrd|switch-root)*
 removing **/systemd/**/plymouth-start.service
-# From mlocate.  Desktop side only needs locate, not updatedb.
-removing etc/updatedb.conf
-removing **/*bin/updatedb*
 # From pspp.  Only GUI part (psppire) is needed.
 removing usr/*bin/@(pspp|pspp-*)
