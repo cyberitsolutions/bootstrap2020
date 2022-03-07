@@ -163,8 +163,6 @@ usr/lib/pt_chown
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # From EVERYTHING.
-# Additional notes:
-#  • pygame examples includes a Space Invaders game.
 **/*.pod
 **/*bin/dh_*
 **/*bin/py3clean
@@ -180,9 +178,6 @@ usr/lib/pt_chown
 **/lib/python*/unittest
 **/lib/python*/venv
 **/pkgconfig
-**/pygame/docs
-**/pygame/examples
-**/pygame/tests
 usr/include
 usr/lib/debug
 usr/lib/valgrind
