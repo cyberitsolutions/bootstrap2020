@@ -491,6 +491,8 @@ Conflicts:
  gjs, libgjs0g, libgjs-dev,
 #   ?source-package(^cjs$)
  cjs, libcjs0g, libcjs-dev,
+#   ?source-package(^kjsembed$)
+ libkf5jsembed-data, libkf5jsembed-dev, libkf5jsembed5,
 # FIXME: Do the stand-alone js VMs duktape/neko/rhino/mujs get security support, or do they count as "unmaintainable web engines" ?
 # For good measure, block www-browser (except chromium/firefox-esr), too.
 # Because of the exception, we cannot LITERALLY say www-browser here.
