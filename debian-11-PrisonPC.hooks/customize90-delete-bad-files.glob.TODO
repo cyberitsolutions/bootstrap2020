@@ -73,9 +73,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
-removing **/systemd/**/*@(getty|console|debug|emergency|rescue|autovt|shell)*
-# From util-linux & sysvinit-utils.  We only want GUI & SSH logins.
-removing **/*bin/*@(getty|sulogin)*
 # From gimp.
 removing **/gimp/**/plug-ins/@(python-console.py|pyconsole.py|script-fu)
 # From dia.
