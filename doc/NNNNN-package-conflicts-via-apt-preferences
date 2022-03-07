@@ -1,0 +1,13 @@
+/join #debian-apt
+09:37 <twb> Is apt likely to get confused/upset if I have a very long Conflicts list?  About 5,000 elements.
+10:06 <DonKult> are you trying to ship a binary incompatible libc6 package? Thats a lot… apt should be fine in terms of working with it. An upgrade to a package version adding that many conflicts might be refused through as apt frequently decides to hold back an upgrade if that would remove "more important" packages for the current system, so having 5.000 possible refusal options is likely getting you confused 
+10:06 <DonKult> while apt stubbornly refuses to upgrade that package on some user systems.
+10:07 <twb> I have a package that Conflicts on "things convicted criminals shouldn't have".  I started with things like "Conflicts: c-compiler, libc-dev" and got a bit carried away.
+10:08 <twb> I was just thinking about conflicting on the output of "apt-file search --list-packages /usr/include", but it turns out quite a few regular packages have a stub .h
+10:41 <DonKult> wouldn't it be easier to have a preferences file pinning all bad packages to -1 (or 'never' or whatever) ?
+10:41 <twb> That didn't occur to me
+10:42 <twb> I wonder if that gives a clear error.
+10:45 <twb> Should this work?  printf 'Package: src:dkms\nPin: release a=*\nPin-Priority: -1\n' >/etc/apt/preferences.d/test-with-negative-priority && apt policy dkms
+10:46 <twb> Oh that's changing "2.8.4-3 500 500" to "2.8.4-3 -1 500"
+10:48 <twb> OK yeah that is working correctly.
+10:48 <twb> And the error message is reasonably clear
