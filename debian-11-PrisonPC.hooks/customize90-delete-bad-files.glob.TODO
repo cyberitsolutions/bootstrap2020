@@ -99,8 +99,6 @@ removing **/webkitgtk*/**/@(GtkLauncher|MiniBrowser)
 # An HTML5 web server / app server.
 # https://developer.gnome.org/gtk3/stable/gtk-broadway.html
 removing **/*bin/broadwayd
-# Locks session when police jiggler inserted.
-removing **/udev/rules.d/*seat.rules
 # From gimp.  Screenshots lead to ersatz child porn?
 removing **/gimp/**/plug-ins/screenshot
 
