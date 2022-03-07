@@ -287,8 +287,6 @@ removing **/*bin/xflock4
 removing etc/xdg/xfce4/Xft.xrdb
 # Harmless because disabled in Xsession.options.
 removing etc/X11/Xsession.d/*@(ssh-agent|xsessionrc)
-# From faenza-icon-theme - icons for a GNOME IM client.
-removing **/emesene
 # These are all symlinks to qtchooser, which automatically switches between Qt3/4/5 (a bit like linux32).
 # They're useless on PrisonPC due to prisonpc-ersatz-kde-junk.
 removing **/*bin/@(qtchooser|assistant|designer|lconvert|linguist|lrelease|lupdate|moc|pixeltool|qcollectiongenerator|qdbus|qdbuscpp2xml|qdbusviewer|qdbusxml2cpp|qdoc|qdoc3|qglinfo|qhelpconverter|qhelpgenerator|qlalr|qmake|qml|qml1plugindump|qmlbundle|qmlimportscanner|qmlmin|qmlplugindump|qmlprofiler|qmlscene|qmltestrunner|qmlviewer|qtconfig|qtdiag|qtpaths|rcc|uic|uic3|xmlpatterns|xmlpatternsvalidator)
