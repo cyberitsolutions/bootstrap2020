@@ -424,6 +424,8 @@ Conflicts:
  libkf5texteditor5,
  libgtksourceview-4-0,
  gir1.2-gtksource-4,
+# ?source-package(kross) is for "embedded scripting", but orthogonal to kf5texteditor?
+ kross-dev, kross, libkf5krosscore5, libkf5krossui5,
 ## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
 ## ================================================================
 # NOTE: systemd timer units can still be used.
