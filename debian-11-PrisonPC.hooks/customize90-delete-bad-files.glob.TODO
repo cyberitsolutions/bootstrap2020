@@ -156,8 +156,7 @@ removing **/*deb-systemd*
 # From libc-bin.  (FIXME: remove more).
 removing **/*bin/@(ldd|pldd|catchsegv)
 # From util-linux.  (FIXME: remove more).
-removing **/*bin/@(blkdiscard|resizepart|runuser|utmpdump|wdctl)
-removing etc/pam.d/runuser*
+removing **/*bin/@(blkdiscard|resizepart|utmpdump|wdctl)
 # From coreutils.  (FIXME: remove more).
 removing **/*bin/shred
 # From parted (blame udisks2).
