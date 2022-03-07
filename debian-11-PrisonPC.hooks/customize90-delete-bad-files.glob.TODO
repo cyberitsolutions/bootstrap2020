@@ -159,8 +159,6 @@ removing **/*bin/@(ldd|pldd|catchsegv)
 removing **/*bin/@(blkdiscard|resizepart|utmpdump|wdctl)
 # From coreutils.  (FIXME: remove more).
 removing **/*bin/shred
-# From parted (blame udisks2).
-removing **/*bin/@(parted|partprobe)
 # From iproute2.  xdm/Xsetup needs ip; exclude the rest.
 removing etc/iproute2
 removing usr/lib/tc

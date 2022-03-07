@@ -90,6 +90,22 @@ Description: appease kio
  Note that kwallet probably doesn't actually WORK without gpg.
  We already nerf gpg/gnupg, so this is probably harmless either way.
 
+Package: prisonpc-ersatz-parted
+Depends: ${misc:Depends}
+Provides:  parted,
+Conflicts: parted,
+Replaces:  parted,
+Architecture: all
+Description: appease udisks2
+ We install udisks2 so thunar can mount and eject read-only optical media (DVDs).
+ udisks2 hard-depends on parted so it can create GPT partitions.
+ https://sources.debian.org/src/udisks2/2.9.4-1/src/udiskslinuxfsinfo.c/?hl=226#L226
+ We never want this, so nerf this.
+ .
+ FIXME: do we need parted for staff desktops?
+ I don't think so -- staff occasionally want to mount USB keys, but
+ if they want to INITIALIZE a USB key, they can use their normal PC.
+
 Package: prisonpc-bad-package-conflicts-inmates
 Depends:
  ${misc:Depends},
@@ -131,6 +147,7 @@ Depends:
  prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
  prisonpc-ersatz-logrotate (= ${binary:Version}),
  prisonpc-ersatz-kwallet5 (= ${binary:Version}),
+ prisonpc-ersatz-parted (= ${binary:Version}),
 Conflicts:
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
