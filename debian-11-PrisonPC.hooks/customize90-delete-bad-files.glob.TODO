@@ -311,9 +311,5 @@ removing usr/share/alsa/utils.sh
 removing **/systemd/**/*@(systemd-hostnamed|org.freedesktop.hostname1)**
 removing **/*bin/hostnamectl
 removing **/dbus-1/**/org.freedesktop.hostname1.*
-# From plymouth & systemd.  Never needed (no systemd in Debian ramdisks).
-removing **/lib/**/plymouth/*-initrd
-removing **/systemd/**/*@(initrd|switch-root)*
-removing **/systemd/**/plymouth-start.service
 # From pspp.  Only GUI part (psppire) is needed.
 removing usr/*bin/@(pspp|pspp-*)
