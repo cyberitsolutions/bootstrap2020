@@ -76,6 +76,23 @@ usr/lib/dropbear
 **/systemd/**/*emergency*
 **/systemd/**/*rescue*
 **/systemd/**/*shell*
+# From gimp.
+# NOTE: "pygimp" exists in gimp 2.10, but Debian 11 does not ship it as it is Python 2 / GTK 2.
+#       Probably when GIMP upgrades to GTK4, it will bring back pygimp or an equivalent rewrite.
+#       At that time we will have to care again.
+#       https://sources.debian.org/src/gimp/2.10.30-1/plug-ins/pygimp/
+**/gimp/**/plug-ins/script-fu
+**/gimp/**/plug-ins/py*
+**/gimp/**/plug-ins/**/*.py
+# From dia.
+# NOTE: Debian 11 does not ship dia's python plugin as it is Python 2 / GTK 2.
+#       https://sources.debian.org/src/dia/0.97.3+git20160930-9/debian/changelog/#L16-L20
+#       https://sources.debian.org/src/dia/0.97.3+git20160930-9/debian/NEWS/
+**/dia/**/*python*plugin*
+# From scribus.
+**/scribus/plugins/libscriptplugin.so
+# From planner (né Mr Project).  I *think* this lets you add python-backed menu items to planner GUI. —twb, Oct 2018
+**/planner/plugins/libpython-plugin.so
 
 
 ## Inmates SHOULD NOT have a text editor

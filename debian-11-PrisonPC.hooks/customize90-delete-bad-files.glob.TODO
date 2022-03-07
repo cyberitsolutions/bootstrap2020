@@ -71,18 +71,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 # removing usr/*bin/kdeinit*
 
 
-## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
-## ===========================================================
-# From gimp.
-removing **/gimp/**/plug-ins/@(python-console.py|pyconsole.py|script-fu)
-# From dia.
-removing usr/lib/**/dia/libpython_plugin.so
-# From scribus.
-removing usr/lib/scribus/plugins/libscriptplugin.so
-# From planner (né Mr Project).  I *think* this lets you add python-backed menu items to planner GUI. —twb, Oct 2018
-removing usr/lib/planner/plugins/libpython-plugin.so
-
-
 ## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
 ## ================================================================
 ## NB: systemd-user-sessions is needed, see pam_nologin(8).
