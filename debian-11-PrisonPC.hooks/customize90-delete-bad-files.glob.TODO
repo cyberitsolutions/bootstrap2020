@@ -169,37 +169,6 @@ removing etc/pam.d/@(chfn|chsh|newusers|passwd)
 
 ## Inmates SHOULD NOT have development tools
 ## =========================================
-
-# UPMC → pygame → numpy → unittest.
-# FIXME: when "emcee" replaces "UPMC", remove this crappy code.
-# UPDATE: As at Apr 2019 / Stretch, (parts of) python-numpy (Python2) are used by:
-#   childsplay
-#   solarwolf   (via python-pygame)
-#   upmc        (via python-pygame)
-#   ghextris    (via python-glade)
-#   dia         (via python-gtk2)
-#   gcompris    (via python-gtk2)
-#   gimp        (via python-gtk2)
-#   lybniz      (via python-gtk2)
-# Mock just enough of "import unittest" so that "import numpy" works.
-mkdir usr/lib/python2.7/unittest
-echo >usr/lib/python2.7/unittest/case.py 'class SkipTest: pass'
-echo >usr/lib/python2.7/unittest/__init__.py 'class TestCase: pass'
-# Or better yet, just mock out numpy's own testing!
-# UPDATE: "import pygame" worked OK with this, but
-#         I can't be arsed testing all of the above apps for regression.
-#         Therefore, go back to just mocking unittest instead of pruning numpy.
-# removing **/lib/python*/numpy/testing
-# removing **/lib/python*/dist-packages/numpy/testing
-# removing **/numpy/**/@(tests|testing|testutils|f2py_testing|distutils)
-# removing **/numpy/**/core/@(setup.py|setup_common.py)
-# removing **/*bin/f2py*
-# mkdir usr/lib/python2.7/dist-packages/numpy/testing
-# echo >usr/lib/python2.7/dist-packages/numpy/testing/__init__.py 'class Tester: pass'
-# mkdir usr/lib/python2.7/dist-packages/numpy/testing/nosetester
-# echo >usr/lib/python2.7/dist-packages/numpy/testing/nosetester/__init__.py 'class _numpy_tester: bench = test = None'
-
-
 # Python's built-in webserver capabilities
 # Python2's SocketServer is needed for logging.config.
 removing **/lib/python*/@(BaseHTTPServer|CGIHTTPServer|SimpleHTTPServer|SimpleXMLRPCServer|DocXMLRPCServer|xmlrpc/server).@(py|pyc)
