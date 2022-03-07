@@ -167,14 +167,6 @@ removing **/*bin/@(chage|chfn|chsh|expiry|gpaswd|passwd|chgpasswd|chpasswd|cpgr|
 removing etc/pam.d/@(chfn|chsh|newusers|passwd)
 
 
-## Inmates SHOULD NOT have development tools
-## =========================================
-# Python's built-in webserver capabilities
-# Python2's SocketServer is needed for logging.config.
-removing **/lib/python*/@(BaseHTTPServer|CGIHTTPServer|SimpleHTTPServer|SimpleXMLRPCServer|DocXMLRPCServer|xmlrpc/server).@(py|pyc)
-removing **/lib/python*/wsgiref/
-
-
 ## Useless & confusing menu items SHOULD be hidden (#30257)
 ## ========================================================
 # From EVERYTHING (especially XFCE4 packages).

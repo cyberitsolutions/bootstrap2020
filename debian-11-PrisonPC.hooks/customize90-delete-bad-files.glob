@@ -163,6 +163,7 @@ usr/lib/pt_chown
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # From EVERYTHING.
+# We cannot easily remove socketserver.py, as logging.warning() needs it.
 **/*.pod
 **/*bin/dh_*
 **/*bin/py3clean
@@ -172,11 +173,14 @@ usr/lib/pt_chown
 **/lib/python*/**/cgitb.*
 **/lib/python*/**/doctest.*
 **/lib/python*/**/pdb.*
+**/lib/python*/http/**/*server*
 **/lib/python*/idlelib
 **/lib/python*/lib2to3
 **/lib/python*/test
 **/lib/python*/unittest
 **/lib/python*/venv
+**/lib/python*/wsgiref
+**/lib/python*/xmlrpc/**/*server*
 **/pkgconfig
 usr/include
 usr/lib/debug
