@@ -28,14 +28,20 @@ source_dir, = {path for path in pathlib.Path.cwd().glob('vlc-*') if path.is_dir(
 # Install build dependencies for VLC.
 subprocess.check_call(['apt', 'build-dep', '--assume-yes', './'], cwd=source_dir)
 
+
+def build():
+    processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
+    os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck'  # for debuild
+    subprocess.check_call(['debuild', '-uc', '-us', '-tc', f'-j{processors_online}'], cwd=source_dir)
+
+
 # Do a stock build, to debdiff against.
 # UPDATE: Doing two builds triggers this problem for each .lua file:
 #           dpkg-source: error: cannot represent change to share/lua/extensions/VLSub.luac: binary file contents changed
 #         Therefore just skip for now.
 #         Can always debdiff against upstream, with a little more work. --twb, Nov 2021
 if False:
-    os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck'  # for debuild
-    subprocess.check_call(['debuild', '-uc', '-us', '-tc', '-j4'], cwd=source_dir)
+    build()
 
 # Patch the source package.
 with (source_dir / 'debian/rules').open('a') as f:
@@ -84,8 +90,7 @@ subprocess.check_call(
     cwd=source_dir)
 
 # Build the patched source package.
-os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck'  # for debuild
-subprocess.check_call(['debuild', '-uc', '-us', '-tc', '-j4'], cwd=source_dir)
+build()
 
 # Put the built package under /X, where the outer script will look.
 destdir = pathlib.Path(f'/X/vlc-{latest_version}')
