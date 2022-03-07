@@ -71,12 +71,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 # removing usr/*bin/kdeinit*
 
 
-## Inmates MUST NOT have writable local media (DVD, USB)
-## =====================================================
-# From genisoimage, blame Pete.  Lucid-era disc snitching needs isoinfo; exclude the rest.
-removing **/*bin/@(devdump|dirsplit|genisoimage|geteltorito|isodump|isovfy|mkzftree)
-
-
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
 removing **/systemd/**/*@(getty|console|debug|emergency|rescue|autovt|shell)*
