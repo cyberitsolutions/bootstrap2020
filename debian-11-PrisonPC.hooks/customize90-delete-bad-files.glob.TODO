@@ -306,10 +306,5 @@ removing **/*bin/@(qtchooser|assistant|designer|lconvert|linguist|lrelease|lupda
 #   systemd-journal-flush: moves /run/journal/* to /var/log/journal/.
 removing **/systemd/**/*@(mqueue|sys-kernel|binfmt|fsck|random|backlight|rfkill|quota|readahead|alsa|network|resolve|systemd-journal-flush)*
 removing usr/share/alsa/utils.sh
-# From systemd - get/set the hostname (& icon). --twb, Feb 2016 (#30645)
-# Only used by the GTK3 File Picker Dialog sidebar, where its absence is harmless.
-removing **/systemd/**/*@(systemd-hostnamed|org.freedesktop.hostname1)**
-removing **/*bin/hostnamectl
-removing **/dbus-1/**/org.freedesktop.hostname1.*
 # From pspp.  Only GUI part (psppire) is needed.
 removing usr/*bin/@(pspp|pspp-*)
