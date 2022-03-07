@@ -31,7 +31,7 @@ subprocess.check_call(['apt', 'build-dep', '--assume-yes', './'], cwd=source_dir
 
 def build():
     processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
-    os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck'  # for debuild
+    os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck noddebs'
     subprocess.check_call(['debuild', '-uc', '-us', '-tc', f'-j{processors_online}'], cwd=source_dir)
 
 
