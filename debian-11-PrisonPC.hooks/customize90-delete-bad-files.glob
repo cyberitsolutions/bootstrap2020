@@ -353,8 +353,3 @@ usr/share/doc/python3-uno/demo
 # Remove it so it does not appear in the GUI printer list.
 # UPDATE: not needed -- when cupsd is reachable, GenericPrinter is hidden.
 # /etc/libreoffice/psprint.conf
-
-
-
-## sysvinit compatibility MAY be removed
-## =====================================
