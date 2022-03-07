@@ -263,11 +263,6 @@ removing etc/sysctl.d/99-sysctl.conf
 removing usr/lib/mime
 removing usr/**/share/emacs
 removing usr/share/@(appdata|bash-completion|menu|upstart|zsh)
-# From quota.  quota-reminder needs quota(1); exclude the rest of the package (which expects an NFS *server*).
-removing **/*bin/@(convertquota|edquota|quota_nld|quotacheck|quotaoff|quotaon|quotastats|quotasync|quot|repquota|rpc.rquotad|setquota|warnquota|xqmstats)
-removing etc/@(quotagrpadmins|quotatab|warnquota.conf)
-removing usr/share/quota
-removing var/lib/quota
 # From tar.
 removing **/*bin/@(tarcat|rmt-tar)
 removing etc/rmt
