@@ -78,9 +78,6 @@ removing usr/share/man          # FIXME: isn't this a noop?
 
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
-# NB: when p123 logs in, systemd-logind grants write access (ACL
-# user:p123:rw) to all devices tagged "uaccess" in udev. (#30098)
-removing **/udev/rules.d/*@(uaccess|seat-late).rules
 # From genisoimage, blame Pete.  Lucid-era disc snitching needs isoinfo; exclude the rest.
 removing **/*bin/@(devdump|dirsplit|genisoimage|geteltorito|isodump|isovfy|mkzftree)
 
