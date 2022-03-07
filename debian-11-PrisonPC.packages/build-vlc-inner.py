@@ -89,6 +89,25 @@ subprocess.check_call(
      ' https://alloc.cyber.com.au/task/task.php?taskID=30713'],
     cwd=source_dir)
 
+# Additional changes --- disable plugins that we don't want.
+# In Debian 9, we built these, but then removes the .so after install.
+with (source_dir / 'debian/rules').open('a') as f:
+    print(
+        'confflags += --disable-lua',
+        'removeplugins += lua',  # doesn't work, fixed below
+        sep='\n',
+        file=f)
+# Again, filter-plugin.py doesn't work for all our cases.
+for install_path in source_dir.glob('debian/*.install'):
+    install_path.write_text('\n'.join([
+        line for line in install_path.read_text().splitlines()
+        if line not in
+        {'usr/lib/*/vlc/lua',
+         'usr/lib/*/vlc/plugins/lua/liblua_plugin.so',
+         'usr/share/doc/vlc/lua',
+         'usr/share/vlc/lua',
+        }]))
+
 # Build the patched source package.
 build()
 
