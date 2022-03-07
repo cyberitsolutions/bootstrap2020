@@ -51,7 +51,6 @@ removing usr/share/dbus-1/services/org.kde.kcookiejar5.service
 removing usr/share/dbus-1/services/org.kde.kpasswdserver.service
 removing usr/lib/**/kf5/kiod/kpasswdserver.so
 removing usr/share/katepart
-removing usr/share/apps/konsole
 removing usr/share/doc/HTML/*/kioslave5
 removing usr/share/kf5/kjava
 removing usr/share/kservices5/!(kcmtrash|khtml|cache|cookies|data|khtmlimage).protocol  # FIXME: this is likely to break things.
