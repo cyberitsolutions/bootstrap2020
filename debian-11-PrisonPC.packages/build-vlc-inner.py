@@ -77,7 +77,7 @@ os.environ['DEBFULLNAME'] = 'Trent W. Buck'  # for debchange
 os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
 subprocess.check_call(
     ['debchange',
-     '--local=inmate',
+     '--local=PrisonPC',
      '--distribution=bullseye',
      'Disable screenshot capability (sout & screen)'
      ' https://alloc.cyber.com.au/task/task.php?taskID=30713'],

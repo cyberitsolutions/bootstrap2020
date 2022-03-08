@@ -102,7 +102,7 @@ candidate_line, = [
     line
     for line in policy_stdout.splitlines()
     if line.strip().startswith('Candidate: ')]
-if 'inmate' in candidate_line:
+if 'PrisonPC' in candidate_line:
     logging.info("apt believes PrisonPC's vlc is the newest vlc")
 else:
     logging.error("apt believes Debian's vlc is newer than PrisonPC's vlc -- REBUILD NEEDED!")
