@@ -73,13 +73,13 @@ Description: appease prayer
  so we don't need logrotate.
  This also lets us avoid installing cron.
 
-Package: prisonpc-ersatz-kwallet5
+Package: prisonpc-ersatz-kio
 Depends: ${misc:Depends}
-Provides:  libkf5wallet-bin, libkf5wallet5 (= 5.78.0-2),
-Conflicts: libkf5wallet-bin, libkf5wallet5,
-Replaces:  libkf5wallet-bin, libkf5wallet5,
+Provides:  kio (= 5.78.0-5),
+Conflicts: kio,
+Replaces:  kio,
 Architecture: all
-Description: appease kio
+Description: appease KDE games and KDE educational apps
  In KDE4, every KDE app depended on "kdelibs", which was *every* KDE library.
  So even if you didn't use any apps that (say) opened files, you still had the
  whole KDE SFTP driver.
@@ -89,6 +89,15 @@ Description: appease kio
  .
  Note that kwallet probably doesn't actually WORK without gpg.
  We already nerf gpg/gnupg, so this is probably harmless either way.
+ .
+ UPDATE: actually we can be even more ruthless.
+ KDEedu apps depend on kio indirectly via libraries like
+ libkeduvocdocument5 and libkf5newstuff5.
+ But I experimentally ran this, and apps still worked (including File > Open):
+ .
+  dpkg --purge --force-depends kio kded5 libkf5doctools5 libkf5kiontlm5 libkf5solid5 libkf5solid5-data
+ .
+ Therefore, instead of spoofing kwallet, we spoof kio itself.
 
 Package: prisonpc-ersatz-parted
 Depends: ${misc:Depends}
@@ -146,7 +155,7 @@ Depends:
  prisonpc-ersatz-gpg (= ${binary:Version}),
  prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
  prisonpc-ersatz-logrotate (= ${binary:Version}),
- prisonpc-ersatz-kwallet5 (= ${binary:Version}),
+ prisonpc-ersatz-kio (= ${binary:Version}),
  prisonpc-ersatz-parted (= ${binary:Version}),
 Conflicts:
 ## Inmates MUST NOT have unnecessary crypto
@@ -186,6 +195,7 @@ Conflicts:
  libcryptui0a, gir1.2-cryptui-0.0, seahorse-daemon,
  libp11-3, p11-kit, p11-kit-modules, libpam-p11,
 # KDE password manager is not needed.
+ libkf5wallet-bin, libkf5wallet5,
  kwalletcli,
  libkf5wallet-data, libkwalletbackend5-5,
  libpam-kwallet-common, libpam-kwallet5,

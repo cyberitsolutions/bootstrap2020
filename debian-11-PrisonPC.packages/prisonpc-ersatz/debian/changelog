@@ -1,3 +1,14 @@
+prisonpc-ersatz (11.23) bullseye; urgency=medium
+
+  * spoof parted (blame udisks2)
+  * spoof kio (not just kwallet5)
+  * block iproute2 and acl
+  * block anything with /usr/bin/dh_*
+  * block anything with /usr/src/*
+  * block large (and unused) parts of KDE, e.g. KDE su, KDE js, drkonqi
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 09 Mar 2022 14:46:34 +1100
+
 prisonpc-ersatz (11.21) unstable; urgency=medium
 
   * block kwallet/kf5-wallet and seahorse/gcr.
