@@ -1,5 +1,12 @@
 # -*- conf -*-
 
+# WARNING: **/B matches /B and /usr/B.
+#          A/**/B matches A/usr/B but DOES NOT MATCH A/B!
+#          "**/" matches zero-or-more dirs, but
+#          "/**/" matches one-or-more dirs!
+#          THIS IS DIFFERENT from bash extglob!
+#          If you want to match both A/B and A/X/Y/B, you need to use two globs!
+
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
 # From openssl & ssl-cert.  Not needed after packages are installed.
@@ -10,9 +17,11 @@
 **/ssleay.cnf
 usr/lib/ssl/misc
 # From systemd.  This replaces "cryptsetup" and does LUKS (encrypted disks).
-**/systemd/**/*cryptsetup*
-**/systemd/**/*cryptdisks*
+**/systemd/*crypt*
+**/systemd/**/*crypt*
 # From systemd.  This is used to prompt for LUKS (et al) decrypt passphrase.
+**/*bin/systemd-*password*
+**/systemd/*password*
 **/systemd/**/*password*
 
 
@@ -70,11 +79,17 @@ usr/lib/dropbear
 # From util-linux & systemd.  We only want GUI & SSH logins.
 **/*getty*
 **/*sulogin*
+**/systemd/*autovt*
 **/systemd/**/*autovt*
+**/systemd/*console*
 **/systemd/**/*console*
+**/systemd/*debug*
 **/systemd/**/*debug*
+**/systemd/*emergency*
 **/systemd/**/*emergency*
+**/systemd/*rescue*
 **/systemd/**/*rescue*
+**/systemd/*shell*
 **/systemd/**/*shell*
 # From gimp.
 # NOTE: "pygimp" exists in gimp 2.10, but Debian 11 does not ship it as it is Python 2 / GTK 2.
@@ -84,11 +99,13 @@ usr/lib/dropbear
 **/gimp/**/plug-ins/script-fu
 **/gimp/**/plug-ins/py*
 **/gimp/**/plug-ins/**/*.py
+**/gimp/**/plug-ins/*.py
 # From dia.
 # NOTE: Debian 11 does not ship dia's python plugin as it is Python 2 / GTK 2.
 #       https://sources.debian.org/src/dia/0.97.3+git20160930-9/debian/changelog/#L16-L20
 #       https://sources.debian.org/src/dia/0.97.3+git20160930-9/debian/NEWS/
 **/dia/**/*python*plugin*
+**/dia/**python*plugin*
 # From scribus.
 **/scribus/plugins/libscriptplugin.so
 # From planner (né Mr Project).  I *think* this lets you add python-backed menu items to planner GUI. —twb, Oct 2018
@@ -170,17 +187,22 @@ usr/lib/pt_chown
 **/*bin/py3compile
 **/*bin/pydoc3*
 **/*bin/pygettext*
-**/lib/python*/**/cgitb.*
-**/lib/python*/**/doctest.*
-**/lib/python*/**/pdb.*
-**/lib/python*/http/**/*server*
+**/lib/python*/cgitb.py
+**/lib/python*/__pycache__/cgitb.*.pyc
+**/lib/python*/doctest.py
+**/lib/python*/__pycache__/doctest.*.pyc
+**/lib/python*/pdb.py
+**/lib/python*/__pycache__/pdb.*.pyc
+**/lib/python*/http/server.py
+**/lib/python*/http/__pycache__/server.*.pyc
 **/lib/python*/idlelib
 **/lib/python*/lib2to3
 **/lib/python*/test
 **/lib/python*/unittest
 **/lib/python*/venv
 **/lib/python*/wsgiref
-**/lib/python*/xmlrpc/**/*server*
+**/lib/python*/xmlrpc/server.py
+**/lib/python*/xmlrpc/__pycache__/server.*.pyc
 **/pkgconfig
 usr/include
 usr/lib/debug
