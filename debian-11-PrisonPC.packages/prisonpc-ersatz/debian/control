@@ -547,6 +547,7 @@ Conflicts:
 # Leftovers from delete-bad-files KDE4 lockdown.
 # In KDE5, we can block the packages outright.
  plasma-desktop,
+ plasma-framework,
 ## Inmates SHOULD NOT be able to use VLC for evil
 ## ==============================================
 ## Inmates SHOULD NOT have packaging tools
