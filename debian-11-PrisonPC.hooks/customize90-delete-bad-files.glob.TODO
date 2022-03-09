@@ -23,15 +23,6 @@ removing **/*bin/@(dvipdf|eps2eps|font2c|gsbj|gsdj|gsdj500|gslj|gslp|gsnd|pdf2ds
 removing usr/share/man          # FIXME: isn't this a noop?
 
 
-# removing usr/share/polkit-1/actions/org.kde.*.policy
-# removing usr/share/mime/inode/vnd.kde.*.xml
-
-## FIXME: this is enough to break khelpcenter.  Refine?
-##   khelpcenter(673): No ksycoca4 database available!
-## Probably need to keep at least libkdeinit4_kbuildsycoca4.so
-# removing usr/*bin/kdeinit*
-
-
 ## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
 ## ================================================================
 ## NB: systemd-user-sessions is needed, see pam_nologin(8).

@@ -594,6 +594,13 @@ Conflicts:
  baloo-kf5, kde-zeroconf, kdeconnect, kdepim-runtime, kio-audiocd,
  kio-extras, kio-gdrive, kio-gopher, kio-ldap, kio-perldoc, kio-sieve,
  libk3b7-extracodecs, libkf5kdelibs4support5-bin, plasma-workspace,
+# Blacklist everything that provides polkit*kde.
+ k3b, kalarm, kde-config-plymouth, kde-config-sddm,
+ kde-config-systemd, kdenetwork-filesharing, kdevelop-python-data,
+ ktexteditor-data, kwalletmanager, libkf5sysguard-data, libkpmcore10,
+ plasma-desktop-data, plasma-discover-backend-snap, plasma-disks,
+ plasma-workspace-data, polkit-kde-agent-1, powerdevil, smb4k,
+ kinit,
 ## Inmates SHOULD NOT be able to use VLC for evil
 ## ==============================================
 ## Inmates SHOULD NOT have packaging tools
