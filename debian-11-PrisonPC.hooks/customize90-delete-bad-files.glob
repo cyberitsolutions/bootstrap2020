@@ -157,6 +157,12 @@ usr/lib/pt_chown
 
 ## Inmates SHOULD NOT have packaging tools
 ## =======================================
+# KDE5 apps have a "knewstuff5" library that downloads additional content from the internet.
+# In theory this is used by e.g. step to download new exercises.
+# In practice nobody ever ACTUALLY puts content there after the first test upload.
+# Remove this just because the name sounds scary.
+# It's PROBABLY just wget+tar under the hood.
+**/*bin/kpackagetool5
 
 
 ## Inmates SHOULD NOT have diagnostic tools
