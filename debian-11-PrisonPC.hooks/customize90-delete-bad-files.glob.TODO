@@ -91,50 +91,6 @@ removing **/*bin/broadwayd
 removing **/gimp/**/plug-ins/screenshot
 
 
-## Inmates SHOULD NOT be able to use VLC for evil
-## ==============================================
-## See also https://kb/PrisonPC+VLC+Functional+Requirements
-## See also Alloc tasks #30713, #30675, #30910
-## This includes screenshots & recording to local files.
-## This includes SFTP, HTTP, VNC, RDP clients.
-## This includes RTP, HTTP servers.
-## FIXME: this lockdown NOT FINISHED:
-##
-##   audio_filter  control      misc           video_chroma
-##   audio_mixer   demux        packetizer     video_filter
-##   codec         meta_engine  stream_filter
-##
-## FIXME: recompile vlc with --disable-foo ?
-##
-## FIXME: j-b on #videolan says ./configure --disable-sout *WILL*
-##        disable Video > Take Snapshot.
-##        Failing that, we need to remove all png, jpg and tiff encoders,
-##        and possibly more.  Ref. Tools > Preferences > Video > Format.
-##
-# These exist outside the "plugins" hierarchy.
-removing usr/lib/vlc/**/*@(lua|vdpau)*
-# These plugin "capabilities" are not required.
-# Additional notes:
-#   stream_out:   Movie recording
-removing usr/lib/vlc/plugins/@(access_output|stream_out|mux|services_discovery|video_splitter|visualization)/
-# These plugin "capabilities" require only a small whitelist.
-# Additional notes:
-#  * cdda:        Music CDs
-#  * dvdread:     Movie DVDs
-#  * dvdnav:      Movie DVD menus
-#  * rtp:         IPTV
-#  * filesystem:  file:///srv/share/tv/Foo/Bar.avi
-#  * xcb_xv:      draws the actual video inside qvlc/cvlc/upmc windows.
-#  * xcb_window:  creates a window for xcb_xv to draw into, in cvlc/upmc (not qvlc).
-#  * qt4:         "native" GUI (not ncurses, not "skinnable")
-#  * freetype:    Subtitles
-removing usr/lib/vlc/plugins/access/!(lib@(cdda|dvdread|dvdnav|rtp|filesystem)_plugin.so)
-removing usr/lib/vlc/plugins/audio_output/!(libalsa_plugin.so)
-removing usr/lib/vlc/plugins/video_output/!(lib@(xcb_window|xcb_xv)_plugin.so)
-removing usr/lib/vlc/plugins/gui/!(libqt4_plugin.so)
-removing usr/lib/vlc/plugins/text_renderer/!(libfreetype_plugin.so)
-
-
 ## Inmates SHOULD NOT have packaging tools
 ## =======================================
 # From apt & dpkg &c.  Not needed after packages are installed.
