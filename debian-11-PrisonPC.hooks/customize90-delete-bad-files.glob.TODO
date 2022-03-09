@@ -27,7 +27,6 @@ removing usr/share/kde*/**/*@(phonon|kcm_)*
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/kde3supportwidgets.so
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/*
 removing usr/lib/kde*/kcm_*.so
-removing usr/bin/kcmshell4
 removing etc/dbus-1/system.d/org.kde.kcontrol.kcmremotewidgets.conf
 removing usr/share/dbus-1/system-services/org.kde.*.service
 removing etc/dbus-1/system.d/org.kde.auth.conf
