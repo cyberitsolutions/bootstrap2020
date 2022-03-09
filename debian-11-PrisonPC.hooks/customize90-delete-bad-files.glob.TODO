@@ -30,7 +30,6 @@ removing usr/lib/kde*/kcm_*.so
 removing usr/bin/kcmshell4
 removing etc/dbus-1/system.d/org.kde.kcontrol.kcmremotewidgets.conf
 removing usr/share/dbus-1/system-services/org.kde.*.service
-removing usr/lib/libkcmutils.so*
 removing etc/dbus-1/system.d/org.kde.auth.conf
 ## FIXME: UNTESTED
 removing usr/lib/**/kf5/kio/!(desktop|file|ghelp|help|trash).so

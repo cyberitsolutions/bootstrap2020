@@ -548,6 +548,7 @@ Conflicts:
 # In KDE5, we can block the packages outright.
  plasma-desktop,
  plasma-framework,
+ libkf5kcmutils5,
 ## Inmates SHOULD NOT be able to use VLC for evil
 ## ==============================================
 ## Inmates SHOULD NOT have packaging tools
