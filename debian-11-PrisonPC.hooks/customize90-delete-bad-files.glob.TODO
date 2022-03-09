@@ -25,12 +25,10 @@ removing usr/lib/**/marble/plugins/libAprsPlugin.so
 removing usr/share/kde*/**/*@(phonon|kcm_)*
 # FIXME: do we really need ALL of desktop|file|ghelp|help|trash ?
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/kde3supportwidgets.so
-removing usr/lib/attica_kde.so
 removing usr/bin/plasma-remote-helper
 removing usr/bin/plasmapkg
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/*
 removing usr/lib/kde*/kcm_*.so
-removing usr/lib/kde*/kcmspellchecking.so
 removing usr/bin/kcmshell4
 removing etc/dbus-1/system.d/org.kde.kcontrol.kcmremotewidgets.conf
 removing usr/share/dbus-1/system-services/org.kde.*.service
