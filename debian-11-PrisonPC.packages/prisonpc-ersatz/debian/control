@@ -558,6 +558,28 @@ Conflicts:
  kde-config-mailtransport,       kde-config-telepathy-accounts,
  khelpcenter,
  kwalletmanager,
+# Blacklist everything that provides dbus-1/services/org.kde.*, except kio kded5 libkf5globalaccel-data (kdeedu needs those).
+ choqok,                         korganizer,
+ dolphin,                        korganizer,
+ k3b,                            ksysguard,
+ kactivitymanagerd,              ktexteditor-data,
+ kalarm,                         kwalletmanager,
+ kde-config-plymouth,
+ kde-config-sddm,                libkf5libkdepim-dev,
+ kde-config-systemd,             libkf5libkdepim-dev,
+ kde-spectacle,                  libkf5screen-bin,
+ kde-spectacle,                  libkf5sysguard-data,
+ kde-telepathy-contact-list,     libkf5wallet-bin,
+ kdeconnect,                     libkpmcore10,
+ kdenetwork-filesharing,         plasma-desktop-data,
+ kdesvn-kio-plugins,             plasma-discover-backend-snap,
+ keurocalc-data,                 plasma-disks,
+ kget,                           plasma-workspace,
+ kio-extras-data,                plasma-workspace-data,
+ kio-fuse,                       powerdevil,
+ kmail,                          smb4k,
+ kongress,                       yakuake,
+ kontact,
 ## Inmates SHOULD NOT be able to use VLC for evil
 ## ==============================================
 ## Inmates SHOULD NOT have packaging tools
