@@ -374,3 +374,10 @@ usr/share/doc/python3-uno/demo
 # Remove it so it does not appear in the GUI printer list.
 # UPDATE: not needed -- when cupsd is reachable, GenericPrinter is hidden.
 # /etc/libreoffice/psprint.conf
+
+# We removed this in Debian 9.
+# This is the "Amateur Radio APRS plugin".
+# I don't know why we other removing it, unless
+# it's just because it's vaguely related to clandestine comms.
+# It's easier to just continue removing it, rather than think about it.
+/usr/lib/**/marble/plugins/AprsPlugin.so
