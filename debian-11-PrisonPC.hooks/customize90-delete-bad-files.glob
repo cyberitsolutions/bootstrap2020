@@ -381,3 +381,22 @@ usr/share/doc/python3-uno/demo
 # it's just because it's vaguely related to clandestine comms.
 # It's easier to just continue removing it, rather than think about it.
 /usr/lib/**/marble/plugins/AprsPlugin.so
+# We removed this in Debian 9.
+# This is from "kio", a "file open" / "file save" framework all KDE apps need.
+# I assume these are for saving passwords for e.g. "File Opening" from an SFTP share.
+# These files are definitely still present in Debian 11.
+# "kio" package is definitely still pulled in and unavoidable in Debian 11.
+**/*bin/kcookiejar5
+/usr/lib/*/kpasswdserver.so
+/usr/lib/*/kcookiejar.so
+/usr/share/dbus-1/services/org.kde.kcookiejar5.service
+/usr/share/dbus-1/services/org.kde.kpasswdserver.service
+# We removed this in Debian 9.
+# These files are definitely still present in Debian 11.
+# "kio" package is definitely still pulled in and unavoidable in Debian 11.
+# FIXME: can ghelp.so and help.so be removed?
+/usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/ftp.so
+/usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/ghelp.so
+/usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/help.so
+/usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/http.so
+/usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/remote.so

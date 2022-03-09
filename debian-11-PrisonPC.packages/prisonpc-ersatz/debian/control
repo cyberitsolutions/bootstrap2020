@@ -580,6 +580,10 @@ Conflicts:
  kmail,                          smb4k,
  kongress,                       yakuake,
  kontact,
+# Blacklist everything that provides /usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/ except kio itself.
+ baloo-kf5, kde-zeroconf, kdeconnect, kdepim-runtime, kio-audiocd,
+ kio-extras, kio-gdrive, kio-gopher, kio-ldap, kio-perldoc, kio-sieve,
+ libk3b7-extracodecs, libkf5kdelibs4support5-bin, plasma-workspace,
 ## Inmates SHOULD NOT be able to use VLC for evil
 ## ==============================================
 ## Inmates SHOULD NOT have packaging tools

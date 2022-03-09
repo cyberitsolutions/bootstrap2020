@@ -28,16 +28,11 @@ removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/*
 removing usr/lib/kde*/kcm_*.so
 removing etc/dbus-1/system.d/org.kde.auth.conf
 ## FIXME: UNTESTED
-removing usr/lib/**/kf5/kio/!(desktop|file|ghelp|help|trash).so
 removing **/*bin/@(kde-cp|kde-mv|kde-open|kde4)
 removing **/*bin/protocoltojson  # blame kio
 removing **/*bin/pykig.py        # blame kig
 removing **/*bin/@(dvipdf|eps2eps|font2c|gsbj|gsdj|gsdj500|gslj|gslp|gsnd|pdf2dsc|pdf2ps|pfbtopfa|pphs|printafm|ps2ascii|ps2epsi|ps2pdf|ps2pdf12|ps2pdf13|ps2pdf14|ps2pdfwr|ps2ps|ps2ps2|ps2txt|wftopfa)  # thin shims around bin/gs — not really useful to remove?
 
-removing **/*bin/kcookiejar5
-removing usr/share/dbus-1/services/org.kde.kcookiejar5.service
-removing usr/share/dbus-1/services/org.kde.kpasswdserver.service
-removing usr/lib/**/kf5/kiod/kpasswdserver.so
 removing usr/share/doc/HTML/*/kioslave5
 removing usr/share/kservices5/!(kcmtrash|khtml|cache|cookies|data|khtmlimage).protocol  # FIXME: this is likely to break things.
 removing usr/share/man          # FIXME: isn't this a noop?
