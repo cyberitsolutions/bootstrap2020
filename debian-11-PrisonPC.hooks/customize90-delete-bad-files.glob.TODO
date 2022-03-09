@@ -14,41 +14,19 @@
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
 
-# FIXME: put this in the right place.
 # From kde4libs and associated villains.
-# Notes: (see also https://api.kde.org/frameworks/)
-#   phonon - the thing KDE apps use to make a "bong" noise when a popup window appears.
-#   kcm - KDE control panels stuff.  Has things like SSL, terminal, text editor in there.
-#   plasma - the "KDE desktop" itself, as opposed to KDE apps.  We use XFCE instead.
-#   attica - downloading user-generated content from web forums
-removing usr/share/kde*/**/*@(phonon|kcm_)*
-# FIXME: do we really need ALL of desktop|file|ghelp|help|trash ?
-removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/kde3supportwidgets.so
 removing usr/lib/x86_64-linux-gnu/qt4/plugins/designer/*
-removing usr/lib/kde*/kcm_*.so
 removing etc/dbus-1/system.d/org.kde.auth.conf
 ## FIXME: UNTESTED
 removing **/*bin/@(kde-cp|kde-mv|kde-open|kde4)
-removing **/*bin/protocoltojson  # blame kio
 removing **/*bin/pykig.py        # blame kig
 removing **/*bin/@(dvipdf|eps2eps|font2c|gsbj|gsdj|gsdj500|gslj|gslp|gsnd|pdf2dsc|pdf2ps|pfbtopfa|pphs|printafm|ps2ascii|ps2epsi|ps2pdf|ps2pdf12|ps2pdf13|ps2pdf14|ps2pdfwr|ps2ps|ps2ps2|ps2txt|wftopfa)  # thin shims around bin/gs — not really useful to remove?
 
-removing usr/share/doc/HTML/*/kioslave5
-removing usr/share/kservices5/!(kcmtrash|khtml|cache|cookies|data|khtmlimage).protocol  # FIXME: this is likely to break things.
 removing usr/share/man          # FIXME: isn't this a noop?
 
 
-# removing **/*bin/kded4
-# removing usr/lib/kde*/kded_*.so
-# removing usr/lib/kconf_update_bin/
-# removing usr/lib/kde*/plugins/phonon_platform
-# removing usr/lib/**/qt4/plugins/phonon_backend
 # removing usr/share/polkit-1/actions/org.kde.*.policy
-# removing usr/bin/kioclient
 # removing usr/share/mime/inode/vnd.kde.*.xml
-# removing usr/bin/solid-hardware
-# removing usr/lib/libsolid.so*
-# removing usr/bin/kbuildsycoca4
 
 ## FIXME: this is enough to break khelpcenter.  Refine?
 ##   khelpcenter(673): No ksycoca4 database available!
