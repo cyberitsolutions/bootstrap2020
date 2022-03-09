@@ -549,6 +549,15 @@ Conflicts:
  plasma-desktop,
  plasma-framework,
  libkf5kcmutils5,
+ kde-config-cddb,                kde-config-mobile-networking,
+ kde-config-cron,                kde-config-plymouth,
+ kde-config-fcitx,               kde-config-screenlocker,
+ kde-config-fcitx5,              kde-config-sddm,
+ kde-config-gtk-style,           kde-config-systemd,
+ kde-config-gtk-style-preview,   kde-config-tablet,
+ kde-config-mailtransport,       kde-config-telepathy-accounts,
+ khelpcenter,
+ kwalletmanager,
 ## Inmates SHOULD NOT be able to use VLC for evil
 ## ==============================================
 ## Inmates SHOULD NOT have packaging tools
