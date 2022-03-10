@@ -20,13 +20,6 @@ removing **/*bin/@(dvipdf|eps2eps|font2c|gsbj|gsdj|gsdj500|gslj|gslp|gsnd|pdf2ds
 removing usr/share/man          # FIXME: isn't this a noop?
 
 
-## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
-## ================================================================
-## NB: systemd-user-sessions is needed, see pam_nologin(8).
-removing **/systemd/**/user*  # user* NOT *user* because multi-user.target
-removing etc/pam.d/systemd-user
-
-
 ## Inmates SHOULD NOT be have miscellaneous scary things
 ## =====================================================
 removing **/systemd/**/*@(sleep|suspend|hibernate)*
