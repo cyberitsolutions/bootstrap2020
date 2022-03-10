@@ -14,9 +14,6 @@
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
 
-removing usr/share/man          # FIXME: isn't this a noop?
-
-
 ## Inmates SHOULD NOT be have miscellaneous scary things
 ## =====================================================
 removing **/systemd/**/*@(sleep|suspend|hibernate)*
