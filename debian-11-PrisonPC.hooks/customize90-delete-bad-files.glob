@@ -51,6 +51,16 @@ usr/lib/dropbear
 # Still present as at Debian 11 / LibreOffice 7.3.
 # https://alloc.cyber.com.au/task/task.php?taskID=31791
 **/libreoffice/**/placeedit.ui
+# No idea what this actually does, but it sounds scary.  It's part of core Qt5.
+/usr/lib/**/qt5/plugins/platforms/libqvnc.so
+# An HTML5 web server / app server.
+# https://developer.gnome.org/gtk3/stable/gtk-broadway.html
+**/*bin/broadwayd
+/usr/lib/**/gtk-*/**/*broadway*.so
+# Unlocked web browsers (libwebkit2gtk-4.0-37, libwpewebkit-1.0-3).
+# See prisonpc-ersatz for more discussion, near this:
+#   "The webkit2gtk and wpewebkit engines ARE covered by security support."
+**/MiniBrowser
 
 
 ## Inmates MUST NOT have writable local media (DVD, USB)

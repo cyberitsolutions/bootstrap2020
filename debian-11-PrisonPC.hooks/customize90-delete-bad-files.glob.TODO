@@ -34,11 +34,6 @@ removing etc/pam.d/systemd-user
 ## =====================================================
 removing **/systemd/**/*@(sleep|suspend|hibernate)*
 removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
-# Unlocked web browsers.
-removing **/webkitgtk*/**/@(GtkLauncher|MiniBrowser)
-# An HTML5 web server / app server.
-# https://developer.gnome.org/gtk3/stable/gtk-broadway.html
-removing **/*bin/broadwayd
 # From gimp.  Screenshots lead to ersatz child porn?
 removing **/gimp/**/plug-ins/screenshot
 
