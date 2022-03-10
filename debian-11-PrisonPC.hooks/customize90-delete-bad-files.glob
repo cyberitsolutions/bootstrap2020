@@ -141,6 +141,16 @@ usr/lib/dropbear
 
 ## Inmates SHOULD NOT have miscellaneous scary things
 ## ==================================================
+# From gimp.  Screenshots lead to ersatz child porn.
+# For more discussion see
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC.packages/build-vlc.py
+**/gimp/**/plug-ins/screenshot
+# LibreOffice also has a screenshot feature, but
+# AFAICT it can only screenshot libreoffice windows, so
+# we do not care.
+# https://wiki.documentfoundation.org/Documentation/Screenshots
+#    /usr/lib/libreoffice/share/config/soffice.cfg/vcl/ui/screenshotparent.ui
+#    /usr/lib/libreoffice/share/config/soffice.cfg/cui/ui/screenshotannotationdialog.ui
 # From tiny-initramfs & tiny-initramfs-core.
 # In ./customize80-purge-bad-packages.py we remove initrd stuff.
 # Nerf the unused "stub" initrd it installs.

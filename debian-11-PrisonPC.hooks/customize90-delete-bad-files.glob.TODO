@@ -31,8 +31,6 @@ removing etc/pam.d/systemd-user
 ## =====================================================
 removing **/systemd/**/*@(sleep|suspend|hibernate)*
 removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
-# From gimp.  Screenshots lead to ersatz child porn?
-removing **/gimp/**/plug-ins/screenshot
 
 
 ## Inmates SHOULD NOT have packaging tools
