@@ -14,9 +14,6 @@
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
 
-## FIXME: UNTESTED
-removing **/*bin/@(dvipdf|eps2eps|font2c|gsbj|gsdj|gsdj500|gslj|gslp|gsnd|pdf2dsc|pdf2ps|pfbtopfa|pphs|printafm|ps2ascii|ps2epsi|ps2pdf|ps2pdf12|ps2pdf13|ps2pdf14|ps2pdfwr|ps2ps|ps2ps2|ps2txt|wftopfa)  # thin shims around bin/gs — not really useful to remove?
-
 removing usr/share/man          # FIXME: isn't this a noop?
 
 
