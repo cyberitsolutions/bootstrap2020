@@ -6,6 +6,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import xml.etree.ElementTree
 import zipfile
 
 __doc__ = """ delete .py files so inmates can't study them
@@ -119,9 +120,34 @@ for path in executable_paths:
         obfuscate_executable(path, shebang)
 
 
+# Inkscape extensions have a metadata .inx file; we need to change
+#     <command location="inx" interpreter="python">addnodes.py</command>
+# to
+#     <command location="inx" interpreter="python">__pycache__/addnodes.cpython-39.pyc</command>
+# Note that some .py files do not have corresponding .inx files, because
+# they are libraries shared between several extensions!
+#
+# FIXME: first part of this is copy-paste-edited from the first stanza in this script -- dedup!
+for src in pathlib.Path('/usr/share/inkscape').glob('**/__pycache__/*.cpython-3*.pyc'):
+    dst = src.parent.parent / ('.'.join(src.stem.split('.')[:-1]) + '.pyc')
+    if dst.exists():
+        raise RuntimeError('One .py has multiple PEP3147 .pyc files?', dst)
+    logging.debug('renamed %s → %s', src, dst)
+    src.rename(dst)             # Undo PEP3147
+    dst.with_suffix('.py').unlink()  # Remove source code.
+    inx_path = dst.with_suffix('.inx')
+    if inx_path.exists():
+        tree = xml.etree.ElementTree.parse(inx_path)
+        command_element, = tree.findall('.//{http://www.inkscape.org/namespace/inkscape/extension}command')
+        command_element.text = str(dst.relative_to(inx_path.parent))
+        with inx_path.open('w') as f:
+            tree.write(f, xml_declaration=True, encoding='unicode')
+
+
 # Look for any files we missed, and go "hey, fix this sometime!"
 harmless = {
     '/etc/python3.9/sitecustomize.py',
+    '/usr/share/python3/py3versions.py',
 }
 for broken_path_str in subprocess.check_output(
         ['find', '-O3', '/', '-xdev',
