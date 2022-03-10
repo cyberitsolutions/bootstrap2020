@@ -101,6 +101,15 @@ usr/lib/dropbear
 **/systemd/**/*rescue*
 **/systemd/*shell*
 **/systemd/**/*shell*
+# kauth / kf5auth is polkit-ish middleware for KDE.
+# The library is unavoidably installed via libkf5kiocore5, which all KDE apps use.
+# Our KDE games and education apps shouldn't EVER need root!
+# polkit itself is handled here:
+#     https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC/polkit-policy.ini
+#     https://github.com/cyberitsolutions/bootstrap2020/commit/9bb89da308bd82ad6a393c3e9102b30f97caf4ec
+/usr/share/dbus-1/system.d/*kde*auth*.conf
+/usr/lib/**/qt5/plugins/kauth
+/usr/share/kf5/kauth
 # From gimp.
 # NOTE: "pygimp" exists in gimp 2.10, but Debian 11 does not ship it as it is Python 2 / GTK 2.
 #       Probably when GIMP upgrades to GTK4, it will bring back pygimp or an equivalent rewrite.
