@@ -89,3 +89,27 @@ subprocess.check_call([
     '--force-depends',
     '--force-remove-essential',
     'dpkg'])
+
+
+# Remove /var/lib/dpkg/info/, et al.
+# This arguably belongs in customize90-delete-bad-files.glob.
+# Putting it here simplifies debugging.
+# You can keep apt/dpkg by simply chmod -x'ing this one file.
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'rm', '-rf', '--',
+    '/var/lib/dpkg/info',
+    # We want to keep /var/lib/dpkg/status for debsecan.
+    # Currently the "download" hook happens AFTER this script, so
+    # we have to keep it here.  FIXME: shuffle ordering?
+    # '/var/lib/dpkg',
+    # If we completely purge this, mmdebstrap gets confused later.
+    # Leave it for mmdebstrap to handle.
+    # '/var/cache/apt',
+    # ...likewise /etc/apt/apt.conf.d/
+    # '/etc/apt',
+    # '/etc/dpkg',
+    # Do we want to purge this?
+    # '/var/log/apt',
+    # '/var/log/dpkg.log',
+])
