@@ -280,7 +280,7 @@ with tempfile.TemporaryDirectory() as td:
                         t.addfile(tarinfo_object, content_handle)
                 else:
                     t.addfile(tarinfo_object)
-        subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
+        # subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
         return dst_path
 
     subprocess.check_call(
@@ -439,7 +439,7 @@ with tempfile.TemporaryDirectory() as td:
             '    at-spi2-core gnome-accessibility-themes'
             '    plymouth-themes',
             # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
-            '--essential-hook=chroot $1 apt install -y fontconfig-config',
+            '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
             *(['--include='
                f'{" ".join(site_apps)}'
                '    chromium chromium-l10n'
@@ -518,12 +518,12 @@ with tempfile.TemporaryDirectory() as td:
          *([f'--include={args.ssh_server}',
             f'--essential-hook=tar-in {authorized_keys_tar_path} /',
             # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
-            '--customize-hook=rm -fv $1/etc/dropbear/dropbear_*_host_key',
-            '--customize-hook=rm -fv $1/etc/ssh/ssh_host_*_key*',
+            '--customize-hook=rm -f $1/etc/dropbear/dropbear_*_host_key',
+            '--customize-hook=rm -f $1/etc/ssh/ssh_host_*_key*',
             ]
            if args.optimize != 'simplicity' else []),
-         '--customize-hook=chroot $1 systemctl preset-all',  # enable ALL units!
-         '--customize-hook=chroot $1 systemctl preset-all --user --global',
+         '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
+         '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
          *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
             '--customize-hook=echo x:x | chroot $1 chpasswd',
             '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',

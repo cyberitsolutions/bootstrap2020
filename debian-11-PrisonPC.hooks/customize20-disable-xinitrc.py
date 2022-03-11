@@ -99,5 +99,5 @@ parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
 subprocess.check_call([
-    'chroot', args.chroot_path,
+    'chronic', 'chroot', args.chroot_path,
     'update-alternatives', '--set', 'x-session-manager', '/usr/bin/xfce4-session'])

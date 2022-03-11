@@ -15,6 +15,62 @@ NOTE: In Debian 9 we purged a shitlist of stuff here (e.g. consolekit).
              Don't do that.
              mmdebstrap means you don't need to anymore.
 
+NOTE: Because we're abusing apt/dpkg, this prints a LOT of scary warnings.
+      These warnings distract from "real" warnings elsewhere in the build.
+      Note dpkg has no equivalent of "apt --quiet=2".
+      Kludge with https://manpages.debian.org/bullseye/moreutils/chronic.1.en.html
+
+      Example of error noise:
+
+        bash5$ mmdebstrap --quiet --variant=apt bullseye /dev/null --customize-hook='chroot $1 dpkg --purge --force-all dpkg'
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: warning: overriding problem because --force enabled:
+        dpkg: warning: this is an essential package; it should not be removed
+        dpkg: dpkg: dependency problems, but removing anyway as you requested:
+         perl-base depends on dpkg (>= 1.17.17).
+         gzip depends on dpkg (>= 1.15.4) | install-info; however:
+          Package dpkg is to be removed.
+          Package install-info is not installed.
+         grep depends on dpkg (>= 1.15.4) | install-info; however:
+          Package dpkg is to be removed.
+          Package install-info is not installed.
+         dash depends on dpkg (>= 1.19.1).
+
+        (Reading database ... 4668 files and directories currently installed.)
+        Removing dpkg (1.20.9) ...
+        Purging configuration files for dpkg (1.20.9) ...
+        dpkg: warning: while removing dpkg, directory '/var/lib/dpkg/updates' not empty so not removed
+        dpkg: warning: while removing dpkg, directory '/var/lib/dpkg/info' not empty so not removed
+        dpkg: warning: while removing dpkg, directory '/var/lib/dpkg/alternatives' not empty so not removed
+        dpkg: warning: while removing dpkg, directory '/etc/alternatives' not empty so not removed
+
 """
 
 parser = argparse.ArgumentParser(
@@ -44,7 +100,7 @@ args = parser.parse_args()
 #         depending on whether debconf was already installed.
 #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
 subprocess.check_call([
-    'chroot', args.chroot_path,
+    'chronic', 'chroot', args.chroot_path,
     'apt', 'purge', '--autoremove', '--assume-yes',
     # These firmware blobs aren't needed now the rd is built.
     'amd64-microcode', 'intel-microcode',
@@ -57,7 +113,7 @@ subprocess.check_call([
 # Safety net: if apt got confused and kept busybox,
 # dpkg will fail (due to dependencies), aborting the build.
 subprocess.check_call([
-    'chroot', args.chroot_path,
+    'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
     'busybox', 'klibc-utils'])
 
@@ -67,7 +123,7 @@ subprocess.check_call([
 # "apt purge apt --autoremove" does not
 # remove dependencies, so for now hard-code them.
 subprocess.check_call([
-    'chroot', args.chroot_path,
+    'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
     'apt', 'gpgv', 'libapt-pkg6.0', 'debian-archive-keyring',
     # Debian 10+ NEVER needs apt-transport-https.
@@ -78,13 +134,16 @@ subprocess.check_call([
     'apt-transport-https'])
 
 
+# Remove dpkg completely.
+# This makes it really hard for the end user to even
+# work out what versions they're looking at.
 subprocess.check_call([
-    'chroot', args.chroot_path,
+    'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
     '--force-depends',
     'debconf', 'adduser', 'ucf'])
 subprocess.check_call([
-    'chroot', args.chroot_path,
+    'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
     '--force-depends',
     '--force-remove-essential',

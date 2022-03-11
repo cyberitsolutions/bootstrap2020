@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 import argparse
+import logging
 import pathlib
-import subprocess
 import shutil
+import subprocess
 import sys
 
 __doc__ = """ if we can't remove it, block it
@@ -113,7 +114,7 @@ for path in find_stdout.strip('\0').split('\0'):
         glob for glob in shitlist
         if path.match(glob)]
     if matching_globs:
-        print(f'Removing ‘{path}’\t(matches {matching_globs})', flush=True)
+        logging.info('Removing ‘%s’\t(matches %s)', path, matching_globs)
         # NOTE: "chroot_path / path" does the Wrong ThingTM as path is absolute.
         path_outside_chroot = args.chroot_path.joinpath(*path.parts[1:])
         if path_outside_chroot.is_dir():

@@ -29,6 +29,6 @@ policies = {
 
 for policy in policies:
     subprocess.check_call([
-        'chroot', args.chroot_path,
+        'chronic', 'chroot', args.chroot_path,
         'dpkg-statoverride', '--update', '--add',
         policy.owner, policy.group, policy.mode, policy.path])
