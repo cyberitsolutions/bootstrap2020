@@ -41,7 +41,7 @@ class DVDBackup:
         self.dvd_present = False
         self.dvd_title = None
         try:
-            output = subprocess.check_output([self.dvdbackup, "-i", self.device, "-I"], stderr=None)
+            output = subprocess.check_output([self.dvdbackup, "-i", self.device, "-I"], text=True, stderr=subprocess.DEVNULL)
             match = re.match('DVD-Video information of the DVD with title "(.*?)"', output)
             if match:
                 self.dvd_present = True
