@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import datetime
+import errno
 import os
 import pathlib
 import re
@@ -93,15 +94,14 @@ class DVDRipApp:
         self.get_object("root_window").show_all()
         try:
             self.dvdbackup = DVDBackup(host_application=self)
-        except OSError as e:
-            self.error = e
-            if e.errno == 2:  # No such file or directory
-                self.get_object("progressbar").set_text("IPTV queue directory does not exist")
-            elif e.errno == 13:  # Permission denied
-                self.get_object("progressbar").set_text("Permission denied when attempting to write to the IPTV queue")
-            else:
-                self.get_object("progressbar").set_text("Unknown error")  # Never actually seen because the raise kills the app
-                raise e
+        except FileNotFoundError:
+            self.get_object("progressbar").set_text("IPTV queue directory does not exist")
+            self.get_object("progressbar").set_fraction(0)
+            self.get_object("button_rescan").set_sensitive(False)
+            self.get_object("button_rip").set_sensitive(False)
+            self.get_object("button_eject").set_sensitive(False)
+        except PermissionError:
+            self.get_object("progressbar").set_text("Permission denied when attempting to write to the IPTV queue")
             self.get_object("progressbar").set_fraction(0)
             self.get_object("button_rescan").set_sensitive(False)
             self.get_object("button_rip").set_sensitive(False)
