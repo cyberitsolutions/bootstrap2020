@@ -19,3 +19,15 @@ add rule inet PrisonPC OUTPUT  ip daddr $PrisonPC  tcp dport 2222  accept  comme
 # server (both addresses), to the prisoner network (for clandestine
 # monitoring), and from the staff net (for IPTV).
 add rule inet PrisonPC OUTPUT  ip daddr { $PrisonPC_staff_network, $PrisonPC_inmate_network }  tcp dport 5900  log prefix "VNC out: " level info  accept
+
+
+# FIXME: PrisonPC 20.09 prisonpc.tca3 ALWAYS uses nfsroot=10.128.0.1:...,
+#        even for staff desktops on 10.0/16.
+#        Now that the firewall is super picky,
+#        this seems to be causing deeply confusing timeouts.
+#        Once tca3 hands out nfsserver=<nearest address>,
+#        we can remove this rule!
+add rule inet PrisonPC OUTPUT  ip daddr $PrisonPC_inmate  meta l4proto . th dport {
+    tcp . nfs,
+    udp . portmapper,
+    udp . 32769 }  accept  comment "workaround tca3 dumbness"
