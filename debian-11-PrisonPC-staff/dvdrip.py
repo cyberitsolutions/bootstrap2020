@@ -42,8 +42,7 @@ class DVDBackup:
         self.dvd_title = None
         try:
             output = subprocess.check_output([self.dvdbackup, "-i", self.device, "-I"], text=True, stderr=subprocess.DEVNULL)
-            match = re.match('DVD-Video information of the DVD with title "(.*?)"', output)
-            if match:
+            if match := re.match('DVD-Video information of the DVD with title "(.*?)"', output):
                 self.dvd_present = True
                 self.dvd_title = match.group(1)
         except subprocess.CalledProcessError:  # FIXME: Is this all the original code was expecting?
@@ -59,8 +58,7 @@ class DVDBackup:
         self.dvdbackup_process = subprocess.Popen(self.rip_cmd, bufsize=0,
                                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in self.dvdbackup_process.stdout:
-            match = re.match(r'Copying Title, part (\d+)/(\d+): \d+% done .(\d+)/(\d+) MiB.', line)
-            if match:
+            if match := re.match(r'Copying Title, part (\d+)/(\d+): \d+% done .(\d+)/(\d+) MiB.', line):
                 (partno, parts, mbno, mbs) = (float(m) for m in match.groups())
                 percentage = (partno - 1) / parts + mbno / mbs / parts
                 progressfunc(percentage)
