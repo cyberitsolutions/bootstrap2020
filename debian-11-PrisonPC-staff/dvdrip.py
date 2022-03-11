@@ -1,14 +1,13 @@
 #!/usr/bin/python
-
+import argparse
+import datetime
 import os
 import pathlib
-import sys
+import re
 import shutil
 import subprocess
-import threading
 import tempfile
-import re
-import datetime
+import threading
 
 import gi.repository
 gi.require_version('Gtk', '3.0')
@@ -193,15 +192,15 @@ class DVDRipApp:
 
 
 if __name__ == "__main__":
-    # FIXME: just use argparse ffs
-    if len(sys.argv) == 1:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test', action='store_true')
+    args = parser.parse_args()
+    if not args.test:
         dvdrip = DVDRipApp()
         Gtk.main()
-    elif len(sys.argv) == 2 and sys.argv[1] == "--test":
+    else:
         # Don't bring up a GUI (or rip), just run the backend ripper's report.
         dvdbackup = DVDBackup()
         dvdbackup.dvdbackup_info()
         print(dvdbackup.dvd_present)
         print(dvdbackup.dvd_title)
-    else:
-        raise SystemExit(1)
