@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Rip a Movie Disc
+Categories=Application;AudioVideo;Video;
+Terminal=0
+Exec=PrisonPC-dvdrip
+Icon=media-optical

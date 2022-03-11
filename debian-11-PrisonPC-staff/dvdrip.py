@@ -14,7 +14,7 @@ import gi.repository
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
 
-GLADE_FILE = pathlib.Path("/usr/local/share/dvdrip/dvdrip.glade")
+GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 
 # NB: RIP_TEMP is a literal magic string - rather than using the automatic dvdbackup name. --twb, Mar 2016
 RIP_TEMP = pathlib.Path("RIP_TEMP")
