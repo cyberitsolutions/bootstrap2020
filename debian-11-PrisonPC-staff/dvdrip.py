@@ -148,10 +148,10 @@ class DVDRipApp:
         button_rip = self.get_object("button_rip")
         entry_dvd_name = self.get_object("entry_dvd_name")
 
-        progressbar_label = "No DVD Detected"
-        if self.dvdbackup.dvd_present:
-            progressbar_label = "Ready to rip DVD"
-        progressbar.set_text(progressbar_label)
+        progressbar.set_text(
+            "Ready to rip DVD"
+            if self.dvdbackup.dvd_present else
+            "No DVD Detected")
         progressbar.set_fraction(0)
         button_rescan.set_sensitive(True)
         button_rip.set_sensitive(self.dvdbackup.dvd_present)
