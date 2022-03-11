@@ -144,6 +144,23 @@ for src in pathlib.Path('/usr/share/inkscape').glob('**/__pycache__/*.cpython-3*
             tree.write(f, xml_declaration=True, encoding='unicode')
 
 
+# LibreOffice has about 40 .py files, of which 2 have a __pycache__ already.
+# Ignore that __pycache_ and just roll new non-PEP3147 .pyc for all.
+# UPDATE: this breaks libreoffice-lightproof-en.
+#         An easy test is to write "Paris in the the spring." in lowriter.
+#         If lightproof is working, "the the" will be blue underlined.
+#         No errors appear in .xsession-errors or journalctl.
+#         For now just skip that subsection.
+dir_path = pathlib.Path('/usr/lib/libreoffice')
+if dir_path.exists():
+    logging.debug('compiling %s', dir_path)
+    subprocess.check_call(['python3', '-m', 'compileall', dir_path, '-b', '-q'])
+    subprocess.check_call(['find', dir_path, '-xdev', '-name', '*.py',
+                           # Skip bugged lightproof extension.
+                           '-not', '-path', '*/extensions/*',
+                           '-delete'])
+
+
 # Look for any files we missed, and go "hey, fix this sometime!"
 harmless = {
     '/etc/python3.9/sitecustomize.py',
