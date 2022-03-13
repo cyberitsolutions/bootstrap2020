@@ -141,7 +141,7 @@ subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
     '--force-depends',
-    'debconf', 'adduser', 'ucf'])
+    'debconf', 'libdebconfclient0', 'adduser', 'ucf'])
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
@@ -157,11 +157,15 @@ subprocess.check_call([
 subprocess.check_call([
     'chroot', args.chroot_path,
     'rm', '-rf', '--',
-    '/var/lib/dpkg/info',
+    '/var/cache/debconf',
+    '/usr/sbin/update-passwd',  # from base-passwd
     # We want to keep /var/lib/dpkg/status for debsecan.
     # Currently the "download" hook happens AFTER this script, so
     # we have to keep it here.  FIXME: shuffle ordering?
     # '/var/lib/dpkg',
+    *{path.relative_to(args.chroot_path)
+      for path in args.chroot_path.glob('var/lib/dpkg/*')
+      if path.name != 'status'},
     # If we completely purge this, mmdebstrap gets confused later.
     # Leave it for mmdebstrap to handle.
     # '/var/cache/apt',
@@ -171,4 +175,7 @@ subprocess.check_call([
     # Do we want to purge this?
     # '/var/log/apt',
     # '/var/log/dpkg.log',
+    # Fuck it, let's make "find / -xdev -ipath *debconf*" completely empty.
+    '/usr/share/dictionaries-common/dc-debconf-default-value.pl',
+    '/usr/share/dictionaries-common/dc-debconf-select.pl',
 ])
