@@ -16,7 +16,6 @@
 
 ## Inmates SHOULD NOT be have miscellaneous scary things
 ## =====================================================
-removing **/systemd/**/*@(sleep|suspend|hibernate)*
 removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
 
 
