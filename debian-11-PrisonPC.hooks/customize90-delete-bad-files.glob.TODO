@@ -23,10 +23,6 @@ removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
 ## =======================================
 # From apt & dpkg &c.  Not needed after packages are installed.
 # NB: adduser(8) needs the Debian::* perl modules we exclude here.
-removing **/*bin/@(dpkg|debconf)@(|-*)
-removing etc/@(dpkg|debconf.conf)
-removing usr/lib/dpkg
-removing usr/share/@(dpkg|debconf|debhelper)
 removing usr/share/perl5/@(Debconf|Debian)
 removing var/cache/debconf
 removing var/lib/dpkg

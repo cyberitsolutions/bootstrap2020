@@ -141,7 +141,13 @@ subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
     '--force-depends',
-    'debconf', 'libdebconfclient0', 'adduser', 'ucf'])
+    'debconf', 'libdebconfclient0', 'adduser', 'ucf',
+    # We ship hunspell for LibreOffice; Chromium is handled by
+    # https://github.com/cyberitsolutions/bootstrap2020/tree/main/debian-11-PrisonPC.packages/prisonpc-chromium-hunspell-dictionaries/debian
+    # hunspell-en-au pulls in dictionaries-common, which we never REALLY needed.
+    # FIXME: add that to prisonpc-ersatz?
+    'dictionaries-common', 'emacsen-common', 'libtext-iconv-perl',
+])
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
@@ -175,7 +181,4 @@ subprocess.check_call([
     # Do we want to purge this?
     # '/var/log/apt',
     # '/var/log/dpkg.log',
-    # Fuck it, let's make "find / -xdev -ipath *debconf*" completely empty.
-    '/usr/share/dictionaries-common/dc-debconf-default-value.pl',
-    '/usr/share/dictionaries-common/dc-debconf-select.pl',
 ])
