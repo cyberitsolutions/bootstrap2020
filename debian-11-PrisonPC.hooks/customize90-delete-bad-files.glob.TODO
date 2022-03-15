@@ -11,14 +11,6 @@
 #     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
 
 
-## Inmates MUST NOT have unnecessary crypto
-## ========================================
-
-## Inmates SHOULD NOT be have miscellaneous scary things
-## =====================================================
-removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
-
-
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
 # From libc-bin.  (FIXME: remove more).

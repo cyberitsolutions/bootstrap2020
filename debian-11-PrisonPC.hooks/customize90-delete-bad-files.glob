@@ -62,9 +62,12 @@ usr/lib/dropbear
 #   "The webkit2gtk and wpewebkit engines ARE covered by security support."
 **/MiniBrowser
 
-
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
+# From systemd.
+# I'm not sure if this can actually fire (e.g. for a USB key).
+# It is not mentioned in bootup(7) manpage.
+/lib/systemd/system-generators/systemd-gpt-auto-generator
 # From genisoimage, blame Pete.
 # Lucid-era disc snitching needs isoinfo; exclude the rest.
 # FIXME: even in 2022, this is STILL the way we fingerprint DVDs!
