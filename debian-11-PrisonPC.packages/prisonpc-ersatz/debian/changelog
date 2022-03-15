@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.25) bullseye; urgency=medium
+
+  * spoof dictionaries-common; I'm sick of looking at it.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 15 Mar 2022 13:14:43 +1100
+
 prisonpc-ersatz (11.23) bullseye; urgency=medium
 
   * spoof parted (blame udisks2)

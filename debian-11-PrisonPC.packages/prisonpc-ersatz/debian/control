@@ -115,6 +115,30 @@ Description: appease udisks2
  I don't think so -- staff occasionally want to mount USB keys, but
  if they want to INITIALIZE a USB key, they can use their normal PC.
 
+Package: prisonpc-ersatz-dictionaries-common
+Depends: ${misc:Depends}
+Provides:  dictionaries-common (= 1.28.4),
+Replaces:  dictionaries-common,
+Conflicts: dictionaries-common,
+# These things really DO need dictionaries-common, so
+# make apt complain if you try to install any of them.
+ emacsen, wordlist,
+ ispell, ispell-dictionary,
+ aspell, aspell-dictionary,
+ myspell, myspell-dictionary,
+Architecture: all
+Description: appease hunspell-en-au
+ We install hunspell dictionaries so LibreOffice can do spell-checking.
+ .
+ hunspell-* hard-depends on dictionaries-common which AFAICT is only REALLY
+ needed for older spelling engines (ispell/aspell/myspell) and maybe Emacs.
+ libreoffice does NOT need dictionaries-common, so just nerf it.
+ .
+ This avoids a little emacs/debconf/perl crap.
+ .
+ Note that Chromium already has special handling (which doesn't use dictionaries-common):
+ https://github.com/cyberitsolutions/bootstrap2020/tree/main/debian-11-PrisonPC.packages/prisonpc-chromium-hunspell-dictionaries/debian
+
 Package: prisonpc-bad-package-conflicts-inmates
 Depends:
  ${misc:Depends},
@@ -157,6 +181,7 @@ Depends:
  prisonpc-ersatz-logrotate (= ${binary:Version}),
  prisonpc-ersatz-kio (= ${binary:Version}),
  prisonpc-ersatz-parted (= ${binary:Version}),
+ prisonpc-ersatz-dictionaries-common (= ${binary:Version}),
 Conflicts:
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
