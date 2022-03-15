@@ -722,6 +722,12 @@ Conflicts:
 # apt-file search -l bin/dh_
 # ...except python3-numpy (for solarwolf)
 # ...except xml-core (for dia)
+# ...except perl-openssl-defaults (for gnucash)
+#
+# AFAICT perl-openssl-defaults does two jobs:
+# 1. at install time, it just aliases libssl1.1 (as here); and
+# 2. at build time, it provides dh_perl_openssl.
+# We do not care about (2), but it's not spooky enough to bother spoofing.
  apache2-dev, autotools-dev, bash-completion, cli-common-dev, cme,
  config-package-dev, debhelper, dh-acc, dh-ada-library, dh-apparmor,
  dh-autoreconf, dh-buildinfo, dh-cmake, dh-consoledata, dh-di,
@@ -733,7 +739,7 @@ Conflicts:
  germinate, gnome-pkg-tools, gnustep-make, gobject-introspection,
  haskell-devscripts-minimal, kodi-addons-dev-common, libdbi-perl,
  libgstreamer1.0-dev, libimager-perl, libva-dev, libxine2-dev, mkdocs,
- mozilla-devscripts, pdl, perl-openssl-defaults, pidgin-dev,
+ mozilla-devscripts, pdl, pidgin-dev,
  pkg-kde-tools, pkg-php-tools, postgresql-server-dev-all, ppp-dev,
  pyppd, python-ply, python3-ply, python3-sip-dev,
  quilt, scour, sphinx-common, tex-common, uwsgi-dev, vagrant, vdr-dev,
