@@ -11,22 +11,6 @@
 #     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
 
 
-## Inmates SHOULD NOT have diagnostic tools
-## ========================================
-# From libc-bin.  (FIXME: remove more).
-removing **/*bin/@(ldd|pldd|catchsegv)
-# From util-linux.  (FIXME: remove more).
-removing **/*bin/@(blkdiscard|resizepart|utmpdump|wdctl)
-# From coreutils.  (FIXME: remove more).
-removing **/*bin/shred
-# From systemd.
-removing **/*bin/@(loginctl|systemd-analyze|systemd-cgls|systemd-cgtop|systemd-delta|systemd-detect-virt|systemd-path)
-# From passwd.  Note Xstartup calls usermod at runtime, and many packages need adduser at install time.
-# Inmates can access chpasswd via Applications > Settings > Password Reset ("usermode" package)
-removing **/*bin/@(chage|chfn|chsh|expiry|gpaswd|passwd|chgpasswd|chpasswd|cpgr|cppw|groupadd|groupdel|groupmems|groupmod|grpck|grpconv|grpunconv|newusers|pwck|pwunconv|useradd|userdel|vigr|vipw)
-removing etc/pam.d/@(chfn|chsh|newusers|passwd)
-
-
 ## Useless & confusing menu items SHOULD be hidden (#30257)
 ## ========================================================
 # From EVERYTHING (especially XFCE4 packages).

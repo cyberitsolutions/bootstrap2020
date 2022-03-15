@@ -213,6 +213,58 @@ usr/lib/pt_chown
 **/*bin/usermount
 /usr/share/applications/redhat-userinfo.desktop
 /usr/share/applications/redhat-usermount.desktop
+# From libc-bin.  FIXME: remove more?
+**/*bin/ldd
+**/*bin/pldd
+**/*bin/catchsegv
+**/*bin/ldconfig
+/usr/share/glib-2.0/clean-up-unmanaged-libraries
+# From util-linux.  FIXME: remove more?
+**/*bin/blkdiscard
+**/*bin/resizepart
+**/*bin/utmpdump
+**/*bin/wdctl
+# From coreutils.  FIXME: remove more?
+**/*bin/shred
+# From passwd.
+# NOTE: These are for NSS "files" tables (/etc/passwd &c). NSS "ldap" tables (libnss-ldapd, usermod) do not need these programs.
+# NOTE: in Debian 9, we kept "usermod".  This is no longer necessary (systemd-logind + systemd-udev "uaccess" now handle that job).
+# NOTE: in Debian 9, we removed some /etc/pam.d/ entries.  Nowadays I'm even scared-er to touch /etc/pam.d, so keep those.  They shouldn't ever be called.
+**/*bin/chage
+**/*bin/chfn
+**/*bin/chgpasswd
+**/*bin/chpasswd
+**/*bin/chsh
+**/*bin/cpgr
+**/*bin/cppw
+**/*bin/expiry
+**/*bin/gpaswd
+**/*bin/groupadd
+**/*bin/groupdel
+**/*bin/groupmems
+**/*bin/groupmod
+**/*bin/grpck
+**/*bin/grpconv
+**/*bin/grpunconv
+**/*bin/newusers
+**/*bin/passwd
+**/*bin/pwck
+**/*bin/pwunconv
+**/*bin/shadowconfig
+**/*bin/useradd
+**/*bin/userdel
+**/*bin/usermod
+**/*bin/vigr
+**/*bin/vipw
+# From systemd.  FIXME: remove more?
+# NOTE: this is likely to piss me off when debugging!
+**/*bin/loginctl
+**/*bin/systemd-analyze
+**/*bin/systemd-cgls
+**/*bin/systemd-cgtop
+**/*bin/systemd-delta
+**/*bin/systemd-detect-virt
+**/*bin/systemd-path
 
 
 ## Inmates SHOULD NOT have development tools
