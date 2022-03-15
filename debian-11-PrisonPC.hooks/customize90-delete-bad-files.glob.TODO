@@ -11,37 +11,6 @@
 #     find / -xdev -type f -exec grep -nHFw --color=always "enable-backdoor" {} +
 
 
-## Useless & confusing menu items SHOULD be hidden (#30257)
-## ========================================================
-# From EVERYTHING (especially XFCE4 packages).
-# Additional notes:
-#  * uca.xml makes Thunar show "Open Terminal Here" in right-click (context) menu.
-#  * for Apps > Settings > Foo, when Foo is locked down in xfconf,
-#    we also delete the underlying binary (just in case).
-#  * ceferino* aren't useful without an xterm.
-#  * libreoffice-math doesn't start properly. (#30257)
-removing **/@(kmailservice|knetattach|ktelnetservice|ktelnetservice5)@(|.desktop)
-removing usr/games/@(ceferinosetup|ceferinoeditor)
-removing usr/share/applications/exo-mail-reader.desktop
-removing usr/share/applications/exo-preferred-applications.desktop
-removing usr/share/applications/exo-terminal-emulator.desktop
-removing usr/share/applications/freeciv-gtk3.desktop
-removing usr/share/applications/freeciv-server.desktop
-removing usr/share/applications/gcompris-edit.desktop
-removing usr/share/applications/kde4/Help.desktop  # khelpcenter4
-removing usr/share/applications/kde4/marble_*.desktop
-removing usr/share/applications/libreoffice-math.desktop
-removing usr/share/applications/libreoffice-startcenter.desktop
-removing usr/share/applications/mono-runtime-terminal.desktop
-removing usr/share/applications/mono-runtime.desktop
-removing usr/share/applications/panel-desktop-handler.desktop
-removing usr/share/applications/panel-preferences.desktop
-removing usr/share/applications/prboom-plus.desktop
-removing usr/share/applications/python*.desktop
-removing usr/share/applications/scummvm.desktop
-removing usr/share/applications/x11vnc.desktop
-
-
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
 # From libmtp9.  Generates log spam because we don't install libmtp-runtime. (#30098)
