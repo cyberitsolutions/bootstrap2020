@@ -19,13 +19,6 @@
 removing **/systemd/**/*@(bluetooth|rfkill|smartcard|gpt|multi-seat)*
 
 
-## Inmates SHOULD NOT have packaging tools
-## =======================================
-# From systemd & init-system-helpers.  Not needed after packages are installed.
-removing **/systemd/**/*system-update*
-removing **/*deb-systemd*
-
-
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
 # From libc-bin.  (FIXME: remove more).
