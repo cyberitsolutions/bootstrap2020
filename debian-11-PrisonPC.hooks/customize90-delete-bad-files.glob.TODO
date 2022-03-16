@@ -21,10 +21,6 @@
 #  * sizecustomize.py is for Apport (ubuntu bug reporting).
 #  * sysctl.* are nothing but comments.
 #  * /usr/share/appdata is for installing packages (ref. http://people.freedesktop.org/~hughsient/appdata/).
-# Harmless because xscreensaver &c not installed.
-removing **/*bin/xflock4
-# Harmless because overridden by overlay/.../xsettings.xml
-removing etc/xdg/xfce4/Xft.xrdb
 # These are all symlinks to qtchooser, which automatically switches between Qt3/4/5 (a bit like linux32).
 # They're useless on PrisonPC due to prisonpc-ersatz-kde-junk.
 removing **/*bin/@(qtchooser|assistant|designer|lconvert|linguist|lrelease|lupdate|moc|pixeltool|qcollectiongenerator|qdbus|qdbuscpp2xml|qdbusviewer|qdbusxml2cpp|qdoc|qdoc3|qglinfo|qhelpconverter|qhelpgenerator|qlalr|qmake|qml|qml1plugindump|qmlbundle|qmlimportscanner|qmlmin|qmlplugindump|qmlprofiler|qmlscene|qmltestrunner|qmlviewer|qtconfig|qtdiag|qtpaths|rcc|uic|uic3|xmlpatterns|xmlpatternsvalidator)
