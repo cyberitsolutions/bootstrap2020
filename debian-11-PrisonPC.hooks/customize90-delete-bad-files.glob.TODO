@@ -13,11 +13,6 @@
 
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
-# From ure (i.e. LibreOffice) & kdelibs5-data.  Java is ALWAYS BAD.
-# Additional notes:
-#  * libreoffice/help/*/*.jar are DOCUMENTATION (NOT CODE); we don't exclude them.
-removing usr/lib/ure/share/java
-removing usr/share/@(java|maven-repo)
 # From EVERYTHING.  Integration for systems we don't use (e.g. cron, upstart).
 # Additional notes:
 #  * /etc/network is for ifupdown.
