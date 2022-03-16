@@ -473,6 +473,21 @@ usr/games/ceferinoeditor
 /usr/share/applications/python*.desktop
 /usr/share/applications/mono-runtime*.desktop
 
+# "MTP" is a way to get photos/songs off a camera/smartphone/ipod.
+# https://en.wikipedia.org/wiki/Media_Transfer_Protocol
+# libmtp9 is pulled in by gvfs-backends (staff SOEs only), and
+# Debian's stock vlc package (but not 3.0.16-1PrisonPC1).
+#
+# libmtp9 pulls in libmtp-common.
+# libmtp-common in 69-libmtp.rules says "run mtp-probe on some devices".
+# But mtp-probe is in libmtp-runtime, which we do not install.
+# So in such cases, we get logspam from udev.
+# Since we never expect to use MTP legitimately,
+# simply remove the rules file entirely.
+#
+# https://alloc.cyber.com.au/task/task.php?taskID=30098
+removing **/udev/rules.d/*libmtp.rules
+
 # Debian LibreOffice config includes an example GenericPrinter which DOES NOT WORK.
 # Remove it so it does not appear in the GUI printer list.
 # UPDATE: not needed -- when cupsd is reachable, GenericPrinter is hidden.
