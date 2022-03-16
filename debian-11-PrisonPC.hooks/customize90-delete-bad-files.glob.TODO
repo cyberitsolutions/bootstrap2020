@@ -30,19 +30,5 @@ removing etc/X11/Xsession.d/*@(ssh-agent|xsessionrc)
 # These are all symlinks to qtchooser, which automatically switches between Qt3/4/5 (a bit like linux32).
 # They're useless on PrisonPC due to prisonpc-ersatz-kde-junk.
 removing **/*bin/@(qtchooser|assistant|designer|lconvert|linguist|lrelease|lupdate|moc|pixeltool|qcollectiongenerator|qdbus|qdbuscpp2xml|qdbusviewer|qdbusxml2cpp|qdoc|qdoc3|qglinfo|qhelpconverter|qhelpgenerator|qlalr|qmake|qml|qml1plugindump|qmlbundle|qmlimportscanner|qmlmin|qmlplugindump|qmlprofiler|qmlscene|qmltestrunner|qmlviewer|qtconfig|qtdiag|qtpaths|rcc|uic|uic3|xmlpatterns|xmlpatternsvalidator)
-# From systemd.  These units are meaningless for PrisonPC desktops.
-# Additional notes:
-#   quota: only the NFS *server* needs rpc.quotad & quotacheck -anug.
-#   readahead: see doc/30144-readahead-and-mksquashfs-sort.txt.
-#   random-seed: persistent entropy across reboots (but we're diskless).
-#   networkd & resolved: see doc/30134-systemd-networkd.txt
-#     UPDATE: removing these causes the desktop to reboot when I try to SSH in.
-#   alsa: persistent mixer levels across reboots (but we're diskless).
-#         The ACTUAL WORKING mixer initialization is triggered from
-#         /lib/udev/rules.d/90-alsa-restore.rules
-#         which reads from /usr/share/alsa/init/. (#30110)
-#   systemd-journal-flush: moves /run/journal/* to /var/log/journal/.
-removing **/systemd/**/*@(mqueue|sys-kernel|binfmt|fsck|random|backlight|rfkill|quota|readahead|alsa|network|resolve|systemd-journal-flush)*
-removing usr/share/alsa/utils.sh
 # From pspp.  Only GUI part (psppire) is needed.
 removing usr/*bin/@(pspp|pspp-*)
