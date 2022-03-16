@@ -21,20 +21,6 @@
 #  * sizecustomize.py is for Apport (ubuntu bug reporting).
 #  * sysctl.* are nothing but comments.
 #  * /usr/share/appdata is for installing packages (ref. http://people.freedesktop.org/~hughsient/appdata/).
-removing etc/@(bash_completion.d|init|logcheck|network|ppp|ufw)
-removing etc/@(cron*|logrotate*)
-removing **/python*/sitecustomize.py
-removing etc/sysctl.conf
-removing etc/sysctl.d/99-sysctl.conf
-removing usr/lib/mime
-removing usr/share/@(appdata|bash-completion|menu|upstart|zsh)
-# From tar.
-removing **/*bin/@(tarcat|rmt-tar)
-removing etc/rmt
-# From perl.
-removing **/*bin/zipdetails
-# From debianutils & sensible-utils & adduser.
-removing **/*bin/@(installkernel|add-shell|remove-shell|select-editor|sensible-editor|sensible-pager|adduser|deluser)
 # Harmless because xscreensaver &c not installed.
 removing **/*bin/xflock4
 # Harmless because overridden by overlay/.../xsettings.xml

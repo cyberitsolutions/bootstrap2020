@@ -265,6 +265,10 @@ usr/lib/pt_chown
 **/*bin/systemd-delta
 **/*bin/systemd-detect-virt
 **/*bin/systemd-path
+# From perl.
+# Note that "python3 -m ziplib" provide similar functionality, but
+# we cannot strip that without breaking some python apps.
+**/*bin/zipdetails
 
 
 ## Inmates SHOULD NOT have development tools
@@ -499,3 +503,61 @@ removing **/udev/rules.d/*libmtp.rules
 # it's just because it's vaguely related to clandestine comms.
 # It's easier to just continue removing it, rather than think about it.
 /usr/lib/**/marble/plugins/AprsPlugin.so
+
+# prisonpc-ersatz-logrotate means these will never fire.
+# Remove them to acknowledge that I've eyeballed them and
+# confirmed this is Not A Problem™.
+# We don't need to mention apt/dpkg as
+# customize80-purge-bad-packages.py handles those.
+/etc/cron.daily/mlocate
+/etc/logrotate.d/bootlog
+/etc/logrotate.d/prayer
+/etc/logrotate.d/rsyslog
+/etc/logrotate.d/xdm
+/etc/logcheck/ignore.d.server/rsyslog
+/etc/network/if-up.d/nslcd
+
+# libpython3.9-minimal's /etc/python3.9/sitecustomize.py
+# loads apport if it is installed (and NOPs if it isn't).
+# apport is Canonical's (Ubuntu) equivalent of reportbug;
+# it uploads bug reports to launchpad.net over HTTPS.
+# Debian 11 does not even ship apport anymore.
+#
+# Is this still worth caring about?
+#
+# I was about to say "lol, no", but
+# it occurred to me you might be able to trick a python program,
+# simply by making ./apport_python_hook/__init__.py.
+# UPDATE: also applies to ./sitecustomize/__init__.py?
+# Simply keep the status quo for now.
+# FIXME: investigate deeper.
+#
+# https://sources.debian.org/src/python3.9/3.9.2-1/debian/sitecustomize.py.in/
+# https://packages.ubuntu.com/jammy/python3-apport
+# https://docs.python.org/3/library/site.html
+# https://peps.python.org/pep-0648/
+# https://wiki.ubuntu.com/Apport
+/etc/python*/sitecustomize.py
+
+# These unused systems are harmless.
+# Remove them only so, when searching for a problem,
+# they do not show up as false positives.
+/usr/lib/mime
+/usr/share/appdata
+/usr/share/bash-completion
+/usr/share/menu
+/usr/share/upstart
+/usr/share/zsh
+
+# From tar.  Not really interesting.
+**/*bin/tarcat
+**/*bin/rmt-tar
+/etc/rmt
+# From debianutils.  Not really interesting.
+**/*bin/add-shell
+**/*bin/remove-shell
+# From sensible-utils.  Not really interesting.
+# FIXME: should we spoof sensible-utils away entirely?
+**/*bin/select-editor
+**/*bin/sensible-editor
+**/*bin/sensible-pager
