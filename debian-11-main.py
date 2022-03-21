@@ -73,6 +73,7 @@ parser.add_argument('--template', default='main',
                              'datasafe3',
                              'desktop',
                              'desktop-inmate',
+                             'desktop-inmate-blackgate',
                              'desktop-inmate-amc',
                              'desktop-inmate-amc-library',
                              'desktop-inmate-hcc-profile-a',
@@ -93,6 +94,7 @@ parser.add_argument('--template', default='main',
                         'desktop: tweaked XFCE; '
                         'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
                         'desktop-staff:  desktop w/ PrisonPC operational staff stuff;'
+                        'desktop-inmate-blackgate: desktop w/ (almost) all PrisonPC-approved apps;'
                         '*-{amc,hcc}-*: site-specific stuff.'
                     ))
 group = parser.add_argument_group('optimization')
