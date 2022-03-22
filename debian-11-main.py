@@ -540,8 +540,8 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=rm -f $1/etc/debian_chroot']
            if args.debug_shell else []),
          *(['--customize-hook=chroot $1 python3 < debian-11-install-footprint.py',
-            '--customize-hook=download /var/log/install-footprint.tsv'
-            f'    doc/debian-11-install-footprint.{args.template}.tsv']
+            '--customize-hook=download /var/log/install-footprint.csv'
+            f'    doc/debian-11-install-footprint.{args.template}.csv']
            if args.measure_install_footprints else []),
          # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
          # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)

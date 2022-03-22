@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import csv
 import math
 import pathlib
 import subprocess
@@ -167,9 +168,9 @@ metapackages = sorted(set(
     for package_version in package.versions
     if package_version.source_name in ('debian-edu', 'debian-games')
     if package.name not in package_shitlist))
-with open('/var/log/install-footprint.tsv', 'w') as f:
-    print('Section', 'Subsection', 'Name', 'Cost (MiB)', 'Description',
-          sep='\t', end='\r\n', file=f)
+with open('/var/log/install-footprint.csv', 'w') as f:
+    g = csv.writer(f)
+    g.writerow(['Section', 'Subsection', 'Name', 'Cost (MiB)', 'Description'])
     for metapackage in metapackages:
         section, subsection = metapackage.package.name.split('-', 1)
         for name in sorted(set(
@@ -181,11 +182,9 @@ with open('/var/log/install-footprint.tsv', 'w') as f:
                 if package.name not in package_shitlist)):
             try:
                 description = cache[name].versions[0].raw_description.splitlines()[0]
-                print(section, subsection, name, cost(name), description,
-                      sep='\t', end='\r\n', file=f)
+                g.writerow([section, subsection, name, cost(name), description])
             except KeyError:  # "The cache has no package named 'cups-pdf'"
-                print(section, subsection, name, 'N/A', 'N/A',
-                      sep='\t', end='\r\n', file=f)
+                g.writerow([section, subsection, name, 'N/A', 'N/A'])
 
     all_games = {
         line.split('/')[0]
@@ -207,8 +206,6 @@ with open('/var/log/install-footprint.tsv', 'w') as f:
         # FIXME: this block is copy-pasted from the earlier...
         try:
             description = cache[name].versions[0].raw_description.splitlines()[0]
-            print(section, subsection, name, cost(name), description,
-                  sep='\t', end='\r\n', file=f)
+            g.writerow([section, subsection, name, cost(name), description])
         except KeyError:  # "The cache has no package named 'cups-pdf'"
-            print(section, subsection, name, 'N/A', 'N/A',
-                  sep='\t', end='\r\n', file=f)
+            g.writerow([section, subsection, name, 'N/A', 'N/A'])
