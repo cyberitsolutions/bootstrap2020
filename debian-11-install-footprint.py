@@ -125,6 +125,8 @@ cache = apt.Cache()
 
 package_shitlist = {
     'education-tasks',          # useless helper package
+    'science-tasks',            # useless helper package
+    'science-config',           # useless helper package
     'games-all',                # already handled by the main loop
     'games-console',            # no tty, therefore tty games banned
     'games-mud',                # MUD = "multiplayer online", therefore banned
@@ -138,6 +140,18 @@ package_shitlist = {
     'games-java-dev',
     'games-perl-dev',
     'games-python3-dev',
+    'science-dataacquisition-dev',
+    'science-distributedcomputing',
+    'science-engineering-dev',
+    'science-highenergy-physics-dev',
+    'science-machine-learning',
+    'science-mathematics-dev',
+    'science-meteorology-dev',
+    'science-nanoscale-physics-dev',
+    'science-numericalcomputation',
+    'science-physics-dev',
+    'science-robotics-dev',
+    'science-viewing-dev',
 
     # This is a *desktop*, not a server.
     'education-ltsp-server',
