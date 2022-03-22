@@ -166,13 +166,21 @@ metapackages = sorted(set(
     package_version
     for package in cache
     for package_version in package.versions
-    if package_version.source_name in ('debian-edu', 'debian-games')
+    if (package_version.source_name in ('debian-edu', 'debian-games', 'debian-science') or
+        package_version.package.name in ('kdeedu', 'kdegames', 'gnome-games'))
     if package.name not in package_shitlist))
 with open('/var/log/install-footprint.csv', 'w') as f:
     g = csv.writer(f)
     g.writerow(['Section', 'Subsection', 'Name', 'Cost (MiB)', 'Description'])
     for metapackage in metapackages:
-        section, subsection = metapackage.package.name.split('-', 1)
+        if metapackage.package.name == 'kdeedu':
+            section, subsection = 'education', 'KDE'
+        elif metapackage.package.name == 'kdegames':
+            section, subsection = 'games', 'KDE'
+        elif metapackage.package.name == 'gnome-games':
+            section, subsection = 'games', 'GNOME'
+        else:
+            section, subsection = metapackage.package.name.split('-', 1)
         for name in sorted(set(
                 package.name
                 for clause in (metapackage.dependencies +
@@ -200,7 +208,10 @@ with open('/var/log/install-footprint.csv', 'w') as f:
                        metapackage.suggests)
         for package in clause}
     for name in sorted(all_games - done_above):
-        if name.endswith('-data') or name.endswith('-common'):
+        if (name.endswith('-data') or
+            name.endswith('-common') or
+            name.endswith('-server') or
+            name.startswith('fortunes-')):
             continue            # boring
         section, subsection = 'games', 'PrisonPC'
         # FIXME: this block is copy-pasted from the earlier...
