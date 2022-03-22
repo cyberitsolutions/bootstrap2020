@@ -186,3 +186,29 @@ with open('/var/log/install-footprint.tsv', 'w') as f:
             except KeyError:  # "The cache has no package named 'cups-pdf'"
                 print(section, subsection, name, 'N/A', 'N/A',
                       sep='\t', end='\r\n', file=f)
+
+    all_games = {
+        line.split('/')[0]
+        for line in subprocess.check_output(
+            ['apt', 'list', '?section(games)'],
+            text=True).strip().splitlines()
+        if '/' in line}
+    done_above = {              # NOTE: does not exclude shitlist
+        package.name
+        for metapackage in metapackages
+        for clause in (metapackage.dependencies +
+                       metapackage.recommends +
+                       metapackage.suggests)
+        for package in clause}
+    for name in sorted(all_games - done_above):
+        if name.endswith('-data') or name.endswith('-common'):
+            continue            # boring
+        section, subsection = 'games', 'PrisonPC'
+        # FIXME: this block is copy-pasted from the earlier...
+        try:
+            description = cache[name].versions[0].raw_description.splitlines()[0]
+            print(section, subsection, name, cost(name), description,
+                  sep='\t', end='\r\n', file=f)
+        except KeyError:  # "The cache has no package named 'cups-pdf'"
+            print(section, subsection, name, 'N/A', 'N/A',
+                  sep='\t', end='\r\n', file=f)
