@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import pathlib
 import subprocess
 
 doc = """ calculate the install footprint for each game & educational app
@@ -50,21 +51,30 @@ This is based on an older bash script:
 14:50 <pabs> I'd bet on the pty issue
 14:50 <twb> I agree
 
+21:51 <twb> OK so... I want to ask apt for a list of all the "educational apps" and then
+            how much disk space it would cost to install each one (separately, not all together)
+21:52 <twb> There is a ?section(games) but not a ?section(education)
+21:52 <twb> There's a bunch of education-gnome and education-astronomy metapackages, but
+            I want to generate the list from a script, not by hand...
+22:13 <twb> Maybe I should just post-process
+              https://sources.debian.org/src/debian-edu/2.11.37/debian/control/
+            and
+              https://sources.debian.org/src/debian-games/4/debian/control/
+
+How about this for a mock-up:
+
+    Section	Subsection	Name	Cost	Description
+    Education	Astronomy	kstars	337MiB	desktop planetarium, observation planning and telescope control
+    Games	Platform	gnujump	1.6MiB	platform game where you have to jump up to survive
+
+To do this, we first enumerate every metapackage with "Source: debian-edu" or "Source: debian-games".
+Then for each of those (e.g. "games-platform") we enumerate each actual app in Depends/Recommends/Suggests.
+Each of those becomes its own line in the TSV.
+
+We can also skip metapackages like "games-mud", "games-java-dev", "education-development".
+
 """
 
-
-# TypeError: '<' not supported between instances of 'str' and 'int'
-# <twb> Seriously, python?  I can't sort a list that contains both strings and integers?
-# acc = {'Package': 'Download Size'}  # accumulator (initial value becomes heading line)
-
-# FIXME: how do I list "educational" packages?
-#        Use the "education-desktop-XXXX" chains (inc. recommends)?
-package_names = {
-    line.split('/')[0]
-    for line in subprocess.check_output(
-            ['apt', 'list', '?section(games)'],
-            text=True).strip().splitlines()
-    if '/' in line}
 
 # NOTE: we cannot use --simulate because that makes apt hide the "After this operation" size summary.
 # NOTE: In Debian 9 we relied on --no-download to implicitly cancel the transaction.
@@ -75,28 +85,92 @@ package_names = {
 #           'http://deb.debian.org/debian/pool/main/libo/libogg/libogg0_1.3.4-0.1_amd64.deb' libogg0_1.3.4-0.1_amd64.deb 27336 MD5Sum:61021b894e2faa57ea9792e748ea2e0f
 #           'http://deb.debian.org/debian/pool/main/f/flac/libflac8_1.3.3-2%2bdeb11u1_amd64.deb' libflac8_1.3.3-2+deb11u1_amd64.deb 112304
 #           'http://deb.debian.org/debian/pool/main/o/opus/libopus0_1.3.1-0.1_amd64.deb' libopus0_1.3.1-0.1_amd64.deb 190428 MD5Sum:9a763a3e21f2fd7ba547bc6874714f4d
-acc = dict()
-for package_name in package_names:
+def cost(package_name):
     try:
         apt_output = subprocess.check_output(
             ['apt-get', 'install', '--print-uris', '--quiet=2', package_name],
             text=True)
-        acc[package_name] = sum(
+        return sum(
             int(line.split()[2])  # the 3rd column (#2, counting from zero) is the deb size.
             for line in apt_output.strip().splitlines())
-    # This happens when prisonpc-bad-package-conflicts-inmates cock-blocks a package???
+    # This happens when prisonpc-bad-package-conflicts-inmates cock-blocks a package:
+    #     E: Error,
+    #        pkgProblemResolver::Resolve generated breaks,
+    #        this may be caused by held packages.
+    # This also happens when you ask for a non-existent package.
+    #     E: Package 'vlc-plugin-bittorent' has no installation candidate
     except subprocess.CalledProcessError:
-        acc[package_name] = -1
+        return 'ERROR'
 
+
+# Argh, prisonpc-bad-package-conflicts-everyone blocks python3-apt!
+# Kludge around it so "import apt; apt.Cache()" works.
+subprocess.check_call(['apt', 'download', 'python3-apt'])
+subprocess.check_call(['dpkg', '-x', *list(pathlib.Path.cwd().glob('python3-apt_*_*.deb')), '/'])
+import apt                      # noqa: E402
+cache = apt.Cache()
+
+package_shitlist = {
+    'education-tasks',          # useless helper package
+    'games-all',                # already handled by the main loop
+    'games-console',            # no tty, therefore tty games banned
+    'games-mud',                # MUD = "multiplayer online", therefore banned
+    'games-tasks',              # useless helper package
+
+    # Inmates aren't allowed general-purpose programming tools.
+    # (The MIGHT be allowed some games-programming, which is about programming WITHIN the game.)
+    'education-development',
+    'games-c++-dev',
+    'games-content-dev',
+    'games-java-dev',
+    'games-perl-dev',
+    'games-python3-dev',
+
+    # This is a *desktop*, not a server.
+    'education-ltsp-server',
+    'education-main-server',
+    # This is an *XFCE* desktop.  (FIXME: is this sensible?)
+    'education-desktop-cinnamon',
+    'education-desktop-gnome',
+    'education-desktop-kde',
+    'education-desktop-lxde',
+    'education-desktop-lxqt',
+    'education-desktop-mate',
+    'education-desktop-other',  # FIXME: openclipart-libreoffice &c are ONLY in this one...
+
+    # We do our own network-y stuff; we don't care about Debian Edu's version.
+    'education-common',
+    'education-laptop',
+    'education-menus',
+    'education-networked',
+    'education-networked-common',
+    'education-roaming-workstation',
+    'education-standalone',
+    'education-thin-client',
+    'education-workstation',
+}
+metapackages = sorted(set(
+    package_version
+    for package in cache
+    for package_version in package.versions
+    if package_version.source_name in ('debian-edu', 'debian-games')
+    if package.name not in package_shitlist))
 with open('/var/log/install-footprint.tsv', 'w') as f:
-    numfmt_proc = subprocess.run(
-        ['numfmt', '--to=iec-i', '--suffix=B', '--padding=6', '--invalid=ignore'],
-        input='  Size\tPackage\n' + ''.join(
-            f'{deb_size}\t{package_name}\n'
-            for package_name, deb_size in sorted(
-                    acc.items(),
-                    key=lambda pair: (pair[1], pair[0]),
-                    reverse=True)),
-        stdout=f,
-        check=True,
-        text=True)
+    print('Section', 'Subsection', 'Name', 'Cost (Bytes)', 'Description',
+          sep='\t', end='\r\n', file=f)
+    for metapackage in metapackages:
+        section, subsection = metapackage.package.name.split('-', 1)
+        for name in sorted(set(
+                package.name
+                for clause in (metapackage.dependencies +
+                               metapackage.recommends +
+                               metapackage.suggests)
+                for package in clause
+                if package.name not in package_shitlist)):
+            try:
+                description = cache[name].versions[0].raw_description.splitlines()[0]
+                print(section, subsection, name, cost(name), description,
+                      sep='\t', end='\r\n', file=f)
+            except KeyError:  # "The cache has no package named 'cups-pdf'"
+                print(section, subsection, name, 'N/A', 'N/A',
+                      sep='\t', end='\r\n', file=f)
