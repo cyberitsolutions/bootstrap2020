@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import math
 import pathlib
 import subprocess
 
@@ -90,9 +91,11 @@ def cost(package_name):
         apt_output = subprocess.check_output(
             ['apt-get', 'install', '--print-uris', '--quiet=2', package_name],
             text=True)
-        return sum(
+        size_in_bytes = sum(
             int(line.split()[2])  # the 3rd column (#2, counting from zero) is the deb size.
             for line in apt_output.strip().splitlines())
+        size_in_mebibytes = size_in_bytes / 1024 / 1024
+        return simplify_number(size_in_mebibytes)
     # This happens when prisonpc-bad-package-conflicts-inmates cock-blocks a package:
     #     E: Error,
     #        pkgProblemResolver::Resolve generated breaks,
@@ -101,6 +104,15 @@ def cost(package_name):
     #     E: Package 'vlc-plugin-bittorent' has no installation candidate
     except subprocess.CalledProcessError:
         return 'ERROR'
+
+
+# Rather than reporting the exact size e.g. "1234.56 MiB",
+# round upwards to two significant figures e.g. "1300 MiB".
+# This is much easier for a human to process when quickly eyeballing a large list.
+def simplify_number(n, significant_digits=2):
+    n = math.ceil(n)  # insignificant_digits calculation assumes integer.
+    insignificant_digits = len(str(int(n))[significant_digits:])  # FIXME: yuk
+    return math.ceil(n / 10**insignificant_digits) * 10**insignificant_digits
 
 
 # Argh, prisonpc-bad-package-conflicts-everyone blocks python3-apt!
@@ -156,7 +168,7 @@ metapackages = sorted(set(
     if package_version.source_name in ('debian-edu', 'debian-games')
     if package.name not in package_shitlist))
 with open('/var/log/install-footprint.tsv', 'w') as f:
-    print('Section', 'Subsection', 'Name', 'Cost (Bytes)', 'Description',
+    print('Section', 'Subsection', 'Name', 'Cost (MiB)', 'Description',
           sep='\t', end='\r\n', file=f)
     for metapackage in metapackages:
         section, subsection = metapackage.package.name.split('-', 1)
