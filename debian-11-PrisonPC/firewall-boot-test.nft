@@ -15,7 +15,7 @@
 # The main counter-argument is that this approach means that VM
 # testing *of the firewall itself* is prone to false-positives and
 # false-negatives.  Other tests are still fine!
-add rule inet PrisonPC INPUT   ip saddr { 10.0.2.2, 10.128.2.2 }  meta l4proto . th dport { tcp . ssh, udp . bootpc }  accept
+add rule inet PrisonPC INPUT   ip saddr { 10.0.2.2, 10.128.2.2 }  meta l4proto . th dport { tcp . ssh, tcp . 5900, udp . bootpc }  accept
 add rule inet PrisonPC OUTPUT  ip daddr { 10.0.2.3, 10.128.2.3 }  meta l4proto { tcp, udp }  th dport domain  accept
 add rule inet PrisonPC OUTPUT  ip daddr { 10.0.2.4, 10.128.2.4 }  tcp dport microsoft-ds  accept
 add rule inet PrisonPC OUTPUT  udp dport ntp  accept

@@ -725,6 +725,10 @@ if args.boot_test:
                 f'define PrisonPC = {master_address};')
             (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
                 pathlib.Path('debian-11-PrisonPC/firewall-boot-test.nft').read_text())
+            if args.template.startswith('desktop-inmate'):
+                (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
+                (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
+                    f'[Service]\nEnvironment=X11VNC_EXTRA_ARGS="-allow {tftp_address}"\n')
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
