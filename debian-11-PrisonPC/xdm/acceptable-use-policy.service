@@ -1,0 +1,65 @@
+# NOTE: this is actually just adding "systemd-analyze security" hardening.
+# The main part of the unit is created in xdm-pre-prompt.py, so
+# it can inherit xdm's environment (yuk!)
+
+# Needs read access to /sbin/acceptable-use-policy (root-only)
+# Needs read access to
+#   https://ppc-services/motd?text=1
+# Needs read access to
+#   /var/lib/xdm/authdir/authfiles/A:⋯  ($XAUTHORITY)
+# Needs write access to (I think)
+#   /tmp/.X11-unix/X0  ($DISPLAY)
+# WANTS write access to this?
+#   ~/.cache/mesa_shader_cache
+
+# FIXME: acceptable-use-[620]: could not allocate closure
+# https://sources.debian.org/src/gobject-introspection/1.72.0-1/girepository/girffi.c/?hl=386#L386
+
+
+[Service]
+# This program needs to talk to https://prisonpc/.
+PrivateNetwork=no
+# Needs read access to root-only /var/lib/xdm/authdir/authfiles
+# User=
+# DynamicUser=yes
+CapabilityBoundingSet=
+# Needs AF_INET to talk to https://prisonpc/
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+DevicePolicy=closed
+# This program needs to talk to https://prisonpc/.
+# IPAddressDeny=any
+# IPAddressAllow=10.0.0.1/32 10.128.0.1/32
+KeyringMode=private
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateMounts=yes
+# Needs write access to /tmp/.X11-unix/?
+# Oddly it seems to work even with this...
+PrivateTmp=yes
+PrivateUsers=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+# Avoid logspam about access to /root/.cache/mesa_shader_cache.
+ProtectHome=tmpfs
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+AmbientCapabilities=
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged
+# FIXME: why does it fail when I block @resources?
+# SystemCallFilter=~@resources
+RestrictRealtime=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+UMask=0077
+ProtectHostname=yes
+ProcSubset=pid
+#FIXME: ReadWritePaths=/var/log
+TasksMax=16
+MemoryHigh=128M
