@@ -98,24 +98,27 @@
   <!-- The bit we changed. -->
   <Menu>
     <Name>Games</Name>
-    <!-- <Directory>xfce-games.directory</Directory> -->
+    <Directory>xfce-games.directory</Directory>
     <Layout>
       <Merge type="all"/>
       <Separator/>
       <Menuname>Other</Menuname>
     </Layout>
-    <Menu><Name>Action</Name><Include><Category>ActionGame</Category></Include></Menu>
-    <Menu><Name>Adventure</Name><Include><Category>AdventureGame</Category></Include></Menu>
-    <Menu><Name>Arcade</Name><Include><Category>ArcadeGame</Category></Include></Menu>
-    <Menu><Name>Board</Name><Include><Category>BoardGame</Category></Include></Menu>
-    <Menu><Name>Blocks</Name><Include><Category>BlocksGame</Category></Include></Menu>
-    <Menu><Name>Card</Name><Include><Category>CardGame</Category></Include></Menu>
-    <Menu><Name>Kids</Name><Include><Category>KidsGame</Category></Include></Menu>
-    <Menu><Name>Logic</Name><Include><Category>LogicGame</Category></Include></Menu>
-    <Menu><Name>Sports</Name><Include><Category>SportsGame</Category></Include></Menu>
-    <Menu><Name>Strategy</Name><Include><Category>StrategyGame</Category></Include></Menu>
+    <Menu><Name>Action</Name><Directory>xfce-games-action.directory</Directory><Include><Category>ActionGame</Category></Include></Menu>
+    <Menu><Name>Adventure</Name><Directory>xfce-games-adventure.directory</Directory><Include><Category>AdventureGame</Category></Include></Menu>
+    <Menu><Name>Arcade</Name><Directory>xfce-games-arcade.directory</Directory><Include><Category>ArcadeGame</Category></Include></Menu>
+    <Menu><Name>Board</Name><Directory>xfce-games-board.directory</Directory><Include><Category>BoardGame</Category></Include></Menu>
+    <Menu><Name>Blocks</Name><Directory>xfce-games-blocks.directory</Directory><Include><Category>BlocksGame</Category></Include></Menu>
+    <Menu><Name>Card</Name><Directory>xfce-games-card.directory</Directory><Include><Category>CardGame</Category></Include></Menu>
+    <Menu><Name>Kids</Name><Directory>xfce-games-kids.directory</Directory><Include><Category>KidsGame</Category></Include></Menu>
+    <Menu><Name>Role Playing</Name><Directory>xfce-games-roleplaying.directory</Directory><Include><Category>RolePlaying</Category></Include></Menu>
+    <Menu><Name>Simulation</Name><Directory>xfce-games-simulation.directory</Directory><Include><Category>Simulation</Category></Include></Menu>
+    <Menu><Name>Logic</Name><Directory>xfce-games-logic.directory</Directory><Include><Category>LogicGame</Category></Include></Menu>
+    <Menu><Name>Sports</Name><Directory>xfce-games-sports.directory</Directory><Include><Category>SportsGame</Category></Include></Menu>
+    <Menu><Name>Strategy</Name><Directory>xfce-games-strategy.directory</Directory><Include><Category>StrategyGame</Category></Include></Menu>
     <Menu>
       <Name>Other</Name>
+      <Directory>xfce-games-other.directory</Directory>
       <Include>
         <Category>Game</Category>
       </Include>
