@@ -1,0 +1,370 @@
+head	1.17;
+access;
+symbols;
+locks
+	twb:1.17; strict;
+comment	@# @;
+
+
+1.17
+date	2022.03.24.01.28.24;	author twb;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2022.03.17.17.23.05;	author twb;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2022.02.24.12.15.49;	author twb;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2022.02.24.09.23.04;	author twb;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2022.02.15.08.18.50;	author twb;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2022.02.01.22.59.23;	author twb;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2022.01.31.02.33.11;	author twb;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2022.01.27.14.11.00;	author twb;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2022.01.27.08.41.00;	author twb;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2022.01.25.00.03.37;	author twb;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2022.01.19.03.00.11;	author twb;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2022.01.12.06.58.37;	author twb;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2021.12.29.19.19.17;	author twb;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2021.12.15.10.30.21;	author twb;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2021.12.07.17.26.44;	author twb;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2021.11.15.04.02.02;	author twb;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2021.10.28.01.58.25;	author twb;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.17
+log
+@Summary: fnord
+@
+text
+@#!/bin/bash
+DONE_BRANCHES=(
+    ^origin/master-debian9 ^origin/master
+    ^origin/POC-http-not-nfs
+    ^origin/32544-dropbear
+    ^origin/tinysshd
+    ^origin/unattended-upgrades
+    ^origin/USB-boot
+    ^origin/SMART
+    ^origin/understudy-debian9 ^origin/understudy
+    ^origin/zfs
+    ^origin/DBAN-nwipe ^origin/nwipe-DBAN-debian10
+    ^origin/datasafe3
+    ^origin/POC-rootless-bootstrap
+    ^origin/prisonpc-desktop    # this is the incomplete Debian 10 upgrade
+    ^origin/prisonpc-desktop-debian9
+    ^origin/33946-tvserver-cleanup
+    ^origin/prisonpc-tvserver-tbs
+    ^origin/30129-whiskermenu        # see debian-11-PrisonPC.packages/prisonpc-ersatz/debian/control
+    ^origin/POC-die-bash
+    ^cc9a5d0                    # onboarding browser games (just use squid allowlist now)
+)
+SKIP_BRANCHES=(
+    ^buildroot-mike           # -- for this, use build-with-mmdebstrap
+    ^POC-2NIC-prayer-varnish  # -- for NSW, long stale?
+    ^32658-POC-just-chromium  # -- mainly for NFSv3 vs chromium problem
+    ^origin/netboot-server
+    ^origin/prisonpc-satellite-debian9 ^origin/prisonpc-satellite
+    ^origin/24023-apparmor-lockdown  # apparmor/selinux DE FACTO don't work live, and by default silently disable themselves, so I give up.
+    ^POC-systemd-lockdown       # moved to https://github.com/cyberitsolutions/prisonpc-systemd-lockdown (but should be re-done on PrisonPC desktops sometime...)
+)
+SKIP_COMMITS=(
+)
+exec tig -C../bootstrap --all -w -M -C "${DONE_BRANCHES[@@]}" "${SKIP_BRANCHES[@@]}" "$@@"
+@
+
+
+1.16
+log
+@Summary: fnord
+@
+text
+@d19 3
+d29 2
+@
+
+
+1.15
+log
+@Summary: fnord
+@
+text
+@d16 3
+a18 1
+    ^549a4a1                    # prisonpc-desktop-debian9 is MOSTLY done
+@
+
+
+1.14
+log
+@Summary: fnord
+@
+text
+@d10 1
+a10 1
+    ^understudy-debian9 ^origin/understudy
+d14 3
+a16 1
+    ^d6aaf16 ^f30f709
+@
+
+
+1.13
+log
+@Summary: foo
+@
+text
+@d14 1
+a14 1
+    ^949c042 ^5837abd
+@
+
+
+1.12
+log
+@Summary: fnord
+@
+text
+@d14 1
+a14 1
+    ^6440584 ^4545072
+@
+
+
+1.11
+log
+@Summary: fnord
+@
+text
+@d14 1
+a14 1
+    ^ac6b302 ^b3f3269
+@
+
+
+1.10
+log
+@Summary: fnord
+@
+text
+@d14 1
+a14 1
+    ^c28189c ^ecb73eb
+a25 1
+
+@
+
+
+1.9
+log
+@Summary: fnord
+@
+text
+@d14 1
+a14 1
+    ^c28189c~ ^ecb73eb~
+@
+
+
+1.8
+log
+@Summary: foo
+@
+text
+@d14 1
+a14 2
+    ^157abea~
+    ^a9a2178~
+@
+
+
+1.7
+log
+@Summary: fnord
+@
+text
+@d14 2
+a15 1
+    ^30e95d7 ^87f37a5
+@
+
+
+1.6
+log
+@Summary: fnord
+@
+text
+@d14 1
+a14 1
+    ^cf566a5 ^39cd624
+@
+
+
+1.5
+log
+@Summary: bump
+@
+text
+@d14 1
+a14 2
+    # ^47c49e9 ^4f9b7c0  # 7Y  TWB ∙ Grant read access to optical drives.
+    ^859eeea ^29f7f0f  # 7Y  TWB │ │ ∙ Add workspace minimap and username to panel.
+@
+
+
+1.4
+log
+@Summary: old changes
+@
+text
+@d14 2
+a15 1
+    ^4c9cc87 ^7cb45cf  # 7Y TWB Install upmc & lirc; fix audio support.
+@
+
+
+1.3
+log
+@Summary: old changes
+@
+text
+@d3 11
+a13 15
+    ^e3ff89b                 # (origin/master-debian9, master-debian9)
+    ^9739a33  # 4D TWB ∙ [master-debian9] {origin/master-debian9} cyber.com.au is https:// not http:// now
+    ^ac81084       # (origin/master, master)
+    ^017c1d6       # (origin/POC-http-not-nfs, POC-http-not-nfs)
+    ^3a0fb5b       # (origin/DBAN-nwipe, DBAN-nwipe)
+    ^3c320a1       # (origin/32544-dropbear, 32544-dropbear)
+    ^3f9724e       # (origin/tinysshd, tinysshd)
+    ^3790668       # (origin/understudy-debian9, understudy-debian9)
+    ^8a49c9f       # (origin/unattended-upgrades, unattended-upgrades)
+    ^bb75f09       # (origin/USB-boot, USB-boot)
+    ^624d20b       # (origin/SMART, SMART)
+    ^628b16f       # (origin/understudy, understudy)
+    ^524a1c8       # (origin/zfs, zfs)
+    ^0b53a45 ^2507914      # (origin/nwipe-DBAN-debian10, nwipe-DBAN-debian10)
+    ^61aa93f ^71813b8       # (origin/datasafe3, datasafe3)
+d20 2
+a21 4
+    ^c4d849d  # (origin/netboot-server, netboot-server) -- for Pioneer to do stand-alone testing, not touched for ages...
+    ^e8c55a0  # (origin/systemd-nspawn-container-alloc-debian8-php5, systemd-nspawn-container-alloc-debian8-php5) -- trying to work out if I can use modern tools to build an ancient image for FUCKING ALLOC
+    ^a945fe4  # (origin/prisonpc-satellite-debian9, prisonpc-satellite-debian9) -- for HCC, broken since Debian 7 or Debian 8 -- want to use HTTP balancer as long-term replacement
+    ^7538e44  # (origin/prisonpc-satellite, prisonpc-satellite) -- for HCC, broken since Debian 7 or Debian 8 -- want to use HTTP balancer as long-term replacement
+a23 1
+    ^4c9cc87 # Install upmc & lirc; fix audio support.
+@
+
+
+1.2
+log
+@Summary: fnord
+@
+text
+@d3 16
+a18 17
+    ^e3ff89b # (origin/master-debian9, master-debian9)
+    ^9739a33 # 4D TWB ∙ [master-debian9] {origin/master-debian9} cyber.com.au is https:// not http:// now
+    ^ac81084 # (origin/master, master)
+    ^017c1d6 # (origin/POC-http-not-nfs, POC-http-not-nfs)
+    ^3a0fb5b # (origin/DBAN-nwipe, DBAN-nwipe)
+    ^3c320a1 # (origin/32544-dropbear, 32544-dropbear)
+    ^3f9724e # (origin/tinysshd, tinysshd)
+    ^3790668 # (origin/understudy-debian9, understudy-debian9)
+    ^8a49c9f # (origin/unattended-upgrades, unattended-upgrades)
+    ^bb75f09 # (origin/USB-boot, USB-boot)
+    ^624d20b # (origin/SMART, SMART)
+    ^628b16f # (origin/understudy, understudy)
+    ^524a1c8 # (origin/zfs, zfs)
+    ^0b53a45 # (origin/nwipe-DBAN-debian10, nwipe-DBAN-debian10)
+    ^61aa93f # (origin/datasafe3, datasafe3)
+    ^3735924 ^ac85db0 # 7Y TWB Block busybox; it contains applets like vi and ping.
+    ^8dd31a1 ^ca8c3ff # 7Y TWB ∙ Appease insserv by preserving pxe-kexec's LSB headers.
+d21 10
+a30 8
+    ^303db08 # (origin/buildroot-mike, buildroot-mike) ---- for this, use build-with-mmdebstrap
+    ^c13d835 # (origin/POC-2NIC-prayer-varnish, POC-2NIC-prayer-varnish) -- for NSW, long stale?
+    ^0be88fe # (origin/32658-POC-just-chromium, 32658-POC-just-chromium) -- mainly for NFSv3 vs chromium problem
+    ^c4d849d # (origin/netboot-server, netboot-server) -- for Pioneer to do stand-alone testing, not touched for ages...
+    ^e8c55a0 # (origin/systemd-nspawn-container-alloc-debian8-php5, systemd-nspawn-container-alloc-debian8-php5) -- trying to work out if I can use modern tools to build an ancient image for FUCKING ALLOC
+    ^a945fe4 # (origin/prisonpc-satellite-debian9, prisonpc-satellite-debian9) -- for HCC, broken since Debian 7 or Debian 8 -- want to use HTTP balancer as long-term replacement
+    ^7538e44 # (origin/prisonpc-satellite, prisonpc-satellite) -- for HCC, broken since Debian 7 or Debian 8 -- want to use HTTP balancer as long-term replacement
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 1
+d18 2
+a19 2
+    ^f6ea3bf ^14744ad # 7Y TWB ∙ Install basic web/office GUI packages.
+    ^60440d1 ^8bca4af # 7Y TWB ∙ Fix NFS delay (it was trying NFSv4).
+@

@@ -1,0 +1,47 @@
+#!/bin/bash
+DONE_BRANCHES=(
+    ^origin/master-debian9 ^origin/master
+    ^origin/POC-http-not-nfs
+    ^origin/32544-dropbear
+    ^origin/tinysshd
+    ^origin/unattended-upgrades
+    ^origin/USB-boot
+    ^origin/SMART
+    ^origin/understudy-debian9 ^origin/understudy
+    ^origin/zfs
+    ^origin/DBAN-nwipe ^origin/nwipe-DBAN-debian10
+    ^origin/datasafe3
+    ^origin/POC-rootless-bootstrap
+    ^origin/prisonpc-desktop    # this is the incomplete Debian 10 upgrade
+    ^origin/prisonpc-desktop-debian9
+    ^origin/33946-tvserver-cleanup
+    ^origin/prisonpc-tvserver-tbs
+    ^origin/30129-whiskermenu        # see debian-11-PrisonPC.packages/prisonpc-ersatz/debian/control
+    ^origin/POC-die-bash
+    ^cc9a5d0                    # onboarding browser games (just use squid allowlist now)
+    ^origin/prisonpc-desktop-bloat  # now called "blackgate"
+    ^origin/prisonpc-desktop-amc
+    ^origin/prisonpc-desktop-amc-library
+    ^origin/prisonpc-desktop-hcc-games
+    ^origin/prisonpc-desktop-hcc-profile-a
+    ^origin/prisonpc-desktop-hcc-library
+    ^origin/prisonpc-desktop-hcc-profile-b
+    ^origin/prisonpc-desktop-staff-amc
+    ^origin/prisonpc-desktop-staff-hcc
+    ^origin/prisonpc-desktop-staff
+)
+SKIP_BRANCHES=(
+    ^buildroot-mike           # -- for this, use build-with-mmdebstrap
+    ^POC-2NIC-prayer-varnish  # -- for NSW, long stale?
+    ^32658-POC-just-chromium  # -- mainly for NFSv3 vs chromium problem
+    ^origin/netboot-server
+    ^origin/prisonpc-satellite-debian9 ^origin/prisonpc-satellite
+    ^origin/24023-apparmor-lockdown  # apparmor/selinux DE FACTO don't work live, and by default silently disable themselves, so I give up.
+    ^origin/POC-systemd-lockdown       # moved to https://github.com/cyberitsolutions/prisonpc-systemd-lockdown (but should be re-done on PrisonPC desktops sometime...)
+    ^origin/31442-die-prayer           # THUNDERBIRD MIGRATION
+    ^origin/31637-POC-NEW-GAMES        # INTERACTIVE FICTION SHORTLIST SCRIPTS
+    ^origin/prisonpc-desktop-netless   # now called "--template=desktop", more or less
+)
+SKIP_COMMITS=(
+)
+exec tig -C../bootstrap --all -w -M -C "${DONE_BRANCHES[@]}" "${SKIP_BRANCHES[@]}" "$@"
