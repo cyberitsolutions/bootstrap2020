@@ -1,5 +1,14 @@
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
- "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+"http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<!--
+<twb> If I have 200 games installed, the Applications > Games menu is really long.  Is there a way to go back to the old Debian "menu" package's style, where if there's enough entries, it automatically turns into a submenu (e.g. Applications > Games > Platforming) ?
+<twb> I think the answer is "lol, no" because .desktop files all suck
+<twb> Yeah based on https://specifications.freedesktop.org/menu-spec/menu-spec-1.0.html  there is no way to say "make a submenu IF AND ONLY IF there are lots of items"
+<twb> i.e. no way to dynamically tune for the 7±2 items ideal menu length
+<twb> I can hard-code deep game menu and just assume the OS image will either have "way too many games" or "no games", and never a middle-ground
+<twb> "no games" case will auto-hide all those empty menus
+-->
 
 <Menu>
   <Name>Xfce</Name>
@@ -86,12 +95,45 @@
     </Include>
   </Menu>
 
+  <!-- The bit we changed. -->
   <Menu>
     <Name>Games</Name>
-    <Directory>xfce-games.directory</Directory>
-    <Include>
-      <Category>Game</Category>
-    </Include>
+    <!-- <Directory>xfce-games.directory</Directory> -->
+    <Layout>
+      <Merge type="all"/>
+      <Separator/>
+      <Menuname>Other</Menuname>
+    </Layout>
+    <Menu><Name>Action</Name><Include><Category>ActionGame</Category></Include></Menu>
+    <Menu><Name>Adventure</Name><Include><Category>AdventureGame</Category></Include></Menu>
+    <Menu><Name>Arcade</Name><Include><Category>ArcadeGame</Category></Include></Menu>
+    <Menu><Name>Board</Name><Include><Category>BoardGame</Category></Include></Menu>
+    <Menu><Name>Blocks</Name><Include><Category>BlocksGame</Category></Include></Menu>
+    <Menu><Name>Card</Name><Include><Category>CardGame</Category></Include></Menu>
+    <Menu><Name>Kids</Name><Include><Category>KidsGame</Category></Include></Menu>
+    <Menu><Name>Logic</Name><Include><Category>LogicGame</Category></Include></Menu>
+    <Menu><Name>Sports</Name><Include><Category>SportsGame</Category></Include></Menu>
+    <Menu><Name>Strategy</Name><Include><Category>StrategyGame</Category></Include></Menu>
+    <Menu>
+      <Name>Other</Name>
+      <Include>
+        <Category>Game</Category>
+      </Include>
+      <Exclude>
+        <Or>
+          <Category>ActionGame</Category>
+          <Category>AdventureGame</Category>
+          <Category>ArcadeGame</Category>
+          <Category>BoardGame</Category>
+          <Category>BlocksGame</Category>
+          <Category>CardGame</Category>
+          <Category>KidsGame</Category>
+          <Category>LogicGame</Category>
+          <Category>SportsGame</Category>
+          <Category>StrategyGame</Category>
+        </Or>
+      </Exclude>
+    </Menu>
   </Menu>
 
   <Menu>
