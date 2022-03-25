@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import argparse
 import datetime
-import errno
 import os
 import pathlib
 import re
@@ -42,7 +41,7 @@ class DVDBackup:
         self.dvd_title = None
         try:
             output = subprocess.check_output([self.dvdbackup, "-i", self.device, "-I"], text=True, stderr=subprocess.DEVNULL)
-            if match := re.match('DVD-Video information of the DVD with title "(.*?)"', output):
+            if match := re.search('DVD-Video information of the DVD with title "(.*?)"', output):
                 self.dvd_present = True
                 self.dvd_title = match.group(1)
         except subprocess.CalledProcessError:  # FIXME: Is this all the original code was expecting?
