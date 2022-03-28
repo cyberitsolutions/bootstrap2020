@@ -1,5 +1,4 @@
 Section,Subsection,Name,Cost (MiB),Description
-education,astronomy,astronomical-almanac,1,astronomical almanac - calculate planet and star positions
 education,astronomy,gpredict,6,Satellite tracking program
 education,astronomy,kstars,72,"desktop planetarium, observation planning and telescope control"
 education,astronomy,lightspeed,1,Shows how objects moving at relativistic speeds look like
@@ -19,7 +18,6 @@ education,chemistry,gperiodic,1,periodic table application
 education,chemistry,kalzium,80,periodic table and chemistry tools
 education,chemistry,pymol,17,Molecular Graphics System
 education,chemistry,rasmol,3,visualization of biological macromolecules
-education,desktop-xfce,blueman,ERROR,Graphical bluetooth manager
 education,desktop-xfce,education-astronomy,1,Debian Edu astronomy related applications
 education,desktop-xfce,education-chemistry,1,Debian Edu chemistry related applications
 education,desktop-xfce,education-electronics,1,Debian Edu electronics related applications
@@ -35,8 +33,6 @@ education,desktop-xfce,education-primaryschool,1,Debian Edu applications for pri
 education,desktop-xfce,education-video,1,Debian Edu video applications
 education,desktop-xfce,kdeedu,380,educational applications from the official KDE release
 education,desktop-xfce,onboard,1,Simple On-screen Keyboard
-education,desktop-xfce,ssh-askpass,1,"under X, asks user for a passphrase for ssh-add"
-education,desktop-xfce,task-xfce-desktop,ERROR,Xfce
 education,electronics,electric,89,electrical CAD system
 education,electronics,fritzing,18,Easy-to-use electronic design software
 education,electronics,gnucap,1,"GNU Circuit Analysis package, main executable"
@@ -53,7 +49,6 @@ education,electronics,xcircuit,1,Draw circuit schematics or almost anything
 education,electronics,xoscope,ERROR,digital oscilloscope
 education,geography,gmt,110,Generic Mapping Tools
 education,geography,googleearth-package,N/A,N/A
-education,geography,gpscorrelate,2,correlates digital photos with GPS data filling EXIF fields (command line)
 education,geography,grass,93,Geographic Resources Analysis Support System (GRASS GIS)
 education,geography,kgeography,24,geography learning aid for KDE
 education,geography,mapserver-bin,27,MapServer utilities
@@ -91,9 +86,7 @@ education,highschool,pencil2d,21,Create hand-drawn animation using both bitmap a
 education,highschool,rocs,ERROR,graph theory IDE
 education,highschool,step,21,interactive physical simulator for KDE
 education,highschool,yorick,2,interpreted language and scientific graphics
-education,language,brazilian-conjugate,1,Brazilian Portuguese verb conjugator
 education,language,collatinus,4,lemmatisation of latin text
-education,language,dict,1,dictionary client
 education,language,festival,2,General multi-lingual speech synthesis system
 education,language,fonts-linex,2,Fonts suitable for education and institutional use
 education,language,fonts-sil-doulos,2,smart Unicode font for Latin and Cyrillic scripts
@@ -166,7 +159,6 @@ education,misc,laby,ERROR,Learn how to program with ants and spider webs
 education,misc,planner,2,project management application
 education,misc,scratch,27,easy to use programming environment for ages 8 and up
 education,misc,thonny,13,Python IDE for beginners
-education,misc,tilp2,ERROR,Texas Instruments hand-helds <-> PC communication program for X
 education,misc,vym,ERROR,mindmapping tool
 education,music,audacious,10,small and fast audio player which supports lots of formats
 education,music,audacity,13,"fast, cross-platform audio editor"
@@ -274,10 +266,8 @@ education,video,pitivi,67,non-linear audio/video editor using GStreamer
 education,video,stopmotion,3,create stop-motion animations
 education,video,xine-ui,15,"xine video player, graphical user interface"
 games,adventure,beneath-a-steel-sky,110,classic 2D point and click science fiction adventure game
-games,adventure,bsdgames,ERROR,collection of classic textual unix games
 games,adventure,dmagnetic,1,Interpreter to play textadventures from Magnetic Scrolls in glorious ANSI Art
 games,adventure,drascula,69,classic 2D point and click adventure game -- English version
-games,adventure,fizmo-ncursesw,1,Ncurses-based Z-machine interpreter for Infocom/Inform games
 games,adventure,fizmo-sdl2,1,SDL2-based Z-machine interpreter for Infocom/Inform games
 games,adventure,flight-of-the-amazon-queen,77,classic 2D point and click fantasy adventure game
 games,adventure,freedink,64,humorous top-down adventure and role-playing game
@@ -381,7 +371,6 @@ games,arcade,noiz2sa,16,abstract arcade shooter
 games,arcade,open-invaders,4,Space Invaders clone
 games,arcade,orbital-eunuchs-sniper,12,"anti-terrorist, pro-Eunuchs, satellite sniping game"
 games,arcade,overgod,2,bi-directional scrolling arcade game
-games,arcade,pacman,1,Chase Monsters in a Labyrinth
 games,arcade,pangzero,19,action game that involves popping balloons with a harpoon
 games,arcade,parsec47,14,retromodern hispeed shmup
 games,arcade,passage,2,game about the passage through life
@@ -449,7 +438,6 @@ games,board,3dchess,1,Play chess across 3 boards!
 games,board,ace-of-penguins,1,penguin-themed solitaire games
 games,board,biloba,11,turn based strategy board game for up to 4 players
 games,board,brutalchess,4,3D chess game with reflection of the chessmen
-games,board,bsdgames,ERROR,collection of classic textual unix games
 games,board,cgoban,1,complete Go board
 games,board,cl-reversi,1,Reversi game for Common Lisp
 games,board,colorcode,1,advanced clone of the MasterMind code-breaking game
@@ -533,7 +521,6 @@ games,chess,eboard,2,GTK+ chessboard program
 games,chess,ethereal-chess,1,UCI-compliant chess engine
 games,chess,fairy-stockfish,1,"chess variant engine including support for Chess, Shogi and XiangQi variants"
 games,chess,fairymax,1,xboard compatible chess and chess-variant engine
-games,chess,fathom,1,Command-line for probing Syzygy tablebases
 games,chess,fruit,1,"chess engine, to calculate chess moves"
 games,chess,glaurung,1,"free UCI chess engine, to calculate chess moves"
 games,chess,gnome-games,18,games for the GNOME desktop
@@ -565,7 +552,6 @@ games,chess,tourney-manager,9,perl interface to run chess engine tournaments
 games,chess,uci2wb,1,protocol adapter between XBoard/CECP and UCI/USI/UCCI engines
 games,chess,xboard,2,X Window System Chess Board
 games,chess,xshogi,1,X11 frontend to gnushogi
-games,education,animals,1,Traditional AI animal guessing engine using a binary tree DB
 games,education,atomix,1,puzzle game for building molecules out of separate atoms
 games,education,basic256,3,educational BASIC programming environment for children
 games,education,childsplay,N/A,N/A
@@ -611,14 +597,12 @@ games,finest,alex4,2,Alex the Allegator 4 - a retro platform game
 games,finest,armagetronad,3,3D Tron-like high speed game
 games,finest,asc,42,turn-based strategy game
 games,finest,atomix,1,puzzle game for building molecules out of separate atoms
-games,finest,bastet,1,ncurses Tetris clone with a bastard algorithm
 games,finest,berusky,6,Logic game based on Sokoban
 games,finest,biniax2,11,logic game with arcade and tactics modes
 games,finest,blobby,2,Volleyball game with blobs
 games,finest,bloboats,3,Boat racing game
 games,finest,blobwars,69,platform shooting game
 games,finest,blockattack,14,puzzle game inspired by Tetris
-games,finest,bsdgames,ERROR,collection of classic textual unix games
 games,finest,btanks,29,fast 2D tank arcade game with multiplayer and split-screen modes
 games,finest,burgerspace,9,Avoid evil foodstuffs and make burgers
 games,finest,bzflag-client,11,3D first person tank battle game -- client
@@ -670,7 +654,6 @@ games,finest,open-invaders,4,Space Invaders clone
 games,finest,openarena,410,fast-paced 3D first-person shooter
 games,finest,openclonk,120,"multiplayer game of strategy, action and skill"
 games,finest,openttd,6,reimplementation of Transport Tycoon Deluxe with enhancements
-games,finest,pacman,1,Chase Monsters in a Labyrinth
 games,finest,parsec47,14,retromodern hispeed shmup
 games,finest,pathological,20,puzzle game involving paths and marbles
 games,finest,performous,6,karaoke game that allows user supplied songs
@@ -765,7 +748,6 @@ games,programming,basic256,3,educational BASIC programming environment for child
 games,programming,colobot,89,educational programming strategy game
 games,programming,laby,ERROR,Learn how to program with ants and spider webs
 games,programming,robocode,40,Java programming game based on battle tanks
-games,puzzle,2048,1,Slide and add puzzle game for text mode
 games,puzzle,2048-qt,6,mathematics based puzzle game
 games,puzzle,ace-of-penguins,1,penguin-themed solitaire games
 games,puzzle,amoebax,17,Puyo Puyo-style puzzle game for up to two players
@@ -780,7 +762,6 @@ games,puzzle,black-box,9,Find the crystals
 games,puzzle,blockattack,14,puzzle game inspired by Tetris
 games,puzzle,blocks-of-the-undead,10,Tetris Attack clone with spooky undertones
 games,puzzle,brainparty,22,36 puzzle games for all the family
-games,puzzle,bsdgames,ERROR,collection of classic textual unix games
 games,puzzle,cavepacker,12,sokoban game with network based multiplayer gaming
 games,puzzle,chroma,N/A,N/A
 games,puzzle,connectagram,2,word unscrambling game
@@ -800,7 +781,6 @@ games,puzzle,gnome-mahjongg,3,classic Eastern tile game for GNOME
 games,puzzle,gnubik,6,3D Rubik's cube game
 games,puzzle,gnurobbo,12,logic game ported from ATARI XE/XL
 games,puzzle,gplanarity,1,simple puzzle game involving untangling planar graphs
-games,puzzle,greed,1,curses-based clone of the DOS free-ware game Greed
 games,puzzle,groundhog,1,simple logic game
 games,puzzle,gtans,1,Tangram (puzzle) game using GTK+
 games,puzzle,gtkballs,1,simple logic game
@@ -881,7 +861,6 @@ games,rogue,omega-rpg,1,text-based roguelike game
 games,rogue,slashem,2,variant of Nethack
 games,rpg,adonthell,7,2D graphical roleplaying game
 games,rpg,ardentryst,35,"Action/RPG sidescoller, focused on story and character development"
-games,rpg,bsdgames,ERROR,collection of classic textual unix games
 games,rpg,crossfire-client,9,Client for the multiplayer roguelike Crossfire
 games,rpg,ember,N/A,N/A
 games,rpg,flare-game,130,fantasy single-player 2D action role-playing game
@@ -919,7 +898,6 @@ games,shootemup,noiz2sa,16,abstract arcade shooter
 games,shootemup,open-invaders,4,Space Invaders clone
 games,shootemup,overgod,2,bi-directional scrolling arcade game
 games,shootemup,parsec47,14,retromodern hispeed shmup
-games,shootemup,piu-piu,1,Horizontal scroller game in bash for cli.
 games,shootemup,powermanga,18,vertical shoot 'em up with colourful 3D graphics
 games,shootemup,projectl,10,sword action shooting
 games,shootemup,rafkill,6,vertical shoot'em-up similar to Raptor: Call of the Shadows
@@ -945,7 +923,6 @@ games,shootemup,xinv3d,1,3D space invaders for X
 games,shootemup,xsoldier,2,"shoot 'em up game with the ""not shooting"" bonus"
 games,simulation,acm,1,Multi-player classic aerial combat simulation
 games,simulation,billard-gl,1,3D billiards game
-games,simulation,bsdgames,ERROR,collection of classic textual unix games
 games,simulation,bzflag-client,11,3D first person tank battle game -- client
 games,simulation,crrcsim,8,Model-Airplane Flight Simulator
 games,simulation,csmash,10,"CannonSmash, a table tennis simulation game"
@@ -969,7 +946,6 @@ games,simulation,searchandrescue,46,fly aircraft to search (for) and rescue peop
 games,simulation,simutrans,13,transportation simulator
 games,simulation,singularity,13,game where one becomes the singularity
 games,simulation,stormbaancoureur,4,simulated obstacle course for automobiles
-games,sport,asciijump,1,Small and funny ASCII-art game about ski jumping
 games,sport,blobby,2,Volleyball game with blobs
 games,sport,bygfoot,ERROR,football (a.k.a soccer) management game
 games,sport,csmash,10,"CannonSmash, a table tennis simulation game"
@@ -990,7 +966,6 @@ games,strategy,boswars,73,futuristic real-time strategy game
 games,strategy,bygfoot,ERROR,football (a.k.a soccer) management game
 games,strategy,colobot,89,educational programming strategy game
 games,strategy,crimson,9,hex-based tactical game
-games,strategy,curseofwar,1,Fast-paced  action  strategy  game for Linux based on ncurses
 games,strategy,dopewars,9,drug-dealing game set in streets of New York City
 games,strategy,empire,1,war game of the century
 games,strategy,endless-sky,69,space exploration and combat game
@@ -1035,7 +1010,6 @@ games,strategy,xfrisk,1,Server and X11 client for playing risk with humans or AI
 games,strategy,xscorch,2,Clone of Scorched Earth
 games,strategy,zec,5,Z-Shell Empire client
 games,tetris,angrydd,16,Angry Drunken Dwarves - falling blocks puzzle game
-games,tetris,bastet,1,ncurses Tetris clone with a bastard algorithm
 games,tetris,blockout2,13,Tetris like game (3D-tetris)
 games,tetris,crack-attack,9,"multiplayer OpenGL puzzle game like ""Tetris Attack"""
 games,tetris,cuyo,12,Tetris-like game with very impressive effects
@@ -1058,13 +1032,9 @@ games,tetris,tint,1,Tetris clone for text based terminal
 games,tetris,vitetris,1,Virtual terminal *tris clone
 games,tetris,xbubble,6,A nice Puzzle Bubble clone
 games,tetris,xwelltris,2,3D Tetris like popular game similar to Welltris
-games,toys,an,1,very fast anagram generator
-games,toys,animals,1,Traditional AI animal guessing engine using a binary tree DB
 games,toys,bambam,12,keyboard mashing and doodling game for babies
-games,toys,bb,3,ASCII-art demo based on AAlib
 games,toys,bucklespring,10,Nostalgia bucklespring keyboard sound
 games,toys,cbonsai,N/A,N/A
-games,toys,cmatrix,1,"simulates the display from ""The Matrix"""
 games,toys,cowsay,8,configurable talking cow
 games,toys,dadadodo,1,exterminates all rational thought
 games,toys,filters,1,"collected filters, including B1FF and the Swedish Chef"
@@ -1076,7 +1046,6 @@ games,toys,geekcode,1,Program for generating geekcode
 games,toys,gnomekiss,1,KiSS paper doll viewer for GNOME
 games,toys,hollywood,5,fill your console with Hollywood melodrama technobabble
 games,toys,kawari8,1,Pseudo AI Shiori module used to create ghosts for Ukagaka
-games,toys,lolcat,6,colorful `cat`
 games,toys,macopix,1,Mascot Constructive Pilot for X
 games,toys,ninix-aya,ERROR,Interactive fake-AI Ukagaka-compatible desktop mascot program
 games,toys,oneko,1,cat chases the cursor (now a mouse) around the screen
@@ -1233,9 +1202,6 @@ science,chemistry,adun.app,25,Molecular Simulator for GNUstep (GUI)
 science,chemistry,apbs,230,Adaptive Poisson Boltzmann Solver
 science,chemistry,avogadro,35,Molecular Graphics and Modelling System
 science,chemistry,bkchem,N/A,N/A
-science,chemistry,bodr,1,Blue Obelisk Data Repository
-science,chemistry,chemeq,1,Parser for chemical formula and equilibria
-science,chemistry,chemical-mime-data,1,chemical MIME and file type support for desktops
 science,chemistry,chemical-structures,5,web service providing molecular structures in open formats
 science,chemistry,chemtool,14,chemical structures drawing program
 science,chemistry,cp2k,47,Ab Initio Molecular Dynamics
@@ -1275,7 +1241,6 @@ science,chemistry,mopac7-bin,1,Semi-empirical Quantum Chemistry Library (binarie
 science,chemistry,mpqc,17,Massively Parallel Quantum Chemistry Program
 science,chemistry,mpqc-support,24,Massively Parallel Quantum Chemistry Program (support tools)
 science,chemistry,msxpertsuite,53,mass spectrometry software suite - metapackage
-science,chemistry,openbabel,4,Chemical toolbox utilities (cli)
 science,chemistry,openchrom,N/A,N/A
 science,chemistry,openfoam,73,Open source toolbox for Computational Fluid Dynamics (CFD) - binaries
 science,chemistry,pdb2pqr,4,Preparation of protein structures for electrostatics calculations
@@ -1298,7 +1263,6 @@ science,chemistry,xmakemol-gl,2,program for visualizing atomic and molecular sys
 science,dataacquisition,binoculars,210,Surface X-ray diffraction 2D detector data reduction
 science,dataacquisition,clickhouse-tools,16,column-oriented database system (tools)
 science,dataacquisition,comedi-source,N/A,N/A
-science,dataacquisition,csvkit,8,command-line tools for working with CSV
 science,dataacquisition,engauge-digitizer,3,interactively extracts numbers from bitmap graphs or maps
 science,dataacquisition,epics,N/A,N/A
 science,dataacquisition,filo,N/A,N/A
@@ -1414,7 +1378,6 @@ science,electrophysiology,sigviewer,6,"GUI viewer for biosignals such as EEG, EM
 science,electrophysiology,spike,N/A,N/A
 science,electrophysiology,stimfit,ERROR,Program for viewing and analyzing electrophysiological data
 science,electrophysiology,trellis-neuro,N/A,N/A
-science,engineering,ann-tools,1,Approximate Nearest Neighbor Searching library (tools)
 science,engineering,avl,N/A,N/A
 science,engineering,brlcad,N/A,N/A
 science,engineering,calculix-ccx,8,Three-Dimensional Structural Finite Element Program
@@ -1492,12 +1455,10 @@ science,financial,r-cran-ftrading,33,GNU R package for financial engineering -- 
 science,financial,r-cran-funitroots,38,GNU R package for financial engineering -- fUnitRoots
 science,financial,r-cran-timedate,ERROR,GNU R package for financial engineering -- timeDate
 science,financial,r-cran-timeseries,28,GNU R package for financial engineering -- timeSeries
-science,geography,avce00,1,Conversion of ESRI Arcinfo Vector Coverage in E00 format
 science,geography,drawmap,N/A,N/A
 science,geography,e00compr,1,Program to read/write Arcinfo compressed E00 files
 science,geography,earth3d,N/A,N/A
 science,geography,gdal-bin,30,Geospatial Data Abstraction Library - Utility programs
-science,geography,geoip-bin,8,IP lookup command line tools that use the GeoIP library
 science,geography,gis-workstation,1,Geographic Information Systems (GIS) workstation
 science,geography,gmt,110,Generic Mapping Tools
 science,geography,googleearth-package,N/A,N/A
@@ -1514,7 +1475,6 @@ science,geography,grace,9,XY graphing and plotting tool
 science,geography,grass,93,Geographic Resources Analysis Support System (GRASS GIS)
 science,geography,grass-doc,32,GRASS GIS user documentation
 science,geography,hyantesite,N/A,N/A
-science,geography,hydroffice.bag-tools,32,command-line tools for hydroffice.bag
 science,geography,josm,88,Editor for OpenStreetMap
 science,geography,libmseed-dev,1,seed data records manipulation library (development files)
 science,geography,mapnik-utils,31,C++ toolkit for developing GIS applications (utilities)
@@ -1678,83 +1638,6 @@ science,imageanalysis,gpiv,N/A,N/A
 science,imageanalysis,gpivtools,N/A,N/A
 science,imageanalysis,gwyddion,5,Scanning Probe Microscopy visualization and analysis tool
 science,imageanalysis,limereg,N/A,N/A
-science,imageanalysis,teem-apps,1,Tools to process and visualize scientific data and images - command line tools
-science,linguistics,apertium,2,Shallow-transfer machine translation engine
-science,linguistics,apertium-af-nl,10,Transitional dummy package for apertium-afr-nld
-science,linguistics,apertium-apy,1,Apertium APY service
-science,linguistics,apertium-arg,N/A,N/A
-science,linguistics,apertium-arg-cat,13,Apertium translation data for the Aragonese-Catalan pair
-science,linguistics,apertium-bel,N/A,N/A
-science,linguistics,apertium-bel-rus,12,Apertium translation data for the Belarusian-Russian pair
-science,linguistics,apertium-br-fr,11,Apertium linguistic data to translate between Breton and French
-science,linguistics,apertium-ca-it,5,Transitional dummy package for apertium-cat-ita
-science,linguistics,apertium-cat,N/A,N/A
-science,linguistics,apertium-cat-srd,12,Apertium translation data for the Catalan-Sardinian pair
-science,linguistics,apertium-crh,N/A,N/A
-science,linguistics,apertium-crh-tur,12,Apertium translation data for the Crimean Tatar-Turkish pair
-science,linguistics,apertium-cy-en,10,Apertium translation data for the Welsh-English pair
-science,linguistics,apertium-dan,N/A,N/A
-science,linguistics,apertium-dan-nor,15,Apertium translation data for the Danish-Norwegian pair
-science,linguistics,apertium-en-ca,14,Transitional dummy package for apertium-eng-cat
-science,linguistics,apertium-en-es,4,Apertium translation data for the English-Spanish pair
-science,linguistics,apertium-en-gl,3,Apertium translation data for the English-Galician pair
-science,linguistics,apertium-eo-ca,3,Apertium translation data for the Esperanto-Catalan pair
-science,linguistics,apertium-eo-en,3,Apertium linguistic data to translate between Esperanto and English
-science,linguistics,apertium-eo-es,10,Apertium translation data for the Esperanto-Spanish pair
-science,linguistics,apertium-eo-fr,3,Apertium translation data for the Esperanto-French pair
-science,linguistics,apertium-es-ast,3,Apertium translation data for the Spanish-Asturian pair
-science,linguistics,apertium-es-ca,6,Transitional dummy package for apertium-spa-cat
-science,linguistics,apertium-es-gl,3,Apertium translation data for the Spanish-Galician pair
-science,linguistics,apertium-es-it,3,Transitional dummy package for apertium-spa-ita
-science,linguistics,apertium-es-pt,2,Apertium translation data for the Spanish-Portuguese pair
-science,linguistics,apertium-es-ro,3,Apertium translation data for the Spanish-Romanian pair
-science,linguistics,apertium-eu-en,2,Apertium translation data for the Basque-English pair
-science,linguistics,apertium-eu-es,3,Apertium translation data for the Basque-Spanish pair
-science,linguistics,apertium-fr-ca,N/A,N/A
-science,linguistics,apertium-fr-es,3,Apertium translation data for the French-Spanish pair
-science,linguistics,apertium-fra,N/A,N/A
-science,linguistics,apertium-fra-cat,13,Apertium translation data for the French-Catalan pair
-science,linguistics,apertium-hbs,N/A,N/A
-science,linguistics,apertium-hbs-eng,12,Apertium translation data for the Serbo-Croatian - English pair
-science,linguistics,apertium-hbs-mkd,10,Apertium translation data for the Serbo-Croatian-Macedonian pair
-science,linguistics,apertium-hbs-slv,11,Apertium translation data for the Serbo-Croatian-Slovenian pair
-science,linguistics,apertium-hin,13,Apertium single language data for Hindi
-science,linguistics,apertium-id-ms,9,Transitional dummy package for apertium-ind-zlm
-science,linguistics,apertium-is-sv,10,Apertium translation data for the Icelandic-Swedish pair
-science,linguistics,apertium-isl,13,Apertium single language data for Icelandic
-science,linguistics,apertium-isl-eng,10,Apertium translation data for the Icelandic-English pair
-science,linguistics,apertium-ita,11,Apertium single language data for Italian
-science,linguistics,apertium-kaz,N/A,N/A
-science,linguistics,apertium-kaz-tat,13,Apertium translation data for the Kazakh-Tatar pair
-science,linguistics,apertium-lex-tools,1,Constraint-based lexical selection module
-science,linguistics,apertium-mk-bg,9,Apertium translation data for the Macedonian-Bulgarian pair
-science,linguistics,apertium-mk-en,10,Apertium translation data for the Macedonian-English pair
-science,linguistics,apertium-mlt-ara,10,Apertium translation data for the Maltese-Arabic pair
-science,linguistics,apertium-nno,N/A,N/A
-science,linguistics,apertium-nno-nob,14,Apertium translation data for the Norwegian Nynorsk-Norwegian Bokmål pair
-science,linguistics,apertium-nob,N/A,N/A
-science,linguistics,apertium-oc-ca,3,Apertium translation data for the Occitan-Catalan pair
-science,linguistics,apertium-oc-es,3,Apertium translation data for the Occitan-Spanish pair
-science,linguistics,apertium-oci,N/A,N/A
-science,linguistics,apertium-pol,N/A,N/A
-science,linguistics,apertium-pt-ca,14,Transitional dummy package for apertium-por-cat
-science,linguistics,apertium-pt-gl,2,Apertium translation data for the Portuguese-Galician pair
-science,linguistics,apertium-rus,N/A,N/A
-science,linguistics,apertium-separable,1,Reordering separable/discontiguous multiwords
-science,linguistics,apertium-sme-nob,26,Apertium translation data for the Northern Sami-Norwegian Bokmål pair
-science,linguistics,apertium-spa,12,Apertium single language data for Spanish
-science,linguistics,apertium-spa-arg,11,Apertium translation data for the Spanish-Aragonese pair
-science,linguistics,apertium-srd,N/A,N/A
-science,linguistics,apertium-srd-ita,11,Apertium translation data for the Sardinian-Italian pair
-science,linguistics,apertium-swe,N/A,N/A
-science,linguistics,apertium-swe-dan,12,Apertium translation data for the Swedish-Danish pair
-science,linguistics,apertium-swe-nor,18,Apertium translation data for the Swedish-Norwegian pair
-science,linguistics,apertium-szl,N/A,N/A
-science,linguistics,apertium-tat,N/A,N/A
-science,linguistics,apertium-tur,N/A,N/A
-science,linguistics,apertium-ukr,N/A,N/A
-science,linguistics,apertium-urd,12,Apertium single language data for Urdu
-science,linguistics,apertium-urd-hin,10,Apertium translation data for the Urdu-Hindi pair
 science,linguistics,artha,7,Handy off-line thesaurus based on WordNet
 science,linguistics,cg3,8,Tools for using the 3rd edition of Constraint Grammar (CG-3)
 science,linguistics,collatinus,4,lemmatisation of latin text
@@ -1766,7 +1649,6 @@ science,linguistics,hfst,3,Helsinki Finite-State Transducer Technology
 science,linguistics,hfst-ospell,1,Spell checker library and tool based on HFST
 science,linguistics,irstlm,8,IRST Language Modeling Toolkit
 science,linguistics,libcg3-dev,1,Headers and shared files to develop using the CG-3 library
-science,linguistics,libcld2-dev,6,"Compact Language Detector 2, development package"
 science,linguistics,libfolia-dev,1,Implementation of the FoLiA document format (C++ headers)
 science,linguistics,libmbt0-dev,N/A,N/A
 science,linguistics,libticcutils2-dev,N/A,N/A
@@ -1775,13 +1657,11 @@ science,linguistics,libtimbl4-dev,N/A,N/A
 science,linguistics,libtimblserver2-dev,N/A,N/A
 science,linguistics,libucto1-dev,N/A,N/A
 science,linguistics,link-grammar,1,Carnegie Mellon University's link grammar parser
-science,linguistics,lttoolbox,1,Apertium lexical processing modules and tools
 science,linguistics,mbt,1,memory-based tagger-generator and tagger
 science,linguistics,mbtserver,1,Server extensions for the MBT tagger
 science,linguistics,python3-nltk,2,Python3 libraries for natural language processing
 science,linguistics,python3-pynlpl,2,PyNLPl is a library for Natural Language Processing (Python 3 version)
 science,linguistics,python3-snowballstemmer,1,Pure Python Snowball stemming library
-science,linguistics,python3-streamparser,1,Python library to parse Apertium stream format
 science,linguistics,python3-thinc,N/A,N/A
 science,linguistics,python3-timbl,N/A,N/A
 science,linguistics,r-cran-lexrankr,36,extractive summarization of text with the LexRank algorithm
@@ -1799,12 +1679,9 @@ science,linguistics,wnsqlbuilder,N/A,N/A
 science,linguistics,wordnet,7,electronic lexical database of English language
 science,logic,agda,230,dependently typed functional programming language
 science,logic,alt-ergo,3,Automatic theorem prover dedicated to program verification
-science,logic,boolector,1,SMT solver for bit-vectors and arrays
 science,logic,clasp,1,conflict-driven nogood learning answer set solver
 science,logic,coala,N/A,N/A
-science,logic,coinor-cbc,1,Coin-or branch-and-cut mixed integer programming solver
 science,logic,coinor-libcoinmp-dev,ERROR,Simple C API for COIN-OR Solvers Clp and Cbc -- development
-science,logic,coinor-symphony,1,COIN-OR solver for mixed-integer linear programs
 science,logic,coq,270,proof assistant for higher-order logic (toplevel and compiler)
 science,logic,cvc3,N/A,N/A
 science,logic,cvc4,7,automated theorem prover for SMT problems
@@ -1830,17 +1707,9 @@ science,logic,why3,ERROR,Software verification platform
 science,logic,z3,7,theorem prover from Microsoft Research
 science,mathematics,4ti2,2,mathematical tool suite for problems on linear spaces -- tools
 science,mathematics,agda,230,dependently typed functional programming language
-science,mathematics,ann-tools,1,Approximate Nearest Neighbor Searching library (tools)
 science,mathematics,auto-07p,3,software for continuation and bifurcation problems in ODE
 science,mathematics,axiom,ERROR,General purpose computer algebra system: main binary and modules
-science,mathematics,bliss,1,tool to compute graph automorphisms and labelings -- bin
-science,mathematics,cliquer,1,clique searching program
-science,mathematics,cohomcalg,1,sheaf cohomology of line bundles on toric varieties
-science,mathematics,coinor-cbc,1,Coin-or branch-and-cut mixed integer programming solver
-science,mathematics,coinor-csdp,1,Software package for semidefinite programming (binaries)
-science,mathematics,coinor-symphony,1,COIN-OR solver for mixed-integer linear programs
 science,mathematics,coq,270,proof assistant for higher-order logic (toplevel and compiler)
-science,mathematics,cryptominisat,1,SAT solver command line interface
 science,mathematics,eclib-tools,6,Programs for modular symbols and elliptic curves over Q
 science,mathematics,eprover,N/A,N/A
 science,mathematics,evolver-nox,4,Surface Evolver - with no X support
@@ -1896,7 +1765,6 @@ science,mathematics,lrcalc,1,programs for calculating Littlewood-Richardson coef
 science,mathematics,lrslib,1,package to enumerate vertices and extreme rays of a convex polyhedron
 science,mathematics,macaulay2,36,Software system for algebraic geometry research
 science,mathematics,magnus,1,Very simple screen magnifier
-science,mathematics,mathicgb,1,Compute Groebner bases (command line tool)
 science,mathematics,mathomatic,1,portable Computer Algebra System (CAS)
 science,mathematics,matita,N/A,N/A
 science,mathematics,matlab-support,ERROR,distro integration for local MATLAB installations
@@ -1962,7 +1830,6 @@ science,mathematics,xmds,N/A,N/A
 science,mathematics,xmds2,97,eXtensible Multi-Dimensional Simulator
 science,meteorology,cdftools,5,Diagnostic tools for NEMO netCDF output
 science,meteorology,cdo,63,Climate Data Operators
-science,meteorology,cmor-tables,1,MIP tables for the Climate Model Output Rewriter library
 science,meteorology,coda,2,Common Data Access framework for Earth science
 science,meteorology,cylc,N/A,N/A
 science,meteorology,dballe,N/A,N/A
@@ -1985,7 +1852,6 @@ science,meteorology,magics++,66,Executables for the magics++ library
 science,meteorology,makedepf90,1,Fortran-90 dependency processor for Makefiles
 science,meteorology,metview,110,"Interactive data visualization and analysis environment,"
 science,meteorology,ncl-ncarg,61,NCAR Command Language and NCAR graphics
-science,meteorology,nco,5,Command-line operators to analyze netCDF files
 science,meteorology,ncview,3,X11 visual browser for NetCDF format files
 science,meteorology,octave-octcdf,N/A,N/A
 science,meteorology,paraview,110,Parallel Visualization Application
@@ -2055,7 +1921,6 @@ science,nanoscale-physics,mayavi2,ERROR,scientific visualization package for 2-D
 science,nanoscale-physics,mpich,4,Implementation of the MPI Message Passing Interface standard
 science,nanoscale-physics,mpich-doc,1,Documentation for MPICH
 science,nanoscale-physics,mpqc,17,Massively Parallel Quantum Chemistry Program
-science,nanoscale-physics,nco,5,Command-line operators to analyze netCDF files
 science,nanoscale-physics,ncview,3,X11 visual browser for NetCDF format files
 science,nanoscale-physics,netcdf-bin,2,Programs for reading and writing NetCDF files
 science,nanoscale-physics,netcdf-doc,3,Documentation for NetCDF
@@ -2198,7 +2063,6 @@ science,psychophysics,octave-psychtoolbox-3,ERROR,toolbox for vision research --
 science,psychophysics,psychopy,ERROR,environment for creating psychology stimuli in Python
 science,psychophysics,science-neuroscience-cognitive,1,Debian Science packages for Cognitive Neuroscience
 science,psychophysics,visionegg,N/A,N/A
-science,robotics,arduino-mk,ERROR,Program your Arduino from the command line
 science,robotics,aseba,10,Event-based framework for distributed mobile robots control
 science,robotics,choreonoid,N/A,N/A
 science,robotics,d-collide,N/A,N/A
@@ -2228,7 +2092,6 @@ science,robotics,ros-perception,24,Python Robot OS perception metapackage
 science,robotics,ros-robot,77,Python Robot OS robot metapackage
 science,robotics,ros-robot-state-publisher,4,Robot OS robot_state_publisher
 science,robotics,ros-simulators,77,Python Robot OS simulators metapackage
-science,robotics,rosdiagnostic,1,command line tool to print aggregated diagnostic (Robot OS)
 science,robotics,rtai,N/A,N/A
 science,robotics,rtnet,N/A,N/A
 science,robotics,solid,N/A,N/A
@@ -2266,7 +2129,6 @@ science,simulations,radiance,N/A,N/A
 science,simulations,sumo,78,Simulation of Urban MObility (SUMO)
 science,simulations,yade,ERROR,Platform for discrete element modeling
 science,statistics,apophenia-bin,2,Apophenia Statistical C Library -- binary package
-science,statistics,datamash,1,statistics tool for command-line interface
 science,statistics,elpa-ess,2,Emacs mode for statistical programming and data analysis
 science,statistics,libapophenia2-dev,2,Apophenia Statistical C Library -- development package
 science,statistics,libtamuanova-dev,2,Development files for the TAMU ANOVA library
@@ -2440,9 +2302,7 @@ science,statistics,science-mathematics,1,Debian Science Mathematics packages
 science,typesetting,auctex,ERROR,integrated document editing environment for TeX etc.
 science,typesetting,biber,ERROR,Much-augmented BibTeX replacement for BibLaTeX users
 science,typesetting,bibus,N/A,N/A
-science,typesetting,bibutils,1,interconvert various bibliographic data formats
 science,typesetting,cb2bib,ERROR,extract bibliographic references from various sources
-science,typesetting,csv2latex,1,command-line CSV to LaTeX file converter
 science,typesetting,dia,8,Diagram editor
 science,typesetting,diploma,1,Write scientific papers with Debian
 science,typesetting,feynmf,160,set of LaTeX macros for creating Feynman diagrams
@@ -2461,7 +2321,6 @@ science,typesetting,libjlatexmath-java,1,Implementation of LaTeX math mode wrote
 science,typesetting,libqtexengine-dev,N/A,N/A
 science,typesetting,luasseq,N/A,N/A
 science,typesetting,lyx,ERROR,document processor
-science,typesetting,mlpost,390,OCaml interface to Metapost (command-line tool)
 science,typesetting,openoffice.org-dmaths,N/A,N/A
 science,typesetting,pandoc,19,general markup converter
 science,typesetting,pandoc-citeproc,15,Pandoc support for Citation Style Language - tools
@@ -2520,7 +2379,6 @@ science,viewing,imview,1,Image viewing and analysis application
 science,viewing,jeuclid-mathviewer,12,Complete MathML rendering solution (Swing MathViewer)
 science,viewing,kst,6,scientific data plotting tool
 science,viewing,labplot,40,interactive graphing and analysis of scientific data
-science,viewing,libcoin-dev,6,high-level 3D graphics devkit with Open Inventor and VRML97 support
 science,viewing,libgnuplot-iostream-dev,42,C++ programming interface for gnuplot. Headers
 science,viewing,libgrits-dev,N/A,N/A
 science,viewing,libgtkmathview-bin,1,rendering engine for MathML documents

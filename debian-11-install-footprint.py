@@ -175,6 +175,56 @@ package_shitlist = {
     'education-standalone',
     'education-thin-client',
     'education-workstation',
+
+    # wrongly selected by education-desktop-xfce
+    'blueman', 'task-xfce-desktop', 'ssh-askpass',
+    # CLI-only apps
+    'astronomical-almanac', 'tilp2', 'bsdgames', '2048', 'an',
+    'animals', 'ann-tools', 'armagetron-dedicated', 'asciijump',
+    'avce00', 'bastet', 'bibutils', 'bliss', 'bodr', 'bombardier',
+    'boolector', 'braillefont', 'brazilian-conjugate',
+    'bsdgames-nonfree', 'cavezofphear', 'chemeq',
+    'chemical-mime-data', 'cliquer', 'cmatrix', 'cmor-tables',
+    'cohomcalg', 'coinor-cbc', 'coinor-csdp', 'coinor-symphony',
+    'colossal-cave-adventure', 'cookietool', 'cryptominisat',
+    'csv2latex', 'curseofwar', 'fizmo-ncursesw', 'fizmo-console',
+    'greed', 'matanza', 'ninvaders', 'nsnake', 'pacman', 'bb',
+    'libcld2-dev', 'libcoin-dev', 'lolcat', 'cataclysm-dda-curses',
+    'gpscorrelate', 'fathom', 'csvkit', 'geoip-bin',
+    'hydroffice.bag-tools', 'teem-apps', 'cryptominisat', 'mathicgb',
+    'nco', 'arduino-mk', 'rosdiagnostic', 'datamash', 'csv2latex',
+    'mlpost', 'qstat', 'dict', 'piu-piu', 'openbabel',
+
+    # Apertium is like Google Translate,
+    # it tries to automatically (machine) translate between human languages.
+    # It is browser-based.  There is no usable desktop GUI version.
+    # It might be useful in a server VM, but not a desktop.
+    'apertium', 'apertium-af-nl', 'apertium-apy', 'apertium-arg',
+    'apertium-arg-cat', 'apertium-bel', 'apertium-bel-rus',
+    'apertium-br-fr', 'apertium-cat', 'apertium-cat-srd',
+    'apertium-ca-it', 'apertium-crh', 'apertium-crh-tur',
+    'apertium-cy-en', 'apertium-dan', 'apertium-dan-nor',
+    'apertium-en-ca', 'apertium-en-es', 'apertium-en-gl',
+    'apertium-eo-ca', 'apertium-eo-en', 'apertium-eo-es',
+    'apertium-eo-fr', 'apertium-es-ast', 'apertium-es-ca',
+    'apertium-es-gl', 'apertium-es-it', 'apertium-es-pt',
+    'apertium-es-ro', 'apertium-eu-en', 'apertium-eu-es',
+    'apertium-fra', 'apertium-fra-cat', 'apertium-fr-ca',
+    'apertium-fr-es', 'apertium-hbs', 'apertium-hbs-eng',
+    'apertium-hbs-mkd', 'apertium-hbs-slv', 'apertium-hin',
+    'apertium-id-ms', 'apertium-isl', 'apertium-isl-eng',
+    'apertium-is-sv', 'apertium-ita', 'apertium-kaz',
+    'apertium-kaz-tat', 'apertium-lex-tools', 'apertium-mk-bg',
+    'apertium-mk-en', 'apertium-mlt-ara', 'apertium-nno',
+    'apertium-nno-nob', 'apertium-nob', 'apertium-oci',
+    'apertium-oc-ca', 'apertium-oc-es', 'apertium-pol',
+    'apertium-pt-ca', 'apertium-pt-gl', 'apertium-rus',
+    'apertium-separable', 'apertium-sme-nob', 'apertium-spa',
+    'apertium-spa-arg', 'apertium-srd', 'apertium-srd-ita',
+    'apertium-swe', 'apertium-swe-dan', 'apertium-swe-nor',
+    'apertium-szl', 'apertium-tat', 'apertium-tur', 'apertium-ukr',
+    'apertium-urd', 'apertium-urd-hin', 'lttoolbox',
+    'python3-streamparser',
 }
 metapackages = sorted(set(
     package_version
