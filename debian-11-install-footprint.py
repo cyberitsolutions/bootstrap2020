@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 import csv
+import gzip
 import math
 import pathlib
 import subprocess
+import tempfile
+import urllib.request
 
 doc = """ calculate the install footprint for each game & educational app
 
@@ -116,12 +119,29 @@ def simplify_number(n, significant_digits=2):
     return math.ceil(n / 10**insignificant_digits) * 10**insignificant_digits
 
 
+# List the upsteam Debian popularity.
+# Just use rank for now (smaller is better).
+def crunch_popcon():
+    with tempfile.TemporaryDirectory() as td:
+        td = pathlib.Path(td)
+        with urllib.request.urlopen('https://popcon.debian.org/by_vote.gz') as f:
+            (td / 'x.gz').write_bytes(f.read())
+        with gzip.open(td / 'x.gz', mode='rt') as f:
+            return {
+                name: int(rank)
+                for line in f
+                if line[0].isdigit()  # not a comment line
+                for rank, name, _ in [line.split(maxsplit=2)]}
+
+
 # Argh, prisonpc-bad-package-conflicts-everyone blocks python3-apt!
 # Kludge around it so "import apt; apt.Cache()" works.
 subprocess.check_call(['apt', 'download', 'python3-apt'])
 subprocess.check_call(['dpkg', '-x', *list(pathlib.Path.cwd().glob('python3-apt_*_*.deb')), '/'])
 import apt                      # noqa: E402
 cache = apt.Cache()
+
+popcon_rank = crunch_popcon()
 
 package_shitlist = {
     'education-tasks',          # useless helper package
@@ -235,7 +255,7 @@ metapackages = sorted(set(
     if package.name not in package_shitlist))
 with open('/var/log/install-footprint.csv', 'w') as f:
     g = csv.writer(f)
-    g.writerow(['Section', 'Subsection', 'Name', 'Cost (MiB)', 'Description'])
+    g.writerow(['Section', 'Subsection', 'Name', 'Cost (MiB)', 'Rank', 'Description'])
     for metapackage in metapackages:
         if metapackage.package.name == 'kdeedu':
             section, subsection = 'education', 'KDE'
@@ -254,9 +274,9 @@ with open('/var/log/install-footprint.csv', 'w') as f:
                 if package.name not in package_shitlist)):
             try:
                 description = cache[name].versions[0].raw_description.splitlines()[0]
-                g.writerow([section, subsection, name, cost(name), description])
+                g.writerow([section, subsection, name, cost(name), popcon_rank.get(name), description])
             except KeyError:  # "The cache has no package named 'cups-pdf'"
-                g.writerow([section, subsection, name, 'N/A', 'N/A'])
+                g.writerow([section, subsection, name, 'N/A', 'N/A', 'N/A'])
 
     all_games = {
         line.split('/')[0]
@@ -281,6 +301,6 @@ with open('/var/log/install-footprint.csv', 'w') as f:
         # FIXME: this block is copy-pasted from the earlier...
         try:
             description = cache[name].versions[0].raw_description.splitlines()[0]
-            g.writerow([section, subsection, name, cost(name), description])
+            g.writerow([section, subsection, name, cost(name), popcon_rank.get(name), description])
         except KeyError:  # "The cache has no package named 'cups-pdf'"
-            g.writerow([section, subsection, name, 'N/A', 'N/A'])
+            g.writerow([section, subsection, name, 'N/A', 'N/A', 'N/A'])
