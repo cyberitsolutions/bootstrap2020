@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.27) bullseye; urgency=medium
+
+  * block more IDEs and build systems.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 30 Mar 2022 05:10:30 +1100
+
 prisonpc-ersatz (11.26) bullseye; urgency=medium
 
   * unblock perl-openssl-defaults, so gnucash can be installed
