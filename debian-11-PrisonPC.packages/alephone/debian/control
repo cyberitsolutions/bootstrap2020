@@ -44,3 +44,21 @@ Description: FPS engine for the Marathon Trilogy
  Bungie's website or using the game-data-packager system.
  .
  Internet play is (hopefully) disabled in this for-PrisonPC build.
+
+Package: marathon-trilogy
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+ alephone,
+ marathon1-data,
+ marathon2-data,
+ marathon3-data,
+Architecture: all
+Description: sci-fi fps series
+ The Marathon Trilogy is a science fiction first-person shooter video game series from Bungie.
+ The name Marathon is derived from the giant interstellar colony ship that provides the setting for the first game;
+ the ship is constructed out of what used to be the Martian moon Deimos.
+ The three games in the series — Marathon (1994), Marathon 2: Durandal (1995), and Marathon Infinity (1996) —
+ are widely regarded as spiritual predecessors of Bungie's Halo series.
+ .
+ This is a metapackage that simply depends on the engine and all three games.
