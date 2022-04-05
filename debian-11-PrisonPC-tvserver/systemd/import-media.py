@@ -58,7 +58,7 @@ def media_import(vob_path):
 #        to power loss, or ENOSPC, or other similar edge cases.
 #        We should think of something more robust?
 def at_least_two_minutes_old(vob_path: pathlib.Path) -> bool:
-    return vob_path.stat().st_mtime < datetime.datetime.now() - datetime.timedelta(minutes=2)
+    return datetime.datetime.fromtimestamp(vob_path.stat().st_mtime) < datetime.datetime.now() - datetime.timedelta(minutes=2)
 
 
 parser = argparse.ArgumentParser(description=__doc__)
