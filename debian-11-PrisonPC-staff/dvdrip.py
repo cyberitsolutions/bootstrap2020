@@ -53,7 +53,7 @@ class DVDBackup:
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
         progressfunc(0.005)
-        self.dvd_title += f'{self.dvd_title} {datetime.datetime.today()}'
+        self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
         self.dvdbackup_process = subprocess.Popen(self.rip_cmd, bufsize=0,
                                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in self.dvdbackup_process.stdout:
