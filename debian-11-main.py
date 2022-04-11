@@ -287,7 +287,8 @@ with tempfile.TemporaryDirectory() as td:
         return dst_path
 
     subprocess.check_call(
-        ['mmdebstrap',
+        ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
+         'mmdebstrap',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'
