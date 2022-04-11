@@ -537,7 +537,7 @@ with tempfile.TemporaryDirectory() as td:
               if template_wants_GUI and not args.template.startswith('desktop-inmate') else [])]
            if args.backdoor_enable else []),
          *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
-            '--customize-hook=chroot $1 bash -i',
+            '--customize-hook=chroot $1 bash -i; false',
             '--customize-hook=rm -f $1/etc/debian_chroot']
            if args.debug_shell else []),
          *(['--customize-hook=chroot $1 python3 < debian-11-install-footprint.py',
