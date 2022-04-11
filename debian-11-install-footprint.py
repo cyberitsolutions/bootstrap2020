@@ -255,9 +255,15 @@ metapackages = sorted(set(
     if (package_version.source_name in ('debian-edu', 'debian-games', 'debian-science') or
         package_version.package.name in ('kdeedu', 'kdegames', 'gnome-games'))
     if package.name not in package_shitlist))
+with open('/tmp/app-reviews.csv') as f:
+    g = csv.DictReader(f)
+    verdicts = {
+        row['Package']: row['Verdict'] or 'TODO'
+        for row in g
+        if row['Package']}
 with open('/var/log/install-footprint.csv', 'w') as f:
     g = csv.writer(f)
-    g.writerow(['Section', 'Subsection', 'Name', 'Score', 'Cost (MiB)', 'Rank', 'Description'])
+    g.writerow(['Section', 'Subsection', 'Name', 'Verdict', 'Score', 'Cost (MiB)', 'Rank', 'Description'])
     for metapackage in metapackages:
         if metapackage.package.name == 'kdeedu':
             section, subsection = 'education', 'KDE'
@@ -274,15 +280,16 @@ with open('/var/log/install-footprint.csv', 'w') as f:
                                metapackage.suggests)
                 for package in clause
                 if package.name not in package_shitlist)):
+            verdict = verdicts.get(name, 'TODO')
             try:
                 description = cache[name].versions[0].raw_description.splitlines()[0]
             except KeyError:  # "The cache has no package named 'cups-pdf'"
-                g.writerow([section, subsection, name, 'N/A', 'N/A', 'N/A', 'N/A'])
+                g.writerow([section, subsection, name, verdict, 'N/A', 'N/A', 'N/A', 'N/A'])
             else:
                 cost = measure_cost(name)
                 rank = popcon_ranks.get(name)
                 score = cost * rank if isinstance(cost, int) and isinstance(rank, int) else None
-                g.writerow([section, subsection, name, score, cost, rank, description])
+                g.writerow([section, subsection, name, verdict, score, cost, rank, description])
 
     all_games = {
         line.split('/')[0]
@@ -305,12 +312,13 @@ with open('/var/log/install-footprint.csv', 'w') as f:
             continue            # boring
         section, subsection = 'games', 'PrisonPC'
         # FIXME: this block is copy-pasted from the earlier...
+        verdict = verdicts.get(name, 'TODO')
         try:
             description = cache[name].versions[0].raw_description.splitlines()[0]
         except KeyError:  # "The cache has no package named 'cups-pdf'"
-            g.writerow([section, subsection, name, 'N/A', 'N/A', 'N/A', 'N/A'])
+            g.writerow([section, subsection, name, verdict, 'N/A', 'N/A', 'N/A', 'N/A'])
         else:
             cost = measure_cost(name)
             rank = popcon_ranks.get(name)
             score = cost * rank if isinstance(cost, int) and isinstance(rank, int) else None
-            g.writerow([section, subsection, name, score, cost, rank, description])
+            g.writerow([section, subsection, name, verdict, score, cost, rank, description])
