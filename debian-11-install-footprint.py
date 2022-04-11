@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import csv
+import functools
 import gzip
 import math
 import pathlib
@@ -90,6 +91,7 @@ We can also skip metapackages like "games-mud", "games-java-dev", "education-dev
 #           'http://deb.debian.org/debian/pool/main/libo/libogg/libogg0_1.3.4-0.1_amd64.deb' libogg0_1.3.4-0.1_amd64.deb 27336 MD5Sum:61021b894e2faa57ea9792e748ea2e0f
 #           'http://deb.debian.org/debian/pool/main/f/flac/libflac8_1.3.3-2%2bdeb11u1_amd64.deb' libflac8_1.3.3-2+deb11u1_amd64.deb 112304
 #           'http://deb.debian.org/debian/pool/main/o/opus/libopus0_1.3.1-0.1_amd64.deb' libopus0_1.3.1-0.1_amd64.deb 190428 MD5Sum:9a763a3e21f2fd7ba547bc6874714f4d
+@functools.cache
 def cost(package_name):
     try:
         apt_output = subprocess.check_output(
