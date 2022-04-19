@@ -26,11 +26,19 @@ parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(override_path=pathlib.Path(
     'debian-11-PrisonPC.hooks/customize50-generic-app-names.conf'))
+parser.set_defaults(exec_override_path=pathlib.Path(
+    'debian-11-PrisonPC.hooks/customize50-generic-app-names.exec-fixes.conf'))
 args = parser.parse_args()
 
 overrides = dict(
     line.split(maxsplit=1)
     for line in args.override_path.read_text().splitlines()
+    if line.strip()
+    if not line.startswith('#'))
+
+exec_overrides = dict(
+    line.split(maxsplit=1)
+    for line in args.exec_override_path.read_text().splitlines()
     if line.strip()
     if not line.startswith('#'))
 
@@ -60,26 +68,9 @@ for path in (args.chroot_path / 'usr/share/applications').glob('**/*.desktop'):
     if path.stem in overrides:
         app['Desktop Entry']['Name[en_AU]'] = overrides[path.stem]
 
-    # Hide crack-attack's "online multiplayer" prompts.
-    # The firewall blocks it, so this is merely convenience (not security).
-    # https://alloc.cyber.com.au/task/task.php?taskID=30262
-    if path.stem == 'crack-attack':
-        app['Desktop Entry']['Exec'] = 'crack-attack --solo'
-
-    # Xsession.d makes apps cache to /run/user/1234/cache;
-    # This moves it back to ~/.cache for xmoto only.
-    # Without this, xmoto is ALWAYS slow to start.
-    # https://alloc.cyber.com.au/task/task.php?taskID=32799
-    # UPDATE: this IS still useful in Debian 11.
-    if path.stem == 'xmoto':
-        app['Desktop Entry']['Exec'] = 'env -u XDG_CACHE_HOME xmoto'
-
-    # https://alloc.cyber.com.au/task/task.php?taskID=30698
-    # https://bugs.debian.org/685198
-    # https://sources.debian.org/src/audacity/2.4.2%7Edfsg0-5/src/AudacityApp.cpp/#L1155
-    # UPDATE: this IS still useful in Debian 11.
-    if path.stem == 'audacity':
-        app['Desktop Entry']['Exec'] = 'sh -c "export TMPDIR=$XDG_CACHE_HOME; exec audacity"'
+    # When Exec= needs patching, patch it.  Mostly for games.
+    if path.stem in exec_overrides:
+        app['Desktop Entry']['Exec'] = exec_overrides[path.stem]
 
     # Write out the entire .desktop file, as-amended.
     with path.open('w') as f:
