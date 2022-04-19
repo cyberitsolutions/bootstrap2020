@@ -155,7 +155,7 @@ Description:
  This package amends that to also ban things
  inmates MUST NOT have, but staff MUST have.
 Conflicts:
- xfce4-terminal, x-terminal-emulator,
+ xfce4-terminal, x-terminal-emulator, libvte-2.91-0,
  mousepad, libgtksourceview-3.0-1,
  xfce4-screenshooter,
 # NOTE: staff need ntfs3 and exfat
@@ -435,6 +435,26 @@ Conflicts:
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
 # NOTE: staff need x-terminal-emulator (xfce4-terminal).
+# NOTE: konsole-kpart & kgx don't Provides: x-terminal-emulator, so
+#       we must explicitly blacklist it (unlike e.g. xterm).
+# NOTE: kgx is gnome-console in Debian 12.
+#       It is NOT the same as gnome-terminal!
+ konsole-kpart,
+ kgx, gnome-console,
+ terminal.app,
+ foot,
+ termonad,
+ xgterm,
+ fbterm, jfbterm,
+ s3dvt,
+ python3-pyte,
+ libqtermwidget5-0,
+ libvterm0,
+ libvte9, libvte-common,
+ node-xterm, libjs-xterm,
+ libterm-vt102-perl,
+ python3-terminado,
+ bogl-bterm,
 # We need at most one privesc framework.  Block the rest.
 # We need thunar->udisks2->polkit for mounting/ejecting DVDs.
  sudo,

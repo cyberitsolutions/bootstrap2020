@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.28) bullseye; urgency=medium
+
+  * block more terminal emulators (and libraries for same).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 19 Apr 2022 16:35:37 +1000
+
 prisonpc-ersatz (11.27) bullseye; urgency=medium
 
   * block more IDEs and build systems.
