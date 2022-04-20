@@ -1,3 +1,10 @@
+prisonpc-chromium-hunspell-dictionaries (11.2) bullseye; urgency=medium
+
+  * Link to an alternate method for solving this problem.
+    No actual work has been done on this yet.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 21 Apr 2022 00:03:09 +1000
+
 prisonpc-chromium-hunspell-dictionaries (11.1) bullseye; urgency=medium
 
   * Bump en-AU-8-0.bdic to en-AU-9-0.bdic (needed for Chromium 90).
