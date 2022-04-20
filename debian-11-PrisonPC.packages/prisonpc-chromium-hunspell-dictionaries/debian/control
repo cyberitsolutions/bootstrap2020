@@ -51,7 +51,3 @@ Description: Chromium spell-checking dictionaries
  Only Australian English is supported at this time.
  As a workaround for locale bugs,
  US English and UK English are replaced with Australian English.
- .
- FIXME: in 2021, an alternate method became available:
-        https://github.com/jankelemen/convert-dict-tool-from-chromium
-        We should investigate this!
