@@ -60,7 +60,7 @@ try:
     print('pete said', response_text, file=sys.stderr, flush=True)  # for syslog
     if response_text != 'OK':
         popup_wait_crash(
-            f'This computer is restricted to {response_text} members; you ({args.user}) are not a member.')
+            f'You ({args.user}) may not use this computer.')
 except urllib.error.HTTPError:
     print('pete did not answer, giving up', file=sys.stderr, flush=True)  # for syslog
     popup_wait_crash('Group verification failed')
