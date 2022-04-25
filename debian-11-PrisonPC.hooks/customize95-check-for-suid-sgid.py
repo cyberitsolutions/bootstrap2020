@@ -24,7 +24,7 @@ acceptable_risks = [
 find_stdout = subprocess.check_output(
     ['chroot', args.chroot_path,
      'find', '/', '-xdev',
-     '-perm', '/6000',          # any combination of suid/sgid/sticky
+     '-perm', '/7000',          # any combination of suid/sgid/sticky
      '-printf', '%M %u:%-6g %p\n'],
     text=True)
 for match_str in find_stdout.splitlines():
