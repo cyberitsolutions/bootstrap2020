@@ -491,6 +491,12 @@ Conflicts:
  retext,
  yudit,
  textedit.app,
+# de facto GUI text editors (meant for something else, but you can easily create attack.sh files).
+# NOTE: in lyx, use File>Import>Plain text and File>Export>Plain text.
+ lyx,
+ texstudio,
+ texmaker,
+ kile,
 # The GTK / Qt widgets that provide text editor functionality.
 # This will error out if an app has such an editor as an embedded widget.
  libkf5texteditor5,
