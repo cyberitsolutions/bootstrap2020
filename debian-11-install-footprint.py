@@ -91,11 +91,19 @@ We can also skip metapackages like "games-mud", "games-java-dev", "education-dev
 #           'http://deb.debian.org/debian/pool/main/libo/libogg/libogg0_1.3.4-0.1_amd64.deb' libogg0_1.3.4-0.1_amd64.deb 27336 MD5Sum:61021b894e2faa57ea9792e748ea2e0f
 #           'http://deb.debian.org/debian/pool/main/f/flac/libflac8_1.3.3-2%2bdeb11u1_amd64.deb' libflac8_1.3.3-2+deb11u1_amd64.deb 112304
 #           'http://deb.debian.org/debian/pool/main/o/opus/libopus0_1.3.1-0.1_amd64.deb' libopus0_1.3.1-0.1_amd64.deb 190428 MD5Sum:9a763a3e21f2fd7ba547bc6874714f4d
+#
+# NOTE: we explicitly add prisonpc-bad-package-conflicts-inmates to the list of packages to install.
+#       If we do not do so, SOMETIMES apt will decide it can meet the install request by removing that.
+#       This does not actually work later in mmdebstrap, so it's confusing and stupid.
+#       Adding prisonpc-bad-package-conflicts-inmates does not change the list of debs printed (because it is installed already).
+#       So the actual integer emitted should not change.
 @functools.cache
 def measure_cost(package_name):
     try:
         apt_output = subprocess.check_output(
-            ['apt-get', 'install', '--print-uris', '--quiet=2', package_name],
+            ['apt-get', 'install', '--print-uris', '--quiet=2', package_name,
+             'prisonpc-bad-package-conflicts-inmates',
+             ],
             text=True)
         size_in_bytes = sum(
             int(line.split()[2])  # the 3rd column (#2, counting from zero) is the deb size.
