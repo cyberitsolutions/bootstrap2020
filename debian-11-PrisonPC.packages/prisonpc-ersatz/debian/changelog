@@ -1,3 +1,11 @@
+prisonpc-ersatz (11.30) bullseye; urgency=medium
+
+  * block groovy after I found
+    /usr/share/applications/groovyConsole.desktop which is a trivial REPL.
+    It was installed by freeplane (Mind Maps app).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Sat, 30 Apr 2022 00:19:13 +1000
+
 prisonpc-ersatz (11.29) bullseye; urgency=medium
 
   * block a few more text editors

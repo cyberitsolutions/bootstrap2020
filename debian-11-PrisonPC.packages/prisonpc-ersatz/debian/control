@@ -719,6 +719,8 @@ Conflicts:
  idle3,
  pyzo,
  faustworks,
+# groovy provides groovyConsole, a basic REPL and text editor.
+ groovy,
 # "aptitude search '?tag(devel::ide)'" to start with...
  anjuta,
  anjuta-common,
