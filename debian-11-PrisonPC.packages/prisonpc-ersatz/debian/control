@@ -865,6 +865,16 @@ Conflicts:
 ## ========================================================
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
+# FIXME: java-wrappers depends on dpkg.
+#        https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC.hooks/customize80-purge-bad-packages.py
+#        could fix this by simply replacing "$(dpkg --print-architecture)" with "amd64".
+#        This is only useful for 47 apps total, so blacklisting for now.
+#        Of those 47, only these are interesting:
+#          * Anno 1600 clone  https://freecol.org/
+#          * Room planner     https://www.sweethome3d.com/
+#          * Mind Map         https://freeplane.org/
+#        They haven't even been reviewed yet, because fuck it.
+ java-wrappers,
 ## sysvinit compatibility MAY be removed
 ## =====================================
 ## Inmates SHOULD NOT be able to make screenshots

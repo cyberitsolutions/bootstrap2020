@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.31) unstable; urgency=medium
+
+  * block java-wrappers because it needs "dpkg --print-architecture".
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 02 May 2022 05:47:04 +1000
+
 prisonpc-ersatz (11.30) bullseye; urgency=medium
 
   * block groovy after I found
