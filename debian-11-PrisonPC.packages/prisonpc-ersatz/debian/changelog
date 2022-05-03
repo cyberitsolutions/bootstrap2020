@@ -1,3 +1,9 @@
+prisonpc-ersatz (11.32) unstable; urgency=medium
+
+  * block fritzing (includes text editor).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 03 May 2022 09:44:05 +1000
+
 prisonpc-ersatz (11.31) unstable; urgency=medium
 
   * block java-wrappers because it needs "dpkg --print-architecture".
