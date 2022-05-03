@@ -12,3 +12,9 @@ Terminal=false
 Type=Application
 MimeType=x-scheme-handler/help;x-scheme-handler/ghelp;
 NoDisplay=true
+
+# UPDATE: if we do not set a Name=, then in Thunar, right-click says 'open with "Unnamed"'.
+# Therefore copy-paste some elements from /usr/share/applications/xfce4-web-browser.desktop
+Name=Web Browser
+Icon=org.xfce.webbrowser
+StartupNotify=true
