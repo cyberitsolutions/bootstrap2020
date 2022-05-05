@@ -863,6 +863,14 @@ Conflicts:
  acr,
  soong, mini-soong,
  yotta,
+# Other than bash and ash, ?section(shells) aren't inherently bad, but
+# anything explicitly depending on them is almost certainly a Bad Thing that we Do Not Want.
+# bash, dash,
+ ash, autojump, bash-completion, bash-static, bats, busybox-static, cleo, csh,
+ elvish, fdclone, fish-common, fish, fizsh, ksh, mksh, mono-csharp-shell, posh,
+ powerline, rc, rush, sash, screenie, tcsh, xonsh, yash, zgen, zplug,
+ zsh-antigen, zsh-autosuggestions, zsh-common, zsh-static,
+ zsh-syntax-highlighting, zsh,
 ## Useless & confusing menu items SHOULD be hidden (#30257)
 ## ========================================================
 ## Useless & confusing "under the hood" files MAY be removed
