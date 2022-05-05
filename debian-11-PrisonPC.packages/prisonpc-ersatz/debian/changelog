@@ -1,8 +1,8 @@
-prisonpc-ersatz (11.32) unstable; urgency=medium
+prisonpc-ersatz (11.33) unstable; urgency=medium
 
-  * block fritzing (includes text editor).
+  * block fritzing and robocode (includes text editor).
 
- -- Trent W. Buck <trentbuck@gmail.com>  Tue, 03 May 2022 09:44:05 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 05 May 2022 11:53:10 +1000
 
 prisonpc-ersatz (11.31) unstable; urgency=medium
 
