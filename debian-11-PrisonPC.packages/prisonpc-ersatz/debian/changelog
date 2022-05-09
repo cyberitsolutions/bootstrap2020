@@ -1,11 +1,17 @@
-prisonpc-ersatz (11.34) unstable; urgency=medium
+prisonpc-ersatz (11.35) bullseye; urgency=medium
+
+  * block vigor (MS Word "clippy" ported to vi).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 09 May 2022 18:02:39 +1000
+
+prisonpc-ersatz (11.34) bullseye; urgency=medium
 
   * block fritzing and robocode (includes text editor).
   * block ?section(shell) except bash and dash.
 
  -- Trent W. Buck <trentbuck@gmail.com>  Thu, 05 May 2022 13:17:00 +1000
 
-prisonpc-ersatz (11.31) unstable; urgency=medium
+prisonpc-ersatz (11.31) bullseye; urgency=medium
 
   * block java-wrappers because it needs "dpkg --print-architecture".
 

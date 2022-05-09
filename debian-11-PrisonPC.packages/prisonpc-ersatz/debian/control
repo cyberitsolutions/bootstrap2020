@@ -499,6 +499,7 @@ Conflicts:
  kile,
  fritzing,
  robocode,
+ vigor,
 # The GTK / Qt widgets that provide text editor functionality.
 # This will error out if an app has such an editor as an embedded widget.
  libkf5texteditor5,
