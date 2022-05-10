@@ -476,6 +476,11 @@ usr/games/ceferinoeditor
 # sounds scary enough to forcibly remove.
 /usr/share/applications/python*.desktop
 /usr/share/applications/mono-runtime*.desktop
+# This lets inmates play .midi files directly.
+# It is mostly harmless, but not needed.
+# timidity is pulled in by openttd.
+# If we want them to "do midi" we should give them musescore3.
+/usr/share/applications/timidity.desktop
 
 # magnus screen magnifier ships an auto-start file, which
 # means every inmate gets it opened on every login.
