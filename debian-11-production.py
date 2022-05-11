@@ -18,5 +18,5 @@ for template in (
         '--physical-only',      # no qemu
         '--ssh=openssh-server',  # PrisonPC needs this
         f'--reproducible={datetime.date.today()}',
-        '--upload-to', 'root@tweak', 'root@amc.prisonpc.com',
+        '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
         '--template', template])
