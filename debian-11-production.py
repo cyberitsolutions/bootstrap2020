@@ -7,7 +7,7 @@ for template in (
         'understudy',
         'tvserver',
         'desktop-staff-amc',
-        'desktop-inmate-amc-library',
+        'desktop-inmate-amc',
         'desktop-inmate-amc-library'):
     subprocess.check_call([
         './debian-11-main.py',
