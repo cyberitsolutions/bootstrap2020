@@ -578,7 +578,11 @@ if args.reproducible:
     (destdir / 'args.txt').write_text(pprint.pformat(args))
     (destdir / 'git-description.txt').write_text(git_description)
     (destdir / 'B2SUMS').write_bytes(subprocess.check_output(['b2sum', *destdir.glob('*')]))
-    subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
+    if False:
+        # Disabled for now because:
+        #   1. you have to babysit the build (otherwise "gpg: signing failed: Timeout"); and
+        #   2. reproducible builds aren't byte-for-byte identical yet, so it's not useful.
+        subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
 
 
 def maybe_dummy_DVD(testdir: pathlib.Path) -> list:
