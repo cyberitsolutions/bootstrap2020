@@ -4,12 +4,10 @@
 import subprocess
 import datetime
 for template in (
-        'main',
         'understudy',
         'tvserver',
-        'desktop',
-        'desktop-staff',
         'desktop-staff-amc',
+        'desktop-inmate-amc-library',
         'desktop-inmate-amc-library'):
     subprocess.check_call([
         './debian-11-main.py',
