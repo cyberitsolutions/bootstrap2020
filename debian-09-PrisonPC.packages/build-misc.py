@@ -45,7 +45,8 @@ with tempfile.TemporaryDirectory() as td:
          '--dpkgopt=path-exclude=/usr/share/doc/*',
          '--customize-hook=mkdir -p $1/X/Y',
          f'--customize-hook=sync-in {args.package_path} /X/Y',
-         *(['--include=devscripts,ca-certificates',  # install uscan
+         '--include=fakeroot',
+         *(['--include=devscripts,ca-certificates,libwww-perl,gnupg2',  # install uscan
             '--include= ' + ('subversion' if 'mode=svn' in watch_path.read_text() else ' '),
             '--customize-hook=chroot $1 sh -c "'
             '   cd /X/Y &&'
@@ -57,11 +58,19 @@ with tempfile.TemporaryDirectory() as td:
          '--customize-hook=chroot $1 sh -c "cd /X/Y && apt-get build-dep -y ./ && HOME=/root debuild -uc -us"',
          '--customize-hook=rm -rf $1/X/Y',
          f'--customize-hook=sync-out /X {td}',
-         'bullseye',
-         '/dev/null'])
+         'stretch',
+         '/dev/null',
+         # Enable backports (for debhelper 12)
+         'deb http://deb.debian.org/debian-security stretch/updates          main',
+         'deb http://deb.debian.org/debian          stretch                  main',
+         'deb http://deb.debian.org/debian          stretch-updates          main',
+         'deb http://deb.debian.org/debian          stretch-proposed-updates main',
+         'deb http://deb.debian.org/debian          stretch-backports        main',
+         '--essential-hook=(echo Package: debhelper dh-autoreconf; echo Pin: release a=stretch-backports; echo Pin-Priority: 500) >$1/etc/apt/preferences.d/fuck',
+         ])
     # debsign here?
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/{package_name}-{package_version}/'])
+        f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/stretch/server/{package_name}-{package_version}/'])
