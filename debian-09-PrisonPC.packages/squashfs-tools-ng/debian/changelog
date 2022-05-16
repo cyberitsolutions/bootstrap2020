@@ -1,3 +1,11 @@
+squashfs-tools-ng (1.1.4-1~bpo11+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+  * Get rdsquashfs with zstd support, on Debian 9 stretch
+  * Downgrade debhelper dependency from 13 to 12, for the above.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 16 May 2022 12:41:31 +1000
+
 squashfs-tools-ng (1.1.4-1) unstable; urgency=medium
 
   * New upstream release.
