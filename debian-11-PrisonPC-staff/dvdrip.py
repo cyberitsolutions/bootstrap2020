@@ -21,10 +21,18 @@ GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 RIP_TEMP = pathlib.Path("RIP_TEMP")
 
 
+def sanitise_disk_label(disk_label):
+    """Santisises a disk label into something that should more closely match the media title."""
+    # NOTE: This logic was initially copied from dvdbackup.c
+
+    # convert title to lower case and replace underscores with spaces
+    return ' '.join(word.capitalize() for word in disk_label.strip().replace('_', ' ').split(' '))
+
+
 class DVDBackup:
     def __init__(self, host_application=None):
         self.host_application = host_application
-        self.dvdbackup = "/usr/bin/dvdbackup"
+        self.blkid = "/usr/sbin/blkid"
         self.eject = "/usr/bin/eject"  # Do we really need eject? O.o
         self.device = "/dev/dvd"
         self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
@@ -37,16 +45,19 @@ class DVDBackup:
         self.vlc_player = self.vlc_media.player_new_from_media()  # FIXME: Does this need to wait until all options have been added to the media object?
 
     def dvdbackup_info(self):
-        # FIXME: I think we discussed just using blkid or similar for this. Do that
-        self.dvd_present = False
-        self.dvd_title = None
-        try:
-            output = subprocess.check_output([self.dvdbackup, "-i", self.device, "-I"], text=True, stderr=subprocess.DEVNULL)
-            if match := re.search('DVD-Video information of the DVD with title "(.*?)"', output):
-                self.dvd_present = True
-                self.dvd_title = match.group(1)
-        except subprocess.CalledProcessError:  # FIXME: Is this all the original code was expecting?
+        # FIXME: I think we discussed just using blkid or similar for this. Do that.
+        #        dvdbackup does some smarts to convert "ROAD_WARRIOR169" into "Road Warrior169",
+        #        but it's not obvious to me whether it's first getting it from blkid or some other DVD video metadata.
+        blkid_response = subprocess.run([self.blkid, '--match-tag=LABEL', '--output=value', self.device],
+                                        text=True, capture_output=True, check=False)
+        if blkid_response.returncode == 0:
+            self.dvd_present = True
+            self.dvd_title = sanitise_disk_label(blkid_response.stdout)
+        elif blkid_response.returncode == 2:
             return False
+        else:
+            blkid_response.check_returncode()  # Raises exception if returncode != 0
+
         return True
 
     def dvdbackup_rip(self, progressfunc):
