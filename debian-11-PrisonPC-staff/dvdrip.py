@@ -53,12 +53,17 @@ class DVDBackup:
         # The host_application isn't set when using --test.
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
-        progressfunc(0.005)
+        progressfunc(0.005)  # FIXME: Why?
         self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
-        self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={RIP_TEMP / 'output.ts'}}}")
+
+        (self.dvdrip_target_directory / RIP_TEMP).mkdir()
+        self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={self.dvdrip_target_directory / RIP_TEMP / 'output.ts'}}}")
 
         self.vlc_player.play()
-        while self.vlc_player.get_state() == vlc.state.Opening: pass  # FIXME: This is probably dumb
+        while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
+            # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
+            #        Should probably also "pulse" the progress bar back and forth until we're in Playing state
+            pass
 
         length = self.vlc_player.get_length()
         while self.vlc_player.get_state() == vlc.State.Playing:
@@ -66,7 +71,11 @@ class DVDBackup:
             progressfunc(percentage)
 
         if self.vlc_player.get_state() == vlc.State.Error:
+            # FIXME: How do we report this to the user via the GUI?
             raise Exception()
+        elif self.vlc_player.get_state() == vlc.State.Stopped:
+            # FIXME: This happens when pressing the 'quit' button, we should probably delete the unfinished files.
+            return False  # Don't let the tvserver run off ahead by creating the rip-complete file
         elif self.vlc_player.get_state() != vlc.State.Ended:
             raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
@@ -76,12 +85,7 @@ class DVDBackup:
         return True
 
     def dvdbackup_cancel(self):
-        if self.dvdbackup_process:
-            self.dvdbackup_process.terminate()
-            for line in self.dvdbackup_process.stdout:
-                pass
-            self.dvdbackup_process.wait()
-            self.dvdbackup_process = None
+        self.vlc_player.stop()
 
     def dvdbackup_eject(self):
         subprocess.call([self.eject, self.device])
