@@ -9,6 +9,8 @@ import subprocess
 import tempfile
 import threading
 
+import vlc
+
 import gi.repository
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
@@ -23,20 +25,19 @@ class DVDBackup:
     def __init__(self, host_application=None):
         self.host_application = host_application
         self.dvdbackup = "/usr/bin/dvdbackup"
-        self.eject = "/usr/bin/eject"
+        self.eject = "/usr/bin/eject"  # Do we really need eject? O.o
         self.device = "/dev/dvd"
         self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
         self.dvdrip_target_directory = pathlib.Path(tempfile.mkdtemp(dir=self.dvdrip_target_root_directory))
-        self.rip_cmd = [self.dvdbackup,
-                        "-i", self.device,
-                        "-o", self.dvdrip_target_directory,
-                        "-n", RIP_TEMP,
-                        "--feature", "--progress"]
-        self.dvdbackup_process = None
         self.dvd_present = False
         self.dvd_title = None
+        self.vlc_instance = vlc.Instance()
+        self.vlc_media = self.vlc_instance.media_new(f"dvdsimple://{self.device}")
+        self.vlc_media.add_options('force-dolby-surround=off', 'sub-language=none', 'audio-language=eng')
+        self.vlc_player = self.vlc_media.player_new_from_media()  # FIXME: Does this need to wait until all options have been added to the media object?
 
     def dvdbackup_info(self):
+        # FIXME: I think we discussed just using blkid or similar for this. Do that
         self.dvd_present = False
         self.dvd_title = None
         try:
@@ -54,15 +55,21 @@ class DVDBackup:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
         progressfunc(0.005)
         self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
-        self.dvdbackup_process = subprocess.Popen(self.rip_cmd, bufsize=0,
-                                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-        for line in self.dvdbackup_process.stdout:
-            if match := re.match(r'Copying Title, part (\d+)/(\d+): \d+% done .(\d+)/(\d+) MiB.', line):
-                (partno, parts, mbno, mbs) = (float(m) for m in match.groups())
-                percentage = (partno - 1) / parts + mbno / mbs / parts
-                progressfunc(percentage)
-        self.dvdbackup_process.wait()
-        self.dvdbackup_process = None
+        self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={RIP_TEMP / 'output.ts'}}}")
+
+        self.vlc_player.play()
+        while self.vlc_player.get_state() == vlc.state.Opening: pass  # FIXME: This is probably dumb
+
+        length = self.vlc_player.get_length()
+        while self.vlc_player.get_state() == vlc.State.Playing:
+            percentage = self.vlc_player.get_time() / length
+            progressfunc(percentage)
+
+        if self.vlc_player.get_state() == vlc.State.Error:
+            raise Exception()
+        elif self.vlc_player.get_state() != vlc.State.Ended:
+            raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
+
         open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
         os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
                   self.dvdrip_target_root_directory.joinpath(self.dvd_title))
