@@ -183,7 +183,6 @@ usr/lib/*/vlc/plugins/video_output/libvdummy_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvmem_plugin.so
 usr/lib/*/vlc/plugins/video_output/libwl_shell_plugin.so
 usr/lib/*/vlc/plugins/video_output/libwl_shm_plugin.so
-usr/lib/*/vlc/plugins/video_output/libxcb_x11_plugin.so
 usr/lib/*/vlc/plugins/video_output/libxdg_shell_plugin.so
 usr/lib/*/vlc/plugins/video_output/libyuv_plugin.so
 usr/share/doc/vlc/lua
@@ -237,7 +236,6 @@ usr/lib/*/vlc/plugins/video_output/libgles2_plugin.so
 usr/lib/*/vlc/plugins/video_output/libglx_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvdummy_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvmem_plugin.so
-usr/lib/*/vlc/plugins/video_output/libxcb_x11_plugin.so
 usr/lib/*/vlc/plugins/video_output/libyuv_plugin.so
 """
 
@@ -275,6 +273,12 @@ subprocess.check_call(
      '--distribution=bullseye',
      'Also disable a shitload of "SHOULD NOT" plugins.'
      ' In Debian 9, this was done in delete-bad-files.'],
+    cwd=source_dir)
+subprocess.check_call(
+    ['debchange',
+     '--local=PrisonPC',
+     '--distribution=bullseye',
+     '(EXPERIMENTAL) re-enable video_output/libxcb_x11_plugin.so for "boot-test" kvm -vga qxl.'],
     cwd=source_dir)
 
 # Build the patched source package.
