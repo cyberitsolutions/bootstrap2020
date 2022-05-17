@@ -89,8 +89,6 @@ __doc__ = """ if Debian vlc is newer than PrisonPC vlc, halt and catch fire
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
-parser.set_defaults(shitlist_path=pathlib.Path(
-    'debian-11-PrisonPC.hooks/customize90-delete-bad-files.glob'))
 args = parser.parse_args()
 
 
