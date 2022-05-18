@@ -13,7 +13,7 @@ import vlc
 
 import gi.repository
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
+from gi.repository import Gtk, GLib  # noqa: E402
 
 GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 
@@ -139,15 +139,15 @@ class DVDRipApp:
 
     def rescan_thread_proc(self):
         self.dvdbackup.dvdbackup_info()
-        GObject.idle_add(self.doFinishRescan)
+        GLib.idle_add(self.doFinishRescan)
 
     def rip_thread_proc(self):
         self.dvdbackup.dvdbackup_rip(self.rip_thread_progress_callback)
-        GObject.idle_add(self.doFinishRip)
+        GLib.idle_add(self.doFinishRip)
 
     def rip_thread_progress_callback(self, percentage):
         progressbar = self.get_object("progressbar")
-        GObject.idle_add(progressbar.set_fraction, percentage)
+        GLib.idle_add(progressbar.set_fraction, percentage)
 
     def doStartRescan(self, *args):
         self.dvd_scanning = True
@@ -155,7 +155,7 @@ class DVDRipApp:
         self.get_object("button_rescan").set_sensitive(False)
         self.get_object("button_rip").set_sensitive(False)
         self.get_object("entry_dvd_name").set_text("UNKNOWN")
-        GObject.timeout_add(50, self.timeout_progress_scanning, None)
+        GLib.timeout_add(50, self.timeout_progress_scanning, None)
         self.rescan_thread = threading.Thread(target=self.rescan_thread_proc)
         self.rescan_thread.start()
 
