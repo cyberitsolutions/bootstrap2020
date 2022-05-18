@@ -6,6 +6,7 @@ import pathlib
 import subprocess
 import tempfile
 import threading
+import time
 
 import vlc
 
@@ -59,12 +60,16 @@ class DVDBackup:
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
                 # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
-                pass
+                logging.debug('Waiting for vlc to start ripping...')
+                time.sleep(0.01)  # 10ms
 
             length = self.vlc_player.get_length()
             while self.vlc_player.get_state() == vlc.State.Playing:
                 percentage = self.vlc_player.get_time() / length
                 progressfunc(percentage)
+                # Without this, dvdrip.py wastes a whole CPU core
+                # asking vlc "are we there yet?" as fast as it can.
+                time.sleep(0.1)  # 100ms
 
             if self.vlc_player.get_state() == vlc.State.Error:
                 # FIXME: How do we report this to the user via the GUI?
