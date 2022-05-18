@@ -43,10 +43,10 @@ class DVDBackup:
             ['/sbin/blkid', '--match-tag=LABEL', '--output=value', self.device],
             text=True, capture_output=True, check=False)
         if blkid_response.returncode == 0:
-            self.dvd_present = True
-            self.dvd_title = blkid_response.stdout.strip()
+            self.dvd_present, self.dvd_title = True, blkid_response.stdout.strip()
         elif blkid_response.returncode == 2:
             logging.debug('blkid cannot identify disc -- empty drive, or unlabelled disc?')
+            self.dvd_present, self.dvd_title = False, None
         else:
             blkid_response.check_returncode()  # Raises exception if returncode != 0
 
