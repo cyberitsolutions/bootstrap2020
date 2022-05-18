@@ -58,32 +58,33 @@ class DVDBackup:
         self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
 
         (self.dvdrip_target_directory / RIP_TEMP).mkdir()
-        self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={self.dvdrip_target_directory / RIP_TEMP / 'output.ts'}}}")
+        if True:
+            self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={self.dvdrip_target_directory / RIP_TEMP / 'output.ts'}}}")
 
-        self.vlc_player.play()
-        while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
-            # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
-            #        Should probably also "pulse" the progress bar back and forth until we're in Playing state
-            pass
+            self.vlc_player.play()
+            while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
+                # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
+                #        Should probably also "pulse" the progress bar back and forth until we're in Playing state
+                pass
 
-        length = self.vlc_player.get_length()
-        while self.vlc_player.get_state() == vlc.State.Playing:
-            percentage = self.vlc_player.get_time() / length
-            progressfunc(percentage)
+            length = self.vlc_player.get_length()
+            while self.vlc_player.get_state() == vlc.State.Playing:
+                percentage = self.vlc_player.get_time() / length
+                progressfunc(percentage)
 
-        if self.vlc_player.get_state() == vlc.State.Error:
-            # FIXME: How do we report this to the user via the GUI?
-            raise Exception()
-        elif self.vlc_player.get_state() == vlc.State.Stopped:
-            logging.debug('User closed the GUI window before ripping finished.')
-            # FIXME: we should probably delete the unfinished files.
-            return  # Don't let the tvserver run off ahead by creating the rip-complete file
-        elif self.vlc_player.get_state() != vlc.State.Ended:
-            raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
+            if self.vlc_player.get_state() == vlc.State.Error:
+                # FIXME: How do we report this to the user via the GUI?
+                raise Exception()
+            elif self.vlc_player.get_state() == vlc.State.Stopped:
+                logging.debug('User closed the GUI window before ripping finished.')
+                # FIXME: we should probably delete the unfinished files.
+                return  # Don't let the tvserver run off ahead by creating the rip-complete file
+            elif self.vlc_player.get_state() != vlc.State.Ended:
+                raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
-        open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
-        os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
-                  self.dvdrip_target_root_directory.joinpath(self.dvd_title))
+            open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
+            os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
+                      self.dvdrip_target_root_directory.joinpath(self.dvd_title))
 
     def dvdbackup_cancel(self):
         self.vlc_player.stop()
