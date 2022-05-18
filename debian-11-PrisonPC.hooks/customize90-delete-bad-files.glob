@@ -220,7 +220,7 @@ usr/lib/pt_chown
 # Every Python library using ctypes needs /sbin/ldconfig at runtime.
 # https://docs.python.org/3/library/ctypes.html#finding-shared-libraries
 # **/*bin/ldconfig
-# /usr/share/glib-2.0/clean-up-unmanaged-libraries
+/usr/share/glib-2.0/clean-up-unmanaged-libraries
 # From util-linux.  FIXME: remove more?
 **/*bin/blkdiscard
 **/*bin/resizepart
