@@ -21,18 +21,9 @@ GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 RIP_TEMP = pathlib.Path("RIP_TEMP")
 
 
-def sanitise_disk_label(disk_label):
-    """Santisises a disk label into something that should more closely match the media title."""
-    # NOTE: This logic was initially copied from dvdbackup.c
-
-    # convert title to lower case and replace underscores with spaces
-    return ' '.join(word.capitalize() for word in disk_label.strip().replace('_', ' ').split(' '))
-
-
 class DVDBackup:
     def __init__(self, host_application=None):
         self.host_application = host_application
-        self.blkid = "/sbin/blkid"
         self.device = "/dev/dvd"
         self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
         self.dvdrip_target_directory = pathlib.Path(tempfile.mkdtemp(dir=self.dvdrip_target_root_directory))
@@ -43,15 +34,17 @@ class DVDBackup:
         self.vlc_media.add_options('force-dolby-surround=off', 'sub-language=none', 'audio-language=eng')
         self.vlc_player = self.vlc_media.player_new_from_media()  # FIXME: Does this need to wait until all options have been added to the media object?
 
+    # FIXME: get video title from VLC metadata, instead of the filesystem metadata.
+    #        We want "Dr. Who Season 2 Episodes 4-6" not "DRWHO_S2E46".
+    #        This is offered to the staff user, who can change it.
+    #        It ends up being (part of) the final file name.
     def dvdbackup_info(self):
-        # FIXME: I think we discussed just using blkid or similar for this. Do that.
-        #        dvdbackup does some smarts to convert "ROAD_WARRIOR169" into "Road Warrior169",
-        #        but it's not obvious to me whether it's first getting it from blkid or some other DVD video metadata.
-        blkid_response = subprocess.run([self.blkid, '--match-tag=LABEL', '--output=value', self.device],
-                                        text=True, capture_output=True, check=False)
+        blkid_response = subprocess.run(
+            ['/sbin/blkid', '--match-tag=LABEL', '--output=value', self.device],
+            text=True, capture_output=True, check=False)
         if blkid_response.returncode == 0:
             self.dvd_present = True
-            self.dvd_title = sanitise_disk_label(blkid_response.stdout)
+            self.dvd_title = blkid_response.stdout.strip()
         elif blkid_response.returncode == 2:
             logging.debug('blkid cannot identify disc -- empty drive, or unlabelled disc?')
         else:
