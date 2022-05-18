@@ -49,7 +49,7 @@ class DVDBackup:
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
         progressfunc(0.005)  # FIXME: Why?
-        self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
+        self.dvd_title = self.dvd_title or 'Unknown'
 
         # NOTE: we can simply do "with TemporaryDirectory", because
         #       this method will terminate on app close due to vlc.State.Stopped.
