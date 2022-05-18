@@ -44,7 +44,7 @@ class DVDBackup:
         else:
             blkid_response.check_returncode()  # Raises exception if returncode != 0
 
-    def vlc_rip(self, progressfunc):
+    def vlc_rip(self, GUI_percentage, GUI_message):
         # The host_application isn't set when using --test.
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
@@ -64,15 +64,15 @@ class DVDBackup:
                 time.sleep(0.01)  # 10ms
 
             while self.vlc_player.get_state() == vlc.State.Playing:
-                progressfunc(self.vlc_player.get_time() /
-                             self.vlc_player.get_length())
+                GUI_percentage(self.vlc_player.get_time() /
+                               self.vlc_player.get_length())
                 # Without this, dvdrip.py wastes a whole CPU core
                 # asking vlc "are we there yet?" as fast as it can.
                 time.sleep(0.1)  # 100ms
 
             if self.vlc_player.get_state() == vlc.State.Error:
-                # FIXME: How do we report this to the user via the GUI?
-                raise Exception()
+                GUI_message('Something went wrong.')
+                return
             elif self.vlc_player.get_state() == vlc.State.Stopped:
                 logging.debug('User closed the GUI window before ripping finished.')
                 # FIXME: we should probably delete the unfinished files.
@@ -129,12 +129,17 @@ class DVDRipApp:
         GLib.idle_add(self.doFinishRescan)
 
     def rip_thread_proc(self):
-        self.dvdbackup.vlc_rip(self.rip_thread_progress_callback)
-        GLib.idle_add(self.doFinishRip)
 
-    def rip_thread_progress_callback(self, percentage):
-        progressbar = self.get_object("progressbar")
-        GLib.idle_add(progressbar.set_fraction, percentage)
+        def percentage_callback(percentage: float):
+            GLib.idle_add(self.builder.get_object("progressbar").set_fraction, percentage)
+
+        def error_callback(error: str):
+            GLib.idle_add(self.builder.get_object("progressbar").set_text, error)
+
+        self.dvdbackup.vlc_rip(
+            GUI_percentage=percentage_callback,
+            GUI_message=error_callback)
+        GLib.idle_add(self.doFinishRip)
 
     def doStartRescan(self, *args):
         self.dvd_scanning = True
