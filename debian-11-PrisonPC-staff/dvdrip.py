@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import datetime
+import logging
 import os
 import pathlib
 import shutil
@@ -52,11 +53,9 @@ class DVDBackup:
             self.dvd_present = True
             self.dvd_title = sanitise_disk_label(blkid_response.stdout)
         elif blkid_response.returncode == 2:
-            return False
+            logging.debug('blkid cannot identify disc -- empty drive, or unlabelled disc?')
         else:
             blkid_response.check_returncode()  # Raises exception if returncode != 0
-
-        return True
 
     def dvdbackup_rip(self, progressfunc):
         # The host_application isn't set when using --test.
@@ -83,15 +82,15 @@ class DVDBackup:
             # FIXME: How do we report this to the user via the GUI?
             raise Exception()
         elif self.vlc_player.get_state() == vlc.State.Stopped:
-            # FIXME: This happens when pressing the 'quit' button, we should probably delete the unfinished files.
-            return False  # Don't let the tvserver run off ahead by creating the rip-complete file
+            logging.debug('User closed the GUI window before ripping finished.')
+            # FIXME: we should probably delete the unfinished files.
+            return  # Don't let the tvserver run off ahead by creating the rip-complete file
         elif self.vlc_player.get_state() != vlc.State.Ended:
             raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
         open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
         os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
                   self.dvdrip_target_root_directory.joinpath(self.dvd_title))
-        return True
 
     def dvdbackup_cancel(self):
         self.vlc_player.stop()
