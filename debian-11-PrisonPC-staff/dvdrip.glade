@@ -86,21 +86,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button_eject">
-                <property name="label" translatable="yes">Eject</property>
-                <property name="width_request">75</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="doEject" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="button_rescan">
                 <property name="label" translatable="yes">Rescan</property>
                 <property name="width_request">75</property>

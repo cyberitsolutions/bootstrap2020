@@ -33,7 +33,6 @@ class DVDBackup:
     def __init__(self, host_application=None):
         self.host_application = host_application
         self.blkid = "/sbin/blkid"
-        self.eject = "/usr/bin/eject"  # Do we really need eject? O.o
         self.device = "/dev/dvd"
         self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
         self.dvdrip_target_directory = pathlib.Path(tempfile.mkdtemp(dir=self.dvdrip_target_root_directory))
@@ -98,9 +97,6 @@ class DVDBackup:
     def dvdbackup_cancel(self):
         self.vlc_player.stop()
 
-    def dvdbackup_eject(self):
-        subprocess.call([self.eject, self.device])
-
 
 class DVDRipApp:
     def __init__(self):
@@ -118,13 +114,11 @@ class DVDRipApp:
             self.get_object("progressbar").set_fraction(0)
             self.get_object("button_rescan").set_sensitive(False)
             self.get_object("button_rip").set_sensitive(False)
-            self.get_object("button_eject").set_sensitive(False)
         except PermissionError:
             self.get_object("progressbar").set_text("Permission denied when attempting to write to the IPTV queue")
             self.get_object("progressbar").set_fraction(0)
             self.get_object("button_rescan").set_sensitive(False)
             self.get_object("button_rip").set_sensitive(False)
-            self.get_object("button_eject").set_sensitive(False)
         else:
             # and start a rescan on launch
             self.doStartRescan()
@@ -182,7 +176,6 @@ class DVDRipApp:
         self.get_object("progressbar").set_text("Ripping")
         self.get_object("button_rescan").set_sensitive(False)
         self.get_object("button_rip").set_sensitive(False)
-        self.get_object("button_eject").set_sensitive(False)
         self.rip_thread = threading.Thread(target=self.rip_thread_proc)
         self.rip_thread.start()
 
@@ -192,16 +185,10 @@ class DVDRipApp:
         progressbar = self.get_object("progressbar")
         button_rescan = self.get_object("button_rescan")
         button_rip = self.get_object("button_rip")
-        button_eject = self.get_object("button_eject")
         progressbar.set_text("Rip Completed")
         progressbar.set_fraction(0)
         button_rescan.set_sensitive(True)
         button_rip.set_sensitive(False)
-        button_eject.set_sensitive(True)
-
-    def doEject(self, *args):
-        self.dvdbackup.dvdbackup_eject()
-        self.get_object("button_rip").set_sensitive(False)
 
     def closeApplication(self, *args):
         if not self.error:
