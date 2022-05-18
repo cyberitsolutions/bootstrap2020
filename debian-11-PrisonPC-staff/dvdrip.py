@@ -99,21 +99,9 @@ class DVDRipApp:
         self.dvd_scanning = False
         self.dvd_ripping = False
         self.get_object("root_window").show_all()
-        try:
-            self.dvdbackup = DVDBackup(host_application=self)
-        except FileNotFoundError:
-            self.get_object("progressbar").set_text("IPTV queue directory does not exist")
-            self.get_object("progressbar").set_fraction(0)
-            self.get_object("button_rescan").set_sensitive(False)
-            self.get_object("button_rip").set_sensitive(False)
-        except PermissionError:
-            self.get_object("progressbar").set_text("Permission denied when attempting to write to the IPTV queue")
-            self.get_object("progressbar").set_fraction(0)
-            self.get_object("button_rescan").set_sensitive(False)
-            self.get_object("button_rip").set_sensitive(False)
-        else:
-            # and start a rescan on launch
-            self.doStartRescan()
+        self.dvdbackup = DVDBackup(host_application=self)
+        # and start a rescan on launch
+        self.doStartRescan()
 
     def get_object(self, object_name):
         return self.builder.get_object(object_name)
@@ -135,9 +123,20 @@ class DVDRipApp:
         def error_callback(error: str):
             GLib.idle_add(self.builder.get_object("progressbar").set_text, error)
 
-        self.dvdbackup.vlc_rip(
-            GUI_percentage=percentage_callback,
-            GUI_message=error_callback)
+        try:
+            self.dvdbackup.vlc_rip(
+                GUI_percentage=percentage_callback,
+                GUI_message=error_callback)
+        except FileNotFoundError:
+            self.get_object("progressbar").set_text("IPTV queue directory does not exist")
+            self.get_object("progressbar").set_fraction(0)
+            self.get_object("button_rescan").set_sensitive(False)
+            self.get_object("button_rip").set_sensitive(False)
+        except PermissionError:
+            self.get_object("progressbar").set_text("Permission denied when attempting to write to the IPTV queue")
+            self.get_object("progressbar").set_fraction(0)
+            self.get_object("button_rescan").set_sensitive(False)
+            self.get_object("button_rip").set_sensitive(False)
         GLib.idle_add(self.doFinishRip)
 
     def doStartRescan(self, *args):
