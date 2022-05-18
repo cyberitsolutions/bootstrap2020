@@ -93,7 +93,6 @@ class DVDBackup:
 
 class DVDRipApp:
     def __init__(self):
-        self.error = None
         self.builder = Gtk.Builder()
         self.builder.add_from_file(os.fspath(GLADE_FILE))
         self.builder.connect_signals(self)
@@ -189,8 +188,7 @@ class DVDRipApp:
         button_rip.set_sensitive(False)
 
     def closeApplication(self, *args):
-        if not self.error:
-            self.dvdbackup.dvdbackup_cancel()
+        self.dvdbackup.dvdbackup_cancel()
         Gtk.main_quit()
 
 
