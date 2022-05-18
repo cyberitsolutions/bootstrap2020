@@ -53,7 +53,7 @@ class DVDBackup:
         # NOTE: we can simply do "with TemporaryDirectory", because
         #       this method will terminate on app close due to vlc.State.Stopped.
         with tempfile.TemporaryDirectory(dir='/srv/tv/iptv-queue/.ripped',
-                                         prefix=f'{self.dvd_title} '
+                                         prefix=f'{self.dvd_title} ',
                                          suffix=' INCOMPLETE') as tempdir:
             tempdir = pathlib.Path(tempdir)
             self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
