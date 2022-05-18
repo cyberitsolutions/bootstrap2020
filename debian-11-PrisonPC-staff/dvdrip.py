@@ -38,7 +38,7 @@ class DVDBackup:
     #        We want "Dr. Who Season 2 Episodes 4-6" not "DRWHO_S2E46".
     #        This is offered to the staff user, who can change it.
     #        It ends up being (part of) the final file name.
-    def dvdbackup_info(self):
+    def blkid_info(self):
         blkid_response = subprocess.run(
             ['/sbin/blkid', '--match-tag=LABEL', '--output=value', self.device],
             text=True, capture_output=True, check=False)
@@ -50,7 +50,7 @@ class DVDBackup:
         else:
             blkid_response.check_returncode()  # Raises exception if returncode != 0
 
-    def dvdbackup_rip(self, progressfunc):
+    def vlc_rip(self, progressfunc):
         # The host_application isn't set when using --test.
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
@@ -123,11 +123,11 @@ class DVDRipApp:
         return self.dvd_scanning
 
     def rescan_thread_proc(self):
-        self.dvdbackup.dvdbackup_info()
+        self.dvdbackup.blkid_info()
         GLib.idle_add(self.doFinishRescan)
 
     def rip_thread_proc(self):
-        self.dvdbackup.dvdbackup_rip(self.rip_thread_progress_callback)
+        self.dvdbackup.vlc_rip(self.rip_thread_progress_callback)
         GLib.idle_add(self.doFinishRip)
 
     def rip_thread_progress_callback(self, percentage):
@@ -198,6 +198,6 @@ if __name__ == "__main__":
     else:
         # Don't bring up a GUI (or rip), just run the backend ripper's report.
         dvdbackup = DVDBackup()
-        dvdbackup.dvdbackup_info()
+        dvdbackup.blkid_info()
         print(dvdbackup.dvd_present)
         print(dvdbackup.dvd_title)
