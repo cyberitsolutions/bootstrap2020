@@ -3,7 +3,6 @@ import argparse
 import datetime
 import os
 import pathlib
-import re
 import shutil
 import subprocess
 import tempfile
