@@ -32,7 +32,7 @@ def sanitise_disk_label(disk_label):
 class DVDBackup:
     def __init__(self, host_application=None):
         self.host_application = host_application
-        self.blkid = "/usr/sbin/blkid"
+        self.blkid = "/sbin/blkid"
         self.eject = "/usr/bin/eject"  # Do we really need eject? O.o
         self.device = "/dev/dvd"
         self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
