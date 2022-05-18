@@ -48,7 +48,6 @@ class DVDBackup:
         # The host_application isn't set when using --test.
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
-        progressfunc(0.005)  # FIXME: Why?
         self.dvd_title = self.dvd_title or 'Unknown'
 
         # NOTE: we can simply do "with TemporaryDirectory", because
@@ -61,7 +60,6 @@ class DVDBackup:
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
                 # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
-                #        Should probably also "pulse" the progress bar back and forth until we're in Playing state
                 pass
 
             length = self.vlc_player.get_length()
