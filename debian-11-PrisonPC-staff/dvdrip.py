@@ -4,7 +4,6 @@ import datetime
 import logging
 import os
 import pathlib
-import shutil
 import subprocess
 import tempfile
 import threading
@@ -17,16 +16,11 @@ from gi.repository import Gtk, GLib  # noqa: E402
 
 GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 
-# NB: RIP_TEMP is a literal magic string - rather than using the automatic dvdbackup name. --twb, Mar 2016
-RIP_TEMP = pathlib.Path("RIP_TEMP")
-
 
 class DVDBackup:
     def __init__(self, host_application=None):
         self.host_application = host_application
         self.device = "/dev/dvd"
-        self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
-        self.dvdrip_target_directory = pathlib.Path(tempfile.mkdtemp(dir=self.dvdrip_target_root_directory))
         self.dvd_present = False
         self.dvd_title = None
         self.vlc_instance = vlc.Instance()
@@ -57,10 +51,13 @@ class DVDBackup:
         progressfunc(0.005)  # FIXME: Why?
         self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
 
-        (self.dvdrip_target_directory / RIP_TEMP).mkdir()
-        if True:
-            self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={self.dvdrip_target_directory / RIP_TEMP / 'output.ts'}}}")
-
+        # NOTE: we can simply do "with TemporaryDirectory", because
+        #       this method will terminate on app close due to vlc.State.Stopped.
+        with tempfile.TemporaryDirectory(dir='/srv/tv/iptv-queue/.ripped',
+                                         prefix=f'{self.dvd_title} '
+                                         suffix=' INCOMPLETE') as tempdir:
+            tempdir = pathlib.Path(tempdir)
+            self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
                 # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
@@ -82,9 +79,12 @@ class DVDBackup:
             elif self.vlc_player.get_state() != vlc.State.Ended:
                 raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
-            open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
-            os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
-                      self.dvdrip_target_root_directory.joinpath(self.dvd_title))
+            # Move the temporary directory to its final name, and
+            # make a "touchfile" to tell the tvserver that dvdrip's job is done.
+            destdir = tempdir.parent / self.dvd_title
+            tempdir.rename(destdir)
+            (destdir / 'rip-complete').write_text(
+                'desktop dvdrip.py succeeded; tvserver import_media.py may start!')
 
     def dvdbackup_cancel(self):
         self.vlc_player.stop()
@@ -185,7 +185,6 @@ class DVDRipApp:
     def closeApplication(self, *args):
         if not self.error:
             self.dvdbackup.dvdbackup_cancel()
-            shutil.rmtree(self.dvdbackup.dvdrip_target_directory)
         Gtk.main_quit()
 
 
