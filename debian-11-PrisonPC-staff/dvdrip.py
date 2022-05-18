@@ -64,10 +64,9 @@ class DVDBackup:
                 logging.debug('Waiting for vlc to start ripping...')
                 time.sleep(0.01)  # 10ms
 
-            length = self.vlc_player.get_length()
             while self.vlc_player.get_state() == vlc.State.Playing:
-                percentage = self.vlc_player.get_time() / length
-                progressfunc(percentage)
+                progressfunc(self.vlc_player.get_time() /
+                             self.vlc_player.get_length())
                 # Without this, dvdrip.py wastes a whole CPU core
                 # asking vlc "are we there yet?" as fast as it can.
                 time.sleep(0.1)  # 100ms
