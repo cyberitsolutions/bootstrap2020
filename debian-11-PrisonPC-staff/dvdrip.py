@@ -56,6 +56,9 @@ class DVDBackup:
                                          prefix=f'{self.dvd_title} ',
                                          suffix=' INCOMPLETE') as tempdir:
             tempdir = pathlib.Path(tempdir)
+            destdir = tempdir.parent / self.dvd_title
+            if destdir.exists():  # TOCTTOU here, but we mostly don't care
+                return GUI_message(f'"{destdir.name}" already exists.  Rip aborted.')
             self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
@@ -82,10 +85,10 @@ class DVDBackup:
 
             # Move the temporary directory to its final name, and
             # make a "touchfile" to tell the tvserver that dvdrip's job is done.
-            destdir = tempdir.parent / self.dvd_title
             tempdir.rename(destdir)
             (destdir / 'rip-complete').write_text(
                 'desktop dvdrip.py succeeded; tvserver import_media.py may start!')
+            GUI_message("Rip Completed")
 
     def dvdbackup_cancel(self):
         self.vlc_player.stop()
@@ -181,7 +184,6 @@ class DVDRipApp:
         progressbar = self.get_object("progressbar")
         button_rescan = self.get_object("button_rescan")
         button_rip = self.get_object("button_rip")
-        progressbar.set_text("Rip Completed")
         progressbar.set_fraction(0)
         button_rescan.set_sensitive(True)
         button_rip.set_sensitive(False)
