@@ -9,6 +9,9 @@ import subprocess
 import tempfile
 import threading
 
+import av
+import av.datasets
+
 import gi.repository
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject  # noqa: E402 "module level import not at top of file"
@@ -20,53 +23,46 @@ RIP_TEMP = pathlib.Path("RIP_TEMP")
 
 
 class DVDBackup:
+    eject = pathlib.Path('/usr/bin/eject')
+    device = pathlib.Path('/dev/dvd')
+    dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
+
     def __init__(self, host_application=None):
         self.host_application = host_application
-        self.dvdbackup = "/usr/bin/dvdbackup"
-        self.eject = "/usr/bin/eject"
-        self.device = "/dev/dvd"
-        self.dvdrip_target_root_directory = pathlib.Path("/srv/tv/iptv-queue/.ripped")
-        self.dvdrip_target_directory = pathlib.Path(tempfile.mkdtemp(dir=self.dvdrip_target_root_directory))
-        self.rip_cmd = [self.dvdbackup,
-                        "-i", self.device,
-                        "-o", self.dvdrip_target_directory,
-                        "-n", RIP_TEMP,
-                        "--feature", "--progress"]
+        self.dvdrip_target_directory = pathlib.Path(
+            tempfile.TemporaryDirectory(dir=self.dvdrip_target_root_directory))
         self.dvdbackup_process = None
         self.dvd_present = False
         self.dvd_title = None
 
     def dvdbackup_info(self):
-        self.dvd_present = False
-        self.dvd_title = None
-        try:
-            output = subprocess.check_output([self.dvdbackup, "-i", self.device, "-I"], text=True, stderr=subprocess.DEVNULL)
-            if match := re.search('DVD-Video information of the DVD with title "(.*?)"', output):
-                self.dvd_present = True
-                self.dvd_title = match.group(1)
-        except subprocess.CalledProcessError:  # FIXME: Is this all the original code was expecting?
-            return False
-        return True
+        # FIXME: use blkid
+        self.dvd_present = True
+        self.dvd_title = 'FIXME Example Title'
 
     def dvdbackup_rip(self, progressfunc):
         # The host_application isn't set when using --test.
         if self.host_application is not None:
             self.dvd_title = self.host_application.get_object("entry_dvd_name").get_text()
-        progressfunc(0.005)
-        self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
-        self.dvdbackup_process = subprocess.Popen(self.rip_cmd, bufsize=0,
-                                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-        for line in self.dvdbackup_process.stdout:
-            if match := re.match(r'Copying Title, part (\d+)/(\d+): \d+% done .(\d+)/(\d+) MiB.', line):
-                (partno, parts, mbno, mbs) = (float(m) for m in match.groups())
-                percentage = (partno - 1) / parts + mbno / mbs / parts
-                progressfunc(percentage)
-        self.dvdbackup_process.wait()
-        self.dvdbackup_process = None
-        open(self.dvdrip_target_directory.joinpath(RIP_TEMP).joinpath('rip-complete'), 'w+').close()  # equivalent to 'touch'
-        os.rename(self.dvdrip_target_directory.joinpath(RIP_TEMP),
-                  self.dvdrip_target_root_directory.joinpath(self.dvd_title))
-        return True
+        # self.dvd_title = f'{self.dvd_title or "Unknown"} {datetime.datetime.today()}'
+        with av.open(av.datasets.curated(self.device)) as src:
+            with av.open("/tmp/tmp.ts", "w") as dst:  # FIXME path
+                # Enable "go faster" stripes???
+                src.streams.video[0] = 'AUTO'
+                # Begin remuxing.
+                src_stream = src.streams.video[0]
+                dst_stream = dst.add_stream(template=src_stream)
+                for i, packet in enumerate(src.demux(src_stream)):
+                    progressfunc(i / 1000)  # tell GTK popup (FIXME: get actual frame count)
+                    # Skip "flushing" packets demux generates.
+                    if packet.dts is None:
+                        continue
+                    # We need to assign the packet to the new stream.
+                    packet.stream = dst_stream
+                    dst.mux(packet)
+        # (self.dvdrip_target_directory / 'RIP_TEMP/rip-complete').write_text('')  # equivalent to 'touch'
+        # (self.dvdrip_target_directory / 'RIP_TEMP').rename(
+        #     (self.dvdrip_target_directory / self.dvd_title))
 
     def dvdbackup_cancel(self):
         if self.dvdbackup_process:
@@ -184,7 +180,7 @@ class DVDRipApp:
     def closeApplication(self, *args):
         if not self.error:
             self.dvdbackup.dvdbackup_cancel()
-            shutil.rmtree(self.dvdbackup.dvdrip_target_directory)
+            self.dvdbackup.dvdrip_target_directory.__exit__()
         Gtk.main_quit()
 
 

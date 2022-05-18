@@ -483,7 +483,7 @@ with tempfile.TemporaryDirectory() as td:
             *(['--include='
                '    gvncviewer'  # Control desktop (vnc://)
                '    gvfs-backends gvfs-fuse'  # Browse p123's home (sftp://)
-               '    dvdbackup asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
+               '    python3-av asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
                # NOTE: exfat-fuse removed as exfat is now in-kernel.
                # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
                # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.
