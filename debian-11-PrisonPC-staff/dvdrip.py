@@ -24,9 +24,7 @@ class DVDBackup:
         self.dvd_present = False
         self.dvd_title = None
         self.vlc_instance = vlc.Instance()
-        self.vlc_media = self.vlc_instance.media_new(f"dvdsimple://{self.device}")
-        self.vlc_media.add_options('force-dolby-surround=off', 'sub-language=none', 'audio-language=eng')
-        self.vlc_player = self.vlc_media.player_new_from_media()  # FIXME: Does this need to wait until all options have been added to the media object?
+        self.vlc_player = self.vlc_instance.media_player_new()
 
     # FIXME: get video title from VLC metadata, instead of the filesystem metadata.
     #        We want "Dr. Who Season 2 Episodes 4-6" not "DRWHO_S2E46".
@@ -59,7 +57,11 @@ class DVDBackup:
             destdir = tempdir.parent / self.dvd_title
             if destdir.exists():  # TOCTTOU here, but we mostly don't care
                 return GUI_message(f'"{destdir.name}" already exists.  Rip aborted.')
-            self.vlc_media.add_option(f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
+
+            vlc_media = self.vlc_instance.media_new(f"dvdsimple://{self.device}")
+            vlc_media.add_options('force-dolby-surround=off', 'sub-language=none', 'audio-language=eng',
+                                  f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
+            self.vlc_player.set_media(vlc_media)
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
                 # FIXME: Put a timeout here, if it takes too long to load there's something very wrong
@@ -81,6 +83,7 @@ class DVDBackup:
                 # FIXME: we should probably delete the unfinished files.
                 return  # Don't let the tvserver run off ahead by creating the rip-complete file
             elif self.vlc_player.get_state() != vlc.State.Ended:
+                self.vlc_player.stop()  # Just in case it's still actually doing something
                 raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
             # Move the temporary directory to its final name, and
