@@ -103,7 +103,7 @@ def tell_database_about_local_medium(
             (SELECT now() + lifetime::interval                       -- expires_at
              FROM local_media_lifetimes
              WHERE standard = 't'   -- use the default expiry
-             ORDER BY 1 DESC,       -- use biggest default expiry (just in case)
+             ORDER BY 1 DESC        -- use biggest default expiry (just in case)
              LIMIT 1))
     """
     with cursor() as cur:
