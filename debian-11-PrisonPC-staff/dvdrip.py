@@ -59,7 +59,8 @@ class DVDBackup:
                 return GUI_message(f'"{destdir.name}" already exists.  Rip aborted.')
 
             vlc_media = self.vlc_instance.media_new(f"dvdsimple://{self.device}")
-            vlc_media.add_options('force-dolby-surround=off', 'sub-language=none', 'audio-language=eng',
+            # FIXME: Why is this not including the subtitles track?
+            vlc_media.add_options('force-dolby-surround=off', 'sub-language=eng', 'audio-language=eng', "no-sout-all",
                                   f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
             self.vlc_player.set_media(vlc_media)
             self.vlc_player.play()
