@@ -69,6 +69,8 @@ for card, sids in card_sids.items():
 
 # Instruct all dvblast processes to reread their config files.
 # FIXME: should probably be "systemctl reload dvblast@{card}.service".
+# FIXME: right after a reboot, this fails, because there are no dvblast processes yet.
+#        That goes away after 1 minute when this is re-run, though.
 subprocess.check_call(['pkill', '-HUP', 'dvblast'])
 
 # :vim: ts=4 sw=4 expandtab
