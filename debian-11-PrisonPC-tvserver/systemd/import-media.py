@@ -18,7 +18,7 @@ __doc__ = """ import a media file for use in local channels """
 #       The dvdrip code already adds YYYY-MM-DD HH:MM:SS, so
 #       we do not bother anymore.
 def media_import(vob_path):
-    ts_path = pathlib.Path('/srv/tv/recorded/local/') / vob_path.stem
+    ts_path = (pathlib.Path('/srv/tv/recorded/local/') / vob_path.name).with_suffix('.ts')
     ts_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Transcode the .vob to .ts
