@@ -50,20 +50,27 @@ class DVDBackup:
 
         # NOTE: we can simply do "with TemporaryDirectory", because
         #       this method will terminate on app close due to vlc.State.Stopped.
-        with tempfile.TemporaryDirectory(dir='/srv/tv/iptv-queue/.ripped',
-                                         prefix=f'{self.dvd_title} ',
-                                         suffix=' INCOMPLETE') as tempdir:
-            tempdir = pathlib.Path(tempdir)
-            destdir = tempdir.parent / self.dvd_title
-            if destdir.exists():  # TOCTTOU here, but we mostly don't care
-                return GUI_message(f'"{destdir.name}" already exists.  Rip aborted.')
+        #       As we only create 1 file, NamedTemporaryFile would also work, but
+        #       a dir results in slightly simpler code.
+        #
+        # NOTE: we COULD simply rip directly into /srv/tv/recorded/local/,
+        #       EXCEPT THAT staff only have write access to .ripped/
+        #       This layer of indirection prevents staff mucking up local/.
+        #       We do have read access to local/ though, so we
+        #       check there to prevent needless re-ripping.
+        dest_dir = pathlib.Path('/srv/tv/iptv-queue/.ripped')
+        dest_path = dest_dir / f'{self.dvd_title}.ts'
+        with tempfile.TemporaryDirectory(dir=dest_dir, prefix='dvdrip') as td:
+            temp_path = pathlib.Path(td) / 'tmp.ts'
+            if dest_path.exists():  # TOCTTOU here, but we mostly don't care
+                return GUI_message(f'"{dest_path}" already exists.  Rip aborted.')
 
             vlc_media = self.vlc_instance.media_new(f"dvdsimple://{self.device}")
             vlc_media.add_options(
                 'force-dolby-surround=off',
                 'sub-language=none',
                 'audio-language=eng',
-                f"sout=#standard{{access=file,mux=ts,dst={tempdir / 'output.ts'}}}")
+                f"sout=#standard{{access=file,mux=ts,dst={temp_path}}}")
             self.vlc_player.set_media(vlc_media)
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
@@ -89,11 +96,12 @@ class DVDBackup:
                 self.vlc_player.stop()  # Just in case it's still actually doing something
                 raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
-            # Move the temporary directory to its final name, and
-            # make a "touchfile" to tell the tvserver that dvdrip's job is done.
-            tempdir.rename(destdir)
-            (destdir / 'rip-complete').write_text(
-                'desktop dvdrip.py succeeded; tvserver import_media.py may start!')
+            # NOTE: in Debian 9, we made a touchfile here.
+            #       dvdbackup created multiple .vobs, so we needed it.
+            #       vlc creates one .ts, so we can simply rely on atomic rename(2).
+            # NOTE: No need for chown(2) as .ripped is not sticky (775 not 2775).
+            temp_path.chmod(0o644)  # let multicat read this file later
+            temp_path.replace(dest_path)
             GUI_message("Rip Completed")
 
     def dvdbackup_cancel(self):

@@ -17,35 +17,21 @@ __doc__ = """ import a media file for use in local channels """
 # NOTE: this used to add " YYYY-MM-DD" in Debian 9.
 #       The dvdrip code already adds YYYY-MM-DD HH:MM:SS, so
 #       we do not bother anymore.
-def media_import(vob_path):
-    ts_path = (pathlib.Path('/srv/tv/recorded/local/') / vob_path.name).with_suffix('.ts')
-    ts_path.parent.mkdir(parents=True, exist_ok=True)
+def media_import(src_path):
+    dst_path = pathlib.Path('/srv/tv/recorded/local/') / src_path.name
+    aux_path = dst_path.with_suffix('.aux')
 
-    # Transcode the .vob to .ts
-    # FIXME: keep subtitles somehow?
-    subprocess.check_call(
-        ['ffmpeg', '-i', vob_path,
-         '-ac', '2',
-         '-q', '4',
-         '-sn',
-         '-map', 'v',                # video stream stays as-is
-         '-map', 'a:m:language:eng',  # audio stream is English-only
-         ts_path])
+    # Move MadMax2.ts from staff-writable dir to tvserver-writable dir.
+    src_path.replace(dst_path)
+
     # Generate .aux from .ts
-    subprocess.check_call(['ingests', '-p', '8192', ts_path])
+    subprocess.check_call(['ingests', '-p', '8192', dst_path])
     # Tell python how long the ts is.
-    duration_27mhz = int(subprocess.check_output(
-        ["lasts", ts_path.with_suffix('.aux')]))
+    duration_27mhz = int(subprocess.check_output(["lasts", aux_path]))
 
     # Tell the database.
     # Site staff can than queue the ripped DVD to a local channel.
-    tvserver.tell_database_about_local_medium(
-        ts_path, duration_27mhz)
-
-    # Transcoding worked; remove the raw .vob.
-    # It used to be moved to /srv/tv/iptv-queue/done/.
-    # This caused prisons to rapidly run out of space.
-    vob_path.unlink()
+    tvserver.tell_database_about_local_medium(dst_path, duration_27mhz)
 
 
 # Equivalent to "find -mmin +2".
@@ -68,9 +54,9 @@ lockfile_path = pathlib.Path('/srv/tv/recorded/lock')
 try:
     with lockfile_path.open('w') as lockfile:
         fcntl.flock(lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        for vob_path in pathlib.Path('/srv/tv/iptv-queue/inbound').glob('*.vob'):
-            if at_least_two_minutes_old(vob_path):
-                media_import(vob_path)
+        for ts_path in pathlib.Path('/srv/tv/iptv-queue/.ripped').glob('*.ts'):
+            if at_least_two_minutes_old(ts_path):
+                media_import(ts_path)
 # If file is locked, do nothing.
 # Compare C implementation:
 # https://github.com/util-linux/util-linux/blob/master/sys-utils/flock.c#L281-L287

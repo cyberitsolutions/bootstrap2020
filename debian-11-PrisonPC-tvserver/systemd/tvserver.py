@@ -109,6 +109,7 @@ def tell_database_about_local_medium(
     with cursor() as cur:
         cur.execute(
             insert_query,
-            {'path': ts_path.with_suffix(''),  # '/path/to/foo' sans '.ts'
+            # FIXME: instead of str(), teach psycopg2 about pathlib.Path objects.
+            {'path': str(ts_path.with_suffix('')),  # '/path/to/foo' sans '.ts'
              'name': ts_path.stem,             # 'foo'
              'duration_27mhz': duration_27mhz})
