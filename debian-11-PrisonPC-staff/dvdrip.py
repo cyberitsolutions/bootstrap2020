@@ -75,7 +75,7 @@ class DVDBackup:
                 'sub-language=eng',
                 'audio-language=eng',
                 'no-sout-all',
-                f'sout=#standard{{access=file,mux=ts,dst={temp_path}}}')
+                f'sout=#transcode{{vcodec=mp2v,vb=800,scale=Auto,acodec=mpga,ab=128,channels=2,samplerate=44100,scodec=dvbs}}:standard{{access=file,mux=ts,dst={temp_path}}}')
             self.vlc_player.set_media(vlc_media)
             self.vlc_player.play()
             while self.vlc_player.get_state() in (vlc.State.NothingSpecial, vlc.State.Opening):
