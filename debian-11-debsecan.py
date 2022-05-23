@@ -3,6 +3,9 @@ import argparse
 import tempfile
 import pathlib
 import subprocess
+import types
+
+import debsecan                # ln -s /usr/bin/debsecan ./debsecan.py
 
 
 __doc__ = """ report what vulns are patched since last time
@@ -38,10 +41,21 @@ parser.add_argument('--templates', nargs='+', default={
     'desktop-inmate-amc-library',
     'desktop-staff-amc',
 })
+# for debsecan.fetch_data.
 args = parser.parse_args()
 
+debsecan_data = debsecan.fetch_data(
+    config={},
+    options=types.simplenamespace(
+        suite=args.suite,
+        source=None,
+        cron=False,
+        disable_https_check=False))
 
-def debsecan(version):
+args, config=dict())
+import pprint; pprint.pprint(debsecan_data)  # oh OK it's a {'adduser': [vuln1, vuln2, vuln3]} structure.
+
+def my_debsecan(version):
     with tempfile.TemporaryDirectory() as td:
         td = pathlib.Path(td)
         status_path = td / 'status'
@@ -70,18 +84,39 @@ def debsecan(version):
         # subprocess.check_call(['emacs', status_path])
         # subprocess.check_call(['ls', '-lh', status_path])
         # subprocess.check_call(['b2sum', status_path])
-        debsecan_text = subprocess.check_output(
-            ['debsecan',
-             *(['--only-fixed'] if args.only_fixed else []),
-             '--suite', args.suite, '--status', status_path],
-            text=True)
-        return set(
-            tuple(line.split())
-            for line in debsecan_text.splitlines())
+        packages = debsecan.PackageFile(status_path)
+    # Our dpkg.status is concatenated from several SOEs.
+    # Therefore, remove exact duplicates as step #1.
+    packages = sorted(set(map(tuple, packages)))
+    # Now get dicts, which are easier to use.
+    packages = list(map(dict, packages))
+    # Omit packages that are not installed.
+    packages = [p for p in packages
+                if 'installed' in p['Status'].split(' ')]
+    # FIXME:
+    #   If there is a Source: extract pkg_source and pkg_source_version from it.
+    #   Otherwise, pkg_source_version is Version:, and pkg_source is Name:.
+    #
+    #   convert version and source version to debsecan.Version() objects.
+    #
+    #if there isn't a 'Source', derive one from 'Version'.
+    re_source = r'^([a-zA-Z0-9.+-]+)(?:\s+\((\S+)\))?$'  # from /usr/bin/debsecan
+    for package in packages:
+        import pprint
+        pprint.pprint(dict(package))
+        exit()
+    # debsecan_text = subprocess.check_output(
+    #     ['debsecan',
+    #      *(['--only-fixed'] if args.only_fixed else []),
+    #      '--suite', args.suite, '--status', status_path],
+    #     text=True)
+    # return set(
+    #     tuple(line.split())
+    #     for line in debsecan_text.splitlines())
 
 
-debsecan_old = debsecan(args.old_version)
-debsecan_new = debsecan(args.new_version)
+debsecan_old = my_debsecan(args.old_version)
+debsecan_new = my_debsecan(args.new_version)
 
 
 import pprint
