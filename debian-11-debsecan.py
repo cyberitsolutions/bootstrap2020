@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.5
 import argparse
 import tempfile
 import pathlib
@@ -25,6 +25,7 @@ https://alloc.cyber.com.au/task/task.php?taskID=32894
 """
 
 parser = argparse.ArgumentParser(
+    description='ssh cyber@tweak.prisonpc.com python3 - < debian-11-debsecan.py',
     epilog='Example: --old=2022-01-01-* --new=2022-02-01-*')
 parser.add_argument('--old-version', default='previous')
 parser.add_argument('--new-version', default='latest')
@@ -41,54 +42,55 @@ parser.add_argument('--templates', nargs='+', default={
 args = parser.parse_args()
 
 
-def debsecan(version):
-    with tempfile.TemporaryDirectory() as td:
-        td = pathlib.Path(td)
-        status_path = td / 'status'
-        with status_path.open('wb') as f:
-            if False:
-                # this is the version I *want* to use, but
-                # old rdsquashfs cannot read newer compressors sometimes.
-                for template in args.templates:
-                    subprocess.check_call(
-                        ['ssh', 'root@tweak.prisonpc.com',
-                         'rdsquashfs',
-                         '--cat /var/lib/dpkg/status',
-                         # FIXME: inadequate sh quoting.
-                         f'/srv/netboot/images/{template}-{version}/filesystem.squashfs'],
-                        stdout=f)
-            else:
-                # This is old version which assumes a backup was made outside the squashfs,
-                # SPECIFICALLY for this script's convenience.
-                subprocess.check_call(
-                    ['ssh', 'root@tweak.prisonpc.com',
-                     'cat', '--',
-                     # FIXME: inadequate sh quoting.
-                     *[f'/srv/netboot/images/{template}-{version}/dpkg.status'
-                       for template in args.templates]],
-                    stdout=f)
-        # subprocess.check_call(['emacs', status_path])
-        # subprocess.check_call(['ls', '-lh', status_path])
-        # subprocess.check_call(['b2sum', status_path])
-        debsecan_text = subprocess.check_output(
-            ['debsecan',
-             *(['--only-fixed'] if args.only_fixed else []),
-             '--suite', args.suite, '--status', status_path],
-            text=True)
-        return set(
-            tuple(line.split())
-            for line in debsecan_text.splitlines())
+def debsecan(version, td):
+    # Concatenate all matching SOEs into one status file;
+    # unlike dpkg-query, debsecan will Just Deal With It.
+    # FIXME: switch to "rdsquashfs --cat=/var/lib/dpkg/status"?
+    status_path = td / 'status'
+    status_path.write_text(
+        ''.join(
+            source_path.read_text()
+            for template in args.templates
+            for source_path in pathlib.Path('/srv/netboot/images/').glob(
+                    '{}-{}/dpkg.status'.format(template, version))))
+    debsecan_text = subprocess.check_output(
+        ['debsecan',
+         *(['--only-fixed'] if args.only_fixed else []),
+         '--suite', args.suite, '--status', str(status_path)],
+        universal_newlines=True)
+    return set(
+        tuple(line.split(maxsplit=2))
+        for line in debsecan_text.splitlines())
 
 
-debsecan_old = debsecan(args.old_version)
-debsecan_new = debsecan(args.new_version)
+with tempfile.TemporaryDirectory() as td:
+    td = pathlib.Path(td)
+    debsecan_old = debsecan(args.old_version, td)
+    debsecan_new = debsecan(args.new_version, td)
+    (td / args.old_version).write_text(
+        'Lines like this are FIXED ISSUEs.\n' +
+        'Lines like this apply to BOTH old and new SOEs.\n' +
+        '\n' +
+        '\n'.join('\t'.join(row) for row in sorted(debsecan_old)) +
+        '\n')
+    (td / args.new_version).write_text(
+        'Lines like this are NEW ISSUEs.\n' +
+        'Lines like this apply to BOTH old and new SOEs.\n' +
+        '\n' +
+        '\n'.join('\t'.join(row) for row in sorted(debsecan_new)) +
+        '\n')
+    subprocess.call(            # we *expect* "git diff" to exit nonzero.
+        ['git', 'diff', '-U999', '--no-index', args.old_version, args.new_version],
+        cwd=str(td))
 
-
-import pprint
-print(f'Considering {args.templates}')
-print(f'Vulnerabilities in {args.old_version} that are fixed in {args.new_version}:')
-pprint.pprint(debsecan_old - debsecan_new)
-print(f'Vulnerabilities introduced in {args.new_version} since {args.old_version} (should be empty):')
-pprint.pprint(debsecan_new - debsecan_old)
-print(f'Vulnerabilities in both {args.new_version} and {args.old_version} (should be empty if {args.new_version} was built today):')
-pprint.pprint(debsecan_new & debsecan_old)
+# import pprint
+# print('Considering', *args.templates)
+# print()
+# print('Vulnerabilities in', args.old_version, 'that are fixed in', args.new_version, '(usually some here):')
+# for row in sorted(debsecan_old - debsecan_new): print('', *row, sep='\t')
+# print()
+# print('Vulnerabilities introduced in', args.new_version, 'since', args.old_version, '(should be empty):')
+# for row in sorted(debsecan_new - debsecan_old): print('', *row, sep='\t')
+# print()
+# print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty if {args.new_version} was built today):')
+# for row in sorted(debsecan_new & debsecan_old): print('', *row, sep='\t')
