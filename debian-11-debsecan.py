@@ -1,8 +1,9 @@
 #!/usr/bin/python3.5
 import argparse
-import tempfile
+import collections
 import pathlib
 import subprocess
+import tempfile
 
 
 __doc__ = """ report what vulns are patched since last time
@@ -63,34 +64,55 @@ def debsecan(version, td):
         for line in debsecan_text.splitlines())
 
 
+# By default debsecan prints each vuln repeatedly.
+# So for example you see something like this:
+#
+#
+#     CVE-2022-27774	curl
+#     CVE-2022-27774	libcurl4
+#     CVE-2022-27776	curl
+#     CVE-2022-27776	libcurl4
+#
+# This function collates those *after* set-based diffing.
+# Thus we end up with something like this:
+#
+#     CVE-2022-27774	curl libcurl4
+#     CVE-2022-27776	curl libcurl4
+#
+# The main gotcha is when a versioned package name transitions,
+# e.g. libcurl3 to libcurl4, and the vulnerability is NOT fixed,
+# the lines "CVE-A libcurl3" and "CVE-B libcurl4" will be far apart.
+# That was not happening in the git diff method, BUT
+# in the git diff method the "curl" lines got in the way, so
+# it was only PARTLY working there.
+def pretty_print(vulns):
+    g = collections.defaultdict(set)
+    for cve, package, flags in vulns:
+        g[cve].add(
+            package if args.only_fixed else
+            '{} {}'.format(package, flags))
+    for cve in sorted(g):
+        print('https://security-tracker.debian.org/tracker/{}'.format(cve),
+              *sorted(g[cve]),
+              sep='\t')
+
+
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
     debsecan_old = debsecan(args.old_version, td)
     debsecan_new = debsecan(args.new_version, td)
-    (td / args.old_version).write_text(
-        'Lines like this are FIXED ISSUEs.\n' +
-        'Lines like this apply to BOTH old and new SOEs.\n' +
-        '\n' +
-        '\n'.join('\t'.join(row) for row in sorted(debsecan_old)) +
-        '\n')
-    (td / args.new_version).write_text(
-        'Lines like this are NEW ISSUEs.\n' +
-        'Lines like this apply to BOTH old and new SOEs.\n' +
-        '\n' +
-        '\n'.join('\t'.join(row) for row in sorted(debsecan_new)) +
-        '\n')
-    subprocess.call(            # we *expect* "git diff" to exit nonzero.
-        ['git', 'diff', '-U999', '--no-index', args.old_version, args.new_version],
-        cwd=str(td))
 
-# import pprint
-# print('Considering', *args.templates)
-# print()
-# print('Vulnerabilities in', args.old_version, 'that are fixed in', args.new_version, '(usually some here):')
-# for row in sorted(debsecan_old - debsecan_new): print('', *row, sep='\t')
-# print()
-# print('Vulnerabilities introduced in', args.new_version, 'since', args.old_version, '(should be empty):')
-# for row in sorted(debsecan_new - debsecan_old): print('', *row, sep='\t')
-# print()
-# print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty if {args.new_version} was built today):')
-# for row in sorted(debsecan_new & debsecan_old): print('', *row, sep='\t')
+both = debsecan_old & debsecan_new
+only_old = debsecan_old - debsecan_new
+only_new = debsecan_new - debsecan_old
+
+print('Considering', *args.templates)
+print()
+print('Vulnerabilities in', args.old_version, 'that are fixed in', args.new_version, '(usually some here):')
+pretty_print(only_old)
+print()
+print('Vulnerabilities introduced in', args.new_version, 'since', args.old_version, '(should be empty):')
+pretty_print(only_new)
+print()
+print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty iff {args.new_version} was built today):')
+pretty_print(both)
