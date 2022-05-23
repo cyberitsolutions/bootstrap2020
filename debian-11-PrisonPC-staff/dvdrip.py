@@ -91,14 +91,15 @@ class DVDBackup:
                 # asking vlc "are we there yet?" as fast as it can.
                 time.sleep(0.1)  # 100ms
 
-            if self.vlc_player.get_state() == vlc.State.Error:
+            vlc_state = self.vlc_player.get_state()
+            if vlc_state == vlc.State.Error:
                 GUI_message('Something went wrong.')
                 return
-            elif self.vlc_player.get_state() == vlc.State.Stopped:
+            elif vlc_state == vlc.State.Stopped:
                 logging.debug('User closed the GUI window before ripping finished.')
                 # FIXME: we should probably delete the unfinished files.
                 return  # Don't let the tvserver run off ahead by creating the rip-complete file
-            elif self.vlc_player.get_state() != vlc.State.Ended:
+            elif vlc_state != vlc.State.Ended:
                 self.vlc_player.stop()  # Just in case it's still actually doing something
                 raise NotImplementedError("Apparently nothing went wrong, but this shouldn't happen")
 
