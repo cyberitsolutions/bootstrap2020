@@ -87,13 +87,19 @@ def debsecan(version, td):
 # it was only PARTLY working there.
 def pretty_print(vulns):
     g = collections.defaultdict(set)
-    for cve, package, flags in vulns:
-        g[cve].add(
-            package if args.only_fixed else
-            '{} {}'.format(package, flags))
+    # Ugh.  If there are no flags,
+    # the third field is entirely absent.
+    # To avoid KeyError, be a bit messy.
+    for vuln in vulns:
+        cve = vuln[0]
+        if args.only_fixed or len(vuln) == 2:
+            package = vuln[1]
+        else:
+            package = ' '.join(vuln[1:])
+        g[cve].add(package)
     for cve in sorted(g):
         print('https://security-tracker.debian.org/tracker/{}'.format(cve),
-              *sorted(g[cve]),
+              ' '.join(sorted(g[cve])),
               sep='\t')
 
 
@@ -102,17 +108,13 @@ with tempfile.TemporaryDirectory() as td:
     debsecan_old = debsecan(args.old_version, td)
     debsecan_new = debsecan(args.new_version, td)
 
-both = debsecan_old & debsecan_new
-only_old = debsecan_old - debsecan_new
-only_new = debsecan_new - debsecan_old
-
 print('Considering', *args.templates)
 print()
 print('Vulnerabilities in', args.old_version, 'that are fixed in', args.new_version, '(usually some here):')
-pretty_print(only_old)
+pretty_print(debsecan_old - debsecan_new)
 print()
 print('Vulnerabilities introduced in', args.new_version, 'since', args.old_version, '(should be empty):')
-pretty_print(only_new)
+pretty_print(debsecan_new - debsecan_old)
 print()
-print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty iff {args.new_version} was built today):')
-pretty_print(both)
+print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty iff new version was built today):')
+pretty_print(debsecan_old & debsecan_new)
