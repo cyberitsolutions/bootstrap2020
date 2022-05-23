@@ -2,6 +2,7 @@
 import argparse
 import collections
 import pathlib
+import re
 import subprocess
 import tempfile
 
@@ -97,10 +98,15 @@ def pretty_print(vulns):
         else:
             package = ' '.join(vuln[1:])
         g[cve].add(package)
-    for cve in sorted(g):
-        print('https://security-tracker.debian.org/tracker/{}'.format(cve),
+    for cve in sorted(g, key=alnum_sortkey):
+        print('    https://security-tracker.debian.org/tracker/{}'.format(cve),
               ' '.join(sorted(g[cve])),
               sep='\t')
+
+# Sort 5-digit CVEs after 4-digit CVEs.
+def alnum_sortkey(s):
+    return [int(i) if i.isdigit() else i
+            for i in re.split(r'(\d+)', s)]
 
 
 with tempfile.TemporaryDirectory() as td:
