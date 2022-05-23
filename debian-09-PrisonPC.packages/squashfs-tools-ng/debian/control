@@ -2,7 +2,7 @@ Source: squashfs-tools-ng
 Section: kernel
 Priority: optional
 Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
-Build-Depends: debhelper-compat (= 12), pkg-config, libselinux1-dev [linux-any], liblzma-dev, liblz4-dev, zlib1g-dev, libzstd-dev, liblzo2-dev
+Build-Depends: debhelper-compat (= 12), pkg-config, libselinux1-dev [linux-any], liblzma-dev, liblz4-dev, zlib1g-dev, libzstd-dev (>= 1.3.1~), liblzo2-dev
 Standards-Version: 4.5.1
 Rules-Requires-Root: no
 Homepage: https://github.com/AgentD/squashfs-tools-ng

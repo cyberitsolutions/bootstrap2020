@@ -1,4 +1,12 @@
-squashfs-tools-ng (1.1.4-1~bpo11+1) stretch-backports; urgency=medium
+squashfs-tools-ng (1.1.4-1~bpo9+2) unstable; urgency=medium
+
+  * Explicitly require zstd 1.3.1, per
+    https://github.com/AgentD/squashfs-tools-ng/blob/master/configure.ac#L207
+    Without this, it happily builds, and just ignores the too-old libzstd installed.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 23 May 2022 16:23:41 +1000
+
+squashfs-tools-ng (1.1.4-1~bpo9+1) stretch-backports; urgency=medium
 
   * Rebuild for stretch-backports.
   * Get rdsquashfs with zstd support, on Debian 9 stretch

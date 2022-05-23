@@ -60,13 +60,14 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=sync-out /X {td}',
          'stretch',
          '/dev/null',
-         # Enable backports (for debhelper 12)
+         # Enable backports (for debhelper 12 & zstd 1.3)
          'deb http://deb.debian.org/debian-security stretch/updates          main',
          'deb http://deb.debian.org/debian          stretch                  main',
          'deb http://deb.debian.org/debian          stretch-updates          main',
          'deb http://deb.debian.org/debian          stretch-proposed-updates main',
          'deb http://deb.debian.org/debian          stretch-backports        main',
          '--essential-hook=(echo Package: debhelper dh-autoreconf; echo Pin: release a=stretch-backports; echo Pin-Priority: 500) >$1/etc/apt/preferences.d/fuck',
+         '--essential-hook=(echo Package: libzstd-dev libzstd1 zstd; echo Pin: release a=stretch-backports; echo Pin-Priority: 500) >$1/etc/apt/preferences.d/duck',
          ])
     # debsign here?
     subprocess.check_call([
