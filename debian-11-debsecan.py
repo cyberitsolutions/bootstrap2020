@@ -1,6 +1,9 @@
 #!/usr/bin/python3.5
 import argparse
 import collections
+import datetime
+import itertools
+import json
 import logging
 import pathlib
 import pprint
@@ -39,8 +42,7 @@ parser = argparse.ArgumentParser(
     epilog='Example: --old=2022-01-01-* --new=2022-02-01-*')
 parser.add_argument('--old-version', default='previous')
 parser.add_argument('--new-version', default='latest')
-parser.add_argument('--only-fixed', action='store_true',
-                    help='do not mention a vuln until it is fixed in Debian 11')
+parser.add_argument('--no-only-fixed', action='store_false', dest='only_fixed')
 parser.add_argument('--suite', default='bullseye', choices=(
     'stretch', 'buster', 'bullseye', 'bookworm'))
 parser.add_argument('--templates', nargs='+', default={
@@ -93,18 +95,14 @@ def get_packages_all(soe_version):
 
 
 def get_security_data():
-    if False:                   # DEBUGGING
-        import json             # DEBUGGING
-        return json.loads(pathlib.Path('json').read_text())  # DEBUGGING
     # This file is about 32MB.
     resp = requests.get('https://security-tracker.debian.org/tracker/data/json')
     resp.raise_for_status()
-    return resp.json()
+    return resp.headers['Last-Modified'], resp.json()
 
 
 def debsecan(soe_version):
     installed_packages = get_packages_all(soe_version)
-    vulnerabilities = get_security_data()
     acc = set()                 # accumulator
     apt_pkg.init()
     for package in installed_packages:
@@ -131,10 +129,17 @@ def debsecan(soe_version):
             if vuln_release['urgency'] == 'unimportant':
                 logging.debug('Skipping unimportant vuln: %s', cve)
                 continue
-            if vuln_release['status'] == 'open' and args.only_fixed:
+            if args.only_fixed and not fix_available:
                 logging.info('Skipping vuln with no fix in %s: %s', args.suite, cve)
                 continue
-            acc.add((cve, FUCK_OFF_SET(vuln)))
+            # FUCK OFF, set()!
+            # I want to de-duplicate, and
+            # I want to diff vulns_fixed = vulns_old - vulns_new.
+            # If I use the vuln structure directly, I get this bullshit:
+            #   TypeError: unhashable type: 'dict'
+            # As a quick-and-dirty way to make the structure hashable,
+            # just convert it to a json string (and later, back).
+            acc.add((cve, package.name, json.dumps(vuln)))
     return acc
 
 
@@ -148,62 +153,38 @@ boring = {
 }
 
 
-# I want to de-duplicate, and
-# I want to diff vulns_fixed = vulns_old - vulns_new.
-# If I use stuff straight from JSON, I get this bullshit:
-#   TypeError: unhashable type: 'dict'
-# So just walk an arbitrary object and convert dicts and lists to tuples.
-def FUCK_OFF_SET(obj):
-    if isinstance(obj, list):
-        return tuple(FUCK_OFF_SET(x) for x in obj)
-    elif isinstance(obj, dict):
-        return tuple((k, FUCK_OFF_SET(v)) for k, v in obj.items())
-    else:
-        return obj
-
-
-# # By default debsecan prints each vuln repeatedly.
-# # So for example you see something like this:
-# #
-# #
-# #     CVE-2022-27774	curl
-# #     CVE-2022-27774	libcurl4
-# #     CVE-2022-27776	curl
-# #     CVE-2022-27776	libcurl4
-# #
-# # This function collates those *after* set-based diffing.
-# # Thus we end up with something like this:
-# #
-# #     CVE-2022-27774	curl libcurl4
-# #     CVE-2022-27776	curl libcurl4
-# #
-# # The main gotcha is when a versioned package name transitions,
-# # e.g. libcurl3 to libcurl4, and the vulnerability is NOT fixed,
-# # the lines "CVE-A libcurl3" and "CVE-B libcurl4" will be far apart.
-# # That was not happening in the git diff method, BUT
-# # in the git diff method the "curl" lines got in the way, so
-# # it was only PARTLY working there.
 def pretty_print(vulns):
-    # FIXME: THIS FUNCTION NEEDS A REWRITE
-    import pprint
-    return pprint.pprint(vulns)
-    g = collections.defaultdict(set)
-    # Ugh.  If there are no flags,
-    # the third field is entirely absent.
-    # To avoid KeyError, be a bit messy.
+    print()                     # separator line
+    if not vulns:
+        print('', 'Nothing, yay!', sep='\t')
+        return
+    # Now that set() diffing is done, go back to dict()s.
+    vulns = [
+        {'cve': cve,
+         'url': 'https://security-tracker.debian.org/tracker/{}'.format(cve),
+         'package': package,
+         **json.loads(vuln_json_str)}
+        for cve, package, vuln_json_str in vulns]
+    # ORDER BY urgency DESC, cve DESC
+    vulns.sort(reverse=True, key=lambda v: (
+        urgency_sortkey(v['releases'][args.suite]['urgency']),
+        alnum_sortkey(v['cve'])))
+
+
+    print('\t==========================================================\t===========\t===============\t==============')
+    print('\t                                             VULNERABILITY\tURGENCY    \tFIX AVAILABLE? \tSOURCE PACKAGE')
+    print('\t==========================================================\t===========\t===============\t==============')
     for vuln in vulns:
-        cve = vuln[0]
-        if args.only_fixed or len(vuln) == 2:
-            package = vuln[1]
-        else:
-            package = ' '.join(vuln[1:])
-        g[cve].add(package)
-    for cve in sorted(g, key=alnum_sortkey):
-        print('    https://security-tracker.debian.org/tracker/{}'.format(cve),
-              ' '.join(sorted(g[cve])),
+        print('', vuln['url'],
+              '{} urgency'.format(vuln['releases'][args.suite]['urgency'].replace('not yet assigned', 'TBD')),
+              ('fix in {}'.format(args.suite)
+               if 'fixed_version' in vuln['releases'][args.suite] else
+               'fix in unstable'
+               if 'fixed_version' in vuln['releases'].get('sid', {}) else
+               'no fix yet'),
+              vuln['package'],
               sep='\t')
-    if not g:
-        print('    Nothing, yay!')
+    print('\t==========================================================\t===========\t===============\t==============')
 
 
 # Sort 5-digit CVEs after 4-digit CVEs.
@@ -214,26 +195,27 @@ def alnum_sortkey(s):
 
 # https://security-team.debian.org/security_tracker.html#severity-levels
 # FIXME: https://docs.python.org/3/library/enum.html#functional-api ?
-def severity_sortkey(s):
+def urgency_sortkey(s):
     return {'unimportant': 0,
             'low': 1,
             'medium': 2,
-            'high': 3}[s]
+            'high': 3,
+            'not yet assigned': -1}[s]
 
 
+last_modified, vulnerabilities = get_security_data()
 debsecan_old = debsecan(args.old_version)
 debsecan_new = debsecan(args.new_version)
 
-print('Considering', *args.templates)
+print('Vulnerability changes in SOE update', '({} → {})'.format(args.old_version, args.new_version))
+print('for SOEs', *sorted(args.templates))
+print('using vulnerability database as at', last_modified)
 print()
 print('Vulnerabilities in', args.old_version, 'that are fixed in', args.new_version, '(usually some here):')
-# pretty_print(debsecan_old - debsecan_new)
-pprint.pprint(debsecan_old - debsecan_new)
+pretty_print(debsecan_old - debsecan_new)
 print()
 print('Vulnerabilities introduced in', args.new_version, 'since', args.old_version, '(should be empty):')
-# pretty_print(debsecan_new - debsecan_old)
-pprint.pprint(debsecan_new - debsecan_old)
+pretty_print(debsecan_new - debsecan_old)
 print()
-print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty iff new version was built today):')
-# pretty_print(debsecan_old & debsecan_new)
-pprint.pprint(debsecan_old & debsecan_new)
+print('Vulnerabilities in both', args.new_version, 'and', args.old_version, '(should be empty if new SOEs were built today):')
+pretty_print(debsecan_old & debsecan_new)
