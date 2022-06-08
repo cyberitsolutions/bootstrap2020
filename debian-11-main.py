@@ -305,6 +305,7 @@ with tempfile.TemporaryDirectory() as td:
             '--include=netbase',       # https://bugs.debian.org/995343 et al
             '--include=init']          # https://bugs.debian.org/993289
            if args.optimize != 'simplicity' else []),
+         '--include=systemd-timesyncd',  # https://bugs.debian.org/986651
          *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
            if args.optimize != 'simplicity' else []),
          # Reduce peak /tmp usage by about 500MB
