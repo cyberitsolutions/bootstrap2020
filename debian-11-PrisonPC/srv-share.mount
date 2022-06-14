@@ -1,5 +1,5 @@
 [Mount]
-What=nfs:/srv/share
+What=PrisonPC:/srv/share
 Where=/srv/share
 Type=nfs
 Options=nodev,noexec,nosuid,ro,sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049

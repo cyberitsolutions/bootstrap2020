@@ -12,7 +12,7 @@ __doc__ = """ (un)mount ~alice when alice logs in
 
 Modeled after systemd-user-runtime-dir.
 
-Originally we just mounted nfs:/home in fstab.
+Originally we just mounted PrisonPC:/home in fstab.
 That worked great until inmates noticed they could just override the POSIX DAC.
 i.e.
 
@@ -72,7 +72,7 @@ if mount_point.is_relative_to('/home'):
             # Force the specific NFS we want.
             # This prevents mount.nfs even trying 111/tcp.
             ',sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049',
-            f'nfs:{mount_point}',
+            f'PrisonPC:{mount_point}',
             # We MUST tell systemd that $HOME mount is part of the user session.
             # If we do not do this, reboot/shutdown hangs for 90s on this unit.
             # This happens even if $HOME is a tmpfs (not nfs) mount, so

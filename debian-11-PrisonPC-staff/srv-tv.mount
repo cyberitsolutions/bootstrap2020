@@ -1,5 +1,5 @@
 [Mount]
-What=nfs:/srv/tv
+What=PrisonPC:/srv/tv
 Where=/srv/tv
 Type=nfs
 Options=nodev,noexec,nosuid,sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049
