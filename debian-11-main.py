@@ -483,7 +483,7 @@ with tempfile.TemporaryDirectory() as td:
             # Staff-only packages
             *(['--include='
                '    gvncviewer'  # Control desktop (vnc://)
-               '    gvfs-backends gvfs-fuse'  # Browse p123's home (sftp://)
+               '    gvfs-backends gvfs-fuse openssh-client'  # Browse p123's home (sftp://)
                '    python3-vlc asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
                # NOTE: exfat-fuse removed as exfat is now in-kernel.
                # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
