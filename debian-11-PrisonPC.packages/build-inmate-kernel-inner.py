@@ -116,6 +116,12 @@ naughty_substrings = [
     'STORAGE', 'MTD', 'MMC', 'MEMSTICK', 'NVME',
     # encryption things
     'ECRYPT', 'CRYPTOLOOP']
+# We want to abort on things like "CONFIG_BT1234", so
+# we match just "BT" rather than "\<BT\>".
+# This bits us for a very small list of LEGITIMATE things that match.
+# Add an explicit hacky workaround for that here.
+naughty_word_exact_exception_allowlist = {
+    'CC_HAS_IBT', 'X86_KERNEL_IBT'}
 
 # Every MUST should match!
 if disabled_MUST_words := policy['MUST'] - enabled_words:
@@ -128,7 +134,8 @@ if enabled_naughty_words := {
         word
         for word in enabled_words
         if any(s in word
-               for s in naughty_substrings)}:
+               for s in naughty_substrings)
+        if word not in naughty_word_exact_exception_allowlist}:
     raise RuntimeError('ERROR: VERY naughty module(s) found!', enabled_naughty_words)
 
 ############################################################
