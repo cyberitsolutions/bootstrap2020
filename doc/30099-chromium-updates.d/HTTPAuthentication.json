@@ -1,5 +1,8 @@
 {
     "AuthSchemes": "basic,digest,ntlm,negotiate",
+    "AllHttpAuthSchemesAllowedForOrigins": [
+        "*.example.com"
+    ],
     "DisableAuthNegotiateCnameLookup": false,
     "EnableAuthNegotiatePort": false,
     "BasicAuthOverHttpEnabled": false,

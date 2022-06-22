@@ -1,4 +1,5 @@
 {
+    "DefaultClipboardSetting": 2,
     "DefaultCookiesSetting": 1,
     "DefaultFileSystemReadGuardSetting": 2,
     "DefaultFileSystemWriteGuardSetting": 2,
@@ -6,6 +7,7 @@
     "DefaultInsecureContentSetting": 2,
     "DefaultJavaScriptSetting": 1,
     "DefaultJavaScriptJitSetting": 1,
+    "DefaultLocalFontsSetting": 2,
     "DefaultPopupsSetting": 1,
     "DefaultNotificationsSetting": 2,
     "DefaultGeolocationSetting": 1,
@@ -13,6 +15,16 @@
     "DefaultWebBluetoothGuardSetting": 2,
     "DefaultWebUsbGuardSetting": 2,
     "DefaultSerialGuardSetting": 2,
+    "DefaultWebHidGuardSetting": 2,
+    "DefaultWindowPlacementSetting": 2,
+    "ClipboardAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "ClipboardBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
     "AutoSelectCertificateForUrls": [
         "{\"pattern\":\"https://www.example.com\",\"filter\":{\"ISSUER\":{\"CN\":\"certificate issuer name\", \"L\": \"certificate issuer location\", \"O\": \"certificate issuer org\", \"OU\": \"certificate issuer org unit\"}, \"SUBJECT\":{\"CN\":\"certificate subject name\", \"L\": \"certificate subject location\", \"O\": \"certificate subject org\", \"OU\": \"certificate subject org unit\"}}}"
     ],
@@ -76,6 +88,14 @@
     ],
     "LegacySameSiteCookieBehaviorEnabledForDomainList": [
         "www.example.com",
+        "[*.]example.edu"
+    ],
+    "LocalFontsAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "LocalFontsBlockedForUrls": [
+        "https://www.example.com",
         "[*.]example.edu"
     ],
     "PopupsAllowedForUrls": [
@@ -163,5 +183,53 @@
                 "https://all-vendor-devices.example.com"
             ]
         }
+    ],
+    "WebHidAskForUrls": [
+        "https://google.com",
+        "https://chromium.org"
+    ],
+    "WebHidBlockedForUrls": [
+        "https://google.com",
+        "https://chromium.org"
+    ],
+    "WebHidAllowAllDevicesForUrls": [
+        "https://google.com",
+        "https://chromium.org"
+    ],
+    "WebHidAllowDevicesForUrls": [
+        {
+            "devices": [
+                {
+                    "vendor_id": 1234,
+                    "product_id": 5678
+                }
+            ],
+            "urls": [
+                "https://google.com",
+                "https://chromium.org"
+            ]
+        }
+    ],
+    "WebHidAllowDevicesWithHidUsagesForUrls": [
+        {
+            "usages": [
+                {
+                    "usage_page": 1234,
+                    "usage": 5678
+                }
+            ],
+            "urls": [
+                "https://google.com",
+                "https://chromium.org"
+            ]
+        }
+    ],
+    "WindowPlacementAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "WindowPlacementBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
     ]
 }

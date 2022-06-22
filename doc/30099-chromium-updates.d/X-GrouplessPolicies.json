@@ -26,6 +26,7 @@
     "RoamingProfileLocation": "${roaming_app_data}\\chrome-profile",
     "DiskCacheDir": "${user_home}/Chrome_cache",
     "DiskCacheSize": 104857600,
+    "DownloadBubbleEnabled": true,
     "DownloadRestrictions": 4,
     "DownloadDirectory": "/home/${user_name}/Downloads",
     "AutoOpenFileTypes": [
@@ -73,6 +74,7 @@
     "BlockThirdPartyCookies": false,
     "DefaultSearchProviderContextMenuAccessAllowed": true,
     "LensRegionSearchEnabled": true,
+    "SideSearchEnabled": false,
     "InsecurePrivateNetworkRequestsAllowed": false,
     "InsecurePrivateNetworkRequestsAllowedForUrls": [
         "http://www.example.com:8080",
@@ -81,7 +83,7 @@
     "Disable3DAPIs": false,
     "PolicyRefreshRate": 3600000,
     "MaxInvalidationFetchDelay": 10000,
-    "TargetBlankImpliesNoOpener": false,
+    "SecondaryGoogleAccountUsage": "primary_account_signin",
     "TranslateEnabled": true,
     "BookmarkBarEnabled": true,
     "EditBookmarksEnabled": false,
@@ -90,7 +92,7 @@
     "SecurityKeyPermitAttestation": [
         "https://example.com"
     ],
-    "U2fSecurityKeyApiEnabled": true,
+    "WebAuthenticationRemoteProxiedRequestsAllowed": true,
     "ImportBookmarks": true,
     "ImportHistory": true,
     "ImportHomepage": true,
@@ -556,6 +558,21 @@
             "enabled_event_names": [
                 "passwordChangedEvent",
                 "sensitiveDataEvent"
+            ],
+            "enabled_opt_in_events": [
+                {
+                    "name": "loginEvent",
+                    "url_patterns": [
+                        "*"
+                    ]
+                },
+                {
+                    "name": "passwordBreachEvent",
+                    "url_patterns": [
+                        "example.com",
+                        "other.example.com"
+                    ]
+                }
             ]
         }
     ],
@@ -563,7 +580,6 @@
     "HSTSPolicyBypassList": [
         "meet"
     ],
-    "AllowSyncXHRInPageDismissal": false,
     "AudioSandboxEnabled": true,
     "ExternalProtocolDialogShowAlwaysOpenCheckbox": true,
     "ClickToCallEnabled": true,
@@ -576,6 +592,7 @@
     "AccessibilityImageLabelsEnabled": false,
     "IntensiveWakeUpThrottlingEnabled": true,
     "UserAgentClientHintsGREASEUpdateEnabled": true,
+    "UrlParamFilterEnabled": true,
     "ShowFullUrlsInAddressBar": false,
     "InsecureFormsWarningsEnabled": true,
     "LookalikeWarningAllowlistDomains": [
@@ -648,20 +665,24 @@
             ]
         }
     ],
-    "WebAppSettings": {
-        "https://foo.example": {
+    "WebAppSettings": [
+        {
+            "manifest_id": "https://foo.example/index.html",
             "run_on_os_login": "allowed"
         },
-        "https://bar.example": {
-            "run_on_os_login": "blocked"
+        {
+            "manifest_id": "https://bar.example/index.html",
+            "run_on_os_login": "allowed"
         },
-        "https://foobar.example": {
+        {
+            "manifest_id": "https://foobar.example/index.html",
             "run_on_os_login": "run_windowed"
         },
-        "*": {
+        {
+            "manifest_id": "*",
             "run_on_os_login": "blocked"
         }
-    },
+    ],
     "FetchKeepaliveDurationSecondsOnShutdown": 1,
     "SuppressDifferentOriginSubframeDialogs": true,
     "ForcedLanguages": [
@@ -673,11 +694,9 @@
         "10080"
     ],
     "ManagedAccountsSigninRestriction": "primary_account",
-    "LockIconInAddressBarEnabled": true,
     "HttpsOnlyMode": "disallowed",
     "DesktopSharingHubEnabled": true,
     "ChromeAppsEnabled": true,
-    "WebSQLInThirdPartyContextEnabled": true,
     "AccessCodeCastEnabled": true,
     "AccessCodeCastDeviceDuration": 60,
     "DeskTemplatesEnabled": true,
@@ -685,7 +704,6 @@
         "url": "https://example.com/a.json",
         "hash": "842841a4c75a55ad050d686f4ea5f77e83ae059877fe9b6946aa63d3d057ed32"
     },
-    "FastPairEnabled": true,
     "CORSNonWildcardRequestHeadersSupport": true,
     "CopyPreventionSettings": {
         "disable": [
@@ -699,5 +717,30 @@
     "UserAgentReduction": 0,
     "ForceMajorVersionToMinorPositionInUserAgent": 0,
     "OriginAgentClusterDefaultEnabled": false,
-    "DeviceLoginScreenWebUILazyLoading": true
+    "DeviceLoginScreenWebUILazyLoading": true,
+    "ExemptDomainFileTypePairsFromFileTypeDownloadWarnings": [
+        {
+            "file_extension": "jnlp",
+            "domains": [
+                "https://example.com",
+                "example2.com"
+            ]
+        },
+        {
+            "file_extension": "swf",
+            "domains": [
+                "*"
+            ]
+        }
+    ],
+    "IsolatedAppsDeveloperModeAllowed": false,
+    "WebSQLAccess": true,
+    "SetTimeoutWithout1MsClampEnabled": true,
+    "AllowChromeDataInBackups": true,
+    "EnterpriseAuthenticationAppLinkPolicy": [
+        {
+            "url": "https://www.abc.com"
+        }
+    ],
+    "ScreenTimeEnabled": true
 }

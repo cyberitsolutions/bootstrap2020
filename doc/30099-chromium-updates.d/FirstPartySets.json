@@ -1,0 +1,22 @@
+{
+    "FirstPartySetsEnabled": false,
+    "FirstPartySetsOverrides": {
+        "replacements": [
+            {
+                "owner": "https://owner1.test",
+                "members": [
+                    "https://member1.test",
+                    "https://member2.test"
+                ]
+            }
+        ],
+        "additions": [
+            {
+                "owner": "https://owner2.test",
+                "members": [
+                    "https://member3.test"
+                ]
+            }
+        ]
+    }
+}
