@@ -122,6 +122,7 @@ table inet PrisonPC {
             tcp . ipp,
             tcp . https,
             tcp . ldaps,
+            tcp . smtp,       # FIXME: PrisonPC is still 25 not 587 :/
             tcp . submission,
             tcp . imaps }  accept
         # In theory DHCP DORA happens in the ramdisk, and they handoff to networkd.
