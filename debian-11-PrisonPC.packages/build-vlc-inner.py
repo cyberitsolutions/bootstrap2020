@@ -3,6 +3,7 @@ import argparse
 import os
 import pathlib
 import subprocess
+import urllib.parse
 
 __doc__ = """ build vlc without screenshot support (--disable-sout) """
 
@@ -15,6 +16,8 @@ args = parser.parse_args()
 latest_version = subprocess.check_output(
     ['apt-get', 'download', '--print-uris', '--target-release=/./', 'vlc'],
     text=True).split('_')[1]
+# 3.0.17.4-0%2bdeb11u1 → 3.0.17.4-0+deb11u1
+latest_version = urllib.parse.unquote(latest_version)
 
 # FIXME: can we get the correct vlc source without enabling deb-src?
 for path in pathlib.Path('/etc/apt/sources.list.d/').glob('*.sources'):
