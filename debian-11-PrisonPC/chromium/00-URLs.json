@@ -4,8 +4,26 @@
         "chrome://bookmarks",
         "chrome://downloads",
         "chrome://history",
-        "chrome://print",
         "chrome://settings/passwords",  // TESTING
+
+        // The "system print dialog" (Ctrl+Shift+P) does not need these.
+        // The browser print dialog (Ctrl+P) needs BOTH of these.
+        //
+        // With chrome://print allowed and chrome-untrusted://print blocked,
+        // you can do Ctrl+P and the print dialog appears, and
+        // you can click "Print", and no error appears.
+        // But as soon as you change URL, you get a modal error:
+        //
+        //   Print Failed
+        //   Something went wrong when trying to print.
+        //   Please check your printer and try again.
+        //
+        // In Debian 9, because all of chrome://* was blocked,
+        // we simply set DisablePrintPreview=false to force Ctrl+P to act like Ctrl+Shift+P.
+        //
+        // https://source.chromium.org/chromium/chromium/src/+/main:docs/chrome_untrusted.md
+        "chrome://print",
+        "chrome-untrusted://print",  // the "print preview" (left-hand-side of Ctrl+P)
 
         "chrome://apps",                // for new-style New Tab Page
         // Observed in chromium=97.0.4692.99-1~deb11u2 on 2022-02-01:
