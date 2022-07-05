@@ -15,3 +15,7 @@ WorkingDirectory=~
 
 [Install]
 WantedBy=default.target
+
+# Don't bother running this on "ssh root@desktop shutdown".
+[Unit]
+ConditionUser=!@system
