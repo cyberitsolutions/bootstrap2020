@@ -89,17 +89,16 @@ def lookup_service_APT(service, protocol='tcp'):
 
 
 if rr := lookup_service('relp'):
+    is_desktop = 'desktop' in pathlib.Path('/proc/cmdline').read_text()
+    all_events = ''
+    non_kernel_events = 'if ($syslogfacility-text != "kern") then  '
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-RELP-to-logserv.conf').write_text(
         'module(load="omrelp")\n'
+        f'{non_kernel_events if is_desktop else all_events}'  # FIXME: this is a dirty dirty kludge.
         f'action(type="omrelp" target="{rr.target}" port="{rr.port}" template="RSYSLOG_SyslogProtocol23Format")\n')
+    # NOTE: imjournal replaces BOTH imuxsock AND imklog.
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-journald.conf').write_text(
         'module(load="imjournal")\n')
-    pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-kernel.conf').write_text(
-        'module(load="imklog")\n'
-        # FIXME: this is a dirty dirty kludge.
-        if 'desktop' not in pathlib.Path('/proc/cmdline').read_text() else
-        '# GUI desktops generate untenable amounts of kernel spam\n'
-        '# For example a scratched DVD will generate read errors at around 100Hz\n')
 
 if rr := lookup_service('smtp'):
     pathlib.Path('/etc/msmtprc').write_text(
