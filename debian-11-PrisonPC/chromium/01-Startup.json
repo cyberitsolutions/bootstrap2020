@@ -40,7 +40,7 @@
          "default_launch_container": "window",
          "create_desktop_shortcut": true},
         {"fallback_app_name": "Lodge Complaint",
-         "url": "https://prisonpc/Complain/",
+         "url": "https://prisonpc/Complain",
          "default_launch_container": "tab",
          "create_desktop_shortcut": true}],
     // I *guess* this is a way to make Mail autostart on GUI login?
