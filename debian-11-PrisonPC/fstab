@@ -31,6 +31,11 @@
 #   * /dev/shm needs -orw for chromium.
 #   * /dev/shm needs >32M for libreoffice.
 #   * /sys/fs/pstore is listed to add -oro (defense in depth).
+#     UPDATE: pstore.ko is gone in inmate desktops.
+#             Removed to appease systemd-remount-fs.service.
+#             Adding "nofail" was not sufficient.
+#             Is 0750 rwxr-x--- root:root on staff desktops;
+#             this is sufficient; we needn't obsess over -o ro here.
 #   * /dev is listed to add -onoexec.
 #   * /proc -o subset=pid broke tinysshd.socket.
 #   * /proc -o hidepid=invisible or =noaccess broke GUI login.
@@ -42,5 +47,4 @@ tmpfs   /run/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
 tmpfs   /lib/live/mount tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
 tmpfs   /run            tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
 tmpfs   /run/lock       tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
-pstore  /sys/fs/pstore  pstore  nosuid,noexec,nodev,ro
 devtmpfs /dev           devtmpfs nosuid,noexec,mode=0755
