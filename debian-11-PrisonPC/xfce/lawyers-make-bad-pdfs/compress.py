@@ -7,6 +7,15 @@ import argparse
 import ctypes
 import ctypes.util
 import pathlib
+import subprocess
+
+import gi
+gi.require_version('Notify', '0.7')
+import gi.repository.Notify     # noqa: E402
+
+
+class GSError(RuntimeError):
+    pass
 
 
 def main():
@@ -33,7 +42,31 @@ def main():
         f'-dColorImageResolution={args.DPI}',
         f'-dGrayImageResolution={args.DPI}',
         f'-dMonoImageResolution={args.DPI}',)
-    exit(ghostscript(args))
+
+    gi.repository.Notify.init('PDF compressor')
+    try:
+        ghostscript(args)
+        input_size = args.input_path.stat().st_size
+        output_size = args.output_path.stat().st_size
+        size_difference = output_size / input_size
+    except GSError:
+        gi.repository.Notify.Notification.new(
+            summary='Compression failed (internal error)',
+            body=f'Failed to compress PDF {args.input_path.name}',
+            icon='dialog-error-symbolic').show()
+        exit(1)
+    if size_difference > 0.9:
+        gi.repository.Notify.Notification.new(
+            summary='Compression failed (not smaller)',
+            body=f'Cannot make {args.input_path.name} significantly smaller',
+            icon='dialog-error-symbolic').show()
+        args.output_path.unlink()  # so delete it
+    else:
+        gi.repository.Notify.Notification.new(
+            summary=f'Compression succeeded ({1 - size_difference:.0%} smaller)',
+            body=f'Opening {args.output_path.name} now…',
+            icon='dialog-information-symbolic').show()
+        subprocess.check_call(['xdg-open', args.output_path])
 
 
 def ghostscript(args):
@@ -64,7 +97,7 @@ def ghostscript(args):
     check(libgs.gsapi_run_file(instance, input_path_encoded, None, ctypes.byref(pexit_code)))
     check(libgs.gsapi_exit(instance))
     check(libgs.gsapi_delete_instance(instance))
-    return pexit_code.value
+    check(pexit_code.value)
 
 
 if __name__ == '__main__':
