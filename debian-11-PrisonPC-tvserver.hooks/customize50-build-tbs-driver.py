@@ -22,13 +22,34 @@ UPDATE: their .zip is now just a readme.txt and a tarball, so
 
 NOTE: these errors are harmless and expected:
           libkmod: ERROR …: could not open /proc/modules: No such file or directory
-      but VER=X ***MUST*** match linux-image-amd46 + linux-headers-amd64 version,
+      but VER=X ***MUST*** match linux-image-amd64 + linux-headers-amd64 version,
       or the build will fail with no clear error message. —twb, Jan 2018
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
+
+# These are all things that definitely *aren't*
+# lib/modules/5.16.0-0.bpo.4-amd64/updates/extra/media/pci/saa716x/saa716x_tbs-dvb.ko
+shitlist = '''
+CXD2880_SPI_DRV DVB_CXD2880 DVB_NETUP_UNIDVB DVB_TEST_DRIVERS
+DVB_VIDTV MEDIA_ALTERA_CI MEDIA_TUNER_MSI001 MEDIA_TUNER_MT2266
+TOUCHSCREEN_SUR40 USB_AIRSPY USB_HACKRF USB_MSI2500 USB_S2255
+VIDEOBUF2_DMA_CONTIG VIDEOBUF2_DMA_SG VIDEOBUF2_DVB VIDEOBUF2_VMALLOC
+VIDEO_BCM2835 VIDEO_CAFE_CCIC VIDEO_COBALT VIDEO_CX18 VIDEO_CX18_ALSA
+VIDEO_CX23885 VIDEO_CX25821 VIDEO_CX25821_ALSA VIDEO_CX88
+VIDEO_CX88_ALSA VIDEO_CX88_BLACKBIRD VIDEO_CX88_DVB
+VIDEO_CX88_ENABLE_VP3054 VIDEO_CX88_MPEG VIDEO_CX88_VP3054
+VIDEO_FB_IVTV VIDEO_FB_IVTV_FORCE_PAT VIDEO_GS1662 VIDEO_IPU3_CIO2
+VIDEO_IPU3_IMGU VIDEO_IVTV VIDEO_IVTV_ALSA
+VIDEO_IVTV_DEPRECATED_IOCTLS VIDEO_MMP_CAMERA VIDEO_PXA27x
+VIDEO_QCOM_CAMSS VIDEO_QCOM_VENUS VIDEO_ROCKCHIP_RGA VIDEO_SAA7134
+VIDEO_SAA7134_ALSA VIDEO_SAA7134_DVB VIDEO_SAA7134_GO7007
+VIDEO_SAA7134_RC VIDEO_SOLO6X10 VIDEO_TW68 VIDEO_TW686X VIDEO_USBTV
+VIDEO_VIA_CAMERA VIDEO_VICODEC VIDEO_VIM2M VIDEO_VIMC VIDEO_VIVID
+VIDEO_VIVID_CEC VIDEO_VIVID_MAX_DEVS
+'''.split()
 
 
 # NOTE: without new open-source driver but no firmware,
@@ -73,28 +94,45 @@ if not modules_paths:
     raise RuntimeError('No kernels found!')
 for modules_path in modules_paths:
     kernel_version = modules_path.name
+    os.environ['VER'] = kernel_version
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build', f'VER={kernel_version}', 'dir', 'DIR=../media'])
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}', 'allyesconfig'])
-    # EXPERIMENTAL: try to reduce the build time by skipping shit we definitely DO NOT WANT.
-    # NOTE: no "make syncconfig", so we won't detect badness???
-    # shitlist = ('MEDIA_USB_SUPPORT', 'LIRC')
-    # subprocess.check_call([
-    #     'chroot', args.chroot_path,
-    #     'sh', '-c', "cd /tmp/media_build/v4l && /tmp/media/scripts/config " +
-    #     ' '.join((word
-    #               for module in shitlist
-    #               for word in ('--disable', module)))])
-    # subprocess.check_call(['chroot', args.chroot_path, 'bash'])  # DEBUGGING
+
+    # Since I can't get v4l's shitty "helper" scripts to work with
+    # regular linux menuconfig, or
+    # oldconfig, or
+    # defconfig, or
+    # localmodconfig, or
+    # localyesconfig, or
+    # scripts/config, or
+    # syncconfig, I FUCKING GIVE UP.
+    # I also tried guessing things like "make saa716x_dvb-tbs.ko" without success.
+    # I also tried --include=linux-source but it did not stop this:
+    #     ***WARNING:*** You do not have the full kernel sources installed.
+    #     [...] the full kernel source may be required in order to use
+    #     make menuconfig / xconfig / qconfig.
+    # Resort to patching the config file itself by hand.
+    # This is essentially looking for "CONFIG_FOO=[ym]" and commenting it out.
+    dotconfig = args.chroot_path / 'tmp/media_build/v4l/.config'
+    dotconfig.write_text('\n'.join(
+        (f'# {line[:-2]} is not set'
+         if any(line.startswith(f'CONFIG_{shitline}=')
+                for shitline in shitlist) else
+         line)
+        for line in dotconfig.read_text().splitlines()))
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}'])
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}', 'install'])
+
+    if not list(modules_path.glob('**/saa716x_tbs-dvb.ko')):
+        raise RuntimeError('Did not compile the one driver we actually want?')
 
 subprocess.check_call([
     'chroot', args.chroot_path,
