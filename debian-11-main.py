@@ -727,7 +727,7 @@ if args.boot_test:
                 'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:
                 # Simulate a site-specific desktop image (typically not done for staff).
-                subprocess.check_call(['convert', 'rose:', testdir / 'site.dir/wallpaper.jpg'])
+                (testdir / 'site.dir/wallpaper.jpg').write_bytes(pathlib.Path('wallpaper.svg').read_bytes())
             (testdir / 'site.dir/etc/nftables.conf.d').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/nftables.conf.d/11-PrisonPC-master-server-address.conf').write_text(
                 f'define PrisonPC = {master_address};')
