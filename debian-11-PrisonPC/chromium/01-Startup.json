@@ -35,14 +35,16 @@
         //  "url": "http://webmail/",
         //  "default_launch_container": "window",
         //  "create_desktop_shortcut": true},
-        {"fallback_app_name": "Watch TV",
-         "url": "https://prisonpc/TV/",
-         "default_launch_container": "window",
-         "create_desktop_shortcut": true},
-        {"fallback_app_name": "Lodge Complaint",
-         "url": "https://prisonpc/Complain",
-         "default_launch_container": "tab",
-         "create_desktop_shortcut": false}],
+        // UPDATE: stop using chrome://apps entirely; it's just a little too squicky right now. --twb, Jul 2022
+        // {"fallback_app_name": "Watch TV",
+        //  "url": "https://prisonpc/TV/",
+        //  "default_launch_container": "window",
+        //  "create_desktop_shortcut": true},
+        // {"fallback_app_name": "Lodge Complaint",
+        //  "url": "https://prisonpc/Complain",
+        //  "default_launch_container": "tab",
+        //  "create_desktop_shortcut": false}
+    ],
     // I *guess* this is a way to make Mail autostart on GUI login?
     // Does that even work?
     // "WebAppSettings": {
@@ -58,8 +60,8 @@
     // Which is something HCC wanted, IIRC.
     // UPDATE: we also need this to append ppcadm to the staff-only app list.
     "PolicyListMultipleSourceMergeList": [
-        // For *THIS* file, 01-Startup.json
-        "WebAppInstallForceList",
+        // For 30-PPCAdm.json (staff) + 50-PrisonPC-Managed-Bookmarks.json (all)
+        "ManagedBookmarks",
         // For *ANOTHER* file, 21-Miscellaneous.json!
         "AutoLaunchProtocolsFromOrigins",
         // For *ANOTHER* file, 00-URLs.json!
@@ -67,5 +69,5 @@
     // "NTP" means chrome://newtab (NOT Network Time Protocol).
     // "Card" means "recently used websites".
     "NTPCardsVisible": false,
-    "ShowAppsShortcutInBookmarkBar": true
+    "ShowAppsShortcutInBookmarkBar": false
 }

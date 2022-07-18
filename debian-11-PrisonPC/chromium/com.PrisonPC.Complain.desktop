@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Lodge Complaint
+Icon=mail-mark-important
+Exec=chromium --app=http://PrisonPC/Complain
+Categories=Network;Email;

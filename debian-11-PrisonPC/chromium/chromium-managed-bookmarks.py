@@ -22,6 +22,7 @@ args = parser.parse_args()
 
 try:
     # As at PrisonPC 20.09, this is not implemented yet.
+    # This IS implemented in Debian 11 PrisonPC, though.
     args.json_path.write_bytes(
         urllib.request.urlopen('https://prisonpc/ManagedBookmarks').read())
 except urllib.error.HTTPError:
@@ -57,6 +58,9 @@ except urllib.error.HTTPError:
                 json.dumps(
                     {'ManagedBookmarks': [
                         {'toplevel_name': 'PrisonPC Bookmarks'},
+                        {'url': 'http://webmail', 'name': 'Mail'},
+                        {'url': 'https://PrisonPC/TV/', 'name': 'Watch TV'},
+                        {'url': 'https://PrisonPC/Complain', 'name': 'Lodge Complaint'},
                         *({'url': u, 'name': n}
                           for u, n in self.links)]}))
             super().close(*_args, **_kwargs)

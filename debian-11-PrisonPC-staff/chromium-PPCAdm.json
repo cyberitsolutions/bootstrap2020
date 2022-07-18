@@ -1,11 +1,15 @@
 // NOTE: this file assumes PolicyListMultipleSourceMergeList includes
-//       WebAppInstallForceList and URLAllowlist, so
+//       ManagedBookmarks and URLAllowlist, so
 //       entries here add to (not replace) the inmate defaults.
 {"HomepageLocation": "https://PPCAdm/",
- "WebAppInstallForceList": [
-    {"fallback_app_name": "PrisonPC Admin",
-     "url": "https://PPCAdm/",
-     "create_desktop_shortcut": true}],
+
+ // NOTE: if this FILE sorts LAST, then
+ //       this BOOKMARK will be FIRST in the PrisonPC Bookmarks dropdown.
+ //       Since the main bookmarks appear in 50-PrisonPC-Managed-Bookmarks.json,
+ //       we SHOULD call this file something higher than "50".
+ "ManagedBookmarks": [
+    {"name": "PrisonPC Admin",
+     "url": "https://PPCAdm/"}],
 
  // In ppcadm, "Browse p123's home directory" just links to sftp://p123@inmates/p123.
  // In ppcadm, "Control desktop" just links to vnc://10.128.1.2.

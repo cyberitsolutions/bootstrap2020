@@ -25,7 +25,6 @@
         "chrome://print",
         "chrome-untrusted://print",  // the "print preview" (left-hand-side of Ctrl+P)
 
-        "chrome://apps",                // for new-style New Tab Page
         // Observed in chromium=97.0.4692.99-1~deb11u2 on 2022-02-01:
         //
         //     <twb> mike: OK what is happening is this:
@@ -61,6 +60,7 @@
         "chrome://about",       // mostly harmless
         "chrome://accessibility",  // dunno
         "chrome://appcache-internals",  // dunno
+        "chrome://apps",                // WebAppInstallForceList & ⋮>More Tools>Create Shortcut (NOT New Tab Page)
         "chrome://autofill-internals",  // dunno
         "chrome://blob-internals",      // dunno
         "chrome://bluetooth-internals",  // BAD!
