@@ -62,8 +62,24 @@ if False:
 #        Continuing to use XV probably just means the desktop CPU will work a little harder.
 #        That doesn't REALLY matter.
 #
+#        <twb> libvdpau-va-gl: VideoSurface::GetBitsYCbCrImpl(): not implemented conversion VA FOURCC ^@^@^@^@ -> VDP_YCBCR_FORMAT_YV12
+#        <twb> [00007f644400f080] vdpau_chroma filter error: video surface export failure: VDP_STATUS_INVALID_Y_CB_CR_FORMAT
+#        <courmisch> twb: vdpau-va-gl is notoriously crap
+#        <courmisch> uninstall the va-gl.vdpau backend
+#        <twb> courmisch: is that ./usr/lib/x86_64-linux-gnu/vlc/libvlc_vdpau.so.0.0.0 ?
+#        <courmisch> no
+#        <twb> I guess the better question is:
+#              On a Debian 11 / XFCE / X11 / amd64 desktop,
+#              what video output stack *should* I be using?
+#              XV, GL, EGL, VAAPI, VDPAU, or what?
+#        <twb> I'm perfectly happy to just compile and use only the "good" one and disable the rest.
+#        <twb> (Oh, and pipewire isn't available yet because reasons)
+#        <twb> courmisch: let me paraphrase differently to check my understanding ---
+#              I should just "./configure --disable-vdpau"?
+#              What about --disable-libva?
+#
 # NOTE: we need cdda:// for music CDs.
-#       That and VCD (bootleg malasyian market movie CDs) use the same configure option (--enable-vcd).
+#       That and VCD (bootleg Malaysian market movie CDs) use the same configure option (--enable-vcd).
 #       Therefore we do not add vcd to shit_modules.
 shit_modules = """
 sout lua vlm addonmanagermodules
@@ -75,11 +91,13 @@ skins2 libtar macosx sparkle minimal-macosx ncurses lirc
 goom projectm vsxu
 avahi mtp upnp microdns
 libxml2 libgcrypt gnutls secret kwallet update-check osx-notifications
+vdpau
 """
 
 shit_globs = """
 usr/bin/svlc
 usr/bin/nvlc
+usr/lib/*/vlc/libvlc_vdpau.so*
 usr/lib/*/vlc/lua
 usr/lib/*/vlc/plugins/access/libaccess_alsa_plugin.so
 usr/lib/*/vlc/plugins/access/libaccess_concat_plugin.so
@@ -169,19 +187,14 @@ usr/lib/*/vlc/plugins/stream_out/libstream_out_stats_plugin.so
 usr/lib/*/vlc/plugins/stream_out/libstream_out_transcode_plugin.so
 usr/lib/*/vlc/plugins/text_renderer/libsvg_plugin.so
 usr/lib/*/vlc/plugins/text_renderer/libtdummy_plugin.so
+usr/lib/*/vlc/plugins/vdpau
 usr/lib/*/vlc/plugins/video_output/libaa_plugin.so
 usr/lib/*/vlc/plugins/video_output/libcaca_plugin.so
 usr/lib/*/vlc/plugins/video_output/libegl_wl_plugin.so
-usr/lib/*/vlc/plugins/video_output/libegl_x11_plugin.so
 usr/lib/*/vlc/plugins/video_output/libfb_plugin.so
 usr/lib/*/vlc/plugins/video_output/libflaschen_plugin.so
-usr/lib/*/vlc/plugins/video_output/libgl_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglconv_vaapi_drm_plugin.so
 usr/lib/*/vlc/plugins/video_output/libglconv_vaapi_wl_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglconv_vaapi_x11_plugin.so
 usr/lib/*/vlc/plugins/video_output/libglconv_vdpau_plugin.so
-usr/lib/*/vlc/plugins/video_output/libgles2_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglx_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvdummy_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvmem_plugin.so
 usr/lib/*/vlc/plugins/video_output/libwl_shell_plugin.so
@@ -228,15 +241,8 @@ usr/lib/*/vlc/plugins/audio_output/libadummy_plugin.so
 usr/lib/*/vlc/plugins/audio_output/libafile_plugin.so
 usr/lib/*/vlc/plugins/audio_output/libamem_plugin.so
 usr/lib/*/vlc/plugins/text_renderer/libtdummy_plugin.so
-usr/lib/*/vlc/plugins/video_output/libegl_x11_plugin.so
 usr/lib/*/vlc/plugins/video_output/libfb_plugin.so
 usr/lib/*/vlc/plugins/video_output/libflaschen_plugin.so
-usr/lib/*/vlc/plugins/video_output/libgl_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglconv_vaapi_drm_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglconv_vaapi_x11_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglconv_vdpau_plugin.so
-usr/lib/*/vlc/plugins/video_output/libgles2_plugin.so
-usr/lib/*/vlc/plugins/video_output/libglx_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvdummy_plugin.so
 usr/lib/*/vlc/plugins/video_output/libvmem_plugin.so
 usr/lib/*/vlc/plugins/video_output/libyuv_plugin.so
@@ -282,6 +288,19 @@ subprocess.check_call(
      '--local=PrisonPC',
      '--distribution=bullseye',
      '(EXPERIMENTAL) re-enable video_output/libxcb_x11_plugin.so for "boot-test" kvm -vga qxl.'],
+    cwd=source_dir)
+subprocess.check_call(
+    ['debchange',
+     '--local=PrisonPC',
+     '--distribution=bullseye',
+     'Stop removing libgl* plugin ("OpenGL video output").\n'
+     'Stop removing libegl* plugin ("OpenGL for Embedded Systems 2 video output").\n'
+     'Start removing vdpau explicitly.\n'
+     '(Some guy in #videolan says vdpau-va-gl is "crap";\n'
+     'I *think* this is the Nvidia VDPAU shim for Intel VA cards???)\n'
+     '\n'
+     'AMC noticed that SOME channels have some/all squares in a video changed to pure green.\n'
+     'On an unlocked stock vlc, rm libgl* was enough to trigger that problem.'],
     cwd=source_dir)
 
 # Build the patched source package.
