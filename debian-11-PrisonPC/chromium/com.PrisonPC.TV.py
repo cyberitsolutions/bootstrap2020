@@ -82,12 +82,7 @@ def watch(channels):
                 for url, name in channels:
                     print(f'#EXTINF:0,{name}', file=f)
                     print(url, file=f)
-            subprocess.check_call(
-                ['vlc',
-                 '--one-instance',
-                 '--no-playlist-enqueue',
-                 playlist_path],
-                cwd=td)
+            subprocess.check_call(['vlc', playlist_path], cwd=td)
 
 
 if __name__ == '__main__':
