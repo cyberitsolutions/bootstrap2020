@@ -82,7 +82,17 @@ def watch(channels):
                 for url, name in channels:
                     print(f'#EXTINF:0,{name}', file=f)
                     print(url, file=f)
-            subprocess.check_call(['vlc', playlist_path], cwd=td)
+            subprocess.check_call(
+                ['vlc',
+                 # Make the IR TV remote control work nicer.  It sends arrow keys.
+                 # Since fast-forward / rewind is meaningless for real-time TV,
+                 # tell vlc to use arrows for channel surfing instead of tracking.
+                 '--key-nav-left=',
+                 '--key-nav-right=',
+                 '--key-next=Right',
+                 '--key-prev=Left',
+                 playlist_path],
+                cwd=td)
 
 
 if __name__ == '__main__':
