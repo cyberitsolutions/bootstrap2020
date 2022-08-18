@@ -1,3 +1,10 @@
+prisonpc-ersatz (11.36) bullseye; urgency=medium
+
+  * unblock pipewire-bin for Debian 12
+    https://github.com/cyberitsolutions/bootstrap2020/commit/3ccdb65
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 18 Aug 2022 11:08:55 +1000
+
 prisonpc-ersatz (11.35) bullseye; urgency=medium
 
   * block vigor (MS Word "clippy" ported to vi).

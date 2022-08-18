@@ -359,7 +359,8 @@ Conflicts:
 #   udisks2             --- for DVD drive
 #   upower              --- for case power button (eventually)
 #   xserver-xorg-core   --- for video
-#   pulseaudio          --- for audio
+#   pulseaudio          --- for audio (Debian 11)
+#   pipewire-bin        --- for audio (Debian 12+)
 #   libinput-bin        --- for keyboard and mouse
 #   ir-keytable         --- for infrared TV remote control
 #   libmtp-common	--- DO NOT WANT, but needs to be nerfed as vlc & gvfs Depends on it via libmtp9
@@ -405,7 +406,7 @@ Conflicts:
  nbc, netscript-2.4, network-manager, nqc, nut-ipmi, nut-server,
  nvidia-kernel-common, nvme-cli, ocfs2-tools, ofono, ola, open-iscsi,
  open-vm-tools, opencpn, openocd, openrazer-driver-dkms, osspd,
- pcmciautils, pipewire-bin, ponyprog, printer-driver-foo2zjs,
+ pcmciautils, ponyprog, printer-driver-foo2zjs,
  projecteur, python3-btchip, qemu-guest-agent, qlcplus,
  qthid-fcd-controller, razercfg, rdma-core, rear, scanbd, scdaemon,
  sg3-utils-udev, solaar, spectools, spice-vdagent, spice-webdavd,
