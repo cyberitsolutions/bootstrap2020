@@ -1,0 +1,15 @@
+This brings back the old bug though, that if you use
+
+  * vlc
+  * a DVD
+  * pipewire
+
+Then vlc tells pipewire to play "auxiliary 0" and "auxiliary 1" and
+you get a constant clicking noise, instead of actual audio.
+
+  * using pulseaudio instead of pipewire does not have this issue
+  * using mpv intead of vlc does not have this issue
+  * using rtp:// or local-file.mkv instead of a DVD does not have this issue
+  * telling vlc to play to alsa (not auto/pulseaudio) **AND** telling vlc that alsa's output should be 5.1 or 7.1 (not the default, stereo) does not have this issue
+
+  * this is true even if the DVD itself is only has 2.0 audio, i.e. it is NOT limited to surround sound DVDs
