@@ -427,7 +427,7 @@ with tempfile.TemporaryDirectory() as td:
             '    xserver-xorg-core xserver-xorg-input-libinput'
             '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar galculator'
             '    xdm'
-            '    pipewire xfce4-pulseaudio-plugin pavucontrol'
+            '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
             # Without "alsactl init" & /usr/share/alsa/init/default,
             # pipewire/pulseaudio use the kernel default (muted & 0%)!
             '    alsa-utils'
@@ -443,25 +443,6 @@ with tempfile.TemporaryDirectory() as td:
             '    gnome-themes-extra adwaita-qt'  # theming
             '    at-spi2-core gnome-accessibility-themes'
             '    plymouth-themes',
-
-            # FIXME: in Debian 12, change to simply '--include=pipewire-pulse'
-            # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
-            *['--dpkgopt=path-include=/usr/share/doc/pipewire',
-              '--dpkgopt=path-include=/usr/share/doc/pipewire/*',
-              '--customize-hook=systemctl link    --user --global --root $1'
-              '    /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.service'
-              '    /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.socket',
-              # FIXME: does "systemctl preset-all --user --global" mean we do not care about these?  I think it does
-              '--customize-hook=systemctl enable  --user --global --root $1 pipewire-pulse pipewire-pulse.socket',
-              '--customize-hook=systemctl disable --user --global --root $1 pulseaudio pulseaudio.socket',
-              '--customize-hook=touch $1/etc/pipewire/media-session.d/with-pulseaudio',
-              # Chromium works without the rest.
-              '--include=pipewire-audio-client-libraries',
-              '--customize-hook=cp -vt $1/etc/alsa/conf.d/ $1/usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf',
-              '--customize-hook=touch $1/etc/pipewire/media-session.d/with-alsa',
-              '--customize-hook=find $1/usr/share/doc/pipewire/examples/ld.so.conf.d/ -name "pipewire-jack-*.conf" -exec cp -vt $1/etc/ld.so.conf.d/ {} +',
-              '--customize-hook=chroot $1 ldconfig'],
-
             # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
             '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
             *(['--include='
