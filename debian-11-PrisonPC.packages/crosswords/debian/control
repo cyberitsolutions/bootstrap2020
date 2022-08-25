@@ -1,0 +1,29 @@
+Source: crosswords
+Section: games
+Priority: optional
+Homepage: https://gitlab.gnome.org/jrb/crosswords/
+Standards-Version: 4.5.1
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13),
+
+Package: gnome-crosswords
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Architecture: any
+Description: crossword player and editor for GNOME
+ GNOME Crosswords is a crossword player and editor.
+ Features:
+ .
+  * Loads .ipuz and .puz files.
+    Supports a significant chunk of the .ipuz spec for Crosswords
+  * Supports standalone puzzle sets with multiple ways of playing them
+  * External puzzle set downloaders can be used to download puzzles
+  * Extensive styling support for crosswords.
+    Square, black and white crosswords are traditional, but
+    it can also take advantage of color and shapes
+  * Reveal button to find mistakes and hint button to suggest answers
+  * Puzzle checksums for puzzles that don't include an answer
+  * Respects the Desktop-wide dark-mode preference.
+  * Language-specific quirks
