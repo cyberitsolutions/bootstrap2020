@@ -6,6 +6,15 @@ Standards-Version: 4.5.1
 Maintainer: Trent W. Buck <twb@cyber.com.au>
 Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13),
+ meson (>= 0.59.0),
+ pkg-config,
+ libglib2.0-dev,
+ libgtk-4-dev,
+ libjson-glib-dev,
+ librsvg2-dev,
+ libadwaita-1-dev,
+# https://gitlab.gnome.org/jrb/libipuz
+ libipuz-dev,
 
 Package: gnome-crosswords
 Depends:
