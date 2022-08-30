@@ -1,3 +1,4 @@
+# -*-conf-*-
 # Only start rsyslog if get-config-from-dnssd found an upstream RELP server.
 # If we don't do this, then rsyslog will exit non-zero with these errors:
 #
@@ -7,5 +8,8 @@
 # Also get-config-from-dnssd will rerun.
 # This will happen in a huge loop because syslog.socket will try
 # REALLY HARD to keep rsyslog running.
-[Unit]
-ConditionPathExists=/etc/rsyslog.d/bootstrap2020-RELP-to-logserv.conf
+# [Install]
+# WantedBy=
+
+disable rsyslog.service
+#disable syslog.socket

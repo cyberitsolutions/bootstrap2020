@@ -90,15 +90,31 @@ def lookup_service_APT(service, protocol='tcp'):
 
 if rr := lookup_service('relp'):
     is_desktop = 'desktop' in pathlib.Path('/proc/cmdline').read_text()
-    all_events = ''
-    non_kernel_events = 'if ($syslogfacility-text != "kern") then  '
     pathlib.Path('/etc/rsyslog.d/bootstrap2020-RELP-to-logserv.conf').write_text(
         'module(load="omrelp")\n'
-        f'{non_kernel_events if is_desktop else all_events}'  # FIXME: this is a dirty dirty kludge.
-        f'action(type="omrelp" target="{rr.target}" port="{rr.port}" template="RSYSLOG_SyslogProtocol23Format")\n')
-    # NOTE: imjournal replaces BOTH imuxsock AND imklog.
-    pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-journald.conf').write_text(
-        'module(load="imjournal")\n')
+        f'action(type="omrelp" target="{rr.target}" port="{rr.port}" template="RSYSLOG_SyslogProtocol23Format")\n'
+    )
+    pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-syslog.conf').write_text(
+        'module(load="imuxsock")\n')
+    pathlib.Path('/etc/rsyslog.d/bootstrap2020-from-kernel.conf').write_text(
+        'module(load="imklog")\n'
+        # FIXME: this is a dirty dirty kludge.
+        if 'desktop' not in pathlib.Path('/proc/cmdline').read_text() else
+        '# GUI desktops generate untenable amounts of kernel spam\n'
+        '# For example a scratched DVD will generate read errors at around 100Hz\n')
+
+    # Start these units (our dropins stop them from booting normally).
+    # I didn't want to have a "start --no-block" call, but
+    # I cannot get stuff to start in the correct order using After=/Requires= :-(
+    subprocess.check_call(['systemctl', 'enable', '--now', '--no-block',
+                           'rsyslog.service',
+                           # 'syslog.socket'
+                           ])
+else:
+    # We aren't forwarding logs off-host, so we don't need syslog at all -- just journald/journalctl.
+    # If we don't disable both these units, rsyslog.service will whinge "my config is stupid; exiting", and
+    # syslog.socket will keep restarting it.
+    subprocess.check_call(['systemctl', 'disable', '--now', '--no-block', 'syslog.socket', 'rsyslog.service'])
 
 if rr := lookup_service('smtp'):
     pathlib.Path('/etc/msmtprc').write_text(
