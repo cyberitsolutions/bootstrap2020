@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=TV Guide
+Name=Watch TV
 Icon=applications-multimedia
 Exec=chromium --app=https://PrisonPC/TV/
 Categories=AudioVideo;Player;Video;
