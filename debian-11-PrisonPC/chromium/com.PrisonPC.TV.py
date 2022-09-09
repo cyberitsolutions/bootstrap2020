@@ -46,11 +46,14 @@ def get_channels():             # -> [(url, name)]
         for station in stations:
             with urllib.request.urlopen(f'https://PrisonPC/TV/{urllib.request.quote(station)}') as f:
                 channels1 = re.findall(
-                    r'<a href="(rtp://239.255.\d+.\d+:1234)" class=channel style="grid-row:1;grid-column:\d+">([^<]+)</a>',
+                    r'<a href="(rtp://239.255.\d+.\d+:1234)" class=channel style="grid-row:1;grid-column:(\d+)">([^<]+)</a>',
                     f.read().decode())
+                # The order in the HTML is NON-DETERMINISTIC.
+                # So far, in ~4 days of testing, it was sorted ascending 3 times, and sorted descending 1 time.
+                channels1.sort(key=lambda triple: int(triple[1]))
                 # Prepend the station name, to aid sorting in vlc's playlist.
                 channels += [(url, f'{station} — {channel}')
-                             for url, channel in channels1]
+                             for url, _, channel in channels1]
     return channels
 
 
