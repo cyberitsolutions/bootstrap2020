@@ -3,5 +3,5 @@ Version=1.0
 Type=Application
 Name=Watch TV
 Icon=applications-multimedia
-Exec=chromium --app=https://PrisonPC/TV/
+Exec=xdg-open https://PrisonPC/TV/
 Categories=AudioVideo;Player;Video;
