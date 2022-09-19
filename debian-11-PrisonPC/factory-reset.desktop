@@ -13,3 +13,6 @@ X-Desktop-File-Install-Version=0.18
 # We remove that GUI, so the icon is leftover.
 # It's "good enough".
 Icon=user_icon
+
+# https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+StartupNotify=true

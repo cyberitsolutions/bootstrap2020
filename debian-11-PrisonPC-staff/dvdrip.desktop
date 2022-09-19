@@ -5,3 +5,6 @@ Categories=Application;AudioVideo;Video;
 Terminal=0
 Exec=PrisonPC-dvdrip
 Icon=media-optical
+
+# https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+StartupNotify=true

@@ -7,3 +7,6 @@ Exec=PrisonPC-watch-TV %U
 Categories=AudioVideo;Player;Video;
 MimeType=x-scheme-handler/rtp;
 NoDisplay=true
+
+# https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+StartupNotify=true

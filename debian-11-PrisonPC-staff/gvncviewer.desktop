@@ -20,3 +20,6 @@ MimeType=x-scheme-handler/vnc;
 # Pretty sure we don't need both of these.
 #MimeType=x-scheme-handler/x-chromium-vnc;x-scheme-handler/vnc;
 NoDisplay=true
+
+# https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+StartupNotify=true

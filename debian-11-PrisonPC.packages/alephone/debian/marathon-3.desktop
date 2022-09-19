@@ -6,3 +6,6 @@ TryExec=/usr/share/games/marathon3
 Name=Marathon Infinity
 Icon=marathon
 Categories=Application;Game;ArcadeGame;
+
+# https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+StartupNotify=true
