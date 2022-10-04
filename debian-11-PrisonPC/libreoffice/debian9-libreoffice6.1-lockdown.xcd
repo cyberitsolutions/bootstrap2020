@@ -170,4 +170,23 @@
   </oor:component-data>
 
 
+  <!-- Default to "Colibre (dark)" not "Colibre" as the icon theme.
+       I would like to say
+
+           Colibre (dark) if Adwaita-dark;
+           Colibre if Adwaita.
+
+       I cannot see any way to specify that, so
+       for now at least set *consistent defaults* for GTK and LibreOffice.
+
+       Do *not* lock it, since Adwaita:light and HighContast GTK theme
+       users will need the Colibre light icon theme.
+  -->
+  <oor:component-data oor:name="Common" oor:package="org.openoffice.Office">
+    <node oor:name="Misc">
+      <prop oor:name="SymbolStyle" oor:op="fuse"><value>colibre_dark</value></prop>
+    </node>
+  </oor:component-data>
+
+
 </oor:data>
