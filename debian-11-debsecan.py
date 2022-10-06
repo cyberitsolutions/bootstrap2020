@@ -153,6 +153,17 @@ boring = {
 }
 
 
+def sanity_check_suite():
+    known_suites = {
+        suite
+        for package in vulnerabilities.values()
+        for cve in package.values()
+        for suite in cve['releases'].keys()}
+    if args.suite not in known_suites:
+        logging.error('%s not supported by Debian Security Team %s', args.suite, sorted(known_suites))
+        exit(3)  # https://www.monitoring-plugins.org/doc/guidelines.html#AEN78
+
+
 def pretty_print(vulns):
     print()                     # separator line
     if not vulns:
@@ -204,6 +215,7 @@ def urgency_sortkey(s):
 
 
 last_modified, vulnerabilities = get_security_data()
+sanity_check_suite()
 debsecan_old = debsecan(args.old_version)
 debsecan_new = debsecan(args.new_version)
 
