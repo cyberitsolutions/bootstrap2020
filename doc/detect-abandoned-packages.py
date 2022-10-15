@@ -23,7 +23,7 @@ FIXME: this does not consider upstream abandonment yet! (IMPORTANT!)
 
 """
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 with pathlib.Path('detect-abandoned-packages.tsv').open('w') as f:
     tsv = csv.DictWriter(
@@ -37,8 +37,8 @@ with pathlib.Path('detect-abandoned-packages.tsv').open('w') as f:
 
     for path in sorted(pathlib.Path('/usr/share/doc/').glob('*/changelog.Debian*')):
         logging.debug(path)
-        if path.name.endswith('.amd64.gz'):  # FIXME: yuk
-            logging.debug('skipping binNMU: %s', path)
+        if path.name != 'changelog.Debian.gz':
+            logging.warning('skipping weird/binNMU file: %s', path)
             continue
         if path.suffix != '.gz':
             raise NotImplementedError(path)
