@@ -63,4 +63,4 @@ for code, name in linux_code2name.items():
         if key in xorg_key2sym:
             line += [xorg_key2sym[key]]
 
-    print('\t'.join([str(word) for word in line]))
+    print(*line, sep='\t')
