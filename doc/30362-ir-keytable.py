@@ -17,8 +17,7 @@ debug_parse_results = False
 
 with open('/usr/include/linux/input-event-codes.h') as fh:
     for line in fh:
-        match = re.search(r'^\s*#\s*define\s+(KEY_\S+)\s+(0x)?([0-9a-fA-F]+)', line)
-        if match:
+        if match := re.search(r'^\s*#\s*define\s+(KEY_\S+)\s+(0x)?([0-9a-fA-F]+)', line):
             name = match.group(1)
             code = (int(match.group(3), 16)
                     if '0x' == match.group(2) else
@@ -30,8 +29,7 @@ with open('/usr/include/linux/input-event-codes.h') as fh:
 
 with open('/usr/share/X11/xkb/keycodes/evdev') as fh:
     for line in fh:
-        match = re.search(r'^\s*<([^>]+)>\s*=\s*(\d+)', line)
-        if match:
+        if match := re.search(r'^\s*<([^>]+)>\s*=\s*(\d+)', line):
             key = match.group(1)
             code = int(match.group(2))
             xorg_code2key[code] = key
@@ -40,8 +38,7 @@ with open('/usr/share/X11/xkb/keycodes/evdev') as fh:
 
 with open('/usr/share/X11/xkb/symbols/inet') as fh:
     for line in fh:
-        match = re.search(r'^\s*key\s+<([^>]+)>\s*{\s*(.*)\s*};', line)
-        if match:
+        if match := re.search(r'^\s*key\s+<([^>]+)>\s*{\s*(.*)\s*};', line):
             key = match.group(1)
             sym = match.group(2)
             xorg_key2sym[key] = sym
