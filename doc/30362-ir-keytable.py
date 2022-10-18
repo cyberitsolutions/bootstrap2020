@@ -8,7 +8,6 @@
 
 import sys
 import re
-import contextlib
 
 linux_code2name = {}
 xorg_code2key = {}
@@ -21,12 +20,11 @@ with open('/usr/include/linux/input-event-codes.h') as fh:
         match = re.search(r'^\s*#\s*define\s+(KEY_\S+)\s+(0x)?([0-9a-fA-F]+)', line)
         if match:
             name = match.group(1)
-            with contextlib.suppress(ValueError):
-                code = (int(match.group(3), 16)
-                        if '0x' == match.group(2) else
-                        int(match.group(3)))
-                if 0 < code < 256:  # Skip codes X11 cannot represent.
-                    linux_code2name[code] = name
+            code = (int(match.group(3), 16)
+                    if '0x' == match.group(2) else
+                    int(match.group(3)))
+            if 0 < code < 256:  # Skip codes X11 cannot represent.
+                linux_code2name[code] = name
         elif debug_match_failures:
             sys.stderr.write('SKIPPED input.h: {}'.format(line))
 
