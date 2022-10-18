@@ -13,14 +13,6 @@ parser.add_argument('target_file', type=pathlib.Path)
 args = parser.parse_args()
 
 
-def rm_noerror(path):
-    try:
-        path.unlink()
-    except:
-        pass
-
-
-
 # FIXME: just use ffmpeg directly?
 #        Can ffmpeg read directly from rtp://239.255.1.2:1234/?
 #        It seems like it should be able to, but
