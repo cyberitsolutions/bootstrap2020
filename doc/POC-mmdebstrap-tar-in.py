@@ -37,8 +37,7 @@ class MyTarInfo(tarfile.TarInfo):
         if content:
             # Convenience - allow content=['foo', 'bar'] &c.
             if isinstance(content, str) and content.startswith('@'):
-                with open(content[1:], 'rb') as f:
-                    content = f.read()
+                content = pathlib.Path(content[1:]).read_bytes()
             if isinstance(content, list):
                 if all(isinstance(x, str) for x in content):
                     content = '\n'.join(content)
