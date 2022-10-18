@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+import contextlib
 import json
 import os
 import pathlib
@@ -48,8 +49,10 @@ To change that we need to do one of these:
 
 
 json_path = pathlib.Path('~/.config/chromium/Default/Preferences').expanduser().resolve()
-try:
+
+with contextlib.suppress(subprocess.CalledProcessError):
     _ = subprocess.check_output(['pgrep', 'chromium'])
+    # pgrep will fail if chromium isn't running; exiting this block.
     Gtk.MessageDialog(
         message_type=Gtk.MessageType.ERROR,
         buttons=Gtk.ButtonsType.OK,
@@ -58,8 +61,6 @@ try:
         secondary_text='Please close Chromium, then try again.',
     ).run()
     exit(os.EX_DATAERR)
-except subprocess.CalledProcessError:
-    pass
 
 try:
     with json_path.open() as f:
