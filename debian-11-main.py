@@ -414,6 +414,7 @@ with tempfile.TemporaryDirectory() as td:
          # This CANNOT persist updates across reboots (they re-download each boot).
          # NOTE: booting with "persistence" and live-tools can solve those.
          *(['--include=unattended-upgrades needrestart'
+            '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
             '    python3-gi powermgmt-base']  # unattended-upgrades wants these
            if template_wants_big_uptimes else []),
          *(['--include=smartmontools'
