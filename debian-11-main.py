@@ -811,7 +811,10 @@ for host in args.upload_to:
         f'cp -at /srv/netboot/images/{destdir.name}/ /srv/netboot/images/{args.template}-previous/site.dir'])
     subprocess.check_call(
         ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-latest'])
-    if host in ('tweak', 'tweak.prisonpc.com'):  # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
+    if host in ('tweak',  # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
+                'tweak.prisonpc.com',
+                'root@tweak',
+                'root@tweak.prisonpc.com'):
         soes = set(subprocess.check_output(
             ['ssh', host, 'tca get soes'],
             text=True).strip().splitlines())
