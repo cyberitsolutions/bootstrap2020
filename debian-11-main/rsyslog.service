@@ -1,0 +1,18 @@
+# NOTE: these two options are/were needed on the central server (imrelp + omfile).
+#       I don't THINK they are needed on the leaf nodes (imuxsock + omrelp).
+#       But they do not hurt, so add them just in case.
+#
+# UPDATE: Specifying them in the rsyslog.conf file did not seem to have any effect.
+#         What happens if I specify them in a systemd dropin instead?
+
+[Service]
+# https://bugs.debian.org/522297
+# Ref. http://www.rsyslog.com/doc/v8-stable/configuration/global/options/rsconf1_umask.html
+# Ref. https://sources.debian.net/src/rsyslog/stretch/runtime/rsconf.c/#L139
+UMask=0022
+# https://bugs.debian.org/656535
+# https://launchpad.net/bugs/918947
+WorkingDirectory=/var/spool/rsyslog
+# UPDATE: this does not work, because
+#             systemd[1]: StateDirectory= path is absolute, ignoring: /var/spool/rsyslog
+#StateDirectory=/var/spool/rsyslog
