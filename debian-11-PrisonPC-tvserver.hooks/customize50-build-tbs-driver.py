@@ -49,6 +49,8 @@ VIDEO_SAA7134_ALSA VIDEO_SAA7134_DVB VIDEO_SAA7134_GO7007
 VIDEO_SAA7134_RC VIDEO_SOLO6X10 VIDEO_TW68 VIDEO_TW686X VIDEO_USBTV
 VIDEO_VIA_CAMERA VIDEO_VICODEC VIDEO_VIM2M VIDEO_VIMC VIDEO_VIVID
 VIDEO_VIVID_CEC VIDEO_VIVID_MAX_DEVS
+
+RC_CORE LIRC RC_MAP RC_DECODERS RC_DEVICES IR_MCEUSB IR_STREAMZAP INPUT_ATI_REMOTE2 RC_ATI_REMOTE RC_XBOX_DVD VIDEO_TM6000 VIDEO_TM6000_ALSA VIDEO_TM6000_DVB
 '''.split()
 
 
@@ -68,7 +70,7 @@ subprocess.check_call([
 
 
 # Compile (much!) faster by running up to 1 compiler per CPU core.
-os.environ['MAKEFLAGS'] = f'j{int(subprocess.check_output(["nproc"]))}'
+os.environ['MAKEFLAGS'] = f'kj{int(subprocess.check_output(["nproc"]))}'
 
 # # These installs now happen via --include= in debian-11-main.py
 # chroot $t apt-get install build-essential ca-certificates git bzip2
