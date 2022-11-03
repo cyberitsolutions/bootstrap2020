@@ -452,6 +452,7 @@ with tempfile.TemporaryDirectory() as td:
                '    chromium chromium-l10n'
                '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
                '    libreoffice-gtk3'
+               '    libreoffice-gnome'  # fix double-click in sftp:// (for staff)
                '    libreoffice-help-en-gb libreoffice-l10n-en-gb'
                '    libreoffice-lightproof-en'
                '    hunspell-en-au hunspell-en-gb hunspell-en-us'
