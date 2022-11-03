@@ -68,7 +68,7 @@ subprocess.check_call([
 
 
 # Compile (much!) faster by running up to 1 compiler per CPU core.
-os.environ['MAKEFLAGS'] = 'j' + subprocess.check_output(['getconf', '_NPROCESSORS_ONLN'], text=True).strip()
+os.environ['MAKEFLAGS'] = f'j{int(subprocess.check_output(["nproc"]))}'
 
 # # These installs now happen via --include= in debian-11-main.py
 # chroot $t apt-get install build-essential ca-certificates git bzip2
