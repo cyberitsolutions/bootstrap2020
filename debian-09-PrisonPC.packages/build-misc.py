@@ -48,14 +48,13 @@ with tempfile.TemporaryDirectory() as td:
          '--include=fakeroot',
          *(['--include=devscripts,ca-certificates,libwww-perl,gnupg2',  # install uscan
             '--include= ' + ('subversion' if 'mode=svn' in watch_path.read_text() else ' '),
-            '--customize-hook=chroot $1 sh -c "'
-            '   cd /X/Y &&'
-            '   uscan --download-current-version &&'
-            '   tar --strip-components=1 -xf ../*orig.tar.*"',
+            '--customize-hook=chroot $1 env --chdir=/X/Y uscan --download-current-version',
+            '--customize-hook=chroot $1 env --chdir=/X/Y sh -c "tar --strip-components=1 -xf ../*orig.tar.*"',
             ]
            if watch_path.exists() else []),
          '--include=devscripts,lintian',
-         '--customize-hook=chroot $1 sh -c "cd /X/Y && apt-get build-dep -y ./ && HOME=/root debuild -uc -us"',
+         '--customize-hook=chroot $1 env --chdir=/X/Y apt-get build-dep -y ./',
+         '--customize-hook=chroot $1 env --chdir=/X/Y HOME=/root debuild -uc -us"',
          '--customize-hook=rm -rf $1/X/Y',
          f'--customize-hook=sync-out /X {td}',
          'stretch',

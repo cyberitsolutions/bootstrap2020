@@ -7,4 +7,4 @@ override_dh_auto_install:
 	wget2 -P $D/mods/global 'https://master.dl.sourceforge.net/project/artrev2100/ARmod_3.3.0.wz'
 	# Workaround https://bugs.debian.org/1005865 (--content-disposition breaks -P)
 	install -d $D/maps
-	cd $D/maps && wget2 -i $(CURDIR)/debian/maps.urls --content-disposition
+	env --chdir=$D/maps wget2 -i $(CURDIR)/debian/maps.urls --content-disposition

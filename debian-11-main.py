@@ -403,7 +403,7 @@ with tempfile.TemporaryDirectory() as td:
             '    ca-certificates',  # for msmtp to verify gmail
             f'--essential-hook=tar-in {create_tarball("debian-11-datasafe3")} /',
             # FIXME: symlink didn't work, so hard link for now.
-            '--customize-hook=cd $1/lib/systemd/system && cp -al ssh.service ssh-sftponly.service',
+            '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
             # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
             '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
             ]
