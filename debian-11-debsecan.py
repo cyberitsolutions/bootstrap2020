@@ -10,6 +10,7 @@ import pprint
 import re
 import subprocess
 import tempfile
+import time
 
 import apt_pkg
 import requests
@@ -98,6 +99,11 @@ def get_security_data():
     # This file is about 32MB.
     resp = requests.get('https://security-tracker.debian.org/tracker/data/json')
     resp.raise_for_status()
+    now, then = time.time(), int(subprocess.check_output(
+        ['date', '+%s', '-d', resp.headers['Last-Modified']]))
+    if now - then > 86400:
+        logging.warning('security data is over a day old! %s',
+                        resp.headers['Last-Modified'])
     return resp.headers['Last-Modified'], resp.json()
 
 
