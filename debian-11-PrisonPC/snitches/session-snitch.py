@@ -82,13 +82,14 @@ while True:
             if response_text.startswith('ERR '):
                 response_text = response_text[len('ERR '):]  # yuk
             popup_wait_crash(response_text)
-    except urllib.error.HTTPError:
+    except urllib.error.URLError:
         # Sometimes pete won't answer due to a transient outage.
+        # UPDATE: also sometimes DNS fails to resolve "ppc-services"!
         # In such cases, do not immediately reboot without warning!
         # We will just retry forever, every ten seconds.
         # If we fail too many times in a row (6), then
         # systemd WatchdogSec=60s will reboot without warning.
-        print('pete did not answer, so will not pet watchdog', file=sys.stderr, flush=True)  # for syslog
+        print('Transient network outage, so will not pet watchdog', e, file=sys.stderr, flush=True)  # for syslog
 
 
 # 10:16 <twb> I am upgrading a pre-systemd system.
