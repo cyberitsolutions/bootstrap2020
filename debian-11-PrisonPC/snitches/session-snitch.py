@@ -45,7 +45,7 @@ args = parser.parse_args()
 def popup_wait_crash(message: str) -> None:
     subprocess.run(['root-notify-send'], check=True, text=True, input=message)
     time.sleep(10)              # let them read the popup
-    exit(os.EX_ERR)             # trigger OnFailure=reboot-immediate
+    exit(1)                     # trigger OnFailure=reboot-immediate
 
 
 # INITIAL QUERY GOES TO /session/login/<USER>
