@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 
+import systemd.journal          # for logging
 import gi
 gi.require_version('Gtk', '3.0')
 import gi.repository.Gtk        # noqa: E402
@@ -97,6 +98,18 @@ def handle_error(function, path, excinfo):
 
 
 if gi.repository.Gtk.ResponseType.YES == dialog.run():
+
+    # Since this script is launched by XFCE,
+    # its stdout/stderr is usually connected to ~/.Xsession-errors.
+    # We're about to erase that, so instead log to the user(?) journal.
+    logging.getLogger().addHandler(systemd.journal.JournalHandler())
+    logging.info('user initiated factory reset')
+
+    # Explicitly terminate some GUI apps that are particularly problematic.
+    # Ignore errors because if they aren't running or don't terminate, we mostly don't care.
+    subprocess.call(['pkill', '-9', 'chromium|soffice.bin'])
+    subprocess.call(['systemctl', '--user', 'stop', 'pulseaudio.service', 'pulseaudio.socket'])
+
     home = pathlib.Path.home()
     if not home.is_relative_to('/home'):
         raise RuntimeError('suspicious $HOME', home)
@@ -125,4 +138,11 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
     # Killing xfce4-session only might be cleaner,
     # but might silently fail when the session start processes change.
     # --twb, Sep 2016
+    #
+    # UPDATE: AMC was reporting that "the desktop didn't close & reboot was not forced".
+    #         I speculate that "pkill -9 ." was killing ITSELF BEFORE the XFCE stuff.
+    #         To avoid this, first try killing the desktop.
+    #         Then try to kill everything if that failed.
+    subprocess.call(['pkill', '-f', 'Xsession|x-session-manager'])
+    subprocess.call(['systemctl' '--user', 'stop', '*'])
     subprocess.check_call(['pkill', '-9', '.'])
