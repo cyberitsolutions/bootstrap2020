@@ -81,7 +81,7 @@ dialog.set_markup(
 # Likewise "return False" instead of "raise". --twb, Sep 2016
 def handle_error(function, path, excinfo):
     _, exception, _ = excinfo
-    if ((function == os.remove
+    if ((function in (os.remove, os.unlink)
          and isinstance(exception, OSError)  # noqa: W503
          and exception.errno == errno.EBUSY  # noqa: W503
          and pathlib.Path(path).name.startswith('.nfs'))):  # noqa: W503
