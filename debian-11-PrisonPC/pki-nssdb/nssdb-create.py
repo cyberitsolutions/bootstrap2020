@@ -93,6 +93,35 @@ a user's dotfiles can be "factory reset" in two ways:
 
 The latter case cannot easily trigger server-side workarounds, so
 the simplest (if slightly messy) solution is to do this client-side.
+
+
+UPDATE: before Nov 2022,
+        "cp -r /etc/skel/.pki ~ --update" ran asynchronously on login.
+        after Nov 2022,
+        "cp -r /etc/skel/.pki ~" runs asynchronously on login.
+
+        The consequences are:
+
+        BONUS: chromium and cp cannot run at the same time, so cannot corrupt ~/.pki.
+
+        BONUS: no --update means a corrupt ~/.pki can be fixed
+               by just "log out and back in" not "do a factory reset".
+
+        MALUS: since cp happens synchronously, it delays the time between
+               "xdm accepts my login password" and
+               "the taskbar appears and I can start apps".
+
+        MALUS: needless cp (no --update) is slightly slower.
+               I measured an average of 1200ms instead of 800ms at AMC.
+
+        MALUS: needless cp (no --update) will create 2 new inodes each login.
+               When PrisonPC has ZFS, this will slightly bloat ZFS snapshots.
+               (Older rsync-based backups won't care.)
+
+        MALUS: client certificates will get wiped on every login,
+               rather than every month or year.
+               Nobody uses client certs, so we don't care.
+
 """
 
 with tempfile.TemporaryDirectory() as td:
