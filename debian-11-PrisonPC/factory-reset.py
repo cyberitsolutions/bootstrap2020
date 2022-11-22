@@ -103,7 +103,8 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
     # We're about to erase that, so instead log to the user(?) journal.
     # UPDATE: we want to log the python backtraces, too, so
     #        instead have the .desktop run "systemd-cat factory-reset".
-    logging.info('user initiated factory reset')
+    logging.getLogger().setLevel(logging.INFO)
+    logging.info('user-initiated factory reset starting')
 
     # Explicitly terminate some GUI apps that are particularly problematic.
     # Ignore errors because if they aren't running or don't terminate, we mostly don't care.
@@ -132,6 +133,8 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
 
     # Just in case the user manually deleted it...
     subprocess.check_call(['install', '-d', home / MAGIC_XDM_DIR])
+
+    logging.info('user-initiated factory reset completed without error')
 
     # Force a logout in the simplest way:
     # force-kill any process we're allowed to.
