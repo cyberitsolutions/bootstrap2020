@@ -16,7 +16,6 @@ import shutil
 import subprocess
 import sys
 
-import systemd.journal          # for logging
 import gi
 gi.require_version('Gtk', '3.0')
 import gi.repository.Gtk        # noqa: E402
@@ -102,7 +101,8 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
     # Since this script is launched by XFCE,
     # its stdout/stderr is usually connected to ~/.Xsession-errors.
     # We're about to erase that, so instead log to the user(?) journal.
-    logging.getLogger().addHandler(systemd.journal.JournalHandler())
+    # UPDATE: we want to log the python backtraces, too, so
+    #        instead have the .desktop run "systemd-cat factory-reset".
     logging.info('user initiated factory reset')
 
     # Explicitly terminate some GUI apps that are particularly problematic.
