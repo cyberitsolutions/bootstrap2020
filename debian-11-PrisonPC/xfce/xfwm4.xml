@@ -22,6 +22,23 @@
          https://alloc.cyber.com.au/task/task.php?taskID=30108 -->
     <property name="use_compositing" type="bool" value="true"/>
 
+    <!-- FIXME: I get a black screen as soon as xfce starts when
+
+           * use_compositing=true; and
+           * qemu uses OpenGL (kvm -display gtk,gl=on -device virtio-vga-gl)
+
+         Is this a known issue with XFCE?
+         I can reproduce this problem with Debian 11 / xfwm4=4.16.1-1.
+
+         UPDATE: it is sufficient to change the vblank method?
+                 https://github.com/xfce-mirror/xfwm4/blob/master/COMPOSITOR
+                 https://gitlab.xfce.org/xfce/xfwm4/-/issues/665
+
+         FIXME: does overriding the vblank_mode to fix GL VMs, break physical hosts?
+    -->
+    <property name="vblank_mode" type="string" value="xpresent"/>
+
+
     <!-- Hide the "rollup" feature.
          This is something Classic Mac people know, but
          Windows people never encountered.

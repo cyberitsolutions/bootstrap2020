@@ -752,7 +752,8 @@ if args.boot_test:
             '--smp', '2',
             # no virtio-sound in qemu 6.1 ☹
             '--device', 'ich9-intel-hda', '--device', 'hda-output',
-            *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga']
+            *(['--device', 'qxl-vga' if args.virtual_only else 'virtio-vga-gl',
+               '--display', 'gtk,gl=on']  # requires qemu 7.1 from bullseye-backports
               if template_wants_GUI else
               ['--nographic', '--vga', 'none']),
             '--net', 'nic,model=virtio',
