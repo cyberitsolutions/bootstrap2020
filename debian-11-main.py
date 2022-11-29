@@ -624,7 +624,7 @@ def maybe_tvserver_ext2(testdir: pathlib.Path) -> list:
                 member = tarfile.TarInfo()
                 member.name = name
                 member.mode = (
-                    0o0444 if  name == 'msmtp-psk' else  # FIXME: yuk
+                    0o0444 if name == 'msmtp-psk' else  # FIXME: yuk
                     0o0400)
                 member.size = f.tell()
                 f.seek(0)
