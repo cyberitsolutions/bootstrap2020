@@ -37,16 +37,19 @@ import gi.repository.Gtk        # noqa: E402
 
 
 stdout = subprocess.check_output(['xrdb', '-query'], text=True)
-xresources = dict(line.split(':\t', 1) for line in stdout.splitlines())
+xresources = dict(line.split(':\t', 1) for line in stdout.splitlines()
+                  # At xdm (normal use), there are no blank lines.
+                  # At xfce (debugging), there is a blank line!
+                  if ':\t' in line)
 stylesheet_str = f'''
 * {{
-    background-color: {xresources['xlogin.Login.Background']};
-    color: {xresources['xlogin.Login.Foreground']};
+    background-color: {xresources.get('xlogin.Login.Background', 'chartreuse')};
+    color: {xresources.get('xlogin.Login.Foreground', 'magenta')};
     /* Hard-coded because GTK3 no longer accepts fontconfig notation,
        despite (AFAIK) it being correct for "real" CSS3.
        I'm not too worried about this because
        (unlike color) this is pretty much set-and-forget. */
-    /* font: {xresources['xlogin.Login.face']}; */
+    /* font: {xresources.get('xlogin.Login.face', 'Sans')}; */
     font-family: Universalis ADF Std;
     font-size: 18pt;
 }}
