@@ -13,6 +13,11 @@ Package: src:amd64-microcode src:intel-microcode src:iucode-tool
 Pin: release a=bullseye-backports
 Pin-Priority: 500
 
+Explanation: use newest firmware also (firmware-bnx2 for TV servers and firmware-realtek firmware-misc-nonfree for desktops)
+Package: src:firmware-free src:firmware-nonfree
+Pin: release a=bullseye-backports
+Pin-Priority: 500
+
 Explanation: use Inkscape 1.1 (not 1.0)
 Package: src:inkscape
 Pin: release a=bullseye-backports
