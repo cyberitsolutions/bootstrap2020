@@ -35,6 +35,9 @@
                  https://gitlab.xfce.org/xfce/xfwm4/-/issues/665
 
          FIXME: does overriding the vblank_mode to fix GL VMs, break physical hosts?
+
+         UPDATE: I tested this on one AIO in the lab and it showed pictures just fine.
+         I also confirmed it could open TV and didn't e.g. have tearing issues.
     -->
     <property name="vblank_mode" type="string" value="xpresent"/>
 
