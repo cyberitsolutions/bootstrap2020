@@ -109,7 +109,7 @@ def main():
     args = parser.parse_args()
 
     # FIXME: for some reason, it defaults to "/tv-snitch" not "tv-snitch".
-    systemd.daemon.notify('READY=1')  # tell systemd to start WatchdogSec= countdown
+    systemd.daemon.notify('READY=1')  # start WatchdogSec= countdown
 
     # FIXME: don't log *all* results, but *do* log state *transitions*!!!
     while True:

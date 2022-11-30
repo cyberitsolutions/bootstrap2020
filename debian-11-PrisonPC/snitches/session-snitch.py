@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import os
 import subprocess
 import sys
 import time
@@ -68,7 +67,7 @@ except urllib.error.HTTPError:
 
 # SUBSEQUENT QUERIES GO TO /session/check/<USER>
 print(f'starting for {args.user}', file=sys.stderr, flush=True)  # for syslog
-systemd.daemon.notify('READY=1')  # tell systemd to start WatchdogSec= countdown
+systemd.daemon.notify('READY=1')  # start WatchdogSec= countdown
 while True:
     time.sleep(10)
     try:

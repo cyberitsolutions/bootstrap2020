@@ -32,6 +32,7 @@
 # I have elided the comments here.
 # FIXME: merge usb-snitchd & disc-snitchd?
 
+import logging
 import os
 import pathlib
 import pwd
@@ -82,12 +83,15 @@ def main():
     monitor = pyudev.Monitor.from_netlink(context)
     monitor.filter_by_tag('disc-snitch')
     monitor.start()
-    systemd.daemon.notify('READY=1')
+    systemd.daemon.notify('READY=1')  # start WatchdogSec= countdown
     print('<7>Ready!', file=sys.stderr, flush=True)
 
-    while device := monitor.poll(timeout=60) or "Timed out polling udev":
-        systemd.daemon.notify('WATCHDOG=1')
-        if device == "Timed out polling udev":
+    while True:
+        device = monitor.poll(timeout=60)  # get next udev event (add/remove/change)
+        systemd.daemon.notify('WATCHDOG=1')  # reset WatchdogSec= countdown
+
+        if device is None:
+            logging.debug('udev poll timed out (no events in last N seconds)')
             continue
 
         assert 'DEVNAME' in device.properties

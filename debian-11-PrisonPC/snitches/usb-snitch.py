@@ -15,16 +15,16 @@
 # I notice there's a DRIVER=mceusb attribute in some udev uevents...
 # could we leverage that? --twb, Oct 2015
 
+import logging
+import pwd
+import sys
 import time
 import urllib.parse
 import urllib.request
 
-import pwd
 import pyudev
 import systemd.daemon
 import systemd.login
-
-import sys
 
 # Maintaining a whitelist of USB keyboards and mice on the server was really tedious.
 # From Dec 2016 onwards, such devices can *NEVER* generate an alert email,
@@ -71,7 +71,7 @@ def main():
     # but I don't care for the added hairiness (for now).
     # Likewise using pyudev's asynchronous MonitorObserver.
     # --twb, Oct 2015
-    systemd.daemon.notify('READY=1')
+    systemd.daemon.notify('READY=1')  # start WatchdogSec= countdown
     print('<7>Ready!', file=sys.stderr, flush=True)
 
     # NB: this iteration is effectively an infinite loop.
@@ -80,9 +80,12 @@ def main():
     # has finished reporting the first one, before (I hope) starting
     # to report the next one.
     # AFAIK all of them will *eventually* get handled.
-    while device := monitor.poll(timeout=60) or "Timed out polling udev":
-        systemd.daemon.notify('WATCHDOG=1')
-        if device == "Timed out polling udev":
+    while True:
+        device = monitor.poll(timeout=60)  # get next udev event (add/remove/change)
+        systemd.daemon.notify('WATCHDOG=1')  # reset WatchdogSec= countdown
+
+        if device is None:
+            logging.debug('udev poll timed out (no events in last N seconds)')
             continue
 
         # A wild device appears!
