@@ -165,9 +165,9 @@ def main():
 
             # FIXME: in here, check what 'answer' is and allow/lock/eject.
             if answer == 'yes':     # FIXME: remove after https://alloc.cyber.com.au/task/task.php?taskID=24643.
-                systemd.daemon.notify('WATCHDOG=1')
+                pass
             elif answer == 'allow':
-                systemd.daemon.notify('WATCHDOG=1')
+                pass
             elif answer == 'lock':
                 lock(device)
             else:
