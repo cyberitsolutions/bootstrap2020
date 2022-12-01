@@ -793,6 +793,8 @@ if args.boot_test:
 for host in args.upload_to:
     subprocess.check_call(
         ['rsync', '-aihh', '--info=progress2', '--protect-args',
+         # FIXME: remove the next line once omega-understudy is gone!
+         '--chown=dnsmasq:nogroup' if re.fullmatch(r'(root@)light(\.cyber\.com\.au)?', host) else
          '--chown=0:0',  # don't use UID:GID of whoever built the images!
          # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
          f'--copy-dest=/srv/netboot/images/{args.template}-latest',
@@ -812,11 +814,12 @@ for host in args.upload_to:
         f'[ ! -d /srv/netboot/images/{args.template}-previous/site.dir ] || '
         f'cp -at /srv/netboot/images/{destdir.name}/ /srv/netboot/images/{args.template}-previous/site.dir'])
     subprocess.check_call(
-        ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-latest'])
-    if host in ('tweak',  # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
-                'tweak.prisonpc.com',
-                'root@tweak',
-                'root@tweak.prisonpc.com'):
+        ['ssh', host,
+         # FIXME: remove the next line once omega-understudy is gone!
+         'runuser -u dnsmasq -- ' if re.fullmatch(r'(root@)light(\.cyber\.com\.au)?', host) else '',
+         f'ln -vnsf {destdir.name} /srv/netboot/images/{args.template}-latest'])
+    # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
+    if re.fullmatch(r'(root@)tweak(\.prisonpc\.com)?', host):
         soes = set(subprocess.check_output(
             ['ssh', host, 'tca get soes'],
             text=True).strip().splitlines())
@@ -829,6 +832,12 @@ for host in args.upload_to:
             input='\n'.join(sorted(soes)))
         # Sync /srv/netboot to /srv/tftp &c.
         subprocess.check_call(['ssh', host, 'tca', 'commit'])
+    # FIXME: remove the next line once omega-understudy is gone!
+    if re.fullmatch(r'(root@)light(\.cyber\.com\.au)?', host) and args.template == 'understudy':
+        subprocess.check_call([
+            'ssh', host,
+            'runuser -u dnsmasq -- '
+            f'ln -nsf ../understudy-omega.cpio /srv/netboot/images/{destdir.name}/omega.cpio'])
 
 if args.remove_afterward:
     shutil.rmtree(destdir)
