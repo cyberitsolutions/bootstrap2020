@@ -509,6 +509,14 @@ with tempfile.TemporaryDirectory() as td:
             '    va-driver-all'           # Intel/AMD/Nvidia, free
             '    i965-va-driver-shaders'  # Intel, non-free, 2013-2017
             '    intel-media-va-driver-non-free',  # Intel, non-free, 2017+
+            # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
+            # On host window resize, sends a message to a guest virtio socket.
+            # Is ignored by xfwm4, so FUCKING USELESS right now.
+            # FIXME: Mike allegedly has a kludge to fix this -- where is it?
+            # FIXME: --boot-test's kvm doesn't know to create the device!!!
+            *(['--include=spice-vdagent']
+              if (not args.physical_only and  # noqa: W504
+                  not args.template.startswith('desktop-inmate')) else []),
             # Seen on H81 and H110 Pioneer AIOs.
             # Not NEEDED, just makes journalctl -p4' quieter.
             *(['--include=firmware-realtek firmware-misc-nonfree']
@@ -516,6 +524,12 @@ with tempfile.TemporaryDirectory() as td:
             f'--essential-hook=tar-in {create_tarball("debian-11-desktop")} /'
             ]
            if template_wants_GUI else []),
+         # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
+         # FIXME: WHY?  Nothing in the package description sounds useful.
+         # FIXME: --boot-test's kvm doesn't know to create the device!!!
+         *(['--include=qemu-guest-agent']
+           if (not args.physical_only and  # noqa: W504
+               not args.template.startswith('desktop-inmate')) else []),
          *(['--include=libnss-ldapd libpam-ldapd unscd',
             f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC")} /',
             f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-staff")} /'

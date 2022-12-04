@@ -1,3 +1,10 @@
+prisonpc-ersatz (11.37) unstable; urgency=medium
+
+  * unblock qemu-guest-agent & spice-vdagent for staff.
+    Mike wants them force spice-html5.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 05 Dec 2022 14:32:29 +1100
+
 prisonpc-ersatz (11.36) bullseye; urgency=medium
 
   * unblock pipewire-bin for Debian 12

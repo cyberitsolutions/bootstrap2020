@@ -172,6 +172,10 @@ Conflicts:
  gvfs-fuse, fuse,
 # See -everyone stanza's comments re NNNNN-udev-audit.py.
  libgphoto2-6,
+# Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
+# See -everyone stanza's comments re NNNNN-udev-audit.py.
+ qemu-guest-agent,
+ spice-vdagent,
 
 Package: prisonpc-bad-package-conflicts-everyone
 Depends:
@@ -407,9 +411,9 @@ Conflicts:
  nvidia-kernel-common, nvme-cli, ocfs2-tools, ofono, ola, open-iscsi,
  open-vm-tools, opencpn, openocd, openrazer-driver-dkms, osspd,
  pcmciautils, ponyprog, printer-driver-foo2zjs,
- projecteur, python3-btchip, qemu-guest-agent, qlcplus,
+ projecteur, python3-btchip, qlcplus,
  qthid-fcd-controller, razercfg, rdma-core, rear, scanbd, scdaemon,
- sg3-utils-udev, solaar, spectools, spice-vdagent, spice-webdavd,
+ sg3-utils-udev, solaar, spectools, spice-webdavd,
  srptools, steam-devices, stlink-tools, sunxi-tools, swupdate,
  system-config-printer-udev, t2n, teensy-loader-cli,
  thunderbolt-tools, tlp, tlp-rdw, tpb, tpm-udev, trezor, triggerhappy,

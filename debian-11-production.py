@@ -13,7 +13,10 @@ for template in (
         './debian-11-main.py',
         '--remove',
         '--netboot-only',       # no ISO/USB
-        '--physical-only',      # no qemu
+        # No qemu, **EXCEPT FOR** desktop-staff-amc, which
+        # Mike wants to expose via spice-html5.
+        *(['--physical-only']
+          if template != 'desktop-staff-amc' else []),
         '--ssh=openssh-server',  # PrisonPC needs this
         f'--reproducible={datetime.date.today()}',
         '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
