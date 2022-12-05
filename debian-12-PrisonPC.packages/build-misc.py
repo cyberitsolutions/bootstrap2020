@@ -53,7 +53,7 @@ with tempfile.TemporaryDirectory() as td:
            if watch_path.exists() else []),
          '--include=devscripts,lintian',
          '--customize-hook=chroot $1 env --chdir=/X/Y apt-get build-dep -y ./',
-         '--customize-hook=chroot $1 env --chdir=/X/Y HOME=/root debuild -uc -us"',
+         '--customize-hook=chroot $1 env --chdir=/X/Y HOME=/root debuild -uc -us',
          '--customize-hook=rm -rf $1/X/Y',
          f'--customize-hook=sync-out /X {td}',
          'bookworm',
