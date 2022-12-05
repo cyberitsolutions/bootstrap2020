@@ -503,7 +503,7 @@ usr/games/ceferinoeditor
 # simply remove the rules file entirely.
 #
 # https://alloc.cyber.com.au/task/task.php?taskID=30098
-removing **/udev/rules.d/*libmtp.rules
+**/udev/rules.d/*libmtp.rules
 
 # Debian LibreOffice config includes an example GenericPrinter which DOES NOT WORK.
 # Remove it so it does not appear in the GUI printer list.
