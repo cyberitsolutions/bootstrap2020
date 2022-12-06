@@ -37,8 +37,10 @@ def walk(acc, menu):
             key1 = entry.DesktopEntry.getName()
             key2 = entry.Filename[:-len('.desktop')]
 
-            # FIXME: what happens with multi-menu paths?
-            value = menu.getPath()
+            # NOTE: the split/join is needed for the games sub-sub-menus.
+            #       These are added by us, here:
+            #           https://github.com/cyberitsolutions/bootstrap2020/tree/main/debian-11-PrisonPC/xfce/too-many-games
+            value = ' > '.join(menu.getPath().split('/'))
             if value:
                 value += ' > '
             value += entry.DesktopEntry.getName()
