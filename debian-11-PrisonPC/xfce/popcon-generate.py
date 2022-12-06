@@ -3,11 +3,17 @@ import configparser
 
 import xdg.DesktopEntry
 import xdg.Menu
+import xdg.Locale
 
 
 def create_lookup_table():
     lookup_table = configparser.ConfigParser()
     lookup_table['wm_class2name'] = {}
+    # NOTE: python3-xdg ignores $LANG and $LC_ALL and defaults to en_US.
+    #       Unless we explicitly set the local here,
+    #       xdg will ignore all the Name[en_AU] values set by
+    #       https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC.hooks/customize50-generic-app-names.py
+    xdg.Locale.update(language='en_AU.UTF-8')
     menu = xdg.Menu.parse('/etc/xdg/menus/xfce-applications.menu')
     walk(acc=lookup_table['wm_class2name'], menu=menu)
     kludge(lookup_table)

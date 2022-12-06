@@ -92,9 +92,6 @@ if True:
 
     # Using the lookup table, try to turn e.g. "soffice.bin" into
     # something a human can understand, like "Office Suite".
-    #
-    # Note that "rename-applications" only patches Name[en_AU]=.
-    # So this script MUST run in that locale, or it will not "see" our app renames.
     lookup_table = configparser.ConfigParser()
     lookup_table.read('/usr/share/bootstrap2020-popularity-contest.ini')
     nice_app_name = lookup_table['wm_class2name'].get(
