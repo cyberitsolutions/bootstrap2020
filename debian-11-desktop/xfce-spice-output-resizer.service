@@ -26,7 +26,8 @@ Environment=PYTHONUNBUFFERED=LiterallyAnyNonZeroString
 ExecStart=xfce-spice-output-resizer
 
 # Because this will usually start before DISPLAY & XAUTHORITY are set,
-# the script has been written to exit '69' if they are not set.
+# the script has been written to exit with 'EX_UNAVAILABLE' if they are not set.
+# ref: https://docs.python.org/3/library/os.html#os.EX_UNAVAILABLE
 # So we'll simply keep restarting it when that happens, until it actually works.
 #
 # In my testing, a 2s delay had it only restart once, and it still seemed to be

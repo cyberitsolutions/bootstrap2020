@@ -30,24 +30,24 @@ class Window(object):
     """Just a basic unmapped window so we can recieve events witohut actually showing a window to the user."""
 
     def __init__(self, display):  # noqa: D107
-        self.d = display
+        self.dpy = display
 
         # Check that RandR is even supported before bothering with anything more
-        if not self.d.has_extension('RANDR'):
+        if not self.dpy.has_extension('RANDR'):
             print(f'{sys.argv[0]}: server does not have the RANDR extension',
                   file=sys.stderr)
-            ext = self.d.query_extension('RANDR')
+            ext = self.dpy.query_extension('RANDR')
             print(ext)
-            print(*self.d.list_extensions(), sep='\n',
+            print(*self.dpy.list_extensions(), sep='\n',
                   file=sys.stderr)
             if ext is None:
                 exit(1)
 
-        # r = self.d.xrandr_query_version()
+        # r = self.dpy.xrandr_query_version()
         # print('RANDR version %d.%d' % (r.major_version, r.minor_version))
 
         # Grab the current screen
-        self.screen = self.d.screen()
+        self.screen = self.dpy.screen()
 
         self.window = self.screen.root.create_window(
             # Xlib doesn't like these being 0
@@ -60,7 +60,7 @@ class Window(object):
         self.window.set_wm_class('xrandr', 'XlibExample')
 
         # Let the WM know that we can be instructed to quit (I think)
-        self.WM_DELETE_WINDOW = self.d.intern_atom('WM_DELETE_WINDOW')
+        self.WM_DELETE_WINDOW = self.dpy.intern_atom('WM_DELETE_WINDOW')
         self.window.set_wm_protocols([self.WM_DELETE_WINDOW])
 
         # Enable the one RandR event we're here for
@@ -73,25 +73,24 @@ class Window(object):
     def loop(self):
         """Wait for and handle the X11 events."""
         while True:
-            e = self.d.next_event()
+            ev = self.dpy.next_event()
 
             # Window has been destroyed, quit
-            if e.type == Xlib.X.DestroyNotify:
+            if ev.type == Xlib.X.DestroyNotify:
                 print("X11 destroyed the window, bye")
                 exit(0)
 
-            elif e.sub_code == Xlib.ext.randr.RRNotify_OutputChange:
+            elif ev.sub_code == Xlib.ext.randr.RRNotify_OutputChange:
                 # FIXME: Should I assert that the output name startswith 'Virtual-'?
-                print(e)
                 subprocess.check_call(['xrandr', '--output',
-                                       Xlib.ext.randr.get_output_info(self.screen.root, e.output, config_timestamp=0).name,
+                                       Xlib.ext.randr.get_output_info(self.screen.root, ev.output, config_timestamp=0).name,
                                        '--auto'])
 
             # Somebody wants to tell us "something"
             # Probably an instruction from the WM
-            elif e.type == Xlib.X.ClientMessage:
-                if e.client_type == self.WM_PROTOCOLS:
-                    fmt, data = e.data
+            elif ev.type == Xlib.X.ClientMessage:
+                if ev.client_type == self.WM_PROTOCOLS:
+                    fmt, data = ev.data
                     if fmt == 32 and data[0] == self.WM_DELETE_WINDOW:
                         print("Window manager deleted my window, bye")
                         exit(0)
@@ -101,7 +100,7 @@ if __name__ == '__main__':
     if os.environ.get('DISPLAY') is os.environ.get('XAUTHORITY') is None:
         # FIXME: Deal with XFCE's lack of systemd integration
         print("No X11 session found, forcing restart")
-        exit(69)
+        exit(os.EX_UNAVAILABLE)
     try:
         Window(Xlib.display.Display()).loop()
     except Xlib.error.ConnectionClosedError:
