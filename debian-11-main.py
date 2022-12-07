@@ -514,7 +514,8 @@ with tempfile.TemporaryDirectory() as td:
             # Is ignored by xfwm4, so FUCKING USELESS right now.
             # FIXME: Mike allegedly has a kludge to fix this -- where is it?
             # FIXME: --boot-test's kvm doesn't know to create the device!!!
-            *(['--include=spice-vdagent']
+            # python3-xlib is used by the randr-watch-changes.py written by Mike
+            *(['--include=spice-vdagent python3-xlib']
               if (not args.physical_only and  # noqa: W504
                   not args.template.startswith('desktop-inmate')) else []),
             # Seen on H81 and H110 Pioneer AIOs.

@@ -1,0 +1,41 @@
+[Unit]
+Description=RROutputChangeNotify watcher for Spice window resizing
+Conflicts=exit.target
+
+# Don't bother running this on "ssh root@desktop shutdown".
+[Unit]
+ConditionUser=!@system
+
+## I don't think this condition is worth adding, but consider it
+## ConditionVirtualization=qemu
+# Only run if he spice virtio socket exists
+# I wanted to rely on spice-vdagent.service to do this and just set that as 'RequiredBy' here,
+# but there is no spice-vdagent.service, that goes in '/etc/xdg/autostart/spice-vdagent.desktop'
+ConditionPathExists=/dev/virtio-ports/com.redhat.spice.0
+# FIXME: This runs too early for this condition because XFCE has no systemd integration
+# # Only bother running if we have an X11 display
+# # If XFCE had better systemd integration, this would be handled with a better WantedBy/PartOf
+# ConditionEnvironment=DISPLAY
+# ConditionEnvironment=XAUTHORITY
+
+[Service]
+# Python3 defaults to quite a large buffer for stdout/stderr.
+# This makes the journal significantly less useful for debugging because the log messages don't appear immediately.
+# So overwrite that default
+Environment=PYTHONUNBUFFERED=LiterallyAnyNonZeroString
+ExecStart=xfce-spice-output-resizer
+
+# Because this will usually start before DISPLAY & XAUTHORITY are set,
+# the script has been written to exit '69' if they are not set.
+# So we'll simply keep restarting it when that happens, until it actually works.
+#
+# In my testing, a 2s delay had it only restart once, and it still seemed to be
+# running before the user's spice-vdagent was active anyway.
+RestartForceExitStatus=69
+RestartSec=2s
+# FIXME: Should we set a burst limit other than the default?
+# StartLimitBurst=5
+
+[Install]
+# If XFCE had proper systemd support, this would be something like 'graphical-session.target'
+WantedBy=default.target
