@@ -41,7 +41,7 @@ class Window(object):
             print(*self.d.list_extensions(), sep='\n',
                   file=sys.stderr)
             if ext is None:
-                sys.exit(1)
+                exit(1)
 
         # r = self.d.xrandr_query_version()
         # print('RANDR version %d.%d' % (r.major_version, r.minor_version))
@@ -78,7 +78,7 @@ class Window(object):
             # Window has been destroyed, quit
             if e.type == Xlib.X.DestroyNotify:
                 print("X11 destroyed the window, bye")
-                sys.exit(0)
+                exit(0)
 
             elif e.sub_code == Xlib.ext.randr.RRNotify_OutputChange:
                 # FIXME: Should I assert that the output name startswith 'Virtual-'?
@@ -94,16 +94,16 @@ class Window(object):
                     fmt, data = e.data
                     if fmt == 32 and data[0] == self.WM_DELETE_WINDOW:
                         print("Window manager deleted my window, bye")
-                        sys.exit(0)
+                        exit(0)
 
 
 if __name__ == '__main__':
     if os.environ.get('DISPLAY') is os.environ.get('XAUTHORITY') is None:
         # FIXME: Deal with XFCE's lack of systemd integration
         print("No X11 session found, forcing restart")
-        sys.exit(69)
+        exit(69)
     try:
         Window(Xlib.display.Display()).loop()
     except Xlib.error.ConnectionClosedError:
         print("X11 connecton closed, time to leave")
-        sys.exit(0)
+        exit(0)
