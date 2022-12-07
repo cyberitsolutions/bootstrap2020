@@ -15,9 +15,9 @@ At some point I stopped being able to reproduce it triggering twice, but it defi
 """
 # Based on https://github.com/mijofa/misc-scripts/blob/master/randr-watch-changes.py
 
+import logging
 import os
 import sys
-# import pprint
 import subprocess
 
 import Xlib.X
@@ -32,34 +32,21 @@ class Window(object):
     def __init__(self, display):  # noqa: D107
         self.dpy = display
 
-        # Check that RandR is even supported before bothering with anything more
-        if not self.dpy.has_extension('RANDR'):
-            print(f'{sys.argv[0]}: server does not have the RANDR extension',
-                  file=sys.stderr)
-            ext = self.dpy.query_extension('RANDR')
-            print(ext)
-            print(*self.dpy.list_extensions(), sep='\n',
-                  file=sys.stderr)
-            if ext is None:
-                exit(1)
-
-        # r = self.dpy.xrandr_query_version()
-        # print('RANDR version %d.%d' % (r.major_version, r.minor_version))
-
         # Grab the current screen
         self.screen = self.dpy.screen()
 
         self.window = self.screen.root.create_window(
-            # Xlib doesn't like these being 0
-            1, 1, 1, 1, 1,
-            self.screen.root_depth,
+            0, 0, 1, 1, 1,      # x, y, width, height, border
+            self.screen.root_depth
         )
 
         # The window never actually gets mapped, but let's set some info on it anyway, just in case
-        self.window.set_wm_name('OutputChangeNotify watcher')
-        self.window.set_wm_class('xrandr', 'XlibExample')
+        self.window.set_wm_name(sys.argv[0])
+        self.window.set_wm_class('xrandr', sys.argv[0])
 
         # Let the WM know that we can be instructed to quit (I think)
+        # https://www.x.org/releases/X11R7.5/doc/man/man3/XSetWMProtocols.3.html
+        # https://tronche.com/gui/x/icccm/sec-4.html#s-4.1.2.7
         self.WM_DELETE_WINDOW = self.dpy.intern_atom('WM_DELETE_WINDOW')
         self.window.set_wm_protocols([self.WM_DELETE_WINDOW])
 
@@ -72,37 +59,42 @@ class Window(object):
 
     def loop(self):
         """Wait for and handle the X11 events."""
-        while True:
-            ev = self.dpy.next_event()
+        while ev := self.dpy.next_event():
 
             # Window has been destroyed, quit
             if ev.type == Xlib.X.DestroyNotify:
-                print("X11 destroyed the window, bye")
-                exit(0)
+                logging.info("X11 destroyed the window, bye")
+                return
 
-            elif ev.sub_code == Xlib.ext.randr.RRNotify_OutputChange:
+            # FIXME: What does type 90 mean? I can't find it in any of:
+            #        * Xlib.X.__dict__
+            #        * Xlib.ext.__dict__
+            #        * Xlib.ext.randr.__dict__
+            elif ev.type == 90 and ev.sub_code == Xlib.ext.randr.RRNotify_OutputChange:
                 # FIXME: Should I assert that the output name startswith 'Virtual-'?
-                subprocess.check_call(['xrandr', '--output',
-                                       Xlib.ext.randr.get_output_info(self.screen.root, ev.output, config_timestamp=0).name,
-                                       '--auto'])
+                subprocess.check_call([
+                    'xrandr',
+                    '--output', Xlib.ext.randr.get_output_info(
+                        self.screen.root, ev.output, config_timestamp=0).name,
+                    '--auto'])
 
-            # Somebody wants to tell us "something"
-            # Probably an instruction from the WM
-            elif ev.type == Xlib.X.ClientMessage:
-                if ev.client_type == self.WM_PROTOCOLS:
-                    fmt, data = ev.data
-                    if fmt == 32 and data[0] == self.WM_DELETE_WINDOW:
-                        print("Window manager deleted my window, bye")
-                        exit(0)
+            elif (ev.type == Xlib.X.ClientMessage and
+                  ev.client_type == self.WM_PROTOCOLS and
+                  ev.data[0] == 32 and  # FIXME: what atom is this?
+                  ev.data[1][0] == self.WM_DELETE_WINDOW):
+                logging.info("Window manager deleted my window, bye")
+                return
+
+            else:
+                logging.debug("Unexpected event %s, ignoring", ev)
 
 
 if __name__ == '__main__':
-    if os.environ.get('DISPLAY') is os.environ.get('XAUTHORITY') is None:
-        # FIXME: Deal with XFCE's lack of systemd integration
-        print("No X11 session found, forcing restart")
-        exit(os.EX_UNAVAILABLE)
     try:
         Window(Xlib.display.Display()).loop()
+    except Xlib.error.DisplayNameError:
+        logging.error("No X11 session found - did XFCE start this before X is ready?")
+        exit(os.EX_UNAVAILABLE)
     except Xlib.error.ConnectionClosedError:
-        print("X11 connecton closed, time to leave")
+        logging.error("X11 connecton closed, time to leave")
         exit(0)
