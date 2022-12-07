@@ -8,3 +8,7 @@ AccuracySec=1 second
 
 [Install]
 WantedBy=timers.target
+
+# Don't bother running this on "ssh root@desktop shutdown".
+[Unit]
+ConditionUser=!@system
