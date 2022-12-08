@@ -776,6 +776,13 @@ if args.boot_test:
               ['--device', 'virtio-vga']
               if not args.opengl_for_boot_test_ssh else
               ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
+            # Glue to allow host's window resize events to propagate to the guest.
+            # Requires buy-in from the window manager, which we work around in
+            # https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-desktop/xfce-spice-output-resizer.py
+            *([
+                '--device', 'virtio-serial-pci,id=FART',
+                '--device', 'virtserialport,bus=FART.0,name=com.redhat.spice.0']
+              if template_wants_GUI else []),
             '--net', 'nic,model=virtio',
             '--net', ','.join([
                 'user',
