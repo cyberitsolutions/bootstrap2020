@@ -33,10 +33,6 @@ ConditionVirtualization=yes
 # ConditionEnvironment=XAUTHORITY
 
 [Service]
-# Python3 defaults to quite a large buffer for stdout/stderr.
-# This makes the journal significantly less useful for debugging because the log messages don't appear immediately.
-# So overwrite that default
-Environment=PYTHONUNBUFFERED=LiterallyAnyNonZeroString
 ExecStart=xfce-spice-output-resizer
 
 # Because this will usually start before DISPLAY & XAUTHORITY are set,
