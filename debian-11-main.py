@@ -510,9 +510,9 @@ with tempfile.TemporaryDirectory() as td:
             '    i965-va-driver-shaders'  # Intel, non-free, 2013-2017
             '    intel-media-va-driver-non-free',  # Intel, non-free, 2017+
             # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-desktop/xfce-spice-output-resizer.py
-            *(['--include=python3-xlib'
+            *(['--include=python3-xlib python3-dbus'
                if args.template.startswith('desktop-inmate') else
-               '--include=python3-xlib spice-vdagent']
+               '--include=python3-xlib python3-dbus spice-vdagent']
               if not args.physical_only else []),
             # Seen on H81 and H110 Pioneer AIOs.
             # Not NEEDED, just makes journalctl -p4' quieter.

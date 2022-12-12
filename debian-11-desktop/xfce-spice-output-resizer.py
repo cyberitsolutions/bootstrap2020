@@ -23,6 +23,7 @@ import subprocess
 import Xlib.X
 import Xlib.display
 import Xlib.ext.randr
+import dbus
 
 
 # Application window (only one)
@@ -116,12 +117,15 @@ if __name__ == '__main__':
     # Therefore limit this code to run only when in a VM.
     # Do NOT require spice-vdgent; as
     # that is not available in --boot-test --template=desktop-inmate.
-    virtualization_type_str = subprocess.run(
-        ['systemd-detect-virt'],
-        check=False,            # this is expected to "fail"
-        text=True,
-        stdout=subprocess.PIPE).stdout.strip()
-    if virtualization_type_str == 'none':
+    virtualization_type = dbus.SystemBus().get_object(
+        "org.freedesktop.systemd1",
+        "/org/freedesktop/systemd1").Get(
+            "org.freedesktop.systemd1.Manager",
+            "Virtualization",
+            dbus_interface="org.freedesktop.DBus.Properties")
+    # dbus.String('kvm', variant_level=1) for VM or
+    # dbus.String('', variant_level=1) for physical host.
+    if not virtualization_type:
         logging.notice('Running on physical hardware -- nothing for me to do')
         exit()
 
