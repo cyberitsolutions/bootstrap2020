@@ -122,6 +122,42 @@ UPDATE: before Nov 2022,
                rather than every month or year.
                Nobody uses client certs, so we don't care.
 
+UPDATE Dec 2022:
+
+       • "cp --recursive" fails; you need
+         "cp --recursive --update",
+         "cp --recursive --remove-destination" (or --force), or
+         "cp --recursive --backup[=simple]".
+         Otherwise you get
+         "Permission denied" which REALLY means
+         "destination already exists".
+
+       • Some chrome/chromium builds can allegedly use CA certificates in /etc:
+
+         <grawity> Though on Arch, at least with Firefox
+                   it's a slightly different case
+                   p11-kit replaces libnssckbi with its own, so
+                   everything that uses NSS automatically loads system CAs.
+
+                   I'm not sure if Chromium uses the system NSS and/or
+                   if it uses the system libnssckbi
+                   (as that's the Mozilla CA store and
+                   Chromium probably wants to use Google's)
+
+                   I have the binary Google Chrome here on Arch, though, and
+                   it loads my custom system-wide CAs without them being in ~/.pki/nssdb
+
+                   I'm sure I remember that happening with Chromium long before
+                   Arch switched to p11-kit – it was only Firefox that insisted on its own.
+
+         <twb> And that's definitely a compile-time option and
+               wouldn't be e.g. a missing Recommends?
+               It might also be relevant that my CA cert is used for SSL inspection
+               (i.e. deliberately MITM'ing users with their informed consent)
+
+         <grawity> Not sure, I've never tried it on actual Debian.
+                   I'm 80% sure Debian doesn't use p11-kit with NSS this way though).
+
 """
 
 with tempfile.TemporaryDirectory() as td:
