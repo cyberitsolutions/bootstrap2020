@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=1.0
+Description=RROutputChangeNotify watcher for Spice window resizing
+Name=XFCE SPICE output resizer
+Exec=xfce-spice-output-resizer
+Type=application

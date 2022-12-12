@@ -90,6 +90,41 @@ class Window(object):
 
 
 if __name__ == '__main__':
+
+    # This code is NEEDED when
+    #
+    #  • kvm --display gtk (directly)
+    #    changes the virtual monitor's preferred resolution; or
+    #
+    #  • spice-html5 (via spice-vdagent)
+    #    changes the virtual monitor's preferred resolution.
+    #
+    # This code is NOT NEEDED when:
+    #
+    #  • you plug an external monitor into your laptop
+    #    (xfce4-settingsd correctly handles this on its own).
+    #
+    # Maybe it is harmless to run this code in the needless case, BUT
+    #
+    #  • we do not feel like testing/debugging it.
+    #    For example, what happens when
+    #    an old fullscreen game forces 800x600 display resolution?
+    #
+    #  • xfce4-settingsd pops up a prompt;
+    #    this is better than our script's hard-coded assumptions.
+    #
+    # Therefore limit this code to run only when in a VM.
+    # Do NOT require spice-vdgent; as
+    # that is not available in --boot-test --template=desktop-inmate.
+    virtualization_type_str = subprocess.run(
+        ['systemd-detect-virt'],
+        check=False,            # this is expected to "fail"
+        text=True,
+        stdout=subprocess.PIPE).stdout.strip()
+    if virtualization_type_str == 'none':
+        logging.notice('Running on physical hardware -- nothing for me to do')
+        exit()
+
     try:
         Window(Xlib.display.Display()).loop()
     except Xlib.error.DisplayNameError:
