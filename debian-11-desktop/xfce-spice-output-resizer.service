@@ -6,12 +6,26 @@ Conflicts=exit.target
 [Unit]
 ConditionUser=!@system
 
-## I don't think this condition is worth adding, but consider it
-## ConditionVirtualization=qemu
-# Only run if he spice virtio socket exists
-# I wanted to rely on spice-vdagent.service to do this and just set that as 'RequiredBy' here,
-# but there is no spice-vdagent.service, that goes in '/etc/xdg/autostart/spice-vdagent.desktop'
-ConditionPathExists=/dev/virtio-ports/com.redhat.spice.0
+# This code is NEEDED when
+#
+#  • kvm --display gtk (directly) changes the virtual monitor's preferred resolution.
+#  • spice-html5 (via spice-vdagent) changes the virtual monitor's preferred resolution.
+#
+# This code is NOT NEEDED when:
+#
+#  • you plug an external monitor into your laptop (xfce4-settingsd correctly handles this on its own).
+#
+# Maybe it is harmless to run this code in the needless case, BUT
+#  • we do not feel like testing/debugging it.
+#    For example, what happens when a full-screen game changes the display resolution?
+#  • xfce4-settingsd pops up a prompt; this is better than our script's hard-coded assumptions.
+#
+# Therefore limit this code to run only when in a VM.
+# Do NOT require spice-vdgent; because that is not available in --boot-test --template=desktop-inmate.
+
+ConditionVirtualization=yes
+#ConditionPathExists=/dev/virtio-ports/com.redhat.spice.0
+
 # FIXME: This runs too early for this condition because XFCE has no systemd integration
 # # Only bother running if we have an X11 display
 # # If XFCE had better systemd integration, this would be handled with a better WantedBy/PartOf

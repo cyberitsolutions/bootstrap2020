@@ -265,7 +265,9 @@ usr/lib/pt_chown
 **/*bin/systemd-cgls
 **/*bin/systemd-cgtop
 **/*bin/systemd-delta
-**/*bin/systemd-detect-virt
+# This is useful for
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-desktop/xfce-spice-output-resizer.py
+#**/*bin/systemd-detect-virt
 **/*bin/systemd-path
 # From perl.
 # Note that "python3 -m ziplib" provide similar functionality, but

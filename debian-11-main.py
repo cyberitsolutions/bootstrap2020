@@ -509,15 +509,11 @@ with tempfile.TemporaryDirectory() as td:
             '    va-driver-all'           # Intel/AMD/Nvidia, free
             '    i965-va-driver-shaders'  # Intel, non-free, 2013-2017
             '    intel-media-va-driver-non-free',  # Intel, non-free, 2017+
-            # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
-            # On host window resize, sends a message to a guest virtio socket.
-            # Is ignored by xfwm4, so FUCKING USELESS right now.
-            # FIXME: Mike allegedly has a kludge to fix this -- where is it?
-            # FIXME: --boot-test's kvm doesn't know to create the device!!!
-            # python3-xlib is used by the randr-watch-changes.py written by Mike
-            *(['--include=spice-vdagent python3-xlib']
-              if (not args.physical_only and  # noqa: W504
-                  not args.template.startswith('desktop-inmate')) else []),
+            # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-desktop/xfce-spice-output-resizer.py
+            *(['--include=python3-xlib'
+               if args.template.startswith('desktop-inmate') else
+               '--include=python3-xlib spice-vdagent']
+              if not args.physical_only else []),
             # Seen on H81 and H110 Pioneer AIOs.
             # Not NEEDED, just makes journalctl -p4' quieter.
             *(['--include=firmware-realtek firmware-misc-nonfree']
@@ -776,13 +772,6 @@ if args.boot_test:
               ['--device', 'virtio-vga']
               if not args.opengl_for_boot_test_ssh else
               ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
-            # Glue to allow host's window resize events to propagate to the guest.
-            # Requires buy-in from the window manager, which we work around in
-            # https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-desktop/xfce-spice-output-resizer.py
-            *([
-                '--device', 'virtio-serial-pci,id=FART',
-                '--device', 'virtserialport,bus=FART.0,name=com.redhat.spice.0']
-              if template_wants_GUI else []),
             '--net', 'nic,model=virtio',
             '--net', ','.join([
                 'user',
