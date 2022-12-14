@@ -8,7 +8,7 @@ import subprocess
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk   # noqa: E402
 
 __DOC__ = """ make chromium use OpenDyslexic (when chrome://settings is blocked)
 
@@ -103,8 +103,7 @@ if json_object['webkit']['webprefs']['fonts']['standard'].get('Zyyy', '').starts
     text = 'Disable dyslexic fonts in Chromium?'
     secondary_text = (
         'This will tell Chromium not to use dyslexic fonts for websites, including PrisonPC mail.\n'
-             '(To change the user interface font, use Applications ▸ Settings ▸ Appearance.)'
-             )
+        '(To change the user interface font, use Applications ▸ Settings ▸ Appearance.)')
 
 else:
     json_object['webkit']['webprefs']['fonts']['standard']['Zyyy'] = 'OpenDyslexicAlta'
@@ -122,12 +121,10 @@ if Gtk.ResponseType.YES == Gtk.MessageDialog(
         buttons=Gtk.ButtonsType.YES_NO,
         title='Dyslexic font in Chromium',
         text=text,
-        secondary_text=secondary_text,
-        ).run():
+        secondary_text=secondary_text).run():
     with json_path.open(mode='w') as f:
         json.dump(json_object, f)
     Gtk.MessageDialog(
         buttons=Gtk.ButtonsType.OK,
         title='Dyslexic font in Chromium',
-        text='Change successful.',
-    ).run()
+        text='Change successful.').run()
