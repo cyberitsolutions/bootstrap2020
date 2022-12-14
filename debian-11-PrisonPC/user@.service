@@ -1,5 +1,0 @@
-# This stuff is copy-paste-edited from user@.service.
-# I tried putting it in an [Install] block but it didn't Just Work.
-[Unit]
-After=user-home-dir@%i.service
-Requires=user-home-dir@%i.service

@@ -1,4 +1,0 @@
-# Make /run/user/1000 nosuid,nodev,noexec.
-# By default systemd omits noexec.
-[Service]
-ExecStart=mount -oremount,noexec /run/user/%i
