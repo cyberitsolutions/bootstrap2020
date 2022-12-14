@@ -81,7 +81,7 @@ while True:
             if response_text.startswith('ERR '):
                 response_text = response_text[len('ERR '):]  # yuk
             popup_wait_crash(response_text)
-    except urllib.error.URLError:
+    except urllib.error.URLError as e:
         # Sometimes pete won't answer due to a transient outage.
         # UPDATE: also sometimes DNS fails to resolve "ppc-services"!
         # In such cases, do not immediately reboot without warning!
