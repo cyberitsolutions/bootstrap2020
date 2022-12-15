@@ -570,3 +570,91 @@ usr/games/ceferinoeditor
 **/*bin/select-editor
 **/*bin/sensible-editor
 **/*bin/sensible-pager
+
+
+# 14:38 <twb> http://ix.io/4iDH  -- with some -dbgsym installed
+#           PID: 889 (tumblerd)
+#           UID: 10243 (s123)
+#           GID: 10243 (s123)
+#        Signal: 11 (SEGV)
+#     Timestamp: Thu 2022-12-15 14:37:53 AEDT (30s ago)
+#  Command Line: /usr/lib/x86_64-linux-gnu/tumbler-1/tumblerd
+#    Executable: /usr/lib/x86_64-linux-gnu/tumbler-1/tumblerd
+# Control Group: /user.slice/user-10243.slice/user@10243.service/app.slice/dbus.service
+#          Unit: user@10243.service
+#     User Unit: dbus.service
+#         Slice: user-10243.slice
+#     Owner UID: 10243 (s123)
+#       Boot ID: 190051c254734a889c2fd47e03bc9696
+#    Machine ID: 351ca14194ab4d9a920dfcec06588366
+#      Hostname: desktop-staff.lan
+#       Storage: /var/lib/systemd/coredump/core.tumblerd.10243.190051c254734a889c2fd47e03bc9696.889.1671075473000000.zst
+#       Message: Process 889 (tumblerd) of user 10243 dumped core.
+#
+#                Stack trace of thread 910:
+#                #0  0x00007f4752371e9f gst_thumbnailer_play_start (tumbler-gst-thumbnailer.so + 0x3e9f)
+#                #1  0x000055e0b0987600 tumbler_lifo_scheduler_thread (tumblerd + 0x12600)
+#                #2  0x00007f47539ac9a4 g_thread_pool_thread_proxy (libglib-2.0.so.0 + 0x7b9a4)
+#                #3  0x00007f47539ac0bd g_thread_proxy (libglib-2.0.so.0 + 0x7b0bd)
+#                #4  0x00007f47535e2ea7 start_thread (libpthread.so.0 + 0x7ea7)
+#                #5  0x00007f4753848a2f __clone (libc.so.6 + 0xfca2f)
+#
+#                Stack trace of thread 889:
+#                #0  0x00007f475383cd2f __poll (libc.so.6 + 0xf0d2f)
+#                #1  0x00007f47539830ae g_main_context_poll (libglib-2.0.so.0 + 0x520ae)
+#                #2  0x00007f475398340b g_main_loop_run (libglib-2.0.so.0 + 0x5240b)
+#                #3  0x000055e0b097d5de main (tumblerd + 0x85de)
+#                #4  0x00007f475376fd0a __libc_start_main (libc.so.6 + 0x23d0a)
+#                #5  0x000055e0b097d62a _start (tumblerd + 0x862a)
+#
+#                Stack trace of thread 891:
+#                #0  0x00007f475383cd2f __poll (libc.so.6 + 0xf0d2f)
+#                #1  0x00007f47539830ae g_main_context_poll (libglib-2.0.so.0 + 0x520ae)
+#                #2  0x00007f47539831cf g_main_context_iteration (libglib-2.0.so.0 + 0x521cf)
+#                #3  0x00007f4753983221 glib_worker_main (libglib-2.0.so.0 + 0x52221)
+#                #4  0x00007f47539ac0bd g_thread_proxy (libglib-2.0.so.0 + 0x7b0bd)
+#                #5  0x00007f47535e2ea7 start_thread (libpthread.so.0 + 0x7ea7)
+#                #6  0x00007f4753848a2f __clone (libc.so.6 + 0xfca2f)
+#
+#                Stack trace of thread 901:
+#                #0  0x00007f475383cd2f __poll (libc.so.6 + 0xf0d2f)
+#                #1  0x00007f47539830ae g_main_context_poll (libglib-2.0.so.0 + 0x520ae)
+#                #2  0x00007f475398340b g_main_loop_run (libglib-2.0.so.0 + 0x5240b)
+#                #3  0x00007f4753bd5a36 gdbus_shared_thread_func (libgio-2.0.so.0 + 0x11ba36)
+#                #4  0x00007f47539ac0bd g_thread_proxy (libglib-2.0.so.0 + 0x7b0bd)
+#                #5  0x00007f47535e2ea7 start_thread (libpthread.so.0 + 0x7ea7)
+#                #6  0x00007f4753848a2f __clone (libc.so.6 + 0xfca2f)
+#
+#                Stack trace of thread 911:
+#                #0  0x00007f47538422e9 syscall (libc.so.6 + 0xf62e9)
+#                #1  0x00007f47539d434f g_cond_wait (libglib-2.0.so.0 + 0xa334f)
+#                #2  0x00007f475395261b g_async_queue_pop_intern_unlocked (libglib-2.0.so.0 + 0x2161b)
+#                #3  0x00007f47539ac977 g_thread_pool_wait_for_new_task (libglib-2.0.so.0 + 0x7b977)
+#                #4  0x00007f47539ac0bd g_thread_proxy (libglib-2.0.so.0 + 0x7b0bd)
+#                #5  0x00007f47535e2ea7 start_thread (libpthread.so.0 + 0x7ea7)
+#                #6  0x00007f4753848a2f __clone (libc.so.6 + 0xfca2f)
+#
+#                Stack trace of thread 912:
+#                #0  0x00007f47538422e9 syscall (libc.so.6 + 0xf62e9)
+#                #1  0x00007f47539d434f g_cond_wait (libglib-2.0.so.0 + 0xa334f)
+#                #2  0x00007f475395261b g_async_queue_pop_intern_unlocked (libglib-2.0.so.0 + 0x2161b)
+#                #3  0x00007f47539ac977 g_thread_pool_wait_for_new_task (libglib-2.0.so.0 + 0x7b977)
+#                #4  0x00007f47539ac0bd g_thread_proxy (libglib-2.0.so.0 + 0x7b0bd)
+#                #5  0x00007f47535e2ea7 start_thread (libpthread.so.0 + 0x7ea7)
+#                #6  0x00007f4753848a2f __clone (libc.so.6 + 0xfca2f)
+#
+# 14:41 <twb> https://sources.debian.org/src/tumbler/4.16.1-1/plugins/gst-thumbnailer/gst-thumbnailer.c/?hl=443#L443
+# 14:41 <twb> I have NFI what that code is actually saying, but I *guess* it's trying to extract the first "video frame" from rose.jpg
+# 14:42 <twb> OK, this is interesting.  If I remove the .mid (MIDI) file, it successfully thumbnails rose.jpg
+# 14:45 <twb> It's hard-coded to try MIDI files with gst, even though gst isn't guaranteed to suppor them
+# 14:45 <twb> https://sources.debian.org/src/tumbler/4.16.1-1/plugins/gst-thumbnailer/gst-thumbnailer-provider.c/#L135
+# 14:46 <twb> If I simply *delete* that one thumbnailer, will it deal with JPEG and PNG still?
+# 14:46 <twb> I guess I can easily find out
+# 14:46 <twb> I was earlier -- wrongly! -- assuming tumbler used gst for still images (~single-frame silent movies)
+#
+# 14:53 <twb> OK so now let's git snapshot and then roll back to origin/twb and see if just that rm is sufficient
+# 15:01 <twb> BA BOW
+# 15:01 <twb> Not working with just that one change
+# 15:03 <twb> not segfaulting anymore, but also not actually generating thumbnails
+# 15:03 <twb> OK thumbnail file exists but not viewed?
+**/tumbler-gst-thumbnailer.so
