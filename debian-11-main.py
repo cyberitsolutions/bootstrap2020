@@ -581,6 +581,7 @@ with tempfile.TemporaryDirectory() as td:
          'bullseye',
          destdir / 'filesystem.squashfs',
          'debian-11.sources',
+         '--include=systemd-homed',
          # https://github.com/rsnapshot/rsnapshot/issues/279
          # https://tracker.debian.org/news/1238555/rsnapshot-removed-from-testing/
          *(['deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20210410/ bullseye main']
@@ -786,7 +787,10 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432,
+                                # FIXME: do we need all of these?
+                                137, 138, 139, 445
+                                }
                    for host in {'prisonpc-staff.lan'
                                 if template_wants_PrisonPC_staff_network else
                                 'prisonpc-inmate.lan'}]

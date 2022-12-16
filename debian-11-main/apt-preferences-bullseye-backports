@@ -22,3 +22,8 @@ Explanation: use Inkscape 1.1 (not 1.0)
 Package: src:inkscape
 Pin: release a=bullseye-backports
 Pin-Priority: 500
+
+Explanation: TESTING
+Package: src:systemd src:init-system-helpers
+Pin: release a=bullseye-backports
+Pin-Priority: 500
