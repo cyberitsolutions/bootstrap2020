@@ -433,7 +433,8 @@ with tempfile.TemporaryDirectory() as td:
             '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
             # Without "alsactl init" & /usr/share/alsa/init/default,
             # pipewire/pulseaudio use the kernel default (muted & 0%)!
-            '    alsa-utils'
+            # alsa-ucm-conf provides default mixer levels for AMC's "black chassis" SoC boards
+            '    alsa-utils alsa-ucm-conf'
             '    ir-keytable'   # infrared TV remote control
             '    xfce4-xkb-plugin '  # basic foreign language input (e.g. Russian, but not Japanese)
             '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
