@@ -1,0 +1,61 @@
+# https://wiki.archlinux.org/title/Cgit#Using_uwsgi
+
+[Service]
+Type=notify
+# ExecStart=uwsgi --ini /etc/uwsgi/apps-available/cgit.uwsgi.ini
+ExecStart=uwsgi --master --plugins=0:cgi --cgi=/usr/lib/cgit/cgit.cgi --processes=1 --threads=2 --disable-logging
+
+StandardError=journal
+NotifyAccess=all
+
+# Tell systemd that we're socket-activated.
+[Unit]
+Requires=cgit.socket
+[Install]
+Also=cgit.socket
+
+
+# Don't start it until this mount exists.
+[Unit]
+RequiresMountsFor=/srv/vcs
+[Service]
+WorkingDirectory=/srv/vcs
+
+
+[Service]
+User=www-data
+Group=www-data
+
+
+
+# # Security lockdown.
+# [Service]
+# User=
+# Group=
+# DynamicUser=yes
+# CacheDirectory=%p
+# PrivateNetwork=yes
+# CapabilityBoundingSet=
+# RestrictAddressFamilies=AF_UNIX
+# RestrictNamespaces=yes
+# DevicePolicy=closed
+# IPAddressDeny=any
+# PrivateDevices=yes
+# PrivateUsers=yes
+# ProtectClock=yes
+# ProtectControlGroups=yes
+# ProtectHome=yes
+# ProtectKernelLogs=yes
+# ProtectKernelModules=yes
+# ProtectKernelTunables=yes
+# ProtectProc=invisible
+# ProtectSystem=strict
+# SystemCallArchitectures=native
+# SystemCallFilter=@system-service
+# SystemCallFilter=~@privileged @resources
+# RestrictRealtime=yes
+# LockPersonality=yes
+# MemoryDenyWriteExecute=yes
+# UMask=0077
+# ProtectHostname=yes
+# ProcSubset=pid

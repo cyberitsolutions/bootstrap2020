@@ -291,6 +291,10 @@ with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
+         '--include=auto-apt-proxy cgit nginx-light git ca-certificates w3m uwsgi',
+         '--customize-hook=mkdir -p "$1"/srv/vcs',
+         '--customize-hook=git clone --bare https://github.com/cyberitsolutions/bootstrap2020 "$1"/srv/vcs/test1.git',
+         '--customize-hook=git clone --bare https://github.com/trentbuck/journalcheck "$1"/srv/vcs/test2.git',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'
@@ -762,7 +766,7 @@ if args.boot_test:
             '--enable-kvm',
             '--machine', 'q35',
             '--cpu', 'host',
-            '-m', '2G' if template_wants_GUI else '512M',
+            '-m', '2G' if template_wants_GUI else '1G',
             '--smp', '2',
             # no virtio-sound in qemu 6.1 ☹
             '--device', 'ich9-intel-hda', '--device', 'hda-output',
@@ -780,6 +784,7 @@ if args.boot_test:
                 f'hostname={args.template}.{domain}',
                 f'dnssearch={domain}',
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
+                f'hostfwd=tcp::8000-:80',
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template_wants_PrisonPC else []),
                 *([f'smb={testdir}'] if have_smbd else []),
