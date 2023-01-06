@@ -1,6 +1,0 @@
-scan-path=/srv/vcs/
-
-# Fix @href/@src/&c in the HTML.
-virtual-root=/
-css=/cgit.css
-logo=/cgit.png

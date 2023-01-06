@@ -1,8 +1,8 @@
 [Unit]
-PartOf=cgit.service
+PartOf=klaus.service
 
 [Socket]
-ListenStream=/run/cgit.socket
+ListenStream=/run/klaus.socket
 
 # Allow nginx (fastcgi-pass) to connect to this AF_UNIX socket.
 SocketUser=www-data

@@ -1,0 +1,56 @@
+[Service]
+Type=notify
+Environment=KLAUS_SITE_NAME="Cyber IT Solutions"
+Environment=KLAUS_REPOS_ROOT=/srv/vcs
+Environment=KLAUS_USE_SMARTHTTP=1
+Environment=KLAUS_DISABLE_PUSH=1
+ExecStart=uwsgi --master --processes=1 --plugin=0:python3 --module=klaus.contrib.wsgi_autoreload --disable-logging
+StandardError=journal
+NotifyAccess=all
+KillSignal=SIGQUIT
+
+# Tell systemd that we're socket-activated.
+[Unit]
+Requires=klaus.socket
+After=klaus.socket
+[Install]
+Also=klaus.socket
+
+# Don't start it until this mount exists.
+[Unit]
+RequiresMountsFor=/srv/vcs
+[Service]
+WorkingDirectory=/srv/vcs
+
+
+# Security lockdown.
+[Service]
+User=
+Group=
+DynamicUser=yes
+CacheDirectory=%p
+PrivateNetwork=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX
+RestrictNamespaces=yes
+DevicePolicy=closed
+IPAddressDeny=any
+PrivateDevices=yes
+PrivateUsers=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+RestrictRealtime=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+UMask=0077
+ProtectHostname=yes
+ProcSubset=pid

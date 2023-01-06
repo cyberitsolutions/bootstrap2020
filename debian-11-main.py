@@ -291,7 +291,7 @@ with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
-         '--include=auto-apt-proxy cgit nginx-light git ca-certificates w3m uwsgi',
+         '--include=auto-apt-proxy klaus nginx-light git ca-certificates w3m uwsgi uwsgi-plugin-python3 python3-setuptools libnss-systemd',
          '--customize-hook=mkdir -p "$1"/srv/vcs',
          '--customize-hook=git clone --bare https://github.com/cyberitsolutions/bootstrap2020 "$1"/srv/vcs/test1.git',
          '--customize-hook=git clone --bare https://github.com/trentbuck/journalcheck "$1"/srv/vcs/test2.git',
