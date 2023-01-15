@@ -29,6 +29,13 @@ cat     >/root/etc/systemd/network/50-bootstrap2020.network.d/my-rootfs-is-on-th
 # Without this, systemd-networkd lowers the interface at shutdown time,
 # then can't find the /sbin/shutdown program to do the final shutdown/reboot!
 # NOTE: in systemd v243 DHCP.CriticalConnection became Network.KeepConnection
+# NOTE: in systemd v243 you can see "yes" (dhcp|static) or simply "dhcp".
+#       As we do not use static configuration, downgrade this to "dhcp".
+#       Hopefully it will nerf this warning?
+#           23	admin	systemd-networkd	enp1s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
+#           36	admin	systemd-networkd	enp2s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
+#           7	inmate	systemd-networkd	enp1s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
+#           202	inmate	systemd-networkd	enp2s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
 [Network]
-KeepConfiguration=yes
+KeepConfiguration=dhcp
 EOF
