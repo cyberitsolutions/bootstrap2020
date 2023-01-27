@@ -147,5 +147,5 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
     #         To avoid this, first try killing the desktop.
     #         Then try to kill everything if that failed.
     subprocess.call(['pkill', '-f', 'Xsession|x-session-manager'])
-    subprocess.call(['systemctl' '--user', 'stop', '*'])
+    subprocess.call(['systemctl', '--user', 'stop', '*'])
     subprocess.check_call(['pkill', '-9', '.'])
