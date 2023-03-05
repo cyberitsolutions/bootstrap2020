@@ -151,6 +151,9 @@ table inet PrisonPC {
         oiftype loopback  ip saddr 127.0.0.0/8  ip daddr 127.0.0.0/8  accept
         icmp type echo-request  accept
         icmpv6 type { echo-request, nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert }  accept
+        # FIXME: split this up across OUTPUT and INPUT?
+        # This is needed for IGMPv3, but (somehow?!) wasn't needed for IGMPv2?
+        ip protocol igmp  ip daddr { 224.0.0.1, 224.0.0.2, 224.0.0.22 }  accept  comment "IGMPv3 un/subscribe (for multicast IPTV)"
     }
 
     # This chain is edited after login by tv-snitch.
