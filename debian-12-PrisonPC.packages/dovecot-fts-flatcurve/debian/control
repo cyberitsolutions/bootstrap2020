@@ -5,7 +5,7 @@ Maintainer: Trent W. Buck <trentbuck@gmail.com>
 Uploaders: Joseph Nahmias <jello@debian.org>
 Build-Depends:
  debhelper-compat (= 13),
- dovecot-dev (>= 2.3.17~),
+ dovecot-dev (<< 1:2.4~),
  libxapian-dev (>= 1.2.22~),
  libicu-dev (>= 60~),
  pkg-config,
@@ -18,9 +18,6 @@ Architecture: any
 Provides: fts-xapian
 Enhances: dovecot-imapd, dovecot-pop3d
 Replaces: dovecot-fts-xapian
-Conflicts:
- dovecot-core (<< 2.3.17),
- dovecot-core (>= 2.4~),
 Depends: ${shlibs:Depends}, ${misc:Depends}, dovecot-abi-${dovecot:ABI-Version}
 Description: full-text search for dovecot using xapian
  FIXME

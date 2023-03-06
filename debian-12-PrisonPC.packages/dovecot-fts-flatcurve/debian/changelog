@@ -1,4 +1,4 @@
-dovecot-fts-flatcurve (0.3.3-1~twb1) bookworm; urgency=medium
+dovecot-fts-flatcurve (0.3.3-1~twb2) bookworm; urgency=medium
 
   * Migrate from fts-xapian to fts-flatcurve for dovecot 2.3.x.
     If you have dovecot >2.3.17 (Debian 12), you want new flatcurve 0.3.x!
