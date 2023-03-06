@@ -1,0 +1,6 @@
+# Debian does not support building things that depend on this as a library.
+usr/include/dovecot-fts-flatcurve/fts-flatcurve-config.h
+usr/lib/dovecot/modules/doveadm/lib21_doveadm_fts_flatcurve_plugin.a
+usr/lib/dovecot/modules/doveadm/lib21_doveadm_fts_flatcurve_plugin.la
+usr/lib/dovecot/modules/lib21_fts_flatcurve_plugin.a
+usr/lib/dovecot/modules/lib21_fts_flatcurve_plugin.la

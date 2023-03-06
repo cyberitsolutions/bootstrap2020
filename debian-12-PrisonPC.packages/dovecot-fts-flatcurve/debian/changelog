@@ -1,0 +1,95 @@
+dovecot-fts-flatcurve (0.3.3-1~twb1) bookworm; urgency=medium
+
+  * Migrate from fts-xapian to fts-flatcurve for dovecot 2.3.x.
+    If you have dovecot >2.3.17 (Debian 12), you want new flatcurve 0.3.x!
+    If you have dovecot <2.3.17 (Debian 11), you need old flatcurve 0.2.0!
+    If you have dovecot ≥2.4    (Debian 13), flatcurve is built in - use that!
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 07 Mar 2023 07:28:19 +1100
+
+dovecot-fts-xapian (1.5.5-1) unstable; urgency=medium
+
+  * [84a9da7] New upstream version 1.5.5
+  * [917b77e] generate dependency on dovecot ABI in use during build.
+    Technique stolen from dovecot-antispam packaging.
+    Thanks to Ron Lee <ron@debian.org> (Closes: #1009794)
+
+ -- Joseph Nahmias <jello@debian.org>  Thu, 12 May 2022 23:30:44 -0400
+
+dovecot-fts-xapian (1.5.2-1) unstable; urgency=medium
+
+  * [e425998] New upstream version 1.5.2
+  * [de243b5] drop patch merged upstream
+
+ -- Joseph Nahmias <jello@debian.org>  Tue, 07 Dec 2021 06:47:01 -0500
+
+dovecot-fts-xapian (1.5.0-1) unstable; urgency=medium
+
+  * [cb5ea2d] New upstream version 1.5.0
+
+ -- Joseph Nahmias <jello@debian.org>  Wed, 10 Nov 2021 23:16:28 -0500
+
+dovecot-fts-xapian (1.4.13-1) unstable; urgency=medium
+
+  * [cf25ea4] New upstream version 1.4.12
+  * [3412d43] drop patch cherry-picked from upstream
+  * [f25f3c6] New upstream version 1.4.13
+  * [db9453a] bump std-ver; no changes
+  * [0ddf5d9] make sure configure does not clobber our CFLAGS
+
+ -- Joseph Nahmias <jello@debian.org>  Fri, 05 Nov 2021 00:07:39 -0400
+
+dovecot-fts-xapian (1.4.9a-1) unstable; urgency=medium
+
+  * [2da6c89] d/watch: allow non-numbers in version
+  * [f42a20e] New upstream version 1.4.9a
+    + fix indexing of attachments, closes: #985654
+    + fix indexing of accented characters
+    + fix memory errors / segfaults when indexing large mailboxes
+    + handle indexing of virtual folders
+  * [4b82cf5] cherry-pick 0b117cb6 from upstream to fix abort on optimize
+
+ -- Joseph Nahmias <jello@debian.org>  Thu, 24 Jun 2021 09:09:17 -0400
+
+dovecot-fts-xapian (1.4.7-1) unstable; urgency=medium
+
+  * [e3bdb1b] fix VCS paths
+  * [b13a90a] New upstream version 1.4.7
+
+ -- Joseph Nahmias <jello@debian.org>  Sun, 31 Jan 2021 21:35:02 -0500
+
+dovecot-fts-xapian (1.4.4-1) unstable; urgency=medium
+
+  * [97a9157] New upstream version 1.4.4
+  * [6a356a0] bump std-ver to 4.5.1: no changes
+  * [890878e] add salsa VCS headers
+
+ -- Joseph Nahmias <jello@debian.org>  Thu, 10 Dec 2020 23:20:15 -0500
+
+dovecot-fts-xapian (1.3.3-1) unstable; urgency=medium
+
+  * Initial release to Debian, closes: #921634.
+  * Take over maintenance from Trent; thanks again Trent for all your work!
+  * rename source pkg to dovecot-fts-xapian
+  * d/copyright: complete missing information
+  * d/rules: run upstream installation into debian/tmp and only install
+    the files we want.
+  * [f10c527] use salsa-ci pipeline
+
+ -- Joseph Nahmias <jello@debian.org>  Sun, 18 Oct 2020 12:34:13 -0400
+
+fts-xapian (1.3.1-0~twb2) unstable; urgency=medium
+
+  * New upstream
+  * rules: drop PANDOC= workaround
+  * watch: tags now lack "dovecot-fts-" prefix
+  * compat: switch to dh-compat style
+  * control: new sqlite3 B-D
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Fri, 22 May 2020 15:10:49 +1000
+
+fts-xapian (1.2-0~twb1) unstable; urgency=medium
+
+  * Initial Debianization
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 15 Aug 2019 22:06:56 +1000

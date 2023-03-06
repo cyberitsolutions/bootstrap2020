@@ -78,4 +78,4 @@ with tempfile.TemporaryDirectory() as td:
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/{package_name}-{package_version}/'])
+        f'apt.cyber.com.au:/srv/apt/cyber/pool/bookworm/main/{package_name}-{package_version}/'])

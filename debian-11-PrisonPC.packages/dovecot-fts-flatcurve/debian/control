@@ -1,0 +1,27 @@
+Source: dovecot-fts-flatcurve
+Section: mail
+Priority: optional
+Maintainer: Trent W. Buck <trentbuck@gmail.com>
+Uploaders: Joseph Nahmias <jello@debian.org>
+Build-Depends:
+ debhelper-compat (= 13),
+ dovecot-dev,
+ libxapian-dev (>= 1.2.22~),
+ libicu-dev (>= 60~),
+ pkg-config,
+Standards-Version: 4.6.0
+Homepage: https://github.com/slusarz/dovecot-fts-flatcurve
+Rules-Requires-Root: no
+
+Package: dovecot-fts-flatcurve
+Architecture: any
+Provides: fts-xapian
+Enhances: dovecot-imapd, dovecot-pop3d
+Replaces: dovecot-fts-xapian
+Conflicts:
+ dovecot-core (>= 2.4~),
+# For dovecot-fts-flatcurve 0.3.x
+# dovecot-core (<< 2.3.17),
+Depends: ${shlibs:Depends}, ${misc:Depends}, dovecot-abi-${dovecot:ABI-Version}
+Description: full-text search for dovecot using xapian
+ FIXME
