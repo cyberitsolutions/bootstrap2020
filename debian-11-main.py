@@ -92,7 +92,7 @@ parser.add_argument('--template', default='main',
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
                         'tvserver: turn free-to-air DVB-T into rtp:// IPTV;'
-                        'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4; '
+                        'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4 (or ZFS); '
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
                         'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
@@ -325,6 +325,7 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
             '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
          *(['--include=dbus',       # https://bugs.debian.org/814758
+            '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
             '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
            if args.optimize != 'simplicity' else []),
          *(['--include=libnss-myhostname libnss-resolve',
@@ -374,7 +375,7 @@ with tempfile.TemporaryDirectory() as td:
             '--include=linux-headers-cloud-amd64'
             if args.virtual_only else
             '--include=linux-headers-amd64']
-           if args.template == 'zfs' else []),
+           if args.template in ('zfs', 'understudy') else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-tvserver")} /',
             # workarounds for garbage hardware
             *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
@@ -394,6 +395,7 @@ with tempfile.TemporaryDirectory() as td:
             '    w-scan'  # Used at new sites to find frequency MHz.
             ]
            if args.template == 'tvserver' else []),
+         # FIXME: remove this block once PrisonPC is ZFS!
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
             '    quota ']    # no slow quotacheck on failover
@@ -680,6 +682,7 @@ if args.boot_test:
              if args.maybe_break else '')])
 
         if template_wants_disks:
+            # NOTE: Can't be "zpool create" as we aren't root.
             dummy_path = testdir / 'dummy.img'
             size0, size1, size2 = 1, 64, 128  # in MiB
             subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
@@ -695,13 +698,15 @@ if args.boot_test:
                 (testdir / 'filesystem.alice.module').write_text('filesystem.squashfs alice.dir')
                 (testdir / 'alice.dir/etc/ssh').mkdir(parents=True)
                 (testdir / 'alice.dir/etc/hostname').write_text('alice-understudy')
-                (testdir / 'alice.dir/etc/ssh/ssh_host_dsa_key').symlink_to(
-                    '/srv/backup/root/etc/ssh/understudy/ssh_host_dsa_key')
-                (testdir / 'alice.dir/etc/ssh/ssh_host_dsa_key.pub').symlink_to(
-                    '/srv/backup/root/etc/ssh/understudy/ssh_host_dsa_key.pub')
-                (testdir / 'alice.dir/etc/fstab').write_text(
-                    'LABEL=ESP  /srv/backup/boot/efi vfat noatime,X-mount.mkdir=0755 0 2\n'
-                    'LABEL=root /srv/backup/root     ext4 noatime,X-mount.mkdir=0755 0 1\n')
+                for alg in {'ed25519', 'ecdsa', 'rsa', 'dsa'}:
+                    (testdir / f'alice.dir/etc/ssh/ssh_host_{alg}_key').symlink_to(
+                        f'/srv/backup/zfs/etc/ssh/understudy/ssh_host_{alg}_key')
+                    (testdir / f'alice.dir/etc/ssh/ssh_host_{alg}_key.pub').symlink_to(
+                        f'/srv/backup/zfs/etc/ssh/understudy/ssh_host_{alg}_key.pub')
+                (testdir / 'alice.dir/etc/hostid').write_bytes(
+                    # pathlib.Path('/etc/hostid').read_bytes()
+                    # if pathlib.Path('/etc/hostid').exists() else
+                    bytes(reversed(bytes.fromhex(subprocess.check_output(['hostid'], text=True)))))
                 # Used by bootstrap2020-only personality=alice for fetch=tftp://.
                 if not have_smbd:
                     common_boot_args += ' personality=alice '  # try filesystem.{module}.squashfs &c
