@@ -1,0 +1,19 @@
+# -*-conf-*-
+# 13:12 <twb> Hey, when you're a weirdo and *don't* put root on ZFS, how do you generally cause the zpool import to happen at boot time?
+# 13:12 <twb> Do you use /etc/fstab?
+# 13:13 <ryao> twb: OpenRC or systemd can import the pool.
+# 13:13 <ryao> There is a script that will read the cachefile to do import.
+# 13:14 <twb> Ah so you need a persistent cachefile
+# 13:14 <twb> Right OK that makes sense.
+# 13:16 <twb> For context: Right now I'm looking at a Debian Live setup that exports a local md/lvm/ext array over rsync://, and it just has a handwritten mdadm.conf + fstab patched in.  I'm trying to migrate that "appliance" over to ZFS.
+# 13:16 <twb> But if / was (say) ordinary ext4, then yeah you'd just have the cache file handle everything automatically across reboots
+# 13:20 <twb> Hrm I will probably also run into problems with that ZFS thing that's like /etc/machine-id only shorter...
+# 13:21 <twb> I mean /etc/hostid
+# 13:23 <twb> Hrm.  My Debian Live environment (filesystem.squashfs) contains an /etc/hostid.  Where did it come from?
+# 13:25 <twb> OK looks like as with /etc/machine-id, I should wipe that when the Debian Live image is built, and then run zgenhostid at boot time.
+# 13:31 <PMT> there's also import-scan which will just import absolutely everything it sees
+# 13:32 <twb> PMT: I think for clarity of error messages, I will probably change the mdadm.conf/fstab dropin to instead provide a "zpool import -f morpheus" systemd unit.
+# 13:32 <twb> But yeah that's plan B
+# 13:36 <twb> Actually no your idea is better: I just need to add zfs-import-scan.service to /etc/systemd/system-preset/50-twb.preset
+# 13:41 <twb> And yep after doing that, I can see "cannot import 'test': pool was previously in use from another system."
+enable zfs-import-scan.service
