@@ -692,6 +692,10 @@ if args.boot_test:
                                    f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB'])
             subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
             subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'big-slow-1.qcow2', '1T'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'big-slow-2.qcow2', '1T'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'small-fast-1.qcow2', '128G'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'small-fast-2.qcow2', '128G'])
             if args.template == 'understudy':
                 # Used by live-boot(7) module=alice for USB/SMB/NFS (but not plainroot!)
                 common_boot_args += ' module=alice '  # try filesystem.{module}.squashfs &c
@@ -706,7 +710,10 @@ if args.boot_test:
                 (testdir / 'alice.dir/etc/hostid').write_bytes(
                     # pathlib.Path('/etc/hostid').read_bytes()
                     # if pathlib.Path('/etc/hostid').exists() else
+                    # FIXME: reversed() assumes little-endian architecture.
                     bytes(reversed(bytes.fromhex(subprocess.check_output(['hostid'], text=True)))))
+                (testdir / 'alice.dir/cyber-zfs-root-key.hex').write_text(
+                    'c3cc679085c3cfa22f8c49e353b9e6f93b90d9812dcc50beea7380502c898625')
                 # Used by bootstrap2020-only personality=alice for fetch=tftp://.
                 if not have_smbd:
                     common_boot_args += ' personality=alice '  # try filesystem.{module}.squashfs &c
@@ -809,6 +816,10 @@ if args.boot_test:
             *maybe_dummy_DVD(testdir),
             *maybe_tvserver_ext2(testdir),
             *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
+               '--drive', f'file={testdir}/big-slow-1.qcow2,format=qcow2,media=disk,if=virtio',
+               '--drive', f'file={testdir}/big-slow-2.qcow2,format=qcow2,media=disk,if=virtio',
+               '--drive', f'file={testdir}/small-fast-1.qcow2,format=qcow2,media=disk,if=virtio',
+               '--drive', f'file={testdir}/small-fast-2.qcow2,format=qcow2,media=disk,if=virtio',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
               if template_wants_disks else [])])
 
