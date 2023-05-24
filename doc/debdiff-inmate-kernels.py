@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 import pathlib
 import subprocess
 import tempfile
@@ -6,6 +7,16 @@ import tempfile
 __doc__ = """ look for unexpected new .ko files between builds
 
 Usage: ssh heavy python3 - < debdiff-inmate-kernels.py >debdiff-inmate-kernels.diff """
+
+# Try to get persistent hashes so inter-diff diffs are simpler.
+os.environ |= {
+    'GIT_AUTHOR_DATE': '1970-01-01T00:00:00+00:00',
+    'GIT_AUTHOR_EMAIL': 'abuse@invalid',
+    'GIT_AUTHOR_NAME': 'Nemo',
+    'GIT_COMMITTER_DATE': '1970-01-01T00:00:00+00:00',
+    'GIT_COMMITTER_EMAIL': 'abuse@invalid',
+    'GIT_COMMITTER_NAME': 'Nemo'}
+
 
 deb_paths = [
     pathlib.Path(line.strip())
@@ -21,7 +32,7 @@ deb_paths = [
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
     manifest_path = td / 'manifest.txt'
-    subprocess.check_call(['git', 'init'], cwd=td)
+    subprocess.check_call(['git', 'init', '--quiet'], cwd=td)
     subprocess.check_call(['git', 'config', 'user.name', 'X'], cwd=td)
     subprocess.check_call(['git', 'config', 'user.email', 'Y'], cwd=td)
     previous_version = None

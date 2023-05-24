@@ -8,6 +8,11 @@ Package: src:linux src:linux-signed-amd64 src:zfs-linux
 Pin: release a=bullseye-backports
 Pin-Priority: 500
 
+Explanation: allow backported build dependencies for Linux 6.1.20+ (6.1.15 did not need this)
+Package: src:libtracefs src:libtraceevent
+Pin: release a=bullseye-backports
+Pin-Priority: 500
+
 Explanation: use newest microcode (stable, security, or backports)
 Package: src:amd64-microcode src:intel-microcode src:iucode-tool
 Pin: release a=bullseye-backports

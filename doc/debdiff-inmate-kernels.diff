@@ -1,5 +1,96 @@
-Initialized empty Git repository in /tmp/tmppndsn4ra/.git/
-a947a3a 6.1.15inmate-1681699556 (was 6.0.12inmate-1673507833)
+4da6b1d 6.1.20inmate-1684912406 (was 6.1.15inmate-1681699556)
+diff --git a/manifest.txt b/manifest.txt
+index 7a57245..76389aa 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -16,8 +16,6 @@ kernel/drivers/acpi/acpi_pad.ko
+ kernel/drivers/acpi/button.ko
+ kernel/drivers/acpi/fan.ko
+ kernel/drivers/acpi/video.ko
+-kernel/drivers/android/
+-kernel/drivers/android/binder_linux.ko
+ kernel/drivers/ata/
+ kernel/drivers/ata/ahci.ko
+ kernel/drivers/ata/libahci.ko
+@@ -63,13 +61,6 @@ kernel/drivers/edac/i82975x_edac.ko
+ kernel/drivers/edac/ie31200_edac.ko
+ kernel/drivers/edac/pnd2_edac.ko
+ kernel/drivers/edac/x38_edac.ko
+-kernel/drivers/firmware/
+-kernel/drivers/firmware/cirrus/
+-kernel/drivers/firmware/cirrus/cs_dsp.ko
+-kernel/drivers/firmware/google/
+-kernel/drivers/firmware/google/coreboot_table.ko
+-kernel/drivers/firmware/google/memconsole-coreboot.ko
+-kernel/drivers/firmware/google/memconsole.ko
+ kernel/drivers/gpu/
+ kernel/drivers/gpu/drm/
+ kernel/drivers/gpu/drm/display/
+@@ -129,18 +120,10 @@ kernel/drivers/platform/
+ kernel/drivers/platform/x86/
+ kernel/drivers/platform/x86/intel/
+ kernel/drivers/platform/x86/intel/intel-hid.ko
+-kernel/drivers/platform/x86/intel/intel_sdsi.ko
+ kernel/drivers/platform/x86/intel/intel_vsec.ko
+ kernel/drivers/platform/x86/intel/pmc/
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core.ko
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core_pltdrv.ko
+-kernel/drivers/platform/x86/intel/pmt/
+-kernel/drivers/platform/x86/intel/pmt/pmt_class.ko
+-kernel/drivers/platform/x86/intel/pmt/pmt_crashlog.ko
+-kernel/drivers/platform/x86/intel/pmt/pmt_telemetry.ko
+-kernel/drivers/platform/x86/intel/uncore-frequency/
+-kernel/drivers/platform/x86/intel/uncore-frequency/intel-uncore-frequency-common.ko
+-kernel/drivers/platform/x86/intel/uncore-frequency/intel-uncore-frequency.ko
+ kernel/drivers/platform/x86/wmi.ko
+ kernel/drivers/scsi/
+ kernel/drivers/scsi/scsi_common.ko
+@@ -153,11 +136,6 @@ kernel/drivers/thermal/intel/intel_powerclamp.ko
+ kernel/drivers/thermal/intel/intel_soc_dts_iosf.ko
+ kernel/drivers/thermal/intel/intel_soc_dts_thermal.ko
+ kernel/drivers/thermal/intel/x86_pkg_temp_thermal.ko
+-kernel/drivers/ufs/
+-kernel/drivers/ufs/core/
+-kernel/drivers/ufs/core/ufshcd-core.ko
+-kernel/drivers/ufs/host/
+-kernel/drivers/ufs/host/ufshcd-pci.ko
+ kernel/drivers/usb/
+ kernel/drivers/usb/common/
+ kernel/drivers/usb/common/usb-common.ko
+@@ -224,10 +202,7 @@ kernel/sound/pci/hda/snd-hda-codec-generic.ko
+ kernel/sound/pci/hda/snd-hda-codec-hdmi.ko
+ kernel/sound/pci/hda/snd-hda-codec-realtek.ko
+ kernel/sound/pci/hda/snd-hda-codec.ko
+-kernel/sound/pci/hda/snd-hda-cs-dsp-ctls.ko
+ kernel/sound/pci/hda/snd-hda-intel.ko
+-kernel/sound/pci/hda/snd-hda-scodec-cs35l41-i2c.ko
+-kernel/sound/pci/hda/snd-hda-scodec-cs35l41.ko
+ kernel/sound/soc/
+ kernel/sound/soc/amd/
+ kernel/sound/soc/amd/raven/
+@@ -243,13 +218,11 @@ kernel/sound/soc/amd/yc/snd-acp6x-pdm-dma.ko
+ kernel/sound/soc/amd/yc/snd-pci-acp6x.ko
+ kernel/sound/soc/amd/yc/snd-soc-acp6x-mach.ko
+ kernel/sound/soc/codecs/
+-kernel/sound/soc/codecs/snd-soc-cs35l41-lib.ko
+ kernel/sound/soc/codecs/snd-soc-cx2072x.ko
+ kernel/sound/soc/codecs/snd-soc-da7213.ko
+ kernel/sound/soc/codecs/snd-soc-da7219.ko
+ kernel/sound/soc/codecs/snd-soc-dmic.ko
+ kernel/sound/soc/codecs/snd-soc-es8316.ko
+-kernel/sound/soc/codecs/snd-soc-es8326.ko
+ kernel/sound/soc/codecs/snd-soc-hdac-hda.ko
+ kernel/sound/soc/codecs/snd-soc-hdac-hdmi.ko
+ kernel/sound/soc/codecs/snd-soc-max98090.ko
+@@ -292,7 +265,6 @@ kernel/sound/soc/intel/boards/snd-soc-kbl_rt5663_max98927.ko
+ kernel/sound/soc/intel/boards/snd-soc-skl_hda_dsp.ko
+ kernel/sound/soc/intel/boards/snd-soc-skl_nau88l25_ssm4567.ko
+ kernel/sound/soc/intel/boards/snd-soc-skl_rt286.ko
+-kernel/sound/soc/intel/boards/snd-soc-sof_es8336.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_rt5682.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-cx2072x.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-da7213.ko
+d26ab94 6.1.15inmate-1681699556 (was 6.0.12inmate-1673507833)
 diff --git a/manifest.txt b/manifest.txt
 index 9f12a81..7a57245 100644
 --- a/manifest.txt
@@ -47,7 +138,7 @@ index 9f12a81..7a57245 100644
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-tgl.ko
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-tng.ko
  kernel/sound/soc/sof/snd-sof-pci.ko
-7fb3dc5 6.0.12inmate-1673507833 (was 6.0.3inmate-1669025252)
+64f2a87 6.0.12inmate-1673507833 (was 6.0.3inmate-1669025252)
 diff --git a/manifest.txt b/manifest.txt
 index a12b947..9f12a81 100644
 --- a/manifest.txt
@@ -60,7 +151,7 @@ index a12b947..9f12a81 100644
  kernel/drivers/cpufreq/cpufreq_ondemand.ko
  kernel/drivers/dca/
  kernel/drivers/dca/dca.ko
-8bc377f 6.0.3inmate-1669025252 (was 5.19.11inmate-1667204222)
+9e53fc8 6.0.3inmate-1669025252 (was 5.19.11inmate-1667204222)
 diff --git a/manifest.txt b/manifest.txt
 index 854f630..a12b947 100644
 --- a/manifest.txt
@@ -109,7 +200,7 @@ index 854f630..a12b947 100644
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-tgl.ko
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-tng.ko
  kernel/sound/soc/sof/snd-sof-pci.ko
-6914ecd 5.19.11inmate-1667204222 (was 5.18.16inmate-1663579056)
+585b271 5.19.11inmate-1667204222 (was 5.18.16inmate-1663579056)
 diff --git a/manifest.txt b/manifest.txt
 index b9bca85..854f630 100644
 --- a/manifest.txt
@@ -146,7 +237,7 @@ index b9bca85..854f630 100644
  kernel/drivers/usb/
  kernel/drivers/usb/common/
  kernel/drivers/usb/common/usb-common.ko
-9d2a733 5.18.16inmate-1663579056 (was 5.18.16inmate-1661227544)
+13bfcdc 5.18.16inmate-1663579056 (was 5.18.16inmate-1661227544)
 diff --git a/manifest.txt b/manifest.txt
 index 9b0319b..b9bca85 100644
 --- a/manifest.txt
@@ -299,8 +390,8 @@ index 9b0319b..b9bca85 100644
  kernel/sound/soundcore.ko
  modules.alias
  modules.alias.bin
-3e06a0e 5.18.16inmate-1661227544 (was 5.18.2inmate-1655892583)
-9a59e8c 5.18.2inmate-1655892583 (was 5.18.2inmate-1655889716)
+ba33536 5.18.16inmate-1661227544 (was 5.18.2inmate-1655892583)
+b1a5a3e 5.18.2inmate-1655892583 (was 5.18.2inmate-1655889716)
 diff --git a/manifest.txt b/manifest.txt
 index 9d659a9..9b0319b 100644
 --- a/manifest.txt
@@ -321,7 +412,7 @@ index 9d659a9..9b0319b 100644
  kernel/drivers/leds/led-class.ko
  kernel/drivers/leds/trigger/
  kernel/drivers/leds/trigger/ledtrig-audio.ko
-4c7f08a 5.18.2inmate-1655889716 (was 5.16.12inmate-1652152203)
+6048b0a 5.18.2inmate-1655889716 (was 5.16.12inmate-1652152203)
 diff --git a/manifest.txt b/manifest.txt
 index d3fac49..9d659a9 100644
 --- a/manifest.txt
@@ -352,9 +443,9 @@ index d3fac49..9d659a9 100644
  kernel/drivers/platform/x86/intel/
  kernel/drivers/platform/x86/intel/intel-hid.ko
  kernel/drivers/platform/x86/intel/pmc/
-72708d8 5.16.12inmate-1652152203 (was 5.16.12inmate-1652148343)
-529e061 5.16.12inmate-1652148343 (was 5.15.5inmate-1642559665)
-3f14c7a 5.15.5inmate-1642559665 (was 5.14.9inmate-1641809653)
+3465fdd 5.16.12inmate-1652152203 (was 5.16.12inmate-1652148343)
+95a6f13 5.16.12inmate-1652148343 (was 5.15.5inmate-1642559665)
+0ee1d60 5.15.5inmate-1642559665 (was 5.14.9inmate-1641809653)
 diff --git a/manifest.txt b/manifest.txt
 index c50fb91..d3fac49 100644
 --- a/manifest.txt
@@ -377,7 +468,7 @@ index c50fb91..d3fac49 100644
  kernel/drivers/scsi/scsi_mod.ko
  kernel/drivers/scsi/sr_mod.ko
  kernel/drivers/thermal/
-25ed6b1 5.14.9inmate-1641809653 (was None)
+3a8d8e5 5.14.9inmate-1641809653 (was None)
 diff --git a/manifest.txt b/manifest.txt
 new file mode 100644
 index 0000000..c50fb91

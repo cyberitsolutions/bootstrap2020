@@ -3,6 +3,14 @@ This is a summary of user-visible changes over time.
 
 
 ===========================================
+ Changes in SOEs May 2023 (since Apr 2023)
+===========================================
+• Inmate kernel bumped to 6.1.20 (was 6.1.15).
+• Proof-of-concept ZFS support for Understudy.
+
+
+
+===========================================
  Changes in SOEs Apr 2023 (since Mar 2023)
 ===========================================
 • Users *MUST* use lowercase usernames ("p123" not "P123").
