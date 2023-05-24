@@ -589,6 +589,30 @@ with tempfile.TemporaryDirectory() as td:
            if template_wants_PrisonPC_or_tvserver else []),
          ])
 
+# FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will replace all of this with a single command
+#        Before then, if using systemd from bullseye-backports, there is systemd-measure which can do most of the math here
+# FIXME: Everything online keeps mentioning '.osrel=/usr/lib/os-release' is this at all important?
+#        Would be easy to include with a --customize-hook=download /usr/lib/os-release {destdir}/os-release' arg above
+# FIXME: Include a basic default cmdline section, it can be overridden by the bootloader.
+#        However when doing secureboot the cmdline needs to be signed too, so maybe an build defined cmdline will be fine.
+stub_new_sections = {'.linux': destdir / 'vmlinuz', '.initrd': destdir / 'initrd.img'}
+objcopy_args = ['objcopy', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub', 'boot-stub.efi']
+
+# I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
+stub_section_headers = subprocess.check_output(['objdump', '--section-headers', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub'], text=True)
+# We only care about lines with 7 columns
+stub_last_section_header = [line for line in stub_section_headers.splitlines() if len(line.split()) == 7][-1].split()
+stub_section_offset = int(stub_last_section_header[2], 16) + int(stub_last_section_header[3], 16)
+for section_name in stub_new_sections:
+    objcopy_args.append('--add-section')
+    objcopy_args.append(f'{section_name}={stub_new_sections[section_name]}')
+    objcopy_args.append('--change-section-vma')
+    objcopy_args.append(f'{section_name}={stub_section_offset}')
+    stub_section_offset += stub_new_sections[section_name].stat().st_size
+
+subprocess.check_call(cwd=destdir, args=objcopy_args)
+# FIXME: Sign the resulting stub for secureboot (and the squashfs somehow)
+
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
 
