@@ -65,6 +65,8 @@ group.add_argument('--host-port-for-boot-test-vnc', type=int, default=5900, meta
 group.add_argument('--opengl-for-boot-test-ssh', action='store_true',
                    help='Enable OpenGL in --boot-test (requires qemu 7.1)')
 group.add_argument('--measure-install-footprints', action='store_true')
+parser.add_argument('--efi-stub', action='store_true',
+                    help='Generate UEFI binary with embedded vmlinuz, initrd.img, etc.')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
@@ -619,27 +621,29 @@ with tempfile.TemporaryDirectory() as td_str:
            if args.template in ('zfs', 'understudy') and args.optimize == 'speed' and not args.virtual_only else []),
          ])
 
-# FIXME: Either generate this stub inside the SOE, or check that the stub is installed on the host before trying to use it
-# FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will replace all of this with a single command
-# FIXME: Everything online keeps mentioning '.osrel=/usr/lib/os-release' is this at all important?
-#        Would be easy to include with a --customize-hook=download /usr/lib/os-release {destdir}/os-release' arg above
-# FIXME: Include a basic default cmdline section, it can be overridden by the bootloader.
-#        However when doing secureboot the cmdline needs to be signed too, so maybe an build defined cmdline will be fine.
-stub_new_sections = {'.linux': destdir / 'vmlinuz', '.initrd': destdir / 'initrd.img'}
-objcopy_args = ['objcopy', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub', 'boot-stub.efi']
+if args.efi_stub:
+    # FIXME: Either generate this stub inside the SOE, or check that the stub is installed on the host before trying to use it
+    # FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will do all of this with a single command
+    # FIXME: Everything online keeps mentioning '.osrel=/usr/lib/os-release' is this at all important?
+    #        Would be easy to include with a --customize-hook=download /usr/lib/os-release {destdir}/os-release' arg above
+    # FIXME: Include a basic default cmdline section, it can be overridden by the bootloader.
+    #        However when doing secureboot the cmdline needs to be signed too, so maybe an build defined cmdline will be fine.
+    stub_new_sections = {'.linux': destdir / 'vmlinuz', '.initrd': destdir / 'initrd.img'}
+    objcopy_args = ['objcopy', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub', 'boot-stub.efi']
 
-# I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
-stub_section_headers = subprocess.check_output(['objdump', '--headers', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub'], text=True)
-# We only care about lines with 7 columns
-stub_section_headers = [line for line in stub_section_headers.splitlines() if len(line.split()) == 7]
-stub_section_offset = int(stub_section_headers[-1].split()[2], 16) + int(stub_section_headers[-1].split()[3], 16)
-for section_name in stub_new_sections:
-    objcopy_args += ['--add-section', f'{section_name}={stub_new_sections[section_name]}']
-    objcopy_args += ['--change-section-vma', f'{section_name}={stub_section_offset}']
-    stub_section_offset += stub_new_sections[section_name].stat().st_size
+    # I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
+    stub_section_headers = subprocess.check_output(text=True,
+                                                   args=['objdump', '--headers', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub'])
+    # We only care about lines with 7 columns
+    stub_section_headers = [line for line in stub_section_headers.splitlines() if len(line.split()) == 7]
+    stub_section_offset = int(stub_section_headers[-1].split()[2], 16) + int(stub_section_headers[-1].split()[3], 16)
+    for section_name in stub_new_sections:
+        objcopy_args += ['--add-section', f'{section_name}={stub_new_sections[section_name]}']
+        objcopy_args += ['--change-section-vma', f'{section_name}={stub_section_offset}']
+        stub_section_offset += stub_new_sections[section_name].stat().st_size
 
-subprocess.check_call(cwd=destdir, args=objcopy_args)
-# FIXME: Sign the resulting stub for secureboot (and the squashfs somehow)
+    subprocess.check_call(cwd=destdir, args=objcopy_args)
+    # FIXME: Sign the resulting stub for secureboot (and the squashfs somehow)
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
