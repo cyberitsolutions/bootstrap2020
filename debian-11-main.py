@@ -748,8 +748,10 @@ if args.boot_test:
         testdir = pathlib.Path(testdir_str)
         validate_unescaped_path_is_safe(testdir)
         subprocess.check_call(['ln', '-vt', testdir, '--',
-                               destdir / 'vmlinuz',
-                               destdir / 'initrd.img',
+                               *([destdir / 'vmlinuz',
+                                  destdir / 'initrd.img']
+                                 if not args.efi_stub else
+                                 [destdir / 'linuxx64.efi']),
                                destdir / 'filesystem.squashfs'])
         common_boot_args = ' '.join([
             ('quiet splash'
@@ -811,7 +813,7 @@ if args.boot_test:
                         input='\n'.join([
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
-        if args.netboot_only:
+        if args.netboot_only and not args.efi_stub:
             subprocess.check_call(['cp', '-t', testdir, '--',
                                    '/usr/lib/PXELINUX/pxelinux.0',
                                    '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
@@ -828,6 +830,19 @@ if args.boot_test:
                      if have_smbd else
                      f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
                     common_boot_args]))
+        elif args.netboot_only:
+            # There's some issues with Qemu/OVMF & syslinux, but it uses ipxe internally anyway, so just configure that.
+            # FIXME: Why do we even need tftp at this point?
+            (testdir / 'ipxe-script.ipxe').write_text('\n'.join([
+                '#!ipxe',
+                'kernel linuxx64.efi ' + ' '.join([
+                    'boot=live',
+                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
+                     if have_smbd else
+                     f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
+                    common_boot_args]),
+                'boot'
+            ]))
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
@@ -856,6 +871,8 @@ if args.boot_test:
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
+            *(['--bios', '/usr/share/qemu/OVMF.fd']
+              if args.efi_stub else []),
             '--enable-kvm',
             '--machine', 'q35',
             '--cpu', 'host',
@@ -881,7 +898,8 @@ if args.boot_test:
                   if template_wants_PrisonPC else []),
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
-                  if args.netboot_only else []),
+                  if args.netboot_only and not args.efi_stub else [f'tftp={testdir}', 'bootfile=ipxe-script.ipxe'
+                                                                   if args.netboot_only else []]),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
@@ -891,8 +909,9 @@ if args.boot_test:
                   if template_wants_PrisonPC_or_tvserver else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
-            *(['--kernel', testdir / 'vmlinuz',  # type: ignore
-               '--initrd', testdir / 'initrd.img',
+            *([*(['--kernel', testdir / 'vmlinuz',  # type: ignore
+                  '--initrd', testdir / 'initrd.img']
+                 if not args.efi_stub else ['--kernel', testdir / 'linuxx64.efi']),
                '--append', ' '.join([
                    'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
                    common_boot_args]),
