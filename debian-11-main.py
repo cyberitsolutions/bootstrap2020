@@ -598,6 +598,9 @@ with tempfile.TemporaryDirectory() as td_str:
            if args.optimize != 'simplicity' else []),
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
+         *([f'--customize-hook=download  /usr/lib/systemd/boot/efi/linuxx64.efi.stub {destdir}/linuxx64.efi.stub',
+            f'--customize-hook=download  /etc/os-release {destdir}/os-release']
+           if args.efi_stub else []),
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--dpkgopt=debian-11-PrisonPC/omit-low-level-docs.conf',
@@ -622,14 +625,28 @@ with tempfile.TemporaryDirectory() as td_str:
          ])
 
 if args.efi_stub:
-    # FIXME: Either generate this stub inside the SOE, or check that the stub is installed on the host before trying to use it
+    root_args = ''
+    if template_wants_PrisonPC:
+        nfs_server = '10.0.0.1' if template_wants_PrisonPC_staff_network else '10.128.0.1'
+        # FIXME: We should stop disabling IPv6 eventually
+        root_args = f'ipv6.disable=1 netboot=nfs nfsroot={nfs_server}:/srv/netboot/images/{destdir.name} live-media-path='
+    elif args.template == 'understudy':
+        # FIXME: This is specific to PrisonPC understudies, and this doesn't properly allow for personality.cpio
+        # FIXME: We should be able to use http here instead of tftp, same for personality.cpio
+        root_args = f'fetch=tftp://10.0.0.1/srv/tftp/SOE/{destdir.name}/filesystem.squashfs'
+    else:
+        # FIXME: This is definitely never valid currently, figure out a suitable "default" cmdline here.
+        root_args = f'fetch=http://bootserver/SOE/{destdir.name}/filesystem.squashfs'
+    (destdir / 'cmdline.txt').write_text(f"panic=10 boot=live noprompt noeject quiet systemd.log_level=notice splash {root_args}")
     # FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will do all of this with a single command
-    # FIXME: Everything online keeps mentioning '.osrel=/usr/lib/os-release' is this at all important?
-    #        Would be easy to include with a --customize-hook=download /usr/lib/os-release {destdir}/os-release' arg above
-    # FIXME: Include a basic default cmdline section, it can be overridden by the bootloader.
-    #        However when doing secureboot the cmdline needs to be signed too, so maybe an build defined cmdline will be fine.
-    stub_new_sections = {'.linux': destdir / 'vmlinuz', '.initrd': destdir / 'initrd.img'}
-    objcopy_args = ['objcopy', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub', 'boot-stub.efi']
+    stub_new_sections = {
+        '.linux': destdir / 'vmlinuz',
+        '.initrd': destdir / 'initrd.img',
+        # FIXME: Is os-release even useful?
+        '.osrel': destdir / 'os-release',
+        '.cmdline': destdir / 'cmdline.txt',
+    }
+    objcopy_args = ['objcopy', 'linuxx64.efi.stub', 'linuxx64.efi']
 
     # I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
     stub_section_headers = subprocess.check_output(text=True,
@@ -643,7 +660,14 @@ if args.efi_stub:
         stub_section_offset += stub_new_sections[section_name].stat().st_size
 
     subprocess.check_call(cwd=destdir, args=objcopy_args)
-    # FIXME: Sign the resulting stub for secureboot (and the squashfs somehow)
+    # FIXME: Sign the resulting binary for secureboot using 'sbsign' (and the squashfs somehow)
+    #        'ukify' will also sign the result when doing all the section header math too
+
+    # Cleanup the files we only copied out for this step anyway
+    (destdir / 'linuxx64.efi.stub').unlink()
+    # FIXME: os-release might actually be a useful one to leave here for referencing later (similar to dpkg.status)
+    (destdir / 'os-release').unlink()
+    (destdir / 'cmdline.txt').unlink()
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
