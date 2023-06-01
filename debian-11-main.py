@@ -395,10 +395,17 @@ with tempfile.TemporaryDirectory() as td:
             '    w-scan'  # Used at new sites to find frequency MHz.
             ]
            if args.template == 'tvserver' else []),
-         # FIXME: remove this block once PrisonPC is ZFS!
+         # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ext4)
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
             '    quota ']    # no slow quotacheck on failover
+           if args.template == 'understudy' else []),
+         # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ZFS)
+         # NOTE: this is "good enough" for now; ZFS->ZFS won't need it.
+         *(['--include=python3-arrow python3-importlib-metadata',
+            '--customize-hook=git clone --branch=0.3 https://github.com/cyberitsolutions/cyber-zfs-backup $1/opt/cyber-zfs-backup',
+            """--customize-hook=printf >$1/usr/bin/cyber-zfs-backup '#!/bin/sh\nPYTHONPATH=/opt/cyber-zfs-backup exec python3 -m cyber_zfs_backup "$@"'""",
+            '--customize-hook=chmod +x $1/usr/bin/cyber-zfs-backup']
            if args.template == 'understudy' else []),
          *(['--include=mdadm rsnapshot'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
