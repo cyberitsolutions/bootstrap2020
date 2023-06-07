@@ -29,7 +29,7 @@ import urllib
 import urllib.parse
 
 import fusepy as fuse
-import requests
+import httpx
 
 fuse.fuse_python_api = (0, 2)
 
@@ -64,7 +64,7 @@ class MyFS(fuse.Operations):
     def __init__(self, url):
         self.url = url
         self.filename = pathlib.Path(urllib.parse.urlsplit(url).path).name
-        self.session = requests.Session()
+        self.session = httpx.Client()
 
         # By default requests will send "Accept-Encoding: gzip, deflate" and automatically handle the gzip decompression.
         # Problem is that the server then calculates the Content-Length according to the compressed transfer size,
