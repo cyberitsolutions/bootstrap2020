@@ -20,6 +20,7 @@
 
 import argparse
 import errno
+import logging
 import os
 import stat
 import sys
@@ -43,11 +44,14 @@ def main():
         return s
     parser = argparse.ArgumentParser(
         description='"Mount" a single HTTP URL, so it can in turn be loopback-mounted.')
+    parser.add_argument('--debug', action='store_true')
     parser.add_argument('url', type=type_url,
                         # For debugging,
                         default='https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-11.7.0-amd64-standard.iso')
     parser.add_argument('mountpoint', type=type_mountpoint)
     args = parser.parse_args()
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
     return fuse.FUSE(MyFS(args.url),
                      args.mountpoint,
                      nothreads=True,
@@ -73,14 +77,14 @@ class MyFS(fuse.Operations):
         assert 'bytes' in resp.headers['Accept-Ranges']
         self.content_length = int(resp.headers['Content-Length'])
         assert self.content_length > 0
-        print('Content-Length is', resp.headers['Content-Length'], file=sys.stderr, flush=True)  # DEBUGGING
+        logging.debug('Content-Length is %s', resp.headers['Content-Length'])
 
     def readdir(self, path, offset):
-        print('READDIR', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
+        logging.debug('READDIR %s %s', type(path), path)
         return ['.', '..', self.filename]
 
     def getattr(self, path, fh=None):
-        print('GETATTR', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
+        logging.debug('GETATTR %s %s', type(path), path)
         assert fh is None
         assert path in ['/',
                         os.path.join('/', self.filename)]
@@ -96,7 +100,7 @@ class MyFS(fuse.Operations):
                 'st_ctime': 0}
 
     def open(self, path, flags):
-        print('OPEN', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
+        logging.debug('OPEN %s %s', type(path), path)
         assert path in [os.path.join('/', self.filename)]
         accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
         if (flags & accmode) != os.O_RDONLY:
@@ -105,9 +109,9 @@ class MyFS(fuse.Operations):
             return 0            # FIXME: UGH
 
     def read(self, path, size, offset, fh=None):
-        print('READ', type(path), path, file=sys.stderr, flush=True)  # DEBUGGING
-        print('...', 'size is', size, 'offset is', offset, file=sys.stderr, flush=True)  # DEBUGGING
-        print('fh is', fh, file=sys.stderr, flush=True)  # DEBUGGING
+        logging.debug('READ %s %s', type(path), path)
+        logging.debug('... size is %s offset is %s', size, offset)
+        logging.debug('fh is %s', fh)
         assert path in [os.path.join('/', self.filename)]
         resp = self.session.get(
             self.url,
@@ -121,7 +125,7 @@ class MyFS(fuse.Operations):
                     offset,
                     offset + size - 1)})
         resp.raise_for_status()
-        print('...', 'response length is', len(resp.content), file=sys.stderr, flush=True)  # DEBUGGING
+        logging.debug('... response length is %s', len(resp.content))
         return resp.content     # NB: as bytes, not str!
 
 
