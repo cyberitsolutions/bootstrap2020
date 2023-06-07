@@ -130,10 +130,7 @@ class MyFS(fuse.Operations):
             return -errno.ENOENT
         resp = self.session.get(
             self.url,
-            headers={
-                'Range': 'bytes={:d}-{:d}'.format(
-                    offset,
-                    offset + size - 1)})
+            headers={'Range': f'bytes={offset:d}-{offset + size - 1:d}'})
         resp.raise_for_status()
         logging.debug('... response length is %s', len(resp.content))
         return resp.content     # NB: as bytes, not str!
