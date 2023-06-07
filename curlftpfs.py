@@ -18,13 +18,14 @@
 #
 # UPDATE: FIXME: Debian 10 has python3-fuse, so just backport it!
 
-import sys
-import stat
-import os
+import argparse
 import errno
+import os
+import stat
+import sys
 import urllib
 import urllib.parse
-import argparse
+
 import fusepy as fuse
 import requests
 
