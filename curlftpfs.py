@@ -44,7 +44,7 @@ def main():
         description='"Mount" a single HTTP URL, so it can in turn be loopback-mounted.')
     parser.add_argument('url', type=type_url,
                         # For debugging,
-                        default='http://cyber.com.au/~twb/tmp/mock.html')
+                        default='https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-11.7.0-amd64-standard.iso')
     parser.add_argument('mountpoint', type=type_mountpoint)
     args = parser.parse_args()
     return fuse.FUSE(MyFS(args.url),
