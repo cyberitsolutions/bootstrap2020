@@ -22,6 +22,7 @@ import argparse
 import errno
 import logging
 import os
+import pathlib
 import stat
 import sys
 import urllib
@@ -35,7 +36,7 @@ fuse.fuse_python_api = (0, 2)
 
 def main():
     def type_mountpoint(s):
-        if not os.path.isdir(s):
+        if not pathlib.Path(s).is_dir():
             raise ValueError('ENOTDIR 20 Not a directory', s)
         return s
 
@@ -62,7 +63,7 @@ def main():
 class MyFS(fuse.Operations):
     def __init__(self, url):
         self.url = url
-        self.filename = os.path.basename(urllib.parse.urlsplit(url).path)
+        self.filename = pathlib.Path(urllib.parse.urlsplit(url).path).name
         self.session = requests.Session()
 
         # By default requests will send "Accept-Encoding: gzip, deflate" and automatically handle the gzip decompression.
