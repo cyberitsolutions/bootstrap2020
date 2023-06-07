@@ -71,7 +71,13 @@ class MyFS(fuse.Operations):
         # not the transfer size.
         # By enforcing no compression during the HEAD request, we can get actual file size,
         # but we can still use gzip compression for the GET requests later.
-        resp = self.session.head(self.url, headers={'Accept-Encoding': None})
+        #
+        # ARGH!  If you ask for bytes 0-4096, and
+        # https://en.wikipedia.org/wiki/HTTP_compression
+        # is on, you'll get too many bytes back!
+        # As a quick fix, disable HTTP compression.
+        del self.session.headers['accept-encoding']
+        resp = self.session.head(self.url)
         resp.raise_for_status()
         if 'bytes' not in resp.headers.get('Accept-Ranges', []):
             return -errno.EOPNOTSUP  # This httpd doesn't do byte range requests
@@ -124,11 +130,6 @@ class MyFS(fuse.Operations):
         resp = self.session.get(
             self.url,
             headers={
-                # ARGH!  If you ask for bytes 0-4096, and
-                # https://en.wikipedia.org/wiki/HTTP_compression
-                # is on, you'll get too many bytes back!
-                # As a quick fix, disable HTTP compression.
-                'Accept-Encoding': '',
                 'Range': 'bytes={:d}-{:d}'.format(
                     offset,
                     offset + size - 1)})
