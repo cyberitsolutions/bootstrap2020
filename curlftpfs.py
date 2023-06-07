@@ -35,12 +35,13 @@ fuse.fuse_python_api = (0, 2)
 
 def main():
     def type_mountpoint(s):
-        assert os.path.isdir(s)
+        if not os.path.isdir(s):
+            raise ValueError('ENOTDIR 20 Not a directory', s)
         return s
 
     def type_url(s):
-        assert urllib.parse.urlsplit(s)
-        assert urllib.parse.urlsplit(s).scheme in ('http', 'https')
+        if not urllib.parse.urlsplit(s).scheme in ('http', 'https'):
+            raise ValueError('URL must be http:// or https://', s)
         return s
     parser = argparse.ArgumentParser(
         description='"Mount" a single HTTP URL, so it can in turn be loopback-mounted.')
@@ -72,11 +73,11 @@ class MyFS(fuse.Operations):
         # but we can still use gzip compression for the GET requests later.
         resp = self.session.head(self.url, headers={'Accept-Encoding': None})
         resp.raise_for_status()
-
-        assert 'Accept-Ranges' in resp.headers
-        assert 'bytes' in resp.headers['Accept-Ranges']
+        if 'bytes' not in resp.headers.get('Accept-Ranges', []):
+            return -errno.EOPNOTSUP  # This httpd doesn't do byte range requests
         self.content_length = int(resp.headers['Content-Length'])
-        assert self.content_length > 0
+        if self.content_length <= 0:
+            logging.warning('%s has content-length: 0?!', url)
         logging.debug('Content-Length is %s', resp.headers['Content-Length'])
 
     def readdir(self, path, offset):
@@ -85,9 +86,10 @@ class MyFS(fuse.Operations):
 
     def getattr(self, path, fh=None):
         logging.debug('GETATTR %s %s', type(path), path)
-        assert fh is None
-        assert path in ['/',
-                        os.path.join('/', self.filename)]
+        if fh is not None:
+            raise NotImplementedError()
+        if path not in {'/', f'/{self.filename}'}:
+            return -errno.ENOENT
         return {'st_mode': ((stat.S_IFDIR | 0o755) if path == '/' else (stat.S_IFREG | 0o444)),
                 'st_ino': 0,
                 'st_dev': 0,
@@ -101,7 +103,10 @@ class MyFS(fuse.Operations):
 
     def open(self, path, flags):
         logging.debug('OPEN %s %s', type(path), path)
-        assert path in [os.path.join('/', self.filename)]
+        if path == '/':
+            return -errno.EISDIR
+        if path != f'/{self.filename}':
+            return -errno.ENOENT
         accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
         if (flags & accmode) != os.O_RDONLY:
             return -errno.EACCES
@@ -112,7 +117,10 @@ class MyFS(fuse.Operations):
         logging.debug('READ %s %s', type(path), path)
         logging.debug('... size is %s offset is %s', size, offset)
         logging.debug('fh is %s', fh)
-        assert path in [os.path.join('/', self.filename)]
+        if path == '/':
+            return -errno.EISDIR
+        if path != f'/{self.filename}':
+            return -errno.ENOENT
         resp = self.session.get(
             self.url,
             headers={
