@@ -83,11 +83,11 @@ class MyFS(fuse.Operations):
     def readdir(self, path, offset):
         "We deny any files exist, but if you ask for them anyway, they work."
         "The alternative is scraping startpage, DAV, index.html, or lslR.txt.gz -- or inventing our own index.json."
-        logging.debug('READDIR %s', repr(path))
+        logging.debug('READDIR %s %s', repr(path), offset)
         return ['.', '..']
 
     def getattr(self, path, fh=None):
-        logging.debug('GETATTR %s', repr(path))
+        logging.debug('GETATTR %s %s', repr(path), fh)
         if fh is not None:
             raise NotImplementedError()
 
@@ -112,7 +112,7 @@ class MyFS(fuse.Operations):
                 'st_ctime': 0}
 
     def open(self, path, flags):
-        logging.debug('OPEN %s', repr(path))
+        logging.debug('OPEN %s %x', repr(path), flags)
         if path == '/':
             return -errno.EISDIR
         # We ought to error out if the URL doesn't exist.
