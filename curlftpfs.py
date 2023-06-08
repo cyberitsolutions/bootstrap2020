@@ -78,14 +78,13 @@ class MyFS(fuse.Operations):
         self.content_length = int(resp.headers['Content-Length'])
         if self.content_length <= 0:
             logging.warning('%s has content-length: 0?!', url)
-        logging.debug('Content-Length is %s', resp.headers['Content-Length'])
 
     def readdir(self, path, offset):
-        logging.debug('READDIR %s %s', type(path), path)
+        logging.debug('READDIR %s', repr(path))
         return ['.', '..', self.filename]
 
     def getattr(self, path, fh=None):
-        logging.debug('GETATTR %s %s', type(path), path)
+        logging.debug('GETATTR %s', repr(path))
         if fh is not None:
             raise NotImplementedError()
         if path not in {'/', f'/{self.filename}'}:
@@ -102,7 +101,7 @@ class MyFS(fuse.Operations):
                 'st_ctime': 0}
 
     def open(self, path, flags):
-        logging.debug('OPEN %s %s', type(path), path)
+        logging.debug('OPEN %s', repr(path))
         if path == '/':
             return -errno.EISDIR
         if path != f'/{self.filename}':
@@ -114,9 +113,7 @@ class MyFS(fuse.Operations):
             return 0            # FIXME: UGH
 
     def read(self, path, size, offset, fh=None):
-        logging.debug('READ %s %s', type(path), path)
-        logging.debug('... size is %s offset is %s', size, offset)
-        logging.debug('fh is %s', fh)
+        logging.debug('READ %s size=%s offset=%s fh=%s', repr(path), size, offset, fh)
         if path == '/':
             return -errno.EISDIR
         if path != f'/{self.filename}':
@@ -125,8 +122,9 @@ class MyFS(fuse.Operations):
             self.url,
             headers={'Range': f'bytes={offset:d}-{offset + size - 1:d}'})
         resp.raise_for_status()
-        logging.debug('... response length is %s', len(resp.content))
-        return resp.content     # NB: as bytes, not str!
+        if len(resp.content) != size:
+            logging.warning('Asked for %s bytes but got %s bytes?!', size, len(resp.content))
+        return resp.content
 
 
 if __name__ == '__main__':
