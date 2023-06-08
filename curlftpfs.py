@@ -62,7 +62,7 @@ def main():
 
 class MyFS(fuse.Operations):
     def __init__(self, url):
-        self.session = httpx.Client()
+        self.session = httpx.Client(http2=True)
         # When we used requests, its built-in default "Accept-Encoding: gzip, deflate" caused problems with range requests.
         # This is because Content-Length is the compressed size.
         # If you ask for (say) "bytes 0-4096", you might get more than 4096 bytes (after compression)!
