@@ -49,6 +49,9 @@ def main():
     parser.add_argument('--debug', action='store_true')
     parser.add_argument(
         'url', type=type_url,
+        # This is always Sweden (very slow for Australians).
+        # There is debian-cd.debian.net but it doesn't allow "current-live" symlink.
+        # Also it returned .com.au one and .de once, so doesn't seem much better.
         help='Example: https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/')
     parser.add_argument('mountpoint', type=type_mountpoint)
     args = parser.parse_args()
@@ -70,26 +73,23 @@ class MyFS(fuse.Operations):
         # https://en.wikipedia.org/wiki/HTTP_compression
         del self.session.headers['accept-encoding']
         # Do a test request to check how stupid the server is.
-        resp = self.session.head(self.url)
+        resp = self.session.head(url)
         resp.raise_for_status()
-        if 'bytes' not in resp.headers.get('Accept-Ranges', []):
-            return -errno.EOPNOTSUP  # This httpd doesn't do byte range requests
         if resp.http_version.startswith('HTTP/1'):
-            logging.warning('Server does not support HTTP/2? (%s)', self.url)
-        # We will use this later for .join(path).
-        self.url = resp.url
+            logging.warning('Server does not support HTTP/2? (%s)', url)
+        self.url = resp.url    # Later we'll .join(path) for final URL
 
 
     def readdir(self, path, offset):
         "We deny any files exist, but if you ask for them anyway, they work."
-        "The alternative is scraping startpage, DAV, index.html, or lslR.txt.gz -- or inventing our own index.json."
+        "The alternative is scraping http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#autoindex_format"
         logging.debug('READDIR %s %s', repr(path), offset)
         return ['.', '..']
 
     def getattr(self, path, fh=None):
         logging.debug('GETATTR %s %s', repr(path), fh)
         if fh is not None:
-            raise NotImplementedError()
+            raise NotImplementedError()  # FIXME: e.g. cksum and wc trigger this!
 
         # Ask the server if the file exists, and if it does, how big it is.
         # We don't bother to fill in anything else, because the real "meat" is inside filesystem.squashfs.
@@ -106,7 +106,7 @@ class MyFS(fuse.Operations):
                 'st_nlink': 2 if path == '/' else 1,
                 'st_uid': 0,
                 'st_gid': 0,
-                'st_size': int(resp.headers['Content-Length']),
+                'st_size': 0 if path == '/' else int(resp.headers['Content-Length']),
                 'st_atime': 0,
                 'st_mtime': 0,
                 'st_ctime': 0}
@@ -121,6 +121,12 @@ class MyFS(fuse.Operations):
         resp = self.session.head(self.url.join(path[1:]))
         if resp.status_code == 404:
             return -errno.ENOENT
+        # FIXME: cdimage.debian.org at least does range requests for *BIG* files only.
+        #        That means for small files, we have to manually chomp them down?
+        if ('bytes' not in resp.headers.get('Accept-Ranges', [])
+            # and int(resp.headers.get('content-length', '0') > 1_000_000)
+            ):
+            logging.warning('Big file but no range requests?  We are probably fucked!')
         resp.raise_for_status()
         # Also error out if you ask for write access.
         accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
@@ -138,6 +144,8 @@ class MyFS(fuse.Operations):
         resp = self.session.get(self.url.join(path[1:]), headers={
             'Range': f'bytes={offset:d}-{offset + size - 1:d}'})
         resp.raise_for_status()
+        if resp.status_code != 206:  # 206 Partial Content, i.e. range-request worked.
+            logging.warning('range-request failed?')
         if len(resp.content) != size:
             logging.warning('Asked for %s bytes but got %s bytes?!', size, len(resp.content))
         return resp.content
