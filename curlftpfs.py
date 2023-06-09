@@ -98,11 +98,17 @@ class MyFS(fuse.Operations):
         if resp.status_code == 404:
             return fuse.FuseOSError(errno.ENOENT)
         resp.raise_for_status()
-        try:
-            data = json.loads(resp.content)
-        except json.decoder.JSONDecodeError:
+        if resp.headers.get('Content-Type') == 'application/json':
+            try:
+                data = json.loads(resp.content)
+            except json.decoder.JSONDecodeError:
+                logging.warning('Unable to parse JSON response when reading dir %s', repr(path))
+                raise RuntimeError(path)
+        else:
+            # FIXME: We **could** try to parse HTML here, since both Apache & Nginx's auto indexing are likely similar enough.
+            #        That's hardly worth it for PrisonPC though.
             logging.warning('Got non-JSON response when reading dir %s', repr(path))
-            raise RuntimeError(path)
+            raise fuse.FuseOSError(errno.ENOTSUP)  # Explicitly tell the application that this is an unsupported action.
 
         return ['.', '..', *(i['name'] for i in data)]
 
@@ -110,6 +116,8 @@ class MyFS(fuse.Operations):
         logging.debug('GETATTR %s %s', repr(path), fh)
         if fh is not None:
             raise NotImplementedError()  # FIXME: e.g. cksum and wc trigger this!
+            # UPDATE: This is only being triggered on larger files (eg, 'filesystem.squashfs' NOT 'vmlinuz' or 'initrd.img')
+            #         And seems to be because fh == 0 rather than None, is that even relevant?
 
         # Ask the server if the file exists, and if it does, how big it is.
         # We don't bother to fill in anything else, because the real "meat" is inside filesystem.squashfs.
@@ -184,6 +192,7 @@ class MyFS(fuse.Operations):
         if resp.status_code != 206:  # 206 Partial Content, i.e. range-request worked.
             logging.warning('range-request failed?')
         if len(resp.content) != size:
+            # This seems to happen whenever we reach the end of a file and try to read larger chunks than what's left
             logging.warning('Asked for %s bytes but got %s bytes?!', size, len(resp.content))
         return resp.content
 
