@@ -100,6 +100,9 @@ class MyFS(fuse.Operations):
         resp.raise_for_status()
         if resp.headers.get('Content-Type') == 'application/json':
             try:
+                # This data includes a bunch of extra info like size, mtime, & object type (file or directory),
+                # but we don't care about any of that here since that gets handled by getattr().
+                # Maybe we could cache/memoize that info and reuse it though?
                 data = json.loads(resp.content)
             except json.decoder.JSONDecodeError:
                 logging.warning('Unable to parse JSON response when reading dir %s', repr(path))
@@ -130,7 +133,8 @@ class MyFS(fuse.Operations):
         resp.raise_for_status()
 
         # If we get redirected around to a new URL with a '/' on the end, it's probably a directory
-        if resp.request.url.path.endswith('/'):
+        # NOTE: This won't work as is if redirects get turned off in httpx, although could be solved easily.
+        if resp.url.path.endswith('/'):
             path += '/'
 
         # NOTE: Nginx does not include 'Last-Modified' in the headers for the autoindex.
@@ -147,6 +151,8 @@ class MyFS(fuse.Operations):
         return {'st_mode': ((stat.S_IFDIR | 0o755) if path.endswith('/') else (stat.S_IFREG | 0o444)),
                 'st_ino': 0,
                 'st_dev': 0,
+                # So this is simply **wrong** for directories, since it should at least go up by 1 for each subdirectory.
+                # Resolving that requires too much effort and we don't care to resolve it.
                 'st_nlink': 2 if path.endswith('/') else 1,
                 'st_uid': 0,
                 'st_gid': 0,
@@ -159,10 +165,15 @@ class MyFS(fuse.Operations):
         logging.debug('OPEN %s %x', repr(path), flags)
         if path == '/':
             raise fuse.FuseOSError(errno.EISDIR)
-        # We ought to error out if the URL doesn't exist.
         if not path.startswith('/'):
             raise RuntimeError(path)
+        # Error out if you ask for write access.
+        accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
+        if (flags & accmode) != os.O_RDONLY:
+            raise fuse.FuseOSError(errno.EROFS)
+
         resp = self.session.head(self.url.join(path[1:]))
+        # Error out if the URL doesn't exist.
         if resp.status_code == 404:
             return fuse.FuseOSError(errno.ENOENT)
         # FIXME: cdimage.debian.org at least does range requests for *BIG* files only.
@@ -172,13 +183,7 @@ class MyFS(fuse.Operations):
             ):
             logging.warning('Big file but no range requests?  We are probably fucked!')
         resp.raise_for_status()
-        # Also error out if you ask for write access.
-        # FIXME: Why not just do this check first? Why waste the http trip when what's being requested will never work anyway?
-        accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
-        if (flags & accmode) != os.O_RDONLY:
-            raise fuse.FuseOSError(errno.EACCES)
-        else:
-            return os.EX_OK
+        return os.EX_OK
 
     def read(self, path, size, offset, fh=None):
         logging.debug('READ %s size=%s offset=%s fh=%s', repr(path), size, offset, fh)
