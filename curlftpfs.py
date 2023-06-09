@@ -98,7 +98,7 @@ class MyFS(fuse.Operations):
             raise RuntimeError(path)
         resp = self.session.head(self.url.join(path[1:]))
         if resp.status_code == 404:
-            return -errno.ENOENT
+            raise fuse.FuseOSError(errno.ENOENT)
         resp.raise_for_status()
         return {'st_mode': ((stat.S_IFDIR | 0o755) if path == '/' else (stat.S_IFREG | 0o444)),
                 'st_ino': 0,
@@ -120,7 +120,7 @@ class MyFS(fuse.Operations):
             raise RuntimeError(path)
         resp = self.session.head(self.url.join(path[1:]))
         if resp.status_code == 404:
-            return -errno.ENOENT
+            return fuse.FuseOSError(errno.ENOENT)
         # FIXME: cdimage.debian.org at least does range requests for *BIG* files only.
         #        That means for small files, we have to manually chomp them down?
         if ('bytes' not in resp.headers.get('Accept-Ranges', [])
