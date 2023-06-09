@@ -150,7 +150,7 @@ class MyFS(fuse.Operations):
     def open(self, path, flags):
         logging.debug('OPEN %s %x', repr(path), flags)
         if path == '/':
-            return -errno.EISDIR
+            raise fuse.FuseOSError(errno.EISDIR)
         # We ought to error out if the URL doesn't exist.
         if not path.startswith('/'):
             raise RuntimeError(path)
@@ -165,16 +165,17 @@ class MyFS(fuse.Operations):
             logging.warning('Big file but no range requests?  We are probably fucked!')
         resp.raise_for_status()
         # Also error out if you ask for write access.
+        # FIXME: Why not just do this check first? Why waste the http trip when what's being requested will never work anyway?
         accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
         if (flags & accmode) != os.O_RDONLY:
-            return -errno.EACCES
+            raise fuse.FuseOSError(errno.EACCES)
         else:
             return os.EX_OK
 
     def read(self, path, size, offset, fh=None):
         logging.debug('READ %s size=%s offset=%s fh=%s', repr(path), size, offset, fh)
         if path == '/':
-            return -errno.EISDIR
+            raise fuse.FuseOSError(errno.EISDIR)
         if not path.startswith('/'):
             raise RuntimeError(path)
         resp = self.session.get(self.url.join(path[1:]), headers={
