@@ -119,13 +119,18 @@ class MyFS(fuse.Operations):
         if resp.status_code == 404:
             raise fuse.FuseOSError(errno.ENOENT)
         resp.raise_for_status()
-        return {'st_mode': ((stat.S_IFDIR | 0o755) if path == '/' else (stat.S_IFREG | 0o444)),
+
+        # If we get redirected around to a new URL with a '/' on the end, it's probably a directory
+        if resp.request.url.path.endswith('/'):
+            path += '/'
+
+        return {'st_mode': ((stat.S_IFDIR | 0o755) if path.endswith('/') else (stat.S_IFREG | 0o444)),
                 'st_ino': 0,
                 'st_dev': 0,
-                'st_nlink': 2 if path == '/' else 1,
+                'st_nlink': 2 if path.endswith('/') else 1,
                 'st_uid': 0,
                 'st_gid': 0,
-                'st_size': 0 if path == '/' else int(resp.headers['Content-Length']),
+                'st_size': 0 if path.endswith('/') else int(resp.headers['Content-Length']),
                 'st_atime': 0,
                 'st_mtime': 0,
                 'st_ctime': 0}
