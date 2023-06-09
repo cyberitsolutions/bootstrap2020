@@ -19,6 +19,7 @@
 # UPDATE: FIXME: Debian 10 has python3-fuse, so just backport it!
 
 import argparse
+import datetime
 import errno
 import json
 import logging
@@ -124,6 +125,17 @@ class MyFS(fuse.Operations):
         if resp.request.url.path.endswith('/'):
             path += '/'
 
+        # NOTE: Nginx does not include 'Last-Modified' in the headers for the autoindex.
+        #       We could workaround this and pull the modified-time from the autoindex info of the parent,
+        #       but unless we cache/memoize that info it's a bit painful to bother.
+        # FIXME: Why the fuck does python3's datetime still not supportt timezones properly?!?
+        #        This shit here tries to workaround that, but will still only work with 'GMT' timezone
+        mtime = 0
+        if 'Last-Modified' in resp.headers:
+            mtime = datetime.datetime.strptime(resp.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')
+            if not mtime.tzinfo and resp.headers['Last-Modified'].endswith(' GMT'):
+                mtime = mtime.replace(tzinfo=datetime.timezone.utc)
+
         return {'st_mode': ((stat.S_IFDIR | 0o755) if path.endswith('/') else (stat.S_IFREG | 0o444)),
                 'st_ino': 0,
                 'st_dev': 0,
@@ -132,7 +144,7 @@ class MyFS(fuse.Operations):
                 'st_gid': 0,
                 'st_size': 0 if path.endswith('/') else int(resp.headers['Content-Length']),
                 'st_atime': 0,
-                'st_mtime': 0,
+                'st_mtime': mtime.timestamp() if mtime else 0,
                 'st_ctime': 0}
 
     def open(self, path, flags):
