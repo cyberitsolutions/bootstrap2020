@@ -20,6 +20,7 @@
 
 import argparse
 import errno
+import json
 import logging
 import os
 import pathlib
@@ -84,7 +85,25 @@ class MyFS(fuse.Operations):
         "We deny any files exist, but if you ask for them anyway, they work."
         "The alternative is scraping http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#autoindex_format"
         logging.debug('READDIR %s %s', repr(path), offset)
-        return ['.', '..']
+        if offset != 0:
+            raise NotImplementedError("I don't actually know what this offset even means")
+
+        # NOTE: I never saw path end with a '/' here in testing
+        if not path.endswith('/'):
+            path += '/'
+
+        resp = self.session.get(self.url.join(path[1:]), headers={
+            'Accept': 'application/json'})  # NOTE: I expect Nginx ignores though, but doesn't hurt
+        if resp.status_code == 404:
+            return fuse.FuseOSError(errno.ENOENT)
+        resp.raise_for_status()
+        try:
+            data = json.loads(resp.content)
+        except json.decoder.JSONDecodeError:
+            logging.warning('Got non-JSON response when reading dir %s', repr(path))
+            raise RuntimeError(path)
+
+        return ['.', '..', *(i['name'] for i in data)]
 
     def getattr(self, path, fh=None):
         logging.debug('GETATTR %s %s', repr(path), fh)
