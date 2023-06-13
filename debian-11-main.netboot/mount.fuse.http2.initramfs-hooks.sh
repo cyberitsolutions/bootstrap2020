@@ -29,3 +29,7 @@ done
 
 # NOTE: it's STILL giving "Unable to find libfuse", but hard-coding the path works for now:
 # (initramfs) FUSE_LIBRARY_PATH=/lib/x86_64-linux-gnu/libfuse.so.2 mount.fuse.http2 --help
+
+
+# We'll also need the CA certificate bundle that python3-httpx uses, if we want to use http/2 (which is https-only).
+copy_file "$(python3 -m certifi)"

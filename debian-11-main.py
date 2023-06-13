@@ -368,6 +368,21 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
             '--include=python3-pyfuse3,python3-fusepy,python3-httpx,python3-h2',  # support mount.http2-fuse (in-house)
+            # Generate TLS keys for boot test.
+            # ACTUALLY, let's just have the guest generate a snakeoil pair (and trust it) normally, and then
+            # copy that keypair out to where nginx can access it.!
+            *(['--include=ssl-cert',
+               # FIXME: this is not working.
+               '--essential-hook=echo ssl-cert make-ssl-cert/altname string DNS:canthappen.invalid | chroot $1 debconf-set-selections',
+               # Therefore resort to brute-force setting the hostname before ssl-cert is installed...
+               '--essential-hook=chroot $1 hostname oscar.the.grouch',
+               # ...and add the final --boot-test VM afterwards.
+               '--customize-hook=printf "%s oscar.the.grouch\n" 10.0.2.4 10.128.2.4 >>$1/etc/hosts',
+               # Argh! "apt install ssl-cert" adds itself to "/etc/ssl/certs/" (dir mode, used by curl &c) but
+               #       does not add itself to "/etc/ssl/certs/ca-certificates.crt" (bundle mode, used by certifi).
+               #       Since this is only for boot-test debugging VMs, we can cut some corners here...
+               '--customize-hook=ln -t $1/usr/local/share/ca-certificates/ $1/etc/ssl/certs/ssl-cert-snakeoil.pem && chroot $1 update-ca-certificates']
+              if args.boot_test and have_nginx else []),
             f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
@@ -675,11 +690,23 @@ def debug_nginx(testdir):
     if not have_nginx:
         yield
     else:
+        # Grab the keypair --include=ssl-cert created, and let nginx read it.
+        # FIXME: move this into --customize-hook=download?
+        (testdir / 'nginx.key.pem').write_bytes(subprocess.check_output(
+            ['rdsquashfs',
+             '--cat', '/etc/ssl/private/ssl-cert-snakeoil.key',
+             testdir / 'filesystem.squashfs']))
+        (testdir / 'nginx.cert.pem').write_bytes(subprocess.check_output(
+            ['rdsquashfs',
+             '--cat', '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+             testdir / 'filesystem.squashfs']))
         (testdir / 'nginx.conf').write_text(
             'error_log nginx.log; pid nginx.pid; events {}'
             'http { access_log nginx.log; sendfile on; root .; allow all; autoindex on; autoindex_format json; server {'
             f'listen unix:{testdir}/nginx-h1.sock default_server;'
-            # f'listen unix:{testdir}/nginx-h2.sock ssl http2 default_server;'
+            f'listen unix:{testdir}/nginx-h2.sock ssl http2 default_server;'
+            f'ssl_certificate {testdir}/nginx.cert.pem;'
+            f'ssl_certificate_key {testdir}/nginx.key.pem;'
             '}}')
         try:
             subprocess.check_call(['/usr/sbin/nginx', '-p', testdir, '-c', 'nginx.conf'], cwd=testdir)
