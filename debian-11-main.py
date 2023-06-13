@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import configparser
+import contextlib
 import datetime
 import io
 import json
@@ -172,6 +173,8 @@ have_smbd = pathlib.Path('/usr/sbin/smbd').exists()
 if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
+
+have_nginx = pathlib.Path('/usr/sbin/nginx').exists()
 
 if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
@@ -666,6 +669,25 @@ def maybe_tvserver_ext2(testdir: pathlib.Path) -> list:
          '--boot', 'order=n'])  # don't try to boot off the dummy disk
 
 
+@contextlib.contextmanager
+def debug_nginx(testdir):
+    if not have_nginx:
+        yield
+    else:
+        (testdir / 'nginx.conf').write_text(
+            'error_log nginx.log; pid nginx.pid; events {}'
+            'http { access_log nginx.log; sendfile on; server {'
+            f'listen unix:{testdir}/nginx-h1.sock default_server;'
+            # f'listen unix:{testdir}/nginx-h2.sock ssl http2 default_server;'
+            'root .; location / { allow all; }'
+            '}}')
+        try:
+            subprocess.check_call(['/usr/sbin/nginx', '-p', testdir, '-c', 'nginx.conf'], cwd=testdir)
+            yield
+        finally:
+            subprocess.check_call(['/usr/sbin/nginx', '-p', testdir, '-c', 'nginx.conf', '-s', 'stop'], cwd=testdir)
+
+
 if args.boot_test:
     # PrisonPC SOEs are hard-coded to check their IP address.
     # This is not boot-time configurable for paranoia reasons.
@@ -775,7 +797,8 @@ if args.boot_test:
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
                     f'[Service]\nEnvironment=X11VNC_EXTRA_ARGS="-allow {tftp_address}"\n')
-        subprocess.check_call([
+        with debug_nginx(testdir):
+          subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
             '--enable-kvm',
@@ -804,6 +827,9 @@ if args.boot_test:
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
+                *([f'guestfwd=tcp:{smb_address}:80-cmd:nc -U {testdir}/nginx-h1.sock',
+                   f'guestfwd=tcp:{smb_address}:80-cmd:nc -U {testdir}/nginx-h2.sock']
+                  if have_nginx else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
