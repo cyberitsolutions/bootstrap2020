@@ -677,10 +677,9 @@ def debug_nginx(testdir):
     else:
         (testdir / 'nginx.conf').write_text(
             'error_log nginx.log; pid nginx.pid; events {}'
-            'http { access_log nginx.log; sendfile on; server {'
+            'http { access_log nginx.log; sendfile on; root .; allow all; autoindex on; autoindex_format json; server {'
             f'listen unix:{testdir}/nginx-h1.sock default_server;'
             # f'listen unix:{testdir}/nginx-h2.sock ssl http2 default_server;'
-            'root .; location / { allow all; }'
             '}}')
         try:
             subprocess.check_call(['/usr/sbin/nginx', '-p', testdir, '-c', 'nginx.conf'], cwd=testdir)
