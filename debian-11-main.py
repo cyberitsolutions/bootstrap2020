@@ -828,7 +828,7 @@ if args.boot_test:
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{smb_address}:80-cmd:nc -U {testdir}/nginx-h1.sock',
-                   f'guestfwd=tcp:{smb_address}:80-cmd:nc -U {testdir}/nginx-h2.sock']
+                   f'guestfwd=tcp:{smb_address}:443-cmd:nc -U {testdir}/nginx-h2.sock']
                   if have_nginx else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
