@@ -112,7 +112,7 @@ class HTTP2FS(fuse.Operations):
             logging.warning('Got non-JSON response when reading dir %s', repr(path))
             raise fuse.FuseOSError(errno.ENOTSUP)  # Explicitly tell the application that this is an unsupported action.
 
-        return ['.', '..', *(i['name'] for i in data)]
+        return ['.', '..', *(i['name'] for i in data if i['type'] in {'file', 'directory'})]
 
     def getattr(self, path, fh=None):
         logging.debug('GETATTR %s %s', repr(path), fh)
