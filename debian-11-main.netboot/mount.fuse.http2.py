@@ -48,6 +48,7 @@ def main():
     parser = argparse.ArgumentParser(
         description='"Mount" a single HTTP URL, so it can in turn be loopback-mounted.')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('-o', nargs='*', help='IGNORED - for compatibility with mount(8)')
     parser.add_argument(
         'url', type=type_url,
         # This is always Sweden (very slow for Australians).
