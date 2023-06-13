@@ -367,6 +367,7 @@ with tempfile.TemporaryDirectory() as td:
            if args.optimize != 'simplicity' else []),
          *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
+            '--include=python3-pyfuse3,python3-fusepy,python3-httpx,python3-h2',  # support mount.http2-fuse (in-house)
             f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot")} /']
            if not args.local_boot_only else []),
          *([f'--essential-hook=tar-in {create_tarball("debian-11-main.netboot-only")} /']  # 9% faster 19% smaller
