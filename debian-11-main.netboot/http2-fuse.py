@@ -58,13 +58,13 @@ def main():
     args = parser.parse_args()
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
-    return fuse.FUSE(MyFS(args.url),
+    return fuse.FUSE(HTTP2FS(args.url),
                      args.mountpoint,
                      nothreads=True,
                      foreground=True)
 
 
-class MyFS(fuse.Operations):
+class HTTP2FS(fuse.Operations):
     def __init__(self, url):
         self.session = httpx.Client(http2=True)
         # When we used requests, its built-in default "Accept-Encoding: gzip, deflate" caused problems with range requests.
