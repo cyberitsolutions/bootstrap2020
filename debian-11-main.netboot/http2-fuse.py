@@ -26,7 +26,6 @@ import logging
 import os
 import pathlib
 import stat
-import sys
 import urllib
 import urllib.parse
 
@@ -80,7 +79,6 @@ class MyFS(fuse.Operations):
         if resp.http_version.startswith('HTTP/1'):
             logging.warning('Server does not support HTTP/2? (%s)', url)
         self.url = resp.url    # Later we'll .join(path) for final URL
-
 
     def readdir(self, path, offset):
         "We deny any files exist, but if you ask for them anyway, they work."
@@ -178,10 +176,8 @@ class MyFS(fuse.Operations):
             return fuse.FuseOSError(errno.ENOENT)
         # FIXME: cdimage.debian.org at least does range requests for *BIG* files only.
         #        That means for small files, we have to manually chomp them down?
-        if ('bytes' not in resp.headers.get('Accept-Ranges', [])
-            # and int(resp.headers.get('content-length', '0') > 1_000_000)
-            ):
-            logging.warning('Big file but no range requests?  We are probably fucked!')
+        if 'bytes' not in resp.headers.get('Accept-Ranges', []):
+            logging.warning('%s: No range requests?  We are probably fucked!', resp.url)
         resp.raise_for_status()
         return os.EX_OK
 
