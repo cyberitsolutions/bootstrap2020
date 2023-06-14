@@ -67,7 +67,8 @@ def main():
 
 class HTTP2FS(fuse.Operations):
     def __init__(self, url):
-        self.session = httpx.Client(http2=True)
+        # FIXME: verify=False disables TLS cert validation --- BAD AND NAUGHTY!!!
+        self.session = httpx.Client(http2=True, verify=False)
         # When we used requests, its built-in default "Accept-Encoding: gzip, deflate" caused problems with range requests.
         # This is because Content-Length is the compressed size.
         # If you ask for (say) "bytes 0-4096", you might get more than 4096 bytes (after compression)!

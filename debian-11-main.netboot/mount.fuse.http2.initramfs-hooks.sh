@@ -2,7 +2,9 @@
 set -e
 case $1 in (prereqs) exit 0;; esac
 . /usr/share/initramfs-tools/hook-functions
-copy_exec /sbin/mount.fuse.http2
+#copy_exec /sbin/mount.fuse.http2
+# We have to call it "/bin/httpfs" because live-boot/bullseye assumes that.
+copy_exec /sbin/mount.fuse.http2 /bin/httpfs
 
 # Plus *all* the fucken dependencies.  UGH.
 
@@ -32,4 +34,6 @@ done
 
 
 # We'll also need the CA certificate bundle that python3-httpx uses, if we want to use http/2 (which is https-only).
-copy_file "$(python3 -m certifi)"
+#copy_file fuck "$(python3 -m certifi)"
+# python3-certifi isn't always installed when this runs? Hard-code and hope...
+copy_file fuck /etc/ssl/certs/ca-certificates.crt

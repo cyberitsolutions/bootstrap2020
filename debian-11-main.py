@@ -795,7 +795,11 @@ if args.boot_test:
                 '  INITRD initrd.img\n'
                 '  APPEND ' + ' '.join([
                     'boot=live',
-                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
+                    # https://codesearch.debian.net/search?q=package%3Alive-boot+do_httpmount
+                    # FIXME: going by IP address requires verify=False in the client -- yuk.
+                    (f'httpfs=https://{smb_address}/ live-media-path='
+                     if have_nginx else
+                     f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
                      if have_smbd else
                      f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
                     common_boot_args]))
