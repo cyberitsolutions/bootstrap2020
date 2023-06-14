@@ -48,6 +48,9 @@ def main():
     parser = argparse.ArgumentParser(
         description='"Mount" a single HTTP URL, so it can in turn be loopback-mounted.')
     parser.add_argument('--debug', action='store_true')
+    # FIXME: Add some argument checking to ensure that without single-file args.url must end with a '/',
+    #        and must **not** end with a '/' if we are in single-file mode.
+    parser.add_argument('--single-file', action='store_true')
     parser.add_argument(
         'url', type=type_url,
         # This is always Sweden (very slow for Australians).
@@ -58,15 +61,15 @@ def main():
     args = parser.parse_args()
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
-    return fuse.FUSE(HTTP2FS(args.url),
+    return fuse.FUSE(HTTP2FS(args.url, single_file=args.single_file),
                      args.mountpoint,
                      nothreads=True,
                      foreground=True)
 
 
 class HTTP2FS(fuse.Operations):
-    def __init__(self, url):
-        self.session = httpx.Client(http2=True)
+    def __init__(self, url, single_file=False):
+        self.session = httpx.Client(http2=True, verify=False)
         # When we used requests, its built-in default "Accept-Encoding: gzip, deflate" caused problems with range requests.
         # This is because Content-Length is the compressed size.
         # If you ask for (say) "bytes 0-4096", you might get more than 4096 bytes (after compression)!
@@ -80,9 +83,18 @@ class HTTP2FS(fuse.Operations):
             logging.warning('Server does not support HTTP/2? (%s)', url)
         self.url = resp.url    # Later we'll .join(path) for final URL
 
+        # The way this is handled in the rest of the code is kinda ugly, but works for now.
+        # It largely relies on the fact that self.url.join('foo') will be effectively a no-op for 'https://localhost/foo',
+        # because .join() understands whether the first URL is a folder or not,
+        # such that 'https://localhost/foo'.join('bar') would turn into 'https://localhost/bar'.
+        if single_file:
+            self.single_filename = pathlib.Path(self.url.path).name
+        else:
+            self.single_filename = None
+
     def readdir(self, path, offset):
-        "We deny any files exist, but if you ask for them anyway, they work."
-        "The alternative is scraping http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#autoindex_format"
+        "We assume we can scrape http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#autoindex_format"
+        "Otherwise, we deny any files exist, but if you ask for them anyway, they work."
         logging.debug('READDIR %s %s', repr(path), offset)
         if offset != 0:
             raise NotImplementedError("I don't actually know what this offset even means")
@@ -90,6 +102,11 @@ class HTTP2FS(fuse.Operations):
         # NOTE: I never saw path end with a '/' here in testing
         if not path.endswith('/'):
             path += '/'
+
+        if self.single_filename:
+            if not path == '/':
+                raise fuse.FuseOSError(errno.ENOENT)
+            return ['.', '..', self.single_filename]
 
         resp = self.session.get(self.url.join(path[1:]), headers={
             'Accept': 'application/json'})  # NOTE: I expect Nginx ignores though, but doesn't hurt
@@ -133,6 +150,8 @@ class HTTP2FS(fuse.Operations):
         # If we get redirected around to a new URL with a '/' on the end, it's probably a directory
         # NOTE: This won't work as is if redirects get turned off in httpx, although could be solved easily.
         if resp.url.path.endswith('/'):
+            if self.single_filename:
+                raise RuntimeError("Got redirected to a folder in single file mode")
             path += '/'
 
         # NOTE: Nginx does not include 'Last-Modified' in the headers for the autoindex.
