@@ -4,6 +4,7 @@
 
 do_httpmount ()
 {
+set -x
 	rc=1
 
 	for webfile in HTTPFS FTPFS FETCH
@@ -89,5 +90,6 @@ do_httpmount ()
 		export NETBOOT
 	fi
 
+set +x
 	return ${rc}
 }
