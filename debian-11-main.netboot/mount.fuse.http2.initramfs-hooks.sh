@@ -2,9 +2,10 @@
 set -e
 case $1 in (prereqs) exit 0;; esac
 . /usr/share/initramfs-tools/hook-functions
-#copy_exec /sbin/mount.fuse.http2
 # We have to call it "/bin/httpfs" because live-boot/bullseye assumes that.
-copy_exec /sbin/mount.fuse.http2 /bin/httpfs
+# UPDATE: this is handled by live-boot for now, because we call our binary "httpfs2" and live-boot looks for that already.
+#copy_exec /sbin/mount.fuse.http2
+#copy_exec /sbin/mount.fuse.http2 /bin/httpfs
 
 # Plus *all* the fucken dependencies.  UGH.
 
