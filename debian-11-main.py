@@ -689,6 +689,8 @@ def maybe_tvserver_ext2(testdir: pathlib.Path) -> list:
 def debug_nginx(testdir):
     if not have_nginx:
         yield
+    elif args.local_boot_only:
+        yield
     else:
         # Grab the keypair --include=ssl-cert created, and let nginx read it.
         # FIXME: move this into --customize-hook=download?
