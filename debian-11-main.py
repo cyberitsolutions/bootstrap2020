@@ -377,7 +377,9 @@ with tempfile.TemporaryDirectory() as td:
                # Therefore resort to brute-force setting the hostname before ssl-cert is installed...
                '--essential-hook=chroot $1 hostname oscar.the.grouch',
                # ...and add the final --boot-test VM afterwards.
-               '--customize-hook=printf "%s oscar.the.grouch\n" 10.0.2.4 10.128.2.4 >>$1/etc/hosts',
+               '--essential-hook=echo 10.0.2.4   oscar.the.grouch >>$1/etc/hosts'
+               if template_wants_PrisonPC_staff_network else
+               '--essential-hook=echo 10.128.2.4 oscar.the.grouch >>$1/etc/hosts',
                # Argh! "apt install ssl-cert" adds itself to "/etc/ssl/certs/" (dir mode, used by curl &c) but
                #       does not add itself to "/etc/ssl/certs/ca-certificates.crt" (bundle mode, used by certifi).
                #       Since this is only for boot-test debugging VMs, we can cut some corners here...
@@ -799,7 +801,7 @@ if args.boot_test:
                     'boot=live',
                     # https://codesearch.debian.net/search?q=package%3Alive-boot+do_httpmount
                     # FIXME: going by IP address requires verify=False in the client -- yuk.
-                    (f'httpfs=http://{smb_address}/ live-media-path='
+                    ('httpfs=https://oscar.the.grouch/ live-media-path='
                      if have_nginx else
                      f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
                      if have_smbd else
