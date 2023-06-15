@@ -368,7 +368,6 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
             '--include=httpdirfs',   # support HTTP/2 (with patched live-boot)
-            '--essential-hook=ln -s httpdirfs $1/usr/bin/curlftpfs',  # trick live-boot into including & using this driver??
             # Generate TLS keys for boot test.
             # ACTUALLY, let's just have the guest generate a snakeoil pair (and trust it) normally, and then
             # copy that keypair out to where nginx can access it.!
@@ -798,7 +797,7 @@ if args.boot_test:
                     'boot=live',
                     # https://codesearch.debian.net/search?q=package%3Alive-boot+do_httpmount
                     # FIXME: going by IP address requires verify=False in the client -- yuk.
-                    (f'httpfs=http://{smb_address}/'
+                    (f'httpfs=http://{smb_address}/ live-media-path='
                      if have_nginx else
                      f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
                      if have_smbd else

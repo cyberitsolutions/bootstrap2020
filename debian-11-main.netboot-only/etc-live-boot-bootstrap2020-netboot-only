@@ -4,8 +4,7 @@
 # Time and space savings negligible.
 DISABLE_DM_VERITY=true          # Doesn't help; doesn't hurt.
 DISABLE_CDROM=true              # Nobody has an optical drive anymore!
-# We want fuse when mounting over http (instead of nfs/smb)
-#DISABLE_FUSE=true               # for ftp:// *NOT* ntfs-3g
+DISABLE_FUSE=true               # for ftp:// *NOT* ntfs-3g
 DISABLE_NTFS=true
 DISABLE_USB=true
 DISABLE_FAT=true
