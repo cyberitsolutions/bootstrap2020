@@ -370,8 +370,13 @@ with tempfile.TemporaryDirectory() as td:
            if args.netboot_only else []),
          *(['--include=nwipe']
            if args.template == 'dban' else []),
-         *(['--include=zfs-dkms zfsutils-linux zfs-zed',
+         *(['--include=zfsutils-linux zfs-zed',
             '--include=mmdebstrap auto-apt-proxy',  # for installing
+            # FIXME: this speed optimization is NOT SUSTAINABLE.
+            #        https://github.com/cyberitsolutions/bootstrap2020/blob/d67b9525/debian-11-PrisonPC.packages/build-zfs-modules.py
+            *(['--include=zfs-modules-6.1.0-0.deb11.7-amd64']
+              if args.optimize == 'speed' and not args.virtual_only else
+              ['--include=zfs-dkms']),
             '--include=linux-headers-cloud-amd64'
             if args.virtual_only else
             '--include=linux-headers-amd64']
@@ -597,6 +602,9 @@ with tempfile.TemporaryDirectory() as td:
            if args.template == 'datasafe3' else []),
          *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye desktop']  # noqa: E501
            if template_wants_PrisonPC_or_tvserver else []),
+         # For --include=zfs-modules-6.1.0-0.deb11.7-amd64, above.
+         *([f'deb [signed-by={pathlib.Path.cwd()}/debian-11-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bullseye server']  # noqa: E501
+           if args.template in ('zfs', 'understudy') and args.optimize == 'speed' and not args.virtual_only else []),
          ])
 
 subprocess.check_call(
