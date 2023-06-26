@@ -413,7 +413,7 @@ with tempfile.TemporaryDirectory() as td:
             '--customize-hook=chmod +x $1/usr/bin/cyber-zfs-backup']
            if args.template == 'understudy' else []),
          # FIXME: remove extlinux/syslinux once everything is openly EFI.
-         *(['--include=parted refind extlinux syslinux-common',  # initial setup of /boot
+         *(['--include=parted refind dosfstools extlinux syslinux-common',  # initial setup of /boot
             '--essential-hook=echo refind refind/install_to_esp boolean false | chroot $1 debconf-set-selections']
            if args.template == 'understudy' else []),
          *(['--include=mdadm rsnapshot'
