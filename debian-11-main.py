@@ -733,6 +733,14 @@ if args.boot_test:
                     bytes(reversed(bytes.fromhex(subprocess.check_output(['hostid'], text=True)))))
                 (testdir / 'alice.dir/cyber-zfs-root-key.hex').write_text(
                     'c3cc679085c3cfa22f8c49e353b9e6f93b90d9812dcc50beea7380502c898625')
+                (testdir / 'alice.dir/etc/zfs/vdev_id.conf').parent.mkdir(exist_ok=True, parents=True)
+                (testdir / 'alice.dir/etc/zfs/vdev_id.conf').write_text(
+                    '# Big Slow disks\n'
+                    'alias top-left       /dev/disk/by-path/pci-0000:00:05.0\n'
+                    'alias top-right      /dev/disk/by-path/pci-0000:00:06.0\n'
+                    '# Small Fast disks\n'
+                    'alias bottom-left    /dev/disk/by-path/pci-0000:00:07.0\n'
+                    'alias bottom-right   /dev/disk/by-path/pci-0000:00:08.0\n')
                 # Used by bootstrap2020-only personality=alice for fetch=tftp://.
                 if not have_smbd:
                     common_boot_args += ' personality=alice '  # try filesystem.{module}.squashfs &c
