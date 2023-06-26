@@ -828,17 +828,18 @@ if args.boot_test:
             *(['--kernel', testdir / 'vmlinuz',
                '--initrd', testdir / 'initrd.img',
                '--append', ' '.join([
-                   'boot=live plainroot root=/dev/vda',
+                   'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
                    common_boot_args]),
-               '--drive', f'file={testdir}/filesystem.squashfs,format=raw,media=disk,if=virtio,readonly=on']
+               '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
+               '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
               if not args.netboot_only else []),
             *maybe_dummy_DVD(testdir),
             *maybe_tvserver_ext2(testdir),
-            *(['--drive', f'file={dummy_path},format=raw,media=disk,if=virtio',
-               '--drive', f'file={testdir}/big-slow-1.qcow2,format=qcow2,media=disk,if=virtio',
-               '--drive', f'file={testdir}/big-slow-2.qcow2,format=qcow2,media=disk,if=virtio',
-               '--drive', f'file={testdir}/small-fast-1.qcow2,format=qcow2,media=disk,if=virtio',
-               '--drive', f'file={testdir}/small-fast-2.qcow2,format=qcow2,media=disk,if=virtio',
+            *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw', '--device', 'virtio-blk-pci,drive=satadom,serial=ACME-SATADOM',
+               '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=big-slow-1,serial=ACME-big-slow-1',
+               '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=big-slow-2,serial=ACME-big-slow-2',
+               '--drive', f'if=none,id=small-fast-1,file={testdir}/small-fast-1.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=small-fast-1,serial=ACME-small-fast-1',
+               '--drive', f'if=none,id=small-fast-2,file={testdir}/small-fast-2.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=small-fast-2,serial=ACME-small-fast-2',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
               if template_wants_disks else [])])
 
