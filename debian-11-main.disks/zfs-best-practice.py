@@ -159,15 +159,15 @@ create('var/mail', canmount='off', setuid='off', exec='off', quota='3T')
 create('var/mail/mailsec', refquota='1.5T', quota='2T')  # 1.1TB at AMC in 2023Q2
 # FIXME: make datasets for mailsec/shared-ro and mailsec/shared-rw?
 # FIXME: Need one of these for each user... (NOTE: they never had ANY mail quota before!)
-create('var/mail/p123', refquota='8G')
-create('var/mail/s123', refquota='8G')
+# create('var/mail/p123', refquota='8G')
+# create('var/mail/s123', refquota='8G')
 
 
 create('home/prisoners', canmount='off', refquota='512G', exec='off')
 create('home/staff', canmount='off', refquota='512G', exec='off')
 # FIXME: Need one of these for each user, seeded from the quota rules...
-create('home/prisoners/p123', refquota='128M')
-create('home/staff/s123', refquota='128M')
+# create('home/prisoners/p123', refquota='128M')
+# create('home/staff/s123', refquota='128M')
 
 
 # FIXME: should var/lib and var/lib/postgresql be a separate dataset, so
