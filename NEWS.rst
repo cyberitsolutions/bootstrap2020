@@ -2,6 +2,18 @@ This is a summary of user-visible changes over time.
 
 
 
+======================================================================
+ Changes in SOEs July 2023 (since May 2023)
+======================================================================
+• Staff no longer see the "acceptable use policy" text on login.
+  Inmates still see this text.
+  This was done to work around remote management VMs initially starting at 640x480px,
+  which caused the username/password prompt to be hidden underneath the AUP.
+
+• Several minor improvements to ZFS debugging.
+
+
+
 ===========================================
  Changes in SOEs May 2023 (since Apr 2023)
 ===========================================
