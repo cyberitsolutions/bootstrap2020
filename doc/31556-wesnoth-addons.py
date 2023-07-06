@@ -34,7 +34,7 @@ import subprocess
 import sys
 
 sys.path.append('/usr/share/games/wesnoth/1.14/data/tools')
-import wesnoth.campaignserver_client
+import wesnoth.campaignserver_client  # noqa: E402
 
 
 def main():
