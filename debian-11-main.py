@@ -633,6 +633,12 @@ if args.efi_stub:
     # FIXME: Sign the resulting binary for secureboot using 'sbsign' (and the squashfs somehow)
     #        'ukify' will also sign the result when doing all the section header math too
 
+    # Cleanup the files we only copied out for this step anyway
+    (destdir / 'linuxx64.efi.stub').unlink()
+    # FIXME: os-release might actually be a useful one to leave here for referencing later (similar to dpkg.status)
+    (destdir / 'os-release').unlink()
+    (destdir / 'cmdline.txt').unlink()
+
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
 
