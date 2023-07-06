@@ -427,8 +427,8 @@ def lock(device):
         # NB: sleep(float('inf')) ==> OSError
         # NB: sleep(float('inf')) ==> OSError
         # NB: sleep(sys.float_info.max) ==> OSError
-        #from time import sleep
-        #sleep(60*60*24*365)
+        #    from time import sleep
+        #    sleep(60*60*24*365)
         # UPDATE: this is better?
         from signal import pause
         pause()

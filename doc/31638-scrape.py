@@ -71,7 +71,7 @@ def scrape_and_upsert(conn, auth, tadsid):
     #    var linkVals = [ [...], ...]
     #
     # It's the script[@type="text/javascript"] directly before div[@id="linkGridDiv"]
-    #url, = data.xpath('//input[@id="linkurl0"]/@value')
+    # url, = data.xpath('//input[@id="linkurl0"]/@value')
     url = "FIXME"
 
     data.write('tmp.html')      # DEBUGGING

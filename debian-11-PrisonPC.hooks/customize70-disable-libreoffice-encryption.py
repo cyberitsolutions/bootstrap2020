@@ -137,13 +137,14 @@ read_write = frozenset({
     #       "File > Export as PDF..." needs these.
     #       "File > Export as PDF..." has "Security > Choose paswords...".
     #       Therefore we cannot allow these (as at Debian 11 / LibreOffice 7.3).
-    #DANGEROUS# "calc_pdf_Export",
-    #DANGEROUS# "draw_pdf_Export",
-    #DANGEROUS# "impress_pdf_Export",
-    #DANGEROUS# "math_pdf_Export",
-    #DANGEROUS# "writer_globaldocument_pdf_Export",
-    #DANGEROUS# "writer_pdf_Export",
-    #DANGEROUS# "writer_web_pdf_Export",
+    # THESE ARE DANGEROUS TO ALLOWLIST!
+    #    "calc_pdf_Export",
+    #    "draw_pdf_Export",
+    #    "impress_pdf_Export",
+    #    "math_pdf_Export",
+    #    "writer_globaldocument_pdf_Export",
+    #    "writer_pdf_Export",
+    #    "writer_web_pdf_Export",
 })
 read_only = frozenset({
     # OLD Microsoft formats can be read, but

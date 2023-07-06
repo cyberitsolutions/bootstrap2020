@@ -75,7 +75,7 @@ with tempfile.TemporaryDirectory() as td:
                if use_backports else []),
 
              # Have to do this (instead of --include) so BOTH stable & bpo headers get installed.
-             #'--customize-hooks=chroot $1 apt install -y linux-headers-generic/bullseye-backports',
+             # '--customize-hooks=chroot $1 apt install -y linux-headers-generic/bullseye-backports',
              # Needed for "dkms mkbmdeb"
              '--include=fakeroot,debhelper',
              # Run mkbmdeb for every module/module_version/kernel_version built by dpkg triggers.
