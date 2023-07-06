@@ -84,15 +84,15 @@ def scrape_and_upsert(conn, auth, tadsid):
         (tadsid,
          title,
          author,
-         date        or None,
-         version     or None,
-         license     or None,
-         system      or None,
-         language    or None,
+         date or None,
+         version or None,
+         license or None,
+         system or None,
+         language or None,
          description or None,
-         genre       or None,
-         difficulty  or None,
-         url         or None))
+         genre or None,
+         difficulty or None,
+         url or None))
 
 
 def valid_tadsid(s):
