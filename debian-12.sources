@@ -1,0 +1,38 @@
+# https://manpages.debian.org/sources.list#DEB822-STYLE_FORMAT (-*-yaml-*-ish)
+#
+# NOTE: apt-transport-https is not needed in Debian 10+ (apt 1.5+).
+#
+# NOTE: Use http (not https) because:
+#
+#         * end-to-end encryption breaks caching proxies, and
+#           we GREATLY benefit from a network-wide apt-cache-proxy.
+#
+#         * apt other security layers are MOSTLY adequate.
+#           The top layer (InRelease) is RSA-4096 signed.
+#           Lower layers (Packages, deb) are SHA-2 hashed.
+#           If the repo is stale (Valid-Until), apt will complain loudly
+#           (compromised proxy cannot simply serve last year's repo).
+#           If the repo changes codename, apt will complain loudly
+#           (compromised proxy cannot simply serve Debian 10 as Debian 11).
+#
+# NOTE: we ALWAYS need contrib and non-free (for intel-microcode &c)!
+#
+# NOTE: SOLELY deb.debian.org (no security.debian.org),
+#       which is identical to security-cdn.debian.org,
+#       which is identical to security.debian.org (mostly), due to SRV records.
+#
+# NOTE: in Debian 12+, non-free-firmware is a new component.
+#       https://www.debian.org/vote/2022/vote_003#texte
+Types: deb
+URIs: http://deb.debian.org/debian-security
+Suites: bookworm-security
+Components: main contrib non-free non-free-firmware
+
+Types: deb
+URIs: http://deb.debian.org/debian
+Suites:
+  bookworm
+  bookworm-updates
+  bookworm-proposed-updates
+  bookworm-backports
+Components: main contrib non-free non-free-firmware

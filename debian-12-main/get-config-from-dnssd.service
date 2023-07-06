@@ -1,0 +1,22 @@
+[Unit]
+Description=Get configuration from DNS-SD
+
+[Service]
+Type=oneshot
+ExecStart=bootstrap2020-get-config-from-dnssd
+
+# This should ACTUALLY run EVERY time the network changes, but
+# for now we only NEED it to run after the first DHCP request comes up, because
+# "probably" the host won't move about or change networks without a reboot.
+[Unit]
+## Either of these seems to work.
+Wants=network-online.target
+After=network-online.target
+# Wants=systemd-networkd-wait-online.service
+# After=systemd-networkd-wait-online.service
+
+Before=msmtpd.service
+Before=rsyslog.service
+[Install]
+RequiredBy=msmtpd.service
+RequiredBy=rsyslog.service

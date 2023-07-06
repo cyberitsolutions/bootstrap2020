@@ -1,0 +1,15 @@
+# -*-conf-*-
+# Only start rsyslog if get-config-from-dnssd found an upstream RELP server.
+# If we don't do this, then rsyslog will exit non-zero with these errors:
+#
+#     rsyslogd: there are no active actions configured. Inputs would run, but no output whatsoever were created. [v8.2102.0 try https://www.rsyslog.com/e/2103 ]
+#     rsyslogd: run failed with error -2103 (see rsyslog.h or try https://www.rsyslog.com/e/2103 to learn what that number means)
+#
+# Also get-config-from-dnssd will rerun.
+# This will happen in a huge loop because syslog.socket will try
+# REALLY HARD to keep rsyslog running.
+# [Install]
+# WantedBy=
+
+disable rsyslog.service
+#disable syslog.socket
