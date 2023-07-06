@@ -50,11 +50,7 @@
 #                     "preferred reified package when asking for a virtual package"
 #                     via /etc/apt/preferences.d
 
-
-#!/usr/bin/python3
 import argparse
-import os
-import pathlib
 import subprocess
 import tempfile
 

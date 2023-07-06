@@ -1,12 +1,9 @@
 #!/usr/bin/python3.5
 import argparse
 import collections
-import datetime
-import itertools
 import json
 import logging
 import pathlib
-import pprint
 import re
 import subprocess
 import tempfile
