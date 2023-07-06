@@ -23,43 +23,43 @@ import tvserver
 # --russm, Oct 2015
 
 
-## FIXME: abstract the common parts of the unit files into a single function.
+# FIXME: abstract the common parts of the unit files into a single function.
 
-## FIXME: it appears there's no way to have exponential backoff in systemd.
-## If foo.service fails StartLimitBurst times in StartLimitInterval seconds,
-## foo is NEVER STARTED AGAIN.
-##
-## This annoys users & we (probably) have unresolved race conditions,
-## so instead disable the "never start again" feature (StartLimitBurst=0) &
-## reduce the retry rate from 10Hz to 0.3Hz (RestartSec=30s).
-## --twb, Jan 2016 (#30682)
+# FIXME: it appears there's no way to have exponential backoff in systemd.
+# If foo.service fails StartLimitBurst times in StartLimitInterval seconds,
+# foo is NEVER STARTED AGAIN.
+#
+# This annoys users & we (probably) have unresolved race conditions,
+# so instead disable the "never start again" feature (StartLimitBurst=0) &
+# reduce the retry rate from 10Hz to 0.3Hz (RestartSec=30s).
+# --twb, Jan 2016 (#30682)
 
-## NB: AMC tvserver1 has 6 tuners, our test server (livid) has only 1 tuner.
-## In initial testing, dvb5 and dvb6 services died because they were started
-## before /dev/dvb/adapter{5,6}/dvb0 existed.
-## The After=....device should fix this, but isn't tested at AMC yet.
-## --twb, Jan 2016 (#30682)
+# NB: AMC tvserver1 has 6 tuners, our test server (livid) has only 1 tuner.
+# In initial testing, dvb5 and dvb6 services died because they were started
+# before /dev/dvb/adapter{5,6}/dvb0 existed.
+# The After=....device should fix this, but isn't tested at AMC yet.
+# --twb, Jan 2016 (#30682)
 
-## FIXME: instead of having a single generate-config that asks the database once,
-## then EDITS the systemd config,
-## create a single dvblast@adapterN.service unit that waits until the network is up.
-## When it starts, it just runs dvblast-wrapper.sh with %i (adapterN).
-## That wrapper connects to postgres for the additional config.
-## The dvblast@.service is started by a udev rule with SYSTEMD{WANTS}+="dvblast@$name.service".
-## --twb, Jan 2016 (#30682)
+# FIXME: instead of having a single generate-config that asks the database once,
+# then EDITS the systemd config,
+# create a single dvblast@adapterN.service unit that waits until the network is up.
+# When it starts, it just runs dvblast-wrapper.sh with %i (adapterN).
+# That wrapper connects to postgres for the additional config.
+# The dvblast@.service is started by a udev rule with SYSTEMD{WANTS}+="dvblast@$name.service".
+# --twb, Jan 2016 (#30682)
 
-## FIXME: dvblast outputs a *LOT* of noise.
-## In Wheezy this all went to the login console & was completely ignored.
-## We have NO IDEA if any of it is important.
-## We have NO IDEA how to FIND OUT if any of it is important.
-## systemd won't let us output only to console (as Wheezy was doing).
-## Therefore, simply discard that output completely (StandardOutput=null).
+# FIXME: dvblast outputs a *LOT* of noise.
+# In Wheezy this all went to the login console & was completely ignored.
+# We have NO IDEA if any of it is important.
+# We have NO IDEA how to FIND OUT if any of it is important.
+# systemd won't let us output only to console (as Wheezy was doing).
+# Therefore, simply discard that output completely (StandardOutput=null).
 
 with tvserver.cursor() as cur:
   with open('/run/systemd/system/tvserver.target', 'w') as fh_target:  # FIXME: reindent
     print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
 
-    ### TV tuners
+    # TV tuners
     for row in tvserver.get_cards(cur):
         # FIXME: make units use RuntimeDirectory=dvblast-%I and then store the .sock and .conf under that.
         #        In that way, they will automatially be reaped when the unit ends.
@@ -72,10 +72,10 @@ with tvserver.cursor() as cur:
         dvblast_conf_path.write_text('')  # create an empty config file
         with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
             print(
-                ## This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
-                ## The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
-                ## --twb, Jan 2016 (#30682)
-                ## '[Unit]', 'After=sys-subsystem-dvb-adapter%d-frontend0.device' % card,
+                # This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
+                # The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
+                # --twb, Jan 2016 (#30682)
+                #   '[Unit]', 'After=sys-subsystem-dvb-adapter%d-frontend0.device' % card,
                 '[Service]',
                 'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
                 'StandardOutput=null',  # see FIXME above.
@@ -86,7 +86,7 @@ with tvserver.cursor() as cur:
                 sep='\n',
                 file=fh)
 
-    ### Local Channels
+    # Local Channels
     for row in tvserver.get_local_channels(cur):
         print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
         # If NOBODY has watched a TV channel for a while,

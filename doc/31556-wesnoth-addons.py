@@ -97,45 +97,53 @@ ORDER BY score DESC
 LIMIT 50
 """
 
-## UPDATE: that (#4) was weighting by size FAR too heavily.
-## We probably should use a logarithmic scale but I'm too stupid.
-## This is the final query:
-##    $ sqlite3 -line bootstrap/doc/addons.wesnoth.org.db "SELECT *, downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day, (size/1024.0/1024.0) AS megabytes FROM addons WHERE type = 'campaign' OR type = 'scenario' ORDER BY DL_per_day - megabytes DESC" >shortlist.ini
+# UPDATE: that (#4) was weighting by size FAR too heavily.
+# We probably should use a logarithmic scale but I'm too stupid.
+# This is the final query:
+#    $ sqlite3 -line bootstrap/doc/addons.wesnoth.org.db "
+#        SELECT *,
+#               downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day,
+#               (size/1024.0/1024.0) AS megabytes
+#        FROM addons
+#        WHERE type = 'campaign' OR
+#              type = 'scenario'
+#        ORDER BY DL_per_day - megabytes DESC
+#        " >shortlist.ini
 
 
-## ATTEMPT #2
-## ==========
-## def main():
-##     subprocess.check_call(
-##         ['pandoc',
-##          '--from=mediawiki',
-##          '--to=docbook',
-##          '--standalone',
-##          '--normalize',
-##          '-o', 'Wesnoth-UMC.docbook',
-##          'http://wiki.wesnoth.org/index.php?title=Guide_to_UMC_Content&action=raw'])
-##     data = lxml.etree.parse('Wesnoth-UMC.docbook')
-##     # Ignore "Ages" (multiplayer) and only get "Campaigns" (single-player)
-##     for campaign in data.xpath('//sect2[@id="campaigns"]/sect3'):
-##         title = campaign.xpath('title/emphasis/text()')
-##         description, = campaign.xpath('para[1]/emphasis/text()')
-##
-##         print(title, '=', description)
+# ATTEMPT #2
+# ==========
+# def main():
+#     subprocess.check_call(
+#         ['pandoc',
+#          '--from=mediawiki',
+#          '--to=docbook',
+#          '--standalone',
+#          '--normalize',
+#          '-o', 'Wesnoth-UMC.docbook',
+#          'http://wiki.wesnoth.org/index.php?title=Guide_to_UMC_Content&action=raw'])
+#     data = lxml.etree.parse('Wesnoth-UMC.docbook')
+#     # Ignore "Ages" (multiplayer) and only get "Campaigns" (single-player)
+#     for campaign in data.xpath('//sect2[@id="campaigns"]/sect3'):
+#         title = campaign.xpath('title/emphasis/text()')
+#         description, = campaign.xpath('para[1]/emphasis/text()')
+#
+#         print(title, '=', description)
 
 
-## ATTEMPT #1
-## ==========
-## def main():
-##     with subprocess.Popen(
-##             ['pandoc',
-##              '--from=mediawiki',
-##              '--to=json',
-##              'http://wiki.wesnoth.org/index.php?title=Guide_to_UMC_Content&action=raw'],
-##             universal_newlines=True,
-##             stdout=subprocess.PIPE) as proc:
-##         pprint.pprint(json.load(proc.stdout))
-##         proc.wait()
-##         assert proc.returncode == 0
+# ATTEMPT #1
+# ==========
+# def main():
+#     with subprocess.Popen(
+#             ['pandoc',
+#              '--from=mediawiki',
+#              '--to=json',
+#              'http://wiki.wesnoth.org/index.php?title=Guide_to_UMC_Content&action=raw'],
+#             universal_newlines=True,
+#             stdout=subprocess.PIPE) as proc:
+#         pprint.pprint(json.load(proc.stdout))
+#         proc.wait()
+#         assert proc.returncode == 0
 
 
 if __name__ == '__main__':

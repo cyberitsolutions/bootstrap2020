@@ -40,9 +40,9 @@ def slurp(i):
     # EXAMPLE: March 21, 2013, 2 a.m.
     # EXAMPLE: Nov. 20, 2013, 4:24 a.m.
     # UPDATE: this is all too hard, so I give up.
-    #BROKEN#acc['Created'] = datetime.datetime.strptime(
-    #BROKEN#    ','.join(acc['Created'].split(',')[:2]),
-    #BROKEN#    '%B %d, %Y')
+    # BROKEN # acc['Created'] = datetime.datetime.strptime(
+    # BROKEN #     ','.join(acc['Created'].split(',')[:2]),
+    # BROKEN #     '%B %d, %Y')
 
     filename, = data.xpath('//a[@class="download action"]/div/text()')
     acc['Filename'] = filename.strip('Download ')

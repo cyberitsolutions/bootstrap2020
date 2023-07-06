@@ -401,18 +401,18 @@ def lock(device):
     # An even older version tried to open files inside the mountpoint,
     # but this was less sexy.
 
-    ## THIS FAILS (IsADirectoryError)
-    # from glob import glob
-    # for mountpoint in glob('/media/*/'):
-    #     with open(mountpoint) as fh:
-    #         # FIXME: double-check this actually backgrounded.
-    #         subprocess.Popen(['sleep','infinity'], stdin=fh)
-    ## THIS WORKS
-    # from glob import glob
-    # subprocess.Popen(['sh',
-    #                   '-c', 'for i; do sleep infinity < "$i" & done',
-    #                   '--'] + glob('/media/*/'))
-    ## THIS WORKS
+    # THIS FAILS (IsADirectoryError)
+    #     from glob import glob
+    #     for mountpoint in glob('/media/*/'):
+    #         with open(mountpoint) as fh:
+    #             # FIXME: double-check this actually backgrounded.
+    #             subprocess.Popen(['sleep','infinity'], stdin=fh)
+    # THIS WORKS
+    #     from glob import glob
+    #     subprocess.Popen(['sh',
+    #                       '-c', 'for i; do sleep infinity < "$i" & done',
+    #                       '--'] + glob('/media/*/'))
+    # THIS WORKS
     import os
     if not os.fork():
         # ME AM CHILD!

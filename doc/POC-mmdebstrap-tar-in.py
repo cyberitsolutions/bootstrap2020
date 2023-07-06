@@ -1,25 +1,29 @@
 #!/usr/bin/python3
 
-# GOAL: declarative bundle of one-liner and two-liner files, which can be deployed into a rootless container that's *not built yet* (so we can't "just use ansible").
-# We have to do it prior to installing packages, because the purpose of these files is to change the at-install-time behaviour of the packages.
+# GOAL: declarative bundle of one-liner and two-liner files, which
+#       can be deployed into a rootless container that's *not built yet*
+#       (so we can't "just use ansible").
+#
+# We have to do it prior to installing packages, because
+# the purpose of these files is to change the at-install-time behaviour of the packages.
 #
 # The ultimate goal is that all of "ENOUGH TO BOOT" and "BEST CURRENT PRACTICES" moves into mmdebstrap.
 # (And also, make it easier to eventually upgrade to a fully rootless (unprivileged) build process.)
 
-## UPDATE: ABANDONED FOR NOW - THIS HANGS WITH
-##
-##    Setting up intel-microcode (3.20191115.2~deb10u1) ...
-##
-##    Configuration file '/etc/default/intel-microcode'
-##     ==> File on system created by you or by a script.
-##     ==> File also in package provided by package maintainer.
-##       What would you like to do about it ?  Your options are:
-##        Y or I  : install the package maintainer's version
-##        N or O  : keep your currently-installed version
-##          D     : show the differences between the versions
-##          Z     : start a shell to examine the situation
-##     The default action is to keep your current version.
-##    *** intel-microcode (Y/I/N/O/D/Z) [default=N] ?
+# UPDATE: ABANDONED FOR NOW - THIS HANGS WITH
+#
+#    Setting up intel-microcode (3.20191115.2~deb10u1) ...
+#
+#    Configuration file '/etc/default/intel-microcode'
+#     ==> File on system created by you or by a script.
+#     ==> File also in package provided by package maintainer.
+#       What would you like to do about it ?  Your options are:
+#        Y or I  : install the package maintainer's version
+#        N or O  : keep your currently-installed version
+#          D     : show the differences between the versions
+#          Z     : start a shell to examine the situation
+#     The default action is to keep your current version.
+#    *** intel-microcode (Y/I/N/O/D/Z) [default=N] ?
 
 import tarfile
 import pathlib
