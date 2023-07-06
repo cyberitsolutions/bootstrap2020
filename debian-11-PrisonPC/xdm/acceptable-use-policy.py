@@ -58,7 +58,7 @@ css_provider = gi.repository.Gtk.CssProvider()
 css_provider.load_from_data(stylesheet_str.encode())
 
 data = urllib.request.urlopen(
-    'https://ppc-services/motd?text=1').read().decode().strip()
+    'https://ppc-services/motd').read().decode().strip()
 # Apparently you have to set margin here instead of in CssProvider,
 # even though margins are pretty basic part of REAL CSS.
 # This is probably in pixels, where the font is in points.

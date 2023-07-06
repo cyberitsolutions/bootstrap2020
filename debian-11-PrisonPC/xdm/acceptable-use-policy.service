@@ -4,7 +4,7 @@
 
 # Needs read access to /sbin/acceptable-use-policy (root-only)
 # Needs read access to
-#   https://ppc-services/motd?text=1
+#   https://ppc-services/motd
 # Needs read access to
 #   /var/lib/xdm/authdir/authfiles/A:⋯  ($XAUTHORITY)
 # Needs write access to (I think)
