@@ -45,7 +45,9 @@ with tempfile.TemporaryDirectory() as td:
          '--include=devscripts,build-essential',
          # Ugh, "allow backports" is a pain in Debian 9.
          # '--include=debhelper/buster-backports,dwz/buster-backports',
-         '--customize-hook=(echo Package: debhelper libdebhelper-perl dwz; echo Pin: release a=buster-backports; echo Pin-Priority: 500) >$1/etc/apt/preferences.d/fuck',
+         '''--customize-hook=(echo Package: debhelper libdebhelper-perl dwz;
+                              echo Pin: release a=buster-backports;
+                              echo Pin-Priority: 500) >$1/etc/apt/preferences.d/fuck''',
          '--customize-hook=mkdir -p $1/X',
          f'--customize-hook=chroot $1 sh -c "cd /X && apt-get source {args.package_name}"',
          '--customize-hook=chroot $1 sh -c "cd /X/*/ && apt-get build-dep -y ./"',

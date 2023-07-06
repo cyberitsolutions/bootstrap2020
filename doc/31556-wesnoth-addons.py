@@ -14,10 +14,17 @@
 # 16:55 <wesnoth-discord-> <Yumi> https://addons.wesnoth.org/1.12/
 # 16:56 <twb> yumi: thanks
 # 16:59 <twb> Ah and that has file size, and a description in a tooltip
-# 17:00 <twb> So I have to do some magic to merge the "status: finished" stuff from the wiki page and the download size & .tbz URL from the addons page.
+# 17:00 <twb> So I have to do some magic to merge the "status: finished" stuff from the wiki page and
+#             the download size & .tbz URL from the addons page.
 #
 # UPDATE 2022: you need something like this:
-#     mmdebstrap --aptopt='Acquire::http::Proxy "http://localhost:3142"' --dpkgopt=force-unsafe-io --variant=apt testing /dev/null --customize-hook='chroot $1 bash; false' --include=wesnoth-1.14-tools,python3,sqlite3
+#     mmdebstrap --aptopt='Acquire::http::Proxy "http://localhost:3142"'
+#                --dpkgopt=force-unsafe-io
+#                --variant=apt
+#                testing
+#                /dev/null
+#                --customize-hook='chroot $1 bash; false'
+#                --include=wesnoth-1.14-tools,python3,sqlite3
 #
 # NOTE: wesnoth-1.16-tools is NOT WORKING in Debian 12, so I don't know what the fuck we do there:
 #           ModuleNotFoundError: No module named 'wesnoth.campaignserver_client'
@@ -73,7 +80,19 @@ CREATE_QUERY = """
     status       TEXT); -- This is PASS or FAIL or NULL depending on whether we like it.
 """
 CREATE_VIEW_QUERY = """
-CREATE VIEW IF NOT EXISTS shortlist AS SELECT cast(((downloads / ((strftime('%s') - timestamp)/86400.0)) - (size/1024.0/1024.0)) as int) AS score, filename, description, dependencies, CAST((size/1024.0/1024.0) AS INT) as sizeMB, substr(type, 1, 1) AS type, date(timestamp, 'unixepoch') AS date, downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day FROM addons WHERE status IS NULL AND type IN ('campaign', 'scenario', 'campaign_sp_mp') ORDER BY score DESC
+CREATE VIEW IF NOT EXISTS shortlist AS
+    SELECT cast(((downloads / ((strftime('%s') - timestamp)/86400.0)) - (size/1024.0/1024.0)) as int) AS score,
+           filename,
+           description,
+           dependencies,
+           CAST((size/1024.0/1024.0) AS INT) as sizeMB,
+           substr(type, 1, 1) AS type,
+           date(timestamp, 'unixepoch') AS date,
+           downloads / ((strftime('%s') - timestamp)/86400.0) AS DL_per_day
+     FROM addons
+     WHERE status IS NULL
+       AND type IN ('campaign', 'scenario', 'campaign_sp_mp')
+     ORDER BY score DESC
 """
 
 

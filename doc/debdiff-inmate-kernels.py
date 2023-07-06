@@ -26,7 +26,8 @@ deb_paths = [
                                stdout=subprocess.PIPE,
                                input='\n'.join(map(
                                    str,
-                                   pathlib.Path('/srv/apt/PrisonPC/pool/bullseye/desktop').glob('*/linux-image-*inmate*_amd64.deb')))
+                                   pathlib.Path('/srv/apt/PrisonPC/pool/bullseye/desktop'
+                                                ).glob('*/linux-image-*inmate*_amd64.deb')))
                                ).stdout.splitlines()]
 
 with tempfile.TemporaryDirectory() as td:

@@ -82,6 +82,12 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          ])
 
     with args.output_file.open('wb') as f:
-        subprocess.check_call(['rdsquashfs', '--cat=boot/USB/filesystem.img', td / 'filesystem.squashfs'], stdout=f)
+        subprocess.check_call(
+            ['rdsquashfs',
+             '--cat=boot/USB/filesystem.img',
+             td / 'filesystem.squashfs'],
+            stdout=f)
     subprocess.check_call([
-        'mcopy', '-i', f'{args.output_file}@@{esp_offset}', td / 'filesystem.squashfs', f'::{live_media_path}/filesystem.squashfs'])
+        'mcopy',
+        '-i', f'{args.output_file}@@{esp_offset}',
+        td / 'filesystem.squashfs', f'::{live_media_path}/filesystem.squashfs'])

@@ -89,9 +89,12 @@ We can also skip metapackages like "games-mud", "games-java-dev", "education-dev
 # NOTE: emits MD5Sum even though SHA256Sum should be used.
 #       If the package has no legacy MD5, there are no sums at all!
 #       Example:
-#           'http://deb.debian.org/debian/pool/main/libo/libogg/libogg0_1.3.4-0.1_amd64.deb' libogg0_1.3.4-0.1_amd64.deb 27336 MD5Sum:61021b894e2faa57ea9792e748ea2e0f
-#           'http://deb.debian.org/debian/pool/main/f/flac/libflac8_1.3.3-2%2bdeb11u1_amd64.deb' libflac8_1.3.3-2+deb11u1_amd64.deb 112304
-#           'http://deb.debian.org/debian/pool/main/o/opus/libopus0_1.3.1-0.1_amd64.deb' libopus0_1.3.1-0.1_amd64.deb 190428 MD5Sum:9a763a3e21f2fd7ba547bc6874714f4d
+#           'http://deb.debian.org/debian/pool/main/libo/libogg/libogg0_1.3.4-0.1_amd64.deb'
+#           libogg0_1.3.4-0.1_amd64.deb 27336 MD5Sum:61021b894e2faa57ea9792e748ea2e0f
+#           'http://deb.debian.org/debian/pool/main/f/flac/libflac8_1.3.3-2%2bdeb11u1_amd64.deb'
+#           libflac8_1.3.3-2+deb11u1_amd64.deb 112304
+#           'http://deb.debian.org/debian/pool/main/o/opus/libopus0_1.3.1-0.1_amd64.deb'
+#           libopus0_1.3.1-0.1_amd64.deb 190428 MD5Sum:9a763a3e21f2fd7ba547bc6874714f4d
 #
 # NOTE: we explicitly add prisonpc-bad-package-conflicts-inmates to the list of packages to install.
 #       If we do not do so, SOMETIMES apt will decide it can meet the install request by removing that.
@@ -344,7 +347,8 @@ package_shitlist = {
     'gap-grape', 'gap-guava', 'gap-laguna', 'gap-sonata',
     'gap-table-of-marks', 'gap-toric',
 
-    # Sagemath is a "all the math apps" wrapper that's web-based, a bit like Jupyter Notebooks, but older.  It's not useful ON THE DESKTOP.
+    # Sagemath is a "all the math apps" wrapper that's web-based, a bit like Jupyter Notebooks, but older.
+    # It's not useful ON THE DESKTOP.
     # 22:36 <twb> (AFAICT sagemath is basically the 200x's equivalent of 201x's .ipynb Jupyter Notebooks)
     # https://www.sagemath.org/help-video.html
     'sagemath',
@@ -360,7 +364,9 @@ package_shitlist = {
     'dosbox',
 
     # Chess *engines* are not apps.  (Some of) these should be installed, but only as part of gnome-chess.
-    'crafty', 'fairymax', 'fruit', 'glaurung', 'gnuchess', 'gnuchess-book', 'hoichess', 'phalanx', 'sjeng', 'stockfish', 'toga2', 'polyglot',
+    'crafty', 'fairymax', 'fruit', 'glaurung', 'gnuchess',
+    'gnuchess-book', 'hoichess', 'phalanx', 'sjeng', 'stockfish',
+    'toga2', 'polyglot',
 
     # Documentation for CLI-only apps
     'gap-gapdoc',

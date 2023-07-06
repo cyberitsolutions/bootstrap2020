@@ -75,7 +75,8 @@ def main():
         ['mmdebstrap',
          '--mode=unshare',      # let me do all this as non-root user, hooray
          '--variant=minbase',
-         '--include=init,initramfs-tools,xz-utils,live-boot,nfs-common,linux-image-cloud-amd64,intel-microcode,amd64-microcode,iucode-tool,locales,localepurge',
+         '--include=init,initramfs-tools,xz-utils,live-boot,nfs-common,linux-image-cloud-amd64'
+         '          intel-microcode,amd64-microcode,iucode-tool,locales,localepurge',
          '--aptopt=Acquire::http::Proxy "http://apt-cacher-ng.cyber.com.au:3142"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--aptopt=APT::Default-Release "buster"',
@@ -119,11 +120,15 @@ rows = [
         'module(load="omrelp")',
         'action(type="omrelp" target="logserv" port="2514" template="RSYSLOG_SyslogProtocol23Format")']),
     MyTarInfo(name='./etc/systemd/timesyncd.conf.d/prisonpc.conf', content=['[Time]', 'Servers=ntp']),
-    MyTarInfo(name='./etc/systemd/system/keygen.service', content=['[Service]', 'Type=oneshot', 'ExecStart=/usr/bin/ssh-keygen -A']),
+    MyTarInfo(name='./etc/systemd/system/keygen.service',
+              content=['[Service]', 'Type=oneshot', 'ExecStart=/usr/bin/ssh-keygen -A']),
     MyTarInfo(name='./etc/systemd/system/ssh.service.wants/keygen.service', linkname='../keygen.service', type=tarfile.SYMTYPE),
-    MyTarInfo(name='./etc/tmpfiles.d/lastlog.conf', content='f /var/log/lastlog 664 root utmp'),  # Avoid pam_lastlog.so warning on SSH
-    MyTarInfo(name='./etc/default/intel-microcode', content='IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no'),  # Support CPUs other than the build host's.
-    MyTarInfo(name='./etc/default/amd64-microcode', content='AMD64UCODE_INITRAMFS=yes'),  # Support CPUs other than the build host's
+    MyTarInfo(name='./etc/tmpfiles.d/lastlog.conf',
+              content='f /var/log/lastlog 664 root utmp'),  # Avoid pam_lastlog.so warning on SSH
+    MyTarInfo(name='./etc/default/intel-microcode',
+              content='IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no'),  # Support CPUs other than the build host's.
+    MyTarInfo(name='./etc/default/amd64-microcode',
+              content='AMD64UCODE_INITRAMFS=yes'),  # Support CPUs other than the build host's
     MyTarInfo(name='./etc/locale.gen', content='en_AU.UTF-8 UTF-8'),
     MyTarInfo(name='./etc/default/locale', content='LANG=en_AU.UTF-8'),
 ]

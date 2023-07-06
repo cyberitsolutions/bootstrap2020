@@ -65,8 +65,12 @@ with tempfile.TemporaryDirectory() as td:
          'deb http://deb.debian.org/debian          stretch-updates          main',
          'deb http://deb.debian.org/debian          stretch-proposed-updates main',
          'deb http://deb.debian.org/debian          stretch-backports        main',
-         '--essential-hook=(echo Package: debhelper dh-autoreconf; echo Pin: release a=stretch-backports; echo Pin-Priority: 500) >$1/etc/apt/preferences.d/fuck',
-         '--essential-hook=(echo Package: libzstd-dev libzstd1 zstd; echo Pin: release a=stretch-backports; echo Pin-Priority: 500) >$1/etc/apt/preferences.d/duck',
+         '''--essential-hook=(echo Package: debhelper dh-autoreconf;
+                              echo Pin: release a=stretch-backports;
+                              echo Pin-Priority: 500) >$1/etc/apt/preferences.d/fuck''',
+         '''--essential-hook=(echo Package: libzstd-dev libzstd1 zstd;
+                              echo Pin: release a=stretch-backports;
+                              echo Pin-Priority: 500) >$1/etc/apt/preferences.d/duck''',
          ])
     # debsign here?
     subprocess.check_call([

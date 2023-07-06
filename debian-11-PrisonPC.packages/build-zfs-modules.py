@@ -38,10 +38,17 @@
 #
 # UPDATE: this builds but the build results have to be asked for by name, so this was a waste of time?
 #         23:02 <twb> STYMIED!
-#         23:02 <twb> "# apt install zfs-modules" ==> "Package zfs-modules is a virtual package provided by: zfs-modules-6.1.0-0.deb11.7-amd64 2.1.11 zfs-modules-5.10.0-23-amd64 2.0.3 zfs-dkms 2.1.11-1~bpo11+1 You should explicitly select one to install."
+#         23:02 <twb> "# apt install zfs-modules" ==>
+#                     "Package zfs-modules is a virtual package provided by:
+#                         zfs-modules-6.1.0-0.deb11.7-amd64 2.1.11
+#                         zfs-modules-5.10.0-23-amd64 2.0.3
+#                         zfs-dkms 2.1.11-1~bpo11+1
+#                      You should explicitly select one to install."
 #         23:02 <twb> Why isn't apt smart enough to pick one
 #         23:03 <cb> policy?
-#         23:04 <twb> I don't think I can influence "preferred reified package when asking for a virtual package" via /etc/apt/preferences.d
+#         23:04 <twb> I don't think I can influence
+#                     "preferred reified package when asking for a virtual package"
+#                     via /etc/apt/preferences.d
 
 
 #!/usr/bin/python3

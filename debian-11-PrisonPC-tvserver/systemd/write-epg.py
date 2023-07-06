@@ -17,8 +17,13 @@ def elem_to_programme_crid(elem):
     # add the crid nodes that xmltv.py ignores
     for crid in elem.findall('crid'):
         programme['crid-%s' % crid.get('type', 'unknown')] = crid.text
-    fake_crid_item = "crid://prisonpc/%s/%s/%s/" % (programme['channel'], xmltv_to_iso8601_date(programme['start']), programme['title'][0][0])
-    fake_crid_series = "crid://prisonpc/%s/%s/" % (programme['channel'], programme['title'][0][0])
+    fake_crid_item = "crid://prisonpc/%s/%s/%s/" % (
+        programme['channel'],
+        xmltv_to_iso8601_date(programme['start']),
+        programme['title'][0][0])
+    fake_crid_series = "crid://prisonpc/%s/%s/" % (
+        programme['channel'],
+        programme['title'][0][0])
     if 'crid-item' not in programme:
         programme['crid-item'] = fake_crid_item
     if 'crid-series' not in programme:
@@ -51,7 +56,8 @@ with tvserver.cursor() as cur:
         stop_iso8601 = xmltv_to_iso8601_timestamp(stop)
         query = "DELETE FROM programmes WHERE sid = %s AND (start, stop) OVERLAPS (%s::timestamptz, %s::timestamptz)"
         cur.execute(query, (sid, start_iso8601, stop_iso8601))
-        query = "INSERT INTO programmes (channel, sid, start, stop, title, sub_title, crid_series, crid_item) VALUES (%s, %s, TIMESTAMP WITH TIME ZONE %s, TIMESTAMP WITH TIME ZONE %s, %s, %s, %s, %s)"
+        query = """INSERT INTO programmes (channel, sid, start, stop, title, sub_title, crid_series, crid_item)
+                   VALUES (%s, %s, TIMESTAMP WITH TIME ZONE %s, TIMESTAMP WITH TIME ZONE %s, %s, %s, %s, %s)"""
         cur.execute(query, (channel, sid, start_iso8601, stop_iso8601, title, sub_title, crid_series, crid_item))
 
     try:

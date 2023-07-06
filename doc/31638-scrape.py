@@ -77,8 +77,10 @@ def scrape_and_upsert(conn, auth, tadsid):
     data.write('tmp.html')      # DEBUGGING
 
     conn.execute(
-        'REPLACE INTO stories (tadsid, title, author, date, version, license, system, language, description, genre, difficulty, url)'
-        ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        '''REPLACE INTO stories (tadsid, title, author, date, version,
+                                 license, system, language, description,
+                                 genre, difficulty, url)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
         (tadsid,
          title,
          author,

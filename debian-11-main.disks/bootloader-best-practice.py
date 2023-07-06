@@ -200,7 +200,7 @@ with pathlib.Path('/etc/fstab').open(mode='at') as f:
     print('LABEL=BOOT', '/srv/backup/boot', 'ext4', 'defaults', 0, 0, sep='\t', file=f)
     print('LABEL=ESP', '/srv/backup/boot/efi', 'vfat', 'defaults', 0, 0, sep='\t', file=f)
 subprocess.check_call(['refind-install', '--alldrivers', '--usedefault', 'LABEL=ESP'])
-logging.warning('Remember to sync /srv/backup/boot/efi FROM understudy TO PrisonPC main server, if main server is still extlinux-based!')
+logging.warning('Remember to sync /srv/backup/boot/efi FROM understudy TO PrisonPC main server, if still extlinux-based!')
 logging.warning('Remember to add the /srv/backup/boot{,/efi} entries to PrisonPC:/etc/understudy-X/etc/fstab!')
 
 # FIXME: also set up extlinux on the /boot ext4, just because we CAN?

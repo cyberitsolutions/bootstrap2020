@@ -843,11 +843,16 @@ if args.boot_test:
               if not args.netboot_only else []),
             *maybe_dummy_DVD(testdir),
             *maybe_tvserver_ext2(testdir),
-            *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw', '--device', 'virtio-blk-pci,drive=satadom,serial=ACME-SATADOM',
-               '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=big-slow-1,serial=ACME-big-slow-1',
-               '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=big-slow-2,serial=ACME-big-slow-2',
-               '--drive', f'if=none,id=small-fast-1,file={testdir}/small-fast-1.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=small-fast-1,serial=ACME-small-fast-1',
-               '--drive', f'if=none,id=small-fast-2,file={testdir}/small-fast-2.qcow2,format=qcow2', '--device', 'virtio-blk-pci,drive=small-fast-2,serial=ACME-small-fast-2',
+            *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
+               '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
+               '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
+               '--drive', f'if=none,id=small-fast-1,file={testdir}/small-fast-1.qcow2,format=qcow2',
+               '--drive', f'if=none,id=small-fast-2,file={testdir}/small-fast-2.qcow2,format=qcow2',
+               '--device', 'virtio-blk-pci,drive=satadom,serial=ACME-SATADOM',
+               '--device', 'virtio-blk-pci,drive=big-slow-1,serial=ACME-big-slow-1',
+               '--device', 'virtio-blk-pci,drive=big-slow-2,serial=ACME-big-slow-2',
+               '--device', 'virtio-blk-pci,drive=small-fast-1,serial=ACME-small-fast-1',
+               '--device', 'virtio-blk-pci,drive=small-fast-2,serial=ACME-small-fast-2',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
               if template_wants_disks else [])])
 

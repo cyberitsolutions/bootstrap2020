@@ -89,7 +89,9 @@ def packages():
 #        What's up with that?
 if search_dirs:
     packages_old = packages()
-    subprocess.check_call(['chronic', 'chroot', args.chroot_path, 'apt', 'install', '--mark-auto', '--assume-yes', *build_dependencies])
+    subprocess.check_call([
+        'chronic', 'chroot', args.chroot_path,
+        'apt', 'install', '--mark-auto', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
     # FIXME: use subprocess.check_call([..., path.name], cwd=path.parent) ?

@@ -140,7 +140,9 @@ UPDATE Jan 2022:
      In other words, "just remove dbus-x11" won't work AT ALL as a strategy.
      We probably need to adopt grawity's approach as the least messy.
 
-      18:11 <twb> What that essentially does is, if you send a org.A.B message to the *system* dbus, it replays it on the *session* dbus
+      18:11 <twb> What that essentially does is,
+                  if you send a org.A.B message to the *system* dbus,
+                  it replays it on the *session* dbus
       18:12 <twb> The thing that does that copy-paste runs as the user as part of their login session
       18:12 <mike> Yeah, that'd make sense
       18:12 <twb> And then you need to trick your client ito sending the message to the "wrong" bus
