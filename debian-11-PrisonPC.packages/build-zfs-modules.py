@@ -101,4 +101,4 @@ with tempfile.TemporaryDirectory() as td:
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/server/dkms-bmdeb/'])
+        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/server/dkms-bmdeb/'])
