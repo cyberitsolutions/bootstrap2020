@@ -123,7 +123,6 @@ def main():
             print('<7>Blank disc, not processing.', file=sys.stderr, flush=True)
             continue
 
-
         # FIXME: Pete's code used to skip in these circumstances.
         # I think that's a mistake, but preserving semantics for now.
         # Reconsider when implementing https://alloc.cyber.com.au/task/task.php?taskID=24643! --twb, Nov 2015

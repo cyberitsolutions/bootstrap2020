@@ -184,7 +184,6 @@ def pretty_print(vulns):
         urgency_sortkey(v['releases'][args.suite]['urgency']),
         alnum_sortkey(v['cve'])))
 
-
     print('\t==========================================================\t===========\t===============\t==============')
     print('\t                                             VULNERABILITY\tURGENCY    \tFIX AVAILABLE? \tSOURCE PACKAGE')
     print('\t==========================================================\t===========\t===============\t==============')

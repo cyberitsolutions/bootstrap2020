@@ -11,6 +11,7 @@ import syslog
 
 import tvserver
 
+
 # nasty method swizzling to include crid attributes
 def elem_to_programme_crid(elem):
     programme = xmltv._elem_to_programme_no_crid(elem)
@@ -29,24 +30,32 @@ def elem_to_programme_crid(elem):
     if 'crid-series' not in programme:
         programme['crid-series'] = fake_crid_series
     return programme
+
+
 xmltv._elem_to_programme_no_crid = xmltv.elem_to_programme
 xmltv.elem_to_programme = elem_to_programme_crid
 # end nasty method swizzling
 
 
 class UTC(datetime.tzinfo):
+
     def utcoffset(self, dt):
         return datetime.timedelta(0)
+
     def dst(self, dt):
         return datetime.timedelta(0)
+
     def tzname(self, dt):
         return "UTC"
+
 
 def xmltv_to_iso8601_timestamp(stamp):
     return stamp[:4] + "-" + stamp[4:6] + "-" + stamp[6:8] + " " + stamp[8:10] + ":" + stamp[10:12] + ":" + stamp[12:]
 
+
 def xmltv_to_iso8601_date(stamp):
     return stamp[:4] + "-" + stamp[4:6] + "-" + stamp[6:8]
+
 
 with tvserver.cursor() as cur:
 
@@ -78,7 +87,6 @@ with tvserver.cursor() as cur:
     cur.execute(query)
     for (sid,) in cur:
         known_sids.append(sid)
-
 
     for programme in programmes:
         channel = programme['channel']
