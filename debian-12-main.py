@@ -116,9 +116,8 @@ mutex.add_argument('--virtual-only', '--no-physical', action='store_true',
                    help='save space/time by omitting physical hw support')
 mutex.add_argument('--physical-only', '--no-virtual', action='store_true',
                    help='save space/time by omitting qemu/VM support')
-parser.add_argument('--reproducible', metavar='YYYY-MM-DD',
-                    type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d').replace(tzinfo=datetime.timezone.utc),
-                    help='build a reproducible OS image & sign it')
+parser.add_argument('--production', action='store_true',
+                    help='keep logfiles, sanity-check repo and args')
 group = parser.add_argument_group('customization')
 group.add_argument('--LANG', default=os.environ['LANG'], metavar='xx_XX.UTF-8',
                    help='locale used inside the image',
@@ -204,17 +203,14 @@ if template_wants_PrisonPC and args.boot_test and not (args.netboot_only and hav
         ' Without these, site.dir cannot patch /etc/hosts, so'
         ' boot-test ldap/nfs/squid/pete redirect will not work!')
 
-if args.reproducible:
-    os.environ['SOURCE_DATE_EPOCH'] = str(int(args.reproducible.timestamp()))
-    # FIXME: we also need a way to use a reproducible snapshot of the Debian mirror.
-    # See /bin/debbisect for discussion re https://snapshot.debian.org.
+if args.production:
     proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
     if proc.returncode != 0:
-        raise RuntimeError('Unsaved changes (may) break reproducible-build! (fix "git diff")')
+        raise RuntimeError('Unsaved changes (may) break production builds! (fix "git diff")')
     if subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard']).strip():
-        raise RuntimeError('Unsaved changes (may) break reproducible-build! (fix "git status")')
+        raise RuntimeError('Unsaved changes (may) break production builds! (fix "git status")')
     if args.backdoor_enable or args.debug_shell:
-        logging.warning('debug/backdoor might break reproducibility')
+        raise RuntimeError('debug/backdoor is not allowed on production builds')
 
 if subprocess.check_output(
         ['systemctl', 'is-enabled', 'systemd-resolved'],
@@ -576,7 +572,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['--hook-dir=debian-12-PrisonPC-inmate.hooks']
            if args.template.startswith('desktop-inmate') else []),
          *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
-           if args.reproducible else []),
+           if args.production else []),
          'bookworm',
          destdir / 'filesystem.squashfs',
          'debian-12.sources',
@@ -590,17 +586,11 @@ with tempfile.TemporaryDirectory() as td:
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
 
-if args.reproducible:
-    (destdir / 'args.txt').write_text(pprint.pformat(args))
-    (destdir / 'git-description.txt').write_text(git_description)
-    (destdir / 'B2SUMS').write_bytes(subprocess.check_output(
-        ['b2sum', *sorted(path.name for path in destdir.iterdir())],
-        cwd=destdir))
-    if False:
-        # Disabled for now because:
-        #   1. you have to babysit the build (otherwise "gpg: signing failed: Timeout"); and
-        #   2. reproducible builds aren't byte-for-byte identical yet, so it's not useful.
-        subprocess.check_call(['gpg', '--sign', '--detach-sign', '--armor', (destdir / 'B2SUMS')])
+(destdir / 'args.txt').write_text(pprint.pformat(args))
+(destdir / 'git-description.txt').write_text(git_description)
+(destdir / 'B2SUMS').write_bytes(subprocess.check_output(
+    ['b2sum', *sorted(path.name for path in destdir.iterdir())],
+    cwd=destdir))
 
 
 def maybe_dummy_DVD(testdir: pathlib.Path) -> list:
