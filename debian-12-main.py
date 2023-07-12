@@ -101,8 +101,6 @@ parser.add_argument('--template', default='main',
                         '*-{amc,hcc}-*: site-specific stuff.'
                     ))
 group = parser.add_argument_group('optimization')
-group.add_argument('--optimize', choices=('size', 'speed'), default='size',
-                   help='build slower to get a smaller image? (default=size)')
 group.add_argument('--no-apps', dest='apps', action='store_false',
                    help='omit browser/office/vlc'
                    '     for faster turnaround when testing something else')
@@ -306,9 +304,8 @@ with tempfile.TemporaryDirectory() as td:
          # Reduce peak /tmp usage by about 500MB
          *['--essential-hook=chroot $1 apt clean',
            '--customize-hook=chroot $1 apt clean'],
-         *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
-            '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
-           if args.optimize == 'size' else []),
+         *['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
+           '--dpkgopt=path-exclude=/usr/share/man/*'],  # 8% faster to 7% SLOWER.
          '--include=zstd',      # for initramfs-tools
          *['--include=dbus',       # https://bugs.debian.org/814758
            '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
@@ -355,7 +352,7 @@ with tempfile.TemporaryDirectory() as td:
             # FIXME: this speed optimization is NOT SUSTAINABLE.
             #        https://github.com/cyberitsolutions/bootstrap2020/blob/d67b9525/debian-12-PrisonPC.packages/build-zfs-modules.py
             *(['--include=zfs-modules-6.1.0-0.deb11.7-amd64']
-              if args.optimize == 'speed' and not args.virtual_only else
+              if not args.production and not args.virtual_only else
               ['--include=zfs-dkms']),
             '--include=linux-headers-cloud-amd64'
             if args.virtual_only else
@@ -580,7 +577,7 @@ with tempfile.TemporaryDirectory() as td:
            if template_wants_PrisonPC_or_tvserver else []),
          # For --include=zfs-modules-6.1.0-0.deb11.7-amd64, above.
          *([f'deb [signed-by={pathlib.Path.cwd()}/debian-12-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bookworm server']  # noqa: E501
-           if args.template in ('zfs', 'understudy') and args.optimize == 'speed' and not args.virtual_only else []),
+           if args.template in ('zfs', 'understudy') and not args.production and not args.virtual_only else []),
          ])
 
 subprocess.check_call(
