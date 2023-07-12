@@ -397,7 +397,7 @@ group.add_argument('--host-port-for-boot-test-vnc', type=int, default=5900, meta
 group.add_argument('--opengl-for-boot-test-ssh', action='store_true',
                    help='Enable OpenGL in --boot-test (requires qemu 7.1)')
 group.add_argument('--measure-install-footprints', action='store_true')
-parser.add_argument('--templates', nargs='+', default=['main'],
+parser.add_argument('--templates',
                     choices=('main',
                              'dban',
                              'zfs',
@@ -429,7 +429,9 @@ parser.add_argument('--templates', nargs='+', default=['main'],
                         'desktop-staff:  desktop w/ PrisonPC operational staff stuff;'
                         'desktop-inmate-blackgate: desktop w/ (almost) all PrisonPC-approved apps;'
                         '*-{amc,hcc}-*: site-specific stuff.'
-                    ))
+                    ),
+                    nargs='+',
+                    default=['main'])
 group = parser.add_argument_group('optimization')
 group.add_argument('--no-apps', dest='apps', action='store_false',
                    help='omit browser/office/vlc'
