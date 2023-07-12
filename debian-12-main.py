@@ -110,6 +110,185 @@ def create_tarball2(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     return dst_path
 
 
+def do_boot_test():
+    # PrisonPC SOEs are hard-coded to check their IP address.
+    # This is not boot-time configurable for paranoia reasons.
+    # Therefore, qemu needs to use compatible IP addresses.
+    network, tftp_address, dns_address, smb_address, master_address = (
+        ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
+        if template_wants_PrisonPC_staff_network else
+        ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
+    with tempfile.TemporaryDirectory(dir=destdir) as testdir:
+        testdir = pathlib.Path(testdir)
+        validate_unescaped_path_is_safe(testdir)
+        subprocess.check_call(['ln', '-vt', testdir, '--',
+                               destdir / 'vmlinuz',
+                               destdir / 'initrd.img',
+                               destdir / 'filesystem.squashfs'])
+        common_boot_args = ' '.join([
+            ('quiet splash'
+             if template_wants_GUI else
+             'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
+            (f'break={args.maybe_break}'
+             if args.maybe_break else '')])
+
+        if template_wants_disks:
+            # NOTE: Can't be "zpool create" as we aren't root.
+            dummy_path = testdir / 'dummy.img'
+            size0, size1, size2 = 1, 64, 128  # in MiB
+            subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
+            subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
+                                   'mklabel gpt',
+                                   f'mkpart ESP  {size0}MiB     {size0+size1}MiB', 'set 1 esp on',
+                                   f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB'])
+            subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
+            subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'big-slow-1.qcow2', '1T'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'big-slow-2.qcow2', '1T'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'small-fast-1.qcow2', '128G'])
+            subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'small-fast-2.qcow2', '128G'])
+            if template == 'understudy':
+                # Used by live-boot(7) module=alice for USB/SMB/NFS (but not plainroot!)
+                common_boot_args += ' module=alice '  # try filesystem.{module}.squashfs &c
+                (testdir / 'filesystem.alice.module').write_text('filesystem.squashfs alice.dir')
+                (testdir / 'alice.dir/etc/ssh').mkdir(parents=True)
+                (testdir / 'alice.dir/etc/hostname').write_text('alice-understudy')
+                for alg in {'ed25519', 'ecdsa', 'rsa', 'dsa'}:
+                    (testdir / f'alice.dir/etc/ssh/ssh_host_{alg}_key').symlink_to(
+                        f'/srv/backup/zfs/etc/ssh/understudy/ssh_host_{alg}_key')
+                    (testdir / f'alice.dir/etc/ssh/ssh_host_{alg}_key.pub').symlink_to(
+                        f'/srv/backup/zfs/etc/ssh/understudy/ssh_host_{alg}_key.pub')
+                (testdir / 'alice.dir/etc/hostid').write_bytes(
+                    # pathlib.Path('/etc/hostid').read_bytes()
+                    # if pathlib.Path('/etc/hostid').exists() else
+                    # FIXME: reversed() assumes little-endian architecture.
+                    bytes(reversed(bytes.fromhex(subprocess.check_output(['hostid'], text=True)))))
+                (testdir / 'alice.dir/cyber-zfs-root-key.hex').write_text(
+                    'c3cc679085c3cfa22f8c49e353b9e6f93b90d9812dcc50beea7380502c898625')
+                (testdir / 'alice.dir/etc/zfs/vdev_id.conf').parent.mkdir(exist_ok=True, parents=True)
+                (testdir / 'alice.dir/etc/zfs/vdev_id.conf').write_text(
+                    '# Big Slow disks\n'
+                    'alias top-left       /dev/disk/by-path/pci-0000:00:05.0\n'
+                    'alias top-right      /dev/disk/by-path/pci-0000:00:06.0\n'
+                    '# Small Fast disks\n'
+                    'alias bottom-left    /dev/disk/by-path/pci-0000:00:07.0\n'
+                    'alias bottom-right   /dev/disk/by-path/pci-0000:00:08.0\n')
+                # Used by bootstrap2020-only personality=alice for fetch=tftp://.
+                if not have_smbd:
+                    common_boot_args += ' personality=alice '  # try filesystem.{module}.squashfs &c
+                    subprocess.run(
+                        ['cpio', '--create', '--format=newc', '--no-absolute-filenames',
+                         '--file', (testdir / 'alice.cpio'),
+                         '--directory', (testdir / 'alice.dir')],
+                        check=True,
+                        text=True,
+                        input='\n'.join([
+                            str(path.relative_to(testdir / 'alice.dir'))
+                            for path in (testdir / 'alice.dir').glob('**/*')]))
+        if args.netboot_only:
+            subprocess.check_call(['cp', '-t', testdir, '--',
+                                   '/usr/lib/PXELINUX/pxelinux.0',
+                                   '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
+            (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
+            (testdir / 'pxelinux.cfg/default').write_text(
+                'DEFAULT linux\n'
+                'LABEL linux\n'
+                '  IPAPPEND 2\n'
+                '  KERNEL vmlinuz\n'
+                '  INITRD initrd.img\n'
+                '  APPEND ' + ' '.join([
+                    'boot=live',
+                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
+                     if have_smbd else
+                     f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
+                    common_boot_args]))
+        domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
+        # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
+        # We need a simple A record in the guest.
+        # This is a quick-and-dirty way to achieve that (FIXME: do better).
+        if template_wants_PrisonPC_or_tvserver:
+            (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
+            (testdir / 'site.dir').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc/hosts').write_text(
+                '127.0.2.1 webmail\n'
+                f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm')
+            (testdir / 'site.dir/prayer.errata').write_text(
+                'ERRATA=--config-option default_domain=tweak.prisonpc.com')
+            if 'inmate' in template:
+                # Simulate a site-specific desktop image (typically not done for staff).
+                (testdir / 'site.dir/wallpaper.jpg').write_bytes(pathlib.Path('wallpaper.svg').read_bytes())
+            (testdir / 'site.dir/etc/nftables.conf.d').mkdir(exist_ok=True)
+            (testdir / 'site.dir/etc/nftables.conf.d/11-PrisonPC-master-server-address.conf').write_text(
+                f'define PrisonPC = {master_address};')
+            (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
+                pathlib.Path('debian-12-PrisonPC/firewall-boot-test.nft').read_text())
+            if template.startswith('desktop-inmate'):
+                (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
+                (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
+                    f'[Service]\nEnvironment=X11VNC_EXTRA_ARGS="-allow {tftp_address}"\n')
+        subprocess.check_call([
+            # NOTE: doesn't need root privs
+            'qemu-system-x86_64',
+            '--enable-kvm',
+            '--machine', 'q35',
+            '--cpu', 'host',
+            '-m', '2G' if template_wants_GUI else '512M',
+            '--smp', '2',
+            # no virtio-sound in qemu 6.1 ☹
+            '--device', 'ich9-intel-hda', '--device', 'hda-output',
+            *(['--nographic', '--vga', 'none']
+              if not template_wants_GUI else
+              ['--device', 'qxl-vga']
+              if args.virtual_only else
+              ['--device', 'virtio-vga']
+              if not args.opengl_for_boot_test_ssh else
+              ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
+            '--net', 'nic,model=virtio',
+            '--net', ','.join([
+                'user',
+                f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
+                f'hostname={template}.{domain}',
+                f'dnssearch={domain}',
+                f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
+                *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
+                  if template_wants_PrisonPC else []),
+                *([f'smb={testdir}'] if have_smbd else []),
+                *([f'tftp={testdir}', 'bootfile=pxelinux.0']
+                  if args.netboot_only else []),
+                *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
+                   f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
+                   for host in {'prisonpc-staff.lan'
+                                if template_wants_PrisonPC_staff_network else
+                                'prisonpc-inmate.lan'}]
+                  if template_wants_PrisonPC_or_tvserver else []),
+            ]),
+            '--device', 'virtio-net-pci',  # second NIC; not plugged in
+            *(['--kernel', testdir / 'vmlinuz',
+               '--initrd', testdir / 'initrd.img',
+               '--append', ' '.join([
+                   'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
+                   common_boot_args]),
+               '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
+               '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
+              if not args.netboot_only else []),
+            *(qemu_dummy_DVD(testdir) if template_wants_DVD else []),
+            *(qemu_tvserver_ext2(testdir) if template == 'tvserver' else []),
+            *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
+               '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
+               '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
+               '--drive', f'if=none,id=small-fast-1,file={testdir}/small-fast-1.qcow2,format=qcow2',
+               '--drive', f'if=none,id=small-fast-2,file={testdir}/small-fast-2.qcow2,format=qcow2',
+               '--device', 'virtio-blk-pci,drive=satadom,serial=ACME-SATADOM',
+               '--device', 'virtio-blk-pci,drive=big-slow-1,serial=ACME-big-slow-1',
+               '--device', 'virtio-blk-pci,drive=big-slow-2,serial=ACME-big-slow-2',
+               '--device', 'virtio-blk-pci,drive=small-fast-1,serial=ACME-small-fast-1',
+               '--device', 'virtio-blk-pci,drive=small-fast-2,serial=ACME-small-fast-2',
+               '--boot', 'order=n']  # don't try to boot off the dummy disk
+              if template_wants_disks else [])])
+
+
 def qemu_dummy_DVD(testdir: pathlib.Path) -> list:
     dummy_DVD_path = testdir / 'dummy.iso'
     subprocess.check_call([
@@ -155,6 +334,46 @@ def qemu_tvserver_ext2(testdir: pathlib.Path) -> list:
     return (                    # add these args to qemu cmdline
         ['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
          '--boot', 'order=n'])  # don't try to boot off the dummy disk
+
+
+def do_upload_to(host):
+    subprocess.check_call(
+        ['rsync', '-aihh', '--info=progress2', '--protect-args',
+         '--chown=0:0',  # don't use UID:GID of whoever built the images!
+         # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
+         f'--copy-dest=/srv/netboot/images/{template}-latest',
+         f'{destdir}/',
+         f'{host}:/srv/netboot/images/{destdir.name}/'])
+    rename_proc = subprocess.run(
+        ['ssh', host, f'mv -vT /srv/netboot/images/{template}-latest /srv/netboot/images/{template}-previous'],
+        check=False)
+    if rename_proc.returncode != 0:
+        # This is the first time uploading this template to this host.
+        # Create a fake -previous so later commands can assume there is ALWAYS a -previous.
+        subprocess.check_call(
+            ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{template}-previous'])
+    # NOTE: this stuff all assumes PrisonPC.
+    subprocess.check_call([
+        'ssh', host,
+        f'[ ! -d /srv/netboot/images/{template}-previous/site.dir ] || '
+        f'cp -at /srv/netboot/images/{destdir.name}/ /srv/netboot/images/{template}-previous/site.dir'])
+    subprocess.check_call(
+        ['ssh', host,
+         f'ln -vnsf {destdir.name} /srv/netboot/images/{template}-latest'])
+    # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
+    if re.fullmatch(r'(root@)tweak(\.prisonpc\.com)?', host):
+        soes = set(subprocess.check_output(
+            ['ssh', host, 'tca get soes'],
+            text=True).strip().splitlines())
+        soes |= {f'{template}-latest',
+                 f'{template}-previous'}
+        subprocess.run(
+            ['ssh', host, 'tca set soes'],
+            text=True,
+            check=True,
+            input='\n'.join(sorted(soes)))
+        # Sync /srv/netboot to /srv/tftp &c.
+        subprocess.check_call(['ssh', host, 'tca', 'commit'])
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -657,221 +876,10 @@ for template in args.templates:
             cwd=destdir))
 
         if args.boot_test:
-            # PrisonPC SOEs are hard-coded to check their IP address.
-            # This is not boot-time configurable for paranoia reasons.
-            # Therefore, qemu needs to use compatible IP addresses.
-            network, tftp_address, dns_address, smb_address, master_address = (
-                ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
-                if template_wants_PrisonPC_staff_network else
-                ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
-            with tempfile.TemporaryDirectory(dir=destdir) as testdir:
-                testdir = pathlib.Path(testdir)
-                validate_unescaped_path_is_safe(testdir)
-                subprocess.check_call(['ln', '-vt', testdir, '--',
-                                       destdir / 'vmlinuz',
-                                       destdir / 'initrd.img',
-                                       destdir / 'filesystem.squashfs'])
-                common_boot_args = ' '.join([
-                    ('quiet splash'
-                     if template_wants_GUI else
-                     'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
-                    (f'break={args.maybe_break}'
-                     if args.maybe_break else '')])
-
-                if template_wants_disks:
-                    # NOTE: Can't be "zpool create" as we aren't root.
-                    dummy_path = testdir / 'dummy.img'
-                    size0, size1, size2 = 1, 64, 128  # in MiB
-                    subprocess.check_call(['truncate', f'-s{size0+size1+size2+size0}M', dummy_path])
-                    subprocess.check_call(['/sbin/parted', '-saopt', dummy_path,
-                                           'mklabel gpt',
-                                           f'mkpart ESP  {size0}MiB     {size0+size1}MiB', 'set 1 esp on',
-                                           f'mkpart root {size0+size1}MiB {size0+size1+size2}MiB'])
-                    subprocess.check_call(['/sbin/mkfs.fat', dummy_path, '-nESP', '-F32', f'--offset={size0*2048}', f'{size1*1024}', '-v'])
-                    subprocess.check_call(['/sbin/mkfs.ext4', dummy_path, '-Lroot', f'-FEoffset={(size0+size1)*1024*1024}', f'{size2}M'])
-                    subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'big-slow-1.qcow2', '1T'])
-                    subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'big-slow-2.qcow2', '1T'])
-                    subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'small-fast-1.qcow2', '128G'])
-                    subprocess.check_call(['qemu-img', 'create', '-f', 'qcow2', testdir / 'small-fast-2.qcow2', '128G'])
-                    if template == 'understudy':
-                        # Used by live-boot(7) module=alice for USB/SMB/NFS (but not plainroot!)
-                        common_boot_args += ' module=alice '  # try filesystem.{module}.squashfs &c
-                        (testdir / 'filesystem.alice.module').write_text('filesystem.squashfs alice.dir')
-                        (testdir / 'alice.dir/etc/ssh').mkdir(parents=True)
-                        (testdir / 'alice.dir/etc/hostname').write_text('alice-understudy')
-                        for alg in {'ed25519', 'ecdsa', 'rsa', 'dsa'}:
-                            (testdir / f'alice.dir/etc/ssh/ssh_host_{alg}_key').symlink_to(
-                                f'/srv/backup/zfs/etc/ssh/understudy/ssh_host_{alg}_key')
-                            (testdir / f'alice.dir/etc/ssh/ssh_host_{alg}_key.pub').symlink_to(
-                                f'/srv/backup/zfs/etc/ssh/understudy/ssh_host_{alg}_key.pub')
-                        (testdir / 'alice.dir/etc/hostid').write_bytes(
-                            # pathlib.Path('/etc/hostid').read_bytes()
-                            # if pathlib.Path('/etc/hostid').exists() else
-                            # FIXME: reversed() assumes little-endian architecture.
-                            bytes(reversed(bytes.fromhex(subprocess.check_output(['hostid'], text=True)))))
-                        (testdir / 'alice.dir/cyber-zfs-root-key.hex').write_text(
-                            'c3cc679085c3cfa22f8c49e353b9e6f93b90d9812dcc50beea7380502c898625')
-                        (testdir / 'alice.dir/etc/zfs/vdev_id.conf').parent.mkdir(exist_ok=True, parents=True)
-                        (testdir / 'alice.dir/etc/zfs/vdev_id.conf').write_text(
-                            '# Big Slow disks\n'
-                            'alias top-left       /dev/disk/by-path/pci-0000:00:05.0\n'
-                            'alias top-right      /dev/disk/by-path/pci-0000:00:06.0\n'
-                            '# Small Fast disks\n'
-                            'alias bottom-left    /dev/disk/by-path/pci-0000:00:07.0\n'
-                            'alias bottom-right   /dev/disk/by-path/pci-0000:00:08.0\n')
-                        # Used by bootstrap2020-only personality=alice for fetch=tftp://.
-                        if not have_smbd:
-                            common_boot_args += ' personality=alice '  # try filesystem.{module}.squashfs &c
-                            subprocess.run(
-                                ['cpio', '--create', '--format=newc', '--no-absolute-filenames',
-                                 '--file', (testdir / 'alice.cpio'),
-                                 '--directory', (testdir / 'alice.dir')],
-                                check=True,
-                                text=True,
-                                input='\n'.join([
-                                    str(path.relative_to(testdir / 'alice.dir'))
-                                    for path in (testdir / 'alice.dir').glob('**/*')]))
-                if args.netboot_only:
-                    subprocess.check_call(['cp', '-t', testdir, '--',
-                                           '/usr/lib/PXELINUX/pxelinux.0',
-                                           '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
-                    (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
-                    (testdir / 'pxelinux.cfg/default').write_text(
-                        'DEFAULT linux\n'
-                        'LABEL linux\n'
-                        '  IPAPPEND 2\n'
-                        '  KERNEL vmlinuz\n'
-                        '  INITRD initrd.img\n'
-                        '  APPEND ' + ' '.join([
-                            'boot=live',
-                            (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
-                             if have_smbd else
-                             f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
-                            common_boot_args]))
-                domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
-                # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
-                # We need a simple A record in the guest.
-                # This is a quick-and-dirty way to achieve that (FIXME: do better).
-                if template_wants_PrisonPC_or_tvserver:
-                    (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
-                    (testdir / 'site.dir').mkdir(exist_ok=True)
-                    (testdir / 'site.dir/etc').mkdir(exist_ok=True)
-                    (testdir / 'site.dir/etc/hosts').write_text(
-                        '127.0.2.1 webmail\n'
-                        f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm')
-                    (testdir / 'site.dir/prayer.errata').write_text(
-                        'ERRATA=--config-option default_domain=tweak.prisonpc.com')
-                    if 'inmate' in template:
-                        # Simulate a site-specific desktop image (typically not done for staff).
-                        (testdir / 'site.dir/wallpaper.jpg').write_bytes(pathlib.Path('wallpaper.svg').read_bytes())
-                    (testdir / 'site.dir/etc/nftables.conf.d').mkdir(exist_ok=True)
-                    (testdir / 'site.dir/etc/nftables.conf.d/11-PrisonPC-master-server-address.conf').write_text(
-                        f'define PrisonPC = {master_address};')
-                    (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
-                        pathlib.Path('debian-12-PrisonPC/firewall-boot-test.nft').read_text())
-                    if template.startswith('desktop-inmate'):
-                        (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
-                        (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
-                            f'[Service]\nEnvironment=X11VNC_EXTRA_ARGS="-allow {tftp_address}"\n')
-                subprocess.check_call([
-                    # NOTE: doesn't need root privs
-                    'qemu-system-x86_64',
-                    '--enable-kvm',
-                    '--machine', 'q35',
-                    '--cpu', 'host',
-                    '-m', '2G' if template_wants_GUI else '512M',
-                    '--smp', '2',
-                    # no virtio-sound in qemu 6.1 ☹
-                    '--device', 'ich9-intel-hda', '--device', 'hda-output',
-                    *(['--nographic', '--vga', 'none']
-                      if not template_wants_GUI else
-                      ['--device', 'qxl-vga']
-                      if args.virtual_only else
-                      ['--device', 'virtio-vga']
-                      if not args.opengl_for_boot_test_ssh else
-                      ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
-                    '--net', 'nic,model=virtio',
-                    '--net', ','.join([
-                        'user',
-                        f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
-                        f'hostname={template}.{domain}',
-                        f'dnssearch={domain}',
-                        f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
-                        *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
-                          if template_wants_PrisonPC else []),
-                        *([f'smb={testdir}'] if have_smbd else []),
-                        *([f'tftp={testdir}', 'bootfile=pxelinux.0']
-                          if args.netboot_only else []),
-                        *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
-                           f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                           for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
-                           for host in {'prisonpc-staff.lan'
-                                        if template_wants_PrisonPC_staff_network else
-                                        'prisonpc-inmate.lan'}]
-                          if template_wants_PrisonPC_or_tvserver else []),
-                    ]),
-                    '--device', 'virtio-net-pci',  # second NIC; not plugged in
-                    *(['--kernel', testdir / 'vmlinuz',
-                       '--initrd', testdir / 'initrd.img',
-                       '--append', ' '.join([
-                           'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
-                           common_boot_args]),
-                       '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
-                       '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
-                      if not args.netboot_only else []),
-                    *(qemu_dummy_DVD(testdir) if template_wants_DVD else []),
-                    *(qemu_tvserver_ext2(testdir) if template == 'tvserver' else []),
-                    *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
-                       '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
-                       '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
-                       '--drive', f'if=none,id=small-fast-1,file={testdir}/small-fast-1.qcow2,format=qcow2',
-                       '--drive', f'if=none,id=small-fast-2,file={testdir}/small-fast-2.qcow2,format=qcow2',
-                       '--device', 'virtio-blk-pci,drive=satadom,serial=ACME-SATADOM',
-                       '--device', 'virtio-blk-pci,drive=big-slow-1,serial=ACME-big-slow-1',
-                       '--device', 'virtio-blk-pci,drive=big-slow-2,serial=ACME-big-slow-2',
-                       '--device', 'virtio-blk-pci,drive=small-fast-1,serial=ACME-small-fast-1',
-                       '--device', 'virtio-blk-pci,drive=small-fast-2,serial=ACME-small-fast-2',
-                       '--boot', 'order=n']  # don't try to boot off the dummy disk
-                      if template_wants_disks else [])])
+            do_boot_test()
 
         for host in args.upload_to:
-            subprocess.check_call(
-                ['rsync', '-aihh', '--info=progress2', '--protect-args',
-                 '--chown=0:0',  # don't use UID:GID of whoever built the images!
-                 # FIXME: need --bwlimit=1MiB here if-and-only-if the host is a production server.
-                 f'--copy-dest=/srv/netboot/images/{template}-latest',
-                 f'{destdir}/',
-                 f'{host}:/srv/netboot/images/{destdir.name}/'])
-            rename_proc = subprocess.run(
-                ['ssh', host, f'mv -vT /srv/netboot/images/{template}-latest /srv/netboot/images/{template}-previous'],
-                check=False)
-            if rename_proc.returncode != 0:
-                # This is the first time uploading this template to this host.
-                # Create a fake -previous so later commands can assume there is ALWAYS a -previous.
-                subprocess.check_call(
-                    ['ssh', host, f'ln -vnsf {destdir.name} /srv/netboot/images/{template}-previous'])
-            # NOTE: this stuff all assumes PrisonPC.
-            subprocess.check_call([
-                'ssh', host,
-                f'[ ! -d /srv/netboot/images/{template}-previous/site.dir ] || '
-                f'cp -at /srv/netboot/images/{destdir.name}/ /srv/netboot/images/{template}-previous/site.dir'])
-            subprocess.check_call(
-                ['ssh', host,
-                 f'ln -vnsf {destdir.name} /srv/netboot/images/{template}-latest'])
-            # FIXME: https://alloc.cyber.com.au/task/task.php?taskID=34581
-            if re.fullmatch(r'(root@)tweak(\.prisonpc\.com)?', host):
-                soes = set(subprocess.check_output(
-                    ['ssh', host, 'tca get soes'],
-                    text=True).strip().splitlines())
-                soes |= {f'{template}-latest',
-                         f'{template}-previous'}
-                subprocess.run(
-                    ['ssh', host, 'tca set soes'],
-                    text=True,
-                    check=True,
-                    input='\n'.join(sorted(soes)))
-                # Sync /srv/netboot to /srv/tftp &c.
-                subprocess.check_call(['ssh', host, 'tca', 'commit'])
+            do_upload_to(host)
 
         if args.save_to:
             shutil.copytree(destdir, args.save_to / destdir.name)
