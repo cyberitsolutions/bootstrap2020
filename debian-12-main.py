@@ -222,7 +222,7 @@ for template in args.templates:
         if template.startswith(section_name.lower())
         for package_name in section_dict.get('applications', '').split()}
 
-    with tempfile.TemporaryDirectory() as td:
+    with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
         td = pathlib.Path(td)
         validate_unescaped_path_is_safe(td)
         # FIXME: use SSH certificates instead, and just trust a static CA!
