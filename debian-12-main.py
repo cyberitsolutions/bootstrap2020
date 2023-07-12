@@ -44,6 +44,119 @@ def hostname_or_fqdn_with_optional_user_at(s: str) -> str:
         raise ValueError()
 
 
+def get_site_apps(template: str) -> set:
+    "Get long, boring app lists from an .ini (instead of inline in main.py)"
+    parser = configparser.ConfigParser()
+    parser.read('debian-12-PrisonPC.site-apps.ini')
+    if any('applications' != key.lower()
+           for section_dict in parser.values()
+           for key in section_dict):
+        raise NotImplementedError('Typo in .ini file?')
+    site_apps = {
+        package_name
+        for section_name, section_dict in parser.items()
+        if template.startswith(section_name.lower())
+        for package_name in section_dict.get('applications', '').split()}
+    return site_apps
+
+
+def create_authorized_keys_tar(dst_path, urls):
+    with tarfile.open(dst_path, 'w') as t:
+        with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
+            for url in urls:
+                resp = requests.get(url)
+                resp.raise_for_status()
+                f.write(b'#')
+                f.write(url.to_text().encode())
+                f.write(b'\n')
+                # can't use resp.content, because website might be using BIG5 or something.
+                f.write(resp.text.encode())
+                f.write(b'\n')
+                f.flush()
+            member = tarfile.TarInfo('root/.ssh/authorized_keys')
+            member.mode = 0o0400
+            member.size = f.tell()
+            f.seek(0)
+            t.addfile(member, f)
+
+
+def create_tarball2(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
+    "Turn a dir (handy for git) into a tarball (handy for mmdebstrap tar-in)."
+    src_path = pathlib.Path(src_path)
+    assert src_path.exists(), 'The .glob() does not catch this!'
+    # FIXME: this can still collide
+    # FIXME: can't do symlinks, directories, &c.
+    dst_path = td / f'{src_path.name}.tar'
+    with tarfile.open(dst_path, 'w') as t:
+        for tarinfo_path in src_path.glob('**/*.tarinfo'):
+            content_path = tarinfo_path.with_suffix('')
+            tarinfo_object = tarfile.TarInfo()
+            # git can store *ONE* executable bit.
+            # Default to "r--------" or "r-x------", not "---------".
+            tarinfo_object.mode = (
+                0 if not content_path.exists() else
+                0o500 if content_path.stat().st_mode & 0o111 else 0o400)
+            for k, v in json.loads(tarinfo_path.read_text()).items():
+                setattr(tarinfo_object, k, v)
+            if tarinfo_object.linkpath:
+                tarinfo_object.type = tarfile.SYMTYPE
+            if tarinfo_object.isreg():
+                tarinfo_object.size = content_path.stat().st_size
+                with content_path.open('rb') as content_handle:
+                    t.addfile(tarinfo_object, content_handle)
+            else:
+                t.addfile(tarinfo_object)
+    # subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
+    return dst_path
+
+
+def qemu_dummy_DVD(testdir: pathlib.Path) -> list:
+    dummy_DVD_path = testdir / 'dummy.iso'
+    subprocess.check_call([
+        'wget2',
+        '--quiet',
+        '--output-document', dummy_DVD_path,
+        '--http-proxy', apt_proxy,
+        'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso'])
+    return (                    # add these args to qemu cmdline
+        ['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
+         '--boot', 'order=n'])  # don't try to boot off the dummy disk
+
+
+def qemu_tvserver_ext2(testdir: pathlib.Path) -> list:
+    # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
+    # containing a specific password file.
+    tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
+    tvserver_tar_path = testdir / 'prisonpc-persist.tar'
+    with tarfile.open(tvserver_tar_path, 'w') as t:
+        for name in {'pgpass', 'msmtp-psk'}:
+            with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
+                f.write(
+                    pypass.PasswordStore().get_decrypted_password(
+                        f'PrisonPC/tvserver/{name}').encode())
+                f.flush()
+                member = tarfile.TarInfo()
+                member.name = name
+                member.mode = (
+                    0o0444 if name == 'msmtp-psk' else  # FIXME: yuk
+                    0o0400)
+                member.size = f.tell()
+                f.seek(0)
+                t.addfile(member, f)
+    subprocess.check_call(
+        ['genext2fs',
+         '--volume-label=prisonpc-persist'
+         '--block-size=1024',
+         '--size-in-blocks=1024',  # 1MiB
+         '--number-of-inodes=128',
+         '--tarball', tvserver_tar_path,
+         tvserver_ext2_path])
+    tvserver_tar_path.unlink()
+    return (                    # add these args to qemu cmdline
+        ['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
+         '--boot', 'order=n'])  # don't try to boot off the dummy disk
+
+
 parser = argparse.ArgumentParser(description=__doc__)
 group = parser.add_argument_group('debugging')
 group.add_argument('--debug-shell', action='store_true',
@@ -160,6 +273,23 @@ if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
 
+if subprocess.check_output(
+        ['systemctl', 'is-enabled', 'systemd-resolved'],
+        text=True).strip() != 'enabled':
+    logging.warning(
+        'If you see odd DNS errors during the build,'
+        ' either run "systemctl enable --now systemd-resolved" on your host, or'
+        ' make the /lib/systemd/resolv.conf line run much later.')
+
+if args.production:
+    proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
+    if proc.returncode != 0:
+        raise RuntimeError('Unsaved changes (may) break production builds! (fix "git diff")')
+    if subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard']).strip():
+        raise RuntimeError('Unsaved changes (may) break production builds! (fix "git status")')
+    if args.backdoor_enable or args.debug_shell:
+        raise RuntimeError('debug/backdoor is not allowed on production builds')
+
 if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
 
@@ -193,86 +323,22 @@ for template in args.templates:
             ' Without these, site.dir cannot patch /etc/hosts, so'
             ' boot-test ldap/nfs/squid/pete redirect will not work!')
 
-    if args.production:
-        proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
-        if proc.returncode != 0:
-            raise RuntimeError('Unsaved changes (may) break production builds! (fix "git diff")')
-        if subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard']).strip():
-            raise RuntimeError('Unsaved changes (may) break production builds! (fix "git status")')
-        if args.backdoor_enable or args.debug_shell:
-            raise RuntimeError('debug/backdoor is not allowed on production builds')
-
-    if subprocess.check_output(
-            ['systemctl', 'is-enabled', 'systemd-resolved'],
-            text=True).strip() != 'enabled':
-        logging.warning(
-            'If you see odd DNS errors during the build,'
-            ' either run "systemctl enable --now systemd-resolved" on your host, or'
-            ' make the /lib/systemd/resolv.conf line run much later.')
-
-    # Use a separate declarative file for these long, boring lists.
-    parser = configparser.ConfigParser()
-    parser.read('debian-12-PrisonPC.site-apps.ini')
-    if any('applications' != key.lower()
-           for section_dict in parser.values()
-           for key in section_dict):
-        raise NotImplementedError('Typo in .ini file?')
-    site_apps = {
-        package_name
-        for section_name, section_dict in parser.items()
-        if template.startswith(section_name.lower())
-        for package_name in section_dict.get('applications', '').split()}
+    site_apps = get_site_apps(template)
 
     with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
         td = pathlib.Path(td)
         validate_unescaped_path_is_safe(td)
         # FIXME: use SSH certificates instead, and just trust a static CA!
         authorized_keys_tar_path = td / 'ssh.tar'
-        with tarfile.open(authorized_keys_tar_path, 'w') as t:
-            with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
-                for url in args.authorized_keys_urls:
-                    resp = requests.get(url)
-                    resp.raise_for_status()
-                    f.write(b'#')
-                    f.write(url.to_text().encode())
-                    f.write(b'\n')
-                    # can't use resp.content, because website might be using BIG5 or something.
-                    f.write(resp.text.encode())
-                    f.write(b'\n')
-                    f.flush()
-                member = tarfile.TarInfo('root/.ssh/authorized_keys')
-                member.mode = 0o0400
-                member.size = f.tell()
-                f.seek(0)
-                t.addfile(member, f)
+        create_authorized_keys_tar(
+            authorized_keys_tar_path,
+            args.authorized_keys_urls)
 
+        # This has to be be here because it closes over the tempdir.
+        # Move the body outside the loop, and curry it.
+        # FIXME: tidy up later?
         def create_tarball(src_path: pathlib.Path) -> pathlib.Path:
-            src_path = pathlib.Path(src_path)
-            assert src_path.exists(), 'The .glob() does not catch this!'
-            # FIXME: this can still collide
-            # FIXME: can't do symlinks, directories, &c.
-            dst_path = td / f'{src_path.name}.tar'
-            with tarfile.open(dst_path, 'w') as t:
-                for tarinfo_path in src_path.glob('**/*.tarinfo'):
-                    content_path = tarinfo_path.with_suffix('')
-                    tarinfo_object = tarfile.TarInfo()
-                    # git can store *ONE* executable bit.
-                    # Default to "r--------" or "r-x------", not "---------".
-                    tarinfo_object.mode = (
-                        0 if not content_path.exists() else
-                        0o500 if content_path.stat().st_mode & 0o111 else 0o400)
-                    for k, v in json.loads(tarinfo_path.read_text()).items():
-                        setattr(tarinfo_object, k, v)
-                    if tarinfo_object.linkpath:
-                        tarinfo_object.type = tarfile.SYMTYPE
-                    if tarinfo_object.isreg():
-                        tarinfo_object.size = content_path.stat().st_size
-                        with content_path.open('rb') as content_handle:
-                            t.addfile(tarinfo_object, content_handle)
-                    else:
-                        t.addfile(tarinfo_object)
-            # subprocess.check_call(['tar', 'vvvtf', dst_path])  # DEBUGGING
-            return dst_path
+            return create_tarball2(td, src_path)
 
         # The upload code gets a bit confused if we upload "foo-2022-01-01" twice in the same day.
         # As a quick-and-dirty workaround, include time in image name.
@@ -590,55 +656,6 @@ for template in args.templates:
             ['b2sum', *sorted(path.name for path in destdir.iterdir())],
             cwd=destdir))
 
-        def maybe_dummy_DVD(testdir: pathlib.Path) -> list:
-            if not template_wants_DVD:
-                return []               # add no args to qemu cmdline
-            dummy_DVD_path = testdir / 'dummy.iso'
-            subprocess.check_call([
-                'wget2',
-                '--quiet',
-                '--output-document', dummy_DVD_path,
-                '--http-proxy', apt_proxy,
-                'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso'])
-            return (                    # add these args to qemu cmdline
-                ['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
-                 '--boot', 'order=n'])  # don't try to boot off the dummy disk
-
-        def maybe_tvserver_ext2(testdir: pathlib.Path) -> list:
-            if not template == 'tvserver':
-                return []               # add no args to qemu cmdline
-            # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
-            # containing a specific password file.
-            tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
-            tvserver_tar_path = testdir / 'prisonpc-persist.tar'
-            with tarfile.open(tvserver_tar_path, 'w') as t:
-                for name in {'pgpass', 'msmtp-psk'}:
-                    with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
-                        f.write(
-                            pypass.PasswordStore().get_decrypted_password(
-                                f'PrisonPC/tvserver/{name}').encode())
-                        f.flush()
-                        member = tarfile.TarInfo()
-                        member.name = name
-                        member.mode = (
-                            0o0444 if name == 'msmtp-psk' else  # FIXME: yuk
-                            0o0400)
-                        member.size = f.tell()
-                        f.seek(0)
-                        t.addfile(member, f)
-            subprocess.check_call(
-                ['genext2fs',
-                 '--volume-label=prisonpc-persist'
-                 '--block-size=1024',
-                 '--size-in-blocks=1024',  # 1MiB
-                 '--number-of-inodes=128',
-                 '--tarball', tvserver_tar_path,
-                 tvserver_ext2_path])
-            tvserver_tar_path.unlink()
-            return (                    # add these args to qemu cmdline
-                ['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
-                 '--boot', 'order=n'])  # don't try to boot off the dummy disk
-
         if args.boot_test:
             # PrisonPC SOEs are hard-coded to check their IP address.
             # This is not boot-time configurable for paranoia reasons.
@@ -802,8 +819,8 @@ for template in args.templates:
                        '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
                        '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
                       if not args.netboot_only else []),
-                    *maybe_dummy_DVD(testdir),
-                    *maybe_tvserver_ext2(testdir),
+                    *(qemu_dummy_DVD(testdir) if template_wants_DVD else []),
+                    *(qemu_tvserver_ext2(testdir) if template == 'tvserver' else []),
                     *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
                        '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
                        '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
