@@ -101,7 +101,7 @@ parser.add_argument('--template', default='main',
                         '*-{amc,hcc}-*: site-specific stuff.'
                     ))
 group = parser.add_argument_group('optimization')
-group.add_argument('--optimize', choices=('size', 'speed', 'simplicity'), default='size',
+group.add_argument('--optimize', choices=('size', 'speed'), default='size',
                    help='build slower to get a smaller image? (default=size)')
 group.add_argument('--no-apps', dest='apps', action='store_false',
                    help='omit browser/office/vlc'
@@ -293,59 +293,49 @@ with tempfile.TemporaryDirectory() as td:
          'mmdebstrap',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
-         '--include=linux-image-cloud-amd64'
-         if args.virtual_only else
-         # NOTE: can't --include= this because there are too many dpkg trigger problems.
-         '--customize-hook=chroot $1 apt install -y linux-image-inmate'
-         if args.template.startswith('desktop-inmate') and args.physical_only else
-         '--include=linux-image-amd64',
+         ('--include=linux-image-cloud-amd64'
+          if args.virtual_only else
+          # NOTE: can't --include= this because there are too many dpkg trigger problems.
+          '--customize-hook=chroot $1 apt install -y linux-image-inmate'
+          if args.template.startswith('desktop-inmate') and args.physical_only else
+          '--include=linux-image-amd64'),
          '--include=live-boot',
-         *([f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',  # save 12s
-            '--aptopt=Acquire::https::Proxy "DIRECT"']
-           if args.optimize != 'simplicity' else []),
-         *(['--variant=apt',           # save 12s 30MB
-            '--include=netbase',       # https://bugs.debian.org/995343 et al
-            '--include=init']          # https://bugs.debian.org/993289
-           if args.optimize != 'simplicity' else []),
+         f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
+         '--aptopt=Acquire::https::Proxy "DIRECT"',
+         *['--variant=apt',      # save 12s 30MB
+           '--include=netbase',  # https://bugs.debian.org/995343 et al
+           '--include=init'],    # https://bugs.debian.org/993289
          '--include=systemd-timesyncd',  # https://bugs.debian.org/986651
-         *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
-           if args.optimize != 'simplicity' else []),
+         '--dpkgopt=force-unsafe-io',   # save 20s (even on tmpfs!)
          # Reduce peak /tmp usage by about 500MB
-         *(['--essential-hook=chroot $1 apt clean',
-            '--customize-hook=chroot $1 apt clean']
-           if args.optimize != 'simplicity' else []),
+         *['--essential-hook=chroot $1 apt clean',
+           '--customize-hook=chroot $1 apt clean'],
          *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
             '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
            if args.optimize == 'size' else []),
-         *(['--include=zstd']   # for initramfs-tools
-           if args.optimize != 'simplicity' else []),
-         *(['--include=dbus',       # https://bugs.debian.org/814758
-            '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
-            '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
-           if args.optimize != 'simplicity' else []),
-         *(['--include=libnss-myhostname libnss-resolve',
-            '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
-            '--customize-hook=rm $1/etc/hostname',
-            '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
-            '--include=rsyslog-relp msmtp-mta',
-            '--include=python3-dbus',  # for get-config-from-dnssd
-            '--include=debian-security-support',  # for customize90-check-support-status.py
-            f'--essential-hook=tar-in {create_tarball("debian-12-main")} /',
-            '--hook-dir=debian-12-main.hooks',
-            ]
-           if args.optimize != 'simplicity' else []),
-         *(['--include=tzdata',
-            '--essential-hook={'
-            f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
-            f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
-            '     } | chroot $1 debconf-set-selections']
-           if args.optimize != 'simplicity' else []),
-         *(['--include=locales',
-            '--essential-hook={'
-            f'    echo locales locales/default_environment_locale select {args.LANG.full};'
-            f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
-            '     } | chroot $1 debconf-set-selections']
-           if args.optimize != 'simplicity' else []),
+         '--include=zstd',      # for initramfs-tools
+         *['--include=dbus',       # https://bugs.debian.org/814758
+           '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
+           '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id'],  # https://bugs.debian.org/994096
+         *['--include=libnss-myhostname libnss-resolve',
+           '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
+           '--customize-hook=rm $1/etc/hostname',
+           '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
+           '--include=rsyslog-relp msmtp-mta',
+           '--include=python3-dbus',  # for get-config-from-dnssd
+           '--include=debian-security-support',  # for customize90-check-support-status.py
+           f'--essential-hook=tar-in {create_tarball("debian-12-main")} /',
+           '--hook-dir=debian-12-main.hooks'],
+         *['--include=tzdata',
+           '--essential-hook={'
+           f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
+           f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
+           '     } | chroot $1 debconf-set-selections'],
+         *['--include=locales',
+           '--essential-hook={'
+           f'    echo locales locales/default_environment_locale select {args.LANG.full};'
+           f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
+           '     } | chroot $1 debconf-set-selections'],
          # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
          # The emulator is called "microcode", and is full of security vulnerabilities.
          # Make sure security patches for microcode for *ALL* CPUs are included.
@@ -354,9 +344,8 @@ with tempfile.TemporaryDirectory() as td:
             '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
             '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
             '--components=main contrib non-free']
-           if args.optimize != 'simplicity' and not args.virtual_only else []),
-         *(['--include=ca-certificates publicsuffix']
-           if args.optimize != 'simplicity' else []),
+           if not args.virtual_only else []),
+         '--include=ca-certificates publicsuffix',
          *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
             '--include=cifs-utils',  # support SMB3
             f'--essential-hook=tar-in {create_tarball("debian-12-main.netboot")} /']
@@ -551,13 +540,10 @@ with tempfile.TemporaryDirectory() as td:
             '     } | chroot $1 debconf-set-selections',
             ]
            if template_wants_PrisonPC else []),
-         *([f'--include={args.ssh_server}',
-            f'--essential-hook=tar-in {authorized_keys_tar_path} /',
-            # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
-            '--customize-hook=rm -f $1/etc/dropbear/dropbear_*_host_key',
-            '--customize-hook=rm -f $1/etc/ssh/ssh_host_*_key*',
-            ]
-           if args.optimize != 'simplicity' else []),
+         *[f'--include={args.ssh_server}',
+           f'--essential-hook=tar-in {authorized_keys_tar_path} /',
+           # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
+           '--customize-hook=rm -f $1/etc/dropbear/dropbear_*_host_key $1/etc/ssh/ssh_host_*_key*'],
          '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
          '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
          *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
@@ -579,12 +565,11 @@ with tempfile.TemporaryDirectory() as td:
            if args.measure_install_footprints else []),
          # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
          # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
-         *([f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status']
-           if args.optimize != 'simplicity' else []),
+         f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status',
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
-           if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
+           if not template_wants_big_uptimes else []),
          *(['--dpkgopt=debian-12-PrisonPC/omit-low-level-docs.conf',
             '--hook-dir=debian-12-PrisonPC.hooks']
            if template_wants_PrisonPC else []),
