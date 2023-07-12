@@ -153,9 +153,6 @@ destdir = (args.destdir / f'{args.template}-{datetime.datetime.now().strftime("%
 validate_unescaped_path_is_safe(destdir)
 destdir.mkdir(parents=True, mode=0o2775, exist_ok=True)
 
-# signed-by needs an absolute path, so also validate $PWD.
-validate_unescaped_path_is_safe(pathlib.Path.cwd())
-
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
 git_proc = subprocess.run(
@@ -573,10 +570,10 @@ with tempfile.TemporaryDirectory() as td:
          'bookworm',
          destdir / 'filesystem.squashfs',
          'debian-12.sources',
-         *([f'deb [signed-by={pathlib.Path.cwd()}/debian-12-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bookworm desktop']  # noqa: E501
+         *(['debian-12-PrisonPC.sources']
            if template_wants_PrisonPC_or_tvserver else []),
          # For --include=zfs-modules-6.1.0-0.deb11.7-amd64, above.
-         *([f'deb [signed-by={pathlib.Path.cwd()}/debian-12-PrisonPC.packages/PrisonPC-archive-pubkey.asc] https://apt.cyber.com.au/PrisonPC bookworm server']  # noqa: E501
+         *(['debian-12-PrisonPC-server.sources']
            if args.template in ('zfs', 'understudy') and not args.production and not args.virtual_only else []),
          ])
 
