@@ -1,3 +1,6 @@
+Debian 11
+======================================================================
+
 Are pigz and xz *REALLY* the best choices for rd compression?
 Surely lz4 and zstd are better tradeoffs?
 
@@ -12,11 +15,14 @@ Looking at ./debian-11-main.py --debug::
           ls -hl /boot/initrd.img-5.14.0-0.bpo.2-amd64;
       done
 
-    COMPRESS    real            user            sys             size
-    lz4         0m10.125s       0m9.263s        0m1.242s        55M
-    gzip        0m5.724s        0m11.860s       0m1.123s        47M    (really pigz)
-    xz          0m18.556s       1m15.392s       0m1.307s        32M
-    zstd        0m25.993s       1m20.542s       0m1.237s        35M
+==========    ==========  ==========      ==========      ==========
+COMPRESS      size        real            user            sys
+==========    ==========  ==========      ==========      ==========
+lz4           55M         0m10.125s       0m9.263s        0m1.242s
+gzip (pigz)   47M         0m5.724s        0m11.860s       0m1.123s
+xz            32M         0m18.556s       1m15.392s       0m1.307s
+zstd          35M         0m25.993s       1m20.542s       0m1.237s
+==========    ==========  ==========      ==========      ==========
 
 So:
 
@@ -93,3 +99,41 @@ It seems to me that the following changes should be made:
 •   Don't pass -19 to zstd.
 •   Don't pass -T0 to zstd when [ -n $SOURCE_DATE_EPOCH ] (same as other -T0 cases).
 •   Encourage people to switch to zstd? ;-)
+
+
+
+Debian 12
+======================================================================
+Doing the same test on a Debian 12 chroot::
+
+    bash5$ mmdebstrap bookworm /dev/null debian-12.sources --customize-hook='chroot $1 bash; false' --include=pixz,pigz,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic
+
+    root@hera:/# for i in lz4 gzip xz zstd;
+                 do
+                     echo === $i === &&
+                     echo COMPRESS=$i >/etc/initramfs-tools/conf.d/test &&
+                     time update-initramfs -u -k all &&
+                     ls -hl /boot/initrd.img-*-amd64;
+                 done
+
+Results for Debian 12:
+
+==========  ==========  ==========      ==========      ==========
+COMPRESS    size        real            user            sys
+==========  ==========  ==========      ==========      ==========
+lz4         44M         0m11.505s       0m9.121s        0m2.476s
+gzip        36M         0m6.359s        0m9.941s        0m1.952s
+xz          24M         0m24.146s       1m25.168s       0m2.688s
+zstd        30M         0m7.421s        0m9.402s        0m2.246s
+==========  ==========  ==========      ==========      ==========
+
+Version I accidentally collected for sid (as at 2023-07-12):
+
+==========  ==========  ==========      ==========      ==========
+COMPRESS    size        real            user            sys
+==========  ==========  ==========      ==========      ==========
+lz4         43M         0m10.609s       0m8.455s        0m2.236s
+gzip        35M         0m6.512s        0m9.843s        0m2.118s
+xz          24M         0m22.807s       1m16.917s       0m2.900s
+zstd        30M         0m7.803s        0m8.296s        0m2.884s
+==========  ==========  ==========      ==========      ==========

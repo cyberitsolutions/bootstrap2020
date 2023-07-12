@@ -317,13 +317,8 @@ with tempfile.TemporaryDirectory() as td:
          *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
             '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
            if args.optimize == 'size' else []),
-         *([]
-           if args.optimize == 'simplicity' else
-           ['--include=pigz']       # save 8s
-           if args.optimize == 'speed' else
-           ['--include=xz-utils',   # save 10MB lose 28s
-            '--essential-hook=mkdir -p $1/etc/initramfs-tools/conf.d',
-            '--essential-hook=>$1/etc/initramfs-tools/conf.d/xz echo COMPRESS=xz']),
+         *(['--include=zstd']   # for initramfs-tools
+           if args.optimize != 'simplicity' else []),
          *(['--include=dbus',       # https://bugs.debian.org/814758
             '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
             '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id']  # https://bugs.debian.org/994096
