@@ -143,6 +143,7 @@ parser.add_argument('--upload-to', nargs='+', default=[], metavar='HOST',
 parser.add_argument('--save-to', type=lambda s: pathlib.Path(s).resolve(),
                     help='Save a local copy (cf. --upload-to).  By default, no local copy is kept.',
                     default=False)
+parser.set_defaults(now=datetime.datetime.now().strftime("%Y-%m-%d-%s"))
 args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
@@ -276,7 +277,7 @@ for template in args.templates:
         # The upload code gets a bit confused if we upload "foo-2022-01-01" twice in the same day.
         # As a quick-and-dirty workaround, include time in image name.
         # Cannot use RFC 3339 because PrisonPC tca3.py has VERY tight constraints on path name.
-        destdir = td / f'{template}-{datetime.datetime.now().strftime("%Y-%m-%d-%s")}'
+        destdir = td / f'{template}-{args.now}'
         validate_unescaped_path_is_safe(destdir)
         destdir.mkdir()
 
