@@ -1,0 +1,38 @@
+#!ipxe
+# If any command fails without being caught ipxe will just crash intentionally.
+# This is equivalent to running bash with `set -e`, which is our BCP anyway so yay.
+
+# This line's really just here for debugging so I can tell if the script died, or just didn't load at all.
+echo Start of embeded script...
+# Requires "#define DHCP_CMD" in general.h
+dhcp  # Sets up DHCP
+# This echo will work, but to actually use log-server requires "#define CONSOLE_SYSLOG" in console.h
+echo log-server: ${syslog}
+# Requires "#define NTP_CMD" in general.h
+# FIXME: Make dhcp option "ntp-server" work instead of assuming the gateway is an NTP server.
+#        I don't know whether it's an issue with my ipxe build, script, or OpenWRT's dnsmasq config.
+#        I tried various forms of ${42:ipv4} like the ipxe documentation says should work: https://ipxe.org/cfgtype/ipv4
+#        and other random stuff I found also said should work: https://forum.ipxe.org/showthread.php?tid=3582&pid=4580#pid4580
+#        I manually dug through the menu in ipxe's `config` command, and as far as I could tell ipxe simply wasn't even recording that option.
+# NOTE: This can take a while to fail
+echo gateway (also used for NTP): ${gateway}
+ntp ${gateway}  || echo "NTP failed, https verification may struggle."
+
+# # Only used for debugging, requires "#define CERT_CMD" in general.h
+# echo Embedded Certificates:
+# certstat
+
+# Requires "#define IMAGE_TRUST_CMD" in general.h
+# # Using --permanent means the any .ipxe scripts we chainload will be unable to disable image verification for the current boot.
+# # I don't think it will have any effects on the booted linux system.
+# imgtrust --permanent
+# Requires "#define IMAGE_CMD" in general.h
+# NOTE: At some point, when debugging https issues, I had this line as well but it somehow caused a separate issue with the kernel failing to load the initramfs
+#           imgfetch --name TESTING.UNUSED http://bootserver.mijofa.au:5000/boot.ipxe
+#       Was it perhaps trying to read that URL as the initramfs or were they somehow just overlapping in RAM?
+# FIXME: Why does this take ~20 seconds sometimes?
+imgfetch --name boot.ipxe https://bootserver.mijofa.au/boot.ipxe  # Download the upstream boot script  # FIXME: Add a timeout?
+# # FIXME: Set up imgtrust & imgverify with Cyber/PrisonPC certs per: https://ipxe.org/crypto
+# #        Or do we just rely on https verfication? https would be easier for us to work with.
+# imgverify boot.ipxe https://bootserver.mijofa.au/images/desktop-staff-latest/boot.ipxe.sig # || echo Failed to verify signature of boot.ipxe
+chain --replace boot.ipxe  # Replaces the currently running script with the downloaded one (similar to "exec" in bash)
