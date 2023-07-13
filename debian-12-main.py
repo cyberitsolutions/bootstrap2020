@@ -80,7 +80,7 @@ def create_authorized_keys_tar(dst_path, urls):
             t.addfile(member, f)
 
 
-def create_tarball2(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
+def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     "Turn a dir (handy for git) into a tarball (handy for mmdebstrap tar-in)."
     src_path = pathlib.Path(src_path)
     if not src_path.is_dir():
@@ -597,12 +597,6 @@ for template in args.templates:
             authorized_keys_tar_path,
             args.authorized_keys_urls)
 
-        # This has to be be here because it closes over the tempdir.
-        # Move the body outside the loop, and curry it.
-        # FIXME: tidy up later?
-        def create_tarball(src_path: pathlib.Path) -> pathlib.Path:
-            return create_tarball2(td, src_path)
-
         # The upload code gets a bit confused if we upload "foo-2022-01-01" twice in the same day.
         # As a quick-and-dirty workaround, include time in image name.
         # Cannot use RFC 3339 because PrisonPC tca3.py has VERY tight constraints on path name.
@@ -645,7 +639,7 @@ for template in args.templates:
                '--include=rsyslog-relp msmtp-mta',
                '--include=python3-dbus',  # for get-config-from-dnssd
                '--include=debian-security-support',  # for customize90-check-support-status.py
-               f'--essential-hook=tar-in {create_tarball("debian-12-main")} /',
+               f'--essential-hook=tar-in {create_tarball(td, "debian-12-main")} /',
                '--hook-dir=debian-12-main.hooks'],
              *['--include=tzdata',
                '--essential-hook={'
@@ -669,9 +663,9 @@ for template in args.templates:
              '--include=ca-certificates publicsuffix',
              *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
                 '--include=cifs-utils',  # support SMB3
-                f'--essential-hook=tar-in {create_tarball("debian-12-main.netboot")} /']
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot")} /']
                if not args.local_boot_only else []),
-             *([f'--essential-hook=tar-in {create_tarball("debian-12-main.netboot-only")} /']  # 9% faster 19% smaller
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot-only")} /']  # 9% faster 19% smaller
                if args.netboot_only else []),
              *(['--include=nwipe']
                if template == 'dban' else []),
@@ -686,7 +680,7 @@ for template in args.templates:
                 if args.virtual_only else
                 '--include=linux-headers-amd64']
                if template in ('zfs', 'understudy') else []),
-             *([f'--essential-hook=tar-in {create_tarball("debian-12-PrisonPC-tvserver")} /',
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-tvserver")} /',
                 # workarounds for garbage hardware
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
                   '--hook-dir=debian-12-PrisonPC-tvserver.hooks',
@@ -726,7 +720,7 @@ for template in args.templates:
                 '    extlinux parted'  # debugging/rescue
                 '    python3 bsd-mailx logcheck-database'  # journalcheck dependencies
                 '    ca-certificates',  # for msmtp to verify gmail
-                f'--essential-hook=tar-in {create_tarball("debian-12-datasafe3")} /',
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-datasafe3")} /',
                 # FIXME: symlink didn't work, so hard link for now.
                 '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
                 # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
@@ -745,7 +739,7 @@ for template in args.templates:
              *(['--include=smartmontools'
                 '    bsd-mailx'    # smartd calls mail(1), not sendmail(8)
                 '    curl ca-certificates gnupg',  # update-smart-drivedb
-                f'--essential-hook=tar-in {create_tarball("debian-12-main.disks")} /',
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.disks")} /',
                 '--customize-hook=chroot $1 update-smart-drivedb'
                 ]
                if template_wants_disks and not args.virtual_only else []),
@@ -842,7 +836,7 @@ for template in args.templates:
                 # Not NEEDED, just makes journalctl -p4' quieter.
                 *(['--include=firmware-realtek firmware-misc-nonfree']
                   if template_wants_PrisonPC and not args.virtual_only else []),
-                f'--essential-hook=tar-in {create_tarball("debian-12-desktop")} /'
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-desktop")} /'
                 ]
                if template_wants_GUI else []),
              # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
@@ -852,10 +846,10 @@ for template in args.templates:
                if (not args.physical_only and  # noqa: W504
                    not template.startswith('desktop-inmate')) else []),
              *(['--include=libnss-ldapd libpam-ldapd unscd',
-                f'--essential-hook=tar-in {create_tarball("debian-12-PrisonPC")} /',
-                f'--essential-hook=tar-in {create_tarball("debian-12-PrisonPC-staff")} /'
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC")} /',
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-staff")} /'
                 if template.startswith('desktop-staff') else
-                f'--essential-hook=tar-in {create_tarball("debian-12-PrisonPC-inmate")} /',
+                f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-inmate")} /',
                 '--essential-hook={'
                 '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
                 '     } | chroot $1 debconf-set-selections',
