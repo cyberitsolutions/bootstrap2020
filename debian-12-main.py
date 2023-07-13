@@ -615,43 +615,44 @@ for template in args.templates:
               '--customize-hook=chroot $1 apt install -y linux-image-inmate'
               if template.startswith('desktop-inmate') and args.physical_only else
               '--include=linux-image-amd64'),
-             '--include=live-boot',
-             f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
-             '--aptopt=Acquire::https::Proxy "DIRECT"',
-             *['--variant=apt',      # save 12s 30MB
-               '--include=netbase',  # https://bugs.debian.org/995343 et al
-               '--include=init'],    # https://bugs.debian.org/993289
-             '--include=systemd-timesyncd',  # https://bugs.debian.org/986651
-             '--dpkgopt=force-unsafe-io',   # save 20s (even on tmpfs!)
-             # Reduce peak /tmp usage by about 500MB
-             *['--essential-hook=chroot $1 apt clean',
-               '--customize-hook=chroot $1 apt clean'],
-             *['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
-               '--dpkgopt=path-exclude=/usr/share/man/*'],  # 8% faster to 7% SLOWER.
-             '--include=zstd',      # for initramfs-tools
-             # dbus-broker is safer than dbus:
-             # https://lists.debian.org/debian-devel/2023/07/msg00117.html
-             '--include=dbus-broker',  # https://bugs.debian.org/814758
-             '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
-             *['--include=libnss-myhostname libnss-resolve',
-               '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
+             # Build faster
+             *['--variant=apt',             # save 12s 30MB
+               '--dpkgopt=force-unsafe-io',  # save 20s (even on tmpfs!)
+               f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
+               '--aptopt=Acquire::https::Proxy "DIRECT"',
+               # Reduce peak /tmp usage by about 500MB
+               '--essential-hook=chroot $1 apt clean',
+               '--customize-hook=chroot $1 apt clean',
+               # 9-12% smaller output; 8% faster to 7% SLOWER build speed
+               '--dpkgopt=path-exclude=/usr/share/doc/*',
+               '--dpkgopt=path-exclude=/usr/share/man/*'],
+             ('--include='      # Vital packages
+              '    live-boot'
+              '    init'        # https://bugs.debian.org/993289
+              '    zstd'        # for initramfs-tools-core
+              '    netbase'     # https://bugs.debian.org/995343 et al
+              '    systemd-timesyncd'  # https://bugs.debian.org/986651
+              '    dbus-broker'  # https://bugs.debian.org/814758
+              '    ca-certificates publicsuffix'
+              ),
+             *['--include=tzdata locales',
+               ('--essential-hook={'
+                f' echo tzdata tzdata/Areas select {args.TZ.area};'
+                f' echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
+                f' echo locales locales/default_environment_locale select {args.LANG.full};'
+                f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
+                '} | chroot $1 debconf-set-selections')],
+             *[f'--essential-hook=tar-in {create_tarball(td, "debian-12-main")} /',
+               '--hook-dir=debian-12-main.hooks',
                '--customize-hook=rm $1/etc/hostname',
                '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
-               '--include=rsyslog-relp msmtp-mta',
-               '--include=python3-dbus',  # for get-config-from-dnssd
-               '--include=debian-security-support',  # for customize90-check-support-status.py
-               f'--essential-hook=tar-in {create_tarball(td, "debian-12-main")} /',
-               '--hook-dir=debian-12-main.hooks'],
-             *['--include=tzdata',
-               '--essential-hook={'
-               f'    echo tzdata tzdata/Areas                select {args.TZ.area};'
-               f'    echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
-               '     } | chroot $1 debconf-set-selections'],
-             *['--include=locales',
-               '--essential-hook={'
-               f'    echo locales locales/default_environment_locale select {args.LANG.full};'
-               f'    echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
-               '     } | chroot $1 debconf-set-selections'],
+               '--include='
+               '    libnss-myhostname libnss-resolve'
+               '    policykit-1'  # https://github.com/openbmc/openbmc/issues/3543
+               '    rsyslog-relp msmtp-mta'
+               '    python3-dbus'  # for get-config-from-dnssd
+               '    debian-security-support'  # for customize90-check-support-status.py
+               ],
              # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
              # The emulator is called "microcode", and is full of security vulnerabilities.
              # Make sure security patches for microcode for *ALL* CPUs are included.
@@ -661,10 +662,8 @@ for template in args.templates:
                 '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
                 '--components=main contrib non-free']
                if not args.virtual_only else []),
-             '--include=ca-certificates publicsuffix',
-             *(['--include=nfs-client',  # support NFSv4 (not just NFSv3)
-                '--include=cifs-utils',  # support SMB3
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot")} /']
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot")} /',
+                '--include=nfs-client cifs-utils']  # support SMB3 & NFSv4 (not just NFSv3)
                if not args.local_boot_only else []),
              *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot-only")} /']  # 9% faster 19% smaller
                if args.netboot_only else []),
@@ -672,6 +671,7 @@ for template in args.templates:
                if template == 'dban' else []),
              *(['--include=zfsutils-linux zfs-zed',
                 '--include=mmdebstrap auto-apt-proxy',  # for installing
+                '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
                 # FIXME: this speed optimization is NOT SUSTAINABLE.
                 #        https://github.com/cyberitsolutions/bootstrap2020/blob/d67b9525/debian-12-PrisonPC.packages/build-zfs-modules.py
                 *(['--include=zfs-modules-6.1.0-0.deb11.7-amd64']
@@ -686,7 +686,7 @@ for template in args.templates:
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
                   '--hook-dir=debian-12-PrisonPC-tvserver.hooks',
                   '--include=build-essential git patchutils libproc-processtable-perl',  # driver
-                  '--include=wget2 ca-certificates bzip2',  # firmware
+                  '--include=wget2 bzip2',  # firmware
                   '--include=linux-headers-cloud-amd64' if args.virtual_only else '--include=linux-headers-amd64'),
                 '--include='
                 # FIXME: dvblast 2.2 works, dvblast 3.0 FAILS.  Does dvblast 3.4 work???
@@ -716,16 +716,16 @@ for template in args.templates:
              *(['--include=parted refind dosfstools extlinux syslinux-common',  # initial setup of /boot
                 '--essential-hook=echo refind refind/install_to_esp boolean false | chroot $1 debconf-set-selections']
                if template == 'understudy' else []),
-             *(['--include=mdadm rsnapshot'
-                '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
-                '    extlinux parted'  # debugging/rescue
-                '    python3 bsd-mailx logcheck-database'  # journalcheck dependencies
-                '    ca-certificates',  # for msmtp to verify gmail
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-datasafe3")} /',
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-datasafe3")} /',
                 # FIXME: symlink didn't work, so hard link for now.
                 '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
                 # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
                 '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
+                '--include=mdadm rsnapshot'
+                '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
+                '    extlinux parted'  # debugging/rescue
+                '    python3 bsd-mailx logcheck-database'  # journalcheck dependencies
+                '    ca-certificates'  # for msmtp to verify gmail
                 ]
                if template == 'datasafe3' else []),
              # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
@@ -737,14 +737,15 @@ for template in args.templates:
                 '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
                 '    python3-gi powermgmt-base']  # unattended-upgrades wants these
                if template_wants_big_uptimes else []),
-             *(['--include=smartmontools'
-                '    bsd-mailx'    # smartd calls mail(1), not sendmail(8)
-                '    curl ca-certificates gnupg',  # update-smart-drivedb
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.disks")} /',
-                '--customize-hook=chroot $1 update-smart-drivedb'
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.disks")} /',
+                '--customize-hook=chroot $1 update-smart-drivedb',
+                '--include=smartmontools'
+                '    bsd-mailx'  # smartd calls mail(1), not sendmail(8)
+                '    curl ca-certificates gnupg'  # update-smart-drivedb
                 ]
                if template_wants_disks and not args.virtual_only else []),
-             *(['--include='
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-desktop")} /',
+                '--include='
                 '    xserver-xorg-core xserver-xorg-input-libinput'
                 '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar galculator'
                 '    xdm'
@@ -782,40 +783,9 @@ for template in args.templates:
                    '    vlc'
                    f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
                    ] if args.apps else []),
-                *([('--include=prisonpc-bad-package-conflicts-everyone'
-                    if template.startswith('desktop-staff') else
-                    '--include=prisonpc-bad-package-conflicts-inmates'),
-                   '--include='
-                   '    nftables'
-                   '    nfs-client-quota'          # for quota-reminder.py
-                   '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
-                   '    gir1.2-wnck-3.0'            # for popcon.py
-                   '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
-                   '    libgtk-3-bin'  # gtk-launch (used by some .desktop files)
-                   '    python3-systemd python3-pyudev'  # for *-snitch.py
-                   '    python3-xdg'                     # for popcon.py
-                   '    libgs9'                          # for lawyers-make-bad-pdfs/compress.py
-                   '    genisoimage lsdvd'  # for disc-snitch.py
-                   '    fonts-prisonpc'
-                   '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
-                   '    prayer-templates-prisonpc'
-                   '    prisonpc-chromium-hunspell-dictionaries'
-                   ]
-                  if template_wants_PrisonPC else []),
                 # Staff and generic (non-PrisonPC) desktops
                 *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
                   if not template.startswith('desktop-inmate') else []),
-                # Staff-only packages
-                *(['--include='
-                   '    gvncviewer'  # Control desktop (vnc://)
-                   '    gvfs-backends gvfs-fuse openssh-client'  # Browse p123's home (sftp://)
-                   '    python3-vlc asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
-                   # NOTE: exfat-fuse removed as exfat is now in-kernel.
-                   # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
-                   # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.
-                   # https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
-                   '    ntfs-3g'  # USB HDDs
-                   ] if template.startswith('desktop-staff') else []),
                 # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
                 # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
                 # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
@@ -837,7 +807,6 @@ for template in args.templates:
                 # Not NEEDED, just makes journalctl -p4' quieter.
                 *(['--include=firmware-realtek firmware-misc-nonfree']
                   if template_wants_PrisonPC and not args.virtual_only else []),
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-desktop")} /'
                 ]
                if template_wants_GUI else []),
              # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
@@ -846,16 +815,43 @@ for template in args.templates:
              *(['--include=qemu-guest-agent']
                if (not args.physical_only and  # noqa: W504
                    not template.startswith('desktop-inmate')) else []),
-             *(['--include=libnss-ldapd libpam-ldapd unscd',
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC")} /',
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-staff")} /'
-                if template.startswith('desktop-staff') else
-                f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-inmate")} /',
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC")} /',
                 '--essential-hook={'
                 '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
                 '     } | chroot $1 debconf-set-selections',
+                '--include='
+                '    libnss-ldapd libpam-ldapd unscd'
+                '    nftables'
+                '    nfs-client-quota'          # for quota-reminder.py
+                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
+                '    gir1.2-wnck-3.0'            # for popcon.py
+                '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
+                '    libgtk-3-bin'  # gtk-launch (used by some .desktop files)
+                '    python3-systemd python3-pyudev'  # for *-snitch.py
+                '    python3-xdg'                     # for popcon.py
+                '    libgs9'                          # for lawyers-make-bad-pdfs/compress.py
+                '    genisoimage lsdvd'  # for disc-snitch.py
+                '    fonts-prisonpc'
+                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
+                '    prayer-templates-prisonpc'
+                '    prisonpc-chromium-hunspell-dictionaries'
                 ]
                if template_wants_PrisonPC else []),
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-inmate")} /',
+                '--include=prisonpc-bad-package-conflicts-inmates']
+               if template.startswith('desktop-inmate') else []),
+             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-staff")} /',
+                '--include=prisonpc-bad-package-conflicts-everyone'
+                '    gvncviewer'  # Control desktop (vnc://)
+                '    gvfs-backends gvfs-fuse openssh-client'  # Browse p123's home (sftp://)
+                '    python3-vlc asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
+                # NOTE: exfat-fuse removed as exfat is now in-kernel.
+                # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
+                # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.
+                # https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
+                '    ntfs-3g'  # USB HDDs
+                ]
+               if template.startswith('desktop-staff') else []),
              *[f'--include={args.ssh_server}',
                f'--essential-hook=tar-in {authorized_keys_tar_path} /',
                # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
