@@ -1,4 +1,4 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python3.9
 import argparse
 import collections
 import json
@@ -61,21 +61,16 @@ if args.debug:
 Package = collections.namedtuple('Package', 'name version')
 
 
-# FIXME: when tweak is Debian 11,
-#          1. remove .mkdir() line;
-#          2. no str() around Paths.
-#          3. f'' not .format().
 def get_packages_one(status_path):
     with tempfile.TemporaryDirectory() as td:
         td = pathlib.Path(td)
-        (td / 'updates').mkdir()  # for old dpkg-query
         (td / 'status').write_bytes(
             status_path.read_bytes())
         stdout = subprocess.check_output(
             ['dpkg-query', '--show', '--admindir=.',
              '--showformat=${source:Package}\t${source:Version}\n'],
-            universal_newlines=True,
-            cwd=str(td))
+            text=True,
+            cwd=td)
         return set(
             Package(name=name, version=version)
             for line in stdout.splitlines()
@@ -86,7 +81,7 @@ def get_packages_all(soe_version):
     acc = set()
     root = pathlib.Path('/srv/netboot/images/')
     for template in args.templates:
-        glob = '{}-{}/dpkg.status'.format(template, soe_version)
+        glob = f'{template}-{soe_version}/dpkg.status'
         status_paths = sorted(root.glob(glob))
         logging.info('%s %s: %s', template, soe_version, status_paths)
         if not status_paths:
@@ -179,7 +174,7 @@ def pretty_print(vulns):
     # Now that set() diffing is done, go back to dict()s.
     vulns = [
         {'cve': cve,
-         'url': 'https://security-tracker.debian.org/tracker/{}'.format(cve),
+         'url': f'https://security-tracker.debian.org/tracker/{cve}',
          'package': package,
          **json.loads(vuln_json_str)}
         for cve, package, vuln_json_str in vulns]
@@ -194,7 +189,7 @@ def pretty_print(vulns):
     for vuln in vulns:
         print('', vuln['url'],
               '{} urgency'.format(vuln['releases'][args.suite]['urgency'].replace('not yet assigned', 'TBD')),
-              ('fix in {}'.format(args.suite)
+              (f'fix in {args.suite}'
                if 'fixed_version' in vuln['releases'][args.suite] else
                'fix in unstable'
                if 'fixed_version' in vuln['releases'].get('sid', {}) else
@@ -225,7 +220,7 @@ sanity_check_suite()
 debsecan_old = debsecan(args.old_version)
 debsecan_new = debsecan(args.new_version)
 
-print('Vulnerability changes in SOE update', '({} → {})'.format(args.old_version, args.new_version))
+print('Vulnerability changes in SOE update', f'({args.old_version} → {args.new_version})')
 print('for SOEs', *sorted(args.templates))
 print('using vulnerability database as at', last_modified)
 print()
