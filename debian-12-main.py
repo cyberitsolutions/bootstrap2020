@@ -83,7 +83,8 @@ def create_authorized_keys_tar(dst_path, urls):
 def create_tarball2(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     "Turn a dir (handy for git) into a tarball (handy for mmdebstrap tar-in)."
     src_path = pathlib.Path(src_path)
-    assert src_path.exists(), 'The .glob() does not catch this!'
+    if not src_path.is_dir():
+        raise NotADirectoryError(src_path)
     # FIXME: this can still collide
     # FIXME: can't do symlinks, directories, &c.
     dst_path = td / f'{src_path.name}.tar'
