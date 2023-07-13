@@ -50,7 +50,11 @@ parser.add_argument('--templates', nargs='+', default={
     'desktop-inmate-amc-library',
     'desktop-staff-amc',
 })
+parser.add_argument('--debug', action='store_true')
 args = parser.parse_args()
+if args.debug:
+    logging.getLogger().setLevel(logging.DEBUG)
+
 
 # NOTE: set() cannot hash types.SimpleNamespace, so
 #       use named tuples instead.
