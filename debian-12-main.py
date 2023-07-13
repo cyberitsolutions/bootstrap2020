@@ -629,9 +629,10 @@ for template in args.templates:
              *['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
                '--dpkgopt=path-exclude=/usr/share/man/*'],  # 8% faster to 7% SLOWER.
              '--include=zstd',      # for initramfs-tools
-             *['--include=dbus',       # https://bugs.debian.org/814758
-               '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
-               '--customize-hook=ln -nsf /etc/machine-id $1/var/lib/dbus/machine-id'],  # https://bugs.debian.org/994096
+             # dbus-broker is safer than dbus:
+             # https://lists.debian.org/debian-devel/2023/07/msg00117.html
+             '--include=dbus-broker',  # https://bugs.debian.org/814758
+             '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
              *['--include=libnss-myhostname libnss-resolve',
                '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
                '--customize-hook=rm $1/etc/hostname',
