@@ -21,6 +21,7 @@ NOTE: this is the simplest config possible.
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.img'), type=pathlib.Path)
+parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 
 
@@ -35,7 +36,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
         ['mmdebstrap',
          '--mode=unshare',
          '--variant=apt',
-         '--aptopt=Acquire::http::Proxy "http://apt-cacher-ng.cyber.com.au:3142"',
+         '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
          '--include=linux-image-amd64 init initramfs-tools live-boot netbase',
@@ -91,3 +92,10 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
         'mcopy',
         '-i', f'{args.output_file}@@{esp_offset}',
         td / 'filesystem.squashfs', f'::{live_media_path}/filesystem.squashfs'])
+
+# Fuck it, also show how to do a basic qemu boot.
+if args.boot_test:
+    subprocess.check_call([
+        'kvm', '-m', '2G',
+        '--drive', f'if=virtio,format=raw,readonly=on,media=disk,file={args.output_file}',
+        '--drive', 'if=pflash,format=raw,unit=0,readonly=on,file=/usr/share/ovmf/OVMF.fd'])
