@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse
-import configparser
 import datetime
 import io
 import json
@@ -13,6 +12,7 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+import tomllib
 import types
 
 import hyperlink                # URL validation
@@ -46,17 +46,16 @@ def hostname_or_fqdn_with_optional_user_at(s: str) -> str:
 
 def get_site_apps(template: str) -> set:
     "Get long, boring app lists from an .ini (instead of inline in main.py)"
-    parser = configparser.ConfigParser()
-    parser.read('debian-12-PrisonPC.site-apps.ini')
-    if any('applications' != key.lower()
+    parser = tomllib.loads(pathlib.Path('debian-12-PrisonPC.site-apps.toml').read_text())
+    if any('applications' != key
            for section_dict in parser.values()
            for key in section_dict):
         raise NotImplementedError('Typo in .ini file?')
     site_apps = {
         package_name
         for section_name, section_dict in parser.items()
-        if template.startswith(section_name.lower())
-        for package_name in section_dict.get('applications', '').split()}
+        if template.startswith(section_name)
+        for package_name in section_dict.get('applications', [])}
     return site_apps
 
 
