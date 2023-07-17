@@ -222,7 +222,7 @@ if subprocess.check_output(
     logging.warning(
         'If you see odd DNS errors during the build,'
         ' either run "systemctl enable --now systemd-resolved" on your host, or'
-        ' make the /lib/systemd/resolv.conf line run much later.')
+        ' make the /run/systemd/resolve/stub-resolv.conf line run much later.')
 
 # Use a separate declarative file for these long, boring lists.
 parser = configparser.ConfigParser()
@@ -331,7 +331,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=libnss-myhostname libnss-resolve',
             '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
             '--customize-hook=rm $1/etc/hostname',
-            '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
+            '--customize-hook=ln -nsf /run/systemd/resolve/stub-resolv.conf $1/etc/resolv.conf',
             '--include=rsyslog-relp msmtp-mta',
             '--include=python3-dbus',  # for get-config-from-dnssd
             '--include=debian-security-support',  # for customize90-check-support-status.py
