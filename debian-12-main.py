@@ -112,9 +112,14 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
 
 
 def do_stuff(keyword: str) -> list:
-    "Add a tar-in tarball as needed"
-    tarball_path = create_tarball(td, f"debian-12-{keyword}")
-    return [f'--essential-hook=tar-in {tarball_path} /']
+    "Add a tar-in tarball and hooks as needed"
+    files_dir = pathlib.Path(f'debian-12-{keyword}')
+    hooks_dir = pathlib.Path(f'debian-12-{keyword}.hooks')
+    tarball_path = create_tarball(td, files_dir)
+    acc = [f'--essential-hook=tar-in {tarball_path} /']
+    if hooks_dir.exists():
+        acc += [f'--hook-dir={hooks_dir}']
+    return acc
 
 
 def mmdebstrap_but_zstd(args):
@@ -649,7 +654,6 @@ for template in args.templates:
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
              *[*do_stuff('main'),
-               '--hook-dir=debian-12-main.hooks',
                '--customize-hook=rm $1/etc/hostname',
                '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
                '--include='
@@ -690,7 +694,6 @@ for template in args.templates:
              *([*do_stuff('PrisonPC-tvserver'),
                 # workarounds for garbage hardware
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
-                  '--hook-dir=debian-12-PrisonPC-tvserver.hooks',
                   '--include=build-essential git patchutils libproc-processtable-perl',  # driver
                   '--include=wget2 bzip2',  # firmware
                   '--include=linux-headers-cloud-amd64' if args.virtual_only else '--include=linux-headers-amd64'),
@@ -888,11 +891,8 @@ for template in args.templates:
              f'--customize-hook=download initrd.img {destdir}/initrd.img',
              *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
                if not template_wants_big_uptimes else []),
-             *(['--dpkgopt=debian-12-PrisonPC/omit-low-level-docs.conf',
-                '--hook-dir=debian-12-PrisonPC.hooks']
+             *(['--dpkgopt=debian-12-PrisonPC/omit-low-level-docs.conf']
                if template_wants_PrisonPC else []),
-             *(['--hook-dir=debian-12-PrisonPC-inmate.hooks']
-               if template.startswith('desktop-inmate') else []),
              *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
                if args.production else []),
              'bookworm',
