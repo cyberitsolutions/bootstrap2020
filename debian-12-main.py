@@ -700,6 +700,7 @@ for template in args.templates:
                 '    w-scan'  # Used at new sites to find frequency MHz.
                 ]
                if template == 'tvserver' else []),
+             *do_stuff('understudy', when=template == 'understudy'),
              # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ext4)
              *(['--include=mdadm lvm2 rsync'
                 '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
@@ -732,7 +733,7 @@ for template in args.templates:
                 '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
                 '    python3-gi powermgmt-base']  # unattended-upgrades wants these
                if template_wants_big_uptimes else []),
-             *do_stuff('main-disks', when=template_wants_disks and not args.virtual_only),
+             *do_stuff('smartd', when=template_wants_disks and not args.virtual_only),
              *([*do_stuff('desktop'),
                 '--include='
                 '    xserver-xorg-core xserver-xorg-input-libinput'
