@@ -671,11 +671,7 @@ for template in args.templates:
                if template == 'dban' else []),
              *(['--include=zfsutils-linux zfs-zed',
                 '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
-                # FIXME: this speed optimization is NOT SUSTAINABLE.
-                #        https://github.com/cyberitsolutions/bootstrap2020/blob/d67b9525/debian-12-PrisonPC.packages/build-zfs-modules.py
-                *(['--include=zfs-modules-6.1.0-0.deb11.7-amd64']
-                  if not args.production and not args.virtual_only else
-                  ['--include=zfs-dkms']),
+                '--include=zfs-dkms',
                 '--include=linux-headers-cloud-amd64'
                 if args.virtual_only else
                 '--include=linux-headers-amd64']
@@ -853,9 +849,6 @@ for template in args.templates:
              'debian-12.sources',
              *(['debian-12-PrisonPC.sources']
                if template_wants_PrisonPC_or_tvserver else []),
-             # For --include=zfs-modules-6.1.0-0.deb11.7-amd64, above.
-             *(['debian-12-PrisonPC-server.sources']
-               if template in 'understudy' and not args.production and not args.virtual_only else []),
              ])
 
         subprocess.check_call(
