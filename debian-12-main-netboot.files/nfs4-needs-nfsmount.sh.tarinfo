@@ -1,1 +1,2 @@
 name = "usr/share/initramfs-tools/hooks/zz-nfs4"
+include = ["nfs-client"]

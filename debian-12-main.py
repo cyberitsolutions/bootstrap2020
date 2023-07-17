@@ -96,6 +96,9 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
                 0 if not content_path.exists() else
                 0o500 if content_path.stat().st_mode & 0o111 else 0o400)
             for k, v in tomllib.loads(tarinfo_path.read_text()).items():
+                if k == 'include':
+                    logging.debug('Skipping %s=%s (it is not for us)', k, v)
+                    continue
                 setattr(tarinfo_object, k, v)
             if tarinfo_object.linkpath:
                 tarinfo_object.type = tarfile.SYMTYPE
@@ -117,6 +120,15 @@ def do_stuff(keyword: str) -> list:
     acc = [f'--essential-hook=tar-in {tarball_path} /']
     if hooks_dir.exists():
         acc += [f'--hook-dir={hooks_dir}']
+    # If debian-12-main.files/foo.py needs python3-foo,
+    # you can just add ‘include = ["python3-foo"]’ to the .tarinfo.
+    # This makes it very clear WHICH scripts need WHICH packages!
+    packages = {
+        package
+        for tarinfo_path in files_dir.glob('**/*.tarinfo')
+        for package in tomllib.loads(tarinfo_path.read_text()).get('include', [])}
+    if packages:
+        acc += ['--include', ' '.join(packages)]
     return acc
 
 
@@ -658,7 +670,6 @@ for template in args.templates:
                '    libnss-myhostname libnss-resolve'
                '    policykit-1'  # https://github.com/openbmc/openbmc/issues/3543
                '    rsyslog-relp msmtp-mta'
-               '    python3-dbus'  # for get-config-from-dnssd
                '    debian-security-support'  # for customize90-check-support-status.py
                ],
              # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
@@ -670,8 +681,7 @@ for template in args.templates:
                 '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
                 '--components=main contrib non-free']
                if not args.virtual_only else []),
-             *([*do_stuff('main-netboot'),
-                '--include=nfs-client cifs-utils']  # support SMB3 & NFSv4 (not just NFSv3)
+             *(do_stuff('main-netboot')  # support SMB3 & NFSv4 (not just NFSv3)
                if not args.local_boot_only else []),
              *(do_stuff('main-netboot-only')  # 9% faster 19% smaller
                if args.netboot_only else []),
