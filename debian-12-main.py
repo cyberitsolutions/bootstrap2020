@@ -113,7 +113,7 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
 
 def do_stuff(keyword: str) -> list:
     "Add a tar-in tarball and hooks as needed"
-    files_dir = pathlib.Path(f'debian-12-{keyword}')
+    files_dir = pathlib.Path(f'debian-12-{keyword}.files')
     hooks_dir = pathlib.Path(f'debian-12-{keyword}.hooks')
     tarball_path = create_tarball(td, files_dir)
     acc = [f'--essential-hook=tar-in {tarball_path} /']
@@ -672,10 +672,10 @@ for template in args.templates:
                 '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
                 '--components=main contrib non-free']
                if not args.virtual_only else []),
-             *([*do_stuff('main.netboot'),
+             *([*do_stuff('main-netboot'),
                 '--include=nfs-client cifs-utils']  # support SMB3 & NFSv4 (not just NFSv3)
                if not args.local_boot_only else []),
-             *(do_stuff('main.netboot-only')  # 9% faster 19% smaller
+             *(do_stuff('main-netboot-only')  # 9% faster 19% smaller
                if args.netboot_only else []),
              *(['--include=nwipe']
                if template == 'dban' else []),
@@ -746,7 +746,7 @@ for template in args.templates:
                 '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
                 '    python3-gi powermgmt-base']  # unattended-upgrades wants these
                if template_wants_big_uptimes else []),
-             *([*do_stuff('main.disks'),
+             *([*do_stuff('main-disks'),
                 '--customize-hook=chroot $1 update-smart-drivedb',
                 '--include=smartmontools'
                 '    bsd-mailx'  # smartd calls mail(1), not sendmail(8)
