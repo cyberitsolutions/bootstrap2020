@@ -1,2 +1,2 @@
-{"path": "etc/systemd/system/rsyslog.service.d/umask-and-cwd.conf",
- "mode": 292}
+name = "etc/systemd/system/rsyslog.service.d/umask-and-cwd.conf"
+mode = 292

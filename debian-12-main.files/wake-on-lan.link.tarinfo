@@ -1,2 +1,2 @@
-{"name": "etc/systemd/network/50-bootstrap2020.link",
- "mode": 292}
+name = "etc/systemd/network/50-bootstrap2020.link"
+mode = 292

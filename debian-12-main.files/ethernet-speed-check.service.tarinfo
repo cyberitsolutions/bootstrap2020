@@ -1,2 +1,2 @@
-{"name": "etc/systemd/system/bootstrap2020-ethernet-speed-check.service",
- "mode": 292}
+name = "etc/systemd/system/bootstrap2020-ethernet-speed-check.service"
+mode = 292

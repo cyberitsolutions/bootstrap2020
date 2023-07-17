@@ -2,7 +2,6 @@
 import argparse
 import datetime
 import io
-import json
 import logging
 import os
 import pathlib
@@ -96,7 +95,7 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
             tarinfo_object.mode = (
                 0 if not content_path.exists() else
                 0o500 if content_path.stat().st_mode & 0o111 else 0o400)
-            for k, v in json.loads(tarinfo_path.read_text()).items():
+            for k, v in tomllib.loads(tarinfo_path.read_text()).items():
                 setattr(tarinfo_object, k, v)
             if tarinfo_object.linkpath:
                 tarinfo_object.type = tarfile.SYMTYPE

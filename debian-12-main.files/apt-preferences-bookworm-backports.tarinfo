@@ -1,1 +1,1 @@
-{"name": "etc/apt/preferences.d/bootstrap2020-bullseye-backports"}
+name = "etc/apt/preferences.d/bootstrap2020-bullseye-backports"

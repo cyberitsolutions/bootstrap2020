@@ -1,1 +1,1 @@
-{"name": "etc/rsyslog.conf"}
+name = "etc/rsyslog.conf"
