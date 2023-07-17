@@ -1,0 +1,17 @@
+include = [
+    "prisonpc-bad-package-conflicts-everyone",
+
+    "gvncviewer",  # Control desktop (vnc://)
+    "gvfs-backends", "gvfs-fuse", "openssh-client"  # Browse p123's home (sftp://)
+    "python3-vlc",  # rip movie DVD (FIXME: move into dvdrip.py.tarinfo)
+    "asunder",      # Rip music CD
+    "xfburn",       # Burn data DVD
+
+    # NOTE: exfat-fuse removed as exfat is now in-kernel.
+    # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
+    # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.
+    # https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
+    # UPDATE: Debian 12 has 6.1, but disables CONFIG_NTFS3_FS.
+    #         https://bugs.debian.org/998627
+    "ntfs-3g",                  # USB HDDs
+]

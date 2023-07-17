@@ -120,6 +120,7 @@ def do_stuff(keyword: str, when: bool = True) -> list:
         return []
     files_dir = pathlib.Path(f'debian-12-{keyword}.files')
     hooks_dir = pathlib.Path(f'debian-12-{keyword}.hooks')
+    toml_path = pathlib.Path(f'debian-12-{keyword}.toml')
     tarball_path = create_tarball(td, files_dir)
     acc = [f'--essential-hook=tar-in {tarball_path} /']
     if hooks_dir.exists():
@@ -131,6 +132,8 @@ def do_stuff(keyword: str, when: bool = True) -> list:
         package
         for tarinfo_path in files_dir.glob('**/*.tarinfo')
         for package in tomllib.loads(tarinfo_path.read_text()).get('include', [])}
+    if toml_path.exists():
+        packages |= set(tomllib.loads(toml_path.read_text()).get('include', []))
     if packages:
         acc += ['--include', ' '.join(packages)]
     return acc
@@ -649,15 +652,6 @@ for template in args.templates:
                # 9-12% smaller output; 8% faster to 7% SLOWER build speed
                '--dpkgopt=path-exclude=/usr/share/doc/*',
                '--dpkgopt=path-exclude=/usr/share/man/*'],
-             ('--include='      # Vital packages
-              '    live-boot'
-              '    init'        # https://bugs.debian.org/993289
-              '    zstd'        # for initramfs-tools-core
-              '    netbase'     # https://bugs.debian.org/995343 et al
-              '    systemd-timesyncd'  # https://bugs.debian.org/986651
-              '    dbus-broker'  # https://bugs.debian.org/814758
-              '    ca-certificates publicsuffix'
-              ),
              *['--include=tzdata locales',
                ('--essential-hook={'
                 f' echo tzdata tzdata/Areas select {args.TZ.area};'
@@ -668,11 +662,6 @@ for template in args.templates:
              *[*do_stuff('main'),
                '--customize-hook=rm $1/etc/hostname',
                '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
-               '--include='
-               '    libnss-myhostname libnss-resolve'
-               '    policykit-1'  # https://github.com/openbmc/openbmc/issues/3543
-               '    rsyslog-relp msmtp-mta'
-               '    debian-security-support'  # for customize90-check-support-status.py
                ],
              # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
              # The emulator is called "microcode", and is full of security vulnerabilities.
@@ -738,11 +727,6 @@ for template in args.templates:
                 '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
                 # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
                 '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
-                '--include=mdadm rsnapshot'
-                '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
-                '    extlinux parted'  # debugging/rescue
-                '    python3 bsd-mailx logcheck-database'  # journalcheck dependencies
-                '    ca-certificates'  # for msmtp to verify gmail
                 ]
                if template == 'datasafe3' else []),
              # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
@@ -846,21 +830,8 @@ for template in args.templates:
                 '    prisonpc-chromium-hunspell-dictionaries'
                 ]
                if template_wants_PrisonPC else []),
-             *([*do_stuff('PrisonPC-inmate'),
-                '--include=prisonpc-bad-package-conflicts-inmates']
-               if template.startswith('desktop-inmate') else []),
-             *([*do_stuff('PrisonPC-staff'),
-                '--include=prisonpc-bad-package-conflicts-everyone'
-                '    gvncviewer'  # Control desktop (vnc://)
-                '    gvfs-backends gvfs-fuse openssh-client'  # Browse p123's home (sftp://)
-                '    python3-vlc asunder xfburn'  # Rip movie DVD, rip music CD, burn data DVD
-                # NOTE: exfat-fuse removed as exfat is now in-kernel.
-                # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
-                # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.
-                # https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
-                '    ntfs-3g'  # USB HDDs
-                ]
-               if template.startswith('desktop-staff') else []),
+             *do_stuff('PrisonPC-inmate', when=template.startswith('desktop-inmate')),
+             *do_stuff('PrisonPC-staff', when=template.startswith('desktop-staff')),
              *[f'--include={args.ssh_server}',
                f'--essential-hook=tar-in {authorized_keys_tar_path} /',
                # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
