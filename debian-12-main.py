@@ -646,9 +646,6 @@ for template in args.templates:
                '--dpkgopt=force-unsafe-io',  # save 20s (even on tmpfs!)
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
                '--aptopt=Acquire::https::Proxy "DIRECT"',
-               # Reduce peak /tmp usage by about 500MB
-               '--essential-hook=chroot $1 apt clean',
-               '--customize-hook=chroot $1 apt clean',
                # 9-12% smaller output; 8% faster to 7% SLOWER build speed
                '--dpkgopt=path-exclude=/usr/share/doc/*',
                '--dpkgopt=path-exclude=/usr/share/man/*'],
@@ -659,10 +656,7 @@ for template in args.templates:
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
-             *[*do_stuff('main'),
-               '--customize-hook=rm $1/etc/hostname',
-               '--customize-hook=ln -nsf /run/systemd/resolve/stub-resolv.conf $1/etc/resolv.conf',
-               ],
+             *do_stuff('main'),
              # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
              # The emulator is called "microcode", and is full of security vulnerabilities.
              # Make sure security patches for microcode for *ALL* CPUs are included.
