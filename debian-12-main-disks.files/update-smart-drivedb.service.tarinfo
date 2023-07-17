@@ -1,2 +1,4 @@
 name = "etc/systemd/system/bootstrap2020-update-smart-drivedb.service"
 mode = 292
+# update-smart-drivedb needs these scripts
+include = ["curl", "ca-certificates", "gnupg"]
