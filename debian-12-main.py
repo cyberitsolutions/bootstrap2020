@@ -470,7 +470,6 @@ group.add_argument('--measure-install-footprints', action='store_true')
 parser.add_argument('--templates',
                     choices=('main',
                              'dban',
-                             'zfs',
                              'tvserver',
                              'understudy',
                              'datasafe3',
@@ -588,7 +587,7 @@ for template in args.templates:
 
     template_wants_GUI = template.startswith('desktop')
     template_wants_DVD = template.startswith('desktop')
-    template_wants_disks = template in {'dban', 'zfs', 'understudy', 'datasafe3'}
+    template_wants_disks = template in {'dban', 'understudy', 'datasafe3'}
     template_wants_big_uptimes = template in {'understudy', 'datasafe3'}
     template_wants_PrisonPC = (
         template.startswith('desktop-inmate') or  # noqa: W504
@@ -681,7 +680,7 @@ for template in args.templates:
                 '--include=linux-headers-cloud-amd64'
                 if args.virtual_only else
                 '--include=linux-headers-amd64']
-               if template in ('zfs', 'understudy') else []),
+               if template == 'understudy' else []),
              *([*do_stuff('PrisonPC-tvserver'),
                 # workarounds for garbage hardware
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
@@ -862,7 +861,7 @@ for template in args.templates:
                if template_wants_PrisonPC_or_tvserver else []),
              # For --include=zfs-modules-6.1.0-0.deb11.7-amd64, above.
              *(['debian-12-PrisonPC-server.sources']
-               if template in ('zfs', 'understudy') and not args.production and not args.virtual_only else []),
+               if template in 'understudy' and not args.production and not args.virtual_only else []),
              ])
 
         subprocess.check_call(
