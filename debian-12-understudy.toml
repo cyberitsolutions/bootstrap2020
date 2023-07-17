@@ -1,0 +1,12 @@
+include = [
+    # For doing an initial install of Debian 12 onto ZFS (not actually understudy).
+    'mmdebstrap', 'auto-apt-proxy',
+
+    # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ext4)
+    'mdadm', 'lvm2', 'rsync',
+    'e2fsprogs',        # no slow fsck on failover (e2scrub_all.timer)
+    'quota',            # no slow quotacheck on failover
+
+
+
+]

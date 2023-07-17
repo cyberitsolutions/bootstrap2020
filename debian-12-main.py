@@ -670,7 +670,6 @@ for template in args.templates:
              *(['--include=nwipe']
                if template == 'dban' else []),
              *(['--include=zfsutils-linux zfs-zed',
-                '--include=mmdebstrap auto-apt-proxy',  # for installing
                 '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
                 # FIXME: this speed optimization is NOT SUSTAINABLE.
                 #        https://github.com/cyberitsolutions/bootstrap2020/blob/d67b9525/debian-12-PrisonPC.packages/build-zfs-modules.py
@@ -700,11 +699,6 @@ for template in args.templates:
                 ]
                if template == 'tvserver' else []),
              *do_stuff('understudy', when=template == 'understudy'),
-             # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ext4)
-             *(['--include=mdadm lvm2 rsync'
-                '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
-                '    quota ']    # no slow quotacheck on failover
-               if template == 'understudy' else []),
              # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ZFS)
              # NOTE: this is "good enough" for now; ZFS->ZFS won't need it.
              *(['--include=python3-arrow python3-importlib-metadata',
