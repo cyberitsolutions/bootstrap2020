@@ -570,7 +570,7 @@ if subprocess.check_output(
     logging.warning(
         'If you see odd DNS errors during the build,'
         ' either run "systemctl enable --now systemd-resolved" on your host, or'
-        ' make the /lib/systemd/resolv.conf line run much later.')
+        ' make the /run/systemd/resolve/stub-resolv.conf line run much later.')
 
 if args.production:
     proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
@@ -661,7 +661,7 @@ for template in args.templates:
                 '} | chroot $1 debconf-set-selections')],
              *[*do_stuff('main'),
                '--customize-hook=rm $1/etc/hostname',
-               '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
+               '--customize-hook=ln -nsf /run/systemd/resolve/stub-resolv.conf $1/etc/resolv.conf',
                ],
              # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
              # The emulator is called "microcode", and is full of security vulnerabilities.
