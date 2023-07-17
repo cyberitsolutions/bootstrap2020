@@ -111,6 +111,12 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     return dst_path
 
 
+def do_stuff(keyword: str) -> list:
+    "Add a tar-in tarball as needed"
+    tarball_path = create_tarball(td, f"debian-12-{keyword}")
+    return [f'--essential-hook=tar-in {tarball_path} /']
+
+
 def mmdebstrap_but_zstd(args):
     "mmdebstrap ALWAYS uses -comp xz when emitting a squashfs."
     "This is a bad speed/size tradeoff, so use zstd instead."
@@ -642,7 +648,7 @@ for template in args.templates:
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
-             *[f'--essential-hook=tar-in {create_tarball(td, "debian-12-main")} /',
+             *[*do_stuff('main'),
                '--hook-dir=debian-12-main.hooks',
                '--customize-hook=rm $1/etc/hostname',
                '--customize-hook=ln -nsf /lib/systemd/resolv.conf $1/etc/resolv.conf',
@@ -662,10 +668,10 @@ for template in args.templates:
                 '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
                 '--components=main contrib non-free']
                if not args.virtual_only else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot")} /',
+             *([*do_stuff('main.netboot'),
                 '--include=nfs-client cifs-utils']  # support SMB3 & NFSv4 (not just NFSv3)
                if not args.local_boot_only else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.netboot-only")} /']  # 9% faster 19% smaller
+             *(do_stuff('main.netboot-only')  # 9% faster 19% smaller
                if args.netboot_only else []),
              *(['--include=nwipe']
                if template == 'dban' else []),
@@ -681,7 +687,7 @@ for template in args.templates:
                 if args.virtual_only else
                 '--include=linux-headers-amd64']
                if template in ('zfs', 'understudy') else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-tvserver")} /',
+             *([*do_stuff('PrisonPC-tvserver'),
                 # workarounds for garbage hardware
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
                   '--hook-dir=debian-12-PrisonPC-tvserver.hooks',
@@ -716,7 +722,7 @@ for template in args.templates:
              *(['--include=parted refind dosfstools extlinux syslinux-common',  # initial setup of /boot
                 '--essential-hook=echo refind refind/install_to_esp boolean false | chroot $1 debconf-set-selections']
                if template == 'understudy' else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-datasafe3")} /',
+             *([*do_stuff('datasafe3'),
                 # FIXME: symlink didn't work, so hard link for now.
                 '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
                 # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
@@ -737,14 +743,14 @@ for template in args.templates:
                 '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
                 '    python3-gi powermgmt-base']  # unattended-upgrades wants these
                if template_wants_big_uptimes else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-main.disks")} /',
+             *([*do_stuff('main.disks'),
                 '--customize-hook=chroot $1 update-smart-drivedb',
                 '--include=smartmontools'
                 '    bsd-mailx'  # smartd calls mail(1), not sendmail(8)
                 '    curl ca-certificates gnupg'  # update-smart-drivedb
                 ]
                if template_wants_disks and not args.virtual_only else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-desktop")} /',
+             *([*do_stuff('desktop'),
                 '--include='
                 '    xserver-xorg-core xserver-xorg-input-libinput'
                 '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar galculator'
@@ -815,7 +821,7 @@ for template in args.templates:
              *(['--include=qemu-guest-agent']
                if (not args.physical_only and  # noqa: W504
                    not template.startswith('desktop-inmate')) else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC")} /',
+             *([*do_stuff('PrisonPC'),
                 '--essential-hook={'
                 '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
                 '     } | chroot $1 debconf-set-selections',
@@ -837,10 +843,10 @@ for template in args.templates:
                 '    prisonpc-chromium-hunspell-dictionaries'
                 ]
                if template_wants_PrisonPC else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-inmate")} /',
+             *([*do_stuff('PrisonPC-inmate'),
                 '--include=prisonpc-bad-package-conflicts-inmates']
                if template.startswith('desktop-inmate') else []),
-             *([f'--essential-hook=tar-in {create_tarball(td, "debian-12-PrisonPC-staff")} /',
+             *([*do_stuff('PrisonPC-staff'),
                 '--include=prisonpc-bad-package-conflicts-everyone'
                 '    gvncviewer'  # Control desktop (vnc://)
                 '    gvfs-backends gvfs-fuse openssh-client'  # Browse p123's home (sftp://)
