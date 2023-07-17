@@ -1,1 +1,5 @@
 name = "etc/smartd.conf"
+include = [
+    "smartmontools",
+    "bsd-mailx",               # smartd calls mail(1), not sendmail(8)
+]

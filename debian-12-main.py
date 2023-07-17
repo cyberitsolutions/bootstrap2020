@@ -732,13 +732,7 @@ for template in args.templates:
                 '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
                 '    python3-gi powermgmt-base']  # unattended-upgrades wants these
                if template_wants_big_uptimes else []),
-             *([*do_stuff('main-disks'),
-                '--customize-hook=chroot $1 update-smart-drivedb',
-                '--include=smartmontools'
-                '    bsd-mailx'  # smartd calls mail(1), not sendmail(8)
-                '    curl ca-certificates gnupg'  # update-smart-drivedb
-                ]
-               if template_wants_disks and not args.virtual_only else []),
+             *do_stuff('main-disks', when=template_wants_disks and not args.virtual_only),
              *([*do_stuff('desktop'),
                 '--include='
                 '    xserver-xorg-core xserver-xorg-input-libinput'
