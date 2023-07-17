@@ -1,0 +1,17 @@
+include = [
+    # Vital packages
+    'live-boot',
+    'init',                     # https://bugs.debian.org/993289
+    'zstd',                     # for initramfs-tools-core
+    'netbase',                  # https://bugs.debian.org/995343 et al
+    'systemd-timesyncd',        # https://bugs.debian.org/986651
+    'dbus-broker',              # https://bugs.debian.org/814758
+    'ca-certificates',
+    'publicsuffix',
+    'debian-security-support',  # for customize90-check-support-status.py
+
+    # Make things work better with systemd-networkd
+    'libnss-myhostname',        # replaces /etc/hostname and stub /etc/hosts
+    'libnss-resolve',
+    'policykit-1'     # https://github.com/openbmc/openbmc/issues/3543
+]

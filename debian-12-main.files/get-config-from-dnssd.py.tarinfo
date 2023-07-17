@@ -1,2 +1,2 @@
 name = "sbin/bootstrap2020-get-config-from-dnssd"
-include = ["python3-dbus"]
+include = ["python3-dbus", "rsyslog-relp", "msmtp-mta"]
