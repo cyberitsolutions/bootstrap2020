@@ -112,8 +112,10 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     return dst_path
 
 
-def do_stuff(keyword: str) -> list:
+def do_stuff(keyword: str, when: bool = True) -> list:
     "Add a tar-in tarball and hooks as needed"
+    if not when:
+        return []
     files_dir = pathlib.Path(f'debian-12-{keyword}.files')
     hooks_dir = pathlib.Path(f'debian-12-{keyword}.hooks')
     tarball_path = create_tarball(td, files_dir)
@@ -681,10 +683,8 @@ for template in args.templates:
                 '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
                 '--components=main contrib non-free']
                if not args.virtual_only else []),
-             *(do_stuff('main-netboot')  # support SMB3 & NFSv4 (not just NFSv3)
-               if not args.local_boot_only else []),
-             *(do_stuff('main-netboot-only')  # 9% faster 19% smaller
-               if args.netboot_only else []),
+             *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
+             *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *(['--include=nwipe']
                if template == 'dban' else []),
              *(['--include=zfsutils-linux zfs-zed',
