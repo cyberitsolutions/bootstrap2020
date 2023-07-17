@@ -609,8 +609,6 @@ for template in args.templates:
             ' Without these, site.dir cannot patch /etc/hosts, so'
             ' boot-test ldap/nfs/squid/pete redirect will not work!')
 
-    site_apps = get_site_apps(template)
-
     with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
         td = pathlib.Path(td)
         validate_unescaped_path_is_safe(td)
@@ -786,19 +784,8 @@ for template in args.templates:
                 '    plymouth-themes',
                 # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
                 '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
-                *(['--include='
-                   f'{" ".join(site_apps)}'
-                   '    chromium chromium-l10n'
-                   '    libreoffice-calc libreoffice-impress libreoffice-writer libreoffice-math'
-                   '    libreoffice-gtk3'
-                   '    libreoffice-gnome'  # fix double-click in sftp:// (for staff)
-                   '    libreoffice-help-en-gb libreoffice-l10n-en-gb'
-                   '    libreoffice-lightproof-en'
-                   '    hunspell-en-au hunspell-en-gb hunspell-en-us'
-                   '    hyphen-en-gb hyphen-en-us'
-                   '    mythes-en-us'  # https://bugs.debian.org/929923 (Debian mythes-en-au is from openoffice 2.1!)
-                   '    vlc'
-                   f'   {"libdvdcss2" if template_wants_PrisonPC else "libdvd-pkg"}'  # watch store-bought DVDs
+                *(['--include', get_site_apps(template),
+                   '--include', 'libdvdcss2' if template_wants_PrisonPC else 'libdvd-pkg'  # watch store-bought DVDs
                    ] if args.apps else []),
                 # Staff and generic (non-PrisonPC) desktops
                 *(['--include=xfce4-terminal mousepad xfce4-screenshooter']

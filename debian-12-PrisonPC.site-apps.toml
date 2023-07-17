@@ -4,6 +4,25 @@
 
 # FIXME: https://bugs.debian.org/1004062 (inkscape offline help)
 
+# Apps that all sites get (not really per-site at all
+[desktop]
+applications = [
+    # Browser
+    "chromium", "chromium-l10n",
+    # Core office suite (word processor, spreadsheet, slideshow)
+    "libreoffice-calc", "libreoffice-impress", "libreoffice-writer", "libreoffice-math",
+    # Stuff to make office work better
+    "libreoffice-gtk3",
+    "libreoffice-gnome",     # fix double-click in sftp:// (for staff)
+    "libreoffice-help-en-gb", "libreoffice-l10n-en-gb",
+    "libreoffice-lightproof-en",
+    "hunspell-en-au", "hunspell-en-gb", "hunspell-en-us",
+    "hyphen-en-gb", "hyphen-en-us",
+    "mythes-en-us",  # https://bugs.debian.org/929923 (Debian mythes-en-au is from openoffice 2.1!)
+    "vlc",
+]
+
+
 
 # Site apps for "demo" prison:
 # all "easy" prisonpc-app-catalogue entries. —twb, Jan 2016
