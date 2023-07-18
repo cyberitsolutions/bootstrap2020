@@ -659,15 +659,6 @@ for template in args.templates:
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
              *do_stuff('main'),
-             # x86_64 CPUs are undocumented proprietary RISC chips that EMULATE a documented x86_64 CISC ISA.
-             # The emulator is called "microcode", and is full of security vulnerabilities.
-             # Make sure security patches for microcode for *ALL* CPUs are included.
-             # By default, it tries to auto-detect the running CPU, so only patches the CPU of the build server.
-             *(['--include=intel-microcode amd64-microcode',
-                '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
-                '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
-                '--components=main contrib non-free']
-               if True else []),
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *(['--include=nwipe']
