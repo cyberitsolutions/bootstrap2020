@@ -663,24 +663,7 @@ for template in args.templates:
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *(['--include=nwipe']
                if template == 'dban' else []),
-             *([*do_stuff('PrisonPC-tvserver'),
-                # workarounds for garbage hardware
-                *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
-                  '--include=build-essential git patchutils libproc-processtable-perl',  # driver
-                  '--include=wget2 bzip2',  # firmware
-                  ),
-                '--include='
-                # FIXME: dvblast 2.2 works, dvblast 3.0 FAILS.  Does dvblast 3.4 work???
-                #        https://alloc.cyber.com.au/task/task.php?taskID=31579
-                '    dvblast'        # DVB-T → rtp://
-                '    ffmpeg'         # DVD | DVB-T → .ts
-                '    multicat'       # .ts → rtp://
-                '    dvb-apps'       # femon (for check_tv.py - FIXME: use dvblast3?)
-                '    procps'         # pkill (for update-config.py - FIXME: use systemctl reload)
-                '    tv-grab-dvb python3-psycopg2 python3-lxml'  # DVB-T → XML → postgres (EPG)
-                '    w-scan'  # Used at new sites to find frequency MHz.
-                ]
-               if template == 'tvserver' else []),
+             *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
              # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
