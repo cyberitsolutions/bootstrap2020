@@ -2,6 +2,4 @@ include = [
     'mdadm', 'rsnapshot',
     'e2fsprogs',        # to get e2scrub (needs to be in fstab tho?)
     'extlinux', 'parted',       # debugging/rescue
-    # FIXME: move this into journalcheck.py.tarinfo
-    'python3', 'bsd-mailx', 'logcheck-database',  # journalcheck dependencies
 ]
