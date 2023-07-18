@@ -1,0 +1,5 @@
+[Timer]
+# NOTE: "minutely" means "every minute", i.e. what cron calls "* *  * * *".
+OnCalendar=minutely
+[Install]
+WantedBy=timers.target

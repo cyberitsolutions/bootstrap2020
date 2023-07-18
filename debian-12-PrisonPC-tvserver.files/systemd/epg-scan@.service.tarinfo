@@ -1,0 +1,2 @@
+name = "etc/systemd/system/tvserver-epg-scan@.service"
+mode = 292
