@@ -1,6 +1,6 @@
-# NOTE: this is installed into /etc/.bashrc because, unfortunately
+# NOTE: this is installed into ~root/.bashrc because, unfortunately
 #       there does not seem to be an "drop-in" /etc/bashrc.d/.
-#       99% of the time root is the only use in the OS image anyway.
+#       99% of the time root is the only user in the OS image anyway.
 
 # On Debian it's dangerous to add busybox applet symlinks to $PATH
 # (even at the end) for two reasons: Firstly, they aren't GNU
