@@ -312,7 +312,7 @@ def do_boot_test():
               ['--device', 'qxl-vga']
               if args.virtual_only else
               ['--device', 'virtio-vga']
-              if not args.opengl_for_boot_test_ssh else
+              if not args.opengl_for_boot_test else
               ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
             '--net', 'nic,model=virtio',
             '--net', ','.join([
@@ -464,7 +464,7 @@ group.add_argument('--host-port-for-boot-test-ssh', type=int, default=2022, meta
                    help='so you can run two of these at once')
 group.add_argument('--host-port-for-boot-test-vnc', type=int, default=5900, metavar='N',
                    help='so you can run two of these at once')
-group.add_argument('--opengl-for-boot-test-ssh', action='store_true',
+group.add_argument('--opengl-for-boot-test', action='store_true',
                    help='Enable OpenGL in --boot-test (requires qemu 7.1)')
 group.add_argument('--measure-install-footprints', action='store_true')
 parser.add_argument('--templates',
