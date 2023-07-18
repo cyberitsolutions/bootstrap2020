@@ -1,1 +1,2 @@
 name = "bin/journalcheck"
+include = ["python3", "bsd-mailx", "logcheck-database"]

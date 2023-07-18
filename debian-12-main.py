@@ -691,13 +691,7 @@ for template in args.templates:
                 ]
                if template == 'tvserver' else []),
              *do_stuff('understudy', when=template == 'understudy'),
-             *([*do_stuff('datasafe3'),
-                # FIXME: symlink didn't work, so hard link for now.
-                '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
-                # Pre-configure /boot a little more than usual, as a convenience for whoever makes the USB key.
-                '--customize-hook=cp -at $1/boot/ $1/usr/bin/extlinux $1/usr/lib/EXTLINUX/mbr.bin',
-                ]
-               if template == 'datasafe3' else []),
+             *do_stuff('datasafe3', when=template == 'datasafe3'),
              # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
              # apply what security updates we can into transient tmpfs COW.
              # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
