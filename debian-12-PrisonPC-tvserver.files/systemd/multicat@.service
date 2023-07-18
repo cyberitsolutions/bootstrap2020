@@ -1,0 +1,5 @@
+[Service]
+Restart=always
+RestartSec=30s
+StartLimitBurst=0
+ExecStart=multicat -U @%I:1234 /dev/null
