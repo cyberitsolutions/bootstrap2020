@@ -847,7 +847,7 @@ for template in args.templates:
              'bookworm',
              destdir / 'filesystem.squashfs',
              'debian-12.sources',
-             *(['debian-12-PrisonPC.sources']
+             *(['debian-12-PrisonPC-desktop.sources']
                if template_wants_PrisonPC_or_tvserver else []),
              ])
 
