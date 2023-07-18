@@ -640,6 +640,9 @@ for template in args.templates:
               '--customize-hook=chroot $1 apt install -y linux-image-inmate'
               if template.startswith('desktop-inmate') and args.physical_only else
               '--include=linux-image-amd64'),
+             # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
+             *(['--include', ('linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64')]
+               if template in {'understudy', 'tvserver'} else []),
              # Build faster
              *['--variant=apt',             # save 12s 30MB
                '--dpkgopt=force-unsafe-io',  # save 20s (even on tmpfs!)
@@ -672,16 +675,14 @@ for template in args.templates:
              *(['--include=zfsutils-linux zfs-zed',
                 '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
                 '--include=zfs-dkms',
-                '--include=linux-headers-cloud-amd64'
-                if args.virtual_only else
-                '--include=linux-headers-amd64']
+                ]
                if template == 'understudy' else []),
              *([*do_stuff('PrisonPC-tvserver'),
                 # workarounds for garbage hardware
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
                   '--include=build-essential git patchutils libproc-processtable-perl',  # driver
                   '--include=wget2 bzip2',  # firmware
-                  '--include=linux-headers-cloud-amd64' if args.virtual_only else '--include=linux-headers-amd64'),
+                  ),
                 '--include='
                 # FIXME: dvblast 2.2 works, dvblast 3.0 FAILS.  Does dvblast 3.4 work???
                 #        https://alloc.cyber.com.au/task/task.php?taskID=31579
