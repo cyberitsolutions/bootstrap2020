@@ -5,7 +5,7 @@ packages.
 
 The following packages found on this system are affected by this:
 
-# Whitelist binutils because
+# Ignorelist binutils because
 #   1. it's very hard to stop people calling "strings" (e.g. needrestart did it until I got upstream to fix it),
 #         https://bugs.debian.org/986507
 #         https://bugs.debian.org/1038621
@@ -25,3 +25,18 @@ The following packages found on this system are affected by this:
   - libctf-nobfd0:amd64 (installed version: 2.40-2)
   - libctf0:amd64 (installed version: 2.40-2)
   - libgprofng0:amd64 (installed version: 2.40-2)
+
+
+# Ignorelist rust-rav1e because
+#
+#   1. it's a hard dependency of ffmpeg (used by e.g. tvserver).
+#      I cannot be arsed recompiling ffmpeg from source to remove it.
+#
+#   2. it's only the encoder, so
+#      PROBABLY that code won't run unless/until something explicitly tries to encode as AV1.
+#      i.e. PROBABLY you can't just trigger an RCE by giving the tvserver a specially crafted attack.av1.mkv.
+
+* Source:rust-rav1e
+  Details: See https://www.debian.org/releases/bookworm/amd64/release-notes/ch-information.en.html#golang-static-linking
+  Affected binary package:
+  - librav1e0:amd64 (installed version: 0.5.1-6)
