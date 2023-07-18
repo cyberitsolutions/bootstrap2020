@@ -695,13 +695,6 @@ for template in args.templates:
                 ]
                if template == 'tvserver' else []),
              *do_stuff('understudy', when=template == 'understudy'),
-             # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ZFS)
-             # NOTE: this is "good enough" for now; ZFS->ZFS won't need it.
-             *(['--include=python3-arrow python3-importlib-metadata',
-                '--customize-hook=git clone --branch=0.3 https://github.com/cyberitsolutions/cyber-zfs-backup $1/opt/cyber-zfs-backup',
-                """--customize-hook=printf >$1/usr/bin/cyber-zfs-backup '#!/bin/sh\nPYTHONPATH=/opt/cyber-zfs-backup exec python3 -m cyber_zfs_backup "$@"'""",
-                '--customize-hook=chmod +x $1/usr/bin/cyber-zfs-backup']
-               if template == 'understudy' else []),
              # FIXME: remove extlinux/syslinux once everything is openly EFI.
              *(['--include=parted refind dosfstools extlinux syslinux-common',  # initial setup of /boot
                 '--essential-hook=echo refind refind/install_to_esp boolean false | chroot $1 debconf-set-selections']
@@ -849,9 +842,9 @@ for template in args.templates:
              'debian-12.sources',
              *(['debian-12-PrisonPC-desktop.sources']
                if template_wants_PrisonPC else []),
-             # For tv-grab-dvb (tvserver)
+             # For cyber-zfs-backup (understudy) and tv-grab-dvb (tvserver)
              *(['debian-12-PrisonPC-server.sources']
-               if template == 'tvserver' else []),
+               if template in {'understudy', 'tvserver'} else []),
              ])
 
         subprocess.check_call(

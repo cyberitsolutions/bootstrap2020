@@ -2,11 +2,22 @@ include = [
     # For doing an initial install of Debian 12 onto ZFS (not actually understudy).
     'mmdebstrap', 'auto-apt-proxy',
 
-    # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ext4)
+    # EXT4 -> EXT4
+    # -----------
+    # FIXME: remove this block once all understudies are ZFS-based.
     'mdadm', 'lvm2', 'rsync',
     'e2fsprogs',        # no slow fsck on failover (e2scrub_all.timer)
     'quota',            # no slow quotacheck on failover
 
+    # EXT4 -> ZFS
+    # -----------
+    # While the PrisonPC main server is ext4 and the understudy is ZFS,
+    # we need cyber-zfs-backup on the UNDERSTUDY, so
+    # that the main server can do "rsync to understudy, then on understudy make understudy-local ZFS snapshots".
+    #
+    # FIXME: Once the PrisonPC main server is also ZFS, remove cyber-zfs-backup from understudy.
+    # In that case the main server just does "cyber-zfs-backup" which is main-server-local ZFS snapshots and a replication send-receive.
+    'cyber-zfs-backup',
 
 
 ]
