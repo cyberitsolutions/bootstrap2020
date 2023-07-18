@@ -672,11 +672,6 @@ for template in args.templates:
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *(['--include=nwipe']
                if template == 'dban' else []),
-             *(['--include=zfsutils-linux zfs-zed',
-                '--customize-hook=rm -f $1/etc/hostid',  # https://bugs.debian.org/1036151
-                '--include=zfs-dkms',
-                ]
-               if template == 'understudy' else []),
              *([*do_stuff('PrisonPC-tvserver'),
                 # workarounds for garbage hardware
                 *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
@@ -696,10 +691,6 @@ for template in args.templates:
                 ]
                if template == 'tvserver' else []),
              *do_stuff('understudy', when=template == 'understudy'),
-             # FIXME: remove extlinux/syslinux once everything is openly EFI.
-             *(['--include=parted refind dosfstools extlinux syslinux-common',  # initial setup of /boot
-                '--essential-hook=echo refind refind/install_to_esp boolean false | chroot $1 debconf-set-selections']
-               if template == 'understudy' else []),
              *([*do_stuff('datasafe3'),
                 # FIXME: symlink didn't work, so hard link for now.
                 '--customize-hook=env --chdir=$1/lib/systemd/system cp -al ssh.service ssh-sftponly.service',
