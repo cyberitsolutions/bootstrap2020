@@ -848,7 +848,10 @@ for template in args.templates:
              destdir / 'filesystem.squashfs',
              'debian-12.sources',
              *(['debian-12-PrisonPC-desktop.sources']
-               if template_wants_PrisonPC_or_tvserver else []),
+               if template_wants_PrisonPC else []),
+             # For tv-grab-dvb (tvserver)
+             *(['debian-12-PrisonPC-server.sources']
+               if template == 'tvserver' else []),
              ])
 
         subprocess.check_call(
