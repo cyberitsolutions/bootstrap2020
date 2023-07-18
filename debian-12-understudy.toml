@@ -19,5 +19,12 @@ include = [
     # In that case the main server just does "cyber-zfs-backup" which is main-server-local ZFS snapshots and a replication send-receive.
     'cyber-zfs-backup',
 
-
+    # ZFS -> ZFS
+    # ----------
+    # NOTE: zfs-dkms will build zfs.ko for each installed linux-headers-X.
+    #       If none are installed, zfs-dkms will no-op *WITHOUT ERROR*.
+    #       Correct kernel header is in the debian-12-main.py script.
+    'zfs-dkms',
+    'zfs-zed',
+    'zfsutils-linux',
 ]

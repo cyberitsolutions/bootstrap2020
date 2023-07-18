@@ -1,2 +1,3 @@
 name = "root/bootloader-best-practice.py"
 mode = 320
+include = ["parted", "refind", "dosfstools"]
