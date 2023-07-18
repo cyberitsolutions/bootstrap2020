@@ -667,7 +667,7 @@ for template in args.templates:
                 '--essential-hook=>$1/etc/default/intel-microcode echo IUCODE_TOOL_INITRAMFS=yes IUCODE_TOOL_SCANCPUS=no',
                 '--essential-hook=>$1/etc/default/amd64-microcode echo AMD64UCODE_INITRAMFS=yes',
                 '--components=main contrib non-free']
-               if not args.virtual_only else []),
+               if True else []),
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *(['--include=nwipe']
