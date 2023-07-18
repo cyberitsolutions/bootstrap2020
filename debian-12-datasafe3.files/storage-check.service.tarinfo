@@ -1,0 +1,2 @@
+name = "etc/systemd/system/storage-check.service"
+mode = 292
