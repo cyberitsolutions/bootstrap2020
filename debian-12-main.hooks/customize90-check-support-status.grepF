@@ -6,7 +6,9 @@ packages.
 The following packages found on this system are affected by this:
 
 # Whitelist binutils because
-#   1. it's very hard to stop people calling "strings" (e.g. needrestart did it until I got upstrem to fix it),
+#   1. it's very hard to stop people calling "strings" (e.g. needrestart did it until I got upstream to fix it),
+#         https://bugs.debian.org/986507
+#         https://bugs.debian.org/1038621
 #   2. it's not vulnerable unless you pass a -be-shit option, and
 #   3. the completely-non-vulnerable version (llvm-strings) adds about 80MB of unwanted compiler shit.
 # Also, --template=zfs needs binutils because gcc-10 depends on it.
@@ -16,9 +18,10 @@ The following packages found on this system are affected by this:
 * Source:binutils
   Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
   Affected binary packages:
-  - binutils (installed version: 2.35.2-2)
-  - binutils-common:amd64 (installed version: 2.35.2-2)
-  - binutils-x86-64-linux-gnu (installed version: 2.35.2-2)
-  - libbinutils:amd64 (installed version: 2.35.2-2)
-  - libctf-nobfd0:amd64 (installed version: 2.35.2-2)
-  - libctf0:amd64 (installed version: 2.35.2-2)
+  - binutils (installed version: 2.40-2)
+  - binutils-common:amd64 (installed version: 2.40-2)
+  - binutils-x86-64-linux-gnu (installed version: 2.40-2)
+  - libbinutils:amd64 (installed version: 2.40-2)
+  - libctf-nobfd0:amd64 (installed version: 2.40-2)
+  - libctf0:amd64 (installed version: 2.40-2)
+  - libgprofng0:amd64 (installed version: 2.40-2)
