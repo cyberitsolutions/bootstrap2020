@@ -45,6 +45,8 @@ def hostname_or_fqdn_with_optional_user_at(s: str) -> str:
 
 def get_site_apps(template: str) -> set:
     "Get long, boring app lists from an .ini (instead of inline in main.py)"
+    if not args.apps:
+        return []
     parser = tomllib.loads(pathlib.Path('debian-12-PrisonPC.site-apps.toml').read_text())
     if any('applications' != key
            for section_dict in parser.values()
@@ -55,7 +57,7 @@ def get_site_apps(template: str) -> set:
         for section_name, section_dict in parser.items()
         if template.startswith(section_name)
         for package_name in section_dict.get('applications', [])}
-    return site_apps
+    return ['--include', ' '.join(site_apps)]
 
 
 def create_authorized_keys_tar(dst_path, urls):
@@ -784,9 +786,12 @@ for template in args.templates:
                 '    plymouth-themes',
                 # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
                 '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
-                *(['--include', get_site_apps(template),
-                   '--include', 'libdvdcss2' if template_wants_PrisonPC else 'libdvd-pkg'  # watch store-bought DVDs
-                   ] if args.apps else []),
+                *get_site_apps(template),
+                # To watch store-bought DVDs we need deCSS.
+                # template=desktop-{staff|inmate} get it pre-compiled (requires debian-12-PrisonPC-desktop.sources);
+                # template=desktop gets it compiled at install time (requires gcc & shit).
+                # FIXME: find an elegant way to put this next one into site-apps.toml.
+                *['--include', ('libdvdcss2' if template_wants_PrisonPC else 'libdvd-pkg') if args.apps else ''],
                 # Staff and generic (non-PrisonPC) desktops
                 *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
                   if not template.startswith('desktop-inmate') else []),
