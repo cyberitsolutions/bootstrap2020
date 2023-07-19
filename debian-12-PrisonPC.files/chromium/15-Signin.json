@@ -1,0 +1,10 @@
+// This is for SAML.
+// SAML 2.0 allows for single sign-on (SSO)
+// when your GUI login uses Active Directory (Kerberos).
+// It replaced the much older "SPNEGO" HTTP auth method used in Windows XP.
+//
+// We do not use SAML.
+// The only option in here is not interesting to us.
+{
+    // "DeviceSamlLoginAuthenticationType": 0
+}

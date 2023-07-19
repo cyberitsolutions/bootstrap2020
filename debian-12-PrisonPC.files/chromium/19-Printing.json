@@ -1,0 +1,74 @@
+{
+    "PrintingEnabled": true,
+
+    // So apparently if you have, for example,
+    //   * a desktop in Florida running chrome, logged into google as alice@gmail.com
+    //   * a USB printer plugged into the same desktop
+    //   * a phone in Tunisia logged into google as alice@gmail
+    // Then you can hit "print" on your phone and have pages appear in Florida.
+    // This is not something WE want, so block.
+    "CloudPrintProxyEnabled": false,
+    "CloudPrintSubmitEnabled": false,
+
+    // We do not care if the user burns through a lot of toner.
+    // "PrintingAllowedBackgroundGraphicsModes": "enabled",
+    // "PrintingBackgroundGraphicsDefault": "enabled",
+
+    // Over 99% of countries use A4 (ISO 216).
+    // Literally only 2 countries do not.
+    // If we have to hard-code A4 still, I will be fucking annoyed.
+    // FIXME: re-test on Debian 11, I guess?
+    // "PrintingPaperSizeDefault": {
+    //     "name": "custom",
+    //     "custom_size": {
+    //         "width": 210000,
+    //         "height": 297000
+    //     }
+    // },
+
+
+    // We don't care if users do Ctrl+P vs. Ctrl+Shift+P ("system print").
+    // FIXME: Does this old bootstrap.git commit still apply in Debian 11?
+    //
+    //            Sometime between Jun 2014 and Feb 2015,
+    //            a security update to chromium broke printing.
+    //            This line makes printing work. (#24903)
+    //            "DisablePrintPreview": true,
+    // "DisablePrintPreview": false,
+    // "PrintPreviewUseSystemDefaultPrinter": false,
+
+    // "Who printed these 500 pages of Fanny Hill?" is a problem we solve elsewhere.
+    // "PrintHeaderFooter": false,
+
+    // FIXME: do we ever care about this?
+    //        Most sites only have 1 or 2 printers, so
+    //        it hasn't really come up yet.
+    // "DefaultPrinterSelection": "{ \"kind\": \"cloud\", \"idPattern\": \".*public\", \"namePattern\": \".*Color\" }",
+    // This changes the default printer from "whatever I used last" to "whatever the system defaults to".  Meh.
+    // "PrintPreviewUseSystemDefaultPrinter": true,
+
+    // These are ChromeOS features that are not supported yet.
+    // As a result, the "supported_on" is ABSENT rather than EMPTY.
+    // This causes our policy analysis script to mistakenly think they apply to us.
+    // I'm 90% sure they don't.
+    // "DeviceExternalPrintServers": {
+    //     "url": "https://example.com/printserverpolicy",
+    //     "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef"
+    // },
+    // "DeviceExternalPrintServersAllowlist": [
+    //     "id1",
+    //     "id2",
+    //     "id3"
+    // ],
+
+    // "privet" here means MDNS/DNS-SD (avahi/zeroconf) printers.
+    // Allow "local" (i.e. CUPS networked printers) and "pdf" (i.e. "Save as PDF").
+    "PrinterTypeDenyList": ["cloud", "privet", "extension"]
+
+    // We don't care if inmate tries to DOS the printer by using a huge DPI and run it out of RAM.
+    // Any remotely modern printer should have safety guards against such abuse.
+    // "PrintRasterizePdfDpi": 300,
+
+    // FIXME: I don't know what this is.  (It doesn't sound scary or interesting, so meh.)
+    // "PrintPdfAsImageDefault": true
+}

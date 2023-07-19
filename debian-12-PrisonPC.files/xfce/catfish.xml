@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="catfish" version="1.0">
+  <property name="use-headerbar" type="bool" value="true"/>
+  <property name="show-hidden-files" type="bool" value="false"/>
+  <property name="show-sidebar" type="bool" value="true"/>
+  <property name="close-after-select" type="bool" value="false"/>
+  <property name="window-width" type="int" value="650"/>
+  <property name="window-height" type="int" value="517"/>
+  <property name="window-x" type="int" value="315"/>
+  <property name="window-y" type="int" value="376"/>
+  <property name="exclude-paths" type="string" value="/dev;~/.cache;~/.gvfs;"/>
+</channel>

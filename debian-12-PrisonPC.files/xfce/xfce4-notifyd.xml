@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is locked with all settings set to their default-in-C-source values.
+     Hopefully this just means inmates cannot set "do not disturb"?
+     We rely on notifyd popups to say "curfew is starting soon, finish up now!".
+     We don't want inmates to ignore that, altough if they do, it's not really our problem.
+     UPDATE: it does not stop inmates toggling do-not-disturb=true ☹
+     The only benefit of setting anything here is that it will reset on logout/reboot.
+ -->
+<channel name="xfce4-notifyd" version="1.0" unlocked="root" />

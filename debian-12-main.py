@@ -745,7 +745,7 @@ for template in args.templates:
              f'--customize-hook=download initrd.img {destdir}/initrd.img',
              *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
                if not template_wants_big_uptimes else []),
-             *(['--dpkgopt=debian-12-PrisonPC/omit-low-level-docs.conf']
+             *(['--dpkgopt=debian-12-PrisonPC.files/omit-low-level-docs.conf']
                if template_wants_PrisonPC else []),
              *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
                if args.production else []),
