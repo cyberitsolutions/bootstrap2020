@@ -29,7 +29,7 @@ Description: appease libreoffice
 
 Package: prisonpc-ersatz-e2fsprogs
 Depends: ${misc:Depends}
-Provides:  e2fsprogs (= 1.46.2-2)
+Provides:  e2fsprogs (= 1.47.0-2)
 Conflicts: e2fsprogs
 Replaces:  e2fsprogs
 Essential: yes
@@ -75,7 +75,7 @@ Description: appease prayer
 
 Package: prisonpc-ersatz-kio
 Depends: ${misc:Depends}
-Provides:  kio (= 5.78.0-5),
+Provides:  kio (= 5.103.0-1),
 Conflicts: kio,
 Replaces:  kio,
 Architecture: all
@@ -117,7 +117,7 @@ Description: appease udisks2
 
 Package: prisonpc-ersatz-dictionaries-common
 Depends: ${misc:Depends}
-Provides:  dictionaries-common (= 1.28.4),
+Provides:  dictionaries-common (= 1.29.5),
 Replaces:  dictionaries-common,
 Conflicts: dictionaries-common,
 # These things really DO need dictionaries-common, so
