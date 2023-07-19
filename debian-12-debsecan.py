@@ -147,6 +147,11 @@ def debsecan(soe_version):
 
 # Entries in this list are ignored.
 boring = {
+    # These vulns apply to Chromium 86-89 in Debian 10.
+    # They are missing "definitely fixed" data for Debian 11.
+    # As a result, our script would warn about them.  Tell it not to.
+    'CVE-2020-15999',
+    'CVE-2020-16044',
 }
 
 
