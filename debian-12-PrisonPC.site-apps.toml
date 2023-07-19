@@ -24,6 +24,17 @@ applications = [
     "hyphen-en-gb", "hyphen-en-us",
     "mythes-en-us",  # https://bugs.debian.org/929923 (Debian mythes-en-au is from openoffice 2.1!)
     "vlc",
+
+    # To watch store-bought DVDs we need deCSS.
+    #
+    # If debian-12-PrisonPC-desktop.sources is in the sources list,
+    # this will select the pre-compiled library created by
+    # debian-12-PrisonPC.packages/build-libdvdcss2.py.
+    #
+    # If not (--template=desktop, which does not require any Cyber IT stuff),
+    # it will automatically instead choose libdvd-pkg (via Provides).
+    # This pulls in wget and gcc and builds the library at package install time.
+    "libdvdcss2",
 ]
 
 
