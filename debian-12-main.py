@@ -659,47 +659,50 @@ for template in args.templates:
              *do_stuff('main'),
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
-             *(['--include=nwipe']
-               if template == 'dban' else []),
              *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
-             # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
-             # apply what security updates we can into transient tmpfs COW.
-             # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
-             # This CANNOT persist updates across reboots (they re-download each boot).
-             # NOTE: booting with "persistence" and live-tools can solve those.
-             *(['--include=unattended-upgrades needrestart'
-                '    auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
-                '    python3-gi powermgmt-base']  # unattended-upgrades wants these
-               if template_wants_big_uptimes else []),
              *do_stuff('smartd', when=template_wants_disks and not args.virtual_only),
              *do_stuff('desktop', when=template_wants_GUI),
              *get_site_apps(template),
-             *([
-                # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
-                '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
-                # To watch store-bought DVDs we need deCSS.
-                # template=desktop-{staff|inmate} get it pre-compiled (requires debian-12-PrisonPC-desktop.sources);
-                # template=desktop gets it compiled at install time (requires gcc & shit).
-                # FIXME: find an elegant way to put this next one into site-apps.toml.
-                *['--include', ('libdvdcss2' if template_wants_PrisonPC else 'libdvd-pkg') if args.apps else ''],
-                # Staff and generic (non-PrisonPC) desktops
-                *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
-                  if not template.startswith('desktop-inmate') else []),
-                # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-desktop/xfce-spice-output-resizer.py
-                *(['--include=python3-xlib python3-dbus'
-                   if template.startswith('desktop-inmate') else
-                   '--include=python3-xlib python3-dbus spice-vdagent']
-                  if not args.physical_only else []),
-                ]
+             # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
+             *(['--essential-hook=chronic chroot $1 apt install -y fontconfig-config']
                if template_wants_GUI else []),
-             # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
-             # FIXME: WHY?  Nothing in the package description sounds useful.
-             # FIXME: --boot-test's kvm doesn't know to create the device!!!
-             *(['--include=qemu-guest-agent']
-               if (not args.physical_only and  # noqa: W504
-                   not template.startswith('desktop-inmate')) else []),
+             # Miscellaneous includes -- can't use do_stuff() because no .files.
+             *['--include', ' '.join(
+                 what for when, what in {
+                     (template == 'dban',
+                      'nwipe'),
+                     # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
+                     # apply what security updates we can into transient tmpfs COW.
+                     # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
+                     # This CANNOT persist updates across reboots (they re-download each boot).
+                     # NOTE: booting with "persistence" and live-tools can solve those.
+                     (template_wants_big_uptimes,
+                      'unattended-upgrades needrestart'
+                      ' auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
+                      ' python3-gi powermgmt-base'),  # unattended-upgrades wants these
+                     # To watch store-bought DVDs we need deCSS.
+                     # FIXME: find an elegant way to put this next one into site-apps.toml.
+                     (template_wants_GUI and args.apps and template_wants_PrisonPC,
+                      'libdvdcss2'),  # needs debian-12-PrisonPC-desktop.sources
+                     (template_wants_GUI and args.apps and not template_wants_PrisonPC,
+                      'libdvd-pkg'),  # needs gcc & wget -- slow!
+                     # Staff and non-PrisonPC desktops (but not inmates!)
+                     (template_wants_GUI and not template.startswith('desktop-inmate'),
+                      'xfce4-terminal mousepad xfce4-screenshooter'),
+                     # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-desktop/xfce-spice-output-resizer.py
+                     # Mike wants qemu-guest-agent for prisonpc-desktop-staff-amc in spice-html5.
+                     # FIXME: WHY?  Nothing in the package description sounds useful.
+                     # FIXME: --boot-test's kvm doesn't know to create the device!!!
+                     (not args.physical_only and template_wants_GUI,
+                      'python3-xlib python3-dbus'),
+                     (not args.physical_only and template_wants_GUI and not template.startswith('desktop-inmate'),
+                      'spice-vdagent'),
+                     (not args.physical_only and not template.startswith('desktop-inmate'),
+                      'qemu-guest-agent'),
+                 }
+                 if when)],
              *([*do_stuff('PrisonPC'),
                 '--essential-hook={'
                 '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
