@@ -97,6 +97,7 @@
     <property name="plugin-71" type="string" value="notification-plugin"/>
     <!-- FIXME: is power-manager interesting? -->
     <property name="plugin-76" type="string" value="power-manager-plugin"/>
+    <!-- NOTE: in Debian 12, this is actually pipewire (via its pulseaudio emulation). -->
     <property name="plugin-75" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="show-notifications" type="bool" value="true"/>

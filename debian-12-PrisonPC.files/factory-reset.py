@@ -109,7 +109,15 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
     # Explicitly terminate some GUI apps that are particularly problematic.
     # Ignore errors because if they aren't running or don't terminate, we mostly don't care.
     subprocess.call(['pkill', '-9', 'chromium|soffice.bin'])
-    subprocess.call(['systemctl', '--user', 'stop', 'pulseaudio.service', 'pulseaudio.socket'])
+    subprocess.call(['systemctl', '--user', 'stop',
+                     # These were problems in Debian 11, but aren't in Debian 12.
+                     'pulseaudio.service', 'pulseaudio.socket',
+                     # These are in Debian 12 -- are they are problem?
+                     # FIXME: find out, instead of assuming they are a problem.
+                     'pipewire-pulse.service',
+                     'pipewire.service',
+                     'wireplumber.service',
+                     ])
 
     home = pathlib.Path.home()
     if not home.is_relative_to('/home'):
