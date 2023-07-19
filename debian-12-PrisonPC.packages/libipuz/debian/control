@@ -1,0 +1,22 @@
+Source: libipuz
+Section: games
+Priority: optional
+Homepage: https://gitlab.gnome.org/jrb/libipuz/
+Standards-Version: 4.5.1
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13),
+ meson (>= 0.59.0),
+ pkg-config,
+ python3,
+ libglib2.0-dev,
+ libjson-glib-dev,
+ cmake,
+
+Package: libipuz-1
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Architecture: any
+Description: FIXME
+ FIXME

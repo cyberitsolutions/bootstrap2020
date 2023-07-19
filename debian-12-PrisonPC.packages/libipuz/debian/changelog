@@ -1,4 +1,4 @@
-crosswords (0.3.8-1) bullseye; urgency=medium
+libipuz (0.4.2-1) bookworm; urgency=medium
 
   * Initial Debianization.
 

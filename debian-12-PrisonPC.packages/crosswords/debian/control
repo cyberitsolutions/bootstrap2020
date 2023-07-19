@@ -8,13 +8,15 @@ Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13),
  meson (>= 0.59.0),
  pkg-config,
+# ../meson.build:111:6: ERROR: Program 'update-desktop-database' not found or not executable
+ desktop-file-utils,
  libglib2.0-dev,
  libgtk-4-dev,
  libjson-glib-dev,
  librsvg2-dev,
  libadwaita-1-dev,
 # https://gitlab.gnome.org/jrb/libipuz
- libipuz-dev,
+ libipuz-1,
 
 Package: gnome-crosswords
 Depends:
