@@ -1,0 +1,21 @@
+include = [
+ "unattended-upgrades",
+ "needrestart",
+
+ # needrestart dependencies.
+ "python3-gi",
+ "powermgmt-base",
+
+ # Because we pass --aptopt=Acquire::http::Proxy to mmdebstrap,
+ # apt will expect the BUILD TIME proxy at BOOT TIME!
+ # As a quick and "mostly good enough" workaround,
+ # auto-detect proxy at boot time (install auto-apt-proxy).
+ #
+ # FIXME: If no proxy is detected at boot time,
+ #        it'll probably fall back to the build time proxy,
+ #        when it SHOULD fall back on no proxy at all...
+ #
+ #        Delete /etc/apt/conf.d/99mmdebstrap, so that
+ #        there is no apt proxy by default?
+ "auto-apt-proxy",
+]

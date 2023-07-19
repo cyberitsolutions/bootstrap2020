@@ -659,6 +659,7 @@ for template in args.templates:
              *do_stuff('main'),
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
+             *do_stuff('main-unattended-upgrades', when=template_wants_big_uptimes),
              *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
@@ -671,17 +672,6 @@ for template in args.templates:
              # Miscellaneous includes -- can't use do_stuff() because no .files.
              *['--include', ' '.join(
                  what for when, what in {
-                     (template == 'dban',
-                      'nwipe'),
-                     # To mitigate vulnerability of rarely-rebuilt/rebooted SOEs,
-                     # apply what security updates we can into transient tmpfs COW.
-                     # This CANNOT apply kernel updates (https://bugs.debian.org/986613).
-                     # This CANNOT persist updates across reboots (they re-download each boot).
-                     # NOTE: booting with "persistence" and live-tools can solve those.
-                     (template_wants_big_uptimes,
-                      'unattended-upgrades needrestart'
-                      ' auto-apt-proxy'  # workaround --aptopt=Acquire::http::Proxy above
-                      ' python3-gi powermgmt-base'),  # unattended-upgrades wants these
                      # To watch store-bought DVDs we need deCSS.
                      # FIXME: find an elegant way to put this next one into site-apps.toml.
                      (template_wants_GUI and args.apps and template_wants_PrisonPC,
