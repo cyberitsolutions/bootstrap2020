@@ -734,9 +734,7 @@ for template in args.templates:
                 '--customize-hook=echo x:x | chroot $1 chpasswd',
                 '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
                 '--include=strace',
-                '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf',
-                *(['--include=xfce4-terminal']
-                  if template_wants_GUI and not template.startswith('desktop-inmate') else [])]
+                '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf']
                if args.backdoor_enable else []),
              *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
                 '--customize-hook=PAGER=cat LOGNAME=root USERNAME=root USER=root HOME=/root chroot $1 bash -i; false',
