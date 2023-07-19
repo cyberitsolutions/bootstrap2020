@@ -686,21 +686,11 @@ for template in args.templates:
                 # Staff and generic (non-PrisonPC) desktops
                 *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
                   if not template.startswith('desktop-inmate') else []),
-                # Accelerated graphics drivers for several libraries & GPU families
-                '--include=vdpau-driver-all'  # VA/AMD, free
-                '    mesa-vulkan-drivers'     # Intel/AMD/Nvidia, free
-                '    va-driver-all'           # Intel/AMD/Nvidia, free
-                '    i965-va-driver-shaders'  # Intel, non-free, 2013-2017
-                '    intel-media-va-driver-non-free',  # Intel, non-free, 2017+
                 # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-desktop/xfce-spice-output-resizer.py
                 *(['--include=python3-xlib python3-dbus'
                    if template.startswith('desktop-inmate') else
                    '--include=python3-xlib python3-dbus spice-vdagent']
                   if not args.physical_only else []),
-                # Seen on H81 and H110 Pioneer AIOs.
-                # Not NEEDED, just makes journalctl -p4' quieter.
-                *(['--include=firmware-realtek firmware-misc-nonfree']
-                  if template_wants_PrisonPC else []),
                 ]
                if template_wants_GUI else []),
              # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.

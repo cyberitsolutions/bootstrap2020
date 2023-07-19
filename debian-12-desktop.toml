@@ -22,4 +22,15 @@ include = [
     "gnome-themes-extra", "adwaita-qt",  # theming
     "at-spi2-core", "gnome-accessibility-themes",
     "plymouth-themes",
+
+    # Accelerated graphics drivers for several libraries & GPU families
+    "vdpau-driver-all",  # VA/AMD, free
+    "mesa-vulkan-drivers",     # Intel/AMD/Nvidia, free
+    "va-driver-all",           # Intel/AMD/Nvidia, free
+    "i965-va-driver-shaders",  # Intel, non-free, 2013-2017
+    "intel-media-va-driver-non-free",  # Intel, non-free, 2017+
+
+    # Seen on H81 and H110 Pioneer AIOs.
+    # Not NEEDED, just makes journalctl -p4' quieter.
+    "firmware-realtek", "firmware-misc-nonfree",
 ]
