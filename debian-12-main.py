@@ -309,8 +309,6 @@ def do_boot_test():
             '--device', 'ich9-intel-hda', '--device', 'hda-output',
             *(['--nographic', '--vga', 'none']
               if not template_wants_GUI else
-              ['--device', 'qxl-vga']
-              if args.virtual_only else
               ['--device', 'virtio-vga']
               if not args.opengl_for_boot_test else
               ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
@@ -582,6 +580,8 @@ if args.production:
 
 if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
+if args.virtual_only and any(template.startswith('desktop') for template in args.templates):
+    raise NotImplementedError("linux-image-cloud-amd64 lacks CONFIG_DRM, so cannot do GUI desktops")
 
 for template in args.templates:
 
@@ -601,8 +601,6 @@ for template in args.templates:
         raise NotImplementedError('datasafe3 only supports OpenSSH')
     if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
         logging.warning('prisonpc.tca3 server code expects OpenSSH')
-    if template_wants_GUI and args.virtual_only:
-        logging.warning('GUI on cloud kernel is a bit hinkey')
     if template == 'tvserver' and args.virtual_only:
         # The error message is quite obscure:
         #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
@@ -688,10 +686,6 @@ for template in args.templates:
                 # Staff and generic (non-PrisonPC) desktops
                 *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
                   if not template.startswith('desktop-inmate') else []),
-                # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
-                # It seems there is a fallback for -vga qxl, but not -vga virtio.
-                '--include=xserver-xorg-video-qxl'
-                if args.virtual_only else
                 # Accelerated graphics drivers for several libraries & GPU families
                 '--include=vdpau-driver-all'  # VA/AMD, free
                 '    mesa-vulkan-drivers'     # Intel/AMD/Nvidia, free
@@ -706,7 +700,7 @@ for template in args.templates:
                 # Seen on H81 and H110 Pioneer AIOs.
                 # Not NEEDED, just makes journalctl -p4' quieter.
                 *(['--include=firmware-realtek firmware-misc-nonfree']
-                  if template_wants_PrisonPC and not args.virtual_only else []),
+                  if template_wants_PrisonPC else []),
                 ]
                if template_wants_GUI else []),
              # Mike wants this for prisonpc-desktop-staff-amc in spice-html5.
