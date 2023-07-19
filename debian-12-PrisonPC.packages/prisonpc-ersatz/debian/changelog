@@ -1,9 +1,9 @@
-prisonpc-ersatz (12.1) bookworm; urgency=medium
+prisonpc-ersatz (12.2) bookworm; urgency=medium
 
   * Bump for Debian 12 bookworm.
-    No changes yet.
+    Bump "Provides: foo (= N)" lines in debian/control to match Debian 12.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Wed, 19 Jul 2023 20:20:54 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 19 Jul 2023 21:02:18 +1000
 
 prisonpc-ersatz (11.37) unstable; urgency=medium
 
