@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PrisonPC Admin
+Icon=security-high
+# NOTE: no "--app=" because we WANT this to be a regular tab.
+Exec=chromium http://PPCAdm
+Categories=Network;Email;
+
+# https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+StartupNotify=true
