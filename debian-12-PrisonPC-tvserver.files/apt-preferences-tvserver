@@ -1,4 +1,0 @@
-Explanation: need systemd v249+ for _outbound
-Package: src:systemd
-Pin: release a=bullseye-backports
-Pin-Priority: 500
