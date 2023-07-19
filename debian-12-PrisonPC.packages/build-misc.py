@@ -38,7 +38,10 @@ watch_path = (args.package_path / 'debian/watch')
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
-         '--variant=buildd',    # "build-dep" would do this anyway
+         # NOTE: --variant=buildd includes ?priority(required), which includes e2fsprogs,
+         #       which interacts negatively with prisonpc-ersatz-e2fsprogs.
+         '--variant=apt',
+         '--include=build-essential',  # "build-dep" would do this anyway
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
