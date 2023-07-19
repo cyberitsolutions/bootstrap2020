@@ -674,10 +674,11 @@ for template in args.templates:
                 '    python3-gi powermgmt-base']  # unattended-upgrades wants these
                if template_wants_big_uptimes else []),
              *do_stuff('smartd', when=template_wants_disks and not args.virtual_only),
-             *([*do_stuff('desktop'),
+             *do_stuff('desktop', when=template_wants_GUI),
+             *get_site_apps(template),
+             *([
                 # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
                 '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
-                *get_site_apps(template),
                 # To watch store-bought DVDs we need deCSS.
                 # template=desktop-{staff|inmate} get it pre-compiled (requires debian-12-PrisonPC-desktop.sources);
                 # template=desktop gets it compiled at install time (requires gcc & shit).
