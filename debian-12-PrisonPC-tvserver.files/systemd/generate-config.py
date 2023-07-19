@@ -55,8 +55,8 @@ import tvserver
 # systemd won't let us output only to console (as Wheezy was doing).
 # Therefore, simply discard that output completely (StandardOutput=null).
 
-with tvserver.cursor() as cur:
-  with open('/run/systemd/system/tvserver.target', 'w') as fh_target:  # FIXME: reindent
+with (tvserver.cursor() as cur,
+      open('/run/systemd/system/tvserver.target', 'w') as fh_target):
     print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
 
     # TV tuners
@@ -82,7 +82,11 @@ with tvserver.cursor() as cur:
                 'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
                 f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
                 # NOTE: in theory "--network-name" works, but in practice we seem to need "-M".
-                f'ExecStart=dvblast --adapter {row.card} --frequency {row.frequency} --bandwidth 7 --dvb-compliance --epg-passthrough -M "{row.name}" --config-file {dvblast_conf_path} --remote-socket {dvblast_sock_path}',
+                (f'ExecStart=dvblast'
+                 f' --adapter {row.card} --frequency {row.frequency}'
+                 f' --bandwidth 7 --dvb-compliance --epg-passthrough'
+                 f' --network-name "{row.name}" --config-file {dvblast_conf_path}'
+                 f' --remote-socket {dvblast_sock_path}'),
                 sep='\n',
                 file=fh)
 
