@@ -665,6 +665,9 @@ for template in args.templates:
              *do_stuff('datasafe3', when=template == 'datasafe3'),
              *do_stuff('smartd', when=template_wants_disks and not args.virtual_only),
              *do_stuff('desktop', when=template_wants_GUI),
+             *do_stuff('PrisonPC', when=template_wants_PrisonPC),
+             *do_stuff('PrisonPC-inmate', when=template.startswith('desktop-inmate')),
+             *do_stuff('PrisonPC-staff', when=template.startswith('desktop-staff')),
              *get_site_apps(template),
              # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
              *(['--essential-hook=chronic chroot $1 apt install -y fontconfig-config']
@@ -693,30 +696,6 @@ for template in args.templates:
                       'qemu-guest-agent'),
                  }
                  if when)],
-             *([*do_stuff('PrisonPC'),
-                '--essential-hook={'
-                '     echo libnss-ldapd libnss-ldapd/nsswitch multiselect passwd group;'
-                '     } | chroot $1 debconf-set-selections',
-                '--include='
-                '    libnss-ldapd libpam-ldapd unscd'
-                '    nftables'
-                '    nfs-client-quota'          # for quota-reminder.py
-                '    python3-gi gir1.2-gtk-3.0'  # for acceptable-use-policy.py
-                '    gir1.2-wnck-3.0'            # for popcon.py
-                '    gir1.2-notify-0.7'          # for log-terminal-attempt.py (et al)
-                '    libgtk-3-bin'  # gtk-launch (used by some .desktop files)
-                '    python3-systemd python3-pyudev'  # for *-snitch.py
-                '    python3-xdg'                     # for popcon.py
-                '    libgs9'                          # for lawyers-make-bad-pdfs/compress.py
-                '    genisoimage lsdvd'  # for disc-snitch.py
-                '    fonts-prisonpc'
-                '    x11vnc'  # https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
-                '    prayer-templates-prisonpc'
-                '    prisonpc-chromium-hunspell-dictionaries'
-                ]
-               if template_wants_PrisonPC else []),
-             *do_stuff('PrisonPC-inmate', when=template.startswith('desktop-inmate')),
-             *do_stuff('PrisonPC-staff', when=template.startswith('desktop-staff')),
              *[f'--include={args.ssh_server}',
                f'--essential-hook=tar-in {authorized_keys_tar_path} /',
                # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
