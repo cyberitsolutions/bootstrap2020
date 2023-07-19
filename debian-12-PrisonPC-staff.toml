@@ -2,7 +2,7 @@ include = [
     "prisonpc-bad-package-conflicts-everyone",
 
     "gvncviewer",  # Control desktop (vnc://)
-    "gvfs-backends", "gvfs-fuse", "openssh-client"  # Browse p123's home (sftp://)
+    "gvfs-backends", "gvfs-fuse", "openssh-client",  # Browse p123's home (sftp://)
     "python3-vlc",  # rip movie DVD (FIXME: move into dvdrip.py.tarinfo)
     "asunder",      # Rip music CD
     "xfburn",       # Burn data DVD
