@@ -4,7 +4,11 @@
 
 # FIXME: https://bugs.debian.org/1004062 (inkscape offline help)
 
-# Apps that all sites get (not really per-site at all
+# The dban template is really just this one CLI "app".
+[dban]
+applications = ["nwipe"]
+
+# Apps that all sites get (not really per-site at all)
 [desktop]
 applications = [
     # Browser
