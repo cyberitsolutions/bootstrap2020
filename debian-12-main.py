@@ -582,6 +582,12 @@ if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
 if args.virtual_only and any(template.startswith('desktop') for template in args.templates):
     raise NotImplementedError("linux-image-cloud-amd64 lacks CONFIG_DRM, so cannot do GUI desktops")
+if args.virtual_only and 'tvserver' in args.templates:
+    # The error message is quite obscure:
+    #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
+    raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
+if args.ssh_server != 'openssh-server' and 'datasafe3' in args.templates:
+    raise NotImplementedError('datasafe3 only supports OpenSSH')
 
 for template in args.templates:
 
@@ -597,14 +603,8 @@ for template in args.templates:
     template_wants_PrisonPC_staff_network = (   # UGH!
         template.startswith('desktop-staff') or template == 'tvserver')
 
-    if template == 'datasafe3' and args.ssh_server != 'openssh-server':
-        raise NotImplementedError('datasafe3 only supports OpenSSH')
     if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
         logging.warning('prisonpc.tca3 server code expects OpenSSH')
-    if template == 'tvserver' and args.virtual_only:
-        # The error message is quite obscure:
-        #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
-        raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
     if template_wants_PrisonPC and args.boot_test and not (args.netboot_only and have_smbd):
         raise NotImplementedError(
             'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
