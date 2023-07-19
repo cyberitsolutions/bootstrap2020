@@ -56,35 +56,35 @@ import tvserver
 # Therefore, simply discard that output completely (StandardOutput=null).
 
 with tvserver.cursor() as cur:
-  with open('/run/systemd/system/tvserver.target', 'w') as fh_target:  # FIXME: reindent
-    print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
+    with open('/run/systemd/system/tvserver.target', 'w') as fh_target:  # FIXME: reindent
+        print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
 
-    # TV tuners
-    for row in tvserver.get_cards(cur):
-        # FIXME: make units use RuntimeDirectory=dvblast-%I and then store the .sock and .conf under that.
-        #        In that way, they will automatially be reaped when the unit ends.
-        dvblast_conf_path = pathlib.Path(f'/run/dvblast-{row.card}.conf')
-        dvblast_sock_path = dvblast_conf_path.with_suffix('.sock')
-        print(f'Wants=tvserver-epg-scan@{row.card}.timer', file=fh_target)
-        print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
-        # FIXME: until update-config runs, dvblast will tune the tuner, but not broadcast anything.
-        #        The equivalent of update-config should run here.
-        dvblast_conf_path.write_text('')  # create an empty config file
-        with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
-            print(
-                # This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
-                # The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
-                # --twb, Jan 2016 (#30682)
-                #   '[Unit]', 'After=sys-subsystem-dvb-adapter%d-frontend0.device' % card,
-                '[Service]',
-                'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
-                'StandardOutput=null',  # see FIXME above.
-                'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
-                f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
-                # NOTE: in theory "--network-name" works, but in practice we seem to need "-M".
-                f'ExecStart=dvblast --adapter {row.card} --frequency {row.frequency} --bandwidth 7 --dvb-compliance --epg-passthrough -M "{row.name}" --config-file {dvblast_conf_path} --remote-socket {dvblast_sock_path}',
-                sep='\n',
-                file=fh)
+        # TV tuners
+        for row in tvserver.get_cards(cur):
+            # FIXME: make units use RuntimeDirectory=dvblast-%I and then store the .sock and .conf under that.
+            #        In that way, they will automatially be reaped when the unit ends.
+            dvblast_conf_path = pathlib.Path(f'/run/dvblast-{row.card}.conf')
+            dvblast_sock_path = dvblast_conf_path.with_suffix('.sock')
+            print(f'Wants=tvserver-epg-scan@{row.card}.timer', file=fh_target)
+            print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
+            # FIXME: until update-config runs, dvblast will tune the tuner, but not broadcast anything.
+            #        The equivalent of update-config should run here.
+            dvblast_conf_path.write_text('')  # create an empty config file
+            with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
+                print(
+                    # This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
+                    # The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
+                    # --twb, Jan 2016 (#30682)
+                    #   '[Unit]', 'After=sys-subsystem-dvb-adapter%d-frontend0.device' % card,
+                    '[Service]',
+                    'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
+                    'StandardOutput=null',  # see FIXME above.
+                    'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
+                    f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
+                    # NOTE: in theory "--network-name" works, but in practice we seem to need "-M".
+                    f'ExecStart=dvblast --adapter {row.card} --frequency {row.frequency} --bandwidth 7 --dvb-compliance --epg-passthrough -M "{row.name}" --config-file {dvblast_conf_path} --remote-socket {dvblast_sock_path}',
+                    sep='\n',
+                    file=fh)
 
     # Local Channels
     for row in tvserver.get_local_channels(cur):
