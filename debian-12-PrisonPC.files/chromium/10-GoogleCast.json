@@ -1,0 +1,16 @@
+// https://en.wikipedia.org/wiki/Google_Cast
+// For sending audio/video from one device to another.
+// I'm not super clear on whether this is for the sender, or the receiver, or both.
+// In any case, block it.
+// UPDATE: I think this is the sender side.
+//         I think the receiver side is "CastReceiver" group,
+//         which only contains deprecated policies.
+{
+    "EnableMediaRouter": false,
+    "ShowCastIconInToolbar": false,
+    // These were in "Miscellaneous" (not "GoogleCast"), but clearly belong here.
+    // MediaRouterCastAllowAllIPs has no effect unless EnableMediaRouter=true.
+    "MediaRouterCastAllowAllIPs": false,
+    "AccessCodeCastEnabled": false,
+    "AccessCodeCastDeviceDuration": 60
+}

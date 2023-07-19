@@ -1,0 +1,4 @@
+// Don't search if you just type "ppcadm" in the address bar.
+{
+    "DefaultSearchProviderEnabled": false
+}

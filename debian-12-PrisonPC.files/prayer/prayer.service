@@ -1,0 +1,10 @@
+[Service]
+ExecStart=/usr/sbin/prayer --foreground --ports=80:0:3 $ERRATA
+# This drop-in is added by prisonpc.tca3 via tca.dir.
+# It looks like this:
+#     ERRATA=--config-option default_domain=tweak.prisonpc.com
+EnvironmentFile=-/prayer.errata
+RuntimeDirectory=prayer
+User=prayer
+SyslogFacility=mail
+NoNewPrivileges=1
