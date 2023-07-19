@@ -675,12 +675,6 @@ for template in args.templates:
              # Miscellaneous includes -- can't use do_stuff() because no .files.
              *['--include', ' '.join(
                  what for when, what in {
-                     # To watch store-bought DVDs we need deCSS.
-                     # FIXME: find an elegant way to put this next one into site-apps.toml.
-                     (template_wants_GUI and args.apps and template_wants_PrisonPC,
-                      'libdvdcss2'),  # needs debian-12-PrisonPC-desktop.sources
-                     (template_wants_GUI and args.apps and not template_wants_PrisonPC,
-                      'libdvd-pkg'),  # needs gcc & wget -- slow!
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template_wants_GUI and not template.startswith('desktop-inmate'),
                       'xfce4-terminal mousepad xfce4-screenshooter'),
