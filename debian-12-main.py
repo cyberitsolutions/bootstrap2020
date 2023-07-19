@@ -677,28 +677,6 @@ for template in args.templates:
                if template_wants_big_uptimes else []),
              *do_stuff('smartd', when=template_wants_disks and not args.virtual_only),
              *([*do_stuff('desktop'),
-                '--include='
-                '    xserver-xorg-core xserver-xorg-input-libinput'
-                '    xfce4-session xfwm4 xfdesktop4 xfce4-panel thunar galculator'
-                '    xdm'
-                '    pulseaudio xfce4-pulseaudio-plugin pavucontrol'
-                # Without "alsactl init" & /usr/share/alsa/init/default,
-                # pipewire/pulseaudio use the kernel default (muted & 0%)!
-                # alsa-ucm-conf provides default mixer levels for AMC's "black chassis" SoC boards
-                '    alsa-utils alsa-ucm-conf'
-                '    ir-keytable'   # infrared TV remote control
-                '    xfce4-xkb-plugin '  # basic foreign language input (e.g. Russian, but not Japanese)
-                '    xdg-user-dirs-gtk'  # Thunar sidebar gets Documents, Music &c
-                '    gvfs thunar-volman eject'  # Thunar trash://, DVD autoplay, DVD eject
-                '    xfce4-notifyd '     # xfce4-panel notification popups
-                # FIXME: use plocate (not mlocate) once PrisonPC master server upgrades!
-                '    catfish mlocate xfce4-places-plugin'  # "Find Files" tool
-                '    eog '  # chromium can't flip between 1000 photos quickly
-                '    usermode'                             # password reset tool
-                '    librsvg2-common'    # SVG icons in GTK3 apps
-                '    gnome-themes-extra adwaita-qt'  # theming
-                '    at-spi2-core gnome-accessibility-themes'
-                '    plymouth-themes',
                 # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
                 '--essential-hook=chronic chroot $1 apt install -y fontconfig-config',
                 *get_site_apps(template),
@@ -710,8 +688,6 @@ for template in args.templates:
                 # Staff and generic (non-PrisonPC) desktops
                 *(['--include=xfce4-terminal mousepad xfce4-screenshooter']
                   if not template.startswith('desktop-inmate') else []),
-                # FIXME: in Debian 12, change --include=pulseaudio to --include=pipewire,pipewire-pulse
-                # https://wiki.debian.org/PipeWire#Using_as_a_substitute_for_PulseAudio.2FJACK.2FALSA
                 # linux-image-cloud-amd64 is CONFIG_DRM=n so Xorg sees no /dev/dri/card0.
                 # It seems there is a fallback for -vga qxl, but not -vga virtio.
                 '--include=xserver-xorg-video-qxl'
