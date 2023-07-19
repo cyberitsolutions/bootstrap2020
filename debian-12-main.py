@@ -691,9 +691,7 @@ for template in args.templates:
                  }
                  if when)],
              *[f'--include={args.ssh_server}',
-               f'--essential-hook=tar-in {authorized_keys_tar_path} /',
-               # Work around https://bugs.debian.org/594175 (dropbear & openssh-server)
-               '--customize-hook=rm -f $1/etc/dropbear/dropbear_*_host_key $1/etc/ssh/ssh_host_*_key*'],
+               f'--essential-hook=tar-in {authorized_keys_tar_path} /'],
              '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
              '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
              *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
