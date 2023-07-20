@@ -15,11 +15,11 @@ parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(acceptable_risks_path=pathlib.Path(
     'debian-11-PrisonPC.hooks/customize95-check-for-suid-sgid.conf'))
 args = parser.parse_args()
-acceptable_risks = [
-    line.split()
+acceptable_risks = {
+    tuple(line.split())
     for line in args.acceptable_risks_path.read_text().splitlines()
     if line.strip()
-    if not line.startswith('#')]
+    if not line.startswith('#')}
 
 find_stdout = subprocess.check_output(
     ['chroot', args.chroot_path,
@@ -27,6 +27,12 @@ find_stdout = subprocess.check_output(
      '-perm', '/7000',          # any combination of suid/sgid/sticky
      '-printf', '%M %u:%-6g %p\n'],
     text=True)
-for match_str in find_stdout.splitlines():
-    if match_str.split() not in acceptable_risks:
-        raise RuntimeError('Risk not accepted', match_str)
+risks = {
+    tuple(match_str.split())
+    for match_str in find_stdout.splitlines()}
+
+unacceptable_risks = risks - acceptable_risks
+if unacceptable_risks:
+    raise RuntimeError('Risk(s) not accepted', *(
+        ' '.join(words) for words in sorted(
+            unacceptable_risks, key=lambda words: words[-1])))
