@@ -292,7 +292,7 @@ def do_boot_test():
             (testdir / 'site.dir/etc/nftables.conf.d/11-PrisonPC-master-server-address.conf').write_text(
                 f'define PrisonPC = {master_address};')
             (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
-                pathlib.Path('debian-12-PrisonPC/firewall-boot-test.nft').read_text())
+                pathlib.Path('debian-12-PrisonPC.files/firewall-boot-test.nft').read_text())
             if template.startswith('desktop-inmate'):
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
