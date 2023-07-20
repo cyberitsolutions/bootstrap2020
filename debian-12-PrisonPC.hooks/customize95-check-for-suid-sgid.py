@@ -13,7 +13,7 @@ So require a human to explicitly "accept the risk" for each one.
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(acceptable_risks_path=pathlib.Path(
-    'debian-11-PrisonPC.hooks/customize95-check-for-suid-sgid.conf'))
+    'debian-12-PrisonPC.hooks/customize95-check-for-suid-sgid.conf'))
 args = parser.parse_args()
 acceptable_risks = {
     tuple(line.split())

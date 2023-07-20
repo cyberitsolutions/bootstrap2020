@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter)
 parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(policy_path=pathlib.Path(
-    'debian-11-PrisonPC.hooks/customize80-chmod-scary-binaries.conf'))
+    'debian-12-PrisonPC.hooks/customize80-chmod-scary-binaries.conf'))
 args = parser.parse_args()
 
 Policy = collections.namedtuple('Policy', 'mode owner group path')

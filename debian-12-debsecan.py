@@ -36,7 +36,7 @@ NOTE: everywhere this talks about "package name" or "package version",
 """
 
 parser = argparse.ArgumentParser(
-    description='ssh cyber@tweak.prisonpc.com python3 - < debian-11-debsecan.py',
+    description='ssh cyber@tweak.prisonpc.com python3 - < debian-12-debsecan.py',
     epilog='Example: --old=2022-01-01-* --new=2022-02-01-*')
 parser.add_argument('--old-version', default='previous')
 parser.add_argument('--new-version', default='latest')
