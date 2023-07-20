@@ -257,7 +257,12 @@ Conflicts:
  libnm0,
  libnma0,
  ifupdown,
- resolvconf,
+## UPDATE: as at Debian 12, systemd-resolvd Provides resolvconf.
+##         It is a stub resolvconf that only understands resolved.
+#          It is harmless, so we must remove resolvconf from here.
+#          Actually, if I say << 252 it'll block resolvconf and openresolv, but
+#          still allow systemd-resolved...
+ resolvconf (<< 252.6-1),
  ifupdown2,
  ifupdown-multi,
  mobile-broadband-provider-info,
