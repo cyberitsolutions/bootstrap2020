@@ -100,10 +100,25 @@ usr/lib/dropbear
 **/systemd/**/*debug*
 **/systemd/*emergency*
 **/systemd/**/*emergency*
-**/systemd/*rescue*
-**/systemd/**/*rescue*
 **/systemd/*shell*
 **/systemd/**/*shell*
+# <twb> WTF happened here?  Failed to preset unit, file "runlevel1.target": Link has been severed
+# <twb> Ah looks like if I delete rescue.target I have to also delete runlevel1.target now.
+# <mjt0k> deleting targets seems like a.. strange idea
+# <twb> It is; the glob is mainly trying to delete the actual binaries
+# <mjt0k> guess you'll have to rearrange quite a few dependencies to keep the whole thing working, as they're tied to each other in a certain way
+# <twb> It started out deleting /usr/sbin/*getty and then spiralled out of control :-)
+# For now, blow away the runlevel files as well.
+# UPDATE: OK that did not work.
+# **/systemd/*rescue*
+# **/systemd/**/*rescue*
+#**/systemd/runlevel1.target
+#**/systemd/runlevel1.target.wants
+**/systemd/*rescue*.service
+**/systemd/**/*rescue*.service
+# FIXME Based on "systemd-analyze dot rescue.target | dot -Tsvg | with-temp-file eog"
+#       I think I should instead make rescue.target an alias for shutdown.target, and
+#       delete rescue.service.
 # kauth / kf5auth is polkit-ish middleware for KDE.
 # The library is unavoidably installed via libkf5kiocore5, which all KDE apps use.
 # Our KDE games and education apps shouldn't EVER need root!
