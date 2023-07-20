@@ -13,5 +13,8 @@ include = [
     # Make things work better with systemd-networkd
     'libnss-myhostname',        # replaces /etc/hostname and stub /etc/hosts
     'libnss-resolve',
-    'policykit-1'     # https://github.com/openbmc/openbmc/issues/3543
+    # NOTE: in Debian 12, "policykit-1" was split into two packages
+    #       "pkexec" (not used except by attackers) and
+    #       "polkitd" (used by systemd-hostnamed, udisks2, upower, &c).
+    'polkitd'         # https://github.com/openbmc/openbmc/issues/3543
 ]
