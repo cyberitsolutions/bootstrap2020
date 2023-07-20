@@ -99,6 +99,14 @@ args = parser.parse_args()
 #         For example "aptitude install 'perl+&M'; aptitude autoremove" may or may not remove perl,
 #         depending on whether debconf was already installed.
 #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
+#
+# PROBLEM!  I reordered stuff in debian-12-main.py, and now PrisonPC hooks (like this one) run
+# BEFORE /boot/vmlinuz and /boot/initrd.img are copied out, to sit next to filesystem.squashfs.
+# This works fine except that we temporarily install tiny-initramfs, and
+# tiny-initramfs has a postinst trigger that replaces /boot/initrd.img.
+# So as a simple hack, replace mktirfs with /bin/true, so it NOPs out.
+subprocess.check_call(['chroot', args.chroot_path, 'dpkg-divert', '/usr/sbin/mktirfs'])
+(args.chroot_path / 'usr/sbin/mktirfs').symlink_to('/bin/true')
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'apt', 'purge', '--autoremove', '--assume-yes',
