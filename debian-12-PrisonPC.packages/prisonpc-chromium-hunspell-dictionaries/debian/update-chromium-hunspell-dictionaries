@@ -1,0 +1,4 @@
+#!/bin/sh
+umask go-rwx
+mkdir -p                                                      ~/.config/chromium/Dictionaries/
+cp -vudRT /usr/share/prisonpc-chromium-hunspell-dictionaries/ ~/.config/chromium/Dictionaries/
