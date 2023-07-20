@@ -1,11 +1,13 @@
-prisonpc-ersatz (12.4) bookworm; urgency=medium
+prisonpc-ersatz (12.9) bookworm; urgency=medium
 
   * Bump for Debian 12 bookworm.
   * Bump "Provides: foo (= N)" lines in debian/control to match Debian 12.
   * Do not conflict with systemd-resolved's new "Provides: resolvconf".
   * mousepad (staff-only) now requires gtksourceview 4 (not 3).
+  * Update the udev rules denylist for Debian 12.
+  * Update MOST other broad-spectrum denylists for Debian 12.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Thu, 20 Jul 2023 17:13:18 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 20 Jul 2023 19:40:09 +1000
 
 prisonpc-ersatz (11.37) unstable; urgency=medium
 
