@@ -9,7 +9,7 @@
 # it looked like it would be rather messy.
 #
 # Likewise, this should probably be a template that
-# gets "10.0.2.x" or "10.128.2.x" from debian-11-main.py at runtime.
+# gets "10.0.2.x" or "10.128.2.x" from debian-12-main.py at runtime.
 # That also felt excessively messy.
 #
 # The main counter-argument is that this approach means that VM

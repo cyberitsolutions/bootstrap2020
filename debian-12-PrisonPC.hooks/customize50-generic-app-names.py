@@ -9,7 +9,7 @@ We want app names like "Word Processor" (not "LibreOffice Writer").
 
 Note that this list also informs the "popularity contest".
 FIXME: should we use "import xdg.DesktopEntry" here, too?
-https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC/xfce/popcon.py
+https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC/xfce/popcon.py
 
 Problem #1:
 xfce4-panel's built-in show-generic-names=true does not affect sort order.

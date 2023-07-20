@@ -89,7 +89,7 @@ args = parser.parse_args()
 # some drivers may be loaded AFTER pivot_root.
 #
 # We DO NOT have to sit through a SLOW, needless rd rebuild, as
-# debian-11-main.py has already removed /boot/vmlinuz*, so
+# debian-12-main.py has already removed /boot/vmlinuz*, so
 # the update-initramfs trigger does nothing.
 #
 # We use apt first for --autoremove, then

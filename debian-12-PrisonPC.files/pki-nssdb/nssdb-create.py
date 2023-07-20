@@ -199,7 +199,7 @@ with tempfile.TemporaryDirectory() as td:
     (dest / 'key4.db').write_bytes(
         (root / 'key4.db').read_bytes())
 
-    # Tell debian-11-main.py how to install the files certutil created.
+    # Tell debian-12-main.py how to install the files certutil created.
     # NOTE: we need an explicit recent mtime, because
     #       nssdb-install.py runs cp --update.
     mtime = 1638316800         # date +%s -d 2021-12-01T00:00:00+00:00

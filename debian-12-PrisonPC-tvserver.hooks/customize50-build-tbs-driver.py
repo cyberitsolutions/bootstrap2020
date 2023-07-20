@@ -75,7 +75,7 @@ subprocess.check_call([
 # Compile (much!) faster by running up to 1 compiler per CPU core.
 os.environ['MAKEFLAGS'] = f'kj{int(subprocess.check_output(["nproc"]))}'
 
-# # These installs now happen via --include= in debian-11-main.py
+# # These installs now happen via debian-12-PrisonPC-tvserver.toml
 # chroot $t apt-get install build-essential ca-certificates git bzip2
 # chroot $t apt-get install linux-compiler-gcc-6-x86/$r-backports
 # chroot $t apt-get install linux-headers-$a/$r-backports
