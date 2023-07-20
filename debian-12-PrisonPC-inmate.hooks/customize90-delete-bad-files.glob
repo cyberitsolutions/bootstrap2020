@@ -10,6 +10,6 @@
 # talks to it over stdio!
 # The end result being: staff need /usr/bin/ssh!
 # https://sources.debian.org/src/gvfs/1.48.1-2/daemon/gvfsbackendsftp.c/#L244
-# See also debian-11-PrisonPC-inmate.hooks/customize90-delete-bad-files.glob.
+# See also debian-12-PrisonPC-inmate.hooks/customize90-delete-bad-files.glob.
 **/*bin/ssh
 /etc/ssh/ssh_config

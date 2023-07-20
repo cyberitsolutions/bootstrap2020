@@ -137,7 +137,7 @@ Description: appease hunspell-en-au
  This avoids a little emacs/debconf/perl crap.
  .
  Note that Chromium already has special handling (which doesn't use dictionaries-common):
- https://github.com/cyberitsolutions/bootstrap2020/tree/main/debian-11-PrisonPC.packages/prisonpc-chromium-hunspell-dictionaries/debian
+ https://github.com/cyberitsolutions/bootstrap2020/tree/main/debian-12-PrisonPC.packages/prisonpc-chromium-hunspell-dictionaries/debian
 
 Package: prisonpc-bad-package-conflicts-inmates
 Depends:
@@ -887,7 +887,7 @@ Conflicts:
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
 # FIXME: java-wrappers depends on dpkg.
-#        https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC.hooks/customize80-purge-bad-packages.py
+#        https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.hooks/customize80-purge-bad-packages.py
 #        could fix this by simply replacing "$(dpkg --print-architecture)" with "amd64".
 #        This is only useful for 47 apps total, so blacklisting for now.
 #        Of those 47, only these are interesting:

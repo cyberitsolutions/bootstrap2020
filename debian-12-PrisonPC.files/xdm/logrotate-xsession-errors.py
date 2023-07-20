@@ -35,7 +35,7 @@ try:
 except FileNotFoundError:
     logging.info('~/.xsession-errors did not exist, so not removing.')
 
-# UPDATE: in debian-11-PrisonPC.hooks/customize20-disable-xinitrc.py
+# UPDATE: in debian-12-PrisonPC.hooks/customize20-disable-xinitrc.py
 #         we run
 #         update-alternatives --set x-session-manager /usr/bin/xfce4-session
 #         which skips harmful startxfce4 wrapper.

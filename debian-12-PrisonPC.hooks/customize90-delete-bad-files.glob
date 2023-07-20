@@ -108,7 +108,7 @@ usr/lib/dropbear
 # The library is unavoidably installed via libkf5kiocore5, which all KDE apps use.
 # Our KDE games and education apps shouldn't EVER need root!
 # polkit itself is handled here:
-#     https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC/polkit-policy.ini
+#     https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC/polkit-policy.ini
 #     https://github.com/cyberitsolutions/bootstrap2020/commit/9bb89da308bd82ad6a393c3e9102b30f97caf4ec
 /usr/share/dbus-1/system.d/*kde*auth*.conf
 /usr/lib/**/qt5/plugins/kauth
@@ -146,7 +146,7 @@ usr/lib/dropbear
 ## ==================================================
 # From gimp.  Screenshots lead to ersatz child porn.
 # For more discussion see
-# https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC.packages/build-vlc.py
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-vlc.py
 **/gimp/**/plug-ins/screenshot
 # LibreOffice also has a screenshot feature, but
 # AFAICT it can only screenshot libreoffice windows, so

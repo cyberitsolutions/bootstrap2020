@@ -2,7 +2,7 @@
 #
 # Instead of having to manually call
 #     systemctl enable foo bar baz quux
-# in the debian-11-main.py, we can just do
+# in the debian-12-main.py, we can just do
 #     systemctl preset-all
 # This is MOSTLY the same as
 #     systemctl enable '*'

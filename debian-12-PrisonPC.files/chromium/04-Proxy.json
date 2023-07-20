@@ -3,5 +3,5 @@
 //   * in no group in https://chromeenterprise.google/static/json/policy_templates_en-US.json
 //   * in "Miscellaneous" in https://chromeenterprise.google/policies
 //   * in https://github.com/cyberitsolutions/bootstrap2020/blob/twb/doc/30099-chromium-updates.d/X-GrouplessPolicies.json
-//   * https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-11-PrisonPC/chromium/00-Proxy.json
+//   * https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-PrisonPC/chromium/00-Proxy.json
 {}
