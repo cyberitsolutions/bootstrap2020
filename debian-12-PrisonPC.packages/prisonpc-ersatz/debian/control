@@ -156,7 +156,7 @@ Description:
  inmates MUST NOT have, but staff MUST have.
 Conflicts:
  xfce4-terminal, x-terminal-emulator, libvte-2.91-0,
- mousepad, libgtksourceview-3.0-1,
+ mousepad, libgtksourceview-4-0,
  xfce4-screenshooter,
 # NOTE: staff need ntfs3 and exfat
 # https://alloc.cyber.com.au/task/task.php?taskID=24592
@@ -485,7 +485,7 @@ Conflicts:
  xfce4-whiskermenu-plugin,
 ## Inmates SHOULD NOT have a text editor
 ## =====================================
-# NOTE: staff need mousepad (GUI text editor), thus also libgtksourceview-3.0-1.
+# NOTE: staff need mousepad (GUI text editor), thus also libgtksourceview-4-0.
 # CLI text editors
  editor,
 # https://codesearch.debian.net/search?q=update-alternatives+--install+%2Fusr%2Fbin%2Feditor+editor&literal=1
@@ -513,7 +513,8 @@ Conflicts:
 # The GTK / Qt widgets that provide text editor functionality.
 # This will error out if an app has such an editor as an embedded widget.
  libkf5texteditor5,
- libgtksourceview-4-0,
+ libgtksourceview-5-0,
+ libgtksourceview-3.0-1,
  gir1.2-gtksource-4,
 # ?source-package(kross) is for "embedded scripting", but orthogonal to kf5texteditor?
  kross-dev, kross, libkf5krosscore5, libkf5krossui5,
