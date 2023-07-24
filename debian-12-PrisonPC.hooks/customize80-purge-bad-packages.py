@@ -105,7 +105,9 @@ args = parser.parse_args()
 # This works fine except that we temporarily install tiny-initramfs, and
 # tiny-initramfs has a postinst trigger that replaces /boot/initrd.img.
 # So as a simple hack, replace mktirfs with /bin/true, so it NOPs out.
-subprocess.check_call(['chroot', args.chroot_path, 'dpkg-divert', '/usr/sbin/mktirfs'])
+subprocess.check_call([
+    'chroot', args.chroot_path,
+    'dpkg-divert', '--rename', '/usr/sbin/mktirfs'])
 (args.chroot_path / 'usr/sbin/mktirfs').symlink_to('/bin/true')
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
