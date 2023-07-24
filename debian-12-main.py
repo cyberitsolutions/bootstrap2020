@@ -139,6 +139,16 @@ def do_stuff(keyword: str, when: bool = True) -> list:
     return acc
 
 
+def maybe_debug_shell():
+    if not args.debug_shell:
+        return []
+    else:
+        return [
+            f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
+            '--customize-hook=env -i TERM=$TERM PATH=/bin:/sbin chroot $1 bash -i',
+            '--customize-hook=false "Do not continue building after a debug shell."']
+
+
 def mmdebstrap_but_zstd(args):
     "mmdebstrap ALWAYS uses -comp xz when emitting a squashfs."
     "This is a bad speed/size tradeoff, so use zstd instead."
@@ -658,6 +668,7 @@ for template in args.templates:
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
+             *maybe_debug_shell(),  # before do_stuff('PrisonPC') removes apt & dpkg!
              *do_stuff('main'),
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
@@ -702,10 +713,6 @@ for template in args.templates:
                 '--include=strace',
                 '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf']
                if args.backdoor_enable else []),
-             *([f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
-                '--customize-hook=PAGER=cat LOGNAME=root USERNAME=root USER=root HOME=/root chroot $1 bash -i; false',
-                '--customize-hook=rm -f $1/etc/debian_chroot']
-               if args.debug_shell else []),
              *(['--customize-hook=upload doc/debian-12-app-reviews.csv /tmp/app-reviews.csv',
                 '--customize-hook=chroot $1 python3 < debian-12-install-footprint.py',
                 '--customize-hook=download /var/log/install-footprint.csv'
