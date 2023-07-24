@@ -134,17 +134,56 @@ with tempfile.TemporaryDirectory() as td:
          # The only downside is if upstream's build-deps change, then
          # we'll waste a little time and space.
          # https://sources.debian.org/src/linux/5.14.9-2%7Ebpo11+1/debian/control/#L7-L9
-         '--include='
-         ' debhelper dh-exec python3 quilt cpio xz-utils dh-python bison flex'
-         ' kernel-wedge kmod bc libssl-dev openssl libelf-dev rsync lz4'
-         ' dwarves gcc-10 python3-docutils zlib1g-dev libcap-dev libpci-dev'
-         ' autoconf automake libtool libglib2.0-dev libudev-dev libwrap0-dev'
-         ' asciidoctor gcc-multilib libaudit-dev libbabeltrace-dev'
-         ' libbabeltrace-dev libdw-dev libiberty-dev libnewt-dev libnuma-dev'
-         ' libperl-dev libunwind-dev libopencsd-dev python3-dev'
-         ' graphviz python3-sphinx python3-sphinx-rtd-theme'
-         ' texlive-latex-base texlive-latex-extra dvipng patchutils',
-
+         '--include', ' '.join([
+             'asciidoctor',
+             'autoconf',
+             'automake',
+             'bc',
+             'bison',
+             'cpio',
+             'debhelper',
+             'dh-exec',
+             'dh-python',
+             'dvipng',
+             'dwarves',
+             'flex',
+             'gcc-10',
+             'gcc-multilib',
+             'graphviz',
+             'kernel-wedge',
+             'kmod',
+             'libaudit-dev',
+             'libbabeltrace-dev',
+             'libcap-dev',
+             'libdw-dev',
+             'libelf-dev',
+             'libglib2.0-dev',
+             'libiberty-dev',
+             'libnewt-dev',
+             'libnuma-dev',
+             'libopencsd-dev',
+             'libpci-dev',
+             'libperl-dev',
+             'libssl-dev',
+             'libtool',
+             'libudev-dev',
+             'libunwind-dev',
+             'libwrap0-dev',
+             'lz4',
+             'openssl',
+             'patchutils',
+             'python3',
+             'python3-dev',
+             'python3-docutils',
+             'python3-sphinx',
+             'python3-sphinx-rtd-theme',
+             'quilt',
+             'rsync',
+             'texlive-latex-base',
+             'texlive-latex-extra',
+             'xz-utils',
+             'zlib1g-dev',
+         ]),
          # Get the /boot/config-* to be copied out as "config-current".
          *(['--include=curl ca-certificates tiny-initramfs',
             f'--customize-hook=chroot $1 curl --output x.deb --proxy {apt_proxy} {args.deb_url}',
