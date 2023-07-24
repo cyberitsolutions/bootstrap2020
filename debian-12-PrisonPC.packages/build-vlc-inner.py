@@ -81,6 +81,8 @@ if False:
 # NOTE: we need cdda:// for music CDs.
 #       That and VCD (bootleg Malaysian market movie CDs) use the same configure option (--enable-vcd).
 #       Therefore we do not add vcd to shit_modules.
+#
+# FIXME: in Debian 12, can we replace pulseaudio with pipewire?
 shit_modules = """
 sout lua vlm addonmanagermodules
 archive live555 dc1394 dv1394 linsys bluray opencv smbclient dsm sftp nfs smb2 v4l2
@@ -137,6 +139,14 @@ usr/lib/*/vlc/plugins/access/libvdr_plugin.so
 usr/lib/*/vlc/plugins/access/libvnc_plugin.so
 usr/lib/*/vlc/plugins/access/libxcb_screen_plugin.so
 usr/lib/*/vlc/plugins/access_output
+usr/lib/*/vlc/plugins/access_output/libaccess_output_dummy_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_file_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_http_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_livehttp_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_rist_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_shout_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_srt_plugin.so
+usr/lib/*/vlc/plugins/access_output/libaccess_output_udp_plugin.so
 usr/lib/*/vlc/plugins/audio_output/libadummy_plugin.so
 usr/lib/*/vlc/plugins/audio_output/libafile_plugin.so
 usr/lib/*/vlc/plugins/audio_output/libalsa_plugin.so
