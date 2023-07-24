@@ -107,7 +107,7 @@ args = parser.parse_args()
 # So as a simple hack, replace mktirfs with /bin/true, so it NOPs out.
 subprocess.check_call([
     'chroot', args.chroot_path,
-    'dpkg-divert', '--rename', '/usr/sbin/mktirfs'])
+    'dpkg-divert', '--quiet', '--rename', '/usr/sbin/mktirfs'])
 (args.chroot_path / 'usr/sbin/mktirfs').symlink_to('/bin/true')
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
