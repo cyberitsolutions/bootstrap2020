@@ -592,7 +592,7 @@ if args.production:
 
 if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
-if args.virtual_only and any(template.startswith('desktop') for template in args.templates):
+if args.boot_test and args.virtual_only and any(template.startswith('desktop') for template in args.templates):
     raise NotImplementedError("linux-image-cloud-amd64 lacks CONFIG_DRM, so cannot do GUI desktops")
 if args.virtual_only and 'tvserver' in args.templates:
     # The error message is quite obscure:
