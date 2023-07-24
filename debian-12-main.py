@@ -175,9 +175,11 @@ def mmdebstrap_but_zstd(args):
         mmdebstrap_proc.wait()
         mmtarfilter_proc.wait()
         if mmdebstrap_proc.returncode:
-            raise RuntimeError('mmdebstrap crashed')
+            logging.error('mmdebstrap crashed')
+            exit(1)
         if mmtarfilter_proc.returncode:
-            raise RuntimeError('mmtarfilter crashed')
+            logging.error('mmtarfilter crashed')
+            exit(1)
 
 
 def do_boot_test():
