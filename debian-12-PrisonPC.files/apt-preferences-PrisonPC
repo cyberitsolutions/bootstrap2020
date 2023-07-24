@@ -2,3 +2,8 @@ Explanation: use quota with server-side code disabled (FIXME: remove when Prison
 Package: src:quota
 Pin: release o=Cyber
 Pin-Priority: 500
+
+Explanation: use marble with webengine support disabled
+Package: src:marble
+Pin: release o=Cyber
+Pin-Priority: 500
