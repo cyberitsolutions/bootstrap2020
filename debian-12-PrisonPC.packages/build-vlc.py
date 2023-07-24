@@ -38,15 +38,15 @@ with tempfile.TemporaryDirectory() as td:
          '--include=devscripts,libdistro-info-perl,python-is-python3,build-essential',
          '--customize-hook=chroot $1 python - < build-vlc-inner.py',
          f'--customize-hook=sync-out /X {td}',
-         'bullseye',
+         'bookworm',
          '/dev/null',
-         '../debian-11.sources'])
+         '../debian-12.sources'])
     # FIXME: currently rsync exits non-zero.
     #        This is minor enough I'm ignoring it for now.
-    #          rsync: [generator] failed to set times on "/srv/apt/PrisonPC/pool/bullseye/desktop/.": Operation not permitted (1)
+    #          rsync: [generator] failed to set times on "/srv/apt/PrisonPC/pool/bookworm/desktop/.": Operation not permitted (1)
     #          rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1333) [sender=3.2.3]
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/'])
+        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/'])
