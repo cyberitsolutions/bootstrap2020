@@ -111,7 +111,7 @@ with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
     subprocess.check_call(
         ['mmdebstrap',
-         '--variant=buildd',
+         '--variant=apt', '--include=build-essential',
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
@@ -126,7 +126,7 @@ with tempfile.TemporaryDirectory() as td:
 
          '--include=devscripts',        # for "dcmd cp" in inner.py
          '--include=libdistro-info-perl',  # for "dch --create" in inner.py
-         '--include=gcc-10-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
+         '--include=gcc-12-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
          '--include=zstd',               # for CONFIG_KERNEL_XZ
 
          # We call "apt build-dep", so this line is not strictly needed.
@@ -134,6 +134,7 @@ with tempfile.TemporaryDirectory() as td:
          # The only downside is if upstream's build-deps change, then
          # we'll waste a little time and space.
          # https://sources.debian.org/src/linux/5.14.9-2%7Ebpo11+1/debian/control/#L7-L9
+         # https://sources.debian.org/src/linux/6.1.38-1/debian/control/#L7-L9
          '--include', ' '.join([
              'asciidoctor',
              'autoconf',
@@ -145,9 +146,8 @@ with tempfile.TemporaryDirectory() as td:
              'dh-exec',
              'dh-python',
              'dvipng',
-             'dwarves',
              'flex',
-             'gcc-10',
+             'gcc-12',
              'gcc-multilib',
              'graphviz',
              'kernel-wedge',
@@ -164,17 +164,24 @@ with tempfile.TemporaryDirectory() as td:
              'libopencsd-dev',
              'libpci-dev',
              'libperl-dev',
+             'libpython3-dev',
              'libssl-dev',
              'libtool',
+             'libtraceevent-dev',
+             'libtracefs-dev',
              'libudev-dev',
              'libunwind-dev',
              'libwrap0-dev',
+             'libzstd-dev',
              'lz4',
              'openssl',
+             'pahole',
              'patchutils',
              'python3',
              'python3-dev',
              'python3-docutils',
+             'python3-jinja2',
+             'python3-setuptools',
              'python3-sphinx',
              'python3-sphinx-rtd-theme',
              'quilt',
@@ -192,7 +199,7 @@ with tempfile.TemporaryDirectory() as td:
            # NORMAL USAGE: just delegate to apt.
            ['--include=linux-image-amd64 tiny-initramfs']),
          '--essential-hook=mkdir -p $1/etc/apt/preferences.d/',
-         '--essential-hook=copy-in ../debian-11-main/apt-preferences-bullseye-backports /etc/apt/preferences.d/',
+         '--essential-hook=copy-in ../debian-12-main.files/apt-preferences-bookworm-backports.conf /etc/apt/preferences.d/',
          '--customize-hook=cp -T $1/boot/config-* $1/boot/build-inmate-kernel.config-current',
          '--customize-hook=copy-out boot/build-inmate-kernel.config-current ./',
          '--customize-hook=copy-in build-inmate-kernel.config-old /boot/',
@@ -217,9 +224,9 @@ with tempfile.TemporaryDirectory() as td:
          # Copy the built kernel back out.
          f'--customize-hook=sync-out /X {td}',
 
-         'bullseye',
+         'bookworm',
          '/dev/null',
-         '../debian-11.sources'
+         '../debian-12.sources'
          ])
     if args.upload:
         # debsign here?
@@ -230,4 +237,4 @@ with tempfile.TemporaryDirectory() as td:
             'rsync', '-ai', '--info=progress2', '--protect-args',
             '--no-group',       # allow remote sgid dirs to do their thing
             f'{td}/',     # trailing suffix forces correct rsync semantics
-            f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bullseye/desktop/linux-{package_version}/'])
+            f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/linux-{package_version}/'])
