@@ -125,6 +125,8 @@ if search_dirs:
     #         For example "aptitude install 'perl+&M'; aptitude autoremove" may or may not remove perl,
     #         depending on whether debconf was already installed.
     #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
+    #
+    # UPDATE: this happened with Recommends also -- Inkscape recommends python3-lxml now.
     subprocess.check_call(['chronic', 'chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
     packages_new = packages()
     if problems := (packages_old ^ packages_new) - acceptable_risks:
