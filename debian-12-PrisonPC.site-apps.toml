@@ -60,7 +60,7 @@ applications = [
     # Games Card
     "aisleriot",
     # Games Chess
-    "gnome-chess", "crafty", "fairymax", "fruit", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
     # Games Platform
     "alex4", "caveexpress", "xmoto", "ballz", "nikwi", "seahorse-adventures",
     # Games Puzzle
@@ -98,7 +98,7 @@ applications = [
 #   VERY POPULAR (WEEKS PER SITE-YEAR)
     "gnome-2048",
     "lbreakout2",
-    "gnome-chess", "crafty", "fairymax", "fruit", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
     "gnome-sudoku",
     "freedoom",
     "blobwars",
@@ -233,7 +233,7 @@ applications = [
 applications = [
     "aisleriot",
     "gnome-sudoku",
-    "gnome-chess", "crafty", "fairymax", "fruit", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
     "gnome-mines",
     "klavaro",
     "kgeography",
@@ -250,7 +250,7 @@ applications = [
     "gnome-mahjongg",
     "aisleriot",
     "gnome-sudoku",
-    "gnome-chess", "crafty", "fairymax", "fruit", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
     "gnome-mines",
     "quadrapassel",
     "blockattack",
@@ -294,7 +294,7 @@ applications = [
     "gnome-mahjongg",
     "aisleriot",
     "gnome-sudoku",
-    "gnome-chess", "crafty", "fairymax", "fruit", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
     "gnome-mines",
     "quadrapassel",
     "blockattack",
