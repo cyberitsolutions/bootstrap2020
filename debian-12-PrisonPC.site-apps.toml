@@ -108,7 +108,7 @@ applications = [
 #   POPULAR (DAYS PER SITE-YEAR)
     "gimp", "gimp-help-en",
     "kolf",
-    "freeciv", "freeciv-server", "freeciv-sound-standard",
+    "freeciv", "freeciv-server",
     "seahorse-adventures",
     "kobodeluxe",
     "frozen-bubble",
@@ -337,7 +337,7 @@ applications = [
     "lincity-ng",
     "nikwi",
     "solarwolf",
-    "freeciv", "freeciv-server", "freeciv-sound-standard",
+    "freeciv", "freeciv-server",
     "prisonpc-wesnoth-addons",
     "epiphany",
     "ceferino",
