@@ -64,7 +64,9 @@ applications = [
     # Games Platform
     "alex4", "caveexpress", "xmoto", "ballz", "nikwi", "seahorse-adventures",
     # Games Puzzle
-    "atomix", "gtans", "puzzle-jigsaw", "gnubik", "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gbrainy", "gnome-mines",
+    "atomix", "gtans", "puzzle-jigsaw",
+    "pybik",
+    "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gbrainy", "gnome-mines",
     # Games Tetris
     "blockattack", "stax", "cuyo", "quadrapassel",
     # Games Strategy
@@ -168,7 +170,7 @@ applications = [
     "gnome-mastermind",
     "gnome-nibbles",
     "gnome-tetravex",
-    "gnubik",
+    "pybik",
     "gplanarity",
     "gtans",
     "gtick",
