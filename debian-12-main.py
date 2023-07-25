@@ -142,11 +142,21 @@ def do_stuff(keyword: str, when: bool = True) -> list:
 def maybe_debug_shell():
     if not args.debug_shell:
         return []
-    else:
-        return [
-            f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
-            '--customize-hook=env -i TERM=$TERM PATH=/bin:/sbin chroot $1 bash -i',
-            '--customize-hook=false "Do not continue building after a debug shell."']
+    return [
+        f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
+        '--customize-hook=env -i TERM=$TERM PATH=/bin:/sbin chroot $1 bash -i',
+        '--customize-hook=false "Do not continue building after a debug shell."']
+
+
+def maybe_measure_install_footprints():
+    if not args.measure_install_footprints:
+        return []
+    return [
+        '--customize-hook=upload doc/debian-12-app-reviews.csv /tmp/app-reviews.csv',
+        '--customize-hook=chroot $1 python3 < debian-12-install-footprint.py',
+        '--customize-hook=download /var/log/install-footprint.csv'
+        f'    doc/debian-12-install-footprint.{template}.csv',
+        '--customize-hook=false "Do not continue building after measuring install footprints."']
 
 
 def mmdebstrap_but_zstd(args):
@@ -669,8 +679,9 @@ for template in args.templates:
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
-             *maybe_debug_shell(),  # before do_stuff('PrisonPC') removes apt & dpkg!
              *do_stuff('main'),
+             *maybe_debug_shell(),  # before 'PrisonPC' breaks apt!
+             *maybe_measure_install_footprints(),  # after 'main' fixes DNS, before 'PrisonPC' breaks apt!
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *do_stuff('main-unattended-upgrades', when=template_wants_big_uptimes),
@@ -714,11 +725,6 @@ for template in args.templates:
                 '--include=strace',
                 '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf']
                if args.backdoor_enable else []),
-             *(['--customize-hook=upload doc/debian-12-app-reviews.csv /tmp/app-reviews.csv',
-                '--customize-hook=chroot $1 python3 < debian-12-install-footprint.py',
-                '--customize-hook=download /var/log/install-footprint.csv'
-                f'    doc/debian-12-install-footprint.{template}.csv']
-               if args.measure_install_footprints else []),
              # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
              # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
              f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status',
