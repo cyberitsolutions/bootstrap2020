@@ -1,0 +1,2088 @@
+Section,Subsection,Name,Verdict,Score,Cost (MiB),Rank,Description
+education,astronomy,gpredict,TODO,94296,6,15716,Satellite tracking program
+education,astronomy,kstars,TODO,1222158,98,12471,"desktop planetarium, observation planning and telescope control"
+education,astronomy,lightspeed,TODO,N/A,N/A,N/A,N/A
+education,astronomy,openuniverse,TODO,120155,5,24031,3D Universe Simulator
+education,astronomy,stellarium,TODO,2001500,250,8006,real-time photo-realistic sky generator
+education,astronomy,sunclock,TODO,36214,2,18107,fancy clock showing time and geographical data
+education,astronomy,xplanet,TODO,10596,1,10596,planetary body renderer
+education,astronomy,xplanet-images,TODO,191331,1,191331,imagery for xplanet
+education,astronomy,xtide,TODO,N/A,N/A,N/A,N/A
+education,astronomy,xtide-data,TODO,191480,1,191480,Harmonics data for xtide
+education,chemistry,avogadro,TODO,99756,6,16626,Molecular Graphics and Modelling System
+education,chemistry,chemtool,TODO,89788,4,22447,chemical structures drawing program
+education,chemistry,easychem,TODO,24280,1,24280,Draw high-quality molecules and 2D chemical formulas
+education,chemistry,gchempaint,TODO,327390,14,23385,2D chemical structures editor for the GNOME2 desktop
+education,chemistry,gdis,TODO,45886,2,22943,molecular and crystal model viewer
+education,chemistry,gperiodic,TODO,19912,1,19912,periodic table application
+education,chemistry,kalzium,TODO,513314,46,11159,periodic table and chemistry tools
+education,chemistry,pymol,TODO,287320,20,14366,Molecular Graphics System
+education,chemistry,rasmol,TODO,,ERROR,24149,visualization of biological macromolecules
+education,desktop-xfce,education-astronomy,TODO,89023,1,89023,Debian Edu astronomy related applications
+education,desktop-xfce,education-chemistry,TODO,89024,1,89024,Debian Edu chemistry related applications
+education,desktop-xfce,education-electronics,TODO,89035,1,89035,Debian Edu electronics related applications
+education,desktop-xfce,education-geography,TODO,89036,1,89036,Debian Edu applications for geography
+education,desktop-xfce,education-graphics,TODO,89037,1,89037,Debian Edu graphics related applications
+education,desktop-xfce,education-language,TODO,89044,1,89044,Debian Edu language related educational applications
+education,desktop-xfce,education-logic-games,TODO,89046,1,89046,Debian Edu logic games
+education,desktop-xfce,education-mathematics,TODO,89049,1,89049,Debian Edu mathematical applications
+education,desktop-xfce,education-misc,TODO,89051,1,89051,Debian Edu miscellaneous applications for education
+education,desktop-xfce,education-music,TODO,89052,1,89052,Debian Edu music and sound applications
+education,desktop-xfce,education-physics,TODO,89055,1,89055,Debian Edu physics related applications
+education,desktop-xfce,education-primaryschool,TODO,89057,1,89057,Debian Edu applications for primary school level
+education,desktop-xfce,education-video,TODO,89063,1,89063,Debian Edu video applications
+education,desktop-xfce,kdeedu,TODO,,ERROR,105170,educational applications from the official KDE release
+education,desktop-xfce,onboard,TODO,7883,1,7883,Simple On-screen Keyboard
+education,electronics,electric,TODO,,ERROR,22897,electrical CAD system
+education,electronics,fritzing,TODO,,ERROR,13527,Easy-to-use electronic design software
+education,electronics,gtkwave,TODO,41988,3,13996,VCD (Value Change Dump) file waveform viewer
+education,electronics,kicad,TODO,641655,97,6615,Electronic schematic and PCB design software
+education,electronics,kicad-doc-en,TODO,1583325,15,105555,Kicad help files (English)
+education,electronics,oregano,TODO,,ERROR,19779,tool for schematical capture of electronic circuits
+education,electronics,pcb,TODO,664332,4,166083,printed circuit board (pcb) design program - metapackage
+education,electronics,xcircuit,TODO,22835,1,22835,Draw circuit schematics or almost anything
+education,electronics,xoscope,TODO,,ERROR,23301,digital oscilloscope
+education,geography,googleearth-package,TODO,N/A,N/A,N/A,N/A
+education,geography,grass,TODO,,ERROR,98453,Geographic Resources Analysis Support System (GRASS GIS)
+education,geography,kgeography,TODO,219942,18,12219,geography learning aid for KDE
+education,geography,marble,TODO,471656,58,8132,globe and map widget
+education,geography,qgis,TODO,,ERROR,7812,Geographic Information System (GIS)
+education,geography,qlandkartegt,TODO,N/A,N/A,N/A,N/A
+education,geography,viking,TODO,896832,72,12456,"GPS data editor, analyzer and viewer"
+education,graphics,blender,TODO,,ERROR,5903,Very fast and versatile 3D modeller/renderer
+education,graphics,dia,TODO,47368,8,5921,Diagram editor
+education,graphics,gimp,TODO,48900,30,1630,GNU Image Manipulation Program
+education,graphics,hugin,TODO,,ERROR,9511,panorama photo stitcher - GUI tools
+education,graphics,inkscape,TODO,76491,27,2833,vector-based drawing program
+education,graphics,librecad,TODO,52031,7,7433,Computer-aided design (CAD) system
+education,graphics,pencil2d,TODO,236808,24,9867,Create hand-drawn animation using both bitmap and vector graphics
+education,graphics,scribus,TODO,475865,65,7321,Open Source Desktop Page Layout
+education,graphics,tgif,TODO,,ERROR,23701,2D vector graphic drawing tool using Xlib
+education,graphics,xaos,TODO,16619,1,16619,real-time interactive fractal zoomer
+education,graphics,xfig,TODO,48010,5,9602,Facility for Interactive Generation of figures under X11
+education,graphics,xpaint,TODO,15314,1,15314,simple paint program for X
+education,highschool,calibre,TODO,,ERROR,3928,powerful and easy to use e-book manager
+education,highschool,cantor,TODO,,ERROR,11237,interface for mathematical applications
+education,highschool,carmetal,TODO,1173060,45,26068,dynamic geometry software with highly ergonomic UI
+education,highschool,chemtool,TODO,89788,4,22447,chemical structures drawing program
+education,highschool,fritzing,TODO,,ERROR,13527,Easy-to-use electronic design software
+education,highschool,inkscape,TODO,76491,27,2833,vector-based drawing program
+education,highschool,kalzium,TODO,513314,46,11159,periodic table and chemistry tools
+education,highschool,kmplot,TODO,168266,14,12019,mathematical function plotter for KDE
+education,highschool,ktouch,TODO,,ERROR,10852,touch typing tutor for KDE
+education,highschool,kturtle,TODO,173124,14,12366,educational programming environment
+education,highschool,lightspeed,TODO,N/A,N/A,N/A,N/A
+education,highschool,marble,TODO,471656,58,8132,globe and map widget
+education,highschool,pencil2d,TODO,236808,24,9867,Create hand-drawn animation using both bitmap and vector graphics
+education,highschool,rocs,TODO,,ERROR,12249,graph theory IDE
+education,highschool,step,TODO,198352,16,12397,interactive physical simulator for KDE
+education,language,collatinus,TODO,258018,6,43003,lemmatisation of latin text
+education,language,kanagram,TODO,251500,20,12575,jumble word puzzle
+education,language,khangman,TODO,255620,20,12781,Hangman word puzzle
+education,language,kiten,TODO,269976,24,11249,Japanese reference and study aid for KDE
+education,language,klavaro,TODO,13998,1,13998,Flexible touch typing tutor
+education,language,klettres,TODO,639100,50,12782,foreign alphabet tutor for KDE
+education,language,ktouch,TODO,,ERROR,10852,touch typing tutor for KDE
+education,language,kwordquiz,TODO,219147,17,12891,flashcard learning program
+education,language,parley,TODO,,ERROR,12332,vocabulary trainer
+education,language,verbiste-gnome,TODO,188551,1,188551,French and Italian conjugator - GNOME interface
+education,language,wordnet,TODO,90580,7,12940,electronic lexical database of English language
+education,language,xfonts-intl-phonetic,TODO,191040,1,191040,international fonts for X - International Phonetic Alphabet
+education,language,xfonts-tipa,TODO,,ERROR,191064,X11 PostScript Type 1 font for the Phonetic Alphabet
+education,logic-games,atomix,TODO,23320,1,23320,puzzle game for building molecules out of separate atoms
+education,logic-games,blinken,TODO,147190,10,14719,KDE version of the Simon electronic memory game
+education,logic-games,cgoban,TODO,20135,1,20135,complete Go board
+education,logic-games,einstein,TODO,183051,11,16641,Puzzle game inspired on Einstein's puzzle
+education,logic-games,gbrainy,TODO,337725,15,22515,brain teaser game and trainer to have fun and to keep your brain trained
+education,logic-games,glpeces,TODO,86292,3,28764,Tangram (puzzle) game clone
+education,logic-games,gnome-games,TODO,863010,30,28767,games for the GNOME desktop
+education,logic-games,gtans,TODO,26184,1,26184,Tangram (puzzle) game using GTK+
+education,logic-games,kdegames,TODO,,ERROR,105174,games from the official KDE release
+education,logic-games,lmemory,TODO,23996,1,23996,"Children's game based on the ""memory"" card game"
+education,logic-games,ri-li,TODO,474835,23,20645,toy train simulation game
+education,logic-games,xboard,TODO,20004,2,10002,X Window System Chess Board
+education,mathematics,algobox,TODO,,ERROR,25372,algorithmics introduction - French UI
+education,mathematics,cantor,TODO,,ERROR,11237,interface for mathematical applications
+education,mathematics,carmetal,TODO,1173060,45,26068,dynamic geometry software with highly ergonomic UI
+education,mathematics,euler,TODO,43285,1,43285,interactive mathematical programming environment
+education,mathematics,geogebra,TODO,784420,65,12068,Dynamic mathematics software for education
+education,mathematics,geomview,TODO,105702,6,17617,interactive geometry viewing program
+education,mathematics,graphmonkey,TODO,390082,14,27863,a GTK#-based graphing calculator
+education,mathematics,gretl,TODO,,ERROR,24344,"GNU Regression, Econometric & Time-Series Library"
+education,mathematics,jfractionlab,TODO,1267948,44,28817,Educative program to practice fractions
+education,mathematics,jupyter-nbformat,TODO,,ERROR,14581,Jupyter notebook format (tools)
+education,mathematics,jupyter-notebook,TODO,,ERROR,7511,Jupyter interactive notebook
+education,mathematics,kalgebra,TODO,,ERROR,11087,algebraic graphing calculator
+education,mathematics,kbruch,TODO,157508,13,12116,fraction learning aid for KDE
+education,mathematics,kig,TODO,,ERROR,11890,interactive geometry tool
+education,mathematics,kile,TODO,,ERROR,8270,KDE Integrated LaTeX Environment
+education,mathematics,kmplot,TODO,168266,14,12019,mathematical function plotter for KDE
+education,mathematics,octave,TODO,,ERROR,6513,GNU Octave language for numerical computations
+education,mathematics,rkward,TODO,,ERROR,21605,KDE frontend to the R statistics language
+education,mathematics,rocs,TODO,,ERROR,12249,graph theory IDE
+education,mathematics,scilab,TODO,,ERROR,15192,Scientific software package for numerical computations
+education,mathematics,wxmaxima,TODO,628150,50,12563,GUI for the computer algebra system Maxima
+education,mathematics,xaos,TODO,16619,1,16619,real-time interactive fractal zoomer
+education,mathematics,xmabacus,TODO,72680,2,36340,simulation of the ancient calculator (Motif version)
+education,mathematics,yacas,TODO,369888,12,30824,Computer Algebra System
+education,misc,basket,TODO,,ERROR,15124,multi-purpose note-taking application
+education,misc,colobot,TODO,1913395,95,20141,educational programming strategy game
+education,misc,freeplane,TODO,,ERROR,10877,Java program for working with Mind Maps
+education,misc,jclic,TODO,1791855,45,39819,Tool for the development & use of multimedia educational activities
+education,misc,laby,TODO,,ERROR,27054,Learn how to program with ants and spider webs
+education,misc,planner,TODO,48021,3,16007,project management application
+education,misc,scratch,TODO,,ERROR,12702,easy to use programming environment for ages 8 and up
+education,misc,thonny,TODO,,ERROR,9720,Python IDE for beginners
+education,misc,vym,TODO,,ERROR,14314,mindmapping tool
+education,music,audacious,TODO,51156,12,4263,small and fast audio player which supports lots of formats
+education,music,audacity,TODO,54555,15,3637,"fast, cross-platform audio editor"
+education,music,denemo,TODO,,ERROR,22051,free graphical music notation editor (GTK front end to LilyPond)
+education,music,gtick,TODO,17458,1,17458,Metronome application
+education,music,hydrogen,TODO,131340,11,11940,advanced drum machine/step sequencer
+education,music,lingot,TODO,47934,3,15978,accurate and easy to use musical instrument tuner
+education,music,lmms,TODO,294678,27,10914,Linux Multimedia Studio
+education,music,mcp-plugins,TODO,7435,1,7435,LADSPA plugins designed for Alsa Modular Synth
+education,music,musescore,TODO,549600,48,11450,"cross-platform multi-lingual music composition and notation, v2"
+education,music,musescore3,TODO,495108,51,9708,"cross-platform multi-lingual music composition and notation, v3"
+education,music,nted,TODO,21181,1,21181,Musical score editor
+education,music,pianobooster,TODO,3450070,130,26539,Learn the piano just by playing a game
+education,music,qsynth,TODO,157232,16,9827,fluidsynth MIDI sound synthesiser front-end
+education,music,rosegarden,TODO,174612,12,14551,music editor and MIDI/audio sequencer
+education,music,solfege,TODO,,ERROR,20083,Ear training software
+education,music,swh-plugins,TODO,5746,2,2873,Steve Harris's LADSPA plugins
+education,music,terminatorx,TODO,122960,4,30740,realtime audio synthesizer
+education,music,timgm6mb-soundfont,TODO,23724,6,3954,TimGM6mb SoundFont from MuseScore 1.3
+education,music,tuxguitar,TODO,2528240,170,14872,Multitrack guitar tablature editor and player
+education,physics,etoys,TODO,,ERROR,43284,"media-rich model, simulation construction kit and authoring tool"
+education,physics,jupyter-nbformat,TODO,,ERROR,14581,Jupyter notebook format (tools)
+education,physics,jupyter-notebook,TODO,,ERROR,7511,Jupyter interactive notebook
+education,physics,kturtle,TODO,173124,14,12366,educational programming environment
+education,physics,lightspeed,TODO,N/A,N/A,N/A,N/A
+education,physics,planets,TODO,27384,1,27384,Gravitation simulation of planetary bodies
+education,physics,step,TODO,198352,16,12397,interactive physical simulator for KDE
+education,physics,xoscope,TODO,,ERROR,23301,digital oscilloscope
+education,preschool,bambam,TODO,390690,15,26046,keyboard mashing and doodling game for babies
+education,preschool,blinken,TODO,147190,10,14719,KDE version of the Simon electronic memory game
+education,preschool,gamine,TODO,316184,11,28744,Interactive game for young children
+education,preschool,gcompris-qt,TODO,488775,49,9975,educational games for small children
+education,preschool,kanagram,TODO,251500,20,12575,jumble word puzzle
+education,preschool,khangman,TODO,255620,20,12781,Hangman word puzzle
+education,preschool,klettres,TODO,639100,50,12782,foreign alphabet tutor for KDE
+education,preschool,ktuberling,TODO,658706,58,11357,stamp drawing toy
+education,preschool,pysiogame,TODO,301200,30,10040,educational activity pack for kids
+education,preschool,tuxpaint,TODO,1470060,180,8167,Paint program for young children
+education,primaryschool,basket,TODO,,ERROR,15124,multi-purpose note-taking application
+education,primaryschool,gcompris-qt,TODO,488775,49,9975,educational games for small children
+education,primaryschool,glpeces,TODO,86292,3,28764,Tangram (puzzle) game clone
+education,primaryschool,kalgebra,TODO,,ERROR,11087,algebraic graphing calculator
+education,primaryschool,kalzium,TODO,513314,46,11159,periodic table and chemistry tools
+education,primaryschool,kanagram,TODO,251500,20,12575,jumble word puzzle
+education,primaryschool,kbruch,TODO,157508,13,12116,fraction learning aid for KDE
+education,primaryschool,kgeography,TODO,219942,18,12219,geography learning aid for KDE
+education,primaryschool,khangman,TODO,255620,20,12781,Hangman word puzzle
+education,primaryschool,kig,TODO,,ERROR,11890,interactive geometry tool
+education,primaryschool,klettres,TODO,639100,50,12782,foreign alphabet tutor for KDE
+education,primaryschool,kmplot,TODO,168266,14,12019,mathematical function plotter for KDE
+education,primaryschool,kstars,TODO,1222158,98,12471,"desktop planetarium, observation planning and telescope control"
+education,primaryschool,ktouch,TODO,,ERROR,10852,touch typing tutor for KDE
+education,primaryschool,ktuberling,TODO,658706,58,11357,stamp drawing toy
+education,primaryschool,kturtle,TODO,173124,14,12366,educational programming environment
+education,primaryschool,kwordquiz,TODO,219147,17,12891,flashcard learning program
+education,primaryschool,marble,TODO,471656,58,8132,globe and map widget
+education,primaryschool,parley,TODO,,ERROR,12332,vocabulary trainer
+education,primaryschool,pysiogame,TODO,301200,30,10040,educational activity pack for kids
+education,primaryschool,qabcs,TODO,1689912,36,46942,educational software to learn the alphabet and get familiar with a keyboard
+education,primaryschool,ri-li,TODO,474835,23,20645,toy train simulation game
+education,primaryschool,step,TODO,198352,16,12397,interactive physical simulator for KDE
+education,primaryschool,tuxmath,TODO,247940,22,11270,math game for kids with Tux
+education,primaryschool,tuxpaint,TODO,1470060,180,8167,Paint program for young children
+education,primaryschool,tuxtype,TODO,370944,23,16128,Educational Typing Tutor Game Starring Tux
+education,primaryschool,ulcc,TODO,170052,4,42513,teaching children by pictures
+education,secondaryschool,basket,TODO,,ERROR,15124,multi-purpose note-taking application
+education,secondaryschool,calibre,TODO,,ERROR,3928,powerful and easy to use e-book manager
+education,secondaryschool,carmetal,TODO,1173060,45,26068,dynamic geometry software with highly ergonomic UI
+education,secondaryschool,chemtool,TODO,89788,4,22447,chemical structures drawing program
+education,secondaryschool,einstein,TODO,183051,11,16641,Puzzle game inspired on Einstein's puzzle
+education,secondaryschool,fritzing,TODO,,ERROR,13527,Easy-to-use electronic design software
+education,secondaryschool,inkscape,TODO,76491,27,2833,vector-based drawing program
+education,secondaryschool,kalgebra,TODO,,ERROR,11087,algebraic graphing calculator
+education,secondaryschool,kalzium,TODO,513314,46,11159,periodic table and chemistry tools
+education,secondaryschool,kbruch,TODO,157508,13,12116,fraction learning aid for KDE
+education,secondaryschool,kgeography,TODO,219942,18,12219,geography learning aid for KDE
+education,secondaryschool,kig,TODO,,ERROR,11890,interactive geometry tool
+education,secondaryschool,kmplot,TODO,168266,14,12019,mathematical function plotter for KDE
+education,secondaryschool,kstars,TODO,1222158,98,12471,"desktop planetarium, observation planning and telescope control"
+education,secondaryschool,ktouch,TODO,,ERROR,10852,touch typing tutor for KDE
+education,secondaryschool,ktuberling,TODO,658706,58,11357,stamp drawing toy
+education,secondaryschool,kturtle,TODO,173124,14,12366,educational programming environment
+education,secondaryschool,kwordquiz,TODO,219147,17,12891,flashcard learning program
+education,secondaryschool,lightspeed,TODO,N/A,N/A,N/A,N/A
+education,secondaryschool,marble,TODO,471656,58,8132,globe and map widget
+education,secondaryschool,parley,TODO,,ERROR,12332,vocabulary trainer
+education,secondaryschool,pencil2d,TODO,236808,24,9867,Create hand-drawn animation using both bitmap and vector graphics
+education,secondaryschool,ri-li,TODO,474835,23,20645,toy train simulation game
+education,secondaryschool,step,TODO,198352,16,12397,interactive physical simulator for KDE
+education,secondaryschool,vokoscreen-ng,TODO,92664,9,10296,easy to use screencast creator
+education,video,kdenlive,TODO,,ERROR,5918,non-linear video editor
+education,video,kino,TODO,N/A,N/A,N/A,N/A
+education,video,openshot-qt,TODO,,ERROR,7061,create and edit videos and movies
+education,video,pitivi,TODO,,ERROR,12286,non-linear audio/video editor using GStreamer
+education,video,stopmotion,TODO,74214,3,24738,create stop-motion animations
+education,video,xine-ui,TODO,181458,17,10674,"xine video player, graphical user interface"
+games,adventure,beneath-a-steel-sky,TODO,2986900,140,21335,classic 2D point and click science fiction adventure game
+games,adventure,drascula,TODO,2670470,110,24277,classic 2D point and click adventure game -- English version
+games,adventure,fizmo-sdl2,TODO,73496,2,36748,SDL2-based Z-machine interpreter for Infocom/Inform games
+games,adventure,flight-of-the-amazon-queen,TODO,2737130,110,24883,classic 2D point and click fantasy adventure game
+games,adventure,freedink,TODO,5980000,65,92000,humorous top-down adventure and role-playing game
+games,adventure,gargoyle-free,TODO,357270,15,23818,graphical player for Interactive Fiction games
+games,adventure,glulxe,TODO,36857,1,36857,Interpreter for glulx interactive fiction
+games,adventure,instead,TODO,342452,11,31132,Simple text adventures/visual novels engine
+games,adventure,jzip,TODO,28822,1,28822,Text mode interpreter for Z-Code adventures
+games,adventure,lure-of-the-temptress,TODO,2024698,86,23543,classic 2D point and click fantasy adventure game
+games,adventure,onscripter,TODO,455983,11,41453,Visual novel games engine compatible to NScripter
+games,adventure,qtads,TODO,N/A,N/A,N/A,N/A
+games,adventure,renpy-thequestion,TODO,1855278,34,54567,simple and complete Ren'Py game
+games,adventure,rlvm,TODO,658910,14,47065,RealLive virtual machine clone
+games,adventure,scummvm,TODO,910140,77,11820,engine for several graphical adventure games
+games,adventure,sdlfrotz,TODO,288600,8,36075,interpreter of Z-code story-files (SDL version)
+games,adventure,sludge-engine,TODO,77829,3,25943,Runtime engine for playing SLUDGE adventure games
+games,adventure,xsystem35,TODO,47724,1,47724,System 3.5 games engine for X Window System
+games,adventure,xzip,TODO,24784,1,24784,Interpreter of Infocom-format story-files
+games,adventure,zoom-player,TODO,28551,1,28551,player for Z-Code stories or games
+games,arcade,a7xpg,TODO,428355,15,28557,chase action game
+games,arcade,abe,TODO,274224,12,22852,"side-scrolling game named ""Abe's Amazing Adventure"""
+games,arcade,airstrike,TODO,88911,3,29637,2d dogfight game in the tradition of 'Biplanes' and 'BIP'
+games,arcade,alienblaster,TODO,349650,15,23310,Classic 2D shoot 'em up
+games,arcade,antigravitaattori,TODO,104100,4,26025,Multiplayer flying saucer racing game
+games,arcade,armagetronad,TODO,56862,3,18954,3D Tron-like high speed game
+games,arcade,asylum,TODO,276780,10,27678,surreal platform shooting game
+games,arcade,atanks,TODO,148280,5,29656,tank-battling game
+games,arcade,ballerburg,TODO,26045,1,26045,Classical castle combat game
+games,arcade,barrage,TODO,322520,10,32252,Rather destructive action game
+games,arcade,bloboats,TODO,78159,3,26053,Boat racing game
+games,arcade,bomberclone,TODO,442986,17,26058,free Bomberman clone
+games,arcade,bouncy,TODO,457728,16,28608,eat the yummy veggies in the garden - game for small kids
+games,arcade,briquolo,TODO,281697,13,21669,fast paced 3d Breakout game
+games,arcade,btanks,TODO,663288,29,22872,fast 2D tank arcade game with multiplayer and split-screen modes
+games,arcade,bugsquish,TODO,322840,10,32284,Bugs are trying to suck blood out of your arm!
+games,arcade,bumprace,TODO,452004,14,32286,1 or 2 players race through a multi-level maze
+games,arcade,burgerspace,TODO,253940,10,25394,Avoid evil foodstuffs and make burgers
+games,arcade,ceferino,TODO,343440,12,28620,action game similar to Super Pang
+games,arcade,chromium-bsu,TODO,81320,5,16264,"fast paced, arcade-style, scrolling space shooter"
+games,arcade,circuslinux,TODO,339977,11,30907,Clowns are trying to pop balloons to score points!
+games,arcade,criticalmass,TODO,349843,13,26911,Shoot-em-up a la galaxian
+games,arcade,cutemaze,TODO,247512,8,30939,single player maze game
+games,arcade,dangen,TODO,73206,2,36603,shoot 'em up game where accurate shooting matters
+games,arcade,dodgindiamond2,TODO,309610,10,30961,Little shoot-'em-up arcade game for one or two players
+games,arcade,efp,TODO,356408,4,89102,Escape from Pong NES game
+games,arcade,epiphany,TODO,280380,12,23365,clone of Boulder Dash game
+games,arcade,excellent-bifurcation,TODO,64960,2,32480,abstract vertical shooter with two sides to play on
+games,arcade,freedroid,TODO,430920,15,28728,Clone of Paradroid - a strategic shoot-em up
+games,arcade,freegish,TODO,83427,3,27809,physics based arcade game
+games,arcade,funguloids,TODO,N/A,N/A,N/A,N/A
+games,arcade,funnyboat,TODO,523020,20,26151,side scrolling arcade shooter game on a steamboat
+games,arcade,garden-of-coloured-lights,TODO,97602,3,32534,abstract vertical shooter with music elements
+games,arcade,gav,TODO,62126,2,31063,GPL Arcade Volleyball
+games,arcade,geki2,TODO,31068,1,31068,Xenon-like vertical shoot'em-up
+games,arcade,geki3,TODO,32548,1,32548,R-Type-like horizontal shoot'em-up
+games,arcade,gltron,TODO,149412,6,24902,3D lightcycle game
+games,arcade,gnome-games,TODO,863010,30,28767,games for the GNOME desktop
+games,arcade,gravitation,TODO,29847,1,29847,"game about mania, melancholia, and the creative process"
+games,arcade,gravitywars,TODO,69074,2,34537,clone of Gravity Force
+games,arcade,gunroar,TODO,497648,16,31103,360-degree gunboat shooter
+games,arcade,hannah,TODO,404404,13,31108,"pacman-like game, child oriented"
+games,arcade,hedgewars,TODO,2744800,160,17155,"Funny turn-based artillery game, featuring fighting hedgehogs!"
+games,arcade,heroes,TODO,278700,10,27870,Collect powerups and avoid your opponents' trails
+games,arcade,icebreaker,TODO,238430,10,23843,Break the iceberg
+games,arcade,ii-esu,TODO,380369,11,34579,shooter game
+games,arcade,jumpnbump,TODO,235908,9,26212,cute multiplayer platform game with bunnies
+games,arcade,jumpnbump-levels,TODO,941175,9,104575,cute multiplayer platform game with bunnies (extra levels)
+games,arcade,kdegames,TODO,,ERROR,105174,games from the official KDE release
+games,arcade,ketm,TODO,111069,3,37023,old school 2D-scrolling shooter
+games,arcade,kobodeluxe,TODO,67614,3,22538,game of space battle
+games,arcade,komi,TODO,407506,11,37046,Single player arcade game with Komi the Space Frog!
+games,arcade,koules,TODO,28836,1,28836,abstract space action game
+games,arcade,krank,TODO,1838880,72,25540,game of dexterity where you match stones together
+games,arcade,kraptor,TODO,279150,10,27915,Classic shoot 'em up scroller game
+games,arcade,late,TODO,111204,3,37068,simple game of capturing balls
+games,arcade,lbreakout2,TODO,196728,12,16394,ball-and-paddle game with nice graphics
+games,arcade,lbreakouthd,TODO,314676,12,26223,ball-and-paddle game
+games,arcade,lierolibre,TODO,389004,11,35364,old-school earthworm action game
+games,arcade,luola,TODO,394056,13,30312,multiplayer cave-flying game
+games,arcade,madbomber,TODO,425232,12,35436,Kaboom! clone
+games,arcade,maelstrom,TODO,75402,3,25134,Arcade-style game resembling Asteroids
+games,arcade,marsshooter,TODO,1828321,71,25751,ridiculous space shooter governed by the laws of gravity
+games,arcade,mirrormagic,TODO,292380,10,29238,Shoot around obstacles to collect energy using your beam.
+games,arcade,moon-lander,TODO,276518,11,25138,game based on the classic moon lander
+games,arcade,mousetrap,TODO,316580,10,31658,Simple game of ball chasing
+games,arcade,mrboom,TODO,282040,10,28204,8 player Bomberman
+games,arcade,mrrescue,TODO,534656,16,33416,Mr Rescue is an arcade 2d action game
+games,arcade,mu-cade,TODO,538322,17,31666,"physics centipede invasion, smashup waggly shmup"
+games,arcade,netmaze,TODO,23132,1,23132,3-D Multiplayer Combat Game
+games,arcade,netrek-client-cow,TODO,828612,12,69051,client for netrek online game
+games,arcade,neverball,TODO,559510,35,15986,3D floor-tilting game
+games,arcade,njam,TODO,321904,11,29264,pacman-like game with multiplayer support
+games,arcade,noiz2sa,TODO,686520,18,38140,abstract arcade shooter
+games,arcade,open-invaders,TODO,83464,4,20866,Space Invaders clone
+games,arcade,orbital-eunuchs-sniper,TODO,498442,14,35603,"anti-terrorist, pro-Eunuchs, satellite sniping game"
+games,arcade,overgod,TODO,76396,2,38198,bi-directional scrolling arcade game
+games,arcade,pangzero,TODO,498624,14,35616,action game that involves popping balloons with a harpoon
+games,arcade,parsec47,TODO,534285,15,35619,retromodern hispeed shmup
+games,arcade,passage,TODO,31729,1,31729,game about the passage through life
+games,arcade,pekka-kana-2,TODO,367419,13,28263,2D Oldschool platform game where you control a rooster
+games,arcade,penguin-command,TODO,300905,11,27355,missile command clone
+games,arcade,performous,TODO,212112,8,26514,karaoke game that allows user supplied songs
+games,arcade,pianobooster,TODO,3450070,130,26539,Learn the piano just by playing a game
+games,arcade,pinball,TODO,284228,14,20302,Emilia Pinball Emulator
+games,arcade,pinball-table-gnu,TODO,3696792,22,168036,GNU Pinball table for emilia pinball
+games,arcade,pinball-table-hurd,TODO,2688608,16,168038,HURD Pinball table for emilia pinball
+games,arcade,plee-the-bear,TODO,1261319,43,29333,2D platform game
+games,arcade,pong2,TODO,84942,3,28314,Remake of old arcade classic in OpenGL
+games,arcade,powermanga,TODO,520885,19,27415,vertical shoot 'em up with colourful 3D graphics
+games,arcade,projectl,TODO,392964,11,35724,sword action shooting
+games,arcade,rafkill,TODO,232014,6,38669,vertical shoot'em-up similar to Raptor: Call of the Shadows
+games,arcade,ri-li,TODO,474835,23,20645,toy train simulation game
+games,arcade,rockdodger,TODO,359900,10,35990,Fly through an asteroid field avoiding rocks and greeblies
+games,arcade,rrootage,TODO,467987,13,35999,arcade-style space shooting game
+games,arcade,scorched3d,TODO,1319154,43,30678,3D artillery game similar to Scorched Earth
+games,arcade,sdl-ball,TODO,302302,13,23254,brick-breaking game like DX-Ball/Arkanoid
+games,arcade,snake4,TODO,30693,1,30693,Snake game
+games,arcade,solarwolf,TODO,321312,16,20082,Collect the boxes and don't become mad
+games,arcade,sopwith,TODO,64150,2,32075,port of the 1980's side-scrolling WWI dogfighting game
+games,arcade,spacearyarya,TODO,38829,1,38829,third person shooter in pseudo-3D
+games,arcade,spout,TODO,N/A,N/A,N/A,N/A
+games,arcade,starfighter,TODO,1689655,55,30721,2D scrolling shooter game
+games,arcade,starvoyager,TODO,59086,2,29543,"2D space arcade game, themed around 'Star Trek' - binary"
+games,arcade,supertransball2,TODO,339560,10,33956,Thrust type of game
+games,arcade,supertux,TODO,1805220,180,10029,Classic 2D jump 'n run sidescroller with Tux
+games,arcade,tatan,TODO,466680,12,38890,pointing STG shooter game
+games,arcade,tecnoballz,TODO,373758,11,33978,breaking block game ported from the Amiga platform
+games,arcade,teeworlds,TODO,203870,10,20387,online multi-player platform 2D shooter
+games,arcade,tenmado,TODO,77804,2,38902,hard-core shoot 'em up game in blue-or-red world
+games,arcade,titanion,TODO,622848,16,38928,strike down super high-velocity swooping insects
+games,arcade,tomatoes,TODO,496584,18,27588,I Have No Tomatoes - tomato smashing game
+games,arcade,torus-trooper,TODO,577881,17,33993,speeding ship sailing through barrage
+games,arcade,trackballs,TODO,1383795,45,30751,OpenGL-based game of steering a marble through a labyrinth
+games,arcade,transcend,TODO,72382,2,36191,"retro-style, abstract 2D shooter"
+games,arcade,triplane,TODO,374022,11,34002,side-scrolling dogfighting game
+games,arcade,tumiki-fighters,TODO,579968,16,36248,sticky 2D shooter
+games,arcade,tuxmath,TODO,247940,22,11270,math game for kids with Tux
+games,arcade,tuxpuck,TODO,46550,2,23275,air hockey game for single players
+games,arcade,tuxtype,TODO,370944,23,16128,Educational Typing Tutor Game Starring Tux
+games,arcade,val-and-rick,TODO,471484,13,36268,shooter game
+games,arcade,vectoroids,TODO,276160,10,27616,vector-based rock-shooting
+games,arcade,viruskiller,TODO,342108,12,28509,Game about viruses invading your computer
+games,arcade,vonsh,TODO,390020,10,39002,Snake-like game with line of people running around to get more food
+games,arcade,vor,TODO,321520,10,32152,2D action game about dodging rocks in space
+games,arcade,warmux,TODO,2419010,110,21991,turn-based artillery game on 2D maps
+games,arcade,wing,TODO,32166,1,32166,Galaga-like arcade game
+games,arcade,wizznic,TODO,1014728,26,39028,implementation of the arcade classic Puzznic
+games,arcade,wordwarvi,TODO,390390,10,39039,retro-styled side-scrolling shoot'em up arcade game
+games,arcade,xbill,TODO,22833,1,22833,Get rid of those Wingdows Viruses!
+games,arcade,xblast-tnt,TODO,117150,3,39050,multiplayer blast-the-others game inspired by Dynablaster
+games,arcade,xevil,TODO,32188,1,32188,A violent side-scrolling game for X
+games,arcade,xgalaga,TODO,24779,1,24779,X version of the famous Galaga game
+games,arcade,xgalaga++,TODO,30807,1,30807,"classic single screen vertical shooter, inspired by xgalaga"
+games,arcade,xinv3d,TODO,42608,1,42608,3D space invaders for X
+games,arcade,xonix,TODO,32193,1,32193,game to carve up the screen whilst dodging monsters
+games,arcade,xracer,TODO,136328,4,34082,Futuristic racing game
+games,arcade,xsoldier,TODO,61640,2,30820,"shoot 'em up game with the ""not shooting"" bonus"
+games,arcade,xtron,TODO,34087,1,34087,Tron game for X11
+games,arcade,zatacka,TODO,78170,2,39085,arcade multiplayer game like nibbles
+games,board,3dchess,TODO,22021,1,22021,Play chess across 3 boards!
+games,board,ace-of-penguins,TODO,12511,1,12511,penguin-themed solitaire games
+games,board,biloba,TODO,387120,12,32260,turn based strategy board game for up to 4 players
+games,board,brutalchess,TODO,85364,4,21341,3D chess game with reflection of the chessmen
+games,board,cgoban,TODO,20135,1,20135,complete Go board
+games,board,colorcode,TODO,24844,1,24844,advanced clone of the MasterMind code-breaking game
+games,board,dossizola,TODO,68622,2,34311,Isola board game with nice graphics
+games,board,eboard,TODO,35202,2,17601,GTK+ chessboard program
+games,board,el-ixir,TODO,34344,1,34344,two-player board game with randomness
+games,board,filler,TODO,1479974,43,34418,simple game where two players try to capture half the board
+games,board,fltk1.3-games,TODO,24312,1,24312,"Fast Light Toolkit - example games: checkers, sudoku"
+games,board,gamazons,TODO,34477,1,34477,Amazons boardgame for GNOME
+games,board,gbatnav,TODO,29813,1,29813,networked BattleShip game
+games,board,gnome-games,TODO,863010,30,28767,games for the GNOME desktop
+games,board,gnubg,TODO,144486,9,16054,graphical or console backgammon program with analysis
+games,board,gnuminishogi,TODO,32580,1,32580,"program to play minishogi, a shogi variant on a 5x5 board"
+games,board,gtkatlantic,TODO,28782,1,28782,Game like Monopoly
+games,board,gtkboard,TODO,270080,10,27008,many board games in one program
+games,board,hachu,TODO,27867,1,27867,"AI engine for many Shogi and Chess variants, including Chu, Sho, and Dai Shogi"
+games,board,hexxagon,TODO,97836,3,32612,Hexagonal Ataxx clone
+games,board,jester,TODO,34638,1,34638,board game similar to Othello
+games,board,kdegames,TODO,,ERROR,105174,games from the official KDE release
+games,board,kgames,TODO,24939,1,24939,Venerable selection of Xaw-based games
+games,board,mah-jong,TODO,24527,1,24527,Original Mah-Jong game
+games,board,mancala,TODO,30321,1,30321,Implementation of the simple board game called Mancala
+games,board,morris,TODO,33411,1,33411,Nine men's morris game
+games,board,openyahtzee,TODO,190320,6,31720,classic dice game of Yahtzee
+games,board,peg-e,TODO,30429,1,30429,peg elimination solitaire game
+games,board,peg-solitaire,TODO,30430,1,30430,Board game for one player with pegs
+games,board,pegsolitaire,TODO,31748,1,31748,education game similar to Hi-Q
+games,board,pente,TODO,30431,1,30431,five in a row game for X and the console
+games,board,pentobi,TODO,573690,15,38246,clone of the strategy board game Blokus
+games,board,pioneers,TODO,96216,4,24054,Settlers of Catan board game
+games,board,qgo,TODO,69642,3,23214,Go client and full featured SGF editor
+games,board,quarry,TODO,23639,1,23639,"Board games Go, Amazons, and Reversi (a.k.a. Othello)"
+games,board,ricochet,TODO,91899,3,30633,multi-user networked version of the Ricochet Robots game
+games,board,scid,TODO,140229,9,15581,chess database with play and training functionality
+games,board,xboard,TODO,20004,2,10002,X Window System Chess Board
+games,board,xchain,TODO,42595,1,42595,strategy game for 2-4 players
+games,board,xfrisk,TODO,29611,1,29611,Server and X11 client for playing Risk with humans or AIs
+games,board,xgammon,TODO,27635,1,27635,Implementation of backgammon under X
+games,board,xmabacus,TODO,72680,2,36340,simulation of the ancient calculator (Motif version)
+games,board,xmahjongg,TODO,14317,1,14317,tile-based solitaire game
+games,board,xshogi,TODO,27644,1,27644,X11 frontend to gnushogi
+games,board,xvier,TODO,29620,1,29620,"a ""Four in a row"" game"
+games,card,ace-of-penguins,TODO,12511,1,12511,penguin-themed solitaire games
+games,card,aisleriot,TODO,29898,9,3322,GNOME solitaire card game collection
+games,card,gnome-games,TODO,863010,30,28767,games for the GNOME desktop
+games,card,gsalliere,TODO,2667924,54,49406,Bridge duplicate scorer (GUI frontend)
+games,card,kdegames,TODO,,ERROR,105174,games from the official KDE release
+games,card,lmemory,TODO,23996,1,23996,"Children's game based on the ""memory"" card game"
+games,card,openpref,TODO,28247,1,28247,card game against two virtual players
+games,card,pescetti,TODO,2242404,54,41526,Bridge Pseudo-duplimate generator
+games,card,pokerth,TODO,408375,25,16335,Texas hold'em game
+games,card,pysolfc,TODO,N/A,N/A,N/A,N/A
+games,card,tenace,TODO,397793,11,36163,Bridge hand viewer and editor
+games,card,xmille,TODO,N/A,N/A,N/A,N/A
+games,card,xpat2,TODO,20679,1,20679,Generic patience game for X11
+games,card,xskat,TODO,16490,1,16490,"3-player card game ""Skat"""
+games,card,xsol,TODO,47486,2,23743,Solitaire game for the X Window system
+games,card,yahtzeesharp,TODO,835980,15,55732,game similar to poker with dice and less money
+games,chess,3dchess,TODO,22021,1,22021,Play chess across 3 boards!
+games,chess,brutalchess,TODO,85364,4,21341,3D chess game with reflection of the chessmen
+games,chess,chessx,TODO,100685,5,20137,chess database
+games,chess,crazywa,TODO,85024,1,85024,AI engine for Wa Shogi and several other variants
+games,chess,dreamchess,TODO,274000,16,17125,3D chess game
+games,chess,eboard,TODO,35202,2,17601,GTK+ chessboard program
+games,chess,ethereal-chess,TODO,27783,1,27783,UCI-compliant chess engine
+games,chess,fairy-stockfish,TODO,26958,1,26958,"chess variant engine including support for Chess, Shogi and XiangQi variants"
+games,chess,gnome-games,TODO,863010,30,28767,games for the GNOME desktop
+games,chess,gpsshogi,TODO,414408,12,34534,Shogi playing program based on OpenShogiLib
+games,chess,gpsshogi-viewer,TODO,331992,9,36888,Shogi studying GUI based on OpenShogiLib
+games,chess,hachu,TODO,27867,1,27867,"AI engine for many Shogi and Chess variants, including Chu, Sho, and Dai Shogi"
+games,chess,kdegames,TODO,,ERROR,105174,games from the official KDE release
+games,chess,pychess,TODO,,ERROR,11300,"Fully featured, nice looking, easy to use Chess Client"
+games,chess,scid,TODO,140229,9,15581,chess database with play and training functionality
+games,chess,shogivar,TODO,32062,1,32062,"UI to play many shogi variants, with builtin computer player"
+games,chess,sjaakii,TODO,24731,1,24731,"Sjaak II - computer player for many Chess variants, including Shogi and XiangQi"
+games,chess,tagua,TODO,561162,21,26722,Board-game frontend for playing chess variants and other games
+games,chess,xboard,TODO,20004,2,10002,X Window System Chess Board
+games,chess,xshogi,TODO,27644,1,27644,X11 frontend to gnushogi
+games,education,atomix,TODO,23320,1,23320,puzzle game for building molecules out of separate atoms
+games,education,basic256,TODO,136688,4,34172,educational BASIC programming environment for children
+games,education,gamine,TODO,316184,11,28744,Interactive game for young children
+games,education,granule,TODO,120964,2,60482,flashcard program for learning new words
+games,education,pysiogame,TODO,301200,30,10040,educational activity pack for kids
+games,education,tuxmath,TODO,247940,22,11270,math game for kids with Tux
+games,education,tuxtype,TODO,370944,23,16128,Educational Typing Tutor Game Starring Tux
+games,education,xball,TODO,64364,2,32182,Simulate bouncing balls in a window
+games,emulator,blastem,TODO,68601,3,22867,Fast and accurate Genesis emulator
+games,emulator,cen64,TODO,24834,1,24834,Cycle-Accurate Nintendo 64 Simulator
+games,emulator,desmume,TODO,140106,6,23351,Nintendo DS emulator
+games,emulator,dolphin-emu,TODO,,ERROR,7562,Gamecube and Wii emulator
+games,emulator,efp,TODO,356408,4,89102,Escape from Pong NES game
+games,emulator,fceux,TODO,65100,4,16275,all-in-one NES/Famicom Emulator
+games,emulator,fs-uae-arcade,TODO,611908,22,27814,Full-screen game browser for FS-UAE
+games,emulator,gngb,TODO,59674,2,29837,Color Gameboy emulator
+games,emulator,gnome-video-arcade,TODO,1742412,84,20743,Simple MAME frontend
+games,emulator,hatari,TODO,81417,7,11631,"Emulator for the Atari ST, STE, TT, and Falcon computers"
+games,emulator,mame,TODO,972110,82,11855,Multiple Arcade Machine Emulator (MAME)
+games,emulator,mednaffe,TODO,105042,7,15006,front-end for the Mednafen multi-system emulator
+games,emulator,mgba-sdl,TODO,563860,20,28193,Game Boy Advance emulator (SDL frontend for mGBA)
+games,emulator,mupen64plus-ui-console,TODO,,ERROR,18862,console frontend for mupen64plus
+games,emulator,nestopia,TODO,83420,4,20855,Nintendo Entertainment System/Famicom emulator
+games,emulator,osmose-emulator,TODO,29295,1,29295,Sega Master System and Game Gear console emulator
+games,emulator,pcsxr,TODO,51162,3,17054,Sony PlayStation emulator
+games,emulator,retroarch,TODO,2594450,190,13655,Simple frontend for the libretro library
+games,emulator,stella,TODO,104785,5,20957,Atari 2600 Emulator for SDL & the X Window System
+games,emulator,virtualjaguar,TODO,116985,3,38995,Cross-platform Atari Jaguar emulator
+games,emulator,visualboyadvance,TODO,45646,2,22823,full featured Game Boy Advance emulator
+games,emulator,wine,TODO,,ERROR,3131,Windows API implementation - standard suite
+games,emulator,yabause,TODO,766628,4,191657,beautiful and under-rated Saturn emulator
+games,emulator,yuzu,TODO,,ERROR,28544,Nintendo Switch Emulator
+games,emulator,zsnes,TODO,N/A,N/A,N/A,N/A
+games,finest,0ad,TODO,12195400,1400,8711,Real-time strategy game of ancient warfare
+games,finest,7kaa,TODO,754050,33,22850,Seven Kingdoms Ancient Adversaries: real-time strategy game
+games,finest,a7xpg,TODO,428355,15,28557,chase action game
+games,finest,abe,TODO,274224,12,22852,"side-scrolling game named ""Abe's Amazing Adventure"""
+games,finest,ace-of-penguins,TODO,12511,1,12511,penguin-themed solitaire games
+games,finest,alex4,TODO,44048,2,22024,Alex the Allegator 4 - a retro platform game
+games,finest,armagetronad,TODO,56862,3,18954,3D Tron-like high speed game
+games,finest,asc,TODO,1418340,44,32235,turn-based strategy game
+games,finest,atomix,TODO,23320,1,23320,puzzle game for building molecules out of separate atoms
+games,finest,berusky,TODO,139944,6,23324,Logic game based on Sokoban
+games,finest,biniax2,TODO,322500,12,26875,logic game with arcade and tactics modes
+games,finest,blobby,TODO,101544,4,25386,Volleyball game with blobs
+games,finest,bloboats,TODO,78159,3,26053,Boat racing game
+games,finest,blobwars,TODO,1623628,71,22868,platform shooting game
+games,finest,blockattack,TODO,403215,15,26881,puzzle game inspired by Tetris
+games,finest,btanks,TODO,663288,29,22872,fast 2D tank arcade game with multiplayer and split-screen modes
+games,finest,burgerspace,TODO,253940,10,25394,Avoid evil foodstuffs and make burgers
+games,finest,bzflag-client,TODO,245136,12,20428,3D first person tank battle game -- client
+games,finest,caveexpress,TODO,584131,23,25397,2D platformer with physics-based gameplay
+games,finest,cgoban,TODO,20135,1,20135,complete Go board
+games,finest,chromium-bsu,TODO,81320,5,16264,"fast paced, arcade-style, scrolling space shooter"
+games,finest,cultivation,TODO,55484,2,27742,game about the interactions within a gardening community
+games,finest,dreamchess,TODO,274000,16,17125,3D chess game
+games,finest,enigma,TODO,999348,42,23794,Game where you control a marble with the mouse
+games,finest,epiphany,TODO,280380,12,23365,clone of Boulder Dash game
+games,finest,extremetuxracer,TODO,508892,41,12412,"3D racing game featuring Tux, the Linux penguin"
+games,finest,flare-game,TODO,11846250,130,91125,fantasy single-player 2D action role-playing game
+games,finest,flightgear,TODO,29298600,1800,16277,Flight Gear Flight Simulator
+games,finest,foobillardplus,TODO,586208,32,18319,3D OpenGL Billiard Game
+games,finest,freeciv,TODO,531748,28,18991,Civilization turn based strategy game
+games,finest,freecol,TODO,,ERROR,17294,open source remake of the old Colonization
+games,finest,freedroidrpg,TODO,5857870,230,25469,Isometric RPG influenced by Paradroid
+games,finest,freeorion,TODO,2443090,130,18793,turn-based space empire and galactic conquest game
+games,finest,frozen-bubble,TODO,427552,32,13361,cool game where you pop out the bubbles!
+games,finest,funguloids,TODO,N/A,N/A,N/A,N/A
+games,finest,funnyboat,TODO,523020,20,26151,side scrolling arcade shooter game on a steamboat
+games,finest,gnubg,TODO,144486,9,16054,graphical or console backgammon program with analysis
+games,finest,gtkatlantic,TODO,28782,1,28782,Game like Monopoly
+games,finest,gweled,TODO,63144,3,21048,"""Diamond Mine""-style puzzle game"
+games,finest,hedgewars,TODO,2744800,160,17155,"Funny turn-based artillery game, featuring fighting hedgehogs!"
+games,finest,holotz-castle,TODO,314304,12,26192,platform game with high doses of mystery
+games,finest,hyperrogue,TODO,314364,12,26197,non-euclidean graphical rogue-like game
+games,finest,kobodeluxe,TODO,67614,3,22538,game of space battle
+games,finest,koules,TODO,28836,1,28836,abstract space action game
+games,finest,lbreakout2,TODO,196728,12,16394,ball-and-paddle game with nice graphics
+games,finest,lincity-ng,TODO,1130965,55,20563,City simulator game with polished graphics
+games,finest,liquidwar,TODO,109080,4,27270,truly original multiplayer wargame
+games,finest,lmemory,TODO,23996,1,23996,"Children's game based on the ""memory"" card game"
+games,finest,lugaru,TODO,982152,36,27282,third person ninja rabbit fighting game
+games,finest,manaplus,TODO,354783,13,27291,Extended client for Evol Online and The Mana World
+games,finest,marsshooter,TODO,1828321,71,25751,ridiculous space shooter governed by the laws of gravity
+games,finest,megaglest,TODO,,ERROR,23546,3D multi-player real time strategy game
+games,finest,micropolis,TODO,226308,12,18859,real-time city management simulator
+games,finest,minetest,TODO,75564,9,8396,Multiplayer infinite-world block sandbox
+games,finest,neverball,TODO,559510,35,15986,3D floor-tilting game
+games,finest,neverputt,TODO,486648,24,20277,3D miniature golf game
+games,finest,nexuiz,TODO,15885100,700,22693,Fast-paced 3D first-person shooter
+games,finest,numptyphysics,TODO,47116,2,23558,crayon based physics puzzle game
+games,finest,open-invaders,TODO,83464,4,20866,Space Invaders clone
+games,finest,openarena,TODO,6796160,410,16576,fast-paced 3D first-person shooter
+games,finest,openclonk,TODO,3019320,120,25161,"multiplayer game of strategy, action and skill"
+games,finest,openttd,TODO,174902,14,12493,reimplementation of Transport Tycoon Deluxe with enhancements
+games,finest,parsec47,TODO,534285,15,35619,retromodern hispeed shmup
+games,finest,pathological,TODO,601678,22,27349,puzzle game involving paths and marbles
+games,finest,performous,TODO,212112,8,26514,karaoke game that allows user supplied songs
+games,finest,pinball,TODO,284228,14,20302,Emilia Pinball Emulator
+games,finest,pingus,TODO,375276,22,17058,Free Lemmings(TM) clone
+games,finest,pioneers,TODO,96216,4,24054,Settlers of Catan board game
+games,finest,pokerth,TODO,408375,25,16335,Texas hold'em game
+games,finest,powermanga,TODO,520885,19,27415,vertical shoot 'em up with colourful 3D graphics
+games,finest,pybik,TODO,214788,12,17899,Rubik's cube game
+games,finest,pysolfc,TODO,N/A,N/A,N/A,N/A
+games,finest,raincat,TODO,518200,20,25910,2D puzzle game featuring a fuzzy little cat
+games,finest,redeclipse,TODO,18146520,840,21603,"free, casual arena shooter"
+games,finest,ri-li,TODO,474835,23,20645,toy train simulation game
+games,finest,scorched3d,TODO,1319154,43,30678,3D artillery game similar to Scorched Earth
+games,finest,searchandrescue,TODO,1357920,46,29520,fly aircraft to search (for) and rescue people in distress
+games,finest,sgt-puzzles,TODO,28647,3,9549,Simon Tatham's Portable Puzzle Collection - 1-player puzzle games
+games,finest,solarwolf,TODO,321312,16,20082,Collect the boxes and don't become mad
+games,finest,sopwith,TODO,64150,2,32075,port of the 1980's side-scrolling WWI dogfighting game
+games,finest,springlobby,TODO,227826,9,25314,single/multiplayer lobby for the Spring RTS engine
+games,finest,supertransball2,TODO,339560,10,33956,Thrust type of game
+games,finest,supertux,TODO,1805220,180,10029,Classic 2D jump 'n run sidescroller with Tux
+games,finest,supertuxkart,TODO,4862920,610,7972,"3D arcade racer with a variety of characters, tracks, and modes to play"
+games,finest,tecnoballz,TODO,373758,11,33978,breaking block game ported from the Amiga platform
+games,finest,teeworlds,TODO,203870,10,20387,online multi-player platform 2D shooter
+games,finest,torcs,TODO,6130880,320,19159,3D racing cars simulator game using OpenGL
+games,finest,torus-trooper,TODO,577881,17,33993,speeding ship sailing through barrage
+games,finest,tuxfootball,TODO,670125,25,26805,great 2D soccer (sometimes called football) game
+games,finest,tuxmath,TODO,247940,22,11270,math game for kids with Tux
+games,finest,tuxpuck,TODO,46550,2,23275,air hockey game for single players
+games,finest,ufoai,TODO,26078800,1100,23708,UFO: Alien Invasion -- build your team and stop the aliens
+games,finest,unknown-horizons,TODO,3661000,250,14644,2D realtime strategy simulation
+games,finest,warmux,TODO,2419010,110,21991,turn-based artillery game on 2D maps
+games,finest,warzone2100,TODO,2296650,150,15311,3D real time strategy game
+games,finest,wesnoth,TODO,55001690,290,189661,fantasy turn-based strategy game - complete suite (metapackage)
+games,finest,widelands,TODO,6676980,380,17571,fantasy real-time strategy game
+games,finest,xmoto,TODO,945546,47,20118,2D motocross platform game
+games,fps,bzflag-client,TODO,245136,12,20428,3D first person tank battle game -- client
+games,fps,crispy-doom,TODO,198423,9,22047,Limit-raising medium-resolution Doom engine based on Chocolate Doom
+games,fps,cube2-data,TODO,4992840,180,27738,demo game and content for the Cube2 engine
+games,fps,deutex,TODO,39394,1,39394,composition tool for doom-style WAD files
+games,fps,doomsday,TODO,894870,45,19886,enhanced version of the legendary DOOM game
+games,fps,dsda-doom,TODO,166380,10,16638,Doom source port with a focus on demo recording and speedrunning
+games,fps,enemylines3,TODO,344388,12,28699,semi-abstract first person 3d-shooter game
+games,fps,enemylines7,TODO,324690,10,32469,first person 3d-shooter game
+games,fps,eureka,TODO,68788,2,34394,map editor for the classic DOOM games
+games,fps,ezquake,TODO,118497,3,39499,modern QuakeWorld client
+games,fps,freedm,TODO,432956,17,25468,multiplayer deathmatch game for Doom-compatible engines
+games,fps,freedoom,TODO,385525,25,15421,two single player campaigns for Doom-compatible engines
+games,fps,ktx,TODO,123584,2,61792,"QuakeWorld mod ""Kombat Teams eXtreme"""
+games,fps,mvdsv,TODO,68919,1,68919,QuakeWorld-compatible dedicated server
+games,fps,nexuiz,TODO,15885100,700,22693,Fast-paced 3D first-person shooter
+games,fps,openarena,TODO,6796160,410,16576,fast-paced 3D first-person shooter
+games,fps,quakespasm,TODO,58134,3,19378,engine for iD software's Quake
+games,fps,rbdoom3bfg,TODO,304740,9,33860,Doom3 BFG edition game engine
+games,fps,redeclipse,TODO,18146520,840,21603,"free, casual arena shooter"
+games,fps,teeworlds,TODO,203870,10,20387,online multi-player platform 2D shooter
+games,fps,woof-doom,TODO,428985,9,47665,Doom source port MBF targeted at modern systems
+games,minesweeper,ace-of-penguins,TODO,12511,1,12511,penguin-themed solitaire games
+games,minesweeper,gnome-mines,TODO,4466,1,4466,popular minesweeper puzzle game for GNOME
+games,minesweeper,kmines,TODO,149884,14,10706,minesweeper game
+games,minesweeper,sgt-puzzles,TODO,28647,3,9549,Simon Tatham's Portable Puzzle Collection - 1-player puzzle games
+games,minesweeper,xbomb,TODO,22409,1,22409,"'minesweeper' game with squares, hexagons or triangles"
+games,minesweeper,xdemineur,TODO,20981,1,20981,Yet another minesweeper for X
+games,platform,abe,TODO,274224,12,22852,"side-scrolling game named ""Abe's Amazing Adventure"""
+games,platform,alex4,TODO,44048,2,22024,Alex the Allegator 4 - a retro platform game
+games,platform,amphetamine,TODO,61670,2,30835,jump'n run game with unique visual effects
+games,platform,asylum,TODO,276780,10,27678,surreal platform shooting game
+games,platform,ballz,TODO,28589,1,28589,B.A.L.L.Z. - platform/puzzle game where you control a rolling ball
+games,platform,between,TODO,55378,2,27689,game about consciousness and isolation
+games,platform,blobandconquer,TODO,903588,28,32271,3D platform shooting game
+games,platform,blobwars,TODO,1623628,71,22868,platform shooting game
+games,platform,caveexpress,TODO,584131,23,25397,2D platformer with physics-based gameplay
+games,platform,davegnukem,TODO,988335,27,36605,Retro-style 2D scrolling platform shooter
+games,platform,ddnet,TODO,582966,18,32387,Teeworlds modification with a unique cooperative gameplay
+games,platform,edgar,TODO,N/A,N/A,N/A,N/A
+games,platform,gnujump,TODO,341957,11,31087,platform game where you have to jump up to survive
+games,platform,holotz-castle,TODO,314304,12,26192,platform game with high doses of mystery
+games,platform,jumpnbump,TODO,235908,9,26212,cute multiplayer platform game with bunnies
+games,platform,jumpnbump-levels,TODO,941175,9,104575,cute multiplayer platform game with bunnies (extra levels)
+games,platform,mazeofgalious,TODO,569520,18,31640,The Maze of Galious
+games,platform,nikwi,TODO,71040,2,35520,platform game where your goal is to collect candies
+games,platform,oneisenough,TODO,333735,15,22249,2D platform game about the epic struggle of balls
+games,platform,pachi,TODO,427344,12,35612,Platform game featuring Pachi el marciano
+games,platform,pekka-kana-2,TODO,367419,13,28263,2D Oldschool platform game where you control a rooster
+games,platform,plee-the-bear,TODO,1261319,43,29333,2D platform game
+games,platform,seahorse-adventures,TODO,614008,23,26696,help Barbie the seahorse float on bubbles to the moon
+games,platform,supertux,TODO,1805220,180,10029,Classic 2D jump 'n run sidescroller with Tux
+games,platform,toppler,TODO,295600,10,29560,"clone of the ""Nebulus"" game on old 8 and 16 bit machines"
+games,platform,whichwayisup,TODO,461850,15,30790,2D platform game with a slight rotational twist
+games,platform,xjump,TODO,29612,1,29612,jumping game for X
+games,platform,xmoto,TODO,945546,47,20118,2D motocross platform game
+games,platform,xscavenger,TODO,30817,1,30817,Lode-runner-like platform game for X
+games,programming,basic256,TODO,136688,4,34172,educational BASIC programming environment for children
+games,programming,colobot,TODO,1913395,95,20141,educational programming strategy game
+games,programming,laby,TODO,,ERROR,27054,Learn how to program with ants and spider webs
+games,programming,robocode,TODO,,ERROR,42126,Java programming game based on battle tanks
+games,puzzle,2048-qt,TODO,98202,6,16367,mathematics based puzzle game
+games,puzzle,ace-of-penguins,TODO,12511,1,12511,penguin-themed solitaire games
+games,puzzle,amoebax,TODO,533556,18,29642,Puyo Puyo-style puzzle game for up to two players
+games,puzzle,atom4,TODO,36438,1,36438,Original two-player color puzzle game
+games,puzzle,atomix,TODO,23320,1,23320,puzzle game for building molecules out of separate atoms
+games,puzzle,auralquiz,TODO,47952,1,47952,simple music quiz game using your own music files
+games,puzzle,berusky,TODO,139944,6,23324,Logic game based on Sokoban
+games,puzzle,berusky2,TODO,16022340,540,29671,logic game Bugs Escape 3D
+games,puzzle,between,TODO,55378,2,27689,game about consciousness and isolation
+games,puzzle,biniax2,TODO,322500,12,26875,logic game with arcade and tactics modes
+games,puzzle,black-box,TODO,308730,10,30873,Find the crystals
+games,puzzle,blockattack,TODO,403215,15,26881,puzzle game inspired by Tetris
+games,puzzle,blocks-of-the-undead,TODO,370500,12,30875,Tetris Attack clone with spooky undertones
+games,puzzle,brainparty,TODO,525987,23,22869,36 puzzle games for all the family
+games,puzzle,cavepacker,TODO,400624,14,28616,sokoban game with network based multiplayer gaming
+games,puzzle,chroma,TODO,85887,3,28629,Abstract puzzle game - graphical version
+games,puzzle,chromono,TODO,128847,3,42949,A circular color puzzle game
+games,puzzle,connectagram,TODO,831880,28,29710,word unscrambling game
+games,puzzle,einstein,TODO,183051,11,16641,Puzzle game inspired on Einstein's puzzle
+games,puzzle,enigma,TODO,999348,42,23794,Game where you control a marble with the mouse
+games,puzzle,explosive-c4,TODO,303044,7,43292,Four in a row game
+games,puzzle,fillets-ng,TODO,1832908,77,23804,puzzle game about witty fish saving the world sokoban-style
+games,puzzle,fltk1.3-games,TODO,24312,1,24312,"Fast Light Toolkit - example games: checkers, sudoku"
+games,puzzle,freealchemist,TODO,465450,15,31030,simpler figure block game
+games,puzzle,gbrainy,TODO,337725,15,22515,brain teaser game and trainer to have fun and to keep your brain trained
+games,puzzle,gfpoken,TODO,36836,1,36836,Recreate a grid of mirrors from clues given by tests
+games,puzzle,glpeces,TODO,86292,3,28764,Tangram (puzzle) game clone
+games,puzzle,gmult,TODO,172580,5,34516,figure out which letters are which numbers
+games,puzzle,gnome-games,TODO,863010,30,28767,games for the GNOME desktop
+games,puzzle,gnome-mahjongg,TODO,11913,3,3971,classic Eastern tile game for GNOME
+games,puzzle,gnurobbo,TODO,423553,13,32581,logic game ported from ATARI XE/XL
+games,puzzle,gplanarity,TODO,24906,1,24906,simple puzzle game involving untangling planar graphs
+games,puzzle,groundhog,TODO,36896,1,36896,simple logic game
+games,puzzle,gtans,TODO,26184,1,26184,Tangram (puzzle) game using GTK+
+games,puzzle,gtkballs,TODO,29851,1,29851,simple logic game
+games,puzzle,gweled,TODO,63144,3,21048,"""Diamond Mine""-style puzzle game"
+games,puzzle,hex-a-hop,TODO,484671,19,25509,puzzle game based on hexagonal tiles
+games,puzzle,hexalate,TODO,31116,1,31116,Color matching puzzle
+games,puzzle,hitori,TODO,4923,1,4923,logic puzzle game similar to sudoku
+games,puzzle,jag,TODO,316943,11,28813,arcade and puzzle 2D game
+games,puzzle,jigzo,TODO,457646,14,32689,Photo puzzle game for children
+games,puzzle,kball,TODO,278880,7,39840,game of skill and reflexes for all the family
+games,puzzle,kdegames,TODO,,ERROR,105174,games from the official KDE release
+games,puzzle,lightsoff,TODO,4766,1,4766,Light puzzle game
+games,puzzle,lix,TODO,N/A,N/A,N/A,N/A
+games,puzzle,lmarbles,TODO,303020,10,30302,game where you build figures out of colored marbles
+games,puzzle,miceamaze,TODO,837122,22,38051,video game with mice in a maze
+games,puzzle,mirrormagic,TODO,292380,10,29238,Shoot around obstacles to collect energy using your beam.
+games,puzzle,mokomaze,TODO,114186,3,38062,Ball in labyrinth game for the OpenMoko FreeRunner
+games,puzzle,monsterz,TODO,467888,16,29243,arcade puzzle game
+games,puzzle,numptyphysics,TODO,47116,2,23558,crayon based physics puzzle game
+games,puzzle,parolottero,TODO,249054,6,41509,Compose words using a 4x4 grid of letters
+games,puzzle,pathogen,TODO,356210,10,35621,Puzzle game about matching 3D model structures
+games,puzzle,pathological,TODO,601678,22,27349,puzzle game involving paths and marbles
+games,puzzle,phlipple,TODO,539994,13,41538,reduce 3D shapes to a single square
+games,puzzle,pipenightdreams,TODO,107073,3,35691,connect pipes to get the water flowing from inlet to outlet
+games,puzzle,pipewalker,TODO,49190,2,24595,combination puzzle game
+games,puzzle,primrose,TODO,56640,2,28320,compelling tile-placement puzzle game
+games,puzzle,pushover,TODO,413764,13,31828,Fun puzzle game with dominos
+games,puzzle,puzzle-jigsaw,TODO,92970,2,46485,tile puzzle game
+games,puzzle,pybik,TODO,214788,12,17899,Rubik's cube game
+games,puzzle,qxw,TODO,31974,1,31974,advanced crossword construction tool
+games,puzzle,raincat,TODO,518200,20,25910,2D puzzle game featuring a fuzzy little cat
+games,puzzle,sgt-puzzles,TODO,28647,3,9549,Simon Tatham's Portable Puzzle Collection - 1-player puzzle games
+games,puzzle,sudoku-solver,TODO,55075,1,55075,sudoku puzzles solver
+games,puzzle,tanglet,TODO,930871,29,32099,single player word finding game based on Boggle
+games,puzzle,tetzle,TODO,227864,8,28483,Jigsaw puzzle game
+games,puzzle,tworld,TODO,84994,2,42497,Chip's Challenge Game Engine Emulation
+games,puzzle,vodovod,TODO,340440,10,34044,"puzzle game, you must lead the water to the storage tank"
+games,puzzle,wizznic,TODO,1014728,26,39028,implementation of the arcade classic Puzznic
+games,puzzle,xbomb,TODO,22409,1,22409,"'minesweeper' game with squares, hexagons or triangles"
+games,puzzle,xdemineur,TODO,20981,1,20981,Yet another minesweeper for X
+games,puzzle,xjig,TODO,N/A,N/A,N/A,N/A
+games,puzzle,xmpuzzles,TODO,85238,2,42619,collection of puzzles for X (Motif version)
+games,puzzle,xshisen,TODO,48450,2,24225,Shisen-sho puzzle game for X11
+games,puzzle,xsok,TODO,27645,1,27645,generic Sokoban game for X11
+games,puzzle,xye,TODO,109080,3,36360,puzzle game - get all the gems in the room
+games,puzzle,zaz,TODO,580713,21,27653,arcade action puzzle game
+games,racing,antigravitaattori,TODO,104100,4,26025,Multiplayer flying saucer racing game
+games,racing,armagetronad,TODO,56862,3,18954,3D Tron-like high speed game
+games,racing,bloboats,TODO,78159,3,26053,Boat racing game
+games,racing,dustracing2d,TODO,172074,6,28679,tile-based 2D racing game
+games,racing,extremetuxracer,TODO,508892,41,12412,"3D racing game featuring Tux, the Linux penguin"
+games,racing,gltron,TODO,149412,6,24902,3D lightcycle game
+games,racing,pink-pony,TODO,670186,22,30463,3D racing game with ponies
+games,racing,pyracerz,TODO,673420,20,33671,multiplayer top view 2D racing game
+games,racing,stormbaancoureur,TODO,160435,5,32087,simulated obstacle course for automobiles
+games,racing,supertuxkart,TODO,4862920,610,7972,"3D arcade racer with a variety of characters, tracks, and modes to play"
+games,racing,torcs,TODO,6130880,320,19159,3D racing cars simulator game using OpenGL
+games,racing,trigger-rally,TODO,3115560,120,25963,3D rally car racing game
+games,racing,trophy,TODO,398874,14,28491,2D car racing action game
+games,racing,xmoto,TODO,945546,47,20118,2D motocross platform game
+games,racing,xracer,TODO,136328,4,34082,Futuristic racing game
+games,rogue,allure,TODO,257752,8,32219,near-future Sci-Fi roguelike and tactical squad game
+games,rogue,angband,TODO,291603,13,22431,"Single-player, text-based, dungeon simulation game"
+games,rogue,cataclysm-dda-sdl,TODO,1147036,44,26069,post-apocalyptic roguelike game - SDL interface
+games,rogue,hyperrogue,TODO,314364,12,26197,non-euclidean graphical rogue-like game
+games,rogue,lambdahack,TODO,398872,8,49859,tactical squad ASCII roguelike dungeon crawler game engine
+games,rogue,meritous,TODO,418495,11,38045,action-adventure dungeon crawl game
+games,rogue,nethack-x11,TODO,38622,2,19311,dungeon crawl game - X11 interface
+games,rpg,adonthell,TODO,248922,9,27658,2D graphical roleplaying game
+games,rpg,ardentryst,TODO,1172148,38,30846,"Action/RPG sidescoller, focused on story and character development"
+games,rpg,crossfire-client,TODO,297230,10,29723,Client for the multiplayer roguelike Crossfire
+games,rpg,flare-game,TODO,11846250,130,91125,fantasy single-player 2D action role-playing game
+games,rpg,freedink,TODO,5980000,65,92000,humorous top-down adventure and role-playing game
+games,rpg,freedroidrpg,TODO,5857870,230,25469,Isometric RPG influenced by Paradroid
+games,rpg,gm-assistant,TODO,69026,2,34513,Game Master assistant for role-playing games
+games,rpg,kildclient,TODO,31195,1,31195,powerful MUD client with a built-in Perl interpreter
+games,rpg,magicmaze,TODO,537778,17,31634,rescue the maiden while avoiding the monsters
+games,rpg,manaplus,TODO,354783,13,27291,Extended client for Evol Online and The Mana World
+games,rpg,minetest,TODO,75564,9,8396,Multiplayer infinite-world block sandbox
+games,rpg,openmw,TODO,980843,47,20869,Open-world RPG game engine
+games,rpg,openmw-cs,TODO,2030864,44,46156,Content editor for use with OpenMW
+games,shootemup,alienblaster,TODO,349650,15,23310,Classic 2D shoot 'em up
+games,shootemup,barrage,TODO,322520,10,32252,Rather destructive action game
+games,shootemup,chromium-bsu,TODO,81320,5,16264,"fast paced, arcade-style, scrolling space shooter"
+games,shootemup,criticalmass,TODO,349843,13,26911,Shoot-em-up a la galaxian
+games,shootemup,dangen,TODO,73206,2,36603,shoot 'em up game where accurate shooting matters
+games,shootemup,dodgindiamond2,TODO,309610,10,30961,Little shoot-'em-up arcade game for one or two players
+games,shootemup,excellent-bifurcation,TODO,64960,2,32480,abstract vertical shooter with two sides to play on
+games,shootemup,freedroid,TODO,430920,15,28728,Clone of Paradroid - a strategic shoot-em up
+games,shootemup,funnyboat,TODO,523020,20,26151,side scrolling arcade shooter game on a steamboat
+games,shootemup,geki2,TODO,31068,1,31068,Xenon-like vertical shoot'em-up
+games,shootemup,geki3,TODO,32548,1,32548,R-Type-like horizontal shoot'em-up
+games,shootemup,gravitywars,TODO,69074,2,34537,clone of Gravity Force
+games,shootemup,gunroar,TODO,497648,16,31103,360-degree gunboat shooter
+games,shootemup,ii-esu,TODO,380369,11,34579,shooter game
+games,shootemup,ketm,TODO,111069,3,37023,old school 2D-scrolling shooter
+games,shootemup,kraptor,TODO,279150,10,27915,Classic shoot 'em up scroller game
+games,shootemup,maelstrom,TODO,75402,3,25134,Arcade-style game resembling Asteroids
+games,shootemup,marsshooter,TODO,1828321,71,25751,ridiculous space shooter governed by the laws of gravity
+games,shootemup,mu-cade,TODO,538322,17,31666,"physics centipede invasion, smashup waggly shmup"
+games,shootemup,noiz2sa,TODO,686520,18,38140,abstract arcade shooter
+games,shootemup,open-invaders,TODO,83464,4,20866,Space Invaders clone
+games,shootemup,overgod,TODO,76396,2,38198,bi-directional scrolling arcade game
+games,shootemup,parsec47,TODO,534285,15,35619,retromodern hispeed shmup
+games,shootemup,powermanga,TODO,520885,19,27415,vertical shoot 'em up with colourful 3D graphics
+games,shootemup,projectl,TODO,392964,11,35724,sword action shooting
+games,shootemup,rafkill,TODO,232014,6,38669,vertical shoot'em-up similar to Raptor: Call of the Shadows
+games,shootemup,rockdodger,TODO,359900,10,35990,Fly through an asteroid field avoiding rocks and greeblies
+games,shootemup,rrootage,TODO,467987,13,35999,arcade-style space shooting game
+games,shootemup,sopwith,TODO,64150,2,32075,port of the 1980's side-scrolling WWI dogfighting game
+games,shootemup,starfighter,TODO,1689655,55,30721,2D scrolling shooter game
+games,shootemup,supertransball2,TODO,339560,10,33956,Thrust type of game
+games,shootemup,tatan,TODO,466680,12,38890,pointing STG shooter game
+games,shootemup,tenmado,TODO,77804,2,38902,hard-core shoot 'em up game in blue-or-red world
+games,shootemup,titanion,TODO,622848,16,38928,strike down super high-velocity swooping insects
+games,shootemup,torus-trooper,TODO,577881,17,33993,speeding ship sailing through barrage
+games,shootemup,transcend,TODO,72382,2,36191,"retro-style, abstract 2D shooter"
+games,shootemup,triplane,TODO,374022,11,34002,side-scrolling dogfighting game
+games,shootemup,tumiki-fighters,TODO,579968,16,36248,sticky 2D shooter
+games,shootemup,val-and-rick,TODO,471484,13,36268,shooter game
+games,shootemup,viruskiller,TODO,342108,12,28509,Game about viruses invading your computer
+games,shootemup,wing,TODO,32166,1,32166,Galaga-like arcade game
+games,shootemup,wordwarvi,TODO,390390,10,39039,retro-styled side-scrolling shoot'em up arcade game
+games,shootemup,xgalaga,TODO,24779,1,24779,X version of the famous Galaga game
+games,shootemup,xgalaga++,TODO,30807,1,30807,"classic single screen vertical shooter, inspired by xgalaga"
+games,shootemup,xinv3d,TODO,42608,1,42608,3D space invaders for X
+games,shootemup,xsoldier,TODO,61640,2,30820,"shoot 'em up game with the ""not shooting"" bonus"
+games,simulation,acm,TODO,32214,1,32214,Multi-player classic aerial combat simulation
+games,simulation,billard-gl,TODO,21337,1,21337,3D billiards game
+games,simulation,bzflag-client,TODO,245136,12,20428,3D first person tank battle game -- client
+games,simulation,crrcsim,TODO,278397,9,30933,Model-Airplane Flight Simulator
+games,simulation,csmash,TODO,356026,11,32366,"CannonSmash, a table tennis simulation game"
+games,simulation,cultivation,TODO,55484,2,27742,game about the interactions within a gardening community
+games,simulation,flightgear,TODO,29298600,1800,16277,Flight Gear Flight Simulator
+games,simulation,foobillardplus,TODO,586208,32,18319,3D OpenGL Billiard Game
+games,simulation,gl-117,TODO,291948,12,24329,action flight simulator
+games,simulation,gtkpool,TODO,32603,1,32603,simple pool billiard game written with GTK+
+games,simulation,lightspeed,TODO,N/A,N/A,N/A,N/A
+games,simulation,lincity,TODO,25116,1,25116,build & maintain a city/country
+games,simulation,lincity-ng,TODO,1130965,55,20563,City simulator game with polished graphics
+games,simulation,micropolis,TODO,226308,12,18859,real-time city management simulator
+games,simulation,netrek-client-cow,TODO,828612,12,69051,client for netrek online game
+games,simulation,opencity,TODO,424224,18,23568,3D city simulator game
+games,simulation,openssn,TODO,423720,15,28248,modern submarine tactical simulator
+games,simulation,openttd,TODO,174902,14,12493,reimplementation of Transport Tycoon Deluxe with enhancements
+games,simulation,pinball,TODO,284228,14,20302,Emilia Pinball Emulator
+games,simulation,pmars,TODO,53535,1,53535,"Portable MARS, Core War simulator"
+games,simulation,searchandrescue,TODO,1357920,46,29520,fly aircraft to search (for) and rescue people in distress
+games,simulation,simutrans,TODO,289086,14,20649,transportation simulator
+games,simulation,singularity,TODO,178128,16,11133,game where one becomes the singularity
+games,simulation,stormbaancoureur,TODO,160435,5,32087,simulated obstacle course for automobiles
+games,sport,blobby,TODO,101544,4,25386,Volleyball game with blobs
+games,sport,bygfoot,TODO,N/A,N/A,N/A,N/A
+games,sport,csmash,TODO,356026,11,32366,"CannonSmash, a table tennis simulation game"
+games,sport,etw,TODO,172218,6,28703,arcade-style soccer game
+games,sport,freetennis,TODO,585871,17,34463,Free Tennis - simulation game
+games,sport,gav,TODO,62126,2,31063,GPL Arcade Volleyball
+games,sport,neverputt,TODO,486648,24,20277,3D miniature golf game
+games,sport,slimevolley,TODO,72178,2,36089,unrealistic 2D volleyball simulation
+games,sport,tennix,TODO,569160,12,47430,2D tennis game
+games,sport,tuxfootball,TODO,670125,25,26805,great 2D soccer (sometimes called football) game
+games,sport,tuxpuck,TODO,46550,2,23275,air hockey game for single players
+games,strategy,0ad,TODO,12195400,1400,8711,Real-time strategy game of ancient warfare
+games,strategy,7kaa,TODO,754050,33,22850,Seven Kingdoms Ancient Adversaries: real-time strategy game
+games,strategy,asc,TODO,1418340,44,32235,turn-based strategy game
+games,strategy,atanks,TODO,148280,5,29656,tank-battling game
+games,strategy,biloba,TODO,387120,12,32260,turn based strategy board game for up to 4 players
+games,strategy,boswars,TODO,1853397,73,25389,futuristic real-time strategy game
+games,strategy,bygfoot,TODO,N/A,N/A,N/A,N/A
+games,strategy,colobot,TODO,1913395,95,20141,educational programming strategy game
+games,strategy,crimson,TODO,342550,10,34255,hex-based tactical game
+games,strategy,dopewars,TODO,278667,9,30963,drug-dealing game set in streets of New York City
+games,strategy,endless-sky,TODO,1210160,70,17288,space exploration and combat game
+games,strategy,freeciv,TODO,531748,28,18991,Civilization turn based strategy game
+games,strategy,freecol,TODO,,ERROR,17294,open source remake of the old Colonization
+games,strategy,freeorion,TODO,2443090,130,18793,turn-based space empire and galactic conquest game
+games,strategy,gbatnav,TODO,29813,1,29813,networked BattleShip game
+games,strategy,gigalomania,TODO,1105140,30,36838,Mega-Lo-Mania-like god game
+games,strategy,glob2,TODO,350909,13,26993,innovative Real Time Strategy game
+games,strategy,hedgewars,TODO,2744800,160,17155,"Funny turn-based artillery game, featuring fighting hedgehogs!"
+games,strategy,ironseed,TODO,517335,13,39795,science-fiction exploration/strategy adventure game in space
+games,strategy,lgeneral,TODO,407825,11,37075,strategy game in the tradition of Panzer General
+games,strategy,lightyears,TODO,533136,16,33321,single player real-time strategy game with steampunk sci-fi
+games,strategy,liquidwar,TODO,109080,4,27270,truly original multiplayer wargame
+games,strategy,lordsawar,TODO,834125,25,33365,Clone of the popular SSG game Warlords II
+games,strategy,megaglest,TODO,,ERROR,23546,3D multi-player real time strategy game
+games,strategy,naev,TODO,11085550,350,31673,2D action/rpg space game
+games,strategy,netpanzer,TODO,745056,18,41392,online multiplayer tactical warfare game
+games,strategy,netrek-client-cow,TODO,828612,12,69051,client for netrek online game
+games,strategy,openclonk,TODO,3019320,120,25161,"multiplayer game of strategy, action and skill"
+games,strategy,openttd,TODO,174902,14,12493,reimplementation of Transport Tycoon Deluxe with enhancements
+games,strategy,pax-britannica,TODO,343980,9,38220,one-button multi-player real-time strategy game
+games,strategy,pingus,TODO,375276,22,17058,Free Lemmings(TM) clone
+games,strategy,pioneers,TODO,96216,4,24054,Settlers of Catan board game
+games,strategy,planetblupi,TODO,2650455,87,30465,Planet Blupi - A delirious spell-binding game
+games,strategy,qonk,TODO,187828,4,46957,Small build-and-conquer strategy game with very simple rules
+games,strategy,singularity,TODO,178128,16,11133,game where one becomes the singularity
+games,strategy,spacezero,TODO,194150,5,38830,"Real Time Strategy 2D space combat, multiplayer net game."
+games,strategy,spring,TODO,468554,17,27562,modern full-3D RTS game engine
+games,strategy,springlobby,TODO,227826,9,25314,single/multiplayer lobby for the Spring RTS engine
+games,strategy,teg,TODO,82746,3,27582,Turn based strategy game
+games,strategy,triplea,TODO,,ERROR,38941,Turn based strategy game
+games,strategy,ufoai,TODO,26078800,1100,23708,UFO: Alien Invasion -- build your team and stop the aliens
+games,strategy,unknown-horizons,TODO,3661000,250,14644,2D realtime strategy simulation
+games,strategy,warmux,TODO,2419010,110,21991,turn-based artillery game on 2D maps
+games,strategy,warzone2100,TODO,2296650,150,15311,3D real time strategy game
+games,strategy,wesnoth,TODO,55001690,290,189661,fantasy turn-based strategy game - complete suite (metapackage)
+games,strategy,widelands,TODO,6676980,380,17571,fantasy real-time strategy game
+games,strategy,xfrisk,TODO,29611,1,29611,Server and X11 client for playing Risk with humans or AIs
+games,strategy,xscorch,TODO,92454,3,30818,Clone of Scorched Earth
+games,strategy,zec,TODO,,ERROR,47752,Z-Shell Empire client
+games,tetris,angrydd,TODO,393072,19,20688,Angry Drunken Dwarves - falling blocks puzzle game
+games,tetris,blockout2,TODO,249032,14,17788,Tetris like game (3D-tetris)
+games,tetris,crack-attack,TODO,254150,10,25415,"multiplayer OpenGL puzzle game like ""Tetris Attack"""
+games,tetris,cuyo,TODO,349908,13,26916,Tetris-like game with very impressive effects
+games,tetris,flobopuyo,TODO,296648,11,26968,Clone of the PuyoPuyo game
+games,tetris,freealchemist,TODO,465450,15,31030,simpler figure block game
+games,tetris,frozen-bubble,TODO,427552,32,13361,cool game where you pop out the bubbles!
+games,tetris,galois,TODO,28739,1,28739,falling blocks game with blocks of various shapes and sizes
+games,tetris,gemdropx,TODO,344990,10,34499,Gem Drop X is an interesting one-player puzzle game for X11
+games,tetris,ghextris,TODO,32554,1,32554,Tetris-like game on a hexagonal grid
+games,tetris,gtetrinet,TODO,28779,1,28779,multiplayer tetris-like game
+games,tetris,kblocks,TODO,197835,15,13189,falling blocks game
+games,tetris,ltris,TODO,205720,10,20572,very polished Tetris clone with CPU opponents
+games,tetris,quadrapassel,TODO,8888,2,4444,"popular Russian game, similar to Tetris"
+games,tetris,stax,TODO,94692,2,47346,collection of puzzle games similar to Tetris Attack
+games,tetris,termtris,TODO,N/A,N/A,N/A,N/A
+games,tetris,xbubble,TODO,184800,6,30800,A nice Puzzle Bubble clone
+games,tetris,xwelltris,TODO,68180,2,34090,3D Tetris like popular game similar to Welltris
+games,toys,bambam,TODO,390690,15,26046,keyboard mashing and doodling game for babies
+games,toys,bucklespring,TODO,101568,4,25392,Nostalgia bucklespring keyboard sound
+games,toys,cbonsai,TODO,26071,1,26071,terminal-based bonsai tree generator
+games,toys,floatbg,TODO,34428,1,34428,slowly modify the color of the X root window
+games,toys,fortunate.app,TODO,870892,22,39586,Display a quotation (fortune) in a window for GNUstep
+games,toys,gnomekiss,TODO,34521,1,34521,KiSS paper doll viewer for GNOME
+games,toys,kawari8,TODO,34655,1,34655,Pseudo AI Shiori module used to create ghosts for Ukagaka
+games,toys,macopix,TODO,45872,1,45872,Mascot Constructive Pilot for X
+games,toys,ninix-aya,TODO,,ERROR,46033,Interactive fake-AI Ukagaka-compatible desktop mascot program
+games,toys,oneko,TODO,19097,1,19097,cat chases the cursor (now a mouse) around the screen
+games,toys,pipes-sh,TODO,41610,1,41610,Animated pipes terminal screensaver
+games,toys,rss-glx,TODO,175510,10,17551,Really Slick Screensavers GLX Port
+games,toys,tdfsb,TODO,67952,2,33976,3D filesystem browser
+games,toys,vigor,TODO,,ERROR,27618,nvi with the evil paperclip
+games,toys,wallstreet,TODO,,ERROR,29596,fill your console with Wall Street-like news and stats
+games,toys,xaos,TODO,16619,1,16619,real-time interactive fractal zoomer
+games,toys,xcowsay,TODO,22410,1,22410,Graphical configurable talking cow
+games,toys,xdesktopwaves,TODO,36327,1,36327,Simulation of water waves on the X Window System
+games,toys,xfireworks,TODO,36332,1,36332,Fireworks in your root window
+games,toys,xfishtank,TODO,23733,1,23733,turns your X root into an aquarium
+games,toys,xflip,TODO,39056,1,39056,programs to mirror-image or melt your display
+games,toys,xmountains,TODO,30814,1,30814,Fractal landscape generator for X
+games,toys,xpenguins,TODO,22009,1,22009,little penguins walk on your windows
+games,toys,xphoon,TODO,27642,1,27642,sets the root window to a picture of the moon
+games,toys,xplanet,TODO,10596,1,10596,planetary body renderer
+games,toys,xplanet-images,TODO,191331,1,191331,imagery for xplanet
+games,toys,xsnow,TODO,42634,2,21317,brings Christmas to your desktop
+games,toys,xteddy,TODO,52018,2,26009,cuddly teddy bear (or other image) for your X desktop
+games,typing,klavaro,TODO,13998,1,13998,Flexible touch typing tutor
+games,typing,nlkt,TODO,60722,2,30361,non-linear keyboard trainer
+games,typing,tuxtype,TODO,370944,23,16128,Educational Typing Tutor Game Starring Tux
+games,typing,xletters,TODO,,ERROR,42613,Type falling words before they land
+games,GNOME,aisleriot,TODO,29898,9,3322,GNOME solitaire card game collection
+games,GNOME,five-or-more,TODO,8908,2,4454,make color lines of five or more length
+games,GNOME,four-in-a-row,TODO,4648,1,4648,Four in a Row game for GNOME
+games,GNOME,gnome-2048,TODO,9334,2,4667,sliding tile puzzle game
+games,GNOME,gnome-chess,TODO,25374,6,4229,simple chess game
+games,GNOME,gnome-klotski,TODO,9734,2,4867,Klotski puzzle game for GNOME
+games,GNOME,gnome-mahjongg,TODO,11913,3,3971,classic Eastern tile game for GNOME
+games,GNOME,gnome-mines,TODO,4466,1,4466,popular minesweeper puzzle game for GNOME
+games,GNOME,gnome-nibbles,TODO,9026,2,4513,"snake game, up to four players"
+games,GNOME,gnome-robots,TODO,4703,1,4703,improved old BSD robots game
+games,GNOME,gnome-sudoku,TODO,4566,1,4566,Sudoku puzzle game for GNOME
+games,GNOME,gnome-taquin,TODO,24650,5,4930,game to move tiles so that they reach their places
+games,GNOME,gnome-tetravex,TODO,4805,1,4805,put tiles on a board and match their edges together
+games,GNOME,hitori,TODO,4923,1,4923,logic puzzle game similar to sudoku
+games,GNOME,iagno,TODO,4812,1,4812,popular Othello game for GNOME
+games,GNOME,lightsoff,TODO,4766,1,4766,Light puzzle game
+games,GNOME,quadrapassel,TODO,8888,2,4444,"popular Russian game, similar to Tetris"
+games,GNOME,swell-foop,TODO,9668,2,4834,Colored ball puzzle game
+games,GNOME,tali,TODO,4898,1,4898,sort of poker with dice and less money
+education,KDE,artikulate,TODO,210018,17,12354,Language learning application
+education,KDE,blinken,TODO,147190,10,14719,KDE version of the Simon electronic memory game
+education,KDE,cantor,TODO,,ERROR,11237,interface for mathematical applications
+education,KDE,kalgebra,TODO,,ERROR,11087,algebraic graphing calculator
+education,KDE,kalzium,TODO,513314,46,11159,periodic table and chemistry tools
+education,KDE,kanagram,TODO,251500,20,12575,jumble word puzzle
+education,KDE,kbruch,TODO,157508,13,12116,fraction learning aid for KDE
+education,KDE,kgeography,TODO,219942,18,12219,geography learning aid for KDE
+education,KDE,khangman,TODO,255620,20,12781,Hangman word puzzle
+education,KDE,kig,TODO,,ERROR,11890,interactive geometry tool
+education,KDE,kiten,TODO,269976,24,11249,Japanese reference and study aid for KDE
+education,KDE,klettres,TODO,639100,50,12782,foreign alphabet tutor for KDE
+education,KDE,kmplot,TODO,168266,14,12019,mathematical function plotter for KDE
+education,KDE,ktouch,TODO,,ERROR,10852,touch typing tutor for KDE
+education,KDE,kturtle,TODO,173124,14,12366,educational programming environment
+education,KDE,kwordquiz,TODO,219147,17,12891,flashcard learning program
+education,KDE,marble,TODO,471656,58,8132,globe and map widget
+education,KDE,minuet,TODO,780270,62,12585,KDE Software for Music Education
+education,KDE,parley,TODO,,ERROR,12332,vocabulary trainer
+education,KDE,rocs,TODO,,ERROR,12249,graph theory IDE
+education,KDE,step,TODO,198352,16,12397,interactive physical simulator for KDE
+games,KDE,bomber,TODO,190358,14,13597,arcade spaceship game
+games,KDE,bovo,TODO,174889,13,13453,gomoku (five in line) board game
+games,KDE,granatier,TODO,209925,15,13995,Bomberman clone
+games,KDE,kajongg,TODO,,ERROR,9281,classical Mah Jongg game
+games,KDE,kapman,TODO,193335,15,12889,Pac-Man clone
+games,KDE,katomic,TODO,186158,14,13297,atomix puzzle game
+games,KDE,kblackbox,TODO,191548,14,13682,Black Box puzzle game
+games,KDE,kblocks,TODO,197835,15,13189,falling blocks game
+games,KDE,kbounce,TODO,205392,16,12837,Jezzball arcade game
+games,KDE,kbreakout,TODO,208192,16,13012,ball and paddle game
+games,KDE,kdiamond,TODO,237420,18,13190,three-in-a-row game
+games,KDE,kfourinline,TODO,193760,14,13840,Connect Four game
+games,KDE,kgoldrunner,TODO,239364,18,13298,Lode Runner arcade game
+games,KDE,kigo,TODO,262979,19,13841,go game
+games,KDE,killbots,TODO,193788,14,13842,port of the classic BSD console game robots
+games,KDE,kiriki,TODO,177879,13,13683,Yahtzee dice game
+games,KDE,kjumpingcube,TODO,181077,13,13929,simple tactical game
+games,KDE,klickety,TODO,184035,15,12269,SameGame puzzle game
+games,KDE,klines,TODO,183540,14,13110,color lines game
+games,KDE,kmahjongg,TODO,168473,19,8867,mahjongg solitaire game
+games,KDE,kmines,TODO,149884,14,10706,minesweeper game
+games,KDE,knavalbattle,TODO,206460,15,13764,battleship board game
+games,KDE,knetwalk,TODO,169008,14,12072,wire puzzle game
+games,KDE,knights,TODO,,ERROR,14231,chess interface for the KDE Platform
+games,KDE,kolf,TODO,189490,14,13535,miniature golf game
+games,KDE,kollision,TODO,179959,13,13843,simple ball dodging game
+games,KDE,konquest,TODO,180460,14,12890,simple turn-based strategy game
+games,KDE,kpat,TODO,162600,25,6504,solitaire card games
+games,KDE,kreversi,TODO,187180,14,13370,reversi board game
+games,KDE,kshisen,TODO,142576,16,8911,Shisen-Sho solitaire game
+games,KDE,ksirk,TODO,,ERROR,13464,Risk strategy game
+games,KDE,ksnakeduel,TODO,183976,13,14152,snake race game
+games,KDE,kspaceduel,TODO,175968,13,13536,SpaceWar! arcade game
+games,KDE,ksquares,TODO,179972,13,13844,Dots and Boxes game
+games,KDE,ksudoku,TODO,164850,15,10990,Sudoku puzzle game and solver
+games,KDE,ktuberling,TODO,658706,58,11357,stamp drawing toy
+games,KDE,kubrick,TODO,199248,14,14232,game based on Rubik's Cube
+games,KDE,lskat,TODO,282722,22,12851,Lieutnant Skat card game
+games,KDE,palapeli,TODO,204880,16,12805,jigsaw puzzle game
+games,KDE,picmi,TODO,192108,14,13722,Number logic game
+science,all,science-biology,TODO,54829,1,54829,Debian Science Biology packages
+science,all,science-chemistry,TODO,38785,1,38785,Debian Science Chemistry packages
+science,all,science-dataacquisition,TODO,73720,1,73720,Debian Science data acquisition packages
+science,all,science-datamanagement,TODO,181784,1,181784,Debian Science Data Management packages
+science,all,science-economics,TODO,181786,1,181786,Debian Science Economics packages
+science,all,science-electrophysiology,TODO,181787,1,181787,Debian Science packages for Electrophysiology
+science,all,science-engineering,TODO,54831,1,54831,Debian Science Engineering packages
+science,all,science-financial,TODO,73721,1,73721,Debian Science financial engineering and computational finance
+science,all,science-geography,TODO,181789,1,181789,Debian Science Geography packages
+science,all,science-geometry,TODO,54832,1,54832,Debian Science geometry packages
+science,all,science-highenergy-physics,TODO,73722,1,73722,Debian Science High Energy Physics packages
+science,all,science-imageanalysis,TODO,47224,1,47224,Debian Science image analysis packages
+science,all,science-imageanalysis-dev,TODO,73723,1,73723,Debian Science development of image analysis applications
+science,all,science-linguistics,TODO,73724,1,73724,Debian Science Linguistics packages
+science,all,science-logic,TODO,181790,1,181790,Debian Science Logic packages
+science,all,science-mathematics,TODO,73726,1,73726,Debian Science Mathematics packages
+science,all,science-meteorology,TODO,181792,1,181792,Debian Science Meteorology packages
+science,all,science-nanoscale-physics,TODO,73727,1,73727,Debian Science Nanoscale Physics packages
+science,all,science-neuroscience-cognitive,TODO,73728,1,73728,Debian Science packages for Cognitive Neuroscience
+science,all,science-neuroscience-modeling,TODO,181795,1,181795,Debian Science packages for modeling of neural systems
+science,all,science-physics,TODO,42306,1,42306,Debian Science Physics packages
+science,all,science-presentation,TODO,181796,1,181796,Debian Science generic tools for presentations
+science,all,science-psychophysics,TODO,181797,1,181797,Debian Science packages for Psychophysics
+science,all,science-robotics,TODO,73730,1,73730,Debian Robotics packages
+science,all,science-simulations,TODO,181798,1,181798,Debian Science Simulation packages
+science,all,science-statistics,TODO,54835,1,54835,Debian Science Statistics packages
+science,all,science-typesetting,TODO,54836,1,54836,Debian Science typesetting packages
+science,all,science-viewing,TODO,54837,1,54837,Debian Science data visualisation packages
+science,all,science-workflow,TODO,181801,1,181801,workflow management systems useful for scientific research
+science,biology,bauble,TODO,N/A,N/A,N/A,N/A
+science,biology,critterding,TODO,73166,2,36583,Evolving Artificial Life
+science,biology,genesis,TODO,N/A,N/A,N/A,N/A
+science,biology,libinterviews-dev,TODO,357784,8,44723,InterViews 3.1 for the NEURON simulator
+science,biology,med-bio,TODO,45889,1,45889,Debian Med bioinformatics packages
+science,biology,med-bio-dev,TODO,156855,1,156855,Debian Med packages for development of bioinformatics applications
+science,biology,nmodl,TODO,553544,8,69193,Code generation engine for the NEURON modeling language
+science,biology,nrn-mod2c,TODO,69321,1,69321,NMODL to C converter for CoreNEURON
+science,biology,python3-nmodl,TODO,505883,7,72269,Python support for the NEURON modeling language engine
+science,biology,siconos,TODO,,ERROR,47263,modeling and simulation of nonsmooth dynamical systems (simulation runner tool)
+science,biology,siconos-mechanics-tools,TODO,,ERROR,54915,modeling and simulation of nonsmooth dynamical systems (mechanics tools)
+science,chemistry,adun.app,TODO,909950,25,36398,Molecular Simulator for GNUstep (GUI)
+science,chemistry,avogadro,TODO,99756,6,16626,Molecular Graphics and Modelling System
+science,chemistry,bkchem,TODO,68362,2,34181,Chemical structures editor
+science,chemistry,chemical-structures,TODO,143125,5,28625,web service providing molecular structures in open formats
+science,chemistry,chemtool,TODO,89788,4,22447,chemical structures drawing program
+science,chemistry,drawxtl,TODO,83277,3,27759,crystal structure viewer
+science,chemistry,easychem,TODO,24280,1,24280,Draw high-quality molecules and 2D chemical formulas
+science,chemistry,fdmnes,TODO,N/A,N/A,N/A,N/A
+science,chemistry,feff85exafs,TODO,48906,1,48906,Open Source theoretical EXAFS calculations
+science,chemistry,gabedit,TODO,201159,7,28737,graphical user interface to Ab Initio packages
+science,chemistry,galculator,TODO,0,0,4931,scientific calculator
+science,chemistry,gamgi,TODO,89433,3,29811,General Atomistic Modelling Graphic Interface (GAMGI)
+science,chemistry,garlic,TODO,25476,1,25476,visualization program for biomolecules
+science,chemistry,gchempaint,TODO,327390,14,23385,2D chemical structures editor for the GNOME2 desktop
+science,chemistry,gcrystal,TODO,373737,13,28749,lightweight crystal structures visualizer
+science,chemistry,gcu-bin,TODO,309686,13,23822,GNOME chemistry utils (helper applications)
+science,chemistry,gcu-plugin,TODO,N/A,N/A,N/A,N/A
+science,chemistry,gdis,TODO,45886,2,22943,molecular and crystal model viewer
+science,chemistry,gdpc,TODO,29818,1,29818,visualiser of molecular dynamic simulations
+science,chemistry,gdpc-examples,TODO,282528,3,94176,example files for the gdpc program
+science,chemistry,gelemental,TODO,44164,2,22082,Periodic Table viewer
+science,chemistry,ghemical,TODO,611592,24,25483,GNOME molecular modelling environment
+science,chemistry,gperiodic,TODO,19912,1,19912,periodic table application
+science,chemistry,gromacs-mpich,TODO,N/A,N/A,N/A,N/A
+science,chemistry,jmol,TODO,950646,62,15333,Molecular Viewer
+science,chemistry,kalzium,TODO,513314,46,11159,periodic table and chemistry tools
+science,chemistry,katomic,TODO,186158,14,13297,atomix puzzle game
+science,chemistry,libcoordgen-dev,TODO,62613,1,62613,2D coordinate generation for chemical compounds - header files
+science,chemistry,libegad,TODO,N/A,N/A,N/A,N/A
+science,chemistry,libint,TODO,N/A,N/A,N/A,N/A
+science,chemistry,libmaeparser-dev,TODO,124582,1,124582,Development files to parse Schrödinger Maestro files
+science,chemistry,libschroedinger-coordgenlibs-dev,TODO,N/A,N/A,N/A,N/A
+science,chemistry,mmass,TODO,N/A,N/A,N/A,N/A
+science,chemistry,mmass-modules,TODO,N/A,N/A,N/A,N/A
+science,chemistry,molden,TODO,N/A,N/A,N/A,N/A
+science,chemistry,molekel,TODO,N/A,N/A,N/A,N/A
+science,chemistry,mpqc-support,TODO,638892,18,35494,Massively Parallel Quantum Chemistry Program (support tools)
+science,chemistry,openchrom,TODO,N/A,N/A,N/A,N/A
+science,chemistry,pdb2pqr,TODO,222215,7,31745,Preparation of protein structures for electrostatics calculations
+science,chemistry,pymol,TODO,287320,20,14366,Molecular Graphics System
+science,chemistry,python3-amp,TODO,,ERROR,30538,Atomistic Machine-learning Package (python 3)
+science,chemistry,python3-mpiplus,TODO,325134,6,54189,Python GPU framework for alchemical free energy calculations (Python 3)
+science,chemistry,python3-openbabel,TODO,152805,5,30561,Chemical toolbox library (Python bindings)
+science,chemistry,qutemol,TODO,223811,7,31973,interactive visualization of macromolecules
+science,chemistry,rasmol,TODO,,ERROR,24149,visualization of biological macromolecules
+science,chemistry,refmac-dictionary,TODO,,14,,dictionary for macromolecular refinement and model building
+science,chemistry,tandem-mass,TODO,27576,1,27576,mass spectrometry software for protein identification
+science,chemistry,tinker,TODO,N/A,N/A,N/A,N/A
+science,chemistry,v-sim,TODO,59166,2,29583,Visualize atomic structures
+science,chemistry,viewmol,TODO,N/A,N/A,N/A,N/A
+science,chemistry,xbs,TODO,32183,1,32183,3-d models and movies of molecules
+science,chemistry,xdrawchem,TODO,160930,5,32186,Chemical structures and reactions editor
+science,chemistry,xmakemol,TODO,78118,2,39059,program for visualizing atomic and molecular systems
+science,chemistry,xmakemol-gl,TODO,72682,2,36341,program for visualizing atomic and molecular systems (OpenGL)
+science,dataacquisition,engauge-digitizer,TODO,74604,3,24868,interactively extracts numbers from bitmap graphs or maps
+science,dataacquisition,epics,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,filo,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,g3data,TODO,26154,1,26154,extract data from scanned graphs
+science,dataacquisition,ghkl,TODO,196804,4,49201,diffractometer computation control application
+science,dataacquisition,hart,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,jaaa,TODO,62280,3,20760,audio signal generator and spectrum analyser
+science,dataacquisition,libgetdata-tools,TODO,63259,1,63259,library to read/write dirfile data - extra tools
+science,dataacquisition,linux-image-2.6-rt,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,mx-dataacquisition,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,open3d-gui,TODO,3150960,76,41460,Library for 3D data processing - GUI
+science,dataacquisition,open3d-tools,TODO,2583392,56,46132,Library for 3D data processing - tools
+science,dataacquisition,opendap,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,plot-digitizer,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,python3-pytango,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,python3-sardana,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,qtdmm,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,rt-tests,TODO,54646,1,54646,Test programs for rt kernels
+science,dataacquisition,segyio-bin,TODO,182078,1,182078,SEG-Y read/write library for seismic processing (shell utilities)
+science,dataacquisition,vnlog,TODO,34043,1,34043,Toolkit to read/write/manipulate whitespace-separated ASCII logs
+science,dataacquisition,xenomai-runtime,TODO,N/A,N/A,N/A,N/A
+science,dataacquisition,xyscan,TODO,426370,10,42637,data thief for scientists
+science,datamanagement,datalad,TODO,,ERROR,18970,data files management and distribution platform
+science,datamanagement,datalad-container,TODO,,ERROR,86430,DataLad extension for working with containerized environments
+science,datamanagement,git-annex,TODO,,ERROR,7102,"manage files with git, without checking their contents into git"
+science,datamanagement,hdf5-filter-plugin,TODO,198926,2,99463,"external filters for HDF5: LZ4, BZip2, Bitshuffle"
+science,datamanagement,hdf5-filter-plugin-blosc-serial,TODO,121304,2,60652,"blocking, shuffling and lossless compression library"
+science,datamanagement,hdf5-filter-plugin-zfp-serial,TODO,298392,3,99464,Compression plugin for the HDF5 library using ZFP compression
+science,datamanagement,libnexus-dev,TODO,1902225,15,126815,NeXus scientific data file format - development libraries
+science,datamanagement,libnexus-java,TODO,380448,3,126816,NeXus scientific data file format - java libraries
+science,datamanagement,libplfit-dev,TODO,65223,1,65223,fitting power-law distributions to empirical data -- development
+science,datamanagement,nexus-tools,TODO,207333,3,69111,NeXus scientific data file format - applications
+science,datamanagement,plfit,TODO,70704,1,70704,fitting power-law distributions to empirical data -- interfaces
+science,datamanagement,python3-jdata,TODO,432822,6,72137,JData encoder/decoder for python 3
+science,datamanagement,python3-mdp,TODO,231030,6,38505,Modular toolkit for Data Processing
+science,datamanagement,python3-nxs,TODO,7184840,41,175240,NeXus scientific data file format - Python 3 binding
+science,datamanagement,python3-openpyxl,TODO,19086,2,9543,Python 3 module to read/write OpenXML xlsx/xlsm files
+science,datamanagement,python3-opentsne,TODO,N/A,N/A,N/A,N/A
+science,datamanagement,python3-plfit,TODO,175396,1,175396,fitting power-law distributions to empirical data -- Python
+science,datamanagement,python3-pyzoltan,TODO,796688,17,46864,Wrapper for the Zoltan data management library
+science,datamanagement,virtuoso-opensource,TODO,944220,5,188844,high-performance database
+science,economics,dolo,TODO,N/A,N/A,N/A,N/A
+science,economics,dynare,TODO,,ERROR,58966,platform for handling a wide class of economic models
+science,economics,dynare-matlab,TODO,,ERROR,88733,MATLAB support for Dynare
+science,economics,elpa-ess,TODO,40306,2,20153,Emacs mode for statistical programming and data analysis
+science,economics,gretl,TODO,,ERROR,24344,"GNU Regression, Econometric & Time-Series Library"
+science,economics,minsky,TODO,N/A,N/A,N/A,N/A
+science,economics,netlogo,TODO,N/A,N/A,N/A,N/A
+science,economics,octave-econometrics,TODO,,ERROR,162656,econometrics functions for Octave
+science,economics,pksfc,TODO,N/A,N/A,N/A,N/A
+science,economics,python3-pandasdmx,TODO,N/A,N/A,N/A,N/A
+science,economics,python3-quantecon,TODO,N/A,N/A,N/A,N/A
+science,economics,r-cran-ecdat,TODO,N/A,N/A,N/A,N/A
+science,economics,r-cran-pdfetch,TODO,N/A,N/A,N/A,N/A
+science,economics,r-cran-vars,TODO,N/A,N/A,N/A,N/A
+science,economics,r-other-bmr,TODO,N/A,N/A,N/A,N/A
+science,economics,r-other-gecon,TODO,N/A,N/A,N/A,N/A
+science,economics,recs,TODO,N/A,N/A,N/A,N/A
+science,economics,repast-hpc,TODO,N/A,N/A,N/A,N/A
+science,economics,repast-symphony,TODO,N/A,N/A,N/A,N/A
+science,economics,science-financial,TODO,73721,1,73721,Debian Science financial engineering and computational finance
+science,economics,science-mathematics,TODO,73726,1,73726,Debian Science Mathematics packages
+science,economics,science-social,TODO,N/A,N/A,N/A,N/A
+science,economics,science-statistics,TODO,54835,1,54835,Debian Science Statistics packages
+science,economics,x13as,TODO,151176,2,75588,seasonal adjustment software for modeling time series
+science,electronics,electronics-all,TODO,89228,1,89228,Default selection of tasks for Debian Electronics
+science,electrophysiology,aghermann,TODO,,ERROR,77203,Sleep-research experiment manager
+science,electrophysiology,bluespike,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,chronus,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,eeglab,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,eegview,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,libdrawtk-dev,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,libmcpanel-dev,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,mclust,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,meabench,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,neo,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,neurodata,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,nspike,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,openelectrophy,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,patchclamp,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,pymeg,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,python3-bioxtasraw,TODO,,ERROR,174252,process biological small angle scattering data
+science,electrophysiology,qrtailab,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,relacs,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,rtxi,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,science-dataacquisition,TODO,73720,1,73720,Debian Science data acquisition packages
+science,electrophysiology,science-neuroscience-modeling,TODO,181795,1,181795,Debian Science packages for modeling of neural systems
+science,electrophysiology,sigviewer,TODO,192390,6,32065,"GUI viewer for biosignals such as EEG, EMG, and ECG"
+science,electrophysiology,spike,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,spykeview,TODO,N/A,N/A,N/A,N/A
+science,electrophysiology,stimfit,TODO,4454100,60,74235,Program for viewing and analyzing electrophysiological data
+science,electrophysiology,trellis-neuro,TODO,N/A,N/A,N/A,N/A
+science,engineering,avl,TODO,N/A,N/A,N/A,N/A
+science,engineering,brlcad,TODO,N/A,N/A,N/A,N/A
+science,engineering,cba,TODO,288900,6,48150,Continuous Beam Analysis
+science,engineering,cgns-convert,TODO,144636,3,48212,CFD General Notation System - Conversion tools
+science,engineering,code-aster,TODO,N/A,N/A,N/A,N/A
+science,engineering,code-aster-gui,TODO,N/A,N/A,N/A,N/A
+science,engineering,diet-agent,TODO,N/A,N/A,N/A,N/A
+science,engineering,eficas,TODO,N/A,N/A,N/A,N/A
+science,engineering,feel++-apps,TODO,N/A,N/A,N/A,N/A
+science,engineering,freecad,TODO,,ERROR,15606,Extensible Open Source CAx program
+science,engineering,gerris,TODO,,ERROR,32552,Fluid Flow Solver
+science,engineering,gmsh,TODO,677402,41,16522,Three-dimensional finite element mesh generator
+science,engineering,hdfview,TODO,N/A,N/A,N/A,N/A
+science,engineering,librecad,TODO,52031,7,7433,Computer-aided design (CAD) system
+science,engineering,libsilo-bin,TODO,527224,8,65903,Utilities to manipulate libsilo files
+science,engineering,logcentral,TODO,N/A,N/A,N/A,N/A
+science,engineering,logcentral-tools,TODO,N/A,N/A,N/A,N/A
+science,engineering,metis-edf,TODO,45900,1,45900,Family of Multilevel Partitioning Algorithms
+science,engineering,netgen,TODO,1562484,44,35511,Automatic 3d tetrahedral mesh generator
+science,engineering,openmeca,TODO,N/A,N/A,N/A,N/A
+science,engineering,persalys,TODO,5121216,96,53346,GUI for uncertainty treatment and variabilities management
+science,engineering,pycgns,TODO,N/A,N/A,N/A,N/A
+science,engineering,python3-openturns,TODO,6651048,92,72294,Python3 front-end of OpenTURNS (aka TUI)
+science,engineering,python3-persalys,TODO,5205888,96,54228,GUI for uncertainty treatment (Python bindings)
+science,engineering,sailcut,TODO,38779,1,38779,Sail design and plotting software
+science,engineering,salome-gui,TODO,N/A,N/A,N/A,N/A
+science,engineering,salome-jobmanager,TODO,N/A,N/A,N/A,N/A
+science,engineering,salome-kernel,TODO,N/A,N/A,N/A,N/A
+science,engineering,salome-med,TODO,N/A,N/A,N/A,N/A
+science,engineering,salome-paravis,TODO,N/A,N/A,N/A,N/A
+science,engineering,salome-smesh,TODO,N/A,N/A,N/A,N/A
+science,engineering,salome-yacs,TODO,N/A,N/A,N/A,N/A
+science,engineering,sfc,TODO,N/A,N/A,N/A,N/A
+science,engineering,solvespace,TODO,131784,8,16473,Parametric 2d/3d CAD
+science,engineering,syrthes,TODO,,ERROR,55114,Transient thermal simulations in complex solid geometries
+science,engineering,tochnog,TODO,N/A,N/A,N/A,N/A
+science,engineering,varkon,TODO,N/A,N/A,N/A,N/A
+science,financial,libstopt-dev,TODO,,ERROR,51925,library for stochastic optimization problems (development package)
+science,financial,python3-stopt,TODO,488970,9,54330,library for stochastic optimization problems (Python 3 bindings)
+science,financial,r-cran-fasianoptions,TODO,N/A,N/A,N/A,N/A
+science,financial,r-cran-fexoticoptions,TODO,N/A,N/A,N/A,N/A
+science,financial,r-cran-foptions,TODO,N/A,N/A,N/A,N/A
+science,geography,earth3d,TODO,N/A,N/A,N/A,N/A
+science,geography,gis-workstation,TODO,94938,1,94938,Geographic Information Systems (GIS) workstation
+science,geography,googleearth-package,TODO,N/A,N/A,N/A,N/A
+science,geography,gosmore,TODO,N/A,N/A,N/A,N/A
+science,geography,gpsman,TODO,45904,2,22952,GPS data graphical manager
+science,geography,gpsmanshp,TODO,,ERROR,32592,Tcl interface to shapelib
+science,geography,gpx2shp,TODO,N/A,N/A,N/A,N/A
+science,geography,grass,TODO,,ERROR,98453,Geographic Resources Analysis Support System (GRASS GIS)
+science,geography,hyantesite,TODO,N/A,N/A,N/A,N/A
+science,geography,josm,TODO,1162310,94,12365,Editor for OpenStreetMap
+science,geography,mapnik-utils,TODO,735840,30,24528,C++ toolkit for developing GIS applications (utilities)
+science,geography,osm2pgsql,TODO,202880,10,20288,OpenStreetMap data to PostgreSQL converter
+science,geography,pgadmin3,TODO,N/A,N/A,N/A,N/A
+science,geography,python3-spaghetti,TODO,N/A,N/A,N/A,N/A
+science,geography,qgis,TODO,,ERROR,7812,Geographic Information System (GIS)
+science,geography,qgis-plugin-grass,TODO,,ERROR,8434,GRASS plugin for QGIS
+science,geography,sumo,TODO,3690293,67,55079,Simulation of Urban MObility (SUMO)
+science,geography,viking,TODO,896832,72,12456,"GPS data editor, analyzer and viewer"
+science,geometry,carmetal,TODO,1173060,45,26068,dynamic geometry software with highly ergonomic UI
+science,geometry,drgeo,TODO,N/A,N/A,N/A,N/A
+science,geometry,geogebra-kde,TODO,N/A,N/A,N/A,N/A
+science,geometry,libgeometry-primitive-perl,TODO,74610,2,37305,module to represent geometric entities
+science,geometry,libgismo-dev,TODO,N/A,N/A,N/A,N/A
+science,geometry,libopengv-dev,TODO,129569,1,129569,Computer vision methods for solving geometric vision problems.
+science,geometry,octave-geometry,TODO,,ERROR,162669,extension of MatGeom functionality in Octave
+science,geometry,python3-gengeo,TODO,83714,2,41857,DEMGenGeo is a library for creating geometry files (Python 3)
+science,geometry,python3-opengv,TODO,72290,1,72290,Computer vision methods for solving geometric vision problems.
+science,geometry,salome-geom,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,cernlib,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,cernlib-base,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,cernlib-core,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,cernlib-extras,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,cernlib-montecarlo,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,dials,TODO,,ERROR,87471,Diffraction Integration for Advanced Light Sources
+science,highenergy-physics,dzedit,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,geant321,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,geant321-doc,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,geant4,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,herwig++,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,kuipc,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,kxterm,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,lhapdf-pdfsets-minimal,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-bindings-python5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-bindings-ruby5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-core5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-geom5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-graf2d-gpad5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-graf2d-graf5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-graf2d-postscript5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-graf3d-eve5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-graf3d-g3d5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-graf3d-gl5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-gui-ged5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-gui5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-hist-spectrum5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-hist5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-html5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-io-xmlparser5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-io5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-foam5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-genvector5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-mathcore5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-mathmore5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-matrix5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-minuit5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-mlp5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-physics5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-quadp5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-smatrix5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-splot5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-math-unuran5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-misc-memstat5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-misc-minicern5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-misc-table5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-montecarlo-eg5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-montecarlo-vmc5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-net-auth5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-net-bonjour5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-net-ldap5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-net5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-proof-proofplayer5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-proof5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-roofit5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-tmva5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-tree-treeplayer5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,libroot-tree5.34,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,looptools,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,nypatchy,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,octave-lhapdf,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,paw,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,paw++,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,paw-demos,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,pawserv,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,pythia8-root-interface,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,rivet,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,rivet-plugins,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,rivet-root-converter,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-macro-fastjet,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-geom-gdml,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-geom-geombuilder,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-geom-geompainter,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-graf2d-asimage,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-graf2d-qt,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-graf2d-x11,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-graf3d-x3d,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-gui-fitpanel,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-gui-guibuilder,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-gui-qt,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-gui-sessionviewer,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-hist-hbook,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-hist-histpainter,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-hist-spectrumpainter,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-io-sql,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-io-xml,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-math-fftw3,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-math-fumili,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-math-minuit2,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-montecarlo-pythia8,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-net-globus,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-net-krb5,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-sql-mysql,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-sql-odbc,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-sql-pgsql,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-plugin-tree-treeviewer,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-system,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-system-bin,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-system-common,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-system-doc,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-system-proofd,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,root-system-rootd,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,sdpb,TODO,147554,2,73777,Semidefinite program solver
+science,highenergy-physics,thepeg,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,thepeg-gui,TODO,N/A,N/A,N/A,N/A
+science,highenergy-physics,zftp,TODO,N/A,N/A,N/A,N/A
+science,imageanalysis-dev,libcv-dev,TODO,N/A,N/A,N/A,N/A
+science,imageanalysis-dev,libcvd-dev,TODO,2480500,22,112750,"C++ library for computer vision, image, and video processing - devel files"
+science,imageanalysis-dev,liblimereg-dev,TODO,N/A,N/A,N/A,N/A
+science,imageanalysis-dev,libvisad-java,TODO,N/A,N/A,N/A,N/A
+science,imageanalysis-dev,python3-vigra,TODO,761222,14,54373,Python3 bindings for the C++ computer vision library
+science,imageanalysis,gpiv,TODO,N/A,N/A,N/A,N/A
+science,imageanalysis,gpivtools,TODO,N/A,N/A,N/A,N/A
+science,imageanalysis,gwyddion,TODO,103760,5,20752,Scanning Probe Microscopy visualization and analysis tool
+science,imageanalysis,libcvd-tools,TODO,2367771,21,112751,"C++ library for computer vision, image, and video processing - tools"
+science,imageanalysis,limereg,TODO,N/A,N/A,N/A,N/A
+science,linguistics,apertium-eval-translator,TODO,56203,1,56203,Evaluate machine translation output against reference
+science,linguistics,apertium-pol-szl,TODO,312444,4,78111,Apertium translation data for the Polish-Silesian pair
+science,linguistics,artha,TODO,124495,7,17785,Handy off-line thesaurus based on WordNet
+science,linguistics,collatinus,TODO,258018,6,43003,lemmatisation of latin text
+science,linguistics,fasttext,TODO,43303,1,43303,Efficient learning of word representations and sentence classification library
+science,linguistics,giella-sme,TODO,N/A,N/A,N/A,N/A
+science,linguistics,libapache-opennlp-java,TODO,,ERROR,49943,machine learning based toolkit for the processing of natural language text
+science,linguistics,libfasttext-dev,TODO,114871,1,114871,Header files of fastText
+science,linguistics,libmbt-dev,TODO,125017,1,125017,memory-based tagger-generator and tagger - development
+science,linguistics,libopennlp-maxent-java,TODO,129652,1,129652,OpenNLP Maximum Entropy Package
+science,linguistics,libsentencepiece-dev,TODO,139198,1,139198,Header files of SentencePiece
+science,linguistics,libticcutils-dev,TODO,,1,,utility functions used in the context of Natural Language Processing (headers)
+science,linguistics,libticcutils2-dev,TODO,N/A,N/A,N/A,N/A
+science,linguistics,libtimbl-dev,TODO,141694,1,141694,Tilburg Memory Based Learner - development
+science,linguistics,libtimblserver-dev,TODO,,1,,Server extensions for Timbl - development
+science,linguistics,libucto-dev,TODO,284656,2,142328,Unicode Tokenizer - development
+science,linguistics,opennlp,TODO,,ERROR,53193,wrapper for Apache OpenNLP natural language text processing toolkit
+science,linguistics,python3-fasttext,TODO,432126,6,72021,fastText binding for Python3
+science,linguistics,python3-gensim,TODO,,ERROR,54130,Python framework for fast Vector Space Modelling
+science,linguistics,python3-sentencepiece,TODO,46884,1,46884,SentencePiece binding for Python3
+science,linguistics,python3-thinc,TODO,1847628,34,54342,Practical Machine Learning for NLP in Python
+science,linguistics,python3-timbl,TODO,N/A,N/A,N/A,N/A
+science,linguistics,sentencepiece,TODO,47242,1,47242,Unsupervised text tokenizer and detokenizer
+science,linguistics,sequitur-g2p,TODO,N/A,N/A,N/A,N/A
+science,linguistics,spacy,TODO,N/A,N/A,N/A,N/A
+science,linguistics,tfdocgen,TODO,,1,,TiLP framework documentation generator
+science,linguistics,travatar,TODO,N/A,N/A,N/A,N/A
+science,linguistics,wnsqlbuilder,TODO,N/A,N/A,N/A,N/A
+science,linguistics,wordnet,TODO,90580,7,12940,electronic lexical database of English language
+science,logic,agda,TODO,,ERROR,77168,dependently typed functional programming language
+science,logic,alt-ergo,TODO,N/A,N/A,N/A,N/A
+science,logic,coala,TODO,N/A,N/A,N/A,N/A
+science,logic,cvc3,TODO,N/A,N/A,N/A,N/A
+science,logic,cvc4,TODO,301476,7,43068,automated theorem prover for SMT problems
+science,logic,depqbf,TODO,58586,1,58586,solver for quantified boolean formulae
+science,logic,gringo,TODO,47664,2,23832,grounding tools for (disjunctive) logic programs
+science,logic,mace2,TODO,N/A,N/A,N/A,N/A
+science,logic,matita,TODO,N/A,N/A,N/A,N/A
+science,logic,proofgeneral,TODO,,ERROR,28321,generic frontend for proof assistants
+science,logic,prover9,TODO,N/A,N/A,N/A,N/A
+science,logic,why,TODO,N/A,N/A,N/A,N/A
+science,logic,why3,TODO,,ERROR,36298,Software verification platform
+science,mathematics,agda,TODO,,ERROR,77168,dependently typed functional programming language
+science,mathematics,axiom,TODO,,ERROR,32247,General purpose computer algebra system: main binary and modules
+science,mathematics,coinor-libbonmin-dev,TODO,,ERROR,83994,COIN-OR mixed integer programming (developer files)
+science,mathematics,eprover,TODO,179256,2,89628,Equational theorem prover
+science,mathematics,feel++-apps,TODO,N/A,N/A,N/A,N/A
+science,mathematics,form,TODO,330993,9,36777,Symbolic manipulation system
+science,mathematics,fplll-tools,TODO,196068,4,49017,Tools to compute LLL-reduction of Euclidian lattices
+science,mathematics,freefem++,TODO,825949,19,43471,Provides the binaries of the FreeFem++ FE suite
+science,mathematics,freefem3d,TODO,N/A,N/A,N/A,N/A
+science,mathematics,freemat,TODO,N/A,N/A,N/A,N/A
+science,mathematics,gap,TODO,403780,13,31060,"computer algebra system for Groups, Algorithms and Programming"
+science,mathematics,gap-prim-groups,TODO,N/A,N/A,N/A,N/A
+science,mathematics,gap-small-groups,TODO,N/A,N/A,N/A,N/A
+science,mathematics,gap-small-groups-extra,TODO,N/A,N/A,N/A,N/A
+science,mathematics,gap-trans-groups,TODO,N/A,N/A,N/A,N/A
+science,mathematics,geneagrapher,TODO,87086,2,43543,Create tree from Mathematics Genealogy Project (executable)
+science,mathematics,geogebra,TODO,784420,65,12068,Dynamic mathematics software for education
+science,mathematics,geomview,TODO,105702,6,17617,interactive geometry viewing program
+science,mathematics,gerris,TODO,,ERROR,32552,Fluid Flow Solver
+science,mathematics,gfan,TODO,51906,3,17302,program for computing with Groebner fans
+science,mathematics,ginac-tools,TODO,65114,2,32557,GiNaC symbolic framework support tools
+science,mathematics,gmsh,TODO,677402,41,16522,Three-dimensional finite element mesh generator
+science,mathematics,isabelle,TODO,N/A,N/A,N/A,N/A
+science,mathematics,julia,TODO,N/A,N/A,N/A,N/A
+science,mathematics,libjgrapht-java,TODO,4033722,33,122234,Java library of graph theory data structures and algorithms
+science,mathematics,libspectra-dev,TODO,,ERROR,139976,library for large scale eigenvalue problems (development files)
+science,mathematics,magnus,TODO,20269,1,20269,Very simple screen magnifier
+science,mathematics,matita,TODO,N/A,N/A,N/A,N/A
+science,mathematics,matlab-support,TODO,,ERROR,25753,distro integration for local MATLAB installations
+science,mathematics,maxima-sage,TODO,159120,9,17680,Computer algebra system -- base system
+science,mathematics,model-builder,TODO,N/A,N/A,N/A,N/A
+science,mathematics,netgen,TODO,1562484,44,35511,Automatic 3d tetrahedral mesh generator
+science,mathematics,octave,TODO,,ERROR,6513,GNU Octave language for numerical computations
+science,mathematics,octaviz,TODO,N/A,N/A,N/A,N/A
+science,mathematics,persalys,TODO,5121216,96,53346,GUI for uncertainty treatment and variabilities management
+science,mathematics,phcpack,TODO,416331,9,46259,general-purpose solver for polynomial systems (command line)
+science,mathematics,proofgeneral,TODO,,ERROR,28321,generic frontend for proof assistants
+science,mathematics,prover9,TODO,N/A,N/A,N/A,N/A
+science,mathematics,pyomo,TODO,N/A,N/A,N/A,N/A
+science,mathematics,python3-openturns,TODO,6651048,92,72294,Python3 front-end of OpenTURNS (aka TUI)
+science,mathematics,python3-persalys,TODO,5205888,96,54228,GUI for uncertainty treatment (Python bindings)
+science,mathematics,qepcad,TODO,2295267,13,176559,quantifier elimination tool
+science,mathematics,regina-normal,TODO,1223170,26,47045,mathematical software for low-dimensional topology
+science,mathematics,sagemath-database-cremona-elliptic-curves,TODO,32659020,180,181439,Databases of elliptic curves over the rationals
+science,mathematics,science-statistics,TODO,54835,1,54835,Debian Science Statistics packages
+science,mathematics,scilab,TODO,,ERROR,15192,Scientific software package for numerical computations
+science,mathematics,scilab-ann,TODO,N/A,N/A,N/A,N/A
+science,mathematics,singular,TODO,550329,13,42333,Computer Algebra System for Polynomial Computations
+science,mathematics,snappea,TODO,N/A,N/A,N/A,N/A
+science,mathematics,surf-alggeo,TODO,184587,1,184587,visualization of real algebraic geometry
+science,mathematics,sympow,TODO,210720,12,17560,mathematical program for SYMmetric POWer elliptic curve L-functions -- program
+science,mathematics,topcom,TODO,67152,3,22384,Triangulations Of Point Configurations and Oriented Matroids
+science,mathematics,wxmaxima,TODO,628150,50,12563,GUI for the computer algebra system Maxima
+science,mathematics,xcas,TODO,245490,15,16366,Computer Algebra System - console and graphical calculator
+science,mathematics,xmaxima,TODO,,ERROR,20677,Computer algebra system -- x interface
+science,mathematics,xmds,TODO,N/A,N/A,N/A,N/A
+science,meteorology,cylc-flow,TODO,,ERROR,86148,Workflow scheduler
+science,meteorology,dballe,TODO,N/A,N/A,N/A,N/A
+science,meteorology,ferret-vis,TODO,,ERROR,23369,Interactive data visualization and analysis environment
+science,meteorology,fpzip-utils,TODO,59696,1,59696,FP array compression library - tools
+science,meteorology,geonetwork,TODO,N/A,N/A,N/A,N/A
+science,meteorology,gerris,TODO,,ERROR,32552,Fluid Flow Solver
+science,meteorology,libaec-tools,TODO,49904,1,49904,Adaptive Entropy Coding library (utilities)
+science,meteorology,libatlas-ecmwf-utils,TODO,2828280,26,108780,Numerical weather prediction and climate modelling library - utilities
+science,meteorology,libeckit-utils,TODO,705124,14,50366,C++ toolkit for ECMWF tools and applications - development files
+science,meteorology,libfckit-utils,TODO,,ERROR,114907,Library Fortran toolkit for interoperating Fortran with C/C++
+science,meteorology,libmetkit-utils,TODO,2128264,17,125192,Utilities for the MetKit MARS access library
+science,meteorology,mbdyn,TODO,N/A,N/A,N/A,N/A
+science,meteorology,metview,TODO,6856330,130,52741,"Interactive data visualization and analysis environment,"
+science,meteorology,ncview,TODO,52551,3,17517,X11 visual browser for NetCDF format files
+science,meteorology,octave-octcdf,TODO,N/A,N/A,N/A,N/A
+science,meteorology,odc,TODO,973378,14,69527,Tools for the Observational Data Processing (ODB)
+science,meteorology,paraview,TODO,,ERROR,11059,Parallel Visualization Application
+science,meteorology,python3-cfgrib,TODO,,ERROR,174332,Python 3 module supporting the CF convention in GRIB files
+science,meteorology,python3-magics++,TODO,3556496,76,46796,Python3 support for Magics++
+science,meteorology,python3-openturns,TODO,6651048,92,72294,Python3 front-end of OpenTURNS (aka TUI)
+science,meteorology,xygrib,TODO,379920,16,23745,"Weather data visualization,  GRIB file viewer"
+science,nanoscale-physics,abinit,TODO,1199562,42,28561,package for electronic structure calculations
+science,nanoscale-physics,ape,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,atompaw,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,avogadro,TODO,99756,6,16626,Molecular Graphics and Modelling System
+science,nanoscale-physics,axiom,TODO,,ERROR,32247,General purpose computer algebra system: main binary and modules
+science,nanoscale-physics,bigdft,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,cadabra,TODO,,ERROR,34201,field-theory motivated computer algebra system
+science,nanoscale-physics,cif-linguist,TODO,57846,1,57846,transform CIF data among CIF formats and dialects
+science,nanoscale-physics,cod-tools,TODO,,ERROR,83935,tools for manipulating CIF format files
+science,nanoscale-physics,drawxtl,TODO,83277,3,27759,crystal structure viewer
+science,nanoscale-physics,dx,TODO,357144,12,29762,OpenDX (IBM Visualization Data Explorer) - main package
+science,nanoscale-physics,exciting,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,fdmnes,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,feel++-apps,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,finalcif,TODO,,ERROR,48927,editor for Crystallographic Information Format
+science,nanoscale-physics,fityk,TODO,203704,8,25463,general-purpose nonlinear curve fitting and data analysis
+science,nanoscale-physics,garlic,TODO,25476,1,25476,visualization program for biomolecules
+science,nanoscale-physics,gdis,TODO,45886,2,22943,molecular and crystal model viewer
+science,nanoscale-physics,ggobi,TODO,75192,4,18798,Data visualization system for high-dimensional data
+science,nanoscale-physics,ghemical,TODO,611592,24,25483,GNOME molecular modelling environment
+science,nanoscale-physics,gperiodic,TODO,19912,1,19912,periodic table application
+science,nanoscale-physics,gpiv,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,gpivtools,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,gwyddion,TODO,103760,5,20752,Scanning Probe Microscopy visualization and analysis tool
+science,nanoscale-physics,libgsl0ldbl,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,liblevmar-2-6,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,mayavi2,TODO,,ERROR,21854,scientific visualization package for 2-D and 3-D data
+science,nanoscale-physics,ncview,TODO,52551,3,17517,X11 visual browser for NetCDF format files
+science,nanoscale-physics,nexus-tools,TODO,207333,3,69111,NeXus scientific data file format - applications
+science,nanoscale-physics,octave,TODO,,ERROR,6513,GNU Octave language for numerical computations
+science,nanoscale-physics,octaviz,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,octopus,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,openkim-models,TODO,,ERROR,164198,Models and model-drivers for KIM-API
+science,nanoscale-physics,openmx,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,pymca,TODO,,ERROR,41698,Applications and toolkit for X-ray fluorescence analysis -- scripts
+science,nanoscale-physics,qtiplot,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,scidavis,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,science-mathematics,TODO,73726,1,73726,Debian Science Mathematics packages
+science,nanoscale-physics,science-statistics,TODO,54835,1,54835,Debian Science Statistics packages
+science,nanoscale-physics,scilab,TODO,,ERROR,15192,Scientific software package for numerical computations
+science,nanoscale-physics,udav,TODO,510060,12,42505,library for scientific graphs (window interface)
+science,nanoscale-physics,v-sim,TODO,59166,2,29583,Visualize atomic structures
+science,nanoscale-physics,voronota,TODO,567048,3,189016,Voronoi diagram-based tool to find atom contacts
+science,nanoscale-physics,wannier90-1,TODO,N/A,N/A,N/A,N/A
+science,nanoscale-physics,wannier90-2,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,afni,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,amide,TODO,170560,8,21320,software for Medical Imaging
+science,neuroscience-cognitive,bioimagesuite,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,brainvisa,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,caret,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,connectomeviewer,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,debruijn,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,eeglab,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,fieldtrip,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,freesurfer,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,fsl,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,fslview,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,hid,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,iqr,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,itksnap,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,lipsia,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,mni-autoreg,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,mni-n3,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,mricron,TODO,417129,17,24537,"magnetic resonance image conversion, viewing and analysis"
+science,neuroscience-cognitive,openmeeg-tools,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,praat,TODO,377584,16,23599,program for speech analysis and synthesis
+science,neuroscience-cognitive,pysurfer,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,python-mvpa2,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,python3-bioxtasraw,TODO,,ERROR,174252,process biological small angle scattering data
+science,neuroscience-cognitive,python3-dipy,TODO,,ERROR,31892,Python library for the analysis of diffusion MRI datasets
+science,neuroscience-cognitive,python3-nipy,TODO,,ERROR,41893,Analysis of structural and functional neuroimaging data
+science,neuroscience-cognitive,python3-nitime,TODO,,ERROR,46811,timeseries analysis for neuroscience data (nitime)
+science,neuroscience-cognitive,python3-pyxnat,TODO,,ERROR,72470,Interface to access neuroimaging data on XNAT servers
+science,neuroscience-cognitive,science-psychophysics,TODO,181797,1,181797,Debian Science packages for Psychophysics
+science,neuroscience-cognitive,science-typesetting,TODO,54836,1,54836,Debian Science typesetting packages
+science,neuroscience-cognitive,slicer,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,spm8,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,voxbo,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-cognitive,xmedcon,TODO,27638,1,27638,"Medical Image (DICOM, ECAT, ...) conversion tool (GUI)"
+science,neuroscience-cognitive,xnat,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-modeling,cnrun,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-modeling,invt,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-modeling,moose,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-modeling,nest,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-modeling,pcsim,TODO,N/A,N/A,N/A,N/A
+science,neuroscience-modeling,python3-pynn,TODO,,ERROR,175566,simulator-independent specification of neuronal network models
+science,neuroscience-modeling,xppaut,TODO,303040,4,75760,Phase Plane Plus Auto: Solves many kinds of equations
+science,physics,abinit,TODO,1199562,42,28561,package for electronic structure calculations
+science,physics,axiom,TODO,,ERROR,32247,General purpose computer algebra system: main binary and modules
+science,physics,blzpack,TODO,N/A,N/A,N/A,N/A
+science,physics,cadabra,TODO,,ERROR,34201,field-theory motivated computer algebra system
+science,physics,cernlib,TODO,N/A,N/A,N/A,N/A
+science,physics,clhep,TODO,N/A,N/A,N/A,N/A
+science,physics,drawxtl,TODO,83277,3,27759,crystal structure viewer
+science,physics,espresso++,TODO,N/A,N/A,N/A,N/A
+science,physics,fdmnes,TODO,N/A,N/A,N/A,N/A
+science,physics,feel++-apps,TODO,N/A,N/A,N/A,N/A
+science,physics,fityk,TODO,203704,8,25463,general-purpose nonlinear curve fitting and data analysis
+science,physics,gate,TODO,N/A,N/A,N/A,N/A
+science,physics,geant321,TODO,N/A,N/A,N/A,N/A
+science,physics,geant4,TODO,N/A,N/A,N/A,N/A
+science,physics,gerris,TODO,,ERROR,32552,Fluid Flow Solver
+science,physics,ghkl,TODO,196804,4,49201,diffractometer computation control application
+science,physics,gpiv,TODO,N/A,N/A,N/A,N/A
+science,physics,gpivtools,TODO,N/A,N/A,N/A,N/A
+science,physics,gwyddion,TODO,103760,5,20752,Scanning Probe Microscopy visualization and analysis tool
+science,physics,jfreemesh,TODO,N/A,N/A,N/A,N/A
+science,physics,libroot-math-mlp-dev,TODO,N/A,N/A,N/A,N/A
+science,physics,libroot-montecarlo-vmc-dev,TODO,N/A,N/A,N/A,N/A
+science,physics,libroot-tmva-dev,TODO,N/A,N/A,N/A,N/A
+science,physics,meshlab,TODO,103320,8,12915,System for processing and editing triangular meshes
+science,physics,octaviz,TODO,N/A,N/A,N/A,N/A
+science,physics,openmx,TODO,N/A,N/A,N/A,N/A
+science,physics,opticalraytracer,TODO,1530800,43,35600,Virtual lens/mirror design workshop
+science,physics,paw,TODO,N/A,N/A,N/A,N/A
+science,physics,paw++,TODO,N/A,N/A,N/A,N/A
+science,physics,paw-demos,TODO,N/A,N/A,N/A,N/A
+science,physics,pymca,TODO,,ERROR,41698,Applications and toolkit for X-ray fluorescence analysis -- scripts
+science,physics,root-system,TODO,N/A,N/A,N/A,N/A
+science,physics,science-electronics,TODO,54830,1,54830,Debian Science Electronics transitional package
+science,physics,science-mathematics,TODO,73726,1,73726,Debian Science Mathematics packages
+science,physics,science-statistics,TODO,54835,1,54835,Debian Science Statistics packages
+science,physics,siconos,TODO,,ERROR,47263,modeling and simulation of nonsmooth dynamical systems (simulation runner tool)
+science,physics,siconos-mechanics-tools,TODO,,ERROR,54915,modeling and simulation of nonsmooth dynamical systems (mechanics tools)
+science,physics,spis,TODO,N/A,N/A,N/A,N/A
+science,physics,tessa,TODO,N/A,N/A,N/A,N/A
+science,physics,tessa-mpi,TODO,N/A,N/A,N/A,N/A
+science,physics,v-sim,TODO,59166,2,29583,Visualize atomic structures
+science,presentation,dspdfviewer,TODO,34324,1,34324,Dual-Screen PDF Viewer for LaTeX-beamer
+science,presentation,zathura,TODO,6205,1,6205,document viewer with a minimalistic interface
+science,psychophysics,octave-psychtoolbox-3,TODO,,ERROR,53103,toolbox for vision research -- Octave bindings
+science,psychophysics,psychopy,TODO,N/A,N/A,N/A,N/A
+science,psychophysics,science-neuroscience-cognitive,TODO,73728,1,73728,Debian Science packages for Cognitive Neuroscience
+science,psychophysics,visionegg,TODO,N/A,N/A,N/A,N/A
+science,robotics,arduino-ctags,TODO,6691,1,6691,Arduino fork of exuberant ctags
+science,robotics,aseba,TODO,527153,11,47923,Event-based framework for distributed mobile robots control
+science,robotics,catkin-lint,TODO,144447,3,48149,Check Robot OS catkin packages for common errors
+science,robotics,catkin-tools,TODO,78504,2,39252,Command line tools for catkin workspaces
+science,robotics,choreonoid,TODO,N/A,N/A,N/A,N/A
+science,robotics,collada-urdf-tools,TODO,758736,9,84304,ROS collada_urdf tools
+science,robotics,d-collide,TODO,N/A,N/A,N/A,N/A
+science,robotics,jskeus,TODO,522655,5,104531,Lisp based intelligent robots programming system
+science,robotics,morse-simulator,TODO,,ERROR,158369,Multi-OpenRobot Simulation Engine
+science,robotics,mrgingham,TODO,,ERROR,52841,Chessboard finder for visual calibration routines
+science,robotics,octave,TODO,,ERROR,6513,GNU Octave language for numerical computations
+science,robotics,octovis,TODO,69525,1,69525,Visualization tool for OctoMap
+science,robotics,ompl-demos,TODO,,ERROR,163127,Open Motion Planning Library (OMPL) demos
+science,robotics,openhrp,TODO,N/A,N/A,N/A,N/A
+science,robotics,openrave,TODO,N/A,N/A,N/A,N/A
+science,robotics,openrtm,TODO,N/A,N/A,N/A,N/A
+science,robotics,orca,TODO,34620,15,2308,Scriptable screen reader
+science,robotics,orocos-ocl,TODO,N/A,N/A,N/A,N/A
+science,robotics,orocos-rtt,TODO,N/A,N/A,N/A,N/A
+science,robotics,pcl-ros-tools,TODO,,ERROR,70129,Bridge between Robot OS library (ROS) and PCL - tools
+science,robotics,roboop,TODO,N/A,N/A,N/A,N/A
+science,robotics,robot-player,TODO,N/A,N/A,N/A,N/A
+science,robotics,ros-camera-calibration,TODO,146438,2,73219,ROS camera_calibration nodes
+science,robotics,ros-desktop,TODO,,ERROR,178712,Robot OS desktop metapackage
+science,robotics,ros-desktop-full,TODO,,ERROR,178714,Robot OS desktop-full metapackage
+science,robotics,ros-opencv-apps,TODO,163878,3,54626,opencv_apps Robot OS package - apps
+science,robotics,ros-perception,TODO,,ERROR,179798,Python Robot OS perception metapackage
+science,robotics,ros-robot,TODO,,ERROR,179814,Python Robot OS robot metapackage
+science,robotics,ros-robot-state-publisher,TODO,168692,4,42173,Robot OS robot_state_publisher
+science,robotics,ros-simulators,TODO,,ERROR,179848,Python Robot OS simulators metapackage
+science,robotics,rtnet,TODO,N/A,N/A,N/A,N/A
+science,robotics,solid,TODO,N/A,N/A,N/A,N/A
+science,robotics,vtk9,TODO,703098,33,21306,Binaries for VTK9
+science,robotics,xenomai-runtime,TODO,N/A,N/A,N/A,N/A
+science,simulations,fdmnes,TODO,N/A,N/A,N/A,N/A
+science,simulations,gazebo,TODO,N/A,N/A,N/A,N/A
+science,simulations,libdart-dev,TODO,,ERROR,112848,Kinematics Dynamics and Optimization Library - development files
+science,simulations,libgismo-dev,TODO,N/A,N/A,N/A,N/A
+science,simulations,libkim-api-v2-models,TODO,N/A,N/A,N/A,N/A
+science,simulations,libopm-common-bin,TODO,519236,4,129809,Tools for Eclipse reservoir simulation files -- utility programs
+science,simulations,libopm-common-dev,TODO,,ERROR,65044,Tools for Eclipse reservoir simulation files -- development files
+science,simulations,libopm-grid-bin,TODO,,ERROR,65045,corner point grid utility programs
+science,simulations,libopm-grid-dev,TODO,,ERROR,65046,DUNE grid implementations for reservoir simulation -- development files
+science,simulations,libopm-material-dev,TODO,,ERROR,129812,Material properties framework for porous media -- development files
+science,simulations,libopm-models-dev,TODO,,ERROR,65047,C++ simulation framework for porous media flow -- development files
+science,simulations,libopm-simulators-bin,TODO,,ERROR,65049,Parallel porous media / reservoir simulators -- applications
+science,simulations,libopm-simulators-dev,TODO,,ERROR,129815,Parallel porous media / reservoir simulators -- development files
+science,simulations,libopm-upscaling-bin,TODO,,ERROR,129818,Porous media upscaling tools -- applications
+science,simulations,libopm-upscaling-dev,TODO,,ERROR,,Porous media upscaling tools -- development files
+science,simulations,mbpoll,TODO,28189,1,28189,command line utility to communicate with ModBus slave (RTU or TCP)
+science,simulations,pysph-viewer,TODO,,ERROR,53752,viewer for PySPH - framework for Smoothed Particle Hydrodynamics
+science,simulations,python3-opm-common,TODO,1577574,9,175286,Tools for Eclipse reservoir simulation files -- Python wrappers
+science,simulations,python3-opm-simulators,TODO,,ERROR,175287,Python wrappers for the Open porous media / reservoir simulators
+science,simulations,python3-pyswarms,TODO,,ERROR,72447,research toolkit for particle swarm optimization in Python
+science,simulations,python3-qutip,TODO,,ERROR,46867,python package for simulating the dynamics of open quantum systems
+science,simulations,python3-woo,TODO,N/A,N/A,N/A,N/A
+science,simulations,siconos,TODO,,ERROR,47263,modeling and simulation of nonsmooth dynamical systems (simulation runner tool)
+science,simulations,siconos-mechanics-tools,TODO,,ERROR,54915,modeling and simulation of nonsmooth dynamical systems (mechanics tools)
+science,simulations,sumo,TODO,3690293,67,55079,Simulation of Urban MObility (SUMO)
+science,simulations,tkgate,TODO,45618,2,22809,Tcl/Tk based digital circuit editor and simulator
+science,simulations,yade,TODO,,ERROR,55728,Platform for discrete element modeling
+science,statistics,elpa-ess,TODO,40306,2,20153,Emacs mode for statistical programming and data analysis
+science,statistics,libdistlib-java,TODO,125732,2,62866,Java library of statistical distribution functions
+science,statistics,libicb-utils-java,TODO,3933776,88,44702,Java library of utilities to manage files and compute statistics
+science,statistics,persalys,TODO,5121216,96,53346,GUI for uncertainty treatment and variabilities management
+science,statistics,pspp,TODO,,ERROR,18061,Statistical analysis tool
+science,statistics,python3-leidenalg,TODO,699860,4,174965,Python3 implementation of the Leiden algorithm in C++
+science,statistics,python3-openturns,TODO,6651048,92,72294,Python3 front-end of OpenTURNS (aka TUI)
+science,statistics,python3-persalys,TODO,5205888,96,54228,GUI for uncertainty treatment (Python bindings)
+science,statistics,python3-pynndescent,TODO,,ERROR,72409,nearest neighbor descent for approximate nearest neighbors
+science,statistics,r-cran-cairodevice,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-fcalendar,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-fecofin,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-foptions,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-hdf5,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-its,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-rggobi,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-rgtk2,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-rpvm,TODO,N/A,N/A,N/A,N/A
+science,statistics,r-cran-rsprng,TODO,N/A,N/A,N/A,N/A
+science,statistics,rkward,TODO,,ERROR,21605,KDE frontend to the R statistics language
+science,statistics,rstudio,TODO,N/A,N/A,N/A,N/A
+science,statistics,science-mathematics,TODO,73726,1,73726,Debian Science Mathematics packages
+science,typesetting,auctex,TODO,,ERROR,9508,integrated document editing environment for TeX etc.
+science,typesetting,biber,TODO,,ERROR,7203,Much-augmented BibTeX replacement for BibLaTeX users
+science,typesetting,bibus,TODO,N/A,N/A,N/A,N/A
+science,typesetting,cb2bib,TODO,,ERROR,26070,extract bibliographic references from various sources
+science,typesetting,dia,TODO,47368,8,5921,Diagram editor
+science,typesetting,gpapers,TODO,N/A,N/A,N/A,N/A
+science,typesetting,gummi,TODO,,ERROR,16386,simple LaTeX editor with live preview
+science,typesetting,ipe,TODO,,ERROR,18340,drawing editor for creating figures in PDF or PS formats
+science,typesetting,jabref,TODO,,ERROR,11355,graphical frontend to manage BibTeX and BibLaTeX databases
+science,typesetting,kbibtex,TODO,,ERROR,16529,BibTeX editor for KDE
+science,typesetting,kile,TODO,,ERROR,8270,KDE Integrated LaTeX Environment
+science,typesetting,libgtkmathview-bin,TODO,N/A,N/A,N/A,N/A
+science,typesetting,libqtexengine-dev,TODO,N/A,N/A,N/A,N/A
+science,typesetting,libreoffice-dmaths,TODO,523909,47,11147,Formula editing plug-in for LibreOffice Writer
+science,typesetting,luasseq,TODO,N/A,N/A,N/A,N/A
+science,typesetting,lyx,TODO,,ERROR,7770,document processor
+science,typesetting,pybliographer,TODO,N/A,N/A,N/A,N/A
+science,typesetting,pymarc,TODO,N/A,N/A,N/A,N/A
+science,typesetting,quaneko,TODO,N/A,N/A,N/A,N/A
+science,typesetting,referencer,TODO,N/A,N/A,N/A,N/A
+science,typesetting,setzer,TODO,,ERROR,24163,simple yet full-featured LaTeX editor
+science,typesetting,tellico,TODO,,ERROR,15585,"Collection manager for books, videos, music, etc"
+science,typesetting,texlive-math-extra,TODO,N/A,N/A,N/A,N/A
+science,typesetting,texmacs,TODO,N/A,N/A,N/A,N/A
+science,typesetting,texmaker,TODO,,ERROR,7973,cross-platform LaTeX editor
+science,typesetting,texstudio,TODO,,ERROR,7215,LaTeX Editor
+science,typesetting,transfig,TODO,N/A,N/A,N/A,N/A
+science,typesetting,xfig,TODO,48010,5,9602,Facility for Interactive Generation of figures under X11
+science,typesetting,xul-ext-zotero,TODO,N/A,N/A,N/A,N/A
+science,typesetting,zotero-standalone,TODO,N/A,N/A,N/A,N/A
+science,viewing,3depict,TODO,1284343,23,55841,visualisation and analysis for single valued point data
+science,viewing,camv-rnd,TODO,244395,3,81465,Standard installation of camv-rnd
+science,viewing,cassandra,TODO,N/A,N/A,N/A,N/A
+science,viewing,circos,TODO,678825,21,32325,plotter for visualizing data
+science,viewing,feedgnuplot,TODO,258417,9,28713,Pipe-oriented frontend to Gnuplot
+science,viewing,findimagedupes,TODO,,ERROR,17127,Finds visually similar or duplicate images
+science,viewing,fityk,TODO,203704,8,25463,general-purpose nonlinear curve fitting and data analysis
+science,viewing,g3data,TODO,26154,1,26154,extract data from scanned graphs
+science,viewing,geg,TODO,34498,1,34498,GTK+ Equation Grapher
+science,viewing,gfsview,TODO,,ERROR,36837,graphical viewer for Gerris simulation files
+science,viewing,gmsh,TODO,677402,41,16522,Three-dimensional finite element mesh generator
+science,viewing,gwyddion,TODO,103760,5,20752,Scanning Probe Microscopy visualization and analysis tool
+science,viewing,ifrit,TODO,N/A,N/A,N/A,N/A
+science,viewing,imview,TODO,18339,1,18339,Image viewing and analysis application
+science,viewing,kst,TODO,229047,7,32721,scientific data plotting tool
+science,viewing,labplot,TODO,731370,30,24379,interactive graphing and analysis of scientific data
+science,viewing,libgrits-dev,TODO,N/A,N/A,N/A,N/A
+science,viewing,libgtkmathview-bin,TODO,N/A,N/A,N/A,N/A
+science,viewing,libqglviewer-dev,TODO,N/A,N/A,N/A,N/A
+science,viewing,libqglviewer2,TODO,N/A,N/A,N/A,N/A
+science,viewing,libvtk9-dev,TODO,,ERROR,22665,VTK header files
+science,viewing,libvtk9-java,TODO,866346,39,22214,VTK - Java language support
+science,viewing,libvtk9-qt-dev,TODO,,ERROR,35331,"VTK header files, containing Qt files"
+science,viewing,lybniz,TODO,19759,1,19759,mathematical function graph plotter
+science,viewing,mathgl,TODO,532448,14,38032,library for scientific graphs (utilities and examples)
+science,viewing,matlab2tikz,TODO,,ERROR,156485,converter of Octave plots to TikZ figures (for integration into LaTeX)
+science,viewing,mayavi2,TODO,,ERROR,21854,scientific visualization package for 2-D and 3-D data
+science,viewing,med-imaging,TODO,38037,1,38037,Debian Med image processing and visualization packages
+science,viewing,open3d-gui,TODO,3150960,76,41460,Library for 3D data processing - GUI
+science,viewing,open3d-tools,TODO,2583392,56,46132,Library for 3D data processing - tools
+science,viewing,ovito,TODO,N/A,N/A,N/A,N/A
+science,viewing,paraview,TODO,,ERROR,11059,Parallel Visualization Application
+science,viewing,pgfplots,TODO,N/A,N/A,N/A,N/A
+science,viewing,plotdrop,TODO,N/A,N/A,N/A,N/A
+science,viewing,python3-vtk9,TODO,710346,42,16913,Python bindings for VTK
+science,viewing,qtiplot,TODO,N/A,N/A,N/A,N/A
+science,viewing,rlplot,TODO,N/A,N/A,N/A,N/A
+science,viewing,scidavis,TODO,N/A,N/A,N/A,N/A
+science,viewing,solvespace,TODO,131784,8,16473,Parametric 2d/3d CAD
+science,viewing,trend,TODO,47480,1,47480,"general-purpose, efficient trend graph"
+science,viewing,tulip,TODO,,ERROR,74835,System dedicated to the visualization of huge data sets as graphs
+science,viewing,udav,TODO,510060,12,42505,library for scientific graphs (window interface)
+science,viewing,veusz,TODO,399098,14,28507,2D and 3D scientific plotting application with graphical interface
+science,viewing,visit,TODO,N/A,N/A,N/A,N/A
+science,viewing,vistrails,TODO,,ERROR,55538,Science visualisation workflow toolkit
+science,viewing,vtk9-examples,TODO,47619,1,47619,VTK examples
+science,workflow,capsule-nextflow,TODO,3423924,42,81522,packaging and deployment tool for Java applications
+science,workflow,pegasus-wms,TODO,N/A,N/A,N/A,N/A
+science,workflow,snakemake,TODO,,ERROR,18935,pythonic workflow management system
+games,PrisonPC,1oom,TODO,502515,9,55835,Master of Orion engine
+games,PrisonPC,alephone,TODO,,7,,FPS engine for the Marathon Trilogy
+games,PrisonPC,alien-arena,TODO,19254060,740,26019,Standalone 3D first person online deathmatch shooter
+games,PrisonPC,asc-music,TODO,787820,10,78782,music pack for ASC
+games,PrisonPC,assaultcube,TODO,107472,4,26868,realistic first-person-shooter
+games,PrisonPC,astromenace,TODO,1457427,51,28577,hardcore 3D space shooter with spaceship upgrade possibilities
+games,PrisonPC,bzflag,TODO,1053325,13,81025,3D first person tank battle game
+games,PrisonPC,cappuccino,TODO,22874,1,22874,utility to let your boss think that you're working hard
+games,PrisonPC,chocolate-doom,TODO,170712,9,18968,Doom engines closely-compatible with Vanilla Doom
+games,PrisonPC,chroma-curses,TODO,34225,1,34225,Abstract puzzle game - terminal version
+games,PrisonPC,colobot-common-sounds,TODO,1168294,58,20143,educational programming strategy game - sounds and music
+games,PrisonPC,colobot-common-textures,TODO,564032,28,20144,educational programming strategy game - textures
+games,PrisonPC,corsix-th,TODO,393310,10,39331,Open source clone of Theme Hospital
+games,PrisonPC,crafty-bitmaps,TODO,85012,1,85012,bitmap images for crafty chess game annotation mode
+games,PrisonPC,crafty-books-medium,TODO,935143,11,85013,Medium size opening books for the crafty chess engine
+games,PrisonPC,crafty-books-medtosmall,TODO,170028,2,85014,Medium-to-small size opening books for crafty chess engine
+games,PrisonPC,crafty-books-small,TODO,85015,1,85015,Small-size opening books for crafty chess engine
+games,PrisonPC,crawl-tiles,TODO,336176,16,21011,"Dungeon Crawl, a roguelike game, tiles version"
+games,PrisonPC,crossfire-client-images,TODO,255324,3,85108,Base crossfire-client images
+games,PrisonPC,crossfire-maps,TODO,429705,15,28647,Standard set of maps for crossfire
+games,PrisonPC,csmash-demosong,TODO,1022088,12,85174,Demo song for CannonSmash
+games,PrisonPC,cube2,TODO,168867,9,18763,3D first-person shooter game engine
+games,PrisonPC,cytadela,TODO,2083780,43,48460,old-school first person shooter game
+games,PrisonPC,d1x-rebirth,TODO,433048,11,39368,port of the 1995 classic game Descent 1: First Strike
+games,PrisonPC,d2x-rebirth,TODO,473825,11,43075,port of the 1996 classic game Descent 2: Counterstrike
+games,PrisonPC,darkplaces,TODO,71780,4,17945,Game engine for Quake and similar 3D first person shooter games
+games,PrisonPC,davegnukem-datasrc,TODO,86453,1,86453,Data source files for davegnukem
+games,PrisonPC,ddnet-tools,TODO,173480,2,86740,Tools for DDNet
+games,PrisonPC,dhewm3,TODO,146480,4,36620,GPL Doom 3 game engine
+games,PrisonPC,dhewm3-d3xp,TODO,524664,6,87444,dhewm3's gamelibrary for the title DOOM³: Resurrection of Evil
+games,PrisonPC,dhewm3-doom3,TODO,437225,5,87445,dhewm3's gamelibrary for the title DOOM³
+games,PrisonPC,dizzy,TODO,227652,12,18971,Graphics demo that makes you dizzy using rotating textures
+games,PrisonPC,doom-wad-shareware,TODO,176022,2,88011,Shareware game files for the 3D game Doom
+games,PrisonPC,drascula-french,TODO,9706180,110,88238,classic 2D point and click adventure game -- French version
+games,PrisonPC,drascula-german,TODO,9706290,110,88239,classic 2D point and click adventure game -- German version
+games,PrisonPC,drascula-italian,TODO,10588800,120,88240,classic 2D point and click adventure game -- Italian version
+games,PrisonPC,drascula-music,TODO,3088435,35,88241,classic 2D point and click adventure game -- music files
+games,PrisonPC,drascula-spanish,TODO,10589040,120,88242,classic 2D point and click adventure game -- Spanish version
+games,PrisonPC,dwarf-fortress,TODO,242594,11,22054,Slaves to Armok: God of Blood Chapter II: Dwarf Fortress
+games,PrisonPC,endless-sky-high-dpi,TODO,17899400,200,89497,space exploration and combat game
+games,PrisonPC,exult,TODO,977240,20,48862,"engine for Ultima VII (BG, FOV, SI, SS)"
+games,PrisonPC,exult-studio,TODO,2614002,29,90138,tools for editing and viewing exult games
+games,PrisonPC,fb-music-high,TODO,180832,2,90416,"High quality, large music files for Frozen-Bubble"
+games,PrisonPC,fheroes2-pkg,TODO,,ERROR,39530,fheroes2 package downloader and builder
+games,PrisonPC,fillets-ng-data-cs,TODO,3454200,38,90900,add-on sounds for Czech language spoken dialogs for fillets-ng
+games,PrisonPC,fillets-ng-data-nl,TODO,2908832,32,90901,add-on sounds for Dutch language spoken dialogs for fillets-ng
+games,PrisonPC,flare,TODO,1002353,11,91123,Meta package to deal with package name changes in Flare 0.19
+games,PrisonPC,flare-engine,TODO,218889,11,19899,game engine for single-player 2D action role-playing games
+games,PrisonPC,flightgear-data-ai,TODO,4557840,280,16278,FlightGear Flight Simulator -- standard AI data
+games,PrisonPC,flightgear-data-all,TODO,27674300,1700,16279,FlightGear Flight Simulator - virtual package
+games,PrisonPC,flightgear-data-base,TODO,118535300,1300,91181,FlightGear Flight Simulator -- base files
+games,PrisonPC,flightgear-data-models,TODO,12765480,140,91182,FlightGear Flight Simulator -- standard models
+games,PrisonPC,fltk1.1-games,TODO,59576,1,59576,"Fast Light Toolkit - example games: checkers, sudoku"
+games,PrisonPC,freeciv-client-extras,TODO,486320,20,24316,Civilization turn based strategy game (miscellaneous extras)
+games,PrisonPC,freeciv-client-gtk,TODO,868868,28,31031,Civilization turn based strategy game (GTK 2 client transitional package)
+games,PrisonPC,freeciv-client-gtk3,TODO,396032,28,14144,Civilization turn based strategy game (GTK 3 client)
+games,PrisonPC,freeciv-client-qt,TODO,732144,28,26148,Civilization turn based strategy game (Qt client)
+games,PrisonPC,freeciv-client-sdl,TODO,3420819,93,36783,Civilization turn based strategy game (SDL client)
+games,PrisonPC,freeciv-ruleset-tools,TODO,183976,2,91988,Civilization turn based strategy game (ruleset tools)
+games,PrisonPC,freedink-dfarc,TODO,156894,6,26149,frontend and .dmod installer for GNU FreeDink
+games,PrisonPC,freedink-engine,TODO,1402680,60,23378,humorous top-down adventure and role-playing game (engine)
+games,PrisonPC,freespace2-launcher-wxlauncher,TODO,294288,8,36786,launcher for the Freespace 2 Source Code Project
+games,PrisonPC,fretsonfire-songs-muldjord,TODO,2587060,28,92395,game of musical skill and fast fingers - Songs Package
+games,PrisonPC,fretsonfire-songs-sectoid,TODO,2587088,28,92396,game of musical skill and fast fingers - Songs Package
+games,PrisonPC,frogatto,TODO,6396760,230,27812,2D platformer game starring a quixotic frog
+games,PrisonPC,gamehub,TODO,628308,36,17453,Unified library for games from multiple sources
+games,PrisonPC,gamescope,TODO,64604,4,16151,Micro-compositor for game scaling
+games,PrisonPC,gav-themes,TODO,93241,1,93241,Extra themes for GPL Arcade Volleyball
+games,PrisonPC,gearhead-sdl,TODO,184155,5,36831,"roguelike mecha role playing game, SDL version"
+games,PrisonPC,gearhead2-sdl,TODO,357995,11,32545,roguelike mecha role playing game in space
+games,PrisonPC,gemrb,TODO,600490,10,60049,"Open-source engine to run Baldur's Gate, Icewind Dale and Planescape: Torment"
+games,PrisonPC,gemrb-baldurs-gate,TODO,943500,10,94350,GemRB binary and configuration for Baldur's Gate game
+games,PrisonPC,gemrb-baldurs-gate-2,TODO,943510,10,94351,GemRB binary and configuration for Baldur's Gate 2 game
+games,PrisonPC,gemrb-icewind-dale,TODO,943550,10,94355,GemRB binary and configuration for Icewind Dale game
+games,PrisonPC,gemrb-icewind-dale-2,TODO,943560,10,94356,GemRB binary and configuration for Icewind Dale 2 game
+games,PrisonPC,gemrb-planescape-torment,TODO,600510,10,60051,GemRB binary and configuration for Planescape: Torment game
+games,PrisonPC,glhack,TODO,86283,3,28761,Fullscreen SDL/OpenGL version of NetHack
+games,PrisonPC,gnome-breakout,TODO,26995,1,26995,"Clone of the classic game Breakout, written for GNOME"
+games,PrisonPC,gnome-crosswords,TODO,,16,,crossword player and editor for GNOME
+games,PrisonPC,gnome-games-app,TODO,130308,6,21718,Game browser and launcher for GNOME
+games,PrisonPC,gnome-mastermind,TODO,22521,1,22521,Mastermind™ clone for GNOME
+games,PrisonPC,gnuboy-sdl,TODO,49263,1,49263,SDL binaries for gnuboy - Game Boy Emulator
+games,PrisonPC,gnuboy-x,TODO,49264,1,49264,X binaries for gnuboy - Game Boy Emulator
+games,PrisonPC,golly,TODO,229446,9,25494,Game of Life simulator using hashlife algorithm
+games,PrisonPC,goverlay,TODO,120050,7,17150,Graphical UI to help manage Vulkan / OpenGL overlays
+games,PrisonPC,heroes-sound-effects,TODO,99577,1,99577,Optional sound files for heroes
+games,PrisonPC,heroes-sound-tracks,TODO,99578,1,99578,Optional sound files for heroes
+games,PrisonPC,holotz-castle-editor,TODO,476856,12,39738,platform game with high doses of mystery - level editor
+games,PrisonPC,hyperrogue-music,TODO,6128792,61,100472,in-game music for hyperrogue
+games,PrisonPC,ioquake3,TODO,55348,4,13837,Game engine for 3D first person shooter games
+games,PrisonPC,kcheckers,TODO,31191,1,31191,Checkers boardgame
+games,PrisonPC,kodi-game-libretro-bsnes-mercury-accuracy,TODO,25429200,240,105955,Kodi integration for bsnes-mercury accuracy core
+games,PrisonPC,kodi-game-libretro-bsnes-mercury-balanced,TODO,25429440,240,105956,Kodi integration for bsnes-mercury balanced core
+games,PrisonPC,kodi-game-libretro-bsnes-mercury-performance,TODO,25429680,240,105957,Kodi integration for bsnes-mercury performance core
+games,PrisonPC,lgc-pg,TODO,59860,2,29930,LGeneral converter for Panzer General game data
+games,PrisonPC,libgemrb,TODO,632380,10,63238,Shared libraries and plugins for GemRB
+games,PrisonPC,libipuz-1,TODO,,1,,FIXME
+games,PrisonPC,libretro-beetle-pce-fast,TODO,25626820,190,134878,Libretro wrapper for the Beetle PCE FAST core
+games,PrisonPC,libretro-beetle-psx,TODO,25627010,190,134879,Libretro wrapper for the Beetle PSX core
+games,PrisonPC,libretro-beetle-vb,TODO,25627200,190,134880,Libretro wrapper for the Beetle VB core
+games,PrisonPC,libretro-beetle-wswan,TODO,25627390,190,134881,Libretro wrapper for the Beetle WSWAN core
+games,PrisonPC,libretro-bsnes-mercury-accuracy,TODO,25627580,190,134882,Libretro wrapper for bsnes-mercury accuracy core
+games,PrisonPC,libretro-bsnes-mercury-balanced,TODO,25627770,190,134883,Libretro wrapper for bsnes-mercury balanced core
+games,PrisonPC,libretro-bsnes-mercury-performance,TODO,25627960,190,134884,Libretro wrapper for bsnes-mercury performance core
+games,PrisonPC,libretro-desmume,TODO,25628150,190,134885,Libretro wrapper for DeSmuME
+games,PrisonPC,libretro-gambatte,TODO,25628340,190,134886,Libretro wrapper for Gambatte
+games,PrisonPC,libretro-genesisplusgx,TODO,12451840,190,65536,Libretro wrapper for Genesis Plus GX
+games,PrisonPC,libretro-mgba,TODO,25629290,190,134891,Libretro wrapper for mGBA
+games,PrisonPC,libretro-nestopia,TODO,25629670,190,134893,libretro wrapper for Nestopia
+games,PrisonPC,libretro-snes9x,TODO,25630240,190,134896,Libretro wrapper for Snes9x
+games,PrisonPC,littlewizard,TODO,33356,1,33356,development environment for children
+games,PrisonPC,luola-levels,TODO,60628,2,30314,level files for luola
+games,PrisonPC,luola-nostalgy,TODO,311546,2,155773,nostalgy level files for luola
+games,PrisonPC,lutris,TODO,,ERROR,6211,video game preservation platform
+games,PrisonPC,mame-extra,TODO,13897261,89,156149,Additional files for the Multiple Arcade Machine Emulator (MAME)
+games,PrisonPC,marathon-trilogy,TODO,,180,,sci-fi fps series
+games,PrisonPC,mednafen,TODO,92771,7,13253,"multi-platform emulator, including NES, GB/A, Lynx, PC Engine"
+games,PrisonPC,mess-desktop-entries,TODO,12875230,82,157015,Desktop entries for MESS ROMs
+games,PrisonPC,mgba-qt,TODO,415023,21,19763,Game Boy Advance emulator (Qt frontend for mGBA)
+games,PrisonPC,minetest-mod-3d-armor,TODO,1418076,9,157564,Modpack to add armor and wielded weapons for Minetest
+games,PrisonPC,minetest-mod-advmarkers-csm,TODO,1418085,9,157565,Minetest mod - marker/waypoint CSM for Minetest
+games,PrisonPC,minetest-mod-basic-materials,TODO,1418121,9,157569,Minetest mod providing basic materials and items
+games,PrisonPC,minetest-mod-basic-robot-csm,TODO,1418130,9,157570,Minetest mod - basic robot client side mod
+games,PrisonPC,minetest-mod-character-creator,TODO,1418139,9,157571,Minetest module to customize your skin
+games,PrisonPC,minetest-mod-craftguide,TODO,1418157,9,157573,Minetest mod providing a crafting guide
+games,PrisonPC,minetest-mod-currency,TODO,1418166,9,157574,Minetest mod providing shops and currency
+games,PrisonPC,minetest-mod-ethereal,TODO,1418175,9,157575,Minetest module to add a map generator enhancer
+games,PrisonPC,minetest-mod-homedecor,TODO,1733336,11,157576,Minetest mod pack providing home decor elements
+games,PrisonPC,minetest-mod-infinite-chest,TODO,1418193,9,157577,Minetest module to get chests with an infinite number of slots
+games,PrisonPC,minetest-mod-lucky-block,TODO,1418211,9,157579,Minetest module to add a Lucky Block to the game
+games,PrisonPC,minetest-mod-maidroid,TODO,1418220,9,157580,Minetest mod - Maidroid for maid robots
+games,PrisonPC,minetest-mod-mesecons,TODO,1890972,12,157581,Digital circuitry blocks for minetest
+games,PrisonPC,minetest-mod-meshport,TODO,1418238,9,157582,Minetest mod - export areas to meshes for 3D rendering
+games,PrisonPC,minetest-mod-mobs-redo,TODO,1418274,9,157586,Minetest module to add mobs programming interface
+games,PrisonPC,minetest-mod-moreblocks,TODO,1418283,9,157587,Minetest mod - More Blocks
+games,PrisonPC,minetest-mod-moreores,TODO,1418292,9,157588,Minetest mod - More Ores
+games,PrisonPC,minetest-mod-nether,TODO,1418301,9,157589,Minetest mod - Nether portals and materials
+games,PrisonPC,minetest-mod-pipeworks,TODO,1418310,9,157590,Pipes and tubes for Minetest
+games,PrisonPC,minetest-mod-protector,TODO,1418328,9,157592,Minetest module to add protector blocks
+games,PrisonPC,minetest-mod-pycraft,TODO,1418337,9,157593,Minetest mod - (most of) Raspberry PI Minecraft API
+games,PrisonPC,minetest-mod-quartz,TODO,1418346,9,157594,Minetest module to add quartz
+games,PrisonPC,minetest-mod-skyblock,TODO,1418355,9,157595,Minetest module to add a Crusoe-like minigame
+games,PrisonPC,minetest-mod-throwing,TODO,1418364,9,157596,Minetest mod - Throwing system
+games,PrisonPC,minetest-mod-throwing-arrows,TODO,1418373,9,157597,Minetest mod - Throwables
+games,PrisonPC,minetest-mod-unified-inventory,TODO,1418391,9,157599,Minetest module to enhance the inventory
+games,PrisonPC,minetest-mod-unifieddyes,TODO,1418400,9,157600,Minetest mod providing a unified dye specification
+games,PrisonPC,minetest-mod-worldedit,TODO,1418409,9,157601,Minetest mod - ingame world editor
+games,PrisonPC,minetest-mod-xdecor,TODO,1418418,9,157602,Lightweight decoration module for minetest
+games,PrisonPC,minetestmapper,TODO,58470,2,29235,map generator from minetest worlds
+games,PrisonPC,mupen64plus-audio-sdl,TODO,,ERROR,19551,sdl audio output plugin for mupen64plus
+games,PrisonPC,mupen64plus-input-sdl,TODO,,ERROR,19307,sdl input device plugin for mupen64plus
+games,PrisonPC,mupen64plus-qt,TODO,,ERROR,21862,customizable launcher for Mupen64Plus
+games,PrisonPC,mupen64plus-rsp-hle,TODO,,ERROR,19309,high-level rsp emulation for mupen64plus
+games,PrisonPC,mupen64plus-rsp-z64,TODO,,ERROR,158836,low-level rsp emulation for mupen64plus
+games,PrisonPC,mupen64plus-video-arachnoid,TODO,,ERROR,158837,Arachnoid high-level graphics emulation for mupen64plus
+games,PrisonPC,mupen64plus-video-glide64,TODO,,ERROR,158838,Glide64 high-level graphics emulation for mupen64plus
+games,PrisonPC,mupen64plus-video-glide64mk2,TODO,,ERROR,19088,Glide64Mk2 high-level graphics emulation for mupen64plus
+games,PrisonPC,mupen64plus-video-rice,TODO,,ERROR,19089,Rice's high-level graphics emulation for mupen64plus
+games,PrisonPC,mupen64plus-video-z64,TODO,,ERROR,158841,low-level rdp emulation for mupen64plus
+games,PrisonPC,nbsdgames,TODO,41387,1,41387,text based mini games for your terminal
+games,PrisonPC,nethack-qt,TODO,100290,3,33430,dungeon crawl game - Qt interface
+games,PrisonPC,nexuiz-music,TODO,12982437,81,160277,Nexuiz music files
+games,PrisonPC,nexuiz-textures,TODO,9985800,440,22695,Textures for Nexuiz
+games,PrisonPC,openarena-081-maps,TODO,522522,39,13398,OpenArena game data - maps from 0.8.1
+games,PrisonPC,openarena-081-misc,TODO,361773,27,13399,OpenArena game data - miscellaneous files from 0.8.1
+games,PrisonPC,openarena-081-players,TODO,964800,72,13400,OpenArena game data - player graphics from 0.8.1
+games,PrisonPC,openarena-081-players-mature,TODO,348426,26,13401,"OpenArena game data - ""mature"" player graphics from 0.8.1"
+games,PrisonPC,openarena-081-textures,TODO,1206180,90,13402,OpenArena game data - textures from 0.8.1
+games,PrisonPC,openarena-oacmp1,TODO,1927200,110,17520,OpenArena Community Map Pack 1
+games,PrisonPC,openjazz,TODO,106338,2,53169,Jazz Jackrabbit™ game engine reimplementation
+games,PrisonPC,openmw-launcher,TODO,1016928,48,21186,Launcher for OpenMW using the Qt-Gui-Toolkit
+games,PrisonPC,openrct2,TODO,602566,19,31714,Open-source re-implementation of RollerCoaster Tycoon 2
+games,PrisonPC,openrct2-objects,TODO,95148,3,31716,Object definitions for OpenRCT2
+games,PrisonPC,openrct2-title-sequences,TODO,253736,8,31717,Title sequences for OpenRCT2
+games,PrisonPC,openttd-opengfx,TODO,495171,3,165057,free graphics set for use with the OpenTTD game
+games,PrisonPC,openttd-openmsx,TODO,165058,1,165058,free music set for use with the OpenTTD game
+games,PrisonPC,openttd-opensfx,TODO,1650590,10,165059,sound set for use with the OpenTTD game
+games,PrisonPC,opentyrian,TODO,158595,5,31719,open-source port of the DOS shoot-em-up Tyrian
+games,PrisonPC,out-of-order,TODO,402384,12,33532,comedy science fiction adventure game
+games,PrisonPC,parolottero-data-it,TODO,995652,6,165942,"Compose words using a 4x4 grid of letters, Italian game files"
+games,PrisonPC,parolottero-data-sv,TODO,319764,6,53294,"Compose words using a 4x4 grid of letters, Swedish game files"
+games,PrisonPC,parolottero-data-us,TODO,266475,5,53295,"Compose words using a 4x4 grid of letters, US English game files"
+games,PrisonPC,performous-tools,TODO,3826142,23,166354,karaoke game that allows user supplied songs - tools
+games,PrisonPC,pioneers-metaserver,TODO,25823,1,25823,Settlers of Catan board game - metaserver
+games,PrisonPC,planetblupi-music-midi,TODO,3196009,19,168211,Planet Blupi - A delirious spell-binding game - MIDI music
+games,PrisonPC,planetblupi-music-ogg,TODO,1844226,58,31797,Planet Blupi - A delirious spell-binding game - Ogg music
+games,PrisonPC,pokemmo-installer,TODO,5729211,81,70731,Installer and Launcher for the PokeMMO emulator
+games,PrisonPC,powder,TODO,76642,2,38321,Graphical dungeon crawling game
+games,PrisonPC,prboom-plus,TODO,162260,10,16226,transitional dummy package (prboom-plus -> dsda-doom)
+games,PrisonPC,prisonpc-openttd-extras,TODO,,170,,OpenTTD (Transport Tycoon Deluxe) extra plugins
+games,PrisonPC,prisonpc-warzone2100-addons,TODO,,ERROR,,Warzone2100 addons
+games,PrisonPC,prisonpc-wesnoth-addons,TODO,,ERROR,,Wesnoth addons
+games,PrisonPC,pybik-bin,TODO,27429,1,27429,Rubik's cube game - architecture dependent files
+games,PrisonPC,quake,TODO,355827,17,20931,classic gothic/horror-themed first person shooter
+games,PrisonPC,quake2,TODO,387175,17,22775,classic science-fiction-themed first person shooter
+games,PrisonPC,quake3,TODO,382500,18,21250,Quake III Arena menu entry and launcher scripts
+games,PrisonPC,reminiscence,TODO,146128,2,73064,free implementation of Flashback game engine
+games,PrisonPC,renpy,TODO,796095,27,29485,framework for developing visual-novel type games
+games,PrisonPC,renpy-demo,TODO,3799744,52,73072,framework for developing visual-novel type games - demo
+games,PrisonPC,rocksndiamonds,TODO,,ERROR,30635,arcade-style game
+games,PrisonPC,rott,TODO,546320,10,54632,SDL-Port of Rise of the Triad
+games,PrisonPC,rtcw,TODO,660044,14,47146,game engine for Return to Castle Wolfenstein
+games,PrisonPC,runescape,TODO,,ERROR,38773,Multiplayer online game set in a fantasy world
+games,PrisonPC,sauerbraten,TODO,20220750,950,21285,3D first-person shooter game
+games,PrisonPC,simutrans-makeobj,TODO,182625,1,182625,data file compiler for Simutrans
+games,PrisonPC,simutrans-pak64,TODO,547881,3,182627,transportation simulator (data files)
+games,PrisonPC,singularity-music,TODO,9132150,50,182643,Music for Endgame: Singularity game
+games,PrisonPC,slashem-gtk,TODO,108261,3,36087,variant of Nethack (Gtk window port)
+games,PrisonPC,slashem-sdl,TODO,155220,4,38805,variant of Nethack (SDL window port)
+games,PrisonPC,slashem-x11,TODO,72176,2,36088,variant of Nethack (X11 window port)
+games,PrisonPC,sm,TODO,20651,1,20651,Displays a short text fullscreen
+games,PrisonPC,spring-javaai,TODO,3356037,61,55017,modern full-3D RTS game engine (Java AIs)
+games,PrisonPC,steam-installer,TODO,,ERROR,4467,Valve's Steam digital software delivery system
+games,PrisonPC,tome,TODO,116805,3,38935,single-player text-based roguelike dungeon simulation game
+games,PrisonPC,tty-solitaire,TODO,38950,1,38950,ncurses-based klondike solitaire game
+games,PrisonPC,ufoai-maps,TODO,8133340,370,21982,UFO: Alien Invasion -- maps
+games,PrisonPC,ufoai-misc,TODO,71130,3,23710,UFO: Alien Invasion -- miscellaneous files and documentation
+games,PrisonPC,ufoai-music,TODO,39373740,210,187494,UFO: Alien Invasion -- music files
+games,PrisonPC,ufoai-sound,TODO,426798,18,23711,UFO: Alien Invasion -- sound files
+games,PrisonPC,ufoai-textures,TODO,7824960,330,23712,UFO: Alien Invasion -- textures
+games,PrisonPC,uhexen2,TODO,108768,3,36256,Hexen II - engine package
+games,PrisonPC,uqm,TODO,510276,12,42523,The Ur-Quan Masters - An inter-galactic adventure game
+games,PrisonPC,uqm-content,TODO,2255676,12,187973,The Ur-Quan Masters - Game data files
+games,PrisonPC,uqm-music,TODO,5639340,30,187978,The Ur-Quan Masters - Game music files
+games,PrisonPC,uqm-russian,TODO,2443727,13,187979,Russian addon for 'The Ur-Quan Masters' game
+games,PrisonPC,uqm-voice,TODO,22557600,120,187980,The Ur-Quan Masters - Voice files
+games,PrisonPC,vcmi,TODO,510540,15,34036,Rewrite of the Heroes of Might and Magic 3 game engine
+games,PrisonPC,warzone2100-music,TODO,15523010,82,189305,official music for warzone2100
+games,PrisonPC,wesnoth-1.16,TODO,55032430,290,189767,fantasy turn-based strategy game - complete suite (branch 1.16)
+games,PrisonPC,wesnoth-1.16-core,TODO,2353600,160,14710,fantasy turn-based strategy game (branch 1.16)
+games,PrisonPC,wesnoth-1.16-did,TODO,32260560,170,189768,"""Descent Into Darkness"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-dm,TODO,32260730,170,189769,"""Delfador's Memoirs"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-dw,TODO,32260900,170,189770,"""Dead Water"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-ei,TODO,32261070,170,189771,"""The Eastern Invasion"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-httt,TODO,32261240,170,189772,"""Heir to the Throne"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-l,TODO,32261410,170,189773,"""Liberty"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-low,TODO,32261580,170,189774,"""Legend of Wesmere"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-music,TODO,28466250,150,189775,music files for Wesnoth (branch 1.16)
+games,PrisonPC,wesnoth-1.16-nr,TODO,32261920,170,189776,"""Northern Rebirth"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-sof,TODO,32262090,170,189777,"""The Sceptre of Fire"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-sota,TODO,32262260,170,189778,"""Secrets of the Ancients"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-sotbe,TODO,32262430,170,189779,"""Son of the Black-Eye"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-thot,TODO,32262600,170,189780,"""The Hammer of Thursagan"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-tools,TODO,28467150,150,189781,tools for campaign developers for Wesnoth (branch 1.16)
+games,PrisonPC,wesnoth-1.16-trow,TODO,34160760,180,189782,"""The Rise of Wesnoth"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-tsg,TODO,32263110,170,189783,"""The South Guard"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-ttb,TODO,32263280,170,189784,"""A Tale of Two Brothers"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-1.16-utbs,TODO,32263450,170,189785,"""Under the Burning Suns"" official campaign for Wesnoth (branch 1.16)"
+games,PrisonPC,wesnoth-core,TODO,30368960,160,189806,fantasy turn-based strategy game (metapackage)
+games,PrisonPC,wesnoth-music,TODO,55044320,290,189808,music files for Wesnoth (metapackage)
+games,PrisonPC,wmpuzzle,TODO,190441,1,190441,WindowMaker dock app 4x4 puzzle
+games,PrisonPC,wolf4sdl,TODO,321750,10,32175,SDL-Port of Wolfenstein 3-D and Spear of Destiny
+games,PrisonPC,wordwarvi-sound,TODO,351360,9,39040,retro-styled side-scrolling shoot'em up arcade game [Sound Files]
+games,PrisonPC,xabacus,TODO,55666,1,55666,simulation of the ancient calculator (plain X version)
+games,PrisonPC,xblast-tnt-images,TODO,39051,1,39051,image files for xblast-tnt
+games,PrisonPC,xblast-tnt-levels,TODO,190725,1,190725,level files for xblast-tnt
+games,PrisonPC,xblast-tnt-models,TODO,78104,2,39052,player models for xblast-tnt
+games,PrisonPC,xblast-tnt-musics,TODO,953635,5,190727,music files for xblast-tnt
+games,PrisonPC,xblast-tnt-sounds,TODO,381456,2,190728,sound files for xblast-tnt
+games,PrisonPC,xjokes,TODO,42611,1,42611,X11 jokes
+games,PrisonPC,xpuzzles,TODO,47716,1,47716,collection of puzzles for X (plain X version)
+games,PrisonPC,xqf,TODO,42627,1,42627,X-based Quake Server Browser
+games,PrisonPC,xscreensaver-screensaver-dizzy,TODO,342456,12,28538,Graphics demo that makes you dizzy (XScreenSaver hack)
+games,PrisonPC,yamagi-quake2,TODO,64941,3,21647,enhanced version of id Software's Quake II - client
+games,PrisonPC,zangband,TODO,85314,2,42657,"A single-player, text-based, roguelike game"
