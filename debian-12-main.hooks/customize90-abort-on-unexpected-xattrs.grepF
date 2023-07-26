@@ -1,0 +1,7 @@
+This one happens because /var/log/journal grants recursive read access to members of the "acl" group.
+It is OK to remove this because at boot time, systemd-tmpfiles will put it back.
+https://github.com/systemd/systemd/blob/v252/tmpfiles.d/systemd.conf.in#L42-L44
+
+# file: var/log/journal
+system.posix_acl_access=0sAgAAAAEABwD/////BAAFAP////8IAAUABAAAABAABQD/////IAAFAP////8=
+system.posix_acl_default=0sAgAAAAEABwD/////BAAFAP////8IAAUABAAAABAABQD/////IAAFAP////8=
