@@ -179,19 +179,18 @@ def mmdebstrap_but_zstd(args):
     "This requires re-doing some of mmdebstrap's internals, here."
     "https://salsa.debian.org/debian/mmdebstrap/-/blob/debian/1.3.7-2/mmdebstrap?ref_type=tags#L7286-7297"
     "https://salsa.debian.org/debian/mmdebstrap/-/blob/debian/1.3.7-2/mmdebstrap?ref_type=tags#L5819-5828"
-    with (subprocess.Popen(
+    with subprocess.Popen(
             # Change "⋯/filesystem.squashfs" to "-"
-            ['-' if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs' else x
-             for x in args],
-            stdout=subprocess.PIPE) as mmdebstrap_proc,
-          # Remove "system" xattrs that mmdebstrap doesn't know to remove, because
-          # we don't tell mmdebstrap we're making a squashfs.
-          # (ERROR: squashfs does not support xattr prefix of system.posix_acl_default)
-          # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L5820-L5828
-          subprocess.Popen(
-              ['mmtarfilter', '--pax-exclude=SCHILY.xattr.system.*'],
-              stdin=mmdebstrap_proc.stdout,
-              stdout=subprocess.PIPE) as mmtarfilter_proc):
+            [*['-' if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs' else x
+               for x in args],
+             # squashfs-tools-ng doesn't support system.posix_acl_default
+             # https://www.kernel.org/doc/html/latest/filesystems/squashfs.html#xattr-table
+             # https://github.com/AgentD/squashfs-tools-ng/blob/v1.2.0/lib/sqfs/xattr/xattr.c#L14-L21
+             # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L5820-L5828
+             # Rather than piping through "mmtarfilter --pax-exclude=SCHILY.xattr.system.*",
+             # just remove the one dir that has the problem.
+             '--customize-hook=rmdir $1/var/log/journal && mkdir $1/var/log/journal'],
+            stdout=subprocess.PIPE) as mmdebstrap_proc:
         # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L6096-L6102
         subprocess.check_call(
             ['tar2sqfs',
@@ -205,14 +204,10 @@ def mmdebstrap_but_zstd(args):
              *[x
                for x in args
                if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs']],
-            stdin=mmtarfilter_proc.stdout)
+            stdin=mmdebstrap_proc.stdout)
         mmdebstrap_proc.wait()
-        mmtarfilter_proc.wait()
         if mmdebstrap_proc.returncode:
             logging.error('mmdebstrap crashed')
-            exit(1)
-        if mmtarfilter_proc.returncode:
-            logging.error('mmtarfilter crashed')
             exit(1)
 
 
