@@ -121,6 +121,7 @@ def do_stuff(keyword: str, when: bool = True) -> list:
     files_dir = pathlib.Path(f'debian-12-{keyword}.files')
     hooks_dir = pathlib.Path(f'debian-12-{keyword}.hooks')
     toml_path = pathlib.Path(f'debian-12-{keyword}.toml')
+    dpkg_path = pathlib.Path(f'debian-12-{keyword}.dpkg.cfg')
     tarball_path = create_tarball(td, files_dir)
     acc = [f'--essential-hook=tar-in {tarball_path} /']
     if hooks_dir.exists():
@@ -136,6 +137,8 @@ def do_stuff(keyword: str, when: bool = True) -> list:
         packages |= set(tomllib.loads(toml_path.read_text()).get('include', []))
     if packages:
         acc += ['--include', ' '.join(packages)]
+    if dpkg_path.exists():
+        acc += ['--dpkgopt', dpkg_path]
     return acc
 
 
@@ -652,7 +655,6 @@ for template in args.templates:
         mmdebstrap_but_zstd(
             ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
              'mmdebstrap',
-             '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
              '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
              '--aptopt=APT::AutoRemove::RecommendsImportant "false"',  # fix autoremove
              ('--include=linux-image-cloud-amd64'
@@ -666,12 +668,9 @@ for template in args.templates:
                if template in {'understudy', 'tvserver'} else []),
              # Build faster
              *['--variant=apt',             # save 12s 30MB
-               '--dpkgopt=force-unsafe-io',  # save 20s (even on tmpfs!)
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
                '--aptopt=Acquire::https::Proxy "DIRECT"',
-               # 9-12% smaller output; 8% faster to 7% SLOWER build speed
-               '--dpkgopt=path-exclude=/usr/share/doc/*',
-               '--dpkgopt=path-exclude=/usr/share/man/*'],
+               ],
              *['--include=tzdata locales',
                ('--essential-hook={'
                 f' echo tzdata tzdata/Areas select {args.TZ.area};'
@@ -732,8 +731,6 @@ for template in args.templates:
              f'--customize-hook=download initrd.img {destdir}/initrd.img',
              *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
                if not template_wants_big_uptimes else []),
-             *(['--dpkgopt=debian-12-PrisonPC.files/omit-low-level-docs.conf']
-               if template_wants_PrisonPC else []),
              *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
                if args.production else []),
              'bookworm',
