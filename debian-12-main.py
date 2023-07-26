@@ -180,8 +180,9 @@ def mmdebstrap_but_zstd(args):
     "https://salsa.debian.org/debian/mmdebstrap/-/blob/debian/1.3.7-2/mmdebstrap?ref_type=tags#L7286-7297"
     "https://salsa.debian.org/debian/mmdebstrap/-/blob/debian/1.3.7-2/mmdebstrap?ref_type=tags#L5819-5828"
     with subprocess.Popen(
-            # Change "⋯/filesystem.squashfs" to "-"
-            [*['-' if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs' else x
+            ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
+             # Change "⋯/filesystem.squashfs" to "-"
+             *['-' if isinstance(x, pathlib.Path) and x.name == 'filesystem.squashfs' else x
                for x in args],
              # squashfs-tools-ng doesn't support system.posix_acl_default
              # https://www.kernel.org/doc/html/latest/filesystems/squashfs.html#xattr-table
@@ -193,7 +194,8 @@ def mmdebstrap_but_zstd(args):
             stdout=subprocess.PIPE) as mmdebstrap_proc:
         # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L6096-L6102
         subprocess.check_call(
-            ['tar2sqfs',
+            ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
+             'tar2sqfs',
              '--quiet',
              '--no-skip',
              '--force',
@@ -653,8 +655,7 @@ for template in args.templates:
         destdir.mkdir()
 
         mmdebstrap_but_zstd(
-            ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
-             'mmdebstrap',
+            ['mmdebstrap',
              '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
              '--aptopt=APT::AutoRemove::RecommendsImportant "false"',  # fix autoremove
              ('--include=linux-image-cloud-amd64'
