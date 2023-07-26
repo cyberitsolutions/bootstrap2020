@@ -12,6 +12,8 @@ for template in (
     subprocess.check_call([
         './debian-11-main.py',
         '--remove',
+        # Hard-code $LANG and $TZ instead of inheriting from build host.
+        '--LANG', 'en_AU.UTF-8', '--TZ', 'Australia/Canberra',
         '--netboot-only',       # no ISO/USB
         # No qemu, **EXCEPT FOR** desktop-staff-amc, which
         # Mike wants to expose via spice-html5.
