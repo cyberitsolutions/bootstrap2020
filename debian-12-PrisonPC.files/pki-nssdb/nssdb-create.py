@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-import json
 import pathlib
 import subprocess
 import tempfile
@@ -199,15 +198,17 @@ with tempfile.TemporaryDirectory() as td:
     (dest / 'key4.db').write_bytes(
         (root / 'key4.db').read_bytes())
 
-    # Tell debian-12-main.py how to install the files certutil created.
+    # Tell debian-11-main.py how to install the files certutil created.
     # NOTE: we need an explicit recent mtime, because
     #       nssdb-install.py runs cp --update.
-    mtime = 1638316800         # date +%s -d 2021-12-01T00:00:00+00:00
-    (dest / 'cert9.db.tarinfo').write_text(json.dumps({
-        'name': 'etc/skel/.pki/nssdb/cert9.db',
-        'mode': 292,
-        'mtime': mtime}))
-    (dest / 'key4.db.tarinfo').write_text(json.dumps({
-        'name': 'etc/skel/.pki/nssdb/key4.db',
-        'mode': 292,
-        'mtime': mtime}))
+    mtime = 1688169600         # date +%s -d 2023-07-01T00:00:00+00:00
+    (dest / 'cert9.db.tarinfo').write_text(
+        # FIXME: use a toml writing library once Python has one :/
+        'name = "etc/skel/.pki/nssdb/cert9.db"\n'
+        'mode = 292\n'
+        f'mtime = {mtime}\n')
+    (dest / 'key4.db.tarinfo').write_text(
+        # FIXME: use a toml writing library once Python has one :/
+        'name = "etc/skel/.pki/nssdb/key4.db"\n'
+        'mode = 292\n'
+        f'mtime = {mtime}\n')
