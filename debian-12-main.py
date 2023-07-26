@@ -60,6 +60,17 @@ def get_site_apps(template: str) -> set:
     return ['--include', ' '.join(site_apps)]
 
 
+def do_ssh_access() -> list:
+    # FIXME: use SSH certificates instead, and just trust a static CA!
+    authorized_keys_tar_path = td / 'ssh.tar'
+    create_authorized_keys_tar(
+        authorized_keys_tar_path,
+        args.authorized_keys_urls)
+    return [
+        f'--include={args.ssh_server}',
+        f'--essential-hook=tar-in {authorized_keys_tar_path} /']
+
+
 def create_authorized_keys_tar(dst_path, urls):
     with tarfile.open(dst_path, 'w') as t:
         with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
@@ -569,6 +580,9 @@ parser.add_argument('--upload-to', nargs='+', default=[], metavar='HOST',
 parser.add_argument('--save-to', type=lambda s: pathlib.Path(s).resolve(),
                     help='Save a local copy (cf. --upload-to).  By default, no local copy is kept.',
                     default=False)
+# The --upload-to code gets confused if we upload "foo-2022-01-01" twice in the same day.
+# As a quick-and-dirty workaround, include time in image name.
+# FIXME: should be RFC 3339, but PrisonPC tca3.py doesn't allow ":" so just using "-%s" for now.
 parser.set_defaults(now=datetime.datetime.now().strftime("%Y-%m-%d-%s"))
 args = parser.parse_args()
 
@@ -639,15 +653,6 @@ for template in args.templates:
     with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
         td = pathlib.Path(td)
         validate_unescaped_path_is_safe(td)
-        # FIXME: use SSH certificates instead, and just trust a static CA!
-        authorized_keys_tar_path = td / 'ssh.tar'
-        create_authorized_keys_tar(
-            authorized_keys_tar_path,
-            args.authorized_keys_urls)
-
-        # The upload code gets a bit confused if we upload "foo-2022-01-01" twice in the same day.
-        # As a quick-and-dirty workaround, include time in image name.
-        # Cannot use RFC 3339 because PrisonPC tca3.py has VERY tight constraints on path name.
         destdir = td / f'{template}-{args.now}'
         validate_unescaped_path_is_safe(destdir)
         destdir.mkdir()
@@ -678,6 +683,7 @@ for template in args.templates:
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
                 '} | chroot $1 debconf-set-selections')],
+             *do_ssh_access(),
              *do_stuff('main'),
              *maybe_debug_shell(),  # before 'PrisonPC' breaks apt!
              *maybe_measure_install_footprints(),  # after 'main' fixes DNS, before 'PrisonPC' breaks apt!
@@ -714,8 +720,6 @@ for template in args.templates:
                       'qemu-guest-agent'),
                  }
                  if when)],
-             *[f'--include={args.ssh_server}',
-               f'--essential-hook=tar-in {authorized_keys_tar_path} /'],
              '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
              '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
              *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
