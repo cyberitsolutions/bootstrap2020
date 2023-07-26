@@ -656,15 +656,6 @@ for template in args.templates:
 
         mmdebstrap_but_zstd(
             ['mmdebstrap',
-             ('--include=linux-image-cloud-amd64'
-              if args.virtual_only else
-              # NOTE: can't --include= this because there are too many dpkg trigger problems.
-              '--customize-hook=chroot $1 apt install -y linux-image-inmate'
-              if template.startswith('desktop-inmate') and args.physical_only else
-              '--include=linux-image-amd64'),
-             # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
-             *(['--include', ('linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64')]
-               if template in {'understudy', 'tvserver'} else []),
              # Build faster
              *['--variant=apt',             # save 12s 30MB
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
@@ -693,12 +684,16 @@ for template in args.templates:
              *do_stuff('PrisonPC-inmate', when=template.startswith('desktop-inmate')),
              *do_stuff('PrisonPC-staff', when=template.startswith('desktop-staff')),
              *get_site_apps(template),
-             # Workaround https://bugs.debian.org/1004001 (FIXME: fix upstream)
-             *(['--essential-hook=chronic chroot $1 apt install -y fontconfig-config']
-               if template_wants_GUI else []),
              # Miscellaneous includes -- can't use do_stuff() because no .files.
              *['--include', ' '.join(
                  what for when, what in {
+                     (True,     # we always need a kernel!
+                      'linux-image-cloud-amd64' if args.virtual_only else
+                      'linux-image-amd64' if not template.startswith('desktop-inmate') else
+                      'linux-image-inmate'),
+                     # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
+                     (template in {'understudy', 'tvserver'},
+                      'linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64'),
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template_wants_GUI and not template.startswith('desktop-inmate'),
                       'xfce4-terminal mousepad xfce4-screenshooter'),
