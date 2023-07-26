@@ -127,7 +127,13 @@ if search_dirs:
     #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
     #
     # UPDATE: this happened with Recommends also -- Inkscape recommends python3-lxml now.
-    subprocess.check_call(['chronic', 'chroot', args.chroot_path, 'apt', 'autoremove', '--assume-yes', '--purge'])
+    subprocess.check_call([
+        'chronic', 'chroot', args.chroot_path,
+        'apt', 'autoremove', '--assume-yes', '--purge',
+        # fix autoremove
+        '-o', 'APT::AutoRemove::SuggestsImportant=0',
+        '-o', 'APT::AutoRemove::RecommendsImportant=0',
+    ])
     packages_new = packages()
     if problems := (packages_old ^ packages_new) - acceptable_risks:
         raise RuntimeError('chromium-no-yelp made an unacceptable mess', problems)
