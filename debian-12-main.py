@@ -656,8 +656,6 @@ for template in args.templates:
 
         mmdebstrap_but_zstd(
             ['mmdebstrap',
-             '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
-             '--aptopt=APT::AutoRemove::RecommendsImportant "false"',  # fix autoremove
              ('--include=linux-image-cloud-amd64'
               if args.virtual_only else
               # NOTE: can't --include= this because there are too many dpkg trigger problems.
