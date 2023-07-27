@@ -3,3 +3,11 @@
 ! In Debian 11, we use pure white-on-black to make the transition from POST->splash->login feel smoother.
 xlogin.Login.Foreground: white
 xlogin.Login.Background: black
+
+
+! Place login prompt in the top-left,
+! so the AUP is less likely to overlap it.
+! UPDATE: by putting this here, inmate SOEs (which have an AUP) will get it.
+!         But staff SOEs (which have no AUP) will not, as staff SOE replaces this file.
+xlogin.Login.x:                 0
+xlogin.Login.y:                 0
