@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+import pathlib
+import re
+import subprocess
+import logging
+
+__doc__ = """ work around warzone2100 bug
+
+We can place warzone2100 addons in
+/usr/share/games/warzone2100/maps/X.wz and
+/usr/share/games/warzone2100/mods/Y.wz.
+
+Warzone2100 FINDS these files, but it READS from
+~/.local/share/warzone2100-$VERSION/maps/X.wz and
+~/.local/share/warzone2100-$VERSION/mods/Y.wz.
+This is a bug in warzone2100.
+
+As a workaround, symlink the latter to the former.
+
+NOTE: this breaks map auto-download for online play.
+PrisonPC does not allow online play, so we don't care.
+—twb, Sep 2017
+https://alloc.cyber.com.au/task/task.php?taskID=31556
+
+UPDATE 2022: in Debian 11 / warzone2100 3.3, symlinking the whole directory no longer works.
+I think the warzone2100 code is doing stat() instead of lstat(), so treating a symlink as "not a directory".
+Let's try symlinking individual files.
+
+"""
+
+# FIXME: in Python3.5+ use subprocess.run instead of the try/except shit!
+proc = subprocess.run(
+    ['/usr/games/warzone2100', '--version'],
+    stdout=subprocess.PIPE,
+    text=True,
+    check=False)
+if proc.returncode != 1:
+    raise RuntimeError('warzone2100 --version should always exit(1)!')
+
+# Example: Warzone 2100 - Version: 3.3.0, Built: 2020-10-16
+version = re.fullmatch(
+    r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
+    proc.stdout.strip()).group(1)
+
+src_root = pathlib.Path('/usr/share/games/warzone2100/')
+dst_root = pathlib.Path.home() / f'.local/share/warzone2100-{version}'
+for subdir_name in {'maps', 'mods/global'}:
+    srcs = (src_root / subdir_name).glob('*.wz')
+    dst = dst_root / subdir_name
+    dst.mkdir(exist_ok=True, parents=True)
+    for src in srcs:
+        try:
+            (dst / src.name).symlink_to(src)
+        except FileExistsError:
+            logging.debug('already exists -- assuming already correct', src)
