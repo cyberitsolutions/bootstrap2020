@@ -18,8 +18,7 @@ Package: prisonpc-warzone2100-addons
 #           ARmod_3.3.0.wz: works with WZ2100 3.3.0-3.4.1.
 #           NOTE! to get it works with 3.4.1, open mod by zip archiver and delete "palette.txt" file
 Pre-Depends:
- warzone2100 (>= 3.3~),
- warzone2100 (<< 3.4~),
+ warzone2100 (>= 4~),
 Depends: ${misc:Depends},
  python3,
  warzone2100-music,
