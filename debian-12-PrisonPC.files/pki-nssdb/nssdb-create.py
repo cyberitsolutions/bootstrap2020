@@ -180,7 +180,7 @@ with tempfile.TemporaryDirectory() as td:
          '-d', 'sql:.',
          '-A',
          '-n', 'PrisonPC',
-         '-t', 'C',
+         '-t', 'C,,',
          '-i', pathlib.Path('../com.prisonpc.crt').resolve()],
         cwd=root)
 
@@ -203,14 +203,20 @@ with tempfile.TemporaryDirectory() as td:
     # Tell debian-11-main.py how to install the files certutil created.
     # NOTE: we need an explicit recent mtime, because
     #       nssdb-install.py runs cp --update.
+    #
+    # UPDATE: in Debian 12, ~/.pki/nssdb/*db must be user-writable
+    #         (i.e. 0o0600 not 0o0400), otherwise chromium silently ignores them.
+    #         cp --recursive will turn
+    #         root:root 0644 /etc/skel/.pki/nssdb/cert9.db into
+    #         s123:s123 0600 ~s123/.pki/nssdb/cert9.db.
     mtime = 1688169600         # date +%s -d 2023-07-01T00:00:00+00:00
     (dest / 'cert9.db.tarinfo').write_text(
         # FIXME: use a toml writing library once Python has one :/
         'name = "etc/skel/.pki/nssdb/cert9.db"\n'
-        'mode = 292\n'
+        'mode = 420\n'
         f'mtime = {mtime}\n')
     (dest / 'key4.db.tarinfo').write_text(
         # FIXME: use a toml writing library once Python has one :/
         'name = "etc/skel/.pki/nssdb/key4.db"\n'
-        'mode = 292\n'
+        'mode = 420\n'
         f'mtime = {mtime}\n')
