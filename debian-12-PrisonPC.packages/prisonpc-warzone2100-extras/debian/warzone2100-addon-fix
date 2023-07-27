@@ -26,6 +26,8 @@ UPDATE 2022: in Debian 11 / warzone2100 3.3, symlinking the whole directory no l
 I think the warzone2100 code is doing stat() instead of lstat(), so treating a symlink as "not a directory".
 Let's try symlinking individual files.
 
+FIXME: is all this bullshit still needed in Debian 12?
+
 """
 
 # FIXME: in Python3.5+ use subprocess.run instead of the try/except shit!
