@@ -167,20 +167,22 @@ with tempfile.TemporaryDirectory() as td:
     # "certutil --help" claims it will do this for you.  It lies.
     subprocess.run(
         ['certutil',
-         '-d', f'sql:{root}',
+         '-d', 'sql:.',
          '-N', '-f/dev/stdin'],
         check=True,
         text=True,
+        cwd=root,
         input='\n\n')           # The password is the empty string.
 
     # Trust our certificate.
     subprocess.check_call(
         ['certutil',
-         '-d', f'sql:{root}',
+         '-d', 'sql:.',
          '-A',
          '-n', 'PrisonPC',
          '-t', 'C',
-         '-i', '../com.prisonpc.crt'])
+         '-i', pathlib.Path('../com.prisonpc.crt').resolve()],
+        cwd=root)
 
     # Validation / sanity check.
     filenames = {x.name for x in root.iterdir()}
