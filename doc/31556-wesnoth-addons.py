@@ -17,35 +17,33 @@
 # 17:00 <twb> So I have to do some magic to merge the "status: finished" stuff from the wiki page and
 #             the download size & .tbz URL from the addons page.
 #
-# UPDATE 2022: you need something like this:
-#     mmdebstrap --aptopt='Acquire::http::Proxy "http://localhost:3142"'
-#                --dpkgopt=force-unsafe-io
-#                --variant=apt
-#                testing
-#                /dev/null
-#                --customize-hook='chroot $1 bash; false'
-#                --include=wesnoth-1.14-tools,python3,sqlite3
-#
-# NOTE: wesnoth-1.16-tools is NOT WORKING in Debian 12, so I don't know what the fuck we do there:
-#           ModuleNotFoundError: No module named 'wesnoth.campaignserver_client'
+# UPDATE 2023: run this via 31556-wesnoth-addons-outer.py.
 
+import os
+import pathlib
 import sqlite3
 import subprocess
 import sys
 
-sys.path.append('/usr/share/games/wesnoth/1.14/data/tools')
+sys.path.append('/usr/share/games/wesnoth/1.16/data/tools')
 import wesnoth.campaignserver_client  # noqa: E402
 
 
 def main():
-    with sqlite3.connect('addons.wesnoth.org.db') as conn:
+    # campaignserver_client needs wesnoth in $PATH (add /usr/games).
+    os.environ['PATH'] = '/bin:/sbin:/usr/games'
+    with sqlite3.connect('31556-wesnoth-addons-1.16.db') as conn:
         conn.execute(CREATE_QUERY)
         campaigns, = wesnoth.campaignserver_client.CampaignClient('add-ons.wesnoth.org').list_campaigns().get_all(tag='campaigns')
         for campaign in campaigns.get_all(tag='campaign'):
             upsert(conn, campaign)
     # ICBF working out how to do pretty-printing from within python2.
     # Just use sqlite3's CLI tool.
-    subprocess.check_call(['sqlite3', '-line', 'addons.wesnoth.org.db', SELECT_QUERY])
+    with pathlib.Path('31556-wesnoth-addons-1.16.txt').open('w') as f:
+        subprocess.check_call(
+            ['sqlite3', '-line', '31556-wesnoth-addons-1.16.db', SELECT_QUERY],
+            text=True,
+            stdout=f)
 
 
 def upsert(conn, row):
