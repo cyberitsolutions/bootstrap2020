@@ -1,3 +1,9 @@
+prisonpc-wesnoth-addons (12.0) bookworm; urgency=medium
+
+  * Bump to bookworm; no real changes?
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 27 Jul 2023 19:26:49 +1000
+
 prisonpc-wesnoth-addons (11.2) bullseye; urgency=medium
 
   * Target Debian 11 and Wesnoth 1.14.

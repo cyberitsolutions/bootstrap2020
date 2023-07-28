@@ -10,7 +10,7 @@ addons = frozenset(
     set(lookup_table['addons'].get('TODO', '').split()) |
     set(lookup_table['addons'].get('PASS', '').split()))
 
-destdir = pathlib.Path('debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.14/data/add-ons/')
+destdir = pathlib.Path('debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.16/data/add-ons/')
 destdir.mkdir(exist_ok=True, parents=True)
 with tempfile.TemporaryDirectory() as td:
     td = pathlib.Path(td)
@@ -21,7 +21,7 @@ with tempfile.TemporaryDirectory() as td:
             # FIXME: use https (not http) when debugging is done.
             # NOTE: https:// currently broken for gnutls (inc. wget/wget2/curl) due to
             #           issuer DST Root CA X3,O=Digital Signature Trust Co.
-            print(f'http://files.wesnoth.org/addons/1.14/{addon}.tar.bz2', file=f)
+            print(f'http://files.wesnoth.org/addons/1.16/{addon}.tar.bz2', file=f)
     subprocess.run(
         ['wget2',
          '--http-proxy', 'http://localhost:3142/',  # FIXME: remove when done debugging

@@ -22,10 +22,9 @@ Package: prisonpc-wesnoth-addons
 Depends: ${misc:Depends},
 # We do not strictly NEED wesnoth, but
 # asking for it here avoids site-apps needing to ask for it AND us.
-# We version the dependency only because wesnoth-addon-fix ASSUMES 1.14.
-# We can and should bump to 1.16 for Debian 12 (or Debian 11bpo).
- wesnoth (>= 1:1.14~),
- wesnoth (<< 1:1.16~),
+# We version the dependency only because wesnoth-addon-fix ASSUMES 1.16.
+ wesnoth (>= 1:1.16~),
+ wesnoth (<< 1:1.18~),
  wesnoth-music,
 Enhances: wesnoth
 Architecture: all
