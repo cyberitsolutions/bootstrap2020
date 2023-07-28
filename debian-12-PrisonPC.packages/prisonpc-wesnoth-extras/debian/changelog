@@ -1,8 +1,9 @@
 prisonpc-wesnoth-addons (12.0) bookworm; urgency=medium
 
   * Bump to bookworm; no real changes?
+  * Bump initial untested DLC list to be based on 1.16 (not 1.16).
 
- -- Trent W. Buck <trentbuck@gmail.com>  Thu, 27 Jul 2023 19:26:49 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Fri, 28 Jul 2023 20:26:09 +1000
 
 prisonpc-wesnoth-addons (11.2) bullseye; urgency=medium
 
