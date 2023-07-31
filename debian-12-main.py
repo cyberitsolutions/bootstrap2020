@@ -388,8 +388,8 @@ def do_boot_test():
                '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
                '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
               if not args.netboot_only else []),
-            *(qemu_dummy_DVD(testdir) if template.startswith('desktop') else []),
-            *(qemu_tvserver_ext2(testdir) if template == 'tvserver' else []),
+            *qemu_dummy_DVD(testdir, when=template.startswith('desktop')),
+            *qemu_tvserver_ext2(testdir, when=template == 'tvserver'),
             *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
                '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
                '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
@@ -404,7 +404,9 @@ def do_boot_test():
               if disk_bullshit else [])])
 
 
-def qemu_dummy_DVD(testdir: pathlib.Path) -> list:
+def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
+    if not when:
+        return []
     dummy_DVD_path = testdir / 'dummy.iso'
     subprocess.check_call([
         'wget2',
@@ -417,7 +419,9 @@ def qemu_dummy_DVD(testdir: pathlib.Path) -> list:
          '--boot', 'order=n'])  # don't try to boot off the dummy disk
 
 
-def qemu_tvserver_ext2(testdir: pathlib.Path) -> list:
+def qemu_tvserver_ext2(testdir: pathlib.Path, when: bool = True) -> list:
+    if not when:
+        return []
     # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
     # containing a specific password file.
     tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
