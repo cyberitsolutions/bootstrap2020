@@ -232,9 +232,12 @@ def do_boot_test():
     # PrisonPC SOEs are hard-coded to check their IP address.
     # This is not boot-time configurable for paranoia reasons.
     # Therefore, qemu needs to use compatible IP addresses.
+    staff_network = not template.startswith('desktop-inmate')
+    disk_bullshit = template in {'dban', 'understudy', 'datasafe3'}
+    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate') or template == 'tvserver'
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
-        if template_wants_PrisonPC_staff_network else
+        if staff_network else
         ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
     with tempfile.TemporaryDirectory(dir=destdir) as testdir:
         testdir = pathlib.Path(testdir)
@@ -243,12 +246,12 @@ def do_boot_test():
             (testdir / name).hardlink_to(destdir / name)
         common_boot_args = ' '.join([
             ('quiet splash'
-             if template_wants_GUI else
+             if template.statswith('desktop') else
              'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
             (f'break={args.maybe_break}'
              if args.maybe_break else '')])
 
-        if template_wants_disks:
+        if disk_bullshit:
             # NOTE: Can't be "zpool create" as we aren't root.
             dummy_path = testdir / 'dummy.img'
             size0, size1, size2 = 1, 64, 128  # in MiB
@@ -322,7 +325,7 @@ def do_boot_test():
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
         # This is a quick-and-dirty way to achieve that (FIXME: do better).
-        if template_wants_PrisonPC_or_tvserver:
+        if port_forward_bullshit:
             (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
@@ -349,12 +352,12 @@ def do_boot_test():
             '--enable-kvm',
             '--machine', 'q35',
             '--cpu', 'host',
-            '-m', '2G' if template_wants_GUI else '512M',
+            '-m', '2G' if template.startswith('desktop') else '512M',
             '--smp', '2',
             # no virtio-sound in qemu 6.1 ☹
             '--device', 'ich9-intel-hda', '--device', 'hda-output',
             *(['--nographic', '--vga', 'none']
-              if not template_wants_GUI else
+              if not template.startswith('desktop') else
               ['--device', 'virtio-vga']
               if not args.opengl_for_boot_test else
               ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
@@ -366,17 +369,15 @@ def do_boot_test():
                 f'dnssearch={domain}',
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
-                  if template_wants_PrisonPC else []),
+                  if template.startswith('desktop') else []),
                 *([f'smb={testdir}'] if have_smbd else []),
                 *([f'tftp={testdir}', 'bootfile=pxelinux.0']
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
-                   for host in {'prisonpc-staff.lan'
-                                if template_wants_PrisonPC_staff_network else
-                                'prisonpc-inmate.lan'}]
-                  if template_wants_PrisonPC_or_tvserver else []),
+                   for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
+                  if port_forward_bullshit else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
@@ -387,7 +388,7 @@ def do_boot_test():
                '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
                '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
               if not args.netboot_only else []),
-            *(qemu_dummy_DVD(testdir) if template_wants_DVD else []),
+            *(qemu_dummy_DVD(testdir) if template.startswith('desktop') else []),
             *(qemu_tvserver_ext2(testdir) if template == 'tvserver' else []),
             *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
                '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
@@ -400,7 +401,7 @@ def do_boot_test():
                '--device', 'virtio-blk-pci,drive=small-fast-1,serial=ACME-small-fast-1',
                '--device', 'virtio-blk-pci,drive=small-fast-2,serial=ACME-small-fast-2',
                '--boot', 'order=n']  # don't try to boot off the dummy disk
-              if template_wants_disks else [])])
+              if disk_bullshit else [])])
 
 
 def qemu_dummy_DVD(testdir: pathlib.Path) -> list:
@@ -665,18 +666,6 @@ apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
 for template in args.templates:
 
-    template_wants_GUI = template.startswith('desktop')
-    template_wants_DVD = template.startswith('desktop')
-    template_wants_disks = template in {'dban', 'understudy', 'datasafe3'}
-    template_wants_big_uptimes = template in {'understudy', 'datasafe3'}
-    template_wants_PrisonPC = (
-        template.startswith('desktop-inmate') or  # noqa: W504
-        template.startswith('desktop-staff'))
-    template_wants_PrisonPC_or_tvserver = (  # UGH!
-        template_wants_PrisonPC or template == 'tvserver')
-    template_wants_PrisonPC_staff_network = (   # UGH!
-        template.startswith('desktop-staff') or template == 'tvserver')
-
     with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
         td = pathlib.Path(td)
         validate_unescaped_path_is_safe(td)
@@ -705,13 +694,13 @@ for template in args.templates:
              *maybe_measure_install_footprints(),  # after 'main' fixes DNS, before 'PrisonPC' breaks apt!
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
-             *do_stuff('main-unattended-upgrades', when=template_wants_big_uptimes),
+             *do_stuff('main-unattended-upgrades', when=template in {'understudy', 'datasafe3'}),
              *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
-             *do_stuff('smartd', when=template_wants_disks and not args.virtual_only),
-             *do_stuff('desktop', when=template_wants_GUI),
-             *do_stuff('PrisonPC', when=template_wants_PrisonPC),
+             *do_stuff('smartd', when=template in {'dban', 'understudy', 'datasafe3'} and not args.virtual_only),
+             *do_stuff('desktop', when=template.starstwith('desktop')),
+             *do_stuff('PrisonPC', when=template.starstwith('desktop-inmate') or template.starstwith('desktop-staff')),
              *do_stuff('PrisonPC-inmate', when=template.startswith('desktop-inmate')),
              *do_stuff('PrisonPC-staff', when=template.startswith('desktop-staff')),
              *get_site_apps(template),
@@ -726,15 +715,15 @@ for template in args.templates:
                      (template in {'understudy', 'tvserver'},
                       'linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64'),
                      # Staff and non-PrisonPC desktops (but not inmates!)
-                     (template_wants_GUI and not template.startswith('desktop-inmate'),
+                     (template.startswith('desktop') and not template.startswith('desktop-inmate'),
                       'xfce4-terminal mousepad xfce4-screenshooter'),
                      # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-desktop/xfce-spice-output-resizer.py
                      # Mike wants qemu-guest-agent for prisonpc-desktop-staff-amc in spice-html5.
                      # FIXME: WHY?  Nothing in the package description sounds useful.
                      # FIXME: --boot-test's kvm doesn't know to create the device!!!
-                     (not args.physical_only and template_wants_GUI,
+                     (not args.physical_only and template.startswith('desktop'),
                       'python3-xlib python3-dbus'),
-                     (not args.physical_only and template_wants_GUI and not template.startswith('desktop-inmate'),
+                     (not args.physical_only and template.startswith('desktop') and not template.startswith('desktop-inmate'),
                       'spice-vdagent'),
                      (not args.physical_only and not template.startswith('desktop-inmate'),
                       'qemu-guest-agent'),
@@ -747,15 +736,13 @@ for template in args.templates:
              f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status',
              f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
              f'--customize-hook=download initrd.img {destdir}/initrd.img',
-             *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
-               if not template_wants_big_uptimes else []),
              *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
                if args.production else []),
              'bookworm',
              destdir / 'filesystem.squashfs',
              'debian-12.sources',
              *(['debian-12-PrisonPC-desktop.sources']
-               if template_wants_PrisonPC else []),
+               if template.startswith('desktop-staff') or template.startswith('desktop-inmate') else []),
              # For cyber-zfs-backup (understudy) and tv-grab-dvb (tvserver)
              *(['debian-12-PrisonPC-server.sources']
                if template in {'understudy', 'tvserver'} else []),
