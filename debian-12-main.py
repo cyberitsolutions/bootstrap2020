@@ -224,10 +224,8 @@ def do_boot_test():
     with tempfile.TemporaryDirectory(dir=destdir) as testdir:
         testdir = pathlib.Path(testdir)
         validate_unescaped_path_is_safe(testdir)
-        subprocess.check_call(['ln', '-vt', testdir, '--',
-                               destdir / 'vmlinuz',
-                               destdir / 'initrd.img',
-                               destdir / 'filesystem.squashfs'])
+        for name in {'vmlinuz', 'initrd.img', 'filesystem.squashfs'}:
+            (testdir / name).hardlink_to(destdir / name)
         common_boot_args = ' '.join([
             ('quiet splash'
              if template_wants_GUI else
