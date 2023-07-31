@@ -631,6 +631,10 @@ if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
 if args.boot_test and args.virtual_only and any(template.startswith('desktop') for template in args.templates):
     raise NotImplementedError("linux-image-cloud-amd64 lacks CONFIG_DRM, so cannot do GUI desktops")
+if not args.physical_only and any(template.startswith('desktop-inmate') for template in args.templates):
+    logging.warning('Not using inmate kernel for inmates (you SHOULD add --physical-only)!')
+    if args.production:
+        raise RuntimeError('Production inmate SOEs MUST have hardened inmate kernel')
 if args.virtual_only and 'tvserver' in args.templates:
     # The error message is quite obscure:
     #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
@@ -703,7 +707,7 @@ for template in args.templates:
                  what for when, what in {
                      (True,     # we always need a kernel!
                       'linux-image-cloud-amd64' if args.virtual_only else
-                      'linux-image-amd64' if not template.startswith('desktop-inmate') else
+                      'linux-image-amd64' if not (template.startswith('desktop-inmate') and args.physical_only) else
                       'linux-image-inmate'),
                      # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
                      (template in {'understudy', 'tvserver'},
