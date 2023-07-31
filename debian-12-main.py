@@ -162,6 +162,21 @@ def maybe_debug_shell():
         '--customize-hook=false "Do not continue building after a debug shell."']
 
 
+def maybe_enable_backdoor_access():
+    if not args.backdoor_enable:
+        return []
+    return [
+        # Let root login with no password.
+        '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
+        # Because GUI logins (e.g. xdm) disallow root and disallow empty passwords,
+        # create a user "x" with a password "x".
+        '--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
+        '--customize-hook=echo x:x | chroot $1 chpasswd',
+        # Include strace and remove the "disable strace" hardening.
+        '--include=strace',
+        '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf']
+
+
 def maybe_measure_install_footprints():
     if not args.measure_install_footprints:
         return []
@@ -669,6 +684,7 @@ for template in args.templates:
              *do_ssh_access(),
              *do_stuff('main'),
              *maybe_debug_shell(),  # before 'PrisonPC' breaks apt!
+             *maybe_enable_backdoor_access(),  # before 'PrisonPC' breaks adduser!
              *maybe_measure_install_footprints(),  # after 'main' fixes DNS, before 'PrisonPC' breaks apt!
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
@@ -709,12 +725,6 @@ for template in args.templates:
                  if when)],
              '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
              '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
-             *(['--customize-hook=chroot $1 adduser x --gecos x --disabled-password --quiet',
-                '--customize-hook=echo x:x | chroot $1 chpasswd',
-                '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
-                '--include=strace',
-                '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf']
-               if args.backdoor_enable else []),
              # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
              # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
              f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status',
