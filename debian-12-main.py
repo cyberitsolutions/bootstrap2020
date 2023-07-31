@@ -596,8 +596,6 @@ parser.add_argument('--save-to', type=lambda s: pathlib.Path(s).resolve(),
 parser.set_defaults(now=datetime.datetime.now().strftime("%Y-%m-%d-%s"))
 args = parser.parse_args()
 
-apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
-
 git_proc = subprocess.run(
     ['git', 'describe', '--always', '--dirty', '--broken'],
     text=True,
@@ -629,18 +627,41 @@ if args.production:
 
 if args.boot_test and args.physical_only:
     raise NotImplementedError("You can't --boot-test a --physical-only (--no-virtual) build!")
-if args.boot_test and args.virtual_only and any(template.startswith('desktop') for template in args.templates):
+if args.boot_test and args.virtual_only and any(
+        template.startswith('desktop')
+        for template in args.templates):
     raise NotImplementedError("linux-image-cloud-amd64 lacks CONFIG_DRM, so cannot do GUI desktops")
-if not args.physical_only and any(template.startswith('desktop-inmate') for template in args.templates):
+if not args.physical_only and any(
+        template.startswith('desktop-inmate')
+        for template in args.templates):
     logging.warning('Not using inmate kernel for inmates (you SHOULD add --physical-only)!')
     if args.production:
         raise RuntimeError('Production inmate SOEs MUST have hardened inmate kernel')
+if args.boot_test and not (args.netboot_only and have_smbd) and any(
+        template.startswith(prefix)
+        for template in args.templates
+        for prefix in {'desktop-inmate', 'desktop-staff'}):
+    raise NotImplementedError(
+        'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
+        ' Without these, site.dir cannot patch /etc/hosts, so'
+        ' boot-test ldap/nfs/squid/pete redirect will not work!')
 if args.virtual_only and 'tvserver' in args.templates:
     # The error message is quite obscure:
     #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
     raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
 if args.ssh_server != 'openssh-server' and 'datasafe3' in args.templates:
     raise NotImplementedError('datasafe3 only supports OpenSSH')
+if args.ssh_server != 'openssh-server' and any(
+        template.startswith(prefix)
+        for template in args.templates
+        for prefix in {'desktop-inmate', 'desktop-staff'}):
+    logging.warning('prisonpc.tca3 server code expects OpenSSH')
+    if args.production:
+        raise RuntimeError('Production PrisonPC SOEs MUST have OpenSSH')
+
+# FIXME: often this takes 5-10 seconds on my laptop - why?
+#        Since there's a delay anyway do it AFTER all the warnings appear.
+apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
 for template in args.templates:
 
@@ -655,14 +676,6 @@ for template in args.templates:
         template_wants_PrisonPC or template == 'tvserver')
     template_wants_PrisonPC_staff_network = (   # UGH!
         template.startswith('desktop-staff') or template == 'tvserver')
-
-    if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
-        logging.warning('prisonpc.tca3 server code expects OpenSSH')
-    if template_wants_PrisonPC and args.boot_test and not (args.netboot_only and have_smbd):
-        raise NotImplementedError(
-            'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
-            ' Without these, site.dir cannot patch /etc/hosts, so'
-            ' boot-test ldap/nfs/squid/pete redirect will not work!')
 
     with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
         td = pathlib.Path(td)
