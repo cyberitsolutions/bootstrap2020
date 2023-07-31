@@ -305,22 +305,17 @@ def do_boot_test():
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
         if args.netboot_only:
-            subprocess.check_call(['cp', '-t', testdir, '--',
-                                   '/usr/lib/PXELINUX/pxelinux.0',
-                                   '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
-            (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
-            (testdir / 'pxelinux.cfg/default').write_text(
-                'DEFAULT linux\n'
-                'LABEL linux\n'
-                '  IPAPPEND 2\n'
-                '  KERNEL vmlinuz\n'
-                '  INITRD initrd.img\n'
-                '  APPEND ' + ' '.join([
-                    'boot=live',
-                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
-                     if have_smbd else
-                     f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
-                    common_boot_args]))
+            ipxe_boot_args = ' '.join(
+                ['boot=live',
+                 'netboot=cifs', 'nfsopts=ro,guest,vers=3.1.1',
+                 f'nfsroot=//{smb_address}/qemu live-media-path=']
+                if have_smbd else
+                ['boot=live',
+                 f'fetch=tftp://{tftp_address}/filesystem.squashfs'])
+            (testdir / 'netboot.ipxe').write_text(
+                '#!ipxe\n'
+                'initrd initrd.img\n'
+                f'boot --replace vmlinuz initrd=initrd.img {ipxe_boot_args} {common_boot_args}\n')
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
@@ -350,6 +345,7 @@ def do_boot_test():
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
             '--enable-kvm',
+            '--bios', '/usr/share/ovmf/OVMF.fd',  # EFI (not legacy BIOS)
             '--machine', 'q35',
             '--cpu', 'host',
             '-m', '2G' if template.startswith('desktop') else '512M',
@@ -371,7 +367,7 @@ def do_boot_test():
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template.startswith('desktop') else []),
                 *([f'smb={testdir}'] if have_smbd else []),
-                *([f'tftp={testdir}', 'bootfile=pxelinux.0']
+                *([f'tftp={testdir}', 'bootfile=netboot.ipxe']
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
