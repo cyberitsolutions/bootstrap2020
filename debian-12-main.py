@@ -373,8 +373,7 @@ def do_boot_test():
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
                    for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
-                  if port_forward_bullshit else []),
-            ]),
+                  if port_forward_bullshit else [])]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
                '--initrd', testdir / 'initrd.img',
