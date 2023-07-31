@@ -4,7 +4,7 @@
 # Mods can be loaded only from the CLI.
 # As a shitty kludge, patch warzone2100's menu item to always load the new graphics package.
 # NOTE: this is inappropriate for a proper Debian package, but it's "good enough" for PrisonPC.
-sed -i '/^Exec=/ c Exec=warzone2100 --mod=ARmod_4.0.1.wz' /usr/share/applications/warzone2100.desktop
+sed -i '/^Exec=warzone2100/ c Exec=warzone2100 --mod=ARmod_4.0.1.wz' /usr/share/applications/net.wz2100.warzone2100.desktop
 
 # The next line loads the normal postinst code, which we want.
 ##DEBHELPER##
