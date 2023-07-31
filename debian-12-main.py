@@ -246,7 +246,7 @@ def do_boot_test():
             (testdir / name).hardlink_to(destdir / name)
         common_boot_args = ' '.join([
             ('quiet splash'
-             if template.statswith('desktop') else
+             if template.startswith('desktop') else
              'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
             (f'break={args.maybe_break}'
              if args.maybe_break else '')])
