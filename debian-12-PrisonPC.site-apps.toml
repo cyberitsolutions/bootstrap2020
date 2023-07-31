@@ -86,98 +86,96 @@ applications = [
 applications = [
     # https://alloc.cyber.com.au/task/task.php?taskID=34172
     "fonts-opendyslexic",
-#   EXTREMELY POPULAR (MONTHS PER SITE-YEAR)
-    "aisleriot",
-    "endless-sky",
-    "xmoto",
-    "prisonpc-warzone2100-addons",
-    "supertuxkart",
-    "prisonpc-openttd-extras",
-    "gnome-mahjongg",
-    "prisonpc-wesnoth-addons",
-#   VERY POPULAR (WEEKS PER SITE-YEAR)
-    "gnome-2048",
-    "lbreakout2",
-    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
-    "gnome-sudoku",
-    "freedoom",
-    "blobwars",
-    "supertux",
-    "quadrapassel",
-    "maelstrom",
-#   POPULAR (DAYS PER SITE-YEAR)
-    "gimp", "gimp-help-en",
-    "kolf",
-    "freeciv", "freeciv-server",
-    "seahorse-adventures",
-    "kobodeluxe",
-    "frozen-bubble",
-    "marble-qt", "marble-plugins",
-    "swell-foop",
-    "gnome-mines",
-    "gnome-klotski",
-    "iagno",
-    "starfighter",
-    "dia", "dia-shapes",
-    "nikwi",
-    "bomberclone",
-    "four-in-a-row",
-    "lincity-ng",
-#   UNPOPULAR (HOURS PER SITE-YEAR)
-    "kgeography",
-    "warmux",
-    "pingus",
-    "supertransball2",
-    "burgerspace",
-    "gjiten",
-    "blockattack",
-    "stax",
-    "torus-trooper",
-    "enigma",
-    "klavaro",
-    "lierolibre",
-    "inkscape", "inkscape-tutorials",
-    "armagetronad",
-    "gelemental",
-    "garden-of-coloured-lights",
-    "opentyrian", "tyrian-data",
-    "powermanga",
-    "gnucash", "gnucash-docs",
-    "kbounce",
-    "hitori",
-    "atomix",
-    "freedroid",
-    "knavalbattle",
-    "numptyphysics",
-    "lightsoff",
-    "qonk",
-    "librecad",
-    "ballz",
-    "pysiogame",
-    "gbrainy",
-    "planner", "planner-doc",
-    "lybniz",
 #   UNKNOWN POPULARITY (new or not detected properly)
-    "marathon-trilogy",
-    "alex4",
-    "allure",
-    "bloboats",
-    "cataclysm-dda-sdl",
-    "crawl-tiles",
-    "dangen",
-    "excellent-bifurcation",
-    "funnyboat",
-    "gnome-mastermind",
-    "gnome-nibbles",
-    "gnome-tetravex",
-    "pybik",
-    "gplanarity",
-    "gtans",
-    "gtick",
-    "overgod",
-    "pegsolitaire",
-    "singularity",
-    "tetzle",
+    "gimp", "gimp-help-en",
+#   EXTREMELY POPULAR (MONTHS PER SITE-YEAR)
+    "aisleriot",                # Games > Card > Solitaire
+    "endless-sky",              # Games > Other > Endless Sky
+    "xmoto",                    # Games > Sports > Elastomania clone
+    "prisonpc-wesnoth-addons",  # Games > Strategy > The Battle for Wesnoth
+    "prisonpc-warzone2100-addons",  # Games > Strategy > Warzone 2100
+    "gnome-mahjongg",           # Games > Board > Mahjong Solitaire
+    "crawl-tiles",              # Games > Adventure > Dungeon Crawl
+    "supertuxkart",             # Games > Arcade > Mario Kart clone
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",  # Games > Board > Chess
+    "gnome-sudoku",             # Games > Logic > Sudoku
+    "quadrapassel",             # Games > Falling Blocks > Tetris clone
+    "lbreakout2",               # Games > Other > Arkanoid (Breakout) clone
+#   VERY POPULAR (WEEKS PER SITE-YEAR)
+    "prisonpc-openttd-extras",  # Games > Strategy > Transport Tycoon Deluxe clone
+    "freedoom",                 # DOOM clone (all campaigns)
+    "gnome-tetravex",           # Games > Logic > Tetravex
+    "opentyrian", "tyrian-data",  # Games > Arcade > OpenTyrian
+    "cataclysm-dda-sdl",        # Games > Other > Cataclysm: Dark Days Ahead
+    "supertux",                 # Games > Arcade > Super Mario clone
+    "gnome-mines",              # Games > Logic > Minesweeper
+    "four-in-a-row",            # Games > Logic > Connect4 clone
+    "gnome-2048",               # Games > Other > 2048
+    "librecad",                 # Graphics > Computer Aided Design (CAD)
+    # Allegro-based games are popcon'd together. :-(
+    # Between them, they are worth ~7 days per site-year as at 2023Q3.
+    "alex4", "ballz", "excellent-bifurcation",  "garden-of-coloured-lights", "overgod", "stax",
+#   POPULAR (DAYS PER SITE-YEAR)
+    "pingus",                   # Games > Strategy > Lemmings clone
+    "blobwars",                 # Games > Action > Blob Wars : Metal Blob Solid
+    "gtick",                    # Multimedia > Metronome
+    "singularity",              # Games > Strategy > Singularity
+    "starfighter",              # Games > Arcade > Starfighter
+    "gtans",                    # Games > Logic > Tangrams
+    "marathon-trilogy",         # alephone
+    "marble-qt", "marble-plugins",  # Education > Terrestrial Globe (Marble Virtual Globe)
+    "powermanga",               # Games > Arcade > Power Manga
+    "pegsolitaire",             # Games > Logic > Peg Solitaire
+    "iagno",                    # Games > Board > Reversi
+    "maelstrom",                # Games > Arcade > Asteroids clone
+    "lincity-ng",               # Games > Other > SimCity clone
+    "kgeography",               # Education > Geography Trainer
+    "warmux",                   # Games > Arcade > Worms clone
+    "gnome-nibbles",            # Games > Arcade > Nibbles (Gnome-nibbles)
+    "kolf",                     # Games > Arcade > MiniGolf
+    "blockattack",              # Games > Arcade > Block Attack
+    "freeciv", "freeciv-server",  # Games > Strategy > Civilization clone
+    "gnome-mastermind",         # Games > Board > Mastermind clone
+    "nikwi",                    # Games > Arcade > Nikwi Deluxe
+    "bomberclone",              # Games > Arcade > Bomberman clone
+    "gjiten",                   # Accessories > Japanese/English Dictionary
+    "gbrainy",                  # Games > Logic > Brain Teasers
+    "tetzle",                   # Games > Logic > Jigsaw Puzzle Game
+    "frozen-bubble",            # perl
+#   UNPOPULAR (HOURS PER SITE-YEAR)
+    "bloboats",                 # Games > Arcade > Boatmania
+    "gelemental",               # Education > Periodic Table
+    "burgerspace",              # Games > Arcade > BurgerTime clone
+    "gnome-klotski",            # Games > Logic > Klotski
+    "lierolibre",               # Games > Action > Liero
+    "swell-foop",               # Games > Logic > Swell Foop
+    "kbounce",                  # Games > Arcade > JezzBall clone
+    "inkscape", "inkscape-tutorials",  # Graphics > Vector Graphics Editor (Inkscape)
+    "funnyboat",                # main.py
+    "gplanarity",               # Games > Other > Planarity
+    "armagetronad",             # Games > Action > Armagetron Advanced
+    "knavalbattle",             # Games > Strategy > Battleship clone
+    "qonk",                     # Games > Arcade > Qonk
+    "pysiogame",                # eduactiv8.py
+    "enigma",                   # Games > Logic > Oxyd clone
+    "klavaro",                  # Education > Typing Tutor
+    "torus-trooper",            # Games > Arcade > Torus Trooper
+    "hitori",                   # Games > Logic > Hitori
+    "allure",                   # Games > Other > Allure of the Stars
+    "dangen",                   # Games > Arcade > Dangen
+    "numptyphysics",            # Games > Logic > Crayon Physics clone
+    "gnucash", "gnucash-docs",  # Office > Finance Management
+    "seahorse-adventures",      # run_game.py
+    "pybik",                    # Games > Other > Rubik’s Cube
+    "lightsoff",                # Games > Logic > Lights Off
+    "kobodeluxe",               # Games > Arcade > Bosconian clone
+    "freedroid",                # Games > Other > Paradroid clone
+    "planner", "planner-doc",   # Office > Project Planner
+    "dia", "dia-shapes",        # Graphics > Diagram Editor
+    "atomix",                   # Games > Logic > Atomix
+    "supertransball2",          # Games > Arcade > Zarathrusta clone
+    "lybniz",                   # Education > Graphics Calculator
+
 ]
 
 
