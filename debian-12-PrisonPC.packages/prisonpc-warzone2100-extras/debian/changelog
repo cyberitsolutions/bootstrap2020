@@ -1,10 +1,9 @@
-prisonpc-warzone2100-addons (12.1) bookworm; urgency=medium
+prisonpc-warzone2100-addons (12.2) bookworm; urgency=medium
 
   * Expect warzone2100 4.x not 3.3.x.
-  * Remove wget2 -P workaround.
   * postinst: the .desktop file was renamed upstream
 
- -- Trent W. Buck <trentbuck@gmail.com>  Mon, 31 Jul 2023 15:15:41 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 02 Aug 2023 01:46:27 +1000
 
 prisonpc-warzone2100-addons (11.7) bullseye; urgency=medium
 
