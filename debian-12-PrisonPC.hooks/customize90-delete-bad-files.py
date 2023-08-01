@@ -117,7 +117,10 @@ find_stdout = subprocess.check_output(
      'find', '/', '-xdev', '-depth',
      '-print0'],
     text=True)
-for path in find_stdout.strip('\0').split('\0'):
+paths = [
+    pathlib.Path(path)
+    for path in find_stdout.strip('\0').split('\0')]
+for path in paths:
     path = pathlib.Path(path)
     matching_globs = [
         glob for glob in shitlist
@@ -130,3 +133,11 @@ for path in find_stdout.strip('\0').split('\0'):
             shutil.rmtree(path_outside_chroot)
         else:
             path_outside_chroot.unlink()
+
+# It is entirely expected that some patterns will not match
+# (e.g. "remove dbclient" only triggers when dropbear is installed).
+# So this is not a halt-and-catch-fire error, but
+# it might be worth logging for the occasional sanity-check.
+for glob in shitlist:
+    if not any(path.match(glob) for path in paths):
+        logging.warning('Pattern ‘%s’ matched no files.', glob)
