@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import logging
+import os
 import pathlib
 import shutil
 import subprocess
@@ -90,6 +91,14 @@ parser.set_defaults(shitlist_path=(
     pathlib.Path(sys.argv[0]).parent /  # noqa: W504
     'customize90-delete-bad-files.glob'))
 args = parser.parse_args()
+
+# Save the list of "deleted file X" into the squashfs by default.
+os.umask(0o0077)                # not readable by inmates
+logging.basicConfig(
+    filename=(
+        args.chroot_path /
+        'var/log/bootstrap2020-delete-bad-files.log'),
+    level=logging.INFO)
 
 if args.chroot_path.resolve() == '/':
     raise RuntimeError('Refusing to trash your rootfs!')
