@@ -1,1 +1,2 @@
 name = "usr/sbin/bootstrap2020-usb-snitch"
+include = ["python3-systemd", "python3-pyudev"]

@@ -1,1 +1,2 @@
 name = "usr/lib/python3/dist-packages/tvserver/__init__.py"
+include = ["python3-psycopg2"]

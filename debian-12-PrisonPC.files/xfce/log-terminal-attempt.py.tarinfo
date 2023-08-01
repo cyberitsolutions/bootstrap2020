@@ -1,2 +1,3 @@
 name = "usr/bin/com.PrisonPC.log-terminal-attempt.py"
 mode = 365
+include = ["python3-gi", "gir1.2-notify-0.7"]

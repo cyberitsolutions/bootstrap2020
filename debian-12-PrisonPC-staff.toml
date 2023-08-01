@@ -1,12 +1,8 @@
 include = [
     "prisonpc-bad-package-conflicts-everyone",
-
-    "gvncviewer",  # Control desktop (vnc://)
     "gvfs-backends", "gvfs-fuse", "openssh-client",  # Browse p123's home (sftp://)
-    "python3-vlc",  # rip movie DVD (FIXME: move into dvdrip.py.tarinfo)
     "asunder",      # Rip music CD
     "xfburn",       # Burn data DVD
-
     # NOTE: exfat-fuse removed as exfat is now in-kernel.
     # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
     # FIXME: remove ntfs-3g when 5.15 reaches bullseye-backports.

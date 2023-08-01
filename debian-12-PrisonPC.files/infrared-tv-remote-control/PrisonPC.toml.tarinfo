@@ -1,1 +1,2 @@
 name = "etc/rc_keymaps/PrisonPC.toml"
+include = ["ir-keytable"]

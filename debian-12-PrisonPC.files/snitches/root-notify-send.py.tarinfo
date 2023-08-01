@@ -1,1 +1,2 @@
 name = "usr/sbin/root-notify-send"
+include = ["python3-gi", "gir1.2-notify-0.7"]

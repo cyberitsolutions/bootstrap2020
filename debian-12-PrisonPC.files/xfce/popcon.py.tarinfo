@@ -1,2 +1,3 @@
 name = "usr/bin/bootstrap2020-popularity-contest"
 mode = 365
+include = ["python3-gi", "gir1.2-wnck-3.0"]

@@ -1,1 +1,5 @@
 name = "usr/sbin/tvserver-update-config"
+include = [
+    # procps: /usr/bin/pkill
+    "procps",
+]

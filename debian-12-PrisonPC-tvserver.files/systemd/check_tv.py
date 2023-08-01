@@ -118,6 +118,10 @@ results = []     # accumulator
 for row in adapters_to_check:
     # FIXME: run the femon processes in parallel,
     # so the total runtime is ATTEMPTS, not n*ATTEMPTS! --twb, Nov 2016
+    # FIXME: use dvblast instead of femon???
+    #        I have no idea what I was thinking when I wrote that!
+    #        Maybe I was actually just saying "use dvblast 3.x not dvblast 2.x"?
+    #        https://github.com/cyberitsolutions/bootstrap2020/commit/10851ec
     output = subprocess.check_output(['femon', f'-c{ATTEMPTS}', f'-a{row.card}'], text=True)
     # The number of 'FE_HAS_LOCK' strings is
     # the number of times femon detected signal.

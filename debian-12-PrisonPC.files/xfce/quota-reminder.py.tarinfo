@@ -1,2 +1,8 @@
 name = "usr/bin/bootstrap2020-quota-reminder"
 mode = 365
+include = [
+    "python3-gi", "gir1.2-notify-0.7",
+    # This is an in-house repackage of src:quota to include only the client-side parts.
+    # FIXME: remove this entirely when all sites are running ZFS, where
+    #        "what's my quota usage?" is easily answered by df.
+    "nfs-client-quota"]

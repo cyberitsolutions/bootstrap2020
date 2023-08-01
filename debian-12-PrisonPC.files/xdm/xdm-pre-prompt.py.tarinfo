@@ -1,1 +1,3 @@
 name = "etc/X11/xdm/Xsetup"
+# https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
+include = ["x11vnc"]
