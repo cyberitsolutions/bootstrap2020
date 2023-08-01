@@ -12,6 +12,11 @@
 # UPDATE: In Debian 11 we will use chromium (not ristretto) as image viewer.
 #         Therefore tumbler has no use, and we never install it in the first place.
 #
+#         UPDATE: users complained so we went back to ristretto, then
+#         switched to eog to avoid the thumbnailer issues:
+#         https://github.com/cyberitsolutions/bootstrap2020/commit/f462e8e
+#         https://github.com/cyberitsolutions/bootstrap2020/commit/55a5fcc
+#
 #         In Debian 11, x-moto slowly writes a bunch of .blv files to the cache.
 #         But it's not THAT slow, so stop trying to avoid it.
 #

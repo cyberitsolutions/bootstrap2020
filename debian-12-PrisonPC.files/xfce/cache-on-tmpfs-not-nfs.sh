@@ -13,6 +13,12 @@
 #         Therefore tumbler has no use, and we never install it in the first place.
 #
 #         In Debian 11, x-moto slowly writes a bunch of .blv files to the cache.
+#
+#         UPDATE: users complained so we went back to ristretto, then
+#         switched to eog to avoid the thumbnailer issues:
+#         https://github.com/cyberitsolutions/bootstrap2020/commit/f462e8e
+#         https://github.com/cyberitsolutions/bootstrap2020/commit/55a5fcc
+#
 #         But it's not THAT slow, so stop trying to avoid it.
 #
 #         In Debian 11, wesnoth ALREADY ignore XDG_CACHE_HOME, so
