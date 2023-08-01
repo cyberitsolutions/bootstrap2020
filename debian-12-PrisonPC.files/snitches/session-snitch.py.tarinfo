@@ -1,1 +1,2 @@
 name = "usr/sbin/bootstrap2020-session-snitch"
+include = ["python3-systemd"]

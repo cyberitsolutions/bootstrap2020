@@ -1,2 +1,3 @@
 name = "etc/prayer/prayer.cf"
 mode = 292
+include = ["prayer-templates-prisonpc"]

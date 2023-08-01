@@ -1,2 +1,4 @@
 name = "usr/share/xfce4/helpers/com.PrisonPC.Mail.desktop"
 mode = 292
+# Needed because we use gtk4-launch (was gtk-launch)
+include = ["libgtk-4-bin"]
