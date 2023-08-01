@@ -188,7 +188,7 @@ applications = [
 [desktop-staff-amc]
 applications = [
     # Rationale (gimp): inmates can hide information in an .xcd;
-    # Only gimp (not ristretto) can view these;
+    # Only gimp (not ristretto/eog) can view these;
     # It is not feasible to disable XCD support in GIMP.
     # --twb, Apr 2016
     # https://alloc.cyber.com.au/task/task.php?taskID=30908
