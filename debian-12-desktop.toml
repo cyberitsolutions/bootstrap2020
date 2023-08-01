@@ -10,13 +10,12 @@ include = [
     # UPDATE: in Debian 12, pipewire defaults to 40% with or without alsa-utils/alsa-ucm-conf.
     # alsa-ucm-conf provides default mixer levels for AMCs "black chassis" SoC boards
     # "alsa-utils", "alsa-ucm-conf",
-    "ir-keytable",              # infrared TV remote control
     "xfce4-xkb-plugin",  # basic foreign language input (e.g. Russian, but not Japanese)
     "xdg-user-dirs-gtk",  # Thunar sidebar gets Documents, Music &c
     "gvfs", "thunar-volman", "eject",  # Thunar trash://, DVD autoplay, DVD eject
     "xfce4-notifyd",            # xfce4-panel notification popups
     # FIXME: use plocate (not mlocate) once PrisonPC master server upgrades!
-    "catfish", "mlocate", "xfce4-places-plugin",  # "Find Files" tool
+    "catfish", "plocate", "xfce4-places-plugin",  # "Find Files" tool
     "eog",            # chromium cant flip between 1000 photos quickly
     "usermode",                         # password reset tool
     "librsvg2-common",                  # SVG icons in GTK3 apps

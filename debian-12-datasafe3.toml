@@ -1,5 +1,5 @@
 include = [
-    'mdadm', 'rsnapshot',
+    'mdadm',
     'e2fsprogs',        # to get e2scrub (needs to be in fstab tho?)
     'extlinux', 'parted',       # debugging/rescue
 ]

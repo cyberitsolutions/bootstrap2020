@@ -45,6 +45,7 @@ subprocess.check_call([
     'acceptable-use-policy'])
 
 
+# https://en.wikipedia.org/wiki/Panopticon#Surveillance_technology
 subprocess.check_call([
     'systemd-run',
     '--collect',

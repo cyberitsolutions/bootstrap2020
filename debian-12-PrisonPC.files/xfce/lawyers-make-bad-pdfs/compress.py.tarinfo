@@ -1,2 +1,7 @@
 name = "bin/PrisonPC-compress-scanned-PDF"
 mode = 365
+include = [
+    "python3-gi", "gir1.2-notify-0.7",
+    # ctypes.util.find_library('gs') needs libgs.so.NNN
+    "libgs10",
+]

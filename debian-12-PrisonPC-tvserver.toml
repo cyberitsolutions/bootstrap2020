@@ -5,17 +5,6 @@ include = [
     # See customize50-build-tbs-driver.py
     'build-essential', 'git', 'patchutils', 'libproc-processtable-perl',
     'wget2', 'bzip2',
-
-    # FIXME: dvblast 2.2 works, dvblast 3.0 FAILS.  Does dvblast 3.4 work???
-    #        https://alloc.cyber.com.au/task/task.php?taskID=31579
-    # FIXME: move these into .tarinfo includes=[⋯] rules?
-    # FIXME: remove the DVD transcoding stuff –
-    #        it happens inside Debian 11+ staff desktops nowadays.
-    "dvblast",        # DVB-T → rtp://
-    "ffmpeg",         # DVD | DVB-T → .ts
-    "multicat",       # .ts → rtp://
-    "dvb-apps",       # femon (for check_tv.py - FIXME: use dvblast3?)
-    "procps",  # pkill (for update-config.py - FIXME: use systemctl reload)
-    "tv-grab-dvb", "python3-psycopg2", "python3-lxml",  # DVB-T → XML → postgres (EPG)
-    "w-scan",               # Used at new sites to find frequency MHz.
+    # Used at new sites to find frequency MHz.
+    "w-scan",
 ]

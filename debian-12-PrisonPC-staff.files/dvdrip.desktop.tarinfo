@@ -1,2 +1,3 @@
 name = "usr/share/applications/com.PrisonPC.dvdrip.desktop"
 mode = 292
+include = ["python3-gi", "gir1.2-gtk-3.0"]
