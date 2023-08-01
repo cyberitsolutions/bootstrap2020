@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Watch for monitor/screen output changes to trigger certain actins when needed.
+Watch for monitor/screen output changes to trigger certain actions when needed.
 
 Workaround for this XFCE bug: https://gitlab.xfce.org/xfce/xfce4-settings/-/issues/142
 And this much older one: https://bugzilla.xfce.org/show_bug.cgi?id=15897
