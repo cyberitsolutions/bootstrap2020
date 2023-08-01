@@ -180,6 +180,14 @@
   </Menu>
 
   <Menu>
+    <Name>Science</Name>
+    <Directory>xfce-science.directory</Directory>
+    <Include>
+      <Category>Science</Category>
+    </Include>
+  </Menu>
+
+  <Menu>
     <Name>System</Name>
     <Directory>xfce-system.directory</Directory>
     <Include>
