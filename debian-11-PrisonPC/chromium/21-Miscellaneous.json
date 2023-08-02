@@ -157,7 +157,11 @@
     "InsecurePrivateNetworkRequestsAllowed": false,
     "InsecurePrivateNetworkRequestsAllowedForUrls": [],
 
-    "Disable3DAPIs": true,
+    // Allow webGL for modern browser-based video games (which use webGL even for 2D acceleration).
+    // https://alloc.cyber.com.au/task/task.php?taskID=34964
+    // https://alloc.cyber.com.au/task/task.php?taskID=33851
+    "Disable3DAPIs": false,
+
     // Not interesting, because
     // desktops are not enrolled into Google CloudDPC stuff.
     // "PolicyRefreshRate": 3600000,
