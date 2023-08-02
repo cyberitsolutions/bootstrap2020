@@ -357,7 +357,7 @@ usr/share/doc/python3-uno/demo
 # Some apps have a "server" or "engine" component.
 # Inmates never need to run this part directly.
 /usr/share/applications/org.freeciv.server.desktop
-/usr/share/applications/prboom-plus.desktop
+/usr/share/applications/dsda-doom.desktop
 /usr/share/applications/scummvm.desktop
 # From chromium, contains XBEL bookmarks for https://debian.org/.
 # These appear below the address bar on chrome://newtab tabs.
