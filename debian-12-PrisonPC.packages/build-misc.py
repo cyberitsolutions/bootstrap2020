@@ -60,7 +60,10 @@ with tempfile.TemporaryDirectory() as td:
          '--customize-hook=rm -rf $1/X/Y',
          f'--customize-hook=sync-out /X {td}',
          'bookworm',
-         '/dev/null'])
+         '/dev/null',
+         # '../../debian-12.sources',
+         # '../../debian-12-PrisonPC-desktop.sources',
+         ])
     # debsign here?
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
