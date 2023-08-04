@@ -675,3 +675,40 @@ usr/games/ceferinoeditor
 # 15:03 <twb> not segfaulting anymore, but also not actually generating thumbnails
 # 15:03 <twb> OK thumbnail file exists but not viewed?
 **/tumbler-gst-thumbnailer.so
+
+
+# https://github.com/trentbuck/puzzlepull/
+# GNOME Crosswords takes too long (~7 seconds) to start if 70MB of crosswords are available in /usr/share/crosswords/puzzle-sets/.
+# Therefore remove all The Guardian crosswords EXCEPT those from the year 2022 CE.
+#
+# 09:12 <ron> twb/mike: I agree re *not* dumping eleventy-billion crosswords on the inmates
+# 09:13 <ron> if we're going for this fat local app then we should give them a reasonable amount (100?) to start with, and
+#             it'd be really cool if we had some clever little script which then released just a few additional per day
+# 09:40 <mike> A few per day is likely not viable. But we could probably throw a different set of random ones in with each SOE update
+# 11:03 <ron> mike: yeah, might've been viable if the puzzles weren't in the SOE
+# [...]
+# 14:19 <twb> I really don't want to write a script to recompile the binary blobs of crosswords they get every day
+# 14:19 <ron> nope, idea dismissed
+# 14:52 <twb> OK apparently having 7MB of crosswords makes the app take fucking ages to load (5-10s), regardless of whether the crosswords are hidden
+# 14:53 <twb> So I will probably install only the 2022 year crosswords, I think
+# 14:57 <ron> 7MB = ~ how many?
+# 14:58 <ron> and, how many in 2022?
+# 14:59 <twb> in 2022, 260 cryptic 51 everyman 50 prize 313 quick 52 quiptic 51 speedy 53 weekend
+# 14:59 <twb> So 830 total
+# 14:59 <ron> that's a lot
+# 15:00 <twb> That's roughly consistent from 1999 through to 2022; 2023 is 50% because 2023 not finished
+# 15:00 <ron> how easy is it to drop to a single month or two?
+# 15:01 <twb> Hard
+# 15:01 <twb> It is not really feasible to make me go repackage this stuff every month
+# 15:02 <ron> yeah, fair
+# 15:03 <ron> twb: I need to find a balance between hitting them with too much content at once,
+#             leaving not enough to give them fresh content next SOE/month/whenever, and
+#             your effort to do so.
+# 15:03 <twb> IMO if you want to fiddle around like that you can do it in the web apps.
+# 15:03 <ron> I want to keep a fairly steady flow, if possible
+# 15:04 <twb> in-SOE apps are the "not fiddle-fuck around" kind.
+# 15:04 <ron> twb: fair
+# 15:04 <twb> If The Guardian website is whitelisted they can, in theory, download each day's one as a separate file.
+/usr/share/crosswords/puzzle-sets/gnome-crosswords-addons-theguardian/*-19??.gresource
+/usr/share/crosswords/puzzle-sets/gnome-crosswords-addons-theguardian/*-20[!2]?.gresource
+/usr/share/crosswords/puzzle-sets/gnome-crosswords-addons-theguardian/*-20?[!2].gresource
