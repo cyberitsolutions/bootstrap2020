@@ -3,6 +3,10 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 %:
 	dh $@
 
+# GNOME Crosswords defaults to development mode. (WHY?!)
+# Disable this.
+override_dh_auto_configure:
+	dh_auto_configure -- -D development=false
 
 
 
