@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 import pathlib
-import re
-import subprocess
 import logging
 
 __doc__ = """ work around warzone2100 bug
@@ -32,37 +30,35 @@ UPDATE: all this bullshit IS still needed in Debian 12.
         WAS ~p123/.local/share/warzone2100-$VERSION/mods/global/ARmod_$VERSION.wz
         NOW ~p123/.local/share/warzone2100/mods/$VERSION/global/ARmod_$VERSION.wz
 
+UPDATE: in warzone2100 3.x, we could create symlinks to files in /usr/.
+        in warzone2100 4.x, they EXPLICITLY DISABLE following symlinks.
+        I don't know why, but this means that for the high-res texture mode (ARmod_4.1.0.wz),
+        we would have to copy the entire texture blob into each user's $HOME (instead of just symlinking it).
+        This is clearly bonkers, so I give up - I am just going to drop the text mod entirely.
+        --twb, Aug 2023
+
+        This is what strace said (note "SYMLINK_NOFOLLOW"):
+
+             newfstatat(AT_FDCWD,
+                        "/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz",
+                        {st_mode=S_IFLNK|0777, st_size=55, ...},
+                        AT_SYMLINK_NOFOLLOW) = 0
+
+             access("/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz",
+                    W_OK) = -1 EACCES (Permission denied)
+
+        This is the code cjb found:
+
+            https://github.com/Warzone2100/warzone2100/blob/master/src/version.cpp#L139
+            https://github.com/Warzone2100/warzone2100/commit/11b4c086263b451d4f38b6869fa6da42f565a903
+
+
 """
 
-# FIXME: in Python3.5+ use subprocess.run instead of the try/except shit!
-proc = subprocess.run(
-    ['/usr/games/warzone2100', '--version'],
-    stdout=subprocess.PIPE,
-    text=True,
-    check=False)
-if proc.returncode != 1:
-    raise RuntimeError('warzone2100 --version should always exit(1)!')
-
-# Example: Warzone 2100 - Version: 3.3.0, Built: 2020-10-16
-version = re.fullmatch(
-    r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
-    proc.stdout.strip()).group(1)
-
-# 13:50:05: [listMapFiles:678]
-#           Could not mount /home/prisoners/p123/.local/share/warzone2100//maps/10c-DA-BDCTW10-v1max.wz, because:
-#           not found.  Please delete or move the file specified.
-# access("/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz", W_OK) = -1 EACCES (Permission denied)
-# newfstatat(AT_FDCWD, "/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz", {st_mode=S_IFLNK|0777, st_size=55, ...}, AT_SYMLINK_NOFOLLOW) = 0
-for srcs, dst in {
-        # Skirmish maps are in an unversioned dir.
-        (pathlib.Path('/usr/share/games/warzone2100/maps').glob('*.wz'),
-         pathlib.Path.home() / '.local/share/warzone2100/maps'),
-        # The one mod (for high-res textures) is in a versioned dir.
-        (pathlib.Path('/usr/share/games/warzone2100/mods/global').glob('*.wz'),
-         pathlib.Path.home() / f'.local/share/warzone2100/mods/{version}/global')}:
-    dst.mkdir(exist_ok=True, parents=True)
-    for src in srcs:
-        try:
-            (dst / src.name).symlink_to(src)
-        except FileExistsError:
-            logging.debug('already exists -- assuming already correct', src)
+dst = pathlib.Path.home() / '.local/share/warzone2100/maps'
+dst.mkdir(exist_ok=True, parents=True)
+for src in pathlib.Path('/usr/share/games/warzone2100/maps').glob('*.wz'):
+    try:
+        (dst / src.name).symlink_to(src)
+    except FileExistsError:
+        logging.debug('already exists -- assuming already correct', src)
