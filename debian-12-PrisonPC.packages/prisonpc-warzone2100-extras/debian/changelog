@@ -1,3 +1,11 @@
+prisonpc-warzone2100-addons (12.3) bookworm; urgency=medium
+
+  * Due to https://github.com/Warzone2100/warzone2100/commit/11b4c086263b451d4f38b6869fa6da42f565a903
+    we cannot serve the high-res texture mode out of /usr anymore, so
+    remove it completely.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 07 Aug 2023 15:31:40 +1000
+
 prisonpc-warzone2100-addons (12.2) bookworm; urgency=medium
 
   * Expect warzone2100 4.x not 3.3.x.

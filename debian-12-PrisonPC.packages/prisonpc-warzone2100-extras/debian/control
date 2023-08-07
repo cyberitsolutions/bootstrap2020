@@ -27,5 +27,9 @@ Architecture: all
 Description: Warzone2100 addons
  There are a bunch of third-party addons at https://addons.wz2100.net/.
  This package provides them pre-downloaded.
- We also include better textures from
-  https://sourceforge.net/projects/artrev2100/.
+ We used to also include better textures from
+  https://sourceforge.net/projects/artrev2100/, but
+ warzone2100 4.4.0-beta1 and later reads mods with "no follow symlinks" mode, so
+ there is no longer even a SNEAKY way to make the game read that mod from /usr instead of $HOME.
+ Installing 100MB of texture mods into each user's home is unacceptable, so
+ the texture pack is no longer an option in warzone2100 4 / Debian 12.
