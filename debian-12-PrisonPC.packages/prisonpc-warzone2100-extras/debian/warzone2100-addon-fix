@@ -26,7 +26,11 @@ UPDATE 2022: in Debian 11 / warzone2100 3.3, symlinking the whole directory no l
 I think the warzone2100 code is doing stat() instead of lstat(), so treating a symlink as "not a directory".
 Let's try symlinking individual files.
 
-FIXME: is all this bullshit still needed in Debian 12?
+UPDATE: all this bullshit IS still needed in Debian 12.
+        The paths have changed slightly:
+
+        WAS ~p123/.local/share/warzone2100-$VERSION/mods/global/ARmod_$VERSION.wz
+        NOW ~p123/.local/share/warzone2100/mods/$VERSION/global/ARmod_$VERSION.wz
 
 """
 
@@ -44,11 +48,18 @@ version = re.fullmatch(
     r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
     proc.stdout.strip()).group(1)
 
-src_root = pathlib.Path('/usr/share/games/warzone2100/')
-dst_root = pathlib.Path.home() / f'.local/share/warzone2100-{version}'
-for subdir_name in {'maps', 'mods/global'}:
-    srcs = (src_root / subdir_name).glob('*.wz')
-    dst = dst_root / subdir_name
+# 13:50:05: [listMapFiles:678]
+#           Could not mount /home/prisoners/p123/.local/share/warzone2100//maps/10c-DA-BDCTW10-v1max.wz, because:
+#           not found.  Please delete or move the file specified.
+# access("/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz", W_OK) = -1 EACCES (Permission denied)
+# newfstatat(AT_FDCWD, "/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz", {st_mode=S_IFLNK|0777, st_size=55, ...}, AT_SYMLINK_NOFOLLOW) = 0
+for srcs, dst in {
+        # Skirmish maps are in an unversioned dir.
+        (pathlib.Path('/usr/share/games/warzone2100/maps').glob('*.wz'),
+         pathlib.Path.home() / '.local/share/warzone2100/maps'),
+        # The one mod (for high-res textures) is in a versioned dir.
+        (pathlib.Path('/usr/share/games/warzone2100/mods/global').glob('*.wz'),
+         pathlib.Path.home() / f'.local/share/warzone2100/mods/{version}/global')}:
     dst.mkdir(exist_ok=True, parents=True)
     for src in srcs:
         try:
