@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DH_VERBOSE=1		# DEBUGGING
+# https://bugs.debian.org/895044 (re cmake+ninja)
+%:
+	dh $@ --buildsystem=cmake+ninja
+
+# Tell the build script we're NOT building for Visual Studio and
+# therefore we DO NOT WANT it do use git to download libraries.
+# Since "ES_USE_SYSTEM_LIBRARIES:BOOL=ON" is the default, this
+# really just avoids needing "Build-Depends: git" in debian/control.
+O += -D ES_USE_VCPKG=0
+override_dh_auto_configure:
+	dh_auto_configure --buildsystem=cmake+ninja -- $O
+
+# Upstream has "configuration modes" that include "none" (the default), "release", and "debug".
+# In "none" mode, everything gets installed EXCEPT the actual /usr/games/endless-sky binary!
+# This is because they have
+#     install(TARGETS EndlessSky
+#             CONFIGURATIONS Release
+#             RUNTIME DESTINATION games)
+# instead of
+#     install(TARGETS EndlessSky
+#             RUNTIME DESTINATION games)
+# I have to somehow work out how to tell cmake to make a
+# "release build" using some rando fucking variable somewhere, somehow...
+# Apparently this is a standard part of cmake at least:
+# https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#id38
+# https://stackoverflow.com/questions/19024259/how-to-change-the-build-type-to-release-mode-in-cmake#20423820
+# https://github.com/endless-sky/endless-sky/blob/master/docs/readme-cmake.md
+#
+# This is apparently wrong:
+#
+#     override_dh_auto_install:
+#     	dh_auto_install -- --config Release
+O += -D CMAKE_BUILD_TYPE=Release
