@@ -150,6 +150,13 @@ def get_quota():
         grace=grace)
 
 
+# PrisonPC on ZFS does not use user quotas or rpc.rquotad at all.
+# Instead each $HOME is a separate datasets entirely, and
+# we can just use df(1).
+# We use statvfs(1) directly rather than post-processing df stdout.
+# This function returns a now-slightly-silly data structure,
+# so that things look the same to the function that calls us.
+#
 # Example:
 #
 #     $ df -h /home/prisoners/p456
@@ -166,28 +173,41 @@ def get_quota():
 #                       f_favail=60552,    /* Number of free inodes for unprivileged users */
 #                       f_flag=4096,       /* Mount flags */
 #                       f_namemax=255)     /* Maximum filename length */
-def get_quota_zfs():
-    """ PrisonPC on ZFS does not use user quotas or rpc.rquotad at all.
-    Instead each $HOME is a separate datasets entirely, and
-    we can just use df(1).
-    We use statvfs(1) directly rather than post-processing df stdout.
-    This function returns a now-slightly-silly data structure,
-    so that things look the same to the function that calls us.
-    """
-    s = os.statvfs(pathlib.Path.home())
-    bytes_size = s.f_bsize * s.f_blocks
-    bytes_avail = s.f_bsize * s.f_bavail
-    bytes_used = bytes_size - bytes_avail
-    use_percent = bytes_used / bytes_size
-    if use_percent < 0.8:
-        # under pseudo "soft" quota of 80%
-        return False
-    return types.SimpleNamespace(
-        used=bytes_used,
-        soft=bytes_size * 0.8,  # 80% of total size
-        hard=bytes_size,
-        # There is no sensible value here, so just always claim "one week from now".
-        grace=time.time() + (7 * 24 * 60 * 60))
+def main_zfs():
+    gi.repository.Notify.init("Quota Reminder")
+    was_nearly_full = False     # initial state before first check
+    while True:
+        time.sleep(60)          # infinite loop, with sleep FIRST.
+        s = os.statvfs(pathlib.Path.home())
+        bytes_size = s.f_bsize * s.f_blocks
+        bytes_avail = s.f_bsize * s.f_bavail
+        bytes_used = bytes_size - bytes_avail
+        use_percent = bytes_used / bytes_size
+        is_nearly_full = use_percent > 0.8  # pseudo soft quota of 80%
+        if was_nearly_full and not is_nearly_full:
+            # State changed, so display a notification.
+            notification = gi.repository.Notify.Notification.new(
+                summary='Storage Quota',
+                body='Your storage quota is within limits.  Thank you.',
+                icon='face-smile-symbolic')
+            notification.set_urgency(gi.repository.Notify.Urgency.LOW)
+            notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
+            notification.show()
+        if is_nearly_full and not was_nearly_full:
+            # State changed, so display a notification.
+            notification = gi.repository.Notify.Notification.new(
+                summary='Storage Quota',
+                body=(
+                    f'You have {numfmt(bytes_used)} of files.\n'
+                    f'You may keep {numfmt(bytes_size)} of files.\n'
+                    'You should delete some files.\n'
+                    f'Otherwise, you may not be able to create or edit files.\n'
+                    'Go to Applications > File Manager to see your files.'),
+                icon='face-plain-symbolic')
+            notification.set_urgency(gi.repository.Notify.Urgency.NORMAL)
+            notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
+            notification.show()
+        was_nearly_full = is_nearly_full
 
 
 def numfmt(n):
