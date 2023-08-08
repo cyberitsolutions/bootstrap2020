@@ -55,14 +55,14 @@ applications = [
     "gnome-mastermind", "opentyrian", "tyrian-data", "crawl-tiles",
     # Games Arcade
     "cutemaze", "garden-of-coloured-lights", "kobodeluxe", "ceferino", "lierolibre", "burgerspace", "epiphany",
-    "lbreakout2", "abe", "armagetronad", "bloboats", "supertransball2", "parsec47", "torus-trooper", "powermanga", "funnyboat",
+    "lbreakout2", "abe", "armagetronad", "bloboats", "supertransball2", "parsec47", "torus-trooper", "powermanga",
     "warmux", "dangen", "excellent-bifurcation", "maelstrom", "overgod", "rrootage", "freedroid", "gunroar", "starfighter",
     # Games Card
     "aisleriot",
     # Games Chess
     "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
     # Games Platform
-    "alex4", "caveexpress", "xmoto", "ballz", "nikwi", "seahorse-adventures",
+    "alex4", "caveexpress", "xmoto", "ballz", "nikwi",
     # Games Puzzle
     "atomix", "gtans", "puzzle-jigsaw",
     "pybik",
@@ -152,7 +152,6 @@ applications = [
     "swell-foop",               # Games > Logic > Swell Foop
     "kbounce",                  # Games > Arcade > JezzBall clone
     "inkscape", "inkscape-tutorials",  # Graphics > Vector Graphics Editor (Inkscape)
-    "funnyboat",                # main.py
     "gplanarity",               # Games > Other > Planarity
     "armagetronad",             # Games > Action > Armagetron Advanced
     "knavalbattle",             # Games > Strategy > Battleship clone
@@ -166,7 +165,6 @@ applications = [
     "dangen",                   # Games > Arcade > Dangen
     "numptyphysics",            # Games > Logic > Crayon Physics clone
     "gnucash", "gnucash-docs",  # Office > Finance Management
-    "seahorse-adventures",      # run_game.py
     "pybik",                    # Games > Other > Rubik’s Cube
     "lightsoff",                # Games > Logic > Lights Off
     "kobodeluxe",               # Games > Arcade > Bosconian clone
