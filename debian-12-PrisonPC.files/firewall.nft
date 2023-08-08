@@ -149,6 +149,7 @@ table inet PrisonPC {
         ct state vmap { established: accept, related: accept, invalid: drop }
         iiftype loopback  accept
         oiftype loopback  ip saddr 127.0.0.0/8  ip daddr 127.0.0.0/8  accept
+        oiftype loopback  ip6 saddr ::1  ip6 daddr ::1  accept  comment "freeciv needs this, sometimes"
         icmp type echo-request  accept
         icmpv6 type { echo-request, nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert }  accept
         # FIXME: split this up across OUTPUT and INPUT?
