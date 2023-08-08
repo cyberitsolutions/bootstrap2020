@@ -6,6 +6,7 @@
 # FIXME: if this script crashes, the exception & backtrace go to stderr,
 # which ends up in ~p1234/.xsession-errors, NOT syslog!
 
+import os
 import pathlib
 import subprocess
 import sys
@@ -147,6 +148,46 @@ def get_quota():
         soft=soft,
         hard=hard,
         grace=grace)
+
+
+# Example:
+#
+#     $ df -h /home/prisoners/p456
+#     Size Used Avail Use% Mounted on
+#     40M   11M   30M  27% /home/prisoners/p456
+#     >>> os.statvfs('/home/prisoners/p456')
+#     os.statvfs_result(f_bsize=131072,    /* Filesystem block size */
+#                       f_frsize=131072,   /* Fragment size */
+#                       f_blocks=320,      /* Size of fs in f_frsize units */
+#                       f_bfree=236,       /* Number of free blocks */
+#                       f_bavail=236,      /* Number of free blocks for unprivileged users */
+#                       f_files=61436,     /* Number of inodes */
+#                       f_ffree=60552,     /* Number of free inodes */
+#                       f_favail=60552,    /* Number of free inodes for unprivileged users */
+#                       f_flag=4096,       /* Mount flags */
+#                       f_namemax=255)     /* Maximum filename length */
+def get_quota_zfs():
+    """ PrisonPC on ZFS does not use user quotas or rpc.rquotad at all.
+    Instead each $HOME is a separate datasets entirely, and
+    we can just use df(1).
+    We use statvfs(1) directly rather than post-processing df stdout.
+    This function returns a now-slightly-silly data structure,
+    so that things look the same to the function that calls us.
+    """
+    s = os.statvfs(pathlib.Path.home())
+    bytes_size = s.f_bsize * s.f_blocks
+    bytes_avail = s.f_bsize * s.f_bavail
+    bytes_used = bytes_size - bytes_avail
+    use_percent = bytes_used / bytes_size
+    if use_percent < 0.8:
+        # under pseudo "soft" quota of 80%
+        return False
+    return types.SimpleNamespace(
+        used=bytes_used,
+        soft=bytes_size * 0.8,  # 80% of total size
+        hard=bytes_size,
+        # There is no sensible value here, so just always claim "one week from now".
+        grace=time.time() + (7 * 24 * 60 * 60))
 
 
 def numfmt(n):
