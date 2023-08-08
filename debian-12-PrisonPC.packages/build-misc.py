@@ -29,15 +29,23 @@ os.environ['SOURCE_DATE_EPOCH'] = subprocess.check_output(
      '--file', args.package_path / 'debian/changelog',
      '--show-field=timestamp'],
     text=True).strip()
-# Makes autotools/make/gcc print "CC foo" instead of the full 600-character command.
-# Makes errors/warnings much easier to see.
-os.environ['DEB_BUILD_OPTIONS'] = 'terse'
+os.environ['DEB_BUILD_OPTIONS'] = ' '.join([
+    # Makes autotools/make/gcc print "CC foo" instead of the full 600-character command.
+    # Makes errors/warnings much easier to see.
+    'terse',
+    # I'll never use the -dbgsym packages (and they're big!); skip them.
+    'noautodbgsym',
+    # Skip "make test" or equivalent; useful when tests fail
+    # due to problems I do not actually care about.
+    # 'nocheck',
+    ])
 
 watch_path = (args.package_path / 'debian/watch')
 
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
-        ['mmdebstrap',
+        ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
+         'mmdebstrap',
          # NOTE: --variant=buildd includes ?priority(required), which includes e2fsprogs,
          #       which interacts negatively with prisonpc-ersatz-e2fsprogs.
          '--variant=apt',
