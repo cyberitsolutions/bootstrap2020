@@ -17,7 +17,7 @@ if paths:
     #       In Debian 12, it seems dbus-broker takes care of this?
     #       At any rate, it Works For Me right now...
     subprocess.check_call(
-        ['dconf', 'update', 'etc/dconf/db/'],
+        ['chronic', 'dconf', 'update', 'etc/dconf/db/'],
         cwd=args.chroot_path)
     # Sanity checks.  Did each "foo.d" get compiled into a "foo"?
     for path in paths:
