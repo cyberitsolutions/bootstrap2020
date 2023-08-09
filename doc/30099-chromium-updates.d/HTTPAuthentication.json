@@ -3,7 +3,7 @@
         "*.example.com"
     ],
     "AllowCrossOriginAuthPrompt": false,
-    "AuthNegotiateDelegateAllowlist": "foobar.example.com",
+    "AuthNegotiateDelegateAllowlist": "*.example.com,foobar.example.com",
     "AuthNegotiateDelegateByKdcPolicy": true,
     "AuthSchemes": "basic,digest,ntlm,negotiate",
     "AuthServerAllowlist": "*.example.com,example.com",

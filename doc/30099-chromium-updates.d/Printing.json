@@ -11,14 +11,11 @@
         "id3"
     ],
     "DisablePrintPreview": false,
-    "PrintHeaderFooter": false,
-    "PrintPdfAsImageDefault": true,
-    "PrintPreviewUseSystemDefaultPrinter": false,
-    "PrintRasterizePdfDpi": 300,
     "PrinterTypeDenyList": [
         "local",
         "pdf"
     ],
+    "PrintHeaderFooter": false,
     "PrintingAllowedBackgroundGraphicsModes": "enabled",
     "PrintingBackgroundGraphicsDefault": "enabled",
     "PrintingEnabled": true,
@@ -28,5 +25,8 @@
             "width": 210000
         },
         "name": "custom"
-    }
+    },
+    "PrintPdfAsImageDefault": true,
+    "PrintPreviewUseSystemDefaultPrinter": false,
+    "PrintRasterizePdfDpi": 300
 }

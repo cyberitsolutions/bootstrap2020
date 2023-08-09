@@ -3,19 +3,34 @@
     "FirstPartySetsOverrides": {
         "additions": [
             {
-                "members": [
-                    "https://member3.test"
+                "associatedSites": [
+                    "https://associate2.test"
                 ],
-                "owner": "https://owner2.test"
+                "ccTLDs": {
+                    "https://associate2.test": [
+                        "https://associate2.com"
+                    ]
+                },
+                "primary": "https://primary2.test",
+                "serviceSites": [
+                    "https://associate2-content.test"
+                ]
             }
         ],
         "replacements": [
             {
-                "members": [
-                    "https://member1.test",
-                    "https://member2.test"
+                "associatedSites": [
+                    "https://associate1.test"
                 ],
-                "owner": "https://owner1.test"
+                "ccTLDs": {
+                    "https://associate1.test": [
+                        "https://associate1.co.uk"
+                    ]
+                },
+                "primary": "https://primary1.test",
+                "serviceSites": [
+                    "https://associate1-content.test"
+                ]
             }
         ]
     }

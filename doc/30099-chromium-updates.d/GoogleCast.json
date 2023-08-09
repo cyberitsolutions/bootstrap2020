@@ -1,4 +1,6 @@
 {
     "EnableMediaRouter": true,
-    "ShowCastIconInToolbar": false
+    "MediaRouterCastAllowAllIPs": false,
+    "ShowCastIconInToolbar": false,
+    "ShowCastSessionsStartedByOtherDevices": false
 }

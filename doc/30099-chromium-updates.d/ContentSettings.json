@@ -22,6 +22,7 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
+    "DataUrlInSvgUseEnabled": false,
     "DefaultClipboardSetting": 2,
     "DefaultCookiesSetting": 1,
     "DefaultFileSystemReadGuardSetting": 2,
@@ -36,10 +37,11 @@
     "DefaultPopupsSetting": 1,
     "DefaultSensorsSetting": 2,
     "DefaultSerialGuardSetting": 2,
+    "DefaultThirdPartyStoragePartitioningSetting": 1,
     "DefaultWebBluetoothGuardSetting": 2,
     "DefaultWebHidGuardSetting": 2,
     "DefaultWebUsbGuardSetting": 2,
-    "DefaultWindowPlacementSetting": 2,
+    "DefaultWindowManagementSetting": 2,
     "FileSystemReadAskForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -53,6 +55,10 @@
         "[*.]example.edu"
     ],
     "FileSystemWriteBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "GetDisplayMediaSetSelectAllScreensAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
@@ -105,6 +111,10 @@
     "NotificationsBlockedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
+    ],
+    "PdfLocalFileAccessAllowedForDomains": [
+        "example.com",
+        "google.com"
     ],
     "PopupsAllowedForUrls": [
         "https://www.example.com",
@@ -161,6 +171,10 @@
     ],
     "SerialBlockedForUrls": [
         "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "ThirdPartyStoragePartitioningBlockedForOrigins": [
+        "www.example.com",
         "[*.]example.edu"
     ],
     "WebHidAllowAllDevicesForUrls": [
@@ -224,11 +238,11 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "WindowPlacementAllowedForUrls": [
+    "WindowManagementAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "WindowPlacementBlockedForUrls": [
+    "WindowManagementBlockedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ]

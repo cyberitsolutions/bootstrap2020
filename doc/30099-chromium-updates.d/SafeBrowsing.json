@@ -10,5 +10,6 @@
         "myuniversity.edu"
     ],
     "SafeBrowsingExtendedReportingEnabled": true,
-    "SafeBrowsingProtectionLevel": 2
+    "SafeBrowsingProtectionLevel": 2,
+    "SafeBrowsingProxiedRealTimeChecksAllowed": true
 }
