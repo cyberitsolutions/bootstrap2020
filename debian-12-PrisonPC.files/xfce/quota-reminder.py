@@ -220,5 +220,26 @@ def numfmt(n):
         text=True).strip()
 
 
+# We can't actually detect ZFS, but
+# we can detect when quota fails, and
+# go "OK, that is PROBABLY because of ZFS".
+# quota(1)'s exit status indicates if any users are over quota.
+# quota(1)'s stdout indicates what the user quotas ARE.
+# When rpc.rquotad is working, there will always be a banner on stdout, like
+#     "Disk quotas for user p123 (uid 1234): "
+# When rpc.rquotad is not working (because we disabled it when switching to ZFS),
+# quota(1) will exit nonzero with NO output.
+# Note that when rpc.rquotad is off (or firewalled),
+# this will take a couple of seconds to time out.
+def detect_zfs():
+    proc = subprocess.run(
+        ['quota', '--format=rpc', '--filesystem=/NONEXISTENT'],
+        stdout=subprocess.PIPE)
+    return proc.returncode == 1 and not proc.stdout.strip()
+
+
 if __name__ == '__main__':
-    main()
+    if detect_zfs():
+        zfs_main()
+    else:
+        main()
