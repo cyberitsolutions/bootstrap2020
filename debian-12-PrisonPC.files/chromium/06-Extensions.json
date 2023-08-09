@@ -1,5 +1,6 @@
 // Block all extensions.
 {
+    "ExtensionUnpublishedAvailability": 1,
     "ExtensionInstallAllowlist": [],
     "ExtensionInstallBlocklist": ["*"],
     "ExtensionInstallForcelist": [],
