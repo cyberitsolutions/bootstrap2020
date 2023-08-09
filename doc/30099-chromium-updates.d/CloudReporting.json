@@ -1,10 +1,10 @@
 {
-    "ReportVersionData": false,
-    "ReportPolicyData": false,
-    "ReportMachineIDData": false,
-    "ReportUserIDData": false,
-    "ReportExtensionsAndPluginsData": false,
     "CloudExtensionRequestEnabled": true,
     "CloudReportingEnabled": true,
-    "CloudReportingUploadFrequency": 12
+    "CloudReportingUploadFrequency": 12,
+    "ReportExtensionsAndPluginsData": false,
+    "ReportMachineIDData": false,
+    "ReportPolicyData": false,
+    "ReportUserIDData": false,
+    "ReportVersionData": false
 }

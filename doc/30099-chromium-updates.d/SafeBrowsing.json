@@ -1,14 +1,14 @@
 {
-    "SafeBrowsingExtendedReportingEnabled": true,
-    "SafeBrowsingProtectionLevel": 2,
-    "SafeBrowsingAllowlistDomains": [
-        "mydomain.com",
-        "myuniversity.edu"
-    ],
-    "PasswordProtectionWarningTrigger": 1,
+    "PasswordProtectionChangePasswordURL": "https://mydomain.com/change_password.html",
     "PasswordProtectionLoginURLs": [
         "https://mydomain.com/login.html",
         "https://login.mydomain.com"
     ],
-    "PasswordProtectionChangePasswordURL": "https://mydomain.com/change_password.html"
+    "PasswordProtectionWarningTrigger": 1,
+    "SafeBrowsingAllowlistDomains": [
+        "mydomain.com",
+        "myuniversity.edu"
+    ],
+    "SafeBrowsingExtendedReportingEnabled": true,
+    "SafeBrowsingProtectionLevel": 2
 }
