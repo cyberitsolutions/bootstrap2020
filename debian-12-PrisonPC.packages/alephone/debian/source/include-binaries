@@ -1,0 +1,2 @@
+# This tells dpkg-source this file is EXPECTED to be binary data.
+debian/marathon.png
