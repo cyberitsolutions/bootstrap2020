@@ -154,8 +154,6 @@ def get_quota():
 # Instead each $HOME is a separate datasets entirely, and
 # we can just use df(1).
 # We use statvfs(1) directly rather than post-processing df stdout.
-# This function returns a now-slightly-silly data structure,
-# so that things look the same to the function that calls us.
 #
 # Example:
 #
@@ -240,6 +238,6 @@ def detect_zfs():
 
 if __name__ == '__main__':
     if detect_zfs():
-        zfs_main()
+        main_zfs()
     else:
         main()
