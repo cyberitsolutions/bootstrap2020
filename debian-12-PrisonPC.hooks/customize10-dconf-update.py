@@ -22,6 +22,5 @@ if paths:
     # Sanity checks.  Did each "foo.d" get compiled into a "foo"?
     for path in paths:
         compiled_path = path.parent / path.name[:-len('.d')]  # foo.d → foo
-        print('compiled path is', compiled_path, flush=True)
         if not compiled_path.exists():
             raise RuntimeError('dconf fucked up', path)
