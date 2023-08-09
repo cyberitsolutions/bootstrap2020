@@ -6,6 +6,7 @@ Standards-Version: 4.6.2
 Maintainer: Trent W. Buck <twb@cyber.com.au>
 Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13),
+ autoconf-archive,
  libboost-dev,
  libboost-filesystem-dev,
  libboost-system-dev,
