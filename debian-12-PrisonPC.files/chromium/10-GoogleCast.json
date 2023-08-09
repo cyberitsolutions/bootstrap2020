@@ -8,6 +8,7 @@
 {
     "EnableMediaRouter": false,
     "ShowCastIconInToolbar": false,
+    "ShowCastSessionsStartedByOtherDevices": false,
     // These were in "Miscellaneous" (not "GoogleCast"), but clearly belong here.
     // MediaRouterCastAllowAllIPs has no effect unless EnableMediaRouter=true.
     "MediaRouterCastAllowAllIPs": false,

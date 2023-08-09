@@ -1,7 +1,48 @@
 {
+    // DOES THIS COMPLETELY BREAK OUR MITM CERT?
+    // 14:36 <twb> BuiltinCertificateVerifierEnabled is another "go back to insecure mode for shit vendors" option.  It's essentially saying that chrome nowadays works on windows the way it has always worked on linux -- ignoring certificates trusted by /etc
+    // 14:36 <twb> Oh also
+    // 14:36 <twb>   - chrome.linux:79-83
+    // 14:37 <twb> ...so ignore it, that's ancient stuff
+    // 14:37 <twb> Hasn't been auto-ignored properly by my scripts
+    // 14:39 <twb> ChromeRootStoreEnabled is related and changed in chrome 114
+    // 14:39 <twb> i.e. right before the version we ship
+    // 14:40 <twb> I don't understand how they can remove that when they already don't use it
+    // 14:41 <twb> https://chromeenterprise.google/policies/#ChromeRootStoreEnabled
+    // 14:43 <twb> https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html
+    // 14:44 <twb> I'm not super clear on what all that means, it *might* mean that MITM breaks completely for us in the next 2 years
+    // 14:44 <ron> we need clarity on that
+    // 14:44 <ron> twb: ^
+    // 14:44 <ron> need to have a point of contact for clear confirmation
+    // 14:44 <twb> Let's see if I can just turn it on in 114 and see if MITM breaks
+    // 14:45 <mike> AIUI, no web browser is going to stop the user from being able to add their own certs. Which is the only thing we are leveraging anyway
+    // 14:45 <mike> They might change how, but not break entirely
+    // 14:45 <twb> mike: that makes sense
+    "ChromeRootStoreEnabled": true,
+
     // There is no point Chromium checking if it's the default browser.
     // It should be the only browser installed.
     "DefaultBrowserSettingEnabled": false,
+
+    // If set to Enabled or not set, Google Search Side Panel is allowed on all web pages.
+    "GoogleSearchSidePanelEnabled": false,
+
+    // 16:18 <twb> I think basically turning it on means that our CA cert cannot have "allowed to be a CA cert: false" in its certificate
+    "RSAKeyUsageForLocalAnchorsEnabled": true,
+
+    // not set = disabled, but it does not hurt to be explicit.
+    "ShoppingListEnabled": false,
+    "ShowDisplaySizeScreenEnabled": false,
+    "ShowTouchpadScrollScreenEnabled": false,
+
+    // 15:59 <twb> TIL Chromium's PDF RIP is migrating from https://en.wikipedia.org/wiki/Anti-Grain_Geometry to https://en.wikipedia.org/wiki/Skia_Graphics_Engine
+    // 15:59 <twb> Which I've never heard of but AFAICT they're basically "like Cairo, but not".
+    "PdfUseSkiaRendererEnabled": true,
+
+    // AFAICT this says "let users bypass lockdown policy", but
+    // it's ignored except in dev builds of the browser ("canary").
+    // IMO we can disable this outright, for everyone, and undo that if/when we ever need to.
+    "PolicyTestPageEnabled": false,
 
     // We never worked out if this is better on or off.
     // Not very important.
@@ -55,6 +96,11 @@
     // The sending is almost certainly blocked anyway, so
     // this really just reduces noise in squid logs.
     "MetricsReportingEnabled": false,
+    // "If this policy is set true or not set,
+    // domain reliability diagnostic data reporting will follow the behavior of
+    // MetricsReportingEnabled for Google Chrome or
+    // DeviceMetricsReportingEnabled for Google ChromeOS.
+    "DomainReliabilityAllowed": false,
 
     // Inmates shouldn't be filling in these fields anyway...
     "AutofillAddressEnabled": false,
@@ -152,6 +198,12 @@
     // Don't know, but sounds slightly scary.
     "DefaultSearchProviderContextMenuAccessAllowed": false,
     "LensRegionSearchEnabled": true,
+    // Leaving the policy unset or setting it to Enabled allows users
+    // to view and use the Google Lens button in the search box on the
+    // New Tab page. Setting the policy to Disabled means users will
+    // not see the Google Lens button in the search box on the New Tab
+    // page.
+    "LensDesktopNTPSearchEnabled": false,
 
     // Requires chromium 92+, so not tested yet...
     "InsecurePrivateNetworkRequestsAllowed": false,
@@ -463,7 +515,9 @@
 
     // "Enable google spyware telemetry?" No.
     "UrlKeyedAnonymizedDataCollectionEnabled": false,
+    "UrlKeyedMetricsAllowed": false,
     "WebRtcEventLogCollectionAllowed": false,
+    "WebRtcTextLogCollectionAllowed": false,
 
     // Not interesting; we do not use client certificates.
     // "CoalesceH2ConnectionsWithClientCertificatesForHosts": ["example.com"],
