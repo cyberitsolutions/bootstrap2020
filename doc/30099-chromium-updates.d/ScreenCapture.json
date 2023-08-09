@@ -1,10 +1,10 @@
 {
-    "ScreenCaptureAllowed": false,
-    "ScreenCaptureAllowedByOrigins": [
+    "SameOriginTabCaptureAllowedByOrigins": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "WindowCaptureAllowedByOrigins": [
+    "ScreenCaptureAllowed": false,
+    "ScreenCaptureAllowedByOrigins": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
@@ -12,7 +12,7 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "SameOriginTabCaptureAllowedByOrigins": [
+    "WindowCaptureAllowedByOrigins": [
         "https://www.example.com",
         "[*.]example.edu"
     ]

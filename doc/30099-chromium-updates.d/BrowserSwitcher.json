@@ -1,5 +1,4 @@
 {
-    "AlternativeBrowserPath": "${ie}",
     "AlternativeBrowserParameters": [
         "-foreground",
         "-new-window",
@@ -7,18 +6,19 @@
         "-profile",
         "%HOME%\\browser_profile"
     ],
+    "AlternativeBrowserPath": "${ie}",
     "BrowserSwitcherDelay": 10000,
     "BrowserSwitcherEnabled": true,
-    "BrowserSwitcherExternalSitelistUrl": "http://example.com/sitelist.xml",
     "BrowserSwitcherExternalGreylistUrl": "http://example.com/greylist.xml",
+    "BrowserSwitcherExternalSitelistUrl": "http://example.com/sitelist.xml",
     "BrowserSwitcherKeepLastChromeTab": false,
     "BrowserSwitcherParsingMode": 1,
-    "BrowserSwitcherUrlList": [
+    "BrowserSwitcherUrlGreylist": [
         "ie.com",
         "!open-in-chrome.ie.com",
         "foobar.com/ie-only/"
     ],
-    "BrowserSwitcherUrlGreylist": [
+    "BrowserSwitcherUrlList": [
         "ie.com",
         "!open-in-chrome.ie.com",
         "foobar.com/ie-only/"

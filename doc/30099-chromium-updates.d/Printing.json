@@ -1,32 +1,32 @@
 {
-    "PrintingEnabled": true,
     "CloudPrintProxyEnabled": true,
-    "PrintingAllowedBackgroundGraphicsModes": "enabled",
-    "PrintingBackgroundGraphicsDefault": "enabled",
-    "PrintingPaperSizeDefault": {
-        "name": "custom",
-        "custom_size": {
-            "width": 210000,
-            "height": 297000
-        }
-    },
-    "DisablePrintPreview": false,
-    "PrintHeaderFooter": false,
     "DefaultPrinterSelection": "{ \"kind\": \"cloud\", \"idPattern\": \".*public\", \"namePattern\": \".*Color\" }",
-    "PrintPreviewUseSystemDefaultPrinter": false,
     "DeviceExternalPrintServers": {
-        "url": "https://example.com/printserverpolicy",
-        "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef"
+        "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef",
+        "url": "https://example.com/printserverpolicy"
     },
     "DeviceExternalPrintServersAllowlist": [
         "id1",
         "id2",
         "id3"
     ],
+    "DisablePrintPreview": false,
+    "PrintHeaderFooter": false,
+    "PrintPdfAsImageDefault": true,
+    "PrintPreviewUseSystemDefaultPrinter": false,
+    "PrintRasterizePdfDpi": 300,
     "PrinterTypeDenyList": [
         "local",
         "pdf"
     ],
-    "PrintRasterizePdfDpi": 300,
-    "PrintPdfAsImageDefault": true
+    "PrintingAllowedBackgroundGraphicsModes": "enabled",
+    "PrintingBackgroundGraphicsDefault": "enabled",
+    "PrintingEnabled": true,
+    "PrintingPaperSizeDefault": {
+        "custom_size": {
+            "height": 297000,
+            "width": 210000
+        },
+        "name": "custom"
+    }
 }

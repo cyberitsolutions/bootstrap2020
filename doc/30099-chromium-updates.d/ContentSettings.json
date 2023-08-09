@@ -1,22 +1,7 @@
 {
-    "DefaultClipboardSetting": 2,
-    "DefaultCookiesSetting": 1,
-    "DefaultFileSystemReadGuardSetting": 2,
-    "DefaultFileSystemWriteGuardSetting": 2,
-    "DefaultImagesSetting": 1,
-    "DefaultInsecureContentSetting": 2,
-    "DefaultJavaScriptSetting": 1,
-    "DefaultJavaScriptJitSetting": 1,
-    "DefaultLocalFontsSetting": 2,
-    "DefaultPopupsSetting": 1,
-    "DefaultNotificationsSetting": 2,
-    "DefaultGeolocationSetting": 1,
-    "DefaultSensorsSetting": 2,
-    "DefaultWebBluetoothGuardSetting": 2,
-    "DefaultWebUsbGuardSetting": 2,
-    "DefaultSerialGuardSetting": 2,
-    "DefaultWebHidGuardSetting": 2,
-    "DefaultWindowPlacementSetting": 2,
+    "AutoSelectCertificateForUrls": [
+        "{\"pattern\":\"https://www.example.com\",\"filter\":{\"ISSUER\":{\"CN\":\"certificate issuer name\", \"L\": \"certificate issuer location\", \"O\": \"certificate issuer org\", \"OU\": \"certificate issuer org unit\"}, \"SUBJECT\":{\"CN\":\"certificate subject name\", \"L\": \"certificate subject location\", \"O\": \"certificate subject org\", \"OU\": \"certificate subject org unit\"}}}"
+    ],
     "ClipboardAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -24,9 +9,6 @@
     "ClipboardBlockedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
-    ],
-    "AutoSelectCertificateForUrls": [
-        "{\"pattern\":\"https://www.example.com\",\"filter\":{\"ISSUER\":{\"CN\":\"certificate issuer name\", \"L\": \"certificate issuer location\", \"O\": \"certificate issuer org\", \"OU\": \"certificate issuer org unit\"}, \"SUBJECT\":{\"CN\":\"certificate subject name\", \"L\": \"certificate subject location\", \"O\": \"certificate subject org\", \"OU\": \"certificate subject org unit\"}}}"
     ],
     "CookiesAllowedForUrls": [
         "https://www.example.com",
@@ -40,6 +22,24 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
+    "DefaultClipboardSetting": 2,
+    "DefaultCookiesSetting": 1,
+    "DefaultFileSystemReadGuardSetting": 2,
+    "DefaultFileSystemWriteGuardSetting": 2,
+    "DefaultGeolocationSetting": 1,
+    "DefaultImagesSetting": 1,
+    "DefaultInsecureContentSetting": 2,
+    "DefaultJavaScriptJitSetting": 1,
+    "DefaultJavaScriptSetting": 1,
+    "DefaultLocalFontsSetting": 2,
+    "DefaultNotificationsSetting": 2,
+    "DefaultPopupsSetting": 1,
+    "DefaultSensorsSetting": 2,
+    "DefaultSerialGuardSetting": 2,
+    "DefaultWebBluetoothGuardSetting": 2,
+    "DefaultWebHidGuardSetting": 2,
+    "DefaultWebUsbGuardSetting": 2,
+    "DefaultWindowPlacementSetting": 2,
     "FileSystemReadAskForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -98,21 +98,6 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "PopupsAllowedForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "RegisteredProtocolHandlers": [
-        {
-            "protocol": "mailto",
-            "url": "https://mail.google.com/mail/?extsrc=mailto&url=%s",
-            "default": true
-        }
-    ],
-    "PopupsBlockedForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
     "NotificationsAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -121,40 +106,26 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
+    "PopupsAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "PopupsBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "RegisteredProtocolHandlers": [
+        {
+            "default": true,
+            "protocol": "mailto",
+            "url": "https://mail.google.com/mail/?extsrc=mailto&url=%s"
+        }
+    ],
     "SensorsAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
     "SensorsBlockedForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "WebUsbAllowDevicesForUrls": [
-        {
-            "devices": [
-                {
-                    "vendor_id": 1234,
-                    "product_id": 5678
-                }
-            ],
-            "urls": [
-                "https://google.com"
-            ]
-        }
-    ],
-    "WebUsbAskForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "WebUsbBlockedForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "SerialAskForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "SerialBlockedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
@@ -165,8 +136,8 @@
         {
             "devices": [
                 {
-                    "vendor_id": 1234,
-                    "product_id": 5678
+                    "product_id": 5678,
+                    "vendor_id": 1234
                 }
             ],
             "urls": [
@@ -184,13 +155,13 @@
             ]
         }
     ],
-    "WebHidAskForUrls": [
-        "https://google.com",
-        "https://chromium.org"
+    "SerialAskForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
     ],
-    "WebHidBlockedForUrls": [
-        "https://google.com",
-        "https://chromium.org"
+    "SerialBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
     ],
     "WebHidAllowAllDevicesForUrls": [
         "https://google.com",
@@ -200,8 +171,8 @@
         {
             "devices": [
                 {
-                    "vendor_id": 1234,
-                    "product_id": 5678
+                    "product_id": 5678,
+                    "vendor_id": 1234
                 }
             ],
             "urls": [
@@ -212,17 +183,46 @@
     ],
     "WebHidAllowDevicesWithHidUsagesForUrls": [
         {
-            "usages": [
-                {
-                    "usage_page": 1234,
-                    "usage": 5678
-                }
-            ],
             "urls": [
                 "https://google.com",
                 "https://chromium.org"
+            ],
+            "usages": [
+                {
+                    "usage": 5678,
+                    "usage_page": 1234
+                }
             ]
         }
+    ],
+    "WebHidAskForUrls": [
+        "https://google.com",
+        "https://chromium.org"
+    ],
+    "WebHidBlockedForUrls": [
+        "https://google.com",
+        "https://chromium.org"
+    ],
+    "WebUsbAllowDevicesForUrls": [
+        {
+            "devices": [
+                {
+                    "product_id": 5678,
+                    "vendor_id": 1234
+                }
+            ],
+            "urls": [
+                "https://google.com"
+            ]
+        }
+    ],
+    "WebUsbAskForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "WebUsbBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
     ],
     "WindowPlacementAllowedForUrls": [
         "https://www.example.com",

@@ -1,9 +1,9 @@
 {
-    "NativeMessagingBlocklist": [
+    "NativeMessagingAllowlist": [
         "com.native.messaging.host.name1",
         "com.native.messaging.host.name2"
     ],
-    "NativeMessagingAllowlist": [
+    "NativeMessagingBlocklist": [
         "com.native.messaging.host.name1",
         "com.native.messaging.host.name2"
     ],
