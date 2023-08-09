@@ -193,11 +193,15 @@ def main_zfs():
             notification.show()
         if is_nearly_full and not was_nearly_full:
             # State changed, so display a notification.
+            human_used, human_size = subprocess.check_output(
+                ['numfmt', '--to=iec-i', '--suffix=B',
+                 str(bytes_used), str(bytes_size)],
+                text=True).split()
             notification = gi.repository.Notify.Notification.new(
                 summary='Storage Quota',
                 body=(
-                    f'You have {numfmt(bytes_used)} of files.\n'
-                    f'You may keep {numfmt(bytes_size)} of files.\n'
+                    f'You have {human_used} of files.\n'
+                    f'You may keep {human_size} of files.\n'
                     'You should delete some files.\n'
                     f'Otherwise, you may not be able to create or edit files.\n'
                     'Go to Applications > File Manager to see your files.'),
@@ -211,7 +215,7 @@ def main_zfs():
 def numfmt(n):
     return subprocess.check_output(
         ['numfmt',
-         '--from-unit=Ki',
+         '--from-unit=Ki',      # work around quota(1)'s bullshit
          '--to=iec-i',
          '--suffix=B',
          str(n)],
