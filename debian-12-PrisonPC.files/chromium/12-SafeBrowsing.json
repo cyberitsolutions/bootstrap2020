@@ -11,6 +11,10 @@
     // Disable this feature.
     "SafeBrowsingProtectionLevel": 0,
 
+    // "This policy will be ignored if Safe Browsing is disabled"
+    // Disable it explicitly just in case.
+    "SafeBrowsingProxiedRealTimeChecksAllowed": false,
+
     // Inmate may not opt-in to sending additional telemetry to google-the-advertising-company.
     "SafeBrowsingExtendedReportingEnabled": false
 

@@ -1,0 +1,13 @@
+{
+    // "If you set this policy to Disabled, then the Ad measurement
+    // setting will be turned off for your users."
+    //
+    // "Ad measurement allows sites you visit to request information
+    // from Chromium that helps the site measure the performance of
+    // their ads. Ad measurement restricts cross-site tracking by
+    // transferring as little information as possible between sites."
+    "PrivacySandboxAdMeasurementEnabled": false,
+    "PrivacySandboxAdTopicsEnabled": false,
+    "PrivacySandboxSiteEnabledAdsEnabled": false,
+    "PrivacySandboxPromptEnabled": false
+}
