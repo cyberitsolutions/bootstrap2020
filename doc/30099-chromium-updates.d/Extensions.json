@@ -1,7 +1,12 @@
 {
     "BlockExternalExtensions": true,
+    "ChromeAppsWebViewPermissiveBehaviorAllowed": false,
     "ExtensionAllowedTypes": [
         "hosted_app"
+    ],
+    "ExtensionExtendedBackgroundLifetimeForPortConnectionsToUrls": [
+        "chrome-extension://abcdefghijklmnopabcdefghijklmnop/",
+        "chrome-extension://bcdefghijklmnopabcdefghijklmnopa/"
     ],
     "ExtensionInstallAllowlist": [
         "extension_id1",
@@ -18,6 +23,7 @@
     "ExtensionInstallSources": [
         "https://corp.mycompany.com/*"
     ],
+    "ExtensionManifestV2Availability": 2,
     "ExtensionSettings": {
         "*": {
             "allowed_types": [
@@ -86,5 +92,6 @@
             ],
             "installation_mode": "allowed"
         }
-    }
+    },
+    "ExtensionUnpublishedAvailability": 1
 }

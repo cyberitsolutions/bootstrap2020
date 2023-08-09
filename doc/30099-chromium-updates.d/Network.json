@@ -1,0 +1,4 @@
+{
+    "AccessControlAllowMethodsInCORSPreflightSpecConformant": true,
+    "OutOfProcessSystemDnsResolutionEnabled": false
+}

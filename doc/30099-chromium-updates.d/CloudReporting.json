@@ -2,6 +2,10 @@
     "CloudExtensionRequestEnabled": true,
     "CloudReportingEnabled": true,
     "CloudReportingUploadFrequency": 12,
+    "LegacyTechReportAllowlist": [
+        "example.com",
+        "www.example.edu/path"
+    ],
     "ReportExtensionsAndPluginsData": false,
     "ReportMachineIDData": false,
     "ReportPolicyData": false,

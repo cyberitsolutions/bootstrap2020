@@ -1,0 +1,7 @@
+{
+    "IdleTimeout": 30,
+    "IdleTimeoutActions": [
+        "close_browsers",
+        "show_profile_picker"
+    ]
+}
