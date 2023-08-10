@@ -1,0 +1,10 @@
+The way I generated the URLs was by running the game itself and using its internal downloader,
+while running this in the background:
+
+    root@desktop:~# tshark -f 'port 80' -Y http -T fields -e http.request.full_uri
+
+It emits URLs like
+
+    http://bananas-cdn.openttd.org/ai-library/4752412a/4afad59243616532a64e8da4565a7aa7/4752412a-Graph.AyStar-4.tar.gz
+
+ -- Trent W. Buck <trentbuck@gmail.com>, Thu, 10 Aug 2023 10:08:26 +1000
