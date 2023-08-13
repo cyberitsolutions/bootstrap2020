@@ -332,6 +332,8 @@ with tempfile.TemporaryDirectory() as td:
             '--include=policykit-1',  # https://github.com/openbmc/openbmc/issues/3543
             '--customize-hook=rm $1/etc/hostname',
             '--customize-hook=ln -nsf /run/systemd/resolve/stub-resolv.conf $1/etc/resolv.conf',
+            '--essential-hook=mkdir $1/run/systemd/resolve/ -p',
+            '--essential-hook=cat > $1/run/systemd/resolve/stub-resolv.conf < /etc/resolv.conf',
             '--include=rsyslog-relp msmtp-mta',
             '--include=python3-dbus',  # for get-config-from-dnssd
             '--include=debian-security-support',  # for customize90-check-support-status.py
