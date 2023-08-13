@@ -36,6 +36,8 @@ UPDATE: mmdebstrap --include=libnss-resolve will by default make /etc/resolv.con
         So all we ACTUALLY have to do is make the file in (build-time) /run.
         We do not need to mess with /etc at all.
         (This changed since Debian 11!)
+
+        https://salsa.debian.org/systemd-team/systemd/-/blob/debian/bookworm/debian/systemd-resolved.postinst#L26-34
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
