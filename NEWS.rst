@@ -1,6 +1,21 @@
 This is a summary of user-visible changes over time.
 
 
+======================================================================
+ Changes in SOEs August 2023 (since July 2023)
+======================================================================
+• Debian 12 migration is not finished, so is not described here.
+• By default images now open in the image viewer (not browser).
+• 2D/3D graphics acceleration is enabled in the browser.
+  This is needed for many browser-based video games.
+
+• AMC SOEs now explicitly use Canberra time (not Melbourne time).
+  There is no practical difference, as both are AEST / AEDT.
+
+• User storage quota popups now understand ZFS-style user storage quotas.
+  (All PrisonPC main servers will eventually upgrade to ZFS-based storage.)
+
+
 
 ======================================================================
  Changes in SOEs July 2023 (since May 2023)
