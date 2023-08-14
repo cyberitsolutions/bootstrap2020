@@ -1,11 +1,13 @@
-prisonpc-openttd-extras (12.4) unstable; urgency=medium
+prisonpc-openttd-extras (12.6) bookworm; urgency=medium
 
   * Bump for OpenTTD 13 / Debian 12.
+  * Provide HD Graphics (aBase) by default.
+  * Overhaul the DLC list completely.
   * Use bananas-cdn.openttd.org
     not bananas-1.cdn.openttd.org
     nor bananas-2.cdn.openttd.org.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Thu, 10 Aug 2023 10:09:17 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 14 Aug 2023 11:34:48 +1000
 
 prisonpc-openttd-extras (11.3) bullseye; urgency=medium
 
