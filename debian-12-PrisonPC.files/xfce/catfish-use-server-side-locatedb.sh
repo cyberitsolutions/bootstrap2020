@@ -11,4 +11,16 @@
 #
 # FIXME: bugged in Debian 11?
 #        https://bugs.debian.org/1000429
-export LOCATE_PATH="$HOME/.locatedb"
+export LOCATE_PATH="$HOME/.plocatedb"
+
+# If the PrisonPC main server still has mlocate,
+# it will create ~/.updatedb.
+# If that file exists and is newer than ~/.plocatedb,
+# convert it ourselves.
+# This will happen basically once per day at login time, and
+# will become a noop once the server has plocate.
+# https://git.cyber.com.au/prisonpc/commit/fc04a535000cdd6fe54c679e7299c78370feee7d/
+if [ -f "$HOME/.locatedb" -a ! "$HOME/.plocatedb" -nt "$HOME/.locatedb" ]
+then
+    /sbin/plocate-build "$HOME/.locatedb" "$HOME/.plocatedb" &
+fi
