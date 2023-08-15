@@ -17,11 +17,10 @@ if paths:
     #       In Debian 12, it seems dbus-broker takes care of this?
     #       At any rate, it Works For Me right now...
     subprocess.check_call(
-        ['chronic', 'dconf', 'update', 'etc/dconf/db/'],
+        ['dconf', 'update', 'etc/dconf/db/'],
         cwd=args.chroot_path)
     # Sanity checks.  Did each "foo.d" get compiled into a "foo"?
     for path in paths:
         compiled_path = path.parent / path.name[:-len('.d')]  # foo.d → foo
-        print('compiled path is', compiled_path, flush=True)
         if not compiled_path.exists():
             raise RuntimeError('dconf fucked up', path)
