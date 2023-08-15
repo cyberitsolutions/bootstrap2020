@@ -1,3 +1,10 @@
+# In Debian 12:
+# plocate fails with
+#     "/var/lib/plocate/plocate.db: No such file or directory"
+# unless it exists -- at which point catfish silently and
+# automatically switches to non-cached search methods.
+#
+# In Debian 11 (no longer relevant):
 # Catfish GUI offers to run "sudo updatedb" unless there is a valid mlocate.db with a recent timestamp.
 # Generate an empty(ish) one by running updatedb at boot time on an empty(ish) dir.
 # This just avoids a confusing popup in catfish.
@@ -6,6 +13,6 @@ Documentation=https://bugs.debian.org/1000429
 Description=make a dummy mlocate database
 [Service]
 Type=oneshot
-ExecStart=updatedb --database-root=/dev/shm --output=/var/lib/mlocate/mlocate.db
+ExecStart=updatedb --database-root=/dev/shm --output=/var/lib/plocate/plocate.db
 [Install]
 WantedBy=multi-user.target
