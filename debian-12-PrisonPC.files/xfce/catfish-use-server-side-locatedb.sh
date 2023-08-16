@@ -20,7 +20,7 @@ export LOCATE_PATH="$HOME/.plocatedb"
 # This will happen basically once per day at login time, and
 # will become a noop once the server has plocate.
 # https://git.cyber.com.au/prisonpc/commit/fc04a535000cdd6fe54c679e7299c78370feee7d/
-if [ -f "$HOME/.updatedb" -a ! "$HOME/.plocatedb" -nt "$HOME/.updatedb" ]
+if [ -f "$HOME/.locatedb" -a ! "$HOME/.plocatedb" -nt "$HOME/.locatedb" ]
 then
-    /sbin/plocate-build "$HOME/.updatedb" "$HOME/.plocatedb"
+    /sbin/plocate-build "$HOME/.locatedb" "$HOME/.plocatedb"
 fi
