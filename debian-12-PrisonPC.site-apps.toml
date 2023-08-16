@@ -82,6 +82,8 @@ applications = [
 # https://alloc.cyber.com.au/task/task.php?taskID=31735
 # https://alloc.cyber.com.au/task/task.php?taskID=31736
 # https://alloc.cyber.com.au/task/task.php?taskID=30786
+# Debian 12 AMC apps (NOT counting base desktop, chromium, libreoffice, vlc): 3552 MB download; 6209 MB disk space.
+# Debian 11 AMC apps (NOT counting base desktop, chromium, libreoffice, vlc): 2869 MB download; 5522 MB disk space.
 [desktop-inmate-amc]
 applications = [
 #   UNKNOWN POPULARITY (new or not detected properly)
