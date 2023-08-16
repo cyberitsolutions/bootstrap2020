@@ -22,5 +22,5 @@ export LOCATE_PATH="$HOME/.plocatedb"
 # https://git.cyber.com.au/prisonpc/commit/fc04a535000cdd6fe54c679e7299c78370feee7d/
 if [ -f "$HOME/.locatedb" -a ! "$HOME/.plocatedb" -nt "$HOME/.locatedb" ]
 then
-    /sbin/plocate-build "$HOME/.locatedb" "$HOME/.plocatedb"
+    /sbin/plocate-build "$HOME/.locatedb" "$HOME/.plocatedb" &
 fi
