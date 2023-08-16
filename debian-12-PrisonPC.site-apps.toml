@@ -84,8 +84,6 @@ applications = [
 # https://alloc.cyber.com.au/task/task.php?taskID=30786
 [desktop-inmate-amc]
 applications = [
-    # https://alloc.cyber.com.au/task/task.php?taskID=34172
-    "fonts-opendyslexic",
 #   UNKNOWN POPULARITY (new or not detected properly)
     "gimp", "gimp-help-en",
     "gnome-crosswords", "gnome-crosswords-addons-theguardian",  # Games > Logic > Crosswords
