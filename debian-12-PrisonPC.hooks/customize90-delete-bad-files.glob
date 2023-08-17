@@ -55,8 +55,9 @@ usr/lib/ssl/misc
 /usr/lib/**/qt5/plugins/platforms/libqvnc.so
 # An HTML5 web server / app server.
 # https://developer.gnome.org/gtk3/stable/gtk-broadway.html
+# Also in GTK4 with a different name.
 **/*bin/broadwayd
-/usr/lib/**/gtk-*/**/*broadway*.so
+**/*bin/gtk4-broadwayd
 # Unlocked web browsers (libwebkit2gtk-4.0-37, libwpewebkit-1.0-3).
 # See prisonpc-ersatz for more discussion, near this:
 #   "The webkit2gtk and wpewebkit engines ARE covered by security support."
