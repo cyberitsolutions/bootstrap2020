@@ -260,7 +260,7 @@ usr/lib/ssl/misc
 **/*bin/cpgr
 **/*bin/cppw
 **/*bin/expiry
-**/*bin/gpaswd
+**/*bin/gpasswd
 **/*bin/groupadd
 **/*bin/groupdel
 **/*bin/groupmems
