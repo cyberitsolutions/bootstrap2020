@@ -39,13 +39,13 @@ usr/lib/ssl/misc
 **/*bin/ssh-argv0
 **/*bin/ssh-copy-id
 **/*bin/ssh-keyscan
-/usr/lib/openssh
+**/lib/openssh
 **/*bin/ssh-copy-id
 **/systemd/**/*ssh-agent*
 # From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
 **/*bin/dbclient
 **/*bin/dropbearkey
-usr/lib/dropbear
+**/lib/dropbear
 # From libreoffice (File > Open Remote… > Add Service) — some kind of FTP/SSH/WebDAV/SMB/CMIS client.
 # Removing this makes LibreOffice crash when you try to access that dialogue.
 # Still present as at Debian 11 / LibreOffice 7.3.
@@ -67,7 +67,7 @@ usr/lib/dropbear
 # From systemd.
 # I'm not sure if this can actually fire (e.g. for a USB key).
 # It is not mentioned in bootup(7) manpage.
-/lib/systemd/system-generators/systemd-gpt-auto-generator
+**/systemd/system-generators/systemd-gpt-auto-generator
 # From genisoimage, blame Pete.
 # Lucid-era disc snitching needs isoinfo; exclude the rest.
 # FIXME: even in 2022, this is STILL the way we fingerprint DVDs!
@@ -537,10 +537,10 @@ usr/games/ceferinoeditor
 #         We don't need it to read all of the squashfs every midnight.
 #         That would cause a needless, bursty load on the squashfs server.
 #         In Debian 12 (or 11bpo) plocate replaces mlocate.
-/lib/systemd/system/mlocate.service
-/lib/systemd/system/mlocate.timer
-/lib/systemd/system/plocate-updatedb.service
-/lib/systemd/system/plocate-updatedb.timer
+**/systemd/system/mlocate.service
+**/systemd/system/mlocate.timer
+**/systemd/system/plocate-updatedb.service
+**/systemd/system/plocate-updatedb.timer
 
 
 # libpython3.9-minimal's /etc/python3.9/sitecustomize.py
