@@ -527,7 +527,6 @@ usr/games/ceferinoeditor
 # confirmed this is Not A Problem™.
 # We don't need to mention apt/dpkg as
 # customize80-purge-bad-packages.py handles those.
-/etc/cron.daily/mlocate
 /etc/cron.daily/plocate
 /etc/logrotate.d/bootlog
 /etc/logrotate.d/prayer
@@ -540,8 +539,6 @@ usr/games/ceferinoeditor
 #         We don't need it to read all of the squashfs every midnight.
 #         That would cause a needless, bursty load on the squashfs server.
 #         In Debian 12 (or 11bpo) plocate replaces mlocate.
-**/systemd/system/mlocate.service
-**/systemd/system/mlocate.timer
 **/systemd/system/plocate-updatedb.service
 **/systemd/system/plocate-updatedb.timer
 
