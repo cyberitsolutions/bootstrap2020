@@ -243,12 +243,14 @@ for path in paths:
         ever_matching_globs |= matching_globs
         # NOTE: "chroot_path / path" does the Wrong ThingTM as path is absolute.
         path_outside_chroot = args.chroot_path.joinpath(*path.parts[1:])
-        if is_dir := path_outside_chroot.is_dir():
+        if path_outside_chroot.is_dir():
             shutil.rmtree(path_outside_chroot)
+            was_dir = True
         else:
             path_outside_chroot.unlink()
+            was_dir = False
         logging.info('Removed %s\t‘%s’\t(matches %s)',
-                     'dir' if is_dir else 'file',
+                     'dir' if was_dir else 'file',
                      path,
                      sorted(matching_globs))
 
