@@ -1,28 +1,19 @@
 # -*- conf -*-
 
-# WARNING: **/B matches /B and /usr/B.
-#          A/**/B matches A/usr/B but DOES NOT MATCH A/B!
-#          "**/" matches zero-or-more dirs, but
-#          "/**/" matches one-or-more dirs!
-#          THIS IS DIFFERENT from bash extglob!
-#          If you want to match both A/B and A/X/Y/B, you need to use two globs!
-
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
 # From openssl & ssl-cert.  Not needed after packages are installed.
-**/*bin/c_rehash
-**/*bin/make-ssl-cert
-**/*bin/openssl
-**/openssl.cnf
-**/ssleay.cnf
-usr/lib/ssl/misc
+*bin/c_rehash
+*bin/make-ssl-cert
+*bin/openssl
+*/openssl.cnf
+*/ssleay.cnf
+*/lib/ssl/misc
 # From systemd.  This replaces "cryptsetup" and does LUKS (encrypted disks).
-**/systemd/*crypt*
-**/systemd/**/*crypt*
+*/systemd/*crypt*
 # From systemd.  This is used to prompt for LUKS (et al) decrypt passphrase.
-**/*bin/systemd-*password*
-**/systemd/*password*
-**/systemd/**/*password*
+*bin/systemd-*password*
+*/systemd/*password*
 
 
 ## Inmates MUST NOT have clandestine comms
@@ -31,57 +22,59 @@ usr/lib/ssl/misc
 # openssh-server needs ssh-keygen at boot time; exclude the rest.
 #
 # NOTE: staff need /usr/bin/ssh (for "Browse p123's home directory").
-**/*bin/scp
-**/*bin/sftp
-**/*bin/slogin
-**/*bin/ssh-add
-**/*bin/ssh-agent
-**/*bin/ssh-argv0
-**/*bin/ssh-copy-id
-**/*bin/ssh-keyscan
-**/lib/openssh
-**/*bin/ssh-copy-id
-**/systemd/**/*ssh-agent*
+*bin/scp
+*bin/sftp
+*bin/slogin
+*bin/ssh-add
+*bin/ssh-agent
+*bin/ssh-argv0
+*bin/ssh-copy-id
+*bin/ssh-keyscan
+*bin/ssh-copy-id
+*/lib/openssh
+*/systemd/*/*ssh-agent*
 # From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
-**/*bin/dbclient
-**/*bin/dropbearkey
-**/lib/dropbear
+*bin/dbclient
+*bin/dropbearkey
+*/lib/dropbear
 # From libreoffice (File > Open Remote… > Add Service) — some kind of FTP/SSH/WebDAV/SMB/CMIS client.
 # Removing this makes LibreOffice crash when you try to access that dialogue.
 # Still present as at Debian 11 / LibreOffice 7.3.
 # https://alloc.cyber.com.au/task/task.php?taskID=31791
-**/libreoffice/**/placeedit.ui
+*/libreoffice/*/placeedit.ui
+#/usr/lib/libreoffice/share/config/soffice.cfg/svt/ui/placeedit.ui
 # No idea what this actually does, but it sounds scary.  It's part of core Qt5.
-/usr/lib/**/qt5/plugins/platforms/libqvnc.so
+# UPDATE: also part of Qt6!
+*/libqvnc.so
 # An HTML5 web server / app server.
 # https://developer.gnome.org/gtk3/stable/gtk-broadway.html
 # Also in GTK4 with a different name.
-**/*bin/broadwayd
-**/*bin/gtk4-broadwayd
+*bin/broadwayd
+*bin/gtk4-broadwayd
 # Unlocked web browsers (libwebkit2gtk-4.0-37, libwpewebkit-1.0-3).
 # See prisonpc-ersatz for more discussion, near this:
 #   "The webkit2gtk and wpewebkit engines ARE covered by security support."
-**/MiniBrowser
+*/MiniBrowser
 
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
 # From systemd.
 # I'm not sure if this can actually fire (e.g. for a USB key).
 # It is not mentioned in bootup(7) manpage.
-**/systemd/system-generators/systemd-gpt-auto-generator
+*/systemd/system-generators/systemd-gpt-auto-generator
 # From genisoimage, blame Pete.
 # Lucid-era disc snitching needs isoinfo; exclude the rest.
 # FIXME: even in 2022, this is STILL the way we fingerprint DVDs!
 #        This can go when we switch to libcdio-utils!
 #        https://github.com/cyberitsolutions/bootstrap2020/tree/POC-better-disc-snitch
-**/*bin/devdump
-**/*bin/dirsplit
-**/*bin/genisoimage
-**/*bin/geteltorito
-**/*bin/isodump
-**/*bin/isovfy
-**/*bin/mkisofs
-**/*bin/mkzftree
+*bin/devdump
+*bin/dirsplit
+*bin/genisoimage
+*bin/geteltorito
+*bin/isodump
+*bin/isovfy
+*bin/mkisofs
+*bin/mkzftree
 
 
 ## Inmates MUST NOT have containers (VMs)
@@ -91,18 +84,13 @@ usr/lib/ssl/misc
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
 # From util-linux & systemd.  We only want GUI & SSH logins.
-**/*getty*
-**/*sulogin*
-**/systemd/*autovt*
-**/systemd/**/*autovt*
-**/systemd/*console*
-**/systemd/**/*console*
-**/systemd/*debug*
-**/systemd/**/*debug*
-**/systemd/*emergency*
-**/systemd/**/*emergency*
-**/systemd/*shell*
-**/systemd/**/*shell*
+*getty*
+*sulogin*
+*/systemd/*autovt*
+*/systemd/*console*
+*/systemd/*debug*
+*/systemd/*emergency*
+*/systemd/*shell*
 # <twb> WTF happened here?  Failed to preset unit, file "runlevel1.target": Link has been severed
 # <twb> Ah looks like if I delete rescue.target I have to also delete runlevel1.target now.
 # <mjt0k> deleting targets seems like a.. strange idea
@@ -111,12 +99,10 @@ usr/lib/ssl/misc
 # <twb> It started out deleting /usr/sbin/*getty and then spiralled out of control :-)
 # For now, blow away the runlevel files as well.
 # UPDATE: OK that did not work.
-# **/systemd/*rescue*
-# **/systemd/**/*rescue*
-#**/systemd/runlevel1.target
-#**/systemd/runlevel1.target.wants
-**/systemd/*rescue*.service
-**/systemd/**/*rescue*.service
+# */systemd/*rescue*
+# */systemd/runlevel1.target
+# */systemd/runlevel1.target.wants
+*/systemd/*rescue*.service
 # FIXME Based on "systemd-analyze dot rescue.target | dot -Tsvg | with-temp-file eog"
 #       I think I should instead make rescue.target an alias for shutdown.target, and
 #       delete rescue.service.
@@ -126,28 +112,24 @@ usr/lib/ssl/misc
 # polkit itself is handled here:
 #     https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC/polkit-policy.ini
 #     https://github.com/cyberitsolutions/bootstrap2020/commit/9bb89da308bd82ad6a393c3e9102b30f97caf4ec
-/usr/share/dbus-1/system.d/*kde*auth*.conf
-/usr/lib/**/qt5/plugins/kauth
-/usr/share/kf5/kauth
+*kde*auth*
+*kf5auth*
+*kf6auth*
 # From gimp.
 # NOTE: "pygimp" exists in gimp 2.10, but Debian 11 does not ship it as it is Python 2 / GTK 2.
 #       Probably when GIMP upgrades to GTK4, it will bring back pygimp or an equivalent rewrite.
 #       At that time we will have to care again.
 #       https://sources.debian.org/src/gimp/2.10.30-1/plug-ins/pygimp/
-**/gimp/**/plug-ins/script-fu
-**/gimp/**/plug-ins/py*
-**/gimp/**/plug-ins/**/*.py
-**/gimp/**/plug-ins/*.py
+*/gimp/*/plug-ins/script-fu
+*/gimp/*/plug-ins/py*
+*/gimp/*/plug-ins/*.py
 # From dia.
 # NOTE: Debian 11 does not ship dia's python plugin as it is Python 2 / GTK 2.
 #       https://sources.debian.org/src/dia/0.97.3+git20160930-9/debian/changelog/#L16-L20
 #       https://sources.debian.org/src/dia/0.97.3+git20160930-9/debian/NEWS/
-**/dia/**/*python*plugin*
-**/dia/**python*plugin*
+*/dia/*python*plugin*
 # From scribus.
-**/scribus/plugins/libscriptplugin.so
-# From planner (né Mr Project).  I *think* this lets you add python-backed menu items to planner GUI. —twb, Oct 2018
-**/planner/plugins/libpython-plugin.so
+*/scribus/plugins/libscriptplugin.so
 
 
 ## Inmates SHOULD NOT have a text editor
@@ -163,7 +145,7 @@ usr/lib/ssl/misc
 # From gimp.  Screenshots lead to ersatz child porn.
 # For more discussion see
 # https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-vlc.py
-**/gimp/**/plug-ins/screenshot
+*/gimp/*/plug-ins/screenshot
 # LibreOffice also has a screenshot feature, but
 # AFAICT it can only screenshot libreoffice windows, so
 # we do not care.
@@ -173,10 +155,11 @@ usr/lib/ssl/misc
 # From tiny-initramfs & tiny-initramfs-core.
 # In ./customize80-purge-bad-packages.py we remove initrd stuff.
 # Nerf the unused "stub" initrd it installs.
-**/tiny-initramfs
-**/*bin/*tirfs
 # UPDATE: due to "dpkg-divert /usr/sbin/mktirfs", also remove the diverted version.
-**/*bin/mktirfs.distrib
+*/tiny-initramfs
+*bin/mktirfs
+*bin/mktirfs.distrib
+*bin/update-tirfs
 # The Xsession.options file has "no-allow-xsession", but
 # Xsession will stlil executes ~/.xsessionrc.
 # Remove the snippet that does so.
@@ -200,7 +183,7 @@ usr/lib/ssl/misc
 #       https://sources.debian.org/src/uw-imap/8:2007f%7Edfsg-7/src/mlock/mlock.c/
 #       https://manpages.debian.org/mlock
 # <twb> Fuck it, I'm going to just remove mlock and see if anything breaks.
-**/*bin/mlock
+*bin/mlock
 
 
 ## Inmates SHOULD NOT be able to use VLC for evil
@@ -214,134 +197,138 @@ usr/lib/ssl/misc
 # In practice nobody ever ACTUALLY puts content there after the first test upload.
 # Remove this just because the name sounds scary.
 # It's PROBABLY just wget+tar under the hood.
-**/*bin/kpackagetool5
+*bin/kpackagetool5
 
 
 ## Inmates SHOULD NOT have diagnostic tools
 ## ========================================
 # util-linux provides mkfs.{bfs,cramfs,minix}
-**/*bin/mkfs.*
+*bin/mkfs.*
 # From usermode.
 # We want       Applications > Settings > Password (passwd GUI).
 # We don't want Applications > Settings > About Myself (chfn GUI).
 # We don't want Applications > System > Disk Management (sudo mount GUI).
 # The latter two don't actually WORK anyway, but we might as well remove them.
 # The "userpasswd" program needs "userhelper" privesc backdoor (instead of e.g. sudo).
-**/*bin/consolehelper
-**/*bin/consolehelper-gtk
-**/*bin/userinfo
-**/*bin/usermount
-/usr/share/applications/redhat-userinfo.desktop
-/usr/share/applications/redhat-usermount.desktop
+*bin/consolehelper
+*bin/consolehelper-gtk
+*bin/userinfo
+*bin/usermount
+*/redhat-userinfo.desktop
+*/redhat-usermount.desktop
 # From libc-bin.  FIXME: remove more?
-**/*bin/ldd
-**/*bin/pldd
-**/*bin/catchsegv
+*bin/ldd
+*bin/pldd
+*bin/catchsegv
 # Every Python library using ctypes needs /sbin/ldconfig at runtime.
 # https://docs.python.org/3/library/ctypes.html#finding-shared-libraries
-# **/*bin/ldconfig
-/usr/share/glib-2.0/clean-up-unmanaged-libraries
+# *bin/ldconfig
+# UPDATE: in Debian 10 this was
+#             /usr/share/glib-2.0/clean-up-unmanaged-libraries
+#         in Debian 12 it is
+#             /usr/share/libgcrypt20/clean-up-unmanaged-libraries
+*/clean-up-unmanaged-libraries
 # From util-linux.  FIXME: remove more?
-**/*bin/blkdiscard
-**/*bin/resizepart
-**/*bin/utmpdump
-**/*bin/wdctl
+*bin/blkdiscard
+*bin/resizepart
+*bin/utmpdump
+*bin/wdctl
 # From coreutils.  FIXME: remove more?
-**/*bin/shred
+*bin/shred
 # From passwd.
 # NOTE: These are for NSS "files" tables (/etc/passwd &c). NSS "ldap" tables (libnss-ldapd, usermod) do not need these programs.
 # NOTE: in Debian 9, we kept "usermod".  This is no longer necessary (systemd-logind + systemd-udev "uaccess" now handle that job).
 # NOTE: in Debian 9, we removed some /etc/pam.d/ entries.  Nowadays I'm even scared-er to touch /etc/pam.d, so keep those.  They shouldn't ever be called.
-**/*bin/chage
-**/*bin/chfn
-**/*bin/chgpasswd
-**/*bin/chpasswd
-**/*bin/chsh
-**/*bin/cpgr
-**/*bin/cppw
-**/*bin/expiry
-**/*bin/gpasswd
-**/*bin/groupadd
-**/*bin/groupdel
-**/*bin/groupmems
-**/*bin/groupmod
-**/*bin/grpck
-**/*bin/grpconv
-**/*bin/grpunconv
-**/*bin/newusers
-**/*bin/passwd
-**/*bin/pwck
-**/*bin/pwunconv
-**/*bin/shadowconfig
-**/*bin/useradd
-**/*bin/userdel
-**/*bin/usermod
-**/*bin/vigr
-**/*bin/vipw
+*bin/chage
+*bin/chfn
+*bin/chgpasswd
+*bin/chpasswd
+*bin/chsh
+*bin/cpgr
+*bin/cppw
+*bin/expiry
+*bin/gpasswd
+*bin/groupadd
+*bin/groupdel
+*bin/groupmems
+*bin/groupmod
+*bin/grpck
+*bin/grpconv
+*bin/grpunconv
+*bin/newusers
+*bin/passwd
+*bin/pwck
+*bin/pwunconv
+*bin/shadowconfig
+*bin/useradd
+*bin/userdel
+*bin/usermod
+*bin/vigr
+*bin/vipw
 # From systemd.  FIXME: remove more?
 # NOTE: this is likely to piss me off when debugging!
-**/*bin/loginctl
-**/*bin/systemd-analyze
-**/*bin/systemd-cgls
-**/*bin/systemd-cgtop
-**/*bin/systemd-delta
-**/*bin/systemd-detect-virt
-**/*bin/systemd-path
+*bin/loginctl
+*bin/systemd-analyze
+*bin/systemd-cgls
+*bin/systemd-cgtop
+*bin/systemd-delta
+*bin/systemd-detect-virt
+*bin/systemd-path
 # From perl.
 # Note that "python3 -m ziplib" provide similar functionality, but
 # we cannot strip that without breaking some python apps.
-**/*bin/zipdetails
+*bin/zipdetails
 
 
 ## Inmates SHOULD NOT have development tools
 ## =========================================
 # From EVERYTHING.
 # We cannot easily remove socketserver.py, as logging.warning() needs it.
-**/*.pod
-**/*bin/dh_*
-**/*bin/py3clean
-**/*bin/py3compile
-**/*bin/pydoc3*
-**/*bin/pygettext*
-**/lib/python*/cgitb.py
-**/lib/python*/__pycache__/cgitb.*.pyc
-**/lib/python*/doctest.py
-**/lib/python*/__pycache__/doctest.*.pyc
-**/lib/python*/pdb.py
-**/lib/python*/__pycache__/pdb.*.pyc
-**/lib/python*/http/server.py
-**/lib/python*/http/__pycache__/server.*.pyc
-**/lib/python*/idlelib
-**/lib/python*/lib2to3
-**/lib/python*/test
-**/lib/python*/unittest
-**/lib/python*/venv
-**/lib/python*/wsgiref
-**/lib/python*/xmlrpc/server.py
-**/lib/python*/xmlrpc/__pycache__/server.*.pyc
-**/pkgconfig
-usr/include
-usr/lib/debug
-usr/lib/valgrind
-usr/share/apport
-usr/share/bug
-usr/share/dh-python
-usr/share/gdb
-usr/share/lintian
-usr/src
+*.pod
+*bin/dh_*
+*bin/py3clean
+*bin/py3compile
+*bin/pydoc3*
+*bin/pygettext*
+*/lib/python*/cgitb.py
+*/lib/python*/__pycache__/cgitb.*.pyc
+*/lib/python*/doctest.py
+*/lib/python*/__pycache__/doctest.*.pyc
+*/lib/python*/pdb.py
+*/lib/python*/__pycache__/pdb.*.pyc
+*/lib/python*/http/server.py
+*/lib/python*/http/__pycache__/server.*.pyc
+*/lib/python*/idlelib
+*/lib/python*/lib2to3
+*/lib/python*/test
+*/lib/python*/unittest
+*/lib/python*/venv
+*/lib/python*/wsgiref
+*/lib/python*/xmlrpc/server.py
+*/lib/python*/xmlrpc/__pycache__/server.*.pyc
+*/pkgconfig
+/usr/include
+/usr/lib/debug
+/usr/lib/valgrind
+/usr/share/apport
+/usr/share/bug
+/usr/share/dh-python
+/usr/share/gdb
+/usr/share/lintian
+/usr/src
 # I'm 80% sure only py3compile and py3clean need "debpython", so
 # once packages are installed, debpython can go.
 #
 #    https://codesearch.debian.net/search?q=from.debpython.import
 #    https://codesearch.debian.net/search?q=import.debpython
-usr/share/python3/debpython
+/usr/share/python3/debpython
 # This *is* used by libreoffice, but I'm 70% sure it's only used when gdb debugging...
 # https://codesearch.debian.net/search?q=libstdcxx+filetype%3Apython&literal=0
-usr/share/gcc/python
+/usr/share/gcc/python
 # If you do a dev build with --optimize=speed (save 30s),
 # customize95-obfuscate-python.py warns about this harmless tree.
 # Remove it explicitly here just to avoid that needless warning.
-usr/share/doc/python3-uno/demo
+/usr/share/doc/python3-uno/demo
 
 
 ## Useless & confusing menu items SHOULD be hidden (#30257)
@@ -349,19 +336,19 @@ usr/share/doc/python3-uno/demo
 # From x11vnc.
 # Inmates don't (and can't) run x11vnc.
 # Appears because xfce4-panel only checks if $PATH/x11vnc *exists*, not if it is executable.
-/usr/share/applications/x11vnc.desktop
+*/x11vnc.desktop
 # XFCE provides two Terminal Emulator menu items:
 # 1. Apps>Terminal Emulator runs "exo-open --launch TerminalEmulator" (inmates & staff)
 # 2. Apps>System>Terminal Emulator runs "xfce4-terminal" (only staff)
 # Hide the former, because
 # 1. inmates can't get a terminal emulator (prisonpc-bad-package-conflicts-inmates); and
 # 2. staff can click the latter.
-/usr/share/applications/xfce4-terminal-emulator.desktop
+*/xfce4-terminal-emulator.desktop
 # Some apps have a "server" or "engine" component.
 # Inmates never need to run this part directly.
-/usr/share/applications/org.freeciv.server.desktop
-/usr/share/applications/dsda-doom.desktop
-/usr/share/applications/scummvm.desktop
+*/org.freeciv.server.desktop
+*/dsda-doom.desktop
+*/scummvm.desktop
 # From chromium, contains XBEL bookmarks for https://debian.org/.
 # These appear below the address bar on chrome://newtab tabs.
 # They are not interesting (and blocked by squid in any case).
@@ -370,145 +357,91 @@ usr/share/doc/python3-uno/demo
 # I think these used to show up in the start menu.
 # They don't anymore.  They seem harmless, but
 # keep removing them just in case I had a good reason.
-usr/games/ceferinosetup
-usr/games/ceferinoeditor
+*/ceferinosetup
+*/ceferinoeditor
 
 
 ## Useless & confusing "under the hood" files MAY be removed
 ## =========================================================
 # XFCE settings widgets that are either locked, undesirable, or both.
-/usr/bin/thunar-volman-settings
-/usr/bin/xfce4-display-settings
-/usr/bin/xfce4-mime-settings
-/usr/bin/xfce4-session-settings
-/usr/bin/xfdesktop-settings
-/usr/bin/xfwm4-workspace-settings
-/usr/bin/xfwm4-settings
+*bin/thunar-volman-settings
+*bin/xfce4-display-settings
+*bin/xfce4-mime-settings
+*bin/xfce4-session-settings
+*bin/xfdesktop-settings
+*bin/xfwm4-workspace-settings
+*bin/xfwm4-settings
 # We MUST also delete the .desktop, or the GUI still offers the option, then fails when you click it.
 # Why the .desktop files don't TryExec=, I don't know...
-/usr/share/applications/panel-preferences.desktop
-/usr/share/applications/thunar-volman-settings.desktop
-/usr/share/applications/xfce-backdrop-settings.desktop
-/usr/share/applications/xfce-display-settings.desktop
-/usr/share/applications/xfce-session-settings.desktop
-/usr/share/applications/xfce-workspaces-settings.desktop
-/usr/share/applications/xfce4-mime-settings.desktop
-/usr/share/applications/xfce4-session-settings.desktop
-/usr/share/applications/xfce-wm-settings.desktop
+*/panel-preferences.desktop
+*/thunar-volman-settings.desktop
+*/xfce-backdrop-settings.desktop
+*/xfce-display-settings.desktop
+*/xfce-session-settings.desktop
+*/xfce-workspaces-settings.desktop
+*/xfce4-mime-settings.desktop
+*/xfce4-session-settings.desktop
+*/xfce-wm-settings.desktop
 # A sufficiently smart user MIGHT be able to use this to customize the taskbar (xfce4-panel).
-/usr/share/applications/panel-desktop-handler.desktop
+*/panel-desktop-handler.desktop
 # This one is useful for debugging XFCE lockdown.
-/usr/bin/xfce4-settings-editor
-/usr/share/applications/xfce4-settings-editor.desktop
+*bin/xfce4-settings-editor
+*/xfce4-settings-editor.desktop
 # FIXME: this one isn't locked down yet.
-/usr/bin/xfwm4-tweaks-settings
-/usr/share/applications/xfce-wmtweaks-settings.desktop
+*bin/xfwm4-tweaks-settings
+*/xfce-wmtweaks-settings.desktop
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-uca/
 # Right click > Open Terminal Here
 # User-configurable custom commands (system(3)).
 # Can't actually open a terminal (exo-open --launch TerminalEmulator).
-**/thunar-uca.so*
-**/Thunar/uca.xml
+*/thunar-uca.so*
+*/Thunar/uca.xml
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-apr/README.md/
 # Right click > Properties > Launcher (edit .desktop command) -- slightly bad.
 # Right click > Properties > Image (Image Type and Image Size) -- don't care.
-**/thunar-apr.so*
+*/thunar-apr.so*
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-wallpaper/
 # Useless because locked in xfconf.
-**/thunar-wallpaper-plugin.so*
+*/thunar-wallpaper-plugin.so*
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-sendto-email/
 # Useless because needs zip(1) and we block it.
-**/thunar-sendto-email*
+*/thunar-sendto-email*
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-tpa/README.md/
 # This is a xfce4-panel plugin for trash://.  Harmless.  Not removed.
 # https://sources.debian.org/src/thunar/4.16.8-1/plugins/thunar-sbr/README.md/
 # Applications > Accessories > Bulk Rename
 # Only useful for "power users", so remove.
-**/thunar-sbr.so*
-/usr/share/applications/thunar-bulk-rename.desktop
+*/thunar-sbr.so*
+*/thunar-bulk-rename.desktop
 # https://sources.debian.org/src/thunar/4.16.8-1/debian/
 # These are Debian things we do not want.
 # Harmless as the binaries aren't installed.
-/usr/share/Thunar/sendto/bluetooth-sendto.desktop
-/usr/share/Thunar/sendto/gnome-obex-send.desktop
+*/bluetooth-sendto.desktop
+*/gnome-obex-send.desktop
 # From xfce4-helpers.
 # XFCE has a needless layer of indirection from /usr/share/applications.
 # We cannot easily skip it; it's baked into exo-open.
 # In rare circumstances exo-open may open a popup dialog offering these from a dropdown,
 # even though they are not installed.  This is harmless but confusing; avoid it.
-/usr/share/xfce4/helpers/aterm.desktop
-/usr/share/xfce4/helpers/balsa.desktop
-/usr/share/xfce4/helpers/brave.desktop
-/usr/share/xfce4/helpers/caja.desktop
-#KEEP# /usr/share/xfce4/helpers/chromium.desktop
-/usr/share/xfce4/helpers/debian-sensible-browser.desktop
-/usr/share/xfce4/helpers/debian-x-terminal-emulator.desktop
-/usr/share/xfce4/helpers/dillo.desktop
-/usr/share/xfce4/helpers/encompass.desktop
-/usr/share/xfce4/helpers/epiphany.desktop
-/usr/share/xfce4/helpers/eterm.desktop
-/usr/share/xfce4/helpers/evolution.desktop
-/usr/share/xfce4/helpers/firefox.desktop
-/usr/share/xfce4/helpers/galeon.desktop
-/usr/share/xfce4/helpers/geary.desktop
-/usr/share/xfce4/helpers/gnome-terminal.desktop
-/usr/share/xfce4/helpers/google-chrome.desktop
-/usr/share/xfce4/helpers/icecat.desktop
-/usr/share/xfce4/helpers/icedove.desktop
-/usr/share/xfce4/helpers/iceweasel.desktop
-/usr/share/xfce4/helpers/jumanji.desktop
-/usr/share/xfce4/helpers/kmail.desktop
-/usr/share/xfce4/helpers/konqueror.desktop
-/usr/share/xfce4/helpers/links.desktop
-/usr/share/xfce4/helpers/lynx.desktop
-/usr/share/xfce4/helpers/midori.desktop
-/usr/share/xfce4/helpers/mozilla-browser.desktop
-/usr/share/xfce4/helpers/mozilla-mailer.desktop
-/usr/share/xfce4/helpers/mutt.desktop
-/usr/share/xfce4/helpers/muttng.desktop
-/usr/share/xfce4/helpers/nautilus.desktop
-/usr/share/xfce4/helpers/neomutt.desktop
-/usr/share/xfce4/helpers/netscape-navigator.desktop
-/usr/share/xfce4/helpers/nxterm.desktop
-/usr/share/xfce4/helpers/opera-browser.desktop
-/usr/share/xfce4/helpers/pcmanfm-qt.desktop
-/usr/share/xfce4/helpers/pcmanfm.desktop
-/usr/share/xfce4/helpers/qterminal.desktop
-/usr/share/xfce4/helpers/qtfm.desktop
-/usr/share/xfce4/helpers/qupzilla.desktop
-/usr/share/xfce4/helpers/rodent.desktop
-/usr/share/xfce4/helpers/rox-filer.desktop
-/usr/share/xfce4/helpers/sakura.desktop
-/usr/share/xfce4/helpers/surf.desktop
-/usr/share/xfce4/helpers/sylpheed-claws.desktop
-/usr/share/xfce4/helpers/sylpheed.desktop
-/usr/share/xfce4/helpers/terminator.desktop
-#KEEP# /usr/share/xfce4/helpers/thunar.desktop
-/usr/share/xfce4/helpers/thunderbird.desktop
-/usr/share/xfce4/helpers/urxvt.desktop
-/usr/share/xfce4/helpers/vimprobable2.desktop
-/usr/share/xfce4/helpers/w3m.desktop
-/usr/share/xfce4/helpers/xfce4-terminal.desktop
-/usr/share/xfce4/helpers/xfe.desktop
-/usr/share/xfce4/helpers/xterm.desktop
+*/xfce4/helpers/!(thunar|chromium|com.PrisonPC.*).desktop
 # xfce4-session (see customize20-disable-xinitrc.py).
-/usr/bin/startxfce4
+*bin/startxfce4
 /etc/xdg/xfce4/xinitrc
 # This is hidden (NoDisplay=true and Terminal=true), but
 # sounds scary enough to forcibly remove.
-/usr/share/applications/python*.desktop
-/usr/share/applications/mono-runtime*.desktop
+*/python*.desktop
+*/mono-runtime*.desktop
 # This lets inmates play .midi files directly.
 # It is mostly harmless, but not needed.
 # timidity is pulled in by openttd.
 # If we want them to "do midi" we should give them musescore3.
-/usr/share/applications/timidity.desktop
+*/timidity.desktop
 
 # magnus screen magnifier ships an auto-start file, which
 # means every inmate gets it opened on every login.
 # We also hide the xfce4-session configuration app, so they cannot change it.
 # Change this default by simply removing the autostart script entirely.
-/etc/xdg/autostart/magnus-autostart.desktop
+*/autostart/magnus-autostart.desktop
 
 # Debian LibreOffice config includes an example GenericPrinter which DOES NOT WORK.
 # Remove it so it does not appear in the GUI printer list.
@@ -520,7 +453,7 @@ usr/games/ceferinoeditor
 # I don't know why we other removing it, unless
 # it's just because it's vaguely related to clandestine comms.
 # It's easier to just continue removing it, rather than think about it.
-/usr/lib/**/marble/plugins/AprsPlugin.so
+*/marble/plugins/AprsPlugin.so
 
 # prisonpc-ersatz-logrotate means these will never fire.
 # Remove them to acknowledge that I've eyeballed them and
@@ -539,8 +472,8 @@ usr/games/ceferinoeditor
 #         We don't need it to read all of the squashfs every midnight.
 #         That would cause a needless, bursty load on the squashfs server.
 #         In Debian 12 (or 11bpo) plocate replaces mlocate.
-**/systemd/system/plocate-updatedb.service
-**/systemd/system/plocate-updatedb.timer
+*/plocate-updatedb.service
+*/plocate-updatedb.timer
 
 
 # libpython3.9-minimal's /etc/python3.9/sitecustomize.py
@@ -572,21 +505,20 @@ usr/games/ceferinoeditor
 /usr/share/appdata
 /usr/share/bash-completion
 /usr/share/menu
-/usr/share/upstart
 /usr/share/zsh
 
 # From tar.  Not really interesting.
-**/*bin/tarcat
-**/*bin/rmt-tar
+*bin/tarcat
+*bin/rmt-tar
 /etc/rmt
 # From debianutils.  Not really interesting.
-**/*bin/add-shell
-**/*bin/remove-shell
+*bin/add-shell
+*bin/remove-shell
 # From sensible-utils.  Not really interesting.
 # FIXME: should we spoof sensible-utils away entirely?
-**/*bin/select-editor
-**/*bin/sensible-editor
-**/*bin/sensible-pager
+*bin/select-editor
+*bin/sensible-editor
+*bin/sensible-pager
 
 
 # 14:38 <twb> http://ix.io/4iDH  -- with some -dbgsym installed
@@ -674,7 +606,7 @@ usr/games/ceferinoeditor
 # 15:01 <twb> Not working with just that one change
 # 15:03 <twb> not segfaulting anymore, but also not actually generating thumbnails
 # 15:03 <twb> OK thumbnail file exists but not viewed?
-**/tumbler-gst-thumbnailer.so
+*/tumbler-gst-thumbnailer.so
 
 
 # https://github.com/trentbuck/puzzlepull/
@@ -709,6 +641,6 @@ usr/games/ceferinoeditor
 # 15:04 <twb> in-SOE apps are the "not fiddle-fuck around" kind.
 # 15:04 <ron> twb: fair
 # 15:04 <twb> If The Guardian website is whitelisted they can, in theory, download each day's one as a separate file.
-/usr/share/crosswords/puzzle-sets/gnome-crosswords-addons-theguardian/*-19??.gresource
-/usr/share/crosswords/puzzle-sets/gnome-crosswords-addons-theguardian/*-20[!2]?.gresource
-/usr/share/crosswords/puzzle-sets/gnome-crosswords-addons-theguardian/*-20?[!2].gresource
+*/gnome-crosswords-addons-theguardian/*-19??.gresource
+*/gnome-crosswords-addons-theguardian/*-20[!2]?.gresource
+*/gnome-crosswords-addons-theguardian/*-20?[!2].gresource

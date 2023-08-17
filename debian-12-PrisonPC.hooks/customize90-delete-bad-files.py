@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import argparse
+import ctypes
+import ctypes.util
 import logging
 import os
 import pathlib
@@ -7,7 +9,7 @@ import shutil
 import subprocess
 import sys
 
-__doc__ = """ if we can't remove it, block it
+__doc__ = r""" if we can't remove it, block it
 
 We can't avoid shipping some binaries like gnupg(1), because
 they're genuinely needed at boot time.
@@ -82,7 +84,121 @@ No one single reason, but:
      "skipped $path due to path-exclude $pattern"
 
 
+UPDATE 2023 - Path.match ≠ Path.glob ≠ fnmatch.fnmatch ≠ fnmatch(3)
+=====================================================================
+OK so originally this used bash extglobs, where
+
+    **  matches zero or more bytes (including /)
+    *   matches zero or more bytes (excluding /)
+    @(x|y|z)
+    ?(x|y|z)
+    !(x|y|z)   all work
+
+Then I changed to Path.glob which lost support for the (x|y|z) extglobs, but
+still implemented both ** and *.
+
+But that broke because mmdebstrap still has /proc and /sys and /dev mounted, and
+I want --one-file-system semantics.
+
+So I changed that to use find -xdev, and then fnmatch.fnmatch.
+But fnmatch.fnmatch treats every * as a bash **.
+
+And I really like Path objects, so I changed to Path.match.
+But Path.match treats every * as bash *, i.e.
+if I want to match
+
+     /usr/lib/libreoffice/share/config/soffice.cfg/svt/ui/placeedit.ui
+     /lib/libreoffice/share/config/soffice.cfg/svt/ui/placeedit.ui
+
+I cannot write
+
+     **/lib/libreoffice/**/placeedit.ui
+
+I have to write both of these:
+
+     */lib/libreoffice/*/*/*/*/*/placeedit.ui
+     /lib/libreoffice/*/*/*/*/*/placeedit.ui
+
+So I was bitching about this when grawity pointed out that in glibc fnmatch(3),
+you still don't have BOTH * (any excluding /) and ** (any including /), BUT
+it is configurable (FNM_PATHNAME) and you get extglob semantics back.
+
+That is very useful for occasional case of deleting everything EXCEPT a badlist
+
+    plugins/!(allowA|allowB).so
+
+It also allows you to concisely write
+
+    *bin/(badA|badB|⋯|badZ)
+
+instead of
+
+    *bin/badA
+    *bin/badB
+    ⋮
+    *bin/badZ
+
+But then if upstream renames "badB" to "badderB",
+you will not get a warning because the pattern still matches "badA".
+So I ended up NOT going back to the *bin/@(⋯) style we had back in the original bash version.
+
+I also noticed that using glibc fnmatch for this is 60% to 300% faster!
+Apparently the cost of marshalling the Python strings into C is much cheaper
+than letting python implement fnmatch in terms of python regexps?
+
+(Note that this is also one reason we're happy to let find(1) walk the tree –
+as well as supporting -xdev, it is MUCH faster than python iterdir() or os.walk.)
+
+PS: one gotcha that still exists:
+
+    /usr/src     path
+    /usr/src     this pattern WILL match
+    usr/src      this pattern WON'T match
+    usr/src/     this pattern WON'T match
+
+This whole thing is really just irritating and confusing.
+The only reason I haven't thrown the whole thing away and
+gone to re.fullmatch is because . is special in regexps, and
+it's annoying to write things like ".*bin/libfoo-.*\.py" over and over.
+
+Maybe if more languages had SREs by now I'd be writing it like this:
+
+    ELISP> (rx string-start (or "/bin/" "/usr/bin/" "/sbin/" "/usr/sbin/") "libfoo-" (one-or-more any) ".py" string-end)
+    "\\`\\(?:/\\(?:\\(?:s\\|usr/s?\\)?bin/\\)\\)libfoo-.+\\.py\\'"
+
+At which point I could even have shorthand in the file, like
+
+    ELISP> (setq binary-prefix (rx "/" (or "bin" "usr/bin" "sbin" "usr/sbin") "/"))   ; once, in the setup script
+    "/\\(?:\\(?:s\\|usr/s?\\)?bin\\)/"
+
+    ELISP> (rx (regexp binary-prefix) "libfoo-" (one-or-more any) ".py")              ; each rule -- clearer and consistenter
+    "\\(?:/\\(?:\\(?:s\\|usr/s?\\)?bin\\)/\\)libfoo-.+\\.py"
+
+
 """
+
+
+# NOTE: if we do not use b'' and do not declare argtypes, we can feed u'' into fnmatch, BUT
+#       it assumes fnmatch(3) accepts wchar* -- which it DOES NOT.
+_fnmatch = ctypes.CDLL(ctypes.util.find_library('c')).fnmatch
+_fnmatch.argtypes = ctypes.c_char_p, ctypes.c_char_p, ctypes.c_int
+
+
+def glibc_fnmatch(path: pathlib.Path, pattern: str) -> bool:
+    # FNM_PATHNAME = 1 << 0
+    FNM_EXTMATCH = 1 << 5
+    return 0 == _fnmatch(
+        # FIXME: bytes(Path(b'')) works
+        #        bytes(Path(u'')) works
+        #        bytes(b'') works
+        #        bytes(u'') fails
+        #        bytes(u'', encoding='UTF-8') works
+        #        bytes(b'', encoding='UTF-8') fails
+        #        So this bullshit is making assumptions about the input datatypes.
+        bytes(pattern, encoding='UTF-8'),
+        bytes(path),
+        # FNM_PATHNAME |
+        FNM_EXTMATCH)
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -103,41 +219,42 @@ logging.basicConfig(
 if args.chroot_path.resolve() == '/':
     raise RuntimeError('Refusing to trash your rootfs!')
 
-with args.shitlist_path.open() as f:
-    shitlist = [
-        line.strip()
-        for line in f
-        if line.strip()
-        if not line.startswith('#')]
-
 # Walk the filesystem exactly once, with -xdev.
 # Then, use python globbing to decide what to remove.
-find_stdout = subprocess.check_output(
+shitlist = frozenset({
+    line
+    for line in args.shitlist_path.read_text().splitlines()
+    if line
+    if not line.startswith('#')})
+stdout = subprocess.check_output(
     ['chroot', args.chroot_path,
      'find', '/', '-xdev', '-depth',
      '-print0'],
     text=True)
 paths = [
     pathlib.Path(path)
-    for path in find_stdout.strip('\0').split('\0')]
+    for path in stdout.strip('\0').split('\0')]
+ever_matching_globs = set()
 for path in paths:
-    path = pathlib.Path(path)
-    matching_globs = [
-        glob for glob in shitlist
-        if path.match(glob)]
-    if matching_globs:
-        logging.info('Removing ‘%s’\t(matches %s)', path, matching_globs)
+    if matching_globs := frozenset({
+            glob
+            for glob in shitlist
+            if glibc_fnmatch(path, glob)}):
+        ever_matching_globs |= matching_globs
         # NOTE: "chroot_path / path" does the Wrong ThingTM as path is absolute.
         path_outside_chroot = args.chroot_path.joinpath(*path.parts[1:])
-        if path_outside_chroot.is_dir():
+        if is_dir := path_outside_chroot.is_dir():
             shutil.rmtree(path_outside_chroot)
         else:
             path_outside_chroot.unlink()
+        logging.info('Removed %s\t‘%s’\t(matches %s)',
+                     'dir' if is_dir else 'file',
+                     path,
+                     sorted(matching_globs))
 
 # It is entirely expected that some patterns will not match
 # (e.g. "remove dbclient" only triggers when dropbear is installed).
 # So this is not a halt-and-catch-fire error, but
 # it might be worth logging for the occasional sanity-check.
-for glob in shitlist:
-    if not any(path.match(glob) for path in paths):
-        logging.warning('Pattern ‘%s’ matched no files.', glob)
+for glob in sorted(shitlist - ever_matching_globs):
+    logging.warning('Pattern ‘%s’ matched no files.', glob)
