@@ -189,7 +189,9 @@ usr/lib/ssl/misc
 # It is not needed on systems that use devtmpfs and systemd-udev.
 # https://sources.debian.org/src/systemd/250.2-1/debian/changelog/#L6410-L6411
 # https://sources.debian.org/src/glibc/2.33-2/debian/debhelper.in/libc-bin.lintian-overrides/#L6-L9
-usr/lib/pt_chown
+# It was removed entirely from Debian's GNU/Linux architectures sometime before Debian 10, I think.
+# https://sources.debian.org/src/glibc/2.38-1/INSTALL/#L213-L218
+#usr/lib/pt_chown
 # From mlock (via prayer).
 # <twb> I have an IMAP client using libc-client2007e (from uw-imap) to talk to dovecot.
 #       libc-client2007e claims it needs a sgid mail binary ON THE CLIENT to lock mailboxes.
