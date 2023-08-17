@@ -249,7 +249,7 @@ for path in paths:
         else:
             path_outside_chroot.unlink()
             was_dir = False
-        logging.info('Removed %s ‘%s’\t(matches %s)',
+        logging.info('Removed %s\t‘%s’\t(matches %s)',
                      'dir' if was_dir else 'file',
                      path,
                      sorted(matching_globs))
