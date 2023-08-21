@@ -56,7 +56,7 @@ import tvserver
 # Therefore, simply discard that output completely (StandardOutput=null).
 
 with tvserver.cursor() as cur:
-    with open('/run/systemd/system/tvserver.target', 'w') as fh_target:  # FIXME: reindent
+    with open('/run/systemd/system/tvserver.target', 'w') as fh_target:
         print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
 
         # TV tuners
@@ -90,23 +90,23 @@ with tvserver.cursor() as cur:
                     sep='\n',
                     file=fh)
 
-    # Local Channels
-    for row in tvserver.get_local_channels(cur):
-        print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
-        # If NOBODY has watched a TV channel for a while,
-        # the FIRST person to start watching has to wait ~20s for... something.
-        # Other consumers only have to wait ~2s.
-        # So: the tvserver always watches itself. (#25414)
-        #
-        # We know (via djk) that multicat on the tvserver fixes things.
-        # Therefore it's *not* IGMP snooping on the switches.
-        # We have no idea what it is.
-        # --twb, Jun 2015
-        print(f'Wants=tvserver-multicat@{row.address.ip}.service', file=fh_target)
+        # Local Channels
+        for row in tvserver.get_local_channels(cur):
+            print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
+            # If NOBODY has watched a TV channel for a while,
+            # the FIRST person to start watching has to wait ~20s for... something.
+            # Other consumers only have to wait ~2s.
+            # So: the tvserver always watches itself. (#25414)
+            #
+            # We know (via djk) that multicat on the tvserver fixes things.
+            # Therefore it's *not* IGMP snooping on the switches.
+            # We have no idea what it is.
+            # --twb, Jun 2015
+            print(f'Wants=tvserver-multicat@{row.address.ip}.service', file=fh_target)
 
-    for row in tvserver.get_sids(cur):
-        print(f'Wants=tvserver-multicat@{row.multicast_address.ip}.service',
-              file=fh_target)
+        for row in tvserver.get_sids(cur):
+            print(f'Wants=tvserver-multicat@{row.multicast_address.ip}.service',
+                  file=fh_target)
 
 
 # tell init about the processes it needs to manage
