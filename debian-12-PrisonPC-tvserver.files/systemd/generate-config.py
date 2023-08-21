@@ -55,58 +55,58 @@ import tvserver
 # systemd won't let us output only to console (as Wheezy was doing).
 # Therefore, simply discard that output completely (StandardOutput=null).
 
-with tvserver.cursor() as cur:
-    with open('/run/systemd/system/tvserver.target', 'w') as fh_target:
-        print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
+with (tvserver.cursor() as cur,
+      open('/run/systemd/system/tvserver.target', 'w') as fh_target):
+    print('[Unit]', file=fh_target)  # the Wants= below *MUST* be in this section.
 
-        # TV tuners
-        for row in tvserver.get_cards(cur):
-            # FIXME: make units use RuntimeDirectory=dvblast-%I and then store the .sock and .conf under that.
-            #        In that way, they will automatially be reaped when the unit ends.
-            dvblast_conf_path = pathlib.Path(f'/run/dvblast-{row.card}.conf')
-            dvblast_sock_path = dvblast_conf_path.with_suffix('.sock')
-            print(f'Wants=tvserver-epg-scan@{row.card}.timer', file=fh_target)
-            print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
-            # FIXME: until update-config runs, dvblast will tune the tuner, but not broadcast anything.
-            #        The equivalent of update-config should run here.
-            dvblast_conf_path.write_text('')  # create an empty config file
-            with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
-                print(
-                    # This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
-                    # The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
-                    # --twb, Jan 2016 (#30682)
-                    #   '[Unit]', 'After=sys-subsystem-dvb-adapter%d-frontend0.device' % card,
-                    '[Service]',
-                    'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
-                    'StandardOutput=null',  # see FIXME above.
-                    'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
-                    f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
-                    # NOTE: in theory "--network-name" works, but in practice we seem to need "-M".
-                    (f'ExecStart=dvblast'
-                     f' --adapter {row.card} --frequency {row.frequency}'
-                     f' --bandwidth 7 --dvb-compliance --epg-passthrough'
-                     f' --network-name "{row.name}" --config-file {dvblast_conf_path}'
-                     f' --remote-socket {dvblast_sock_path}'),
-                    sep='\n',
-                    file=fh)
+    # TV tuners
+    for row in tvserver.get_cards(cur):
+        # FIXME: make units use RuntimeDirectory=dvblast-%I and then store the .sock and .conf under that.
+        #        In that way, they will automatially be reaped when the unit ends.
+        dvblast_conf_path = pathlib.Path(f'/run/dvblast-{row.card}.conf')
+        dvblast_sock_path = dvblast_conf_path.with_suffix('.sock')
+        print(f'Wants=tvserver-epg-scan@{row.card}.timer', file=fh_target)
+        print(f'Wants=tvserver-dvblast{row.card}.service', file=fh_target)
+        # FIXME: until update-config runs, dvblast will tune the tuner, but not broadcast anything.
+        #        The equivalent of update-config should run here.
+        dvblast_conf_path.write_text('')  # create an empty config file
+        with open(f'/run/systemd/system/tvserver-dvblast{row.card}.service', 'w') as fh:
+            print(
+                # This DOES NOT WORK; if the device doesn't exist yet, the unit doesn't exist, so After= is silently ignored.
+                # The only workable alternative appears to be the SYSTEMD{WANTS} approach described in the FIXME above.
+                # --twb, Jan 2016 (#30682)
+                #   '[Unit]', 'After=sys-subsystem-dvb-adapter%d-frontend0.device' % card,
+                '[Service]',
+                'Restart=always', 'RestartSec=30s', 'StartLimitBurst=0',
+                'StandardOutput=null',  # see FIXME above.
+                'ExecStartPre=sleep 1',  # FIXME: this was in dvblast-wrapper; it's PROBABLY not needed!
+                f'ExecStartPre=rm -fv /run/dvblast-{row.card}.sock',
+                # NOTE: in theory "--network-name" works, but in practice we seem to need "-M".
+                (f'ExecStart=dvblast'
+                 f' --adapter {row.card} --frequency {row.frequency}'
+                 f' --bandwidth 7 --dvb-compliance --epg-passthrough'
+                 f' --network-name "{row.name}" --config-file {dvblast_conf_path}'
+                 f' --remote-socket {dvblast_sock_path}'),
+                sep='\n',
+                file=fh)
 
-        # Local Channels
-        for row in tvserver.get_local_channels(cur):
-            print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
-            # If NOBODY has watched a TV channel for a while,
-            # the FIRST person to start watching has to wait ~20s for... something.
-            # Other consumers only have to wait ~2s.
-            # So: the tvserver always watches itself. (#25414)
-            #
-            # We know (via djk) that multicat on the tvserver fixes things.
-            # Therefore it's *not* IGMP snooping on the switches.
-            # We have no idea what it is.
-            # --twb, Jun 2015
-            print(f'Wants=tvserver-multicat@{row.address.ip}.service', file=fh_target)
+    # Local Channels
+    for row in tvserver.get_local_channels(cur):
+        print(f'Wants=tvserver-local-channel@{row.address.ip}.service', file=fh_target)
+        # If NOBODY has watched a TV channel for a while,
+        # the FIRST person to start watching has to wait ~20s for... something.
+        # Other consumers only have to wait ~2s.
+        # So: the tvserver always watches itself. (#25414)
+        #
+        # We know (via djk) that multicat on the tvserver fixes things.
+        # Therefore it's *not* IGMP snooping on the switches.
+        # We have no idea what it is.
+        # --twb, Jun 2015
+        print(f'Wants=tvserver-multicat@{row.address.ip}.service', file=fh_target)
 
-        for row in tvserver.get_sids(cur):
-            print(f'Wants=tvserver-multicat@{row.multicast_address.ip}.service',
-                  file=fh_target)
+    for row in tvserver.get_sids(cur):
+        print(f'Wants=tvserver-multicat@{row.multicast_address.ip}.service',
+              file=fh_target)
 
 
 # tell init about the processes it needs to manage
