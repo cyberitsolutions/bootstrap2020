@@ -77,3 +77,57 @@
   "Noto Sans" should all just show up as a single combined "Noto
   Sans", and when you write a Tamil-to-Telugu dictionary in
   LibreOffice, it should all Just Work.
+
+* Debian 12 update (August 2023)
+
+Looking at the packages (games) AMC ask for,
+I see these are not handled by this "no, fuck off" package:
+
++-----------------------+----------------------+--------------------------------------+
+|Unwanted font          |Blame                 |Comment                               |
++=======================+======================+======================================+
+|fonts-dejavu           |lincity-ng-data       |discussed above                       |
+|                       |qonk                  |                                      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-dejavu-core      |blobwars-data         |discussed above                       |
+|                       |crawl-tiles           |                                      |
+|                       |enigma-data           |                                      |
+|                       |fonts-dejavu          |                                      |
+|                       |fonts-dejavu-extra    |                                      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-dejavu-extra     |alephone enigma-data  |discussed above                       |
+|                       |fonts-dejavu          |                                      |
+|                       |wesnoth-1.16-data     |                                      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-cantarell        |plymouth-themes       |discussed above                       |
+|                       |supertuxkart-data     |                                      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-roboto-unhinted  |supertux-data         |discussed above                       |
++-----------------------+----------------------+--------------------------------------+
+|fonts-urw-base35       |libgs10-common        |discussed above                       |
++-----------------------+----------------------+--------------------------------------+
+|fonts-arphic-bkai00mp  |xmoto-data            |shitty font for Chinese; prefer Noto? |
++-----------------------+----------------------+--------------------------------------+
+|fonts-wqy-microhei     |warmux-data           |shitty font for Chinese; prefer Noto? |
++-----------------------+----------------------+--------------------------------------+
+|fonts-kacst-one        |pysiogame             |shitty font for Arabic; prefer Noto?  |
++-----------------------+----------------------+--------------------------------------+
+|fonts-nanum            |supertux-data         |shitty font for Korean; prefer Noto?  |
++-----------------------+----------------------+--------------------------------------+
+|fonts-takao-gothic     |starfighter           |shitty font for Japanese; prefer Noto?|
++-----------------------+----------------------+--------------------------------------+
+|fonts-vlgothic         |warmux-data           |shitty font for Japanese; prefer Noto?|
++-----------------------+----------------------+--------------------------------------+
+|fonts-noto-ui-core     |supertuxkart-data     |completely stupid except for Burmese  |
+|                       |                      |and Sinhalese, but hard to nerf!      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-opensymbol       |libreoffice-core      |don't care                            |
+|                       |libreoffice-math      |                                      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-sil-gentium-basic|frozen-bubble (via    |ugh                                   |
+|                       |libsdl-perl)          |                                      |
++-----------------------+----------------------+--------------------------------------+
+|fonts-terminus         |cataclysm-dda-data    |ugh                                   |
++-----------------------+----------------------+--------------------------------------+
+|fonts-unifont          |cataclysm-dda-data    |ugh                                   |
++-----------------------+----------------------+--------------------------------------+
