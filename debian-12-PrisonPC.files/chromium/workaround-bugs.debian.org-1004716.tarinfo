@@ -1,2 +1,8 @@
+# https://bugs.debian.org/1004716
+# This issue still happens in Debian 12 / Chromium 116.
+# This is only needed for
+#     ~/.local/share/desktop-directories/chrome-apps.directory:Icon=chromium-browser
+# As we never ended up using chrome://apps, this does not happen by default.
+# The user can still opt-in to this (More Tools > Create shortcut).
 name = "usr/share/pixmaps/chromium-browser.png"
 linkpath = "chromium.png"

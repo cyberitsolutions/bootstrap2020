@@ -120,6 +120,7 @@
 #       Probably when GIMP upgrades to GTK4, it will bring back pygimp or an equivalent rewrite.
 #       At that time we will have to care again.
 #       https://sources.debian.org/src/gimp/2.10.30-1/plug-ins/pygimp/
+#       UPDATE: as at Debian 12, still not present.
 */gimp/*/plug-ins/script-fu
 */gimp/*/plug-ins/py*
 */gimp/*/plug-ins/*.py
@@ -145,6 +146,7 @@
 # From gimp.  Screenshots lead to ersatz child porn.
 # For more discussion see
 # https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-vlc.py
+# UPDATE: as at Debian 12, this file still exists & should still be removed.
 */gimp/*/plug-ins/screenshot
 # LibreOffice also has a screenshot feature, but
 # AFAICT it can only screenshot libreoffice windows, so
@@ -298,6 +300,7 @@
 */lib/python*/__pycache__/pdb.*.pyc
 */lib/python*/http/server.py
 */lib/python*/http/__pycache__/server.*.pyc
+# NOTE: IDLE (IDE / text editor) is mostly blocked at the package level (idle3 -> idle -> idle-python3.11 &c)
 */lib/python*/idlelib
 */lib/python*/lib2to3
 */lib/python*/test
