@@ -1,11 +1,7 @@
 #!/usr/bin/python3
 import argparse
-import html.parser
-import json
 import pathlib
 import urllib.request
-import time
-
 
 __doc__ = """ copy https://PrisonPC/ManagedBookmarks to chromium policy
 
