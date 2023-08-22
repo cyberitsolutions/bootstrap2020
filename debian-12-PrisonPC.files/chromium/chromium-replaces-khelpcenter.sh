@@ -5,4 +5,6 @@
 # says to run some other binary!
 #
 # So, sigh, make sure that binary exists.
+#
+# UPDATE: This is still needed as at Debian 12 / KDE 5.103. --twb, August 2023
 exec bootstrap2020-chromium-replaces-yelp "$@"

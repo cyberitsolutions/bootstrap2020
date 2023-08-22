@@ -21,6 +21,7 @@
 # Workaround https://bugs.debian.org/997852
 # If openssh-server is used, don't
 # enable BOTH up-front .service and on-demand .socket.
+# UPDATE: as at Debian 12, this is still needed.
 disable ssh.socket
 
 
