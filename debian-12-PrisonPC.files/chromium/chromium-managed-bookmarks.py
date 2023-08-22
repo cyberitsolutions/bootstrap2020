@@ -1,71 +1,33 @@
 #!/usr/bin/python3
 import argparse
-import html.parser
-import json
 import pathlib
 import urllib.request
-import time
 
-
-__doc__ = """ copy https://prisonpc/Bookmarks to chromium policy
+__doc__ = """ copy https://PrisonPC/ManagedBookmarks to chromium policy
 
 Includes per-user bookmarks, so
 MUST run after session-snitch.py hits
 https://ppc-services/login/<USER>.
 
+Example of the content served by that URL:
+
+    {'ManagedBookmarks': [{'toplevel_name': 'PrisonPC Bookmarks'},
+                          {'name': 'Mail', 'url': 'http://webmail'},
+                          {'name': 'Watch TV', 'url': 'https://PrisonPC/TV/'},
+                          {'name': 'Lodge Complaint',
+                           'url': 'https://PrisonPC/Complain'},
+                          {'name': 'Wikipedia Read-Only',
+                           'url': 'https://es.wikipedia.org/'},
+                          {'name': 'XKCD', 'url': 'https://xkcd.com'}]}
+
 """
 
 parser = argparse.ArgumentParser()
-parser.set_defaults(json_path=pathlib.Path(
-    '/etc/chromium/policies/managed/50-PrisonPC-Managed-Bookmarks.json'))
 args = parser.parse_args()
 
-try:
-    # As at PrisonPC 20.09, this is not implemented yet.
-    # This IS implemented in Debian 11 PrisonPC, though.
-    args.json_path.write_bytes(
-        urllib.request.urlopen('https://prisonpc/ManagedBookmarks').read())
-except urllib.error.HTTPError:
-    # FIXME: remove after January 2023!
-    # Even though we wait until session-snitch has successfully got an "OK" from /login,
-    # pete only "remembers" login state from /check, not /login.
-    # So we must wait until after the first /check, which happens 10s later.
-    # FIXME: remove after January 2023!
-    time.sleep(15)    # must be at least 10s
-
-    # Backwards compatibility with PrisonPC 20.09.
-    # Slurp <a href=X>Y</a> into a list of tuples.
-    # Then spit it out to a file in chromium format.
-    class MyHTMLParser(html.parser.HTMLParser):
-        def __init__(self, *_args, **_kwargs):
-            self.links = []
-            super().__init__(*_args, **_kwargs)
-
-        def handle_starttag(self, tag, attrs):
-            attrs = {k: v for k, v in attrs}
-            if tag == 'a' and 'href' in attrs:
-                self.last_url = attrs['href']
-
-        def handle_data(self, data):
-            self.last_name = data
-
-        def handle_endtag(self, tag):
-            if tag == 'a':
-                self.links.append((self.last_url, self.last_name))
-
-        def close(self, *_args, **_kwargs):
-            args.json_path.write_text(
-                json.dumps(
-                    {'ManagedBookmarks': [
-                        {'toplevel_name': 'PrisonPC Bookmarks'},
-                        {'url': 'http://webmail', 'name': 'Mail'},
-                        {'url': 'https://PrisonPC/TV/', 'name': 'Watch TV'},
-                        {'url': 'https://PrisonPC/Complain', 'name': 'Lodge Complaint'},
-                        *({'url': u, 'name': n}
-                          for u, n in self.links)]}))
-            super().close(*_args, **_kwargs)
-
-    with urllib.request.urlopen('https://prisonpc/Bookmarks') as f:
-        p = MyHTMLParser()
-        p.feed(f.read().decode())
-        p.close()
+# Requires PrisonPC 22.09+ (Debian 11 PrisonPC main server).
+# Not supported in PrisonPC 20.09 (Debian 9 PrisonPC main server).
+# https://git.cyber.com.au/prisonpc/blob/22.09.1/eric/squid.py#L-24
+# https://git.cyber.com.au/prisonpc/commit/99bc94f741390dfa67b0f71dad12cef429d23fa6/
+pathlib.Path('/etc/chromium/policies/managed/50-PrisonPC-Managed-Bookmarks.json').write_bytes(
+    urllib.request.urlopen('https://PrisonPC/ManagedBookmarks').read())
