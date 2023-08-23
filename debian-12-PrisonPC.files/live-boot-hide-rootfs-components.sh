@@ -37,10 +37,18 @@
 #
 #         Since the last one could happen several times, just use a loop.
 
+# UPDATE 2023:
+#
+#   In Debian 12 due to usrmerge,
+#   /root/lib/live/mount silently becomes
+#   /root/usr/lib/live/mount.
+#
+#   Check for both cases because it does not hurt to do so.
+
 Fstab() {
     i=0
     cut -d' ' -f5 /proc/self/mountinfo |
-    grep -Fw -e /run/live -e /root/lib/live/mount |
+    grep -Fw -e /run/live -e /root/lib/live/mount -e /root/usr/lib/live/mount |
     while read -r oldpath
     do
        i=$((i+1))

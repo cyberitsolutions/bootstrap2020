@@ -27,6 +27,32 @@
 #     NOTE: live-boot-hide-rootfs-components.sh now nerfs this better, but
 #           nerf here as well in case of regressions.
 #
+#     UPDATE 2023:
+#
+#       After usrmerge, this messed me up (/usr/lib/live/mount was inmate-readable).
+#       The actual problem was in live-boot-hide-rootfs-components.sh, but
+#       I messed around with this as well, and I kept it.
+#
+#       Also, without these fstab entries (but with hide-rootfs-components.sh), I see this:
+#
+#       root@desktop-inmate:~# find /run/live /usr/lib/live /lib/live -ls
+#             148      0 drwxr-xr-x   5 root     root          100 Aug 23 22:51 /run/live
+#             440      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /run/live/overlay
+#             382      0 drwxr-xr-x   3 root     root           60 Aug 23 22:51 /run/live/rootfs
+#             438      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /run/live/rootfs/filesystem.squashfs
+#             149      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /run/live/medium
+#             114      0 drwxr-xr-x   1 root     root           60 Aug 23 22:51 /usr/lib/live
+#             446      0 drwxr-xr-x   3 root     root           51 Aug 23 22:47 /usr/lib/live/boot
+#            2518      2 -r--------   1 root     root         2035 Jan  1  1970 /usr/lib/live/boot/9991-fstab-is-my-backdoor.sh
+#             154      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /usr/lib/live/mount
+#             114      0 drwxr-xr-x   1 root     root           60 Aug 23 22:51 /lib/live
+#             446      0 drwxr-xr-x   3 root     root           51 Aug 23 22:47 /lib/live/boot
+#            2518      2 -r--------   1 root     root         2035 Jan  1  1970 /lib/live/boot/9991-fstab-is-my-backdoor.sh
+#             154      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /lib/live/mount
+#
+#       The reason only my 9991 script is there (and not the rest of the live-boot scripts)
+#       is because customize80-purge-bad-packages.py has removed the upstream scripts (but not my script).
+#
 #   * /var/tmp needs -orw for systemd-timesyncd (NTP client).
 #   * /dev/shm needs -orw for chromium.
 #   * /dev/shm needs >32M for libreoffice.
@@ -44,7 +70,7 @@ tmpfs   /tmp            tmpfs   nosuid,noexec,nodev,size=10%
 tmpfs   /dev/shm        tmpfs   nosuid,noexec,nodev,size=10%
 tmpfs   /var/tmp        tmpfs   nosuid,noexec,nodev,size=32M,mode=0
 tmpfs   /run/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
-tmpfs   /lib/live/mount tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
+tmpfs   /lib/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
 tmpfs   /run            tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
 tmpfs   /run/lock       tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
 devtmpfs /dev           devtmpfs nosuid,noexec,mode=0755
