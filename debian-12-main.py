@@ -157,7 +157,7 @@ def maybe_debug_shell():
     if not args.debug_shell:
         return []
     return [
-        f'--customize-hook=echo bootstrap:{git_description} >$1/etc/debian_chroot',
+        f'--customize-hook=echo bootstrap:{template}:{git_description} >$1/etc/debian_chroot',
         '--customize-hook=env -i TERM=$TERM PATH=/bin:/sbin chroot $1 bash -i',
         '--customize-hook=false "Do not continue building after a debug shell."']
 
