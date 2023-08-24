@@ -83,7 +83,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     subprocess.check_call(
         ['mcopy',
          '-i', f'{args.output_file}@@{esp_offset}',
-         'filesystem.squashfs', f'::live/filesystem.squashfs'],
+         'filesystem.squashfs', '::live/filesystem.squashfs'],
         cwd=td)
 
 # NOTE: this invocation is concise, NOT efficient!
