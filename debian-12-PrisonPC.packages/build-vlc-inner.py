@@ -62,7 +62,8 @@ if False:
 #        Continuing to use XV probably just means the desktop CPU will work a little harder.
 #        That doesn't REALLY matter.
 #
-#        <twb> libvdpau-va-gl: VideoSurface::GetBitsYCbCrImpl(): not implemented conversion VA FOURCC ^@^@^@^@ -> VDP_YCBCR_FORMAT_YV12
+#        <twb> libvdpau-va-gl: VideoSurface::GetBitsYCbCrImpl():
+#              not implemented conversion VA FOURCC ^@^@^@^@ -> VDP_YCBCR_FORMAT_YV12
 #        <twb> [00007f644400f080] vdpau_chroma filter error: video surface export failure: VDP_STATUS_INVALID_Y_CB_CR_FORMAT
 #        <courmisch> twb: vdpau-va-gl is notoriously crap
 #        <courmisch> uninstall the va-gl.vdpau backend

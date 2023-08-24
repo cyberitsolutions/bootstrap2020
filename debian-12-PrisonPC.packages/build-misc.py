@@ -38,7 +38,7 @@ os.environ['DEB_BUILD_OPTIONS'] = ' '.join([
     # Skip "make test" or equivalent; useful when tests fail
     # due to problems I do not actually care about.
     # 'nocheck',
-    ])
+])
 
 watch_path = (args.package_path / 'debian/watch')
 

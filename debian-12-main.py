@@ -723,7 +723,7 @@ for template in args.templates:
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template.startswith('desktop') and not template.startswith('desktop-inmate'),
                       'xfce4-terminal mousepad xfce4-screenshooter'),
-                     # For https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-desktop/xfce-spice-output-resizer.py
+                     # For debian-12-desktop.files/xfce-spice-output-resizer.py
                      # Mike wants qemu-guest-agent for prisonpc-desktop-staff-amc in spice-html5.
                      # FIXME: WHY?  Nothing in the package description sounds useful.
                      # FIXME: --boot-test's kvm doesn't know to create the device!!!
