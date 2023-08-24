@@ -219,8 +219,9 @@ with tempfile.TemporaryDirectory() as td:
          '--include=python3',
          '--customize-hook=copy-in build-inmate-kernel.ini /',
          '--customize-hook=copy-in build-inmate-kernel-inner.py /',
-         f'--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py {"--menuconfig" if args.menuconfig else ""} || chroot $1 bash',
-
+         '--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py --menuconfig || chroot $1 bash'
+         if args.menuconfig else
+         '--customize-hook=chroot $1 python3 build-inmate-kernel-inner.py              || chroot $1 bash',
          # Copy the built kernel back out.
          f'--customize-hook=sync-out /X {td}',
 

@@ -87,13 +87,13 @@ except Exception:
     raise
 
 # FIXME: this is ridiculous.
-json_object['webkit']                                   = json_object.get('webkit', {})
-json_object['webkit']['webprefs']                       = json_object['webkit'].get('webprefs', {})
-json_object['webkit']['webprefs']['fonts']              = json_object['webkit']['webprefs'].get('fonts', {})
-json_object['webkit']['webprefs']['fonts']['standard']  = json_object['webkit']['webprefs']['fonts'].get('standard', {})
+json_object['webkit'] = json_object.get('webkit', {})
+json_object['webkit']['webprefs'] = json_object['webkit'].get('webprefs', {})
+json_object['webkit']['webprefs']['fonts'] = json_object['webkit']['webprefs'].get('fonts', {})
+json_object['webkit']['webprefs']['fonts']['standard'] = json_object['webkit']['webprefs']['fonts'].get('standard', {})
 json_object['webkit']['webprefs']['fonts']['sansserif'] = json_object['webkit']['webprefs']['fonts'].get('sansserif', {})
-json_object['webkit']['webprefs']['fonts']['serif']     = json_object['webkit']['webprefs']['fonts'].get('serif', {})
-json_object['webkit']['webprefs']['fonts']['fixed']     = json_object['webkit']['webprefs']['fonts'].get('fixed', {})
+json_object['webkit']['webprefs']['fonts']['serif'] = json_object['webkit']['webprefs']['fonts'].get('serif', {})
+json_object['webkit']['webprefs']['fonts']['fixed'] = json_object['webkit']['webprefs']['fonts'].get('fixed', {})
 
 if json_object['webkit']['webprefs']['fonts']['standard'].get('Zyyy', '').startswith('OpenDyslexic'):
     del json_object['webkit']['webprefs']['fonts']['standard']['Zyyy']
