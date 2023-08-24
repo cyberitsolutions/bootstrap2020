@@ -24,16 +24,32 @@ parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.i
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 
+# Enforce an absolute path, as we chdir (cwd=td).
+args.output_file = args.output_file.resolve()
 
 filesystem_img_size = '512M'    # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
 esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
-live_media_path = 'debian-live'
+
+
+create_disk_image_script = f"""
+mkdir -p /boot/USB /boot/EFI/BOOT
+cp /usr/share/refind/refind/refind_x64.efi /boot/EFI/BOOT/BOOTX64.EFI
+truncate --size={filesystem_img_size} /boot/USB/filesystem.img
+parted --script --align=optimal /boot/USB/filesystem.img  mklabel gpt  mkpart {esp_label} {esp_offset}b 100%  set 1 esp on
+mformat -i /boot/USB/filesystem.img@@{esp_offset} -F -v {esp_label}
+mmd     -i /boot/USB/filesystem.img@@{esp_offset} ::live
+echo '"Boot with default options" "boot=live"' >$1/boot/refind_linux.conf
+# FIXME: had to remove the "-b" option due to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=990486#15
+mcopy -vspm -i /boot/USB/filesystem.img@@{esp_offset} /boot/EFI /boot/refind_linux.conf /boot/vmlinuz* /boot/initrd.img* ::
+"""
 
 with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td:
     td = pathlib.Path(td)
+    td.chmod(0o0711)           # Let unshare(2) euid access the script
+    (td / 'create_disk_image.sh').write_text(create_disk_image_script)
     subprocess.check_call(
-        ['mmdebstrap',
+        ['mmdebstrap', 'bookworm', 'filesystem.squashfs',
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
@@ -57,46 +73,20 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          # We use refind because 1) I hate grub; and 2) I like refind.
          # If you want aarch64 or ia32 you need to install their BOOTxxx.EFI files.
          # If you want kernel+initrd on something other than FAT, you need refind/drivers_xxx/xxx_xxx.EFI.
-         #
-         # FIXME: with qemu in UEFI mode (OVMF), I get dumped into startup.nsh (UEFI REPL).
-         #        From there, I can manually type in "FS0:\EFI\BOOT\BOOTX64.EFI" to start refind, tho.
-         #        So WTF is its problem?  Does it not support fallback bootloader?
          '--include=refind parted mtools',
          '--essential-hook=echo refind refind/install_to_esp boolean false | chroot $1 debconf-set-selections',
-         '--customize-hook=echo refind refind/install_to_esp boolean true  | chroot $1 debconf-set-selections',
-         '--customize-hook=chroot $1 mkdir -p /boot/USB /boot/EFI/BOOT',
-         '--customize-hook=chroot $1 cp /usr/share/refind/refind/refind_x64.efi /boot/EFI/BOOT/BOOTX64.EFI',
-         f'--customize-hook=chroot $1 truncate --size={filesystem_img_size} /boot/USB/filesystem.img',
-         f'--customize-hook=chroot $1 parted --script --align=optimal /boot/USB/filesystem.img  mklabel gpt  mkpart {esp_label} {esp_offset}b 100%  set 1 esp on',
-         f'--customize-hook=chroot $1 mformat -i /boot/USB/filesystem.img@@{esp_offset} -F -v {esp_label}',
-         f'--customize-hook=chroot $1 mmd     -i /boot/USB/filesystem.img@@{esp_offset} ::{live_media_path}',
-         f"""--customize-hook=echo '"Boot with default options" "boot=live live-media-path={live_media_path}"' >$1/boot/refind_linux.conf""",
-         # NOTE: find sidesteps the "glob expands before chroot applies" problem.
-         # FIXME: had to remove the "-b" option due to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=990486#15
-         f"""--customize-hook=chroot $1 find -O3 /boot/ -xdev -mindepth 1 -maxdepth 1 -regextype posix-egrep -iregex '.*/(EFI|refind_linux.conf|vmlinuz.*|initrd.img.*)' -exec mcopy -vspm -i /boot/USB/filesystem.img@@{esp_offset} {{}} :: ';'""",
-         # FIXME: copy-out doesn't handle sparseness, so is REALLY slow (about 50 seconds).
-         # Therefore instead leave it in the squashfs, and extract it later.
-         #  f'--customize-hook=copy-out /boot/USB/filesystem.img /tmp/',
-         #  f'--customize-hook=chroot $1 rm /boot/USB/filesystem.img',
+         '--customize-hook=chroot $1 sh -ex < create_disk_image.sh',
+         f'--customize-hook=download /boot/USB/filesystem.img {args.output_file}',
+         '--customize-hook=rm $1/boot/USB/filesystem.img',
+         ],
+        cwd=td)
+    subprocess.check_call(
+        ['mcopy',
+         '-i', f'{args.output_file}@@{esp_offset}',
+         'filesystem.squashfs', f'::live/filesystem.squashfs'],
+        cwd=td)
 
-         'bookworm',
-         td / 'filesystem.squashfs'
-         ])
-
-    with args.output_file.open('wb') as f:
-        subprocess.check_call(
-            ['rdsquashfs',
-             '--cat=boot/USB/filesystem.img',
-             td / 'filesystem.squashfs'],
-            stdout=f)
-    subprocess.check_call([
-        'mcopy',
-        '-i', f'{args.output_file}@@{esp_offset}',
-        td / 'filesystem.squashfs', f'::{live_media_path}/filesystem.squashfs'])
-
-# Fuck it, also show how to do a basic qemu boot.
+# NOTE: this invocation is concise, NOT efficient!
 if args.boot_test:
     subprocess.check_call([
-        'kvm', '-m', '2G',
-        '--drive', f'if=virtio,format=raw,readonly=on,media=disk,file={args.output_file}',
-        '--drive', 'if=pflash,format=raw,unit=0,readonly=on,file=/usr/share/ovmf/OVMF.fd'])
+        'kvm', '-m', '1G', '-bios', 'OVMF.fd', '-hda', args.output_file])
