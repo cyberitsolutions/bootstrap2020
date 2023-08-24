@@ -19,7 +19,6 @@ with tempfile.TemporaryDirectory() as td:
          '--dpkgopt=force-unsafe-io',
          '--dpkgopt=path-exclude=/usr/share/doc/*',
          '--include=build-essential,python3,devscripts,moreutils',
-         #'--include=devscripts/backports-new',  # so --distribution=bookworm works?!
          '--customize-hook=chroot $1 python3 < build-emacs-inner.py || chroot $1 bash',
          f'--customize-hook=sync-out /X {td}',
          'bookworm',
