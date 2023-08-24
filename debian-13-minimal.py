@@ -13,7 +13,7 @@ __doc__ = """ build the simplest Debian Live image that can boot
 This uses mmdebstrap to do the heavy lifting;
 it can run entirely without root privileges.
 It emits a USB key disk image that contains a bootable EFI ESP,
-which in turn includes a bootloader (refind), kernel, ramdisk, and filesystem.squashfs.
+which in turn includes a UKI (kernel/ramdisk/cmdline) and filesystem.squashfs.
 
 NOTE: this is the simplest config possible.
       It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
@@ -21,6 +21,10 @@ NOTE: this is the simplest config possible.
 NOTE: This makes a "unified kernel image" (there is NO bootloader).
       The kernel command line is hard-coded into EFI\BOOT\BOOTX64.EFI.
       You cannot change it at boot time (e.g. to add "console=ttyS0").
+
+At time of writing, the host system needs:
+
+    apt install mmdebstrap apt-cacher-ng parted mtools qemu-kvm
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
