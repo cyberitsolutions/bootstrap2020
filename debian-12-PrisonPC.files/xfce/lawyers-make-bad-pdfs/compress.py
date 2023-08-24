@@ -66,7 +66,7 @@ def main():
             summary=f'Compression succeeded ({1 - size_difference:.0%} smaller)',
             body=f'Opening {args.output_path.name} now…',
             icon='dialog-information-symbolic').show()
-        subprocess.check_call(['xdg-open', args.output_path])
+        subprocess.check_call(['exo-open', args.output_path])
 
 
 def ghostscript(args):
