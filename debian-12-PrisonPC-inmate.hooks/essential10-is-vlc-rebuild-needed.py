@@ -55,7 +55,18 @@ __doc__ = """ if Debian vlc is newer than PrisonPC vlc, halt and catch fire
 17:20 <vv221> Otherwise you could go with `apt install vlc=$version`
 17:20 <twb> Yeah but if I do that I have to manually resolve all the dependencies from the same source package
 17:20 <vv221> (a bit tricky, because you would have to explicitely install the correct version of dependencies too)
-17:20 <twb> Like this: apt install {vlc,libvlc5,libvlccore9,libvlc-bin,vlc-{bin,data,l10n,plugin-{base,qt,video-output,zvbi}}}=3.0.11-0+deb10u1inmate1
+17:20 <twb> Like this: apt install                                         \
+                           vlc=3.0.11-0+deb10u1inmate1                     \
+                           libvlc5=3.0.11-0+deb10u1inmate1                 \
+                           libvlccore9=3.0.11-0+deb10u1inmate1             \
+                           libvlc-bin=3.0.11-0+deb10u1inmate1              \
+                           vlc-bin=3.0.11-0+deb10u1inmate1                 \
+                           vlc-data=3.0.11-0+deb10u1inmate1                \
+                           vlc-l10n=3.0.11-0+deb10u1inmate1                \
+                           vlc-plugin-base=3.0.11-0+deb10u1inmate1         \
+                           vlc-plugin-qt=3.0.11-0+deb10u1inmate1           \
+                           vlc-plugin-video-output=3.0.11-0+deb10u1inmate1 \
+                           vlc-plugin-zvbi=3.0.11-0+deb10u1inmate1
 17:21 <twb> That's what I've been doing until now and I'm trying to make it less annoying.
 17:22 <vv221> Well, I have no suggestion, but if you find something I would like to know the solution too ;)
 17:22 <twb> This is working great...
