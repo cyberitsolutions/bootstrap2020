@@ -463,20 +463,12 @@
 # confirmed this is Not A Problem™.
 # We don't need to mention apt/dpkg as
 # customize80-purge-bad-packages.py handles those.
-/etc/cron.daily/plocate
 /etc/logrotate.d/bootlog
 /etc/logrotate.d/prayer
 /etc/logrotate.d/rsyslog
 /etc/logrotate.d/xdm
 /etc/logcheck/ignore.d.server/rsyslog
 /etc/network/if-up.d/nslcd
-# UPDATE: don't run "updatedb" daily systemd timer, either.
-#         We need a fake updatedb once at boot.
-#         We don't need it to read all of the squashfs every midnight.
-#         That would cause a needless, bursty load on the squashfs server.
-#         In Debian 12 (or 11bpo) plocate replaces mlocate.
-*/plocate-updatedb.service
-*/plocate-updatedb.timer
 
 
 # libpython3.9-minimal's /etc/python3.9/sitecustomize.py
