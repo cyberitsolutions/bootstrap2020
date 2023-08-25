@@ -62,19 +62,6 @@
 # I'm not sure if this can actually fire (e.g. for a USB key).
 # It is not mentioned in bootup(7) manpage.
 */systemd/system-generators/systemd-gpt-auto-generator
-# From genisoimage, blame Pete.
-# Lucid-era disc snitching needs isoinfo; exclude the rest.
-# FIXME: even in 2022, this is STILL the way we fingerprint DVDs!
-#        This can go when we switch to libcdio-utils!
-#        https://github.com/cyberitsolutions/bootstrap2020/tree/POC-better-disc-snitch
-*bin/devdump
-*bin/dirsplit
-*bin/genisoimage
-*bin/geteltorito
-*bin/isodump
-*bin/isovfy
-*bin/mkisofs
-*bin/mkzftree
 
 
 ## Inmates MUST NOT have containers (VMs)

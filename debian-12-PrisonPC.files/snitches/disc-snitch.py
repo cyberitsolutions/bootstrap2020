@@ -23,7 +23,7 @@
 # Policy is implemented on the server side;
 # this script ALWAYS asks "hey server, what should I do with disc X?"
 #
-# The server can reply "allow" (or "yes"), "eject", or "lock".
+# The server can reply "allow", "eject", or "lock".
 # The purpose of "lock" is to make it easier to seize contraband discs,
 # by making it harder to reclaim & hide the disc when the inmate hears the guards coming.
 
@@ -45,6 +45,7 @@ import urllib.request
 import pyudev
 import systemd.daemon
 import systemd.login
+import systemd.journal
 
 # When an exception is raised,
 # by default python prints the exception itself *AND*
@@ -79,204 +80,101 @@ def str_to_bool(s: str):
 
 
 def main():
+    if sys.stdin.isatty():
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO,
+                            handlers={systemd.journal.JournalHandler()})
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
     monitor.filter_by_tag('disc-snitch')
     monitor.start()
     systemd.daemon.notify('READY=1')  # start WatchdogSec= countdown
-    print('<7>Ready!', file=sys.stderr, flush=True)
+    logging.info('Ready!')
 
     while True:
         device = monitor.poll(timeout=60)  # get next udev event (add/remove/change)
         systemd.daemon.notify('WATCHDOG=1')  # reset WatchdogSec= countdown
-
-        if device is None:
-            logging.debug('udev poll timed out (no events in last N seconds)')
-            continue
-
-        assert 'DEVNAME' in device.properties
-
-        # Skip to next event when disc is *REMOVED*.
-        if 'remove' == device.properties.get('ACTION', None):
-            print('<7>Drive removed, not processing.', file=sys.stderr, flush=True)
-            continue
-        if '1' == device.properties.get('DISK_EJECT_REQUEST', None):
-            print('<7>Disc eject request, not processing.', file=sys.stderr, flush=True)
-            continue
-
-        # Skip to next event if it's a music CD,
-        # i.e. *ALL* tracks are audio tracks.
-        # FIXME: after https://alloc.cyber.com.au/task/task.php?taskID=24643, this policy changes.
-        if (device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', True) ==
-            device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
-            print('<7>All tracks are CDDA, not processing.', file=sys.stderr, flush=True)
-            continue
-
-        # Skip to next event if it's a blank disc.
-        # Staff need to insert blank discs to burn them.
-        if (str_to_bool(os.environ.get('ALLOW_BLANK_DISCS', 'no')) and
-            'blank' == device.properties.get('ID_CDROM_MEDIA_STATE', None) and
-            # Paranoia -- a blank disc with tracks isn't blank!
-            '1' == device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', None) and
-            not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', False) and
-            not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
-            print('<7>Blank disc, not processing.', file=sys.stderr, flush=True)
-            continue
-
-        # FIXME: Pete's code used to skip in these circumstances.
-        # I think that's a mistake, but preserving semantics for now.
-        # Reconsider when implementing https://alloc.cyber.com.au/task/task.php?taskID=24643! --twb, Nov 2015
-        if pathlib.Path('/require-lucid-disc-snitch').exists():
-            if not device.properties.get('ID_CDROM_MEDIA', False):
-                print('<7>ID_CDROM_MEDIA missing or empty, not processing. (tray-open event?)', file=sys.stderr, flush=True)
-                continue
-            # UPDATE: when the disc (or drive?) is damaged,
-            # udev fails to find a filesystem---but vlc can still play the movie.
-            # Therefore, skipping when ID_FS_TYPE is not set, is very dangerous.
-            # What we expect to happen now, is for isoinfo to run and crash (therefore eject),
-            # or to run and successfully fingerprint the disc.  --twb, Nov 2015
-            if not device.properties.get('ID_FS_TYPE', False):
-                print('<7>WARNING: ID_FS_TYPE not set, PROCESSING CONTINUES. (damaged disc?)', file=sys.stderr, flush=True)
-                # We *DO NOT* continue here, because sometimes a
-                # damaged disc will not be recognized by udev, but
-                # WILL be playable in vlc.
-                #
-                # So: do nothing here.
-                # Either fingerprinting will fail (triggering fallback eject),
-                # or fingerprinting will continue as normal.
-                # # continue      # WRONG!
-
-            # The data_lucid method (isoinfo) can't handle unusual discs,
-            # with a mix of audio/data tracks, or multiple data tracks.
-            # In these cases, log & force an eject.
-            if (('0' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '0')) and
-                ('0' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', '0'))):
-                print('<7>Device has audio *and* data tracks, eject forced.', file=sys.stderr, flush=True)
-                eject(device)
-                continue
-            if '1' != device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', '1'):
-                print('<7>Device has multiple data tracks, eject forced.', file=sys.stderr, flush=True)
-                eject(device)
-                continue
-
-        print('<7>Disc "{}" was inserted.'.format(
-            device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN)), file=sys.stderr, flush=True)
-
-        try:
-            answer = ask_lucid_server_about(device)
-            print('<7>Server said "{}".'.format(answer), file=sys.stderr, flush=True)
-
-            # FIXME: in here, check what 'answer' is and allow/lock/eject.
-            if answer == 'yes':     # FIXME: remove after https://alloc.cyber.com.au/task/task.php?taskID=24643.
-                pass
-            elif answer == 'allow':
-                pass
-            elif answer == 'lock':
-                lock(device)
-            else:
-                eject(device)
-
-        # If there's a problem probing the disc or asking the server,
-        # just force-eject the disc -- don't reboot the whole desktop.
-        # FIXME: is this too forgiving?  Errors are errors...
-        # User story: "I have a scratched old DVD of Mad Max.
-        # Sometimes when I insert it, my whole desktop reboots! Why?"
-        except subprocess.CalledProcessError as error:
-            # Print the exception itself so we know WHICH command failed.
-            # This means we can safely send direct isoinfo stderr to /dev/null,
-            # since that output is near-useless. --twb, Sep 2016 (#30950)
-            print('<3>', error, file=sys.stderr, flush=True)
-            eject(device)
+        maybe_process_event(device)
 
 
-# The output of cd-info is more robust and detailed than
-# the output from lsdvd + isoinfo.
-#
-# AMC has a large (~6000) corpus of known discs,
-# and we SHOULD NOT invalidate it.
-#
-# That means we need to generate data the *OLD* way, as well as the
-# new way, and have the server migrate discs from the old corpus as
-# they're re-reported.  As at 15.09, that is not coded. (https://alloc.cyber.com.au/task/task.php?taskID=24643)
-#
-# That means this output MUST BE BYTE-IDENTICAL to the old code.
-#
-# NB: "isoinfo dev=/dev/sr0" tries to take an exclusive lock,
-# but "isoinfo  -i /dev/sr0" doesn't.
-# The former has (and had!) problems if the GUI mounted the disc,
-# so we use the latter.  It seems to be working.  --twb, Oct 2015
-def data_lucid(device):
-    # NB: Pete used to run lsdvd when ID_CDROM_MEDIA_DVD=="1";
-    # (i.e. when the *disc type* is a DVD, not a CD).
-    # But lsdvd only works when there are .VOB files (i.e. a movie).
-    # Pete ignored errors, so putting in a data DVD "worked";
-    # there lsdvd gave no stdout, and its stderr was thrown away.
-    #
-    # We care about errors, but we don't have a udev header to tell us
-    # when it's a MOVIE.  So run lsdvd ALWAYS, and if it crashes,
-    # pretend we didn't run it.  Syslog will fill with lsdvd errors,
-    # but we don't care.  --twb, Nov 2015 (#30332 - Problem 22).
-    # UPDATE: this generated 30MLOC / 10GiB of logs overnight.
-    # That's too much, so discard stderr from lsdvd. --twb, Jan 2016 (#30645)
-    #
-    # WARNING!!!  This means that if lsdvd fails to read a damaged
-    # disc, but isoinfo works OK, it'll be added as a candidate disc
-    # instead of ejecting.  YUK.  --twb, Nov 2015
+# udev wakes up for a bunch of events that we do not actually care about.
+# If any of these happen, log it and stop checking.
+# Otherwise, run definitely_process_event().
+def maybe_process_event(device):
+    if device is None:
+        return logging.debug('udev poll timed out (no events in last N seconds)')
+    elif 'DEVNAME' not in device.properties:
+        raise RuntimeError('No DEVNAME... something is drastically wrong!')
+    # Skip to next event when disc is *REMOVED*.
+    elif 'remove' == device.properties.get('ACTION', None):
+        return logging.info('Drive removed, not processing.')
+    elif '1' == device.properties.get('DISK_EJECT_REQUEST', None):
+        return logging.info('Disc eject request, not processing.')
+    elif not device.properties.get('ID_CDROM_MEDIA', False):
+        return logging.info('ID_CDROM_MEDIA missing or empty. (tray-open event?)')
+
+    # Skip to next event if it's a music CD,
+    # i.e. *ALL* tracks are audio tracks.
+    # FIXME: We *SHOULD* still scan & report these to the server, and
+    #        have the SERVER implement "if all tracks are audio, allow".
+    #        Doig it here until the server does it.
+    elif (device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', True) ==
+          device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
+        return logging.info('All tracks are CDDA, not processing.')
+
+    # Skip to next event if it's a blank disc.
+    # Staff need to insert blank discs to burn them.
+    elif (str_to_bool(os.environ.get('ALLOW_BLANK_DISCS', 'no')) and
+          'blank' == device.properties.get('ID_CDROM_MEDIA_STATE', None) and
+          # Paranoia -- a blank disc with tracks isn't blank!
+          '1' == device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT', None) and
+          not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA', False) and
+          not device.properties.get('ID_CDROM_MEDIA_TRACK_COUNT_AUDIO', False)):
+        return logging.info('Blank disc, not processing.')
+    else:
+        definitely_process_event(device)
+
+
+def definitely_process_event(device):
+    logging.info('Disc "%s" was inserted.', device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN))
     try:
-        lsdvd = subprocess.check_output(['lsdvd', device.properties['DEVNAME']],
-                                        stderr=subprocess.DEVNULL,
-                                        universal_newlines=True)
+        answer = ask_lucid_server_about(device)
+        logging.info('Server said "%s".', answer)
+        # https://git.cyber.com.au/prisonpc/blob/22.09.1/eric/disc.py#L-72
+        if answer not in {'allow', 'lock', 'eject'}:
+            logging.critical('Server is fucked up!')
+            answer = 'eject'
+    # If there's a problem probing the disc or asking the server,
+    # just force-eject the disc -- don't reboot the whole desktop.
+    # FIXME: is this too forgiving?  Errors are errors...
+    # User story: "I have a scratched old DVD of Mad Max.
+    # Sometimes when I insert it, my whole desktop reboots! Why?"
+    except (subprocess.CalledProcessError, TimeoutError) as error:
+        # Print the exception itself so we know WHICH command failed.
+        # This means we can safely send direct isoinfo stderr to /dev/null,
+        # since that output is near-useless. --twb, Sep 2016 (#30950)
+        logging.error('%s', error)
+        answer = 'eject'
 
-        # lsdvd is a shitty toy project we should never have used.
-        # It's output changed between wheezy & jessie.
-        # Specifically: there are fewer blank lines, &
-        # the track lengths milliseconds are different.
-        # We can't munge the latter from jessie to wheezy,
-        # so munge them both to a common denominator (by removing the milliseconds).
-        #
-        # I was loathe to "import re" just for this.
-        # From RTFS, it is clear I can just cut on character boundaries.
-        # http://sources.debian.net/src/lsdvd/0.17-1/ohuman.c/#L14
-        lsdvd = '\n'.join([
-            (line[0:27] + line[31:] if line.startswith('Title:') else line)
-            for line in lsdvd.splitlines()
-            if line != ''])
-        # Re-add the final newline that splitlines/join chomped.
-        lsdvd += '\n'
-    except subprocess.CalledProcessError:
-        lsdvd = ''              # Not a movie.
+    if answer == 'allow':
+        pass
+    elif answer == 'lock':
+        lock(device)
+    else:
+        eject(device)
 
-    pvd = subprocess.check_output(
-        ['isoinfo', '-d', '-i', device.properties['DEVNAME']],
-        stderr=subprocess.DEVNULL,
-        universal_newlines=True)
 
-    # Get (roughly) the output of "ls -lR" of the disc's first ISO9660/UDF filesystem.
-    # For movies this is short, but for data discs it can be VERY long.
-    # Apparently Ron/Pete decreed that "the first 400 lines is enough".
-    # --twb, Dec 2014
-    #
-    # This used to just pipe into "head -400",
-    # but since isoinfo still blocks to generate the rest of the output,
-    # there is no harm in python collecting it all,
-    # THEN discarding lines 401 onwards.
-    lslR = subprocess.check_output(
-        ['isoinfo',
-         '-l' +
-         # NB: isoinfo -J on a non-Joliet disc will crash isoinfo.
-         ('' if 'NO Joliet present' in pvd else 'J') +
-         # NB: isoinfo -R on a non-RR disc will print one error line per file.
-         ('' if 'NO Rock Ridge present' in pvd else 'R'),
-         '-i',
+def data_cdinfo(device):
+    return subprocess.check_output(
+        ['cd-info',
+         '--no-header',
+         '--no-cddb',
+         '--no-device-info',
+         '--dvd',
+         '--iso9660',
          device.properties['DEVNAME']],
-        stderr=subprocess.DEVNULL,
-        universal_newlines=True)
-    lslR = '\n'.join(lslR.splitlines()[:400])
-    # Re-add the final newline that splitlines/join chomped.
-    lslR += '\n'
-
-    # This dumb separator is inherited from Pete.
-    return '====\n'.join([lsdvd, pvd, lslR])
+        text=True)
 
 
 def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_delay=3):
@@ -292,18 +190,15 @@ def do_POST_with_retry(url, post_data, retries=10, retry_max_time=60, retry_dela
                 answer = req.read().decode(encoding)
 
             return answer
-        except:  # noqa: E722
-            # FIXME: Should we only retry when the exception is a urllib.error.HTTPError?
-            exc_type, exc, exc_tb = sys.exc_info()
-            print(f"<5>Retrying due to {exc_type.__module__}.{exc_type.__name__}: {exc}", file=sys.stderr, flush=True)
+        except Exception as e:
+            logging.warning('Retrying due to %s', e)
 
             # Where previously Curl would take a while to fail,
             # Python seems to immediately recognise there's no network and raise a
             # urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
             # This results in ~1000 retries before things actually succeed,
             # and I have no idea how many attempts before the retry_max_time was reached.
-            if retry_delay:
-                time.sleep(retry_delay)
+            time.sleep(retry_delay)
     else:
         raise TimeoutError("Retry limits exceeded while trying to snitch")
 
@@ -319,6 +214,19 @@ def prisonpc_active_user():
         return pwd.getpwuid(uids[0])
     else:
         raise Exception(f"Only 1 active session allowed at a time, got: {uids}")
+
+
+# Give the server each udev key as-is.
+# The server can decide what to do with them later,
+# without needing synced changes on the client!
+# FIXME: the server side for this hasn't been written yet.
+def ask_modern_server_about(device):
+    return do_POST_with_retry(
+        'https://PPC-Services/disc-check',
+        post_data=(
+            device.properties.items() |
+            {'user': prisonpc_active_user().pw_name,
+             'data': data_cdinfo(device)}))
 
 
 def ask_lucid_server_about(device):
@@ -342,7 +250,7 @@ def ask_lucid_server_about(device):
     response = do_POST_with_retry('https://PrisonPC/discokay',
                                   {'uid': prisonpc_active_user().pw_uid,
                                    'label': device.properties.get('ID_FS_LABEL', ID_FS_LABEL_UNKNOWN),
-                                   'summary': urlsafe_b64encode(compress(data_lucid(device).encode()))})
+                                   'summary': urlsafe_b64encode(compress(data_cdinfo(device).encode()))})
 
     return response
 
@@ -436,7 +344,7 @@ def lock(device):
 try:
     main()
 finally:
-    print('<0>Snitching interrupted, systemd should now force a reboot!', file=sys.stderr, flush=True)
+    logging.critical('Snitching interrupted, systemd should now force a reboot!')
 
 # NOTE: if we exit() inside the "finally" block,
 #       python exits *BEFORE THE BACKTRACE PRINTS*!

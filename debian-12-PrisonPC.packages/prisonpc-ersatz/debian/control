@@ -336,8 +336,10 @@ Conflicts:
 #                 e2fsprogs  --- handled in prisonpc-ersatz-e2fsprogs
 #                 ntfs-3g    --- needed by staff for fuse mount.ntfs-3g
 #                 exfat?     --- not needed now exfat is in-kernel (not fuse)?
+# UPDATE 2023: genisoimage is no longer needed by disc-snitch.py.
 # NOTE: staff need ntfs-3g https://alloc.cyber.com.au/task/task.php?taskID=24592
 # NOTE: staff need exfat   https://alloc.cyber.com.au/task/task.php?taskID=32658
+ genisoimage,
  android-sdk,
  bcachefs-tools,
  btrfs-progs,
