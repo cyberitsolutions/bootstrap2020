@@ -14,8 +14,7 @@ include = [
     "xdg-user-dirs-gtk",  # Thunar sidebar gets Documents, Music &c
     "gvfs", "thunar-volman", "eject",  # Thunar trash://, DVD autoplay, DVD eject
     "xfce4-notifyd",            # xfce4-panel notification popups
-    # FIXME: use plocate (not mlocate) once PrisonPC master server upgrades!
-    "catfish", "plocate", "xfce4-places-plugin",  # "Find Files" tool
+    "xfce4-places-plugin",
     "eog",            # chromium cant flip between 1000 photos quickly
     "usermode",                         # password reset tool
     "librsvg2-common",                  # SVG icons in GTK3 apps
