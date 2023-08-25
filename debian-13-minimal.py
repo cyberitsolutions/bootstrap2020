@@ -19,7 +19,7 @@ NOTE: this is the simplest config possible.
       It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
 
 NOTE: This makes a "unified kernel image" (there is NO bootloader).
-      The kernel command line is hard-coded into EFI\BOOT\BOOTX64.EFI.
+      The kernel command line is hard-coded into EFI/BOOT/BOOTX64.EFI.
       You cannot change it at boot time (e.g. to add "console=ttyS0").
 
 At time of writing, the host system needs:
