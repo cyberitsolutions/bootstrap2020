@@ -170,7 +170,10 @@ Conflicts:
 # FIXME: move ntfs-3g to prisonpc-bad-package-conflicts-everyone
 #        when 5.15 reaches bullseye-backports.
 # https://kernelnewbies.org/Linux_5.15#New_NTFS_file_system_implementation
+# UPDATE 2023: block libburn4 (and most CD/DVD burning tools) for inmates.
+#              Staff need it for the xfburn4 GUI app.
  ntfs-3g,
+ libburn4,
 # Browse p123's home (sftp://)
  gvfs-backends,
  gvfs-fuse, fuse, fuse3, python3-pyfuse3,
@@ -336,8 +339,11 @@ Conflicts:
 #                 e2fsprogs  --- handled in prisonpc-ersatz-e2fsprogs
 #                 ntfs-3g    --- needed by staff for fuse mount.ntfs-3g
 #                 exfat?     --- not needed now exfat is in-kernel (not fuse)?
+# UPDATE 2023: genisoimage is no longer needed by disc-snitch.py.
+#              Block other ISO mastering things (except libburn4, used by staff).
 # NOTE: staff need ntfs-3g https://alloc.cyber.com.au/task/task.php?taskID=24592
 # NOTE: staff need exfat   https://alloc.cyber.com.au/task/task.php?taskID=32658
+ genisoimage, wodim, growisofs, cdrdao,
  android-sdk,
  bcachefs-tools,
  btrfs-progs,

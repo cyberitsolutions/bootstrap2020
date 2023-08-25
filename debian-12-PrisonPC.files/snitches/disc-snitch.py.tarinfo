@@ -1,16 +1,8 @@
 name = "usr/sbin/bootstrap2020-disc-snitch"
 include = [
     "python3-systemd", "python3-pyudev",
-    # This is the buggy shit old way Pete originally wrote, and
-    # is needed for hash compatibility with the existing disc whitelist at AMC
-    # (which I think AMC don't use anymore ANYWAY).
-    # FIXME: remove these.
-    "genisoimage", "lsdvd",
-    # This is the good new way which we can't use yet because
-    # the server does not expect it?
     # https://github.com/cyberitsolutions/bootstrap2020/tree/31338-FOAD-isoinfo (newer modern version of f0ff7b2)
     # https://github.com/cyberitsolutions/bootstrap2020/commit/692b592 (which is active)
     # https://github.com/cyberitsolutions/bootstrap2020/commit/f0ff7b2 (which is still not active)
-    # FIXME: add these.
-    # "libcdio-utils",
+    "libcdio-utils",
 ]

@@ -1,3 +1,10 @@
+prisonpc-ersatz (12.10) bookworm; urgency=medium
+
+  * Explicitly block legacy CD/DVD burning tools (everyone)
+  * Explicitly block modern CD/DVD burning tools (inmates)
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Fri, 25 Aug 2023 21:11:24 +1000
+
 prisonpc-ersatz (12.9) bookworm; urgency=medium
 
   * Bump for Debian 12 bookworm.
