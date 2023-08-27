@@ -8,6 +8,11 @@ Package: src:marble
 Pin: release o=Cyber
 Pin-Priority: 500
 
+Explanation: use squeak-vm without needless hard dependency on x-terminal-emulator
+Package: src:squeak-vm
+Pin: release o=Cyber
+Pin-Priority: 500
+
 Explanation: endless-sky in Debian is stale since 2017 because Zahniser stepped down upstream and he was also Debian maintainer.  Allow installing our in-house quick-and-dirty packaging from 2023
 Package: src:endless-sky
 Pin: release o=Cyber
