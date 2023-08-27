@@ -89,6 +89,7 @@ applications = [
 #   UNKNOWN POPULARITY (new or not detected properly)
     "gimp", "gimp-help-en",
     "gnome-crosswords", "gnome-crosswords-addons-theguardian",  # Games > Logic > Crosswords
+    "scratch",
 #   EXTREMELY POPULAR (MONTHS PER SITE-YEAR)
     "aisleriot",                # Games > Card > Solitaire
     "endless-sky",              # Games > Other > Endless Sky
