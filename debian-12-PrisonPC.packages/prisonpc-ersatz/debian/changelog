@@ -1,3 +1,11 @@
+prisonpc-ersatz (12.11) unstable; urgency=medium
+
+  * Explicitly block polkitd-pkla, a backcompat hack for polkitd.
+    We do not use it, and we do not want it accidentally "winning" over
+    default-deny .rules we write in modern polkitd's javascript.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 29 Aug 2023 04:17:01 +1000
+
 prisonpc-ersatz (12.10) bookworm; urgency=medium
 
   * Explicitly block legacy CD/DVD burning tools (everyone)
