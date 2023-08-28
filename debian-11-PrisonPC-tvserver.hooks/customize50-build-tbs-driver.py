@@ -33,28 +33,13 @@ args = parser.parse_args()
 # These are all things that definitely *aren't*
 # lib/modules/5.16.0-0.bpo.4-amd64/updates/extra/media/pci/saa716x/saa716x_tbs-dvb.ko
 shitlist = '''
-CXD2880_SPI_DRV DVB_CXD2880 DVB_NETUP_UNIDVB DVB_TEST_DRIVERS
-DVB_VIDTV MEDIA_ALTERA_CI MEDIA_TUNER_MSI001 MEDIA_TUNER_MT2266
-TOUCHSCREEN_SUR40 USB_AIRSPY USB_HACKRF USB_MSI2500 USB_S2255
-VIDEOBUF2_DMA_CONTIG VIDEOBUF2_DMA_SG VIDEOBUF2_DVB VIDEOBUF2_VMALLOC
-VIDEO_BCM2835 VIDEO_CAFE_CCIC VIDEO_COBALT VIDEO_CX18 VIDEO_CX18_ALSA
-VIDEO_CX23885 VIDEO_CX25821 VIDEO_CX25821_ALSA VIDEO_CX88
-VIDEO_CX88_ALSA VIDEO_CX88_BLACKBIRD VIDEO_CX88_DVB
-VIDEO_CX88_ENABLE_VP3054 VIDEO_CX88_MPEG VIDEO_CX88_VP3054
-VIDEO_FB_IVTV VIDEO_FB_IVTV_FORCE_PAT VIDEO_GS1662 VIDEO_IPU3_CIO2
-VIDEO_IPU3_IMGU VIDEO_IVTV VIDEO_IVTV_ALSA
-VIDEO_IVTV_DEPRECATED_IOCTLS VIDEO_MMP_CAMERA VIDEO_PXA27x
-VIDEO_QCOM_CAMSS VIDEO_QCOM_VENUS VIDEO_ROCKCHIP_RGA VIDEO_SAA7134
-VIDEO_SAA7134_ALSA VIDEO_SAA7134_DVB VIDEO_SAA7134_GO7007
-VIDEO_SAA7134_RC VIDEO_SOLO6X10 VIDEO_TW68 VIDEO_TW686X VIDEO_USBTV
-VIDEO_VIA_CAMERA VIDEO_VICODEC VIDEO_VIM2M VIDEO_VIMC VIDEO_VIVID
-VIDEO_VIVID_CEC VIDEO_VIVID_MAX_DEVS
-VIDEO_TDA1997X
+'''
 
-RC_CORE LIRC RC_MAP RC_DECODERS RC_DEVICES IR_MCEUSB IR_STREAMZAP
-INPUT_ATI_REMOTE2 RC_ATI_REMOTE RC_XBOX_DVD VIDEO_TM6000
-VIDEO_TM6000_ALSA VIDEO_TM6000_DVB
-'''.split()
+shitlist = frozenset({
+    word.upper()
+    for line in shitlist.splitlines()
+    if not line.startswith('#')
+    for word in line.split()})
 
 
 # NOTE: without new open-source driver but no firmware,
@@ -106,6 +91,13 @@ for modules_path in modules_paths:
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}', 'allyesconfig'])
+    subprocess.check_call([
+        'chroot', args.chroot_path,
+        # UGH.  This is based on https://github.com/tbsdtv/linux_media/wiki
+        'sed', '-i', '-r',
+        '-e', r's/(^CONFIG.*_RC.*=)./\1n/g',
+        '-e', r's/(^CONFIG.*_IR.*=)./\1n/g',
+        '/tmp/media_build/v4l/.config'])
 
     # Since I can't get v4l's shitty "helper" scripts to work with
     # regular linux menuconfig, or

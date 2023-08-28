@@ -33,28 +33,51 @@ args = parser.parse_args()
 # These are all things that definitely *aren't*
 # lib/modules/5.16.0-0.bpo.4-amd64/updates/extra/media/pci/saa716x/saa716x_tbs-dvb.ko
 shitlist = '''
-CXD2880_SPI_DRV DVB_CXD2880 DVB_NETUP_UNIDVB DVB_TEST_DRIVERS
-DVB_VIDTV MEDIA_ALTERA_CI MEDIA_TUNER_MSI001 MEDIA_TUNER_MT2266
-TOUCHSCREEN_SUR40 USB_AIRSPY USB_HACKRF USB_MSI2500 USB_S2255
-VIDEOBUF2_DMA_CONTIG VIDEOBUF2_DMA_SG VIDEOBUF2_DVB VIDEOBUF2_VMALLOC
-VIDEO_BCM2835 VIDEO_CAFE_CCIC VIDEO_COBALT VIDEO_CX18 VIDEO_CX18_ALSA
-VIDEO_CX23885 VIDEO_CX25821 VIDEO_CX25821_ALSA VIDEO_CX88
-VIDEO_CX88_ALSA VIDEO_CX88_BLACKBIRD VIDEO_CX88_DVB
-VIDEO_CX88_ENABLE_VP3054 VIDEO_CX88_MPEG VIDEO_CX88_VP3054
-VIDEO_FB_IVTV VIDEO_FB_IVTV_FORCE_PAT VIDEO_GS1662 VIDEO_IPU3_CIO2
-VIDEO_IPU3_IMGU VIDEO_IVTV VIDEO_IVTV_ALSA
-VIDEO_IVTV_DEPRECATED_IOCTLS VIDEO_MMP_CAMERA VIDEO_PXA27x
-VIDEO_QCOM_CAMSS VIDEO_QCOM_VENUS VIDEO_ROCKCHIP_RGA VIDEO_SAA7134
-VIDEO_SAA7134_ALSA VIDEO_SAA7134_DVB VIDEO_SAA7134_GO7007
-VIDEO_SAA7134_RC VIDEO_SOLO6X10 VIDEO_TW68 VIDEO_TW686X VIDEO_USBTV
-VIDEO_VIA_CAMERA VIDEO_VICODEC VIDEO_VIM2M VIDEO_VIMC VIDEO_VIVID
-VIDEO_VIVID_CEC VIDEO_VIVID_MAX_DEVS
-VIDEO_TDA1997X
+## media_camera_support
+## media_analog_tv_support
+## media_radio_support
+## media_sdr_support
+## media_test_support
+## video_adv_debug
+##
+## media_usb_support
+## v4l_test_drivers
+## media_platform_drivers
+##
+## # [Media drivers > Media Usb Adapters]
+## usb_gspca usb_pwc usb_s2255 video_usbtv usb_video_class video_go7007
+## video_hdpvr video_pvrusb2 video_stk1160_common video_au0828
+## video_cx231xx dvb_as102 dvb_usb_v2 dvb_usb sms_usb_drv
+## dvb_ttusb_budget dvb_ttusb_dec video_em28xx usb_airspy usb_hackrf
+##
+## # [Media drivers > V4L test drivers]
+## video_vim2m video_vicodec video_vimc video_vivid video_visl
+##
+## # [Media drivers > Media platform devices]
+## video_cafe_ccic video_cadence_csi2rx video_cadence_csi2tx
+##
+## # [Media drivers > Media PCI Adapters]
+## video_solo6x10 video_tw5864 video_tw68 video_tw686x video_dt3155
+## video_ivtv video_hexium_gemini video_hexium_orion video_mxb
+## video_bt848 video_cx18 video_cx23885 video_cx25821 video_cx88
+## dvb_b2c2_flexcop_pci dvb_ddbridge dvb_dm1105 mantis_core dvb_ngene
+## dvb_pluto2 dvb_pt1 dvb_pt3 dvb_smipcie video_ipu3_cio2
+##
+## # [Media ancillary drivers]
+## # This block is not complete at all, but let's see how this goes...
+## dvb_dummy_fe
+## video_mt9v011  video_ov2640 video_ov7670
+##
+##
+## # Other stuff that I am pretty sure is not needed.
+## VIDEO_V4L2_TPG
+'''
 
-RC_CORE LIRC RC_MAP RC_DECODERS RC_DEVICES IR_MCEUSB IR_STREAMZAP
-INPUT_ATI_REMOTE2 RC_ATI_REMOTE RC_XBOX_DVD VIDEO_TM6000
-VIDEO_TM6000_ALSA VIDEO_TM6000_DVB
-'''.split()
+shitlist = frozenset({
+    word.upper()
+    for line in shitlist.splitlines()
+    if not line.startswith('#')
+    for word in line.split()})
 
 
 # NOTE: without new open-source driver but no firmware,
@@ -106,6 +129,13 @@ for modules_path in modules_paths:
     subprocess.check_call([
         'chroot', args.chroot_path,
         'make', '-C', '/tmp/media_build/v4l', f'VER={kernel_version}', 'allyesconfig'])
+    subprocess.check_call([
+        'chroot', args.chroot_path,
+        # UGH.  This is based on https://github.com/tbsdtv/linux_media/wiki
+        'sed', '-i', '-r',
+        '-e', r's/(^CONFIG.*_RC.*=)./\1n/g',
+        '-e', r's/(^CONFIG.*_IR.*=)./\1n/g',
+        '/tmp/media_build/v4l/.config'])
 
     # Since I can't get v4l's shitty "helper" scripts to work with
     # regular linux menuconfig, or
