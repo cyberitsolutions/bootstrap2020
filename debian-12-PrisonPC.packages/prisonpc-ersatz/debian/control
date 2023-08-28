@@ -846,6 +846,10 @@ Conflicts:
 # policykit-1 : Depends: pkexec (= 122-3) but it is not going to be installed
 # UPDATE: yes we can because we only need polkitd, and policykit-1 is a legacy alias for polkitd + pkexec.
  pkexec,
+# Explicitly block polkitd-pkla, a backcompat hack for polkitd.
+# We do not use it, and we do not want it accidentally "winning" over
+# default-deny .rules we write in modern polkitd's javascript.
+ polkitd-pkla,
 # kde-cli-tools provides kdesu, the KDE equivalent of pkexec
 # kde-cli-tools also provides kdeeject (which might bypass disc drive locking)
  kde-cli-tools, libkf5su5, libkf5su-bin, libkf5su-data,

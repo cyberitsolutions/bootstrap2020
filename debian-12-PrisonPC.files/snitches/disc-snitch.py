@@ -280,15 +280,17 @@ def lock(device):
     # Thunar asks udisks (via dbus) to eject the disk,
     # and udisks asks polkit (via dbus) if it should do so.
     # Tell polkit the answer is "no".
-    # NB: o.f.udisks2 is for jessie; o.f.udisks is for wheezy.
-    # The latter is in case I backport this to wheezy without paying attention.
-    pathlib.Path('/etc/polkit-1/localauthority/50-local.d/99-disc-snitchd.pkla').write_text('\n'.join([
-        '[disc-snitchd]',
-        'Identity=*',
-        'Action=org.freedesktop.udisks2.eject-media;org.freedesktop.udisks.drive-eject',
-        'ResultAny=no',
-        'ResultInactive=no',
-        'ResultActive=no']))
+    # FIXME: do I need to restart polkitd to make it notice this rule?
+    #        I wasn't doing so in Debian 9 and Debian 11, but
+    #        Debian 12's polkitd is a very different polkitd.
+    #        --twb, August 2023
+    pathlib.Path('/etc/polkit-1/rules.d/00-deny-eject.rules').write_text(
+        'polkit.addRule(function(action, subject) {'
+        '    if (action.id === "org.freedesktop.udisks2.eject-media")'
+        '        return polkit.Result.NO;'
+        '    else'
+        '        return polkit.Result.NOT_HANDLED;'
+        '});')
 
     # Disable umount (except umount -l and umount -f).
     #
