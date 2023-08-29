@@ -1,3 +1,8 @@
+# NOTE: there is no need for ConditionPath= or anything like that.
+#       If you run "ssh-keygen -A" needlessly, it simply exits successfully.
+#       If you run "ssh-keygen -A" and it has to generate 1 or more keys, it
+#       will print which keys it generated.
+
 [Unit]
 Description=Generate OpenSSH host keys
 
