@@ -247,7 +247,8 @@ def do_boot_test():
         common_boot_args = ' '.join([
             ('quiet splash'
              if template.startswith('desktop') else
-             'earlyprintk=ttyS0 console=ttyS0 loglevel=1'),
+             # FIXME: in systemd v254+ use systemd.tty.term.console (not TERM=).
+             f'earlyprintk=ttyS0 console=ttyS0 TERM={os.environ["TERM"]} loglevel=1'),
             (f'break={args.maybe_break}'
              if args.maybe_break else '')])
 
