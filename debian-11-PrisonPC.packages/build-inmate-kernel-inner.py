@@ -58,6 +58,9 @@ subprocess.check_call(['cp', '-vT', config_old_path, '.config'])
 # That won't work anymore...
 pathlib.Path('.version').write_text(str(int(time.time())))
 
+# Backported from ../debian-12-PrisonPC.packages/build-inmate-kernel-inner.py
+subprocess.check_call(['sed', '-rsi', r's/^(CONFIG_.*[a-z].*)=m$/# \1 is not set/', '.config'])
+
 # NOTE: From 2016 to 2018 we did "--disable modules" and forced all =m to =y.
 #       This was done as a defense-in-depth security feature.
 #       This SOMEHOW broke DVD scanning.
