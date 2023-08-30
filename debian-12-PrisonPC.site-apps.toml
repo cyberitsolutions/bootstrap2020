@@ -218,7 +218,7 @@ applications = [
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
-    # FIXME: gjiten NOT REVIWED YET, BUT INSTALLING AS TEST
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
     "gjiten",
     "lybniz",
 ]
@@ -275,7 +275,7 @@ applications = [
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
-    # FIXME: gjiten NOT REVIWED YET, BUT INSTALLING AS TEST
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
     "gjiten",
     "lybniz",
     # FIXME: roll a fresh addons package.
@@ -319,7 +319,7 @@ applications = [
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
-    # FIXME: gjiten NOT REVIWED YET, BUT INSTALLING AS TEST
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
     "gjiten",
     "lybniz",
     # FIXME: roll a fresh addons package.
@@ -424,7 +424,7 @@ applications = [
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
-    # FIXME: gjiten NOT REVIWED YET, BUT INSTALLING AS TEST
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
     "gjiten",
     "lybniz",
 ]
