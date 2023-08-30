@@ -1,3 +1,455 @@
+2d0198a 6.4.4-1693432497 (was 6.1.38inmate-1690539126)
+diff --git a/manifest.txt b/manifest.txt
+index 9f070ab..af385ff 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -52,7 +52,6 @@ kernel/drivers/edac/
+ kernel/drivers/edac/e752x_edac.ko
+ kernel/drivers/edac/i3000_edac.ko
+ kernel/drivers/edac/i3200_edac.ko
+-kernel/drivers/edac/i5000_edac.ko
+ kernel/drivers/edac/i5100_edac.ko
+ kernel/drivers/edac/i5400_edac.ko
+ kernel/drivers/edac/i7300_edac.ko
+@@ -125,6 +124,9 @@ kernel/drivers/platform/x86/intel/pmc/
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core.ko
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core_pltdrv.ko
+ kernel/drivers/platform/x86/wmi.ko
++kernel/drivers/powercap/
++kernel/drivers/powercap/intel_rapl_common.ko
++kernel/drivers/powercap/intel_rapl_msr.ko
+ kernel/drivers/scsi/
+ kernel/drivers/scsi/scsi_common.ko
+ kernel/drivers/scsi/scsi_mod.ko
+@@ -200,6 +202,7 @@ kernel/sound/soc/amd/raven/
+ kernel/sound/soc/amd/raven/snd-acp3x-i2s.ko
+ kernel/sound/soc/amd/raven/snd-acp3x-pcm-dma.ko
+ kernel/sound/soc/amd/raven/snd-pci-acp3x.ko
++kernel/sound/soc/amd/snd-acp-config.ko
+ kernel/sound/soc/amd/vangogh/
+ kernel/sound/soc/amd/vangogh/snd-acp5x-i2s.ko
+ kernel/sound/soc/amd/vangogh/snd-acp5x-pcm-dma.ko
+@@ -282,6 +285,7 @@ kernel/sound/soc/sof/
+ kernel/sound/soc/sof/intel/
+ kernel/sound/soc/sof/intel/snd-sof-intel-atom.ko
+ kernel/sound/soc/sof/intel/snd-sof-intel-hda-common.ko
++kernel/sound/soc/sof/intel/snd-sof-intel-hda-mlink.ko
+ kernel/sound/soc/sof/intel/snd-sof-intel-hda.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-apl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-cnl.ko
+1897ce8 6.1.38inmate-1690539126 (was 6.1.38inmate-1690535873)
+diff --git a/manifest.txt b/manifest.txt
+index 892e3bc..9f070ab 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -30,39 +30,10 @@ kernel/drivers/cdrom/cdrom.ko
+ kernel/drivers/char/
+ kernel/drivers/char/agp/
+ kernel/drivers/char/agp/intel-gtt.ko
+-kernel/drivers/char/applicom.ko
+ kernel/drivers/char/hangcheck-timer.ko
+ kernel/drivers/char/hw_random/
+-kernel/drivers/char/hw_random/amd-rng.ko
+ kernel/drivers/char/hw_random/intel-rng.ko
+ kernel/drivers/char/hw_random/rng-core.ko
+-kernel/drivers/char/hw_random/via-rng.ko
+-kernel/drivers/char/hw_random/virtio-rng.ko
+-kernel/drivers/char/ipmi/
+-kernel/drivers/char/ipmi/ipmi_devintf.ko
+-kernel/drivers/char/ipmi/ipmi_msghandler.ko
+-kernel/drivers/char/ipmi/ipmi_poweroff.ko
+-kernel/drivers/char/ipmi/ipmi_si.ko
+-kernel/drivers/char/ipmi/ipmi_ssif.ko
+-kernel/drivers/char/ipmi/ipmi_watchdog.ko
+-kernel/drivers/char/mwave/
+-kernel/drivers/char/mwave/mwave.ko
+-kernel/drivers/char/nvram.ko
+-kernel/drivers/char/tlclk.ko
+-kernel/drivers/char/tpm/
+-kernel/drivers/char/tpm/st33zp24/
+-kernel/drivers/char/tpm/st33zp24/tpm_st33zp24.ko
+-kernel/drivers/char/tpm/st33zp24/tpm_st33zp24_i2c.ko
+-kernel/drivers/char/tpm/tpm_atmel.ko
+-kernel/drivers/char/tpm/tpm_i2c_atmel.ko
+-kernel/drivers/char/tpm/tpm_i2c_infineon.ko
+-kernel/drivers/char/tpm/tpm_i2c_nuvoton.ko
+-kernel/drivers/char/tpm/tpm_infineon.ko
+-kernel/drivers/char/tpm/tpm_nsc.ko
+-kernel/drivers/char/tpm/tpm_tis_i2c_cr50.ko
+-kernel/drivers/char/tpm/tpm_vtpm_proxy.ko
+-kernel/drivers/char/ttyprintk.ko
+-kernel/drivers/char/virtio_console.ko
+ kernel/drivers/cpufreq/
+ kernel/drivers/cpufreq/acpi-cpufreq.ko
+ kernel/drivers/cpufreq/cpufreq_ondemand.ko
+@@ -73,9 +44,6 @@ kernel/drivers/devfreq/governor_simpleondemand.ko
+ kernel/drivers/dma/
+ kernel/drivers/dma/dw/
+ kernel/drivers/dma/dw/dw_dmac_core.ko
+-kernel/drivers/dma/dw/dw_dmac_pci.ko
+-kernel/drivers/dma/hsu/
+-kernel/drivers/dma/hsu/hsu_dma.ko
+ kernel/drivers/dma/idma64.ko
+ kernel/drivers/dma/ioat/
+ kernel/drivers/dma/ioat/ioatdma.ko
+@@ -93,8 +61,6 @@ kernel/drivers/edac/i82975x_edac.ko
+ kernel/drivers/edac/ie31200_edac.ko
+ kernel/drivers/edac/pnd2_edac.ko
+ kernel/drivers/edac/x38_edac.ko
+-kernel/drivers/gpio/
+-kernel/drivers/gpio/gpio-exar.ko
+ kernel/drivers/gpu/
+ kernel/drivers/gpu/drm/
+ kernel/drivers/gpu/drm/display/
+@@ -113,23 +79,9 @@ kernel/drivers/hid/hid.ko
+ kernel/drivers/hid/usbhid/
+ kernel/drivers/hid/usbhid/usbhid.ko
+ kernel/drivers/hwmon/
+-kernel/drivers/hwmon/ibmaem.ko
+-kernel/drivers/hwmon/ibmpex.ko
+ kernel/drivers/hwmon/sht3x.ko
+ kernel/drivers/hwmon/sht4x.ko
+ kernel/drivers/input/
+-kernel/drivers/input/gameport/
+-kernel/drivers/input/gameport/emu10k1-gp.ko
+-kernel/drivers/input/gameport/fm801-gp.ko
+-kernel/drivers/input/gameport/gameport.ko
+-kernel/drivers/input/gameport/lightning.ko
+-kernel/drivers/input/gameport/ns558.ko
+-kernel/drivers/input/serio/
+-kernel/drivers/input/serio/altera_ps2.ko
+-kernel/drivers/input/serio/ct82c710.ko
+-kernel/drivers/input/serio/pcips2.ko
+-kernel/drivers/input/serio/serio_raw.ko
+-kernel/drivers/input/serio/serport.ko
+ kernel/drivers/input/sparse-keymap.ko
+ kernel/drivers/leds/
+ kernel/drivers/leds/led-class-multicolor.ko
+@@ -184,25 +136,6 @@ kernel/drivers/thermal/intel/intel_powerclamp.ko
+ kernel/drivers/thermal/intel/intel_soc_dts_iosf.ko
+ kernel/drivers/thermal/intel/intel_soc_dts_thermal.ko
+ kernel/drivers/thermal/intel/x86_pkg_temp_thermal.ko
+-kernel/drivers/tty/
+-kernel/drivers/tty/moxa.ko
+-kernel/drivers/tty/mxser.ko
+-kernel/drivers/tty/n_gsm.ko
+-kernel/drivers/tty/n_hdlc.ko
+-kernel/drivers/tty/nozomi.ko
+-kernel/drivers/tty/serial/
+-kernel/drivers/tty/serial/8250/
+-kernel/drivers/tty/serial/8250/8250.ko
+-kernel/drivers/tty/serial/8250/8250_base.ko
+-kernel/drivers/tty/serial/8250/8250_dw.ko
+-kernel/drivers/tty/serial/8250/8250_exar.ko
+-kernel/drivers/tty/serial/8250/8250_lpss.ko
+-kernel/drivers/tty/serial/8250/8250_mid.ko
+-kernel/drivers/tty/serial/8250/8250_pci.ko
+-kernel/drivers/tty/serial/8250/8250_pericom.ko
+-kernel/drivers/tty/serial/serial_core.ko
+-kernel/drivers/tty/serial/serial_mctrl_gpio.ko
+-kernel/drivers/tty/synclink_gt.ko
+ kernel/drivers/usb/
+ kernel/drivers/usb/common/
+ kernel/drivers/usb/common/usb-common.ko
+@@ -226,9 +159,6 @@ kernel/drivers/video/fbdev/core/fb_sys_fops.ko
+ kernel/drivers/video/fbdev/core/syscopyarea.ko
+ kernel/drivers/video/fbdev/core/sysfillrect.ko
+ kernel/drivers/video/fbdev/core/sysimgblt.ko
+-kernel/drivers/virtio/
+-kernel/drivers/virtio/virtio.ko
+-kernel/drivers/virtio/virtio_ring.ko
+ kernel/fs/
+ kernel/fs/fscache/
+ kernel/fs/fscache/fscache.ko
+f437ee4 6.1.38inmate-1690535873 (was 6.1.38inmate-1690527260)
+diff --git a/manifest.txt b/manifest.txt
+index 3871bf3..892e3bc 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -28,6 +28,8 @@ kernel/drivers/base/regmap/regmap-i2c.ko
+ kernel/drivers/cdrom/
+ kernel/drivers/cdrom/cdrom.ko
+ kernel/drivers/char/
++kernel/drivers/char/agp/
++kernel/drivers/char/agp/intel-gtt.ko
+ kernel/drivers/char/applicom.ko
+ kernel/drivers/char/hangcheck-timer.ko
+ kernel/drivers/char/hw_random/
+@@ -95,50 +97,16 @@ kernel/drivers/gpio/
+ kernel/drivers/gpio/gpio-exar.ko
+ kernel/drivers/gpu/
+ kernel/drivers/gpu/drm/
+-kernel/drivers/gpu/drm/amd/
+-kernel/drivers/gpu/drm/amd/amdgpu/
+-kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
+-kernel/drivers/gpu/drm/ast/
+-kernel/drivers/gpu/drm/ast/ast.ko
+ kernel/drivers/gpu/drm/display/
+ kernel/drivers/gpu/drm/display/drm_display_helper.ko
+ kernel/drivers/gpu/drm/drm.ko
+ kernel/drivers/gpu/drm/drm_buddy.ko
+ kernel/drivers/gpu/drm/drm_kms_helper.ko
+ kernel/drivers/gpu/drm/drm_panel_orientation_quirks.ko
+-kernel/drivers/gpu/drm/drm_shmem_helper.ko
+-kernel/drivers/gpu/drm/drm_ttm_helper.ko
+-kernel/drivers/gpu/drm/drm_vram_helper.ko
+-kernel/drivers/gpu/drm/gma500/
+-kernel/drivers/gpu/drm/gma500/gma500_gfx.ko
+-kernel/drivers/gpu/drm/i2c/
+-kernel/drivers/gpu/drm/i2c/ch7006.ko
+-kernel/drivers/gpu/drm/i2c/sil164.ko
+ kernel/drivers/gpu/drm/i915/
+ kernel/drivers/gpu/drm/i915/i915.ko
+-kernel/drivers/gpu/drm/mgag200/
+-kernel/drivers/gpu/drm/mgag200/mgag200.ko
+-kernel/drivers/gpu/drm/nouveau/
+-kernel/drivers/gpu/drm/nouveau/nouveau.ko
+-kernel/drivers/gpu/drm/qxl/
+-kernel/drivers/gpu/drm/qxl/qxl.ko
+-kernel/drivers/gpu/drm/radeon/
+-kernel/drivers/gpu/drm/radeon/radeon.ko
+-kernel/drivers/gpu/drm/scheduler/
+-kernel/drivers/gpu/drm/scheduler/gpu-sched.ko
+-kernel/drivers/gpu/drm/tiny/
+-kernel/drivers/gpu/drm/tiny/bochs.ko
+-kernel/drivers/gpu/drm/tiny/cirrus.ko
+ kernel/drivers/gpu/drm/ttm/
+ kernel/drivers/gpu/drm/ttm/ttm.ko
+-kernel/drivers/gpu/drm/udl/
+-kernel/drivers/gpu/drm/udl/udl.ko
+-kernel/drivers/gpu/drm/vboxvideo/
+-kernel/drivers/gpu/drm/vboxvideo/vboxvideo.ko
+-kernel/drivers/gpu/drm/vgem/
+-kernel/drivers/gpu/drm/vgem/vgem.ko
+-kernel/drivers/gpu/drm/vmwgfx/
+-kernel/drivers/gpu/drm/vmwgfx/vmwgfx.ko
+ kernel/drivers/hid/
+ kernel/drivers/hid/hid-generic.ko
+ kernel/drivers/hid/hid.ko
+@@ -169,9 +137,6 @@ kernel/drivers/leds/led-class.ko
+ kernel/drivers/leds/trigger/
+ kernel/drivers/leds/trigger/ledtrig-audio.ko
+ kernel/drivers/media/
+-kernel/drivers/media/cec/
+-kernel/drivers/media/cec/core/
+-kernel/drivers/media/cec/core/cec.ko
+ kernel/drivers/media/rc/
+ kernel/drivers/media/rc/ir-jvc-decoder.ko
+ kernel/drivers/media/rc/ir-nec-decoder.ko
+@@ -207,7 +172,6 @@ kernel/drivers/platform/x86/intel/intel_vsec.ko
+ kernel/drivers/platform/x86/intel/pmc/
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core.ko
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core_pltdrv.ko
+-kernel/drivers/platform/x86/mxm-wmi.ko
+ kernel/drivers/platform/x86/wmi.ko
+ kernel/drivers/scsi/
+ kernel/drivers/scsi/scsi_common.ko
+@@ -278,15 +242,6 @@ kernel/lib/crc8.ko
+ kernel/net/
+ kernel/net/core/
+ kernel/net/core/selftests.ko
+-kernel/net/ipv4/
+-kernel/net/ipv4/netfilter/
+-kernel/net/ipv4/netfilter/nf_defrag_ipv4.ko
+-kernel/net/ipv6/
+-kernel/net/ipv6/netfilter/
+-kernel/net/ipv6/netfilter/nf_defrag_ipv6.ko
+-kernel/net/netfilter/
+-kernel/net/netfilter/nf_conntrack.ko
+-kernel/net/netfilter/nft_ct.ko
+ kernel/sound/
+ kernel/sound/core/
+ kernel/sound/core/snd-compress.ko
+0ddea01 6.1.38inmate-1690527260 (was 6.1.38inmate-1690523375)
+diff --git a/manifest.txt b/manifest.txt
+index 76389aa..3871bf3 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -28,12 +28,39 @@ kernel/drivers/base/regmap/regmap-i2c.ko
+ kernel/drivers/cdrom/
+ kernel/drivers/cdrom/cdrom.ko
+ kernel/drivers/char/
+-kernel/drivers/char/agp/
+-kernel/drivers/char/agp/intel-gtt.ko
++kernel/drivers/char/applicom.ko
+ kernel/drivers/char/hangcheck-timer.ko
+ kernel/drivers/char/hw_random/
++kernel/drivers/char/hw_random/amd-rng.ko
+ kernel/drivers/char/hw_random/intel-rng.ko
+ kernel/drivers/char/hw_random/rng-core.ko
++kernel/drivers/char/hw_random/via-rng.ko
++kernel/drivers/char/hw_random/virtio-rng.ko
++kernel/drivers/char/ipmi/
++kernel/drivers/char/ipmi/ipmi_devintf.ko
++kernel/drivers/char/ipmi/ipmi_msghandler.ko
++kernel/drivers/char/ipmi/ipmi_poweroff.ko
++kernel/drivers/char/ipmi/ipmi_si.ko
++kernel/drivers/char/ipmi/ipmi_ssif.ko
++kernel/drivers/char/ipmi/ipmi_watchdog.ko
++kernel/drivers/char/mwave/
++kernel/drivers/char/mwave/mwave.ko
++kernel/drivers/char/nvram.ko
++kernel/drivers/char/tlclk.ko
++kernel/drivers/char/tpm/
++kernel/drivers/char/tpm/st33zp24/
++kernel/drivers/char/tpm/st33zp24/tpm_st33zp24.ko
++kernel/drivers/char/tpm/st33zp24/tpm_st33zp24_i2c.ko
++kernel/drivers/char/tpm/tpm_atmel.ko
++kernel/drivers/char/tpm/tpm_i2c_atmel.ko
++kernel/drivers/char/tpm/tpm_i2c_infineon.ko
++kernel/drivers/char/tpm/tpm_i2c_nuvoton.ko
++kernel/drivers/char/tpm/tpm_infineon.ko
++kernel/drivers/char/tpm/tpm_nsc.ko
++kernel/drivers/char/tpm/tpm_tis_i2c_cr50.ko
++kernel/drivers/char/tpm/tpm_vtpm_proxy.ko
++kernel/drivers/char/ttyprintk.ko
++kernel/drivers/char/virtio_console.ko
+ kernel/drivers/cpufreq/
+ kernel/drivers/cpufreq/acpi-cpufreq.ko
+ kernel/drivers/cpufreq/cpufreq_ondemand.ko
+@@ -44,6 +71,9 @@ kernel/drivers/devfreq/governor_simpleondemand.ko
+ kernel/drivers/dma/
+ kernel/drivers/dma/dw/
+ kernel/drivers/dma/dw/dw_dmac_core.ko
++kernel/drivers/dma/dw/dw_dmac_pci.ko
++kernel/drivers/dma/hsu/
++kernel/drivers/dma/hsu/hsu_dma.ko
+ kernel/drivers/dma/idma64.ko
+ kernel/drivers/dma/ioat/
+ kernel/drivers/dma/ioat/ioatdma.ko
+@@ -61,27 +91,77 @@ kernel/drivers/edac/i82975x_edac.ko
+ kernel/drivers/edac/ie31200_edac.ko
+ kernel/drivers/edac/pnd2_edac.ko
+ kernel/drivers/edac/x38_edac.ko
++kernel/drivers/gpio/
++kernel/drivers/gpio/gpio-exar.ko
+ kernel/drivers/gpu/
+ kernel/drivers/gpu/drm/
++kernel/drivers/gpu/drm/amd/
++kernel/drivers/gpu/drm/amd/amdgpu/
++kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
++kernel/drivers/gpu/drm/ast/
++kernel/drivers/gpu/drm/ast/ast.ko
+ kernel/drivers/gpu/drm/display/
+ kernel/drivers/gpu/drm/display/drm_display_helper.ko
+ kernel/drivers/gpu/drm/drm.ko
+ kernel/drivers/gpu/drm/drm_buddy.ko
+ kernel/drivers/gpu/drm/drm_kms_helper.ko
+ kernel/drivers/gpu/drm/drm_panel_orientation_quirks.ko
++kernel/drivers/gpu/drm/drm_shmem_helper.ko
++kernel/drivers/gpu/drm/drm_ttm_helper.ko
++kernel/drivers/gpu/drm/drm_vram_helper.ko
++kernel/drivers/gpu/drm/gma500/
++kernel/drivers/gpu/drm/gma500/gma500_gfx.ko
++kernel/drivers/gpu/drm/i2c/
++kernel/drivers/gpu/drm/i2c/ch7006.ko
++kernel/drivers/gpu/drm/i2c/sil164.ko
+ kernel/drivers/gpu/drm/i915/
+ kernel/drivers/gpu/drm/i915/i915.ko
++kernel/drivers/gpu/drm/mgag200/
++kernel/drivers/gpu/drm/mgag200/mgag200.ko
++kernel/drivers/gpu/drm/nouveau/
++kernel/drivers/gpu/drm/nouveau/nouveau.ko
++kernel/drivers/gpu/drm/qxl/
++kernel/drivers/gpu/drm/qxl/qxl.ko
++kernel/drivers/gpu/drm/radeon/
++kernel/drivers/gpu/drm/radeon/radeon.ko
++kernel/drivers/gpu/drm/scheduler/
++kernel/drivers/gpu/drm/scheduler/gpu-sched.ko
++kernel/drivers/gpu/drm/tiny/
++kernel/drivers/gpu/drm/tiny/bochs.ko
++kernel/drivers/gpu/drm/tiny/cirrus.ko
+ kernel/drivers/gpu/drm/ttm/
+ kernel/drivers/gpu/drm/ttm/ttm.ko
++kernel/drivers/gpu/drm/udl/
++kernel/drivers/gpu/drm/udl/udl.ko
++kernel/drivers/gpu/drm/vboxvideo/
++kernel/drivers/gpu/drm/vboxvideo/vboxvideo.ko
++kernel/drivers/gpu/drm/vgem/
++kernel/drivers/gpu/drm/vgem/vgem.ko
++kernel/drivers/gpu/drm/vmwgfx/
++kernel/drivers/gpu/drm/vmwgfx/vmwgfx.ko
+ kernel/drivers/hid/
+ kernel/drivers/hid/hid-generic.ko
+ kernel/drivers/hid/hid.ko
+ kernel/drivers/hid/usbhid/
+ kernel/drivers/hid/usbhid/usbhid.ko
+ kernel/drivers/hwmon/
++kernel/drivers/hwmon/ibmaem.ko
++kernel/drivers/hwmon/ibmpex.ko
+ kernel/drivers/hwmon/sht3x.ko
+ kernel/drivers/hwmon/sht4x.ko
+ kernel/drivers/input/
++kernel/drivers/input/gameport/
++kernel/drivers/input/gameport/emu10k1-gp.ko
++kernel/drivers/input/gameport/fm801-gp.ko
++kernel/drivers/input/gameport/gameport.ko
++kernel/drivers/input/gameport/lightning.ko
++kernel/drivers/input/gameport/ns558.ko
++kernel/drivers/input/serio/
++kernel/drivers/input/serio/altera_ps2.ko
++kernel/drivers/input/serio/ct82c710.ko
++kernel/drivers/input/serio/pcips2.ko
++kernel/drivers/input/serio/serio_raw.ko
++kernel/drivers/input/serio/serport.ko
+ kernel/drivers/input/sparse-keymap.ko
+ kernel/drivers/leds/
+ kernel/drivers/leds/led-class-multicolor.ko
+@@ -89,6 +169,9 @@ kernel/drivers/leds/led-class.ko
+ kernel/drivers/leds/trigger/
+ kernel/drivers/leds/trigger/ledtrig-audio.ko
+ kernel/drivers/media/
++kernel/drivers/media/cec/
++kernel/drivers/media/cec/core/
++kernel/drivers/media/cec/core/cec.ko
+ kernel/drivers/media/rc/
+ kernel/drivers/media/rc/ir-jvc-decoder.ko
+ kernel/drivers/media/rc/ir-nec-decoder.ko
+@@ -124,6 +207,7 @@ kernel/drivers/platform/x86/intel/intel_vsec.ko
+ kernel/drivers/platform/x86/intel/pmc/
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core.ko
+ kernel/drivers/platform/x86/intel/pmc/intel_pmc_core_pltdrv.ko
++kernel/drivers/platform/x86/mxm-wmi.ko
+ kernel/drivers/platform/x86/wmi.ko
+ kernel/drivers/scsi/
+ kernel/drivers/scsi/scsi_common.ko
+@@ -136,6 +220,25 @@ kernel/drivers/thermal/intel/intel_powerclamp.ko
+ kernel/drivers/thermal/intel/intel_soc_dts_iosf.ko
+ kernel/drivers/thermal/intel/intel_soc_dts_thermal.ko
+ kernel/drivers/thermal/intel/x86_pkg_temp_thermal.ko
++kernel/drivers/tty/
++kernel/drivers/tty/moxa.ko
++kernel/drivers/tty/mxser.ko
++kernel/drivers/tty/n_gsm.ko
++kernel/drivers/tty/n_hdlc.ko
++kernel/drivers/tty/nozomi.ko
++kernel/drivers/tty/serial/
++kernel/drivers/tty/serial/8250/
++kernel/drivers/tty/serial/8250/8250.ko
++kernel/drivers/tty/serial/8250/8250_base.ko
++kernel/drivers/tty/serial/8250/8250_dw.ko
++kernel/drivers/tty/serial/8250/8250_exar.ko
++kernel/drivers/tty/serial/8250/8250_lpss.ko
++kernel/drivers/tty/serial/8250/8250_mid.ko
++kernel/drivers/tty/serial/8250/8250_pci.ko
++kernel/drivers/tty/serial/8250/8250_pericom.ko
++kernel/drivers/tty/serial/serial_core.ko
++kernel/drivers/tty/serial/serial_mctrl_gpio.ko
++kernel/drivers/tty/synclink_gt.ko
+ kernel/drivers/usb/
+ kernel/drivers/usb/common/
+ kernel/drivers/usb/common/usb-common.ko
+@@ -159,6 +262,9 @@ kernel/drivers/video/fbdev/core/fb_sys_fops.ko
+ kernel/drivers/video/fbdev/core/syscopyarea.ko
+ kernel/drivers/video/fbdev/core/sysfillrect.ko
+ kernel/drivers/video/fbdev/core/sysimgblt.ko
++kernel/drivers/virtio/
++kernel/drivers/virtio/virtio.ko
++kernel/drivers/virtio/virtio_ring.ko
+ kernel/fs/
+ kernel/fs/fscache/
+ kernel/fs/fscache/fscache.ko
+b38fca2 6.1.38inmate-1690523375 (was 6.1.38inmate-1690173662)
 394c6a7 6.1.38inmate-1690173662 (was 6.1.20inmate-1684912406)
 4da6b1d 6.1.20inmate-1684912406 (was 6.1.15inmate-1681699556)
 diff --git a/manifest.txt b/manifest.txt
