@@ -1,0 +1,4 @@
+/VirtualPS2_VMware_VMMouse/Acceleration
+/VirtualPS2_VMware_VMMouse/Properties/Device_Enabled
+/VirtualPS2_VMware_VMMouse/RightHanded
+/VirtualPS2_VMware_VMMouse/Threshold

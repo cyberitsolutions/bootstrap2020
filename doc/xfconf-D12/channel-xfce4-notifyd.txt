@@ -1,0 +1,6 @@
+/applications/known_applications
+/do-not-disturb
+/log-level
+/log-level-apps
+/notify-location
+/primary-monitor

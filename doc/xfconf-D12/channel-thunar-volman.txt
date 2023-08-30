@@ -1,0 +1,8 @@
+/autobrowse/enabled
+/autoburn/enabled
+/autokeyboard/enabled
+/automount-drives/enabled
+/automount-media/enabled
+/autoopen/enabled
+/autophoto/enabled
+/autoplay-audio-cds/enabled

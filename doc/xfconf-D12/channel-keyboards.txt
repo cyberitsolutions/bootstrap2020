@@ -1,0 +1,2 @@
+/Default/KeyRepeat
+/Default/RestoreNumlock

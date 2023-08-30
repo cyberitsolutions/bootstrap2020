@@ -1,0 +1,9 @@
+/last-view
+/misc-directory-specific-settings
+/misc-exec-shell-scripts-by-default
+/misc-full-path-in-tab-title
+/misc-open-new-window-as-tab
+/misc-parallel-copy-mode
+/misc-single-click
+/misc-volume-management
+/shortcuts-icon-emblems

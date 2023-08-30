@@ -1,0 +1,18 @@
+Channels:
+  xfce4-appfinder
+  thunar
+  xfce4-panel
+  xfwm4
+  xfce4-desktop
+  displays
+  keyboards
+  xsettings
+  xfce4-power-manager
+  pointers
+  thunar-volman
+  xfce4-notifyd
+  accessibility
+  xfce4-session
+  xfce4-settings-editor
+  xfce4-keyboard-shortcuts
+  xfce4-settings-manager

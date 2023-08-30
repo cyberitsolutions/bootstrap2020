@@ -1,0 +1,1 @@
+/VirtualPS2_VMware_VMMouse/Properties/Device_Enabled

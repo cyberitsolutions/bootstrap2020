@@ -1,0 +1,10 @@
+/applications/known_applications
+/do-fadeout
+/do-not-disturb
+/do-slideout
+/expire-timeout
+/log-level
+/log-level-apps
+/notify-location
+/primary-monitor
+/theme

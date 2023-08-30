@@ -1,0 +1,11 @@
+/autobrowse/enabled
+/autoburn/enabled
+/autokeyboard/enabled
+/automount-drives/enabled
+/automount-media/enabled
+/automouse/enabled
+/autoopen/enabled
+/autophoto/enabled
+/autoplay-audio-cds/enabled
+/autoprinter/enabled
+/autotablet/enabled

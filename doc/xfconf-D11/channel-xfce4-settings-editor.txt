@@ -1,0 +1,3 @@
+/last/paned-position
+/last/window-height
+/last/window-width

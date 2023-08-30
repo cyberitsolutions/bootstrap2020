@@ -1,0 +1,5 @@
+/xfce4-power-manager/dpms-enabled
+/xfce4-power-manager/inactivity-sleep-mode-on-ac
+/xfce4-power-manager/lock-screen-suspend-hibernate
+/xfce4-power-manager/power-button-action
+/xfce4-power-manager/show-tray-icon
