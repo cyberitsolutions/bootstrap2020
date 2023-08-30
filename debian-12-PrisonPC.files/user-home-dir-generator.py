@@ -49,7 +49,7 @@ This is a window of attack where (subject to POSIX DAC),
 a user could access the previous user's $HOME.
 
 To prevent clandestine communication through e.g. /tmp,
-we current force a full reboot on every logout, so
+we currently force a full reboot on every logout, so
 we accept that risk.
 
 FIXME: grawity suggested using an "autofs map" instead.
