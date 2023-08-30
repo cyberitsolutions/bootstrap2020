@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- NOTE: settings not explicitly mentioned fall back to their C source defaults.
-     As the <channel> has no unlocked="root",
-     an inmate can change any setting not explicitly mentioned (& locked) here. -->
+<!-- NOTE: settings not explicitly mentioned fall back to their C source defaults. -->
 <channel name="xfwm4" version="1.0" unlocked="root">
   <property name="general" type="empty">
 
