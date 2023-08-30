@@ -58,6 +58,47 @@ subprocess.check_call(['cp', '-vT', config_old_path, '.config'])
 # That won't work anymore...
 pathlib.Path('.version').write_text(str(int(time.time())))
 
+
+# 08:13 <twb> aaaaaaaargh
+# 08:13 <twb> I think I just worked out why .config continues compiling SND_SOC_AMD stuff
+# 08:13 <twb> "Symbol: SND_SOC_AMD_ACP3x [=m]"  --- they're the only Kconfig keys that are not all uppercase
+# 08:14 <twb> So I'm disabling "SND_SOC_AMD_ACP3X which doesn't match
+# For now just hard-code this here.
+# FIXME: sort this out properly somewhere else.
+# 08:25 <twb> Well, hard-coding "scripts/config --disable SND_SOC_AMD_ACP3x" &c didn't help, but
+#             maybe the "assume uppercase" bug is in scripts/config rather than in MY code
+# Let's try literally removing "SND_SOC_AMD_ACP[356]x" lines from the config file before we run any changes.
+# FYI there are actually a COUPLE more case-sensitive config things that are enabled by Debian:
+#
+#       191:CONFIG_CC_IMPLICIT_FALLTHROUGH="-Wimplicit-fallthrough=5"
+#      2382:CONFIG_MTD_NETtel=m
+#      2756:CONFIG_SCSI_DC395x=m
+#      3004:CONFIG_ARCNET_COM90xx=m
+#      3005:CONFIG_ARCNET_COM90xxIO=m
+#      3743:CONFIG_MT76x02_LIB=m
+#      3744:CONFIG_MT76x02_USB=m
+#      3746:CONFIG_MT76x0_COMMON=m
+#      3747:CONFIG_MT76x0U=m
+#      3748:CONFIG_MT76x0E=m
+#      3749:CONFIG_MT76x2_COMMON=m
+#      3750:CONFIG_MT76x2E=m
+#      3751:CONFIG_MT76x2U=m
+#      4907:CONFIG_SENSORS_SHT3x=m
+#      4908:CONFIG_SENSORS_SHT4x=m
+#      6018:CONFIG_DVB_STV090x=m
+#      6020:CONFIG_DVB_STV6110x=m
+#      6162:CONFIG_DVB_TDA665x=m
+#      6703:CONFIG_SND_SOC_AMD_ACP3x=m
+#      6707:CONFIG_SND_SOC_AMD_ACP5x=m
+#      6709:CONFIG_SND_SOC_AMD_ACP6x=m
+#     10063:CONFIG_CRYPTO_DEV_QAT_DH895xCC=m
+#     10067:CONFIG_CRYPTO_DEV_QAT_DH895xCCVF=m
+#     10238:CONFIG_FONT_8x8=y
+#     10239:CONFIG_FONT_8x16=y
+#     10249:CONFIG_FONT_TER16x32=y
+subprocess.check_call(['sed', '-rsi', r's/^(CONFIG_.*[a-z].*)=m$/# \1 is not set/', '.config'])
+
+
 # NOTE: From 2016 to 2018 we did "--disable modules" and forced all =m to =y.
 #       This was done as a defense-in-depth security feature.
 #       This SOMEHOW broke DVD scanning.
