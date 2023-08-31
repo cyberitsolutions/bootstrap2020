@@ -12,6 +12,11 @@
   </property>
 
   <!-- Enable tabbed views. -->
-  <property name="misc-middle-click-in-tab" type="bool" value="true"/>
-  <property name="misc-open-new-window-as-tab" type="bool" value="true"/>
+  <!-- 10:05 <twb> mike: we want "Open new thunar instances as tabs" to be FALSE by default, right? -->
+  <!-- 10:05 <twb> mike: I intend to do so, but leave that unlocked so users who are comfortable with tabs can leave it enabled. -->
+  <!-- 10:06 <twb> Ah I actually enabled tabbed views previously, apparently, because I thought they were neat. -->
+  <!-- 10:07 <twb> Given at least 2 people (Alison and me) were confused by the tabs being "unnoticable" beneath the title bar, I'm going to revert that -->
+  <!-- 10:07 <mike> I don't really care tbh, was just providing the feedback I'd seen from confused customer/user -->
+  <!-- <property name="misc-middle-click-in-tab" type="bool" value="true"/> -->
+  <!-- <property name="misc-open-new-window-as-tab" type="bool" value="true"/> -->
 </channel>
