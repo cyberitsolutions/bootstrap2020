@@ -61,5 +61,13 @@
          For example, this affects Thunar but not Xfwm4-settings. -->
     <property name="title_font" type="string" value="Universalis ADF Std Bold 10"/>
 
+    <!-- If I drag a window to a screen edge/corner,
+         resize the window to use a half/quarter of the screen.
+         This is very handy, but is off by default for some reason.
+         UPDATE: it's not actually off, but for some reason setting it here is just ignored.
+         If I unlock it here and then toggle it off and on again in Window Manager Tweaks (GUI),
+         THEN it works fine!  FUCK YOU, XFCE.  FUCK YOU! -->
+    <property name="tile_on_move" type="bool" value="true" unlocked="root"/>
+
   </property>
 </channel>
