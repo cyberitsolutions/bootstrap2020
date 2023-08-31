@@ -4,6 +4,13 @@
   <property name="general" type="empty">
     <property name="FailsafeSessionName" type="string" value="Failsafe"/>
     <property name="LockCommand" type="string" value=""/>
+    <!-- When you push the power button, popup logout/shutdown/reboot dialog...
+         Don't just do it without any confirmation (like we did in Ubuntu 10.04).
+         This is the default anyway, but we might as well be explicit. -->
+    <property name="PromptOnLogout" type="bool" value="true"/>
+    <!-- Hide the "Save for Future Sessions" checkbox on logout...
+         by forcing it to always be checked. -->
+    <property name="AutoSave" type="bool" value="true"/>
   </property>
   <property name="sessions" type="empty">
     <property name="Failsafe" type="empty">
