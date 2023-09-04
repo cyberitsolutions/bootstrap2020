@@ -626,3 +626,11 @@
 */gnome-crosswords-addons-theguardian/*-19??.gresource
 */gnome-crosswords-addons-theguardian/*-20[!2]?.gresource
 */gnome-crosswords-addons-theguardian/*-20?[!2].gresource
+
+
+# These files are only used when migrating from sysvinit to systemd.
+# As we start off with systemd right away, they are never used.
+# Removing them makes customize95-obfuscate-python.py STFU about the .py file.
+/usr/share/nfs-common/nfsconvert.py
+/usr/share/nfs-common/conffiles/nfs-common.default
+/etc/default/nfs-common
