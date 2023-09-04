@@ -151,6 +151,9 @@ for src in pathlib.Path('/usr/share/inkscape').glob('**/__pycache__/*.cpython-3*
 #         If lightproof is working, "the the" will be blue underlined.
 #         No errors appear in .xsession-errors or journalctl.
 #         For now just skip that subsection.
+#
+# UPDATE: as at Debian 12 / LibreOffice 7.5.5,
+#         creating .pyc and removing .py files still breaks lightproof.
 dir_path = pathlib.Path('/usr/lib/libreoffice')
 if dir_path.exists():
     logging.debug('compiling %s', dir_path)
@@ -163,8 +166,13 @@ if dir_path.exists():
 
 # Look for any files we missed, and go "hey, fix this sometime!"
 harmless = {
-    '/etc/python3.9/sitecustomize.py',
     '/usr/share/python3/py3versions.py',
+    # See comments about lightproof in previous code block.
+    '/usr/lib/libreoffice/share/extensions/lightproof_en/Lightproof.py',
+    '/usr/lib/libreoffice/share/extensions/lightproof_en/pythonpath/lightproof_opts_lightproof_en.py',
+    '/usr/lib/libreoffice/share/extensions/lightproof_en/pythonpath/lightproof_lightproof_en.py',
+    '/usr/lib/libreoffice/share/extensions/lightproof_en/pythonpath/lightproof_impl_lightproof_en.py',
+    '/usr/lib/libreoffice/share/extensions/lightproof_en/pythonpath/lightproof_handler_lightproof_en.py',
 }
 for broken_path_str in subprocess.check_output(
         ['find', '-O3', '/', '-xdev',
