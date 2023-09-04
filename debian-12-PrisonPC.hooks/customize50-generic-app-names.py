@@ -54,7 +54,10 @@ for path in (args.chroot_path / 'usr/share/applications').glob('**/*.desktop'):
     # By default "Name[zh_CN]=Fart" becomes "name[zh_cn]" in Python.
     # This definitely breaks xfce4-panel=4.16.2-1, so disable it.
     app.optionxform = lambda _: _
-    app.read(path)
+    app.read(
+        path,
+        # Work around https://bugs.debian.org/1009099
+        encoding=('ISO-8859-1' if path.name == 'gnome-breakout.desktop' else None))
 
     # Rename GenericName[xx] to Name[xx].
     # i.e. hard-code equivalent of xfce4-panel's show-generic-names.
