@@ -1,1 +1,6 @@
-name = "usr/sbin/shutdown"
+# NOTE: In Debian 11, we installed this into /usr/sbin/shutdown, and
+#       it ran /sbin/shutdown as the underlying tool.
+#       In Debian 12, usrmerge means those are the same path!
+#       Therefore try using /usr/local/sbin/shutdown and see if
+#       that path is found when SSHing in (with --ssh-server=openssh-server)...
+name = "usr/local/sbin/shutdown"
