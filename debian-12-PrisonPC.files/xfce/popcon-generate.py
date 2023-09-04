@@ -55,6 +55,9 @@ def walk(acc, menu):
             #     org.gnome.Quadrapassel.desktop
             #     Exec=/usr/bin/quadrapassel %U
             # Try to add those to the lookup table, too.
+            #
+            # FIXME: TryExec=cool-game is better than Exec=sh -c 'X=Y cool-game', because
+            #        the latter will key off "sh" (i.e. totally wrong).
             if key3 := entry.DesktopEntry.getExec().split()[0].split('/')[-1]:
                 acc[key3] = acc[key1]
 
