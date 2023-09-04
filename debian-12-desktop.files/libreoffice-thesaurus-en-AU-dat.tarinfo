@@ -1,2 +1,6 @@
+# libreoffice: fix thesaurus (for en-AU locale)
+# https://bugs.debian.org/929923
+# https://alloc.cyber.com.au/task/task.php?taskID=33383
+# UPDATE: this is still needed as at Debian 12 / LibreOffice 7.5.5.
 name = "usr/share/mythes/th_en_AU_v2.dat"
 linkpath = "th_en_US_v2.dat"
