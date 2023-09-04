@@ -8,6 +8,13 @@
        In this way, inmates cannot re-enable it. -->
   <property name="misc-exec-shell-scripts-by-default" type="bool" value="false" unlocked="root"/>
 
+  <!-- Prevent the user opting out of volume management.
+       This basically means the stuff in thunar-volman.xml actually runs.
+       Not very important, but
+       it DOES log on insertion of contraband devices (e.g. cameras).
+  -->
+  <property name="misc-volume-management" type="bool" value="true" unlocked="root"/>
+
   <!-- Make it less obvious that inmates can navigate around outside $HOME. -->
   <property name="last-location-bar" type="string" value="ThunarLocationButtons" unlocked="root"/>
   <property name="last-menubar-visible" type="bool" value="false" unlocked="root"/>
@@ -25,4 +32,17 @@
   <!-- 10:07 <mike> I don't really care tbh, was just providing the feedback I'd seen from confused customer/user -->
   <!-- <property name="misc-middle-click-in-tab" type="bool" value="true"/> -->
   <!-- <property name="misc-open-new-window-as-tab" type="bool" value="true"/> -->
+
+
+  <!-- This does not matter because tumbler (thumbnail generator) is not installed.
+       But the default is "generate thumbnails regardless of file size".
+       Which was a significant factor in getting rid of tumbler.
+       misc-thumbnail-mode choices are:
+         THUNAR_THUMBNAIL_MODE_NEVER
+         THUNAR_THUMBNAIL_MODE_ONLY_LOCAL (default)
+         THUNAR_THUMBNAIL_MODE_ALWAYS
+  -->
+  <property name="misc-thumbnail-max-file-size" type="uint64" value="1048576" unlocked="root"/>
+  <property name="misc-thumbnail-mode" type="string" value="THUNAR_THUMBNAIL_MODE_NEVER" unlocked="root"/>
+
 </channel>
