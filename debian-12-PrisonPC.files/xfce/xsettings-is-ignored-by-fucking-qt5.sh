@@ -10,4 +10,6 @@
 # https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications
 # https://wiki.archlinux.org/title/Dark_mode_switching
 # https://github.com/FedoraQt/adwaita-qt
+#
+# UPDATE: as at Debian 12 / libqt5core5a=5.15.8+dfsg-11, this is still needed :-(
 export QT_STYLE_OVERRIDE=Adwaita-dark
