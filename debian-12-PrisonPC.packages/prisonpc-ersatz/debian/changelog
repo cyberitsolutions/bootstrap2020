@@ -1,4 +1,4 @@
-prisonpc-ersatz (12.13) bookworm; urgency=medium
+prisonpc-ersatz (12.14) bookworm; urgency=medium
 
   * Block EVERYTHING that uses fuse (except gvfs-fuse/ntfs3g, for staff)
   * Block EVERYTHING that ends in "-dev".
@@ -7,7 +7,7 @@ prisonpc-ersatz (12.13) bookworm; urgency=medium
   * Block MOST firmware blobs.
   * Update blocklists for things like xterms and browsers.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Tue, 05 Sep 2023 19:49:26 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 05 Sep 2023 20:20:06 +1000
 
 prisonpc-ersatz (12.11) unstable; urgency=medium
 
