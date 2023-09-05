@@ -177,5 +177,6 @@ KERNEL=="vhost-net",     MODE:="0000"
 KERNEL=="vsock",         MODE:="0000"
 KERNEL=="vhost-vsock",   MODE:="0000"
 DEVPATH=="/devices/virtual/misc/autofs", MODE:="0000"
-DEVNAME=="/dev/net/tun", MODE:="0000"
-DEVNAME=="/dev/vfio/vfio", MODE:="0000"
+## systemd-udevd[422]: ⋯ Invalid key 'DEVNAME'
+#DEVNAME=="/dev/net/tun", MODE:="0000"
+#DEVNAME=="/dev/vfio/vfio", MODE:="0000"
