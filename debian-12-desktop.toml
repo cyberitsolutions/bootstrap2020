@@ -5,11 +5,6 @@ include = [
     # https://wiki.debian.org/PipeWire#Debian_12
     # FIXME: do we need/want vlc-plugin-pipewire?
     "pipewire-audio", "xfce4-pulseaudio-plugin", "pavucontrol",
-    # Without "alsactl init" & /usr/share/alsa/init/default,
-    # pipewire/pulseaudio use the kernel default (muted & 0%)!
-    # UPDATE: in Debian 12, pipewire defaults to 40% with or without alsa-utils/alsa-ucm-conf.
-    # alsa-ucm-conf provides default mixer levels for AMCs "black chassis" SoC boards
-    # "alsa-utils", "alsa-ucm-conf",
     "xfce4-xkb-plugin",  # basic foreign language input (e.g. Russian, but not Japanese)
     "xdg-user-dirs-gtk",  # Thunar sidebar gets Documents, Music &c
     "gvfs", "thunar-volman", "eject",  # Thunar trash://, DVD autoplay, DVD eject
