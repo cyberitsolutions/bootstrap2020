@@ -11,7 +11,8 @@ https://alloc.cyber.com.au/task/task.php?taskID=24913
 17:00 <REDACTED> twb: I think this might be useful https://github.com/AlexanderS/tbsecp3-driver
 17:01 <REDACTED> Found it here: https://forums.opensuse.org/t/will-saa7146-based-dvb-cards-stop-working-in-the-near-future/163640
 17:00 <twb> Sounds great
-17:07 <twb> I also find it very dubious that the "stand alone" tree hasn't had an update in 2 years, because that *IS* likely to randomly break without the v4l backporting hacks
+17:07 <twb> I also find it very dubious that the "stand alone" tree hasn't had an update in 2 years, because
+            that *IS* likely to randomly break without the v4l backporting hacks
 17:07 <twb> I'll give it a go, tho
 17:08 <REDACTED> I think those pull requests indicate it won't even build for modern kernel at the moment though. 😕
 17:08 <twb> REDACTED: https://github.com/AlexanderS/tbsecp3-driver/pull/11 ?
