@@ -31,5 +31,16 @@ include = [
 
     # Seen on H81 and H110 Pioneer AIOs.
     # Not NEEDED, just makes journalctl -p4' quieter.
+    # FIXME: firmware-realktek includes bt/wifi firmware.
+    #        We should remove that in delete-bad-files...
     "firmware-realtek", "firmware-misc-nonfree",
+
+    # <twb> Anyone have an opinion about whether
+    #       I should proactively install non-free intel sound card firmware?
+    #       (firmware-intel-sound, ~5MB)
+    #       In theory it only ever applies to SoC boards, but
+    #       AMC managed to buy some of those.
+    # <mike> I've no objection to doing so with PrisonPC SOEs.
+    "firmware-intel-sound",
+    "firmware-sof-signed",
 ]
