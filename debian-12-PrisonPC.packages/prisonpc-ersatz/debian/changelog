@@ -1,12 +1,13 @@
-prisonpc-ersatz (12.12) bookworm; urgency=medium
+prisonpc-ersatz (12.13) bookworm; urgency=medium
 
   * Block EVERYTHING that uses fuse (except gvfs-fuse/ntfs3g, for staff)
   * Block EVERYTHING that ends in "-dev".
+    * UPDATE: actually this happens in /etc/apt/preferences.d/ now.
   * Block libc-dev / libc6-dev explicitly (somehow, this was lost some time ago).
   * Block MOST firmware blobs.
   * Update blocklists for things like xterms and browsers.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Tue, 05 Sep 2023 13:33:13 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 05 Sep 2023 19:49:26 +1000
 
 prisonpc-ersatz (12.11) unstable; urgency=medium
 

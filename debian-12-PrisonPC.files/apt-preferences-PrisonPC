@@ -12,3 +12,8 @@ Explanation: endless-sky in Debian is stale since 2017 because Zahniser stepped 
 Package: src:endless-sky
 Pin: release o=Cyber
 Pin-Priority: 500
+
+Explanation: denylist package (supplements prisonpc-bad-package-conflicts-everyone, can glob, cannot virtual packages)
+Package: *-dev
+Pin: version *
+Pin-Priority: -1
