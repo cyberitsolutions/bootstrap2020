@@ -174,7 +174,7 @@ def maybe_enable_backdoor_access():
         '--customize-hook=echo x:x | chroot $1 chpasswd',
         # Include strace and remove the "disable strace" hardening.
         '--include=strace',
-        '--customize-hook=rm -f $1/etc/sysctl.d/bootstrap2020-hardening.conf']
+        '--customize-hook=echo kernel.yama.ptrace_scope=0 >>$1/etc/sysctl.d/zz-allow-strace.conf']
 
 
 def maybe_measure_install_footprints():
