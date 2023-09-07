@@ -38,4 +38,13 @@ include = [
     # <mike> I've no objection to doing so with PrisonPC SOEs.
     "firmware-intel-sound",
     "firmware-sof-signed",
+
+    # At update-initramfs time:
+    #     W: Possible missing firmware /lib/firmware/i915/kbl_dmc_ver1_04.bin for module i915
+    # At boot time:
+    #     kernel: [    2.325252] i915 0000:00:02.0: firmware: failed to load i915/kbl_dmc_ver1_04.bin (-2)
+    # <twb> I'm thinking about "fixing" this.
+    # <twb> include firmware-misc-nonfree, and then dpkg path-exclude=/lib/firmware/badthings.
+    "firmware-linux-free",
+    "firmware-misc-nonfree",
 ]
