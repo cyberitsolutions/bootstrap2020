@@ -1,5 +1,22 @@
 # -*-sh-*-
-# This is too much.
+
+# Omit disk-like drivers from the initrd.
+# Examples include:
+#
+#   drivers/ata
+#   drivers/block/aoe
+#   drivers/block/drbd
+#   drivers/block/floppy.ko
+#   drivers/block/virtio_blk.ko
+#   drivers/firewire
+#   drivers/infiniband
+#   drivers/mmc
+#   drivers/nvme
+#   drivers/scsi
+#   drivers/usb/storage
+#
+# Reduces overall build time slightly.
+# Reduces overall attack surface slightly (for PrisonPC).
 
 ## With any of these, PXE boot fails.
 # MODULES=list
@@ -7,6 +24,6 @@
 
 ## With these, PXE boot works.
 MODULES=netboot                 # 21% faster 23% smaller
-FSTYPE=nfsv4                    # only removes fsck & logsave
+FSTYPE=nfs                      # doesn't help; doesn't hurt
 RESUME=none                     # doesn't help; doesn't hurt
 BOOT=live                       # doesn't help; doesn't hurt
