@@ -3,7 +3,11 @@ import logging
 import pathlib
 import re
 
-__doc__ = """ https://github.com/systemd/systemd/issues/29097 """
+__doc__ = """ https://github.com/systemd/systemd/issues/29097
+
+FIXME: this workaround is only needed for systemd v252.
+       Remove this file completely when Debian 12+ gest v254+.
+"""
 
 # FIXME: deal with quoting/escaping &c in /proc/cmdline
 # FIXME: for "TERM=x TERM=y", which should win?
