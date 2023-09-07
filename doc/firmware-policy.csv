@@ -578,7 +578,7 @@ MUST NOT,radio,firmware-atheros,"/lib/firmware/ar7010_1_1.fw",
 MUST NOT,radio,firmware-atheros,"/lib/firmware/ar9271.fw",
 SHOULD NOT,dvb,firmware-misc-nonfree,"/lib/firmware/as102_data1_st.hex",https://github.com/torvalds/linux/blob/v6.5/drivers/media/usb/as102/Kconfig
 SHOULD NOT,dvb,firmware-misc-nonfree,"/lib/firmware/as102_data2_st.hex",https://github.com/torvalds/linux/blob/v6.5/drivers/media/usb/as102/Kconfig
-SHOULD NOT,server,firmware-ast,"/lib/firmware/ast_dp501_fw.bin"
+SHOULD NOT,server,firmware-ast,"/lib/firmware/ast_dp501_fw.bin",
 MUST NOT,radio,firmware-atheros,"/lib/firmware/ath10k/QCA4019/hw1.0/board-2.bin",
 MUST NOT,radio,firmware-atheros,"/lib/firmware/ath10k/QCA4019/hw1.0/firmware-5.bin",
 MUST NOT,radio,firmware-atheros,"/lib/firmware/ath10k/QCA6174/hw2.1/board-2.bin",
