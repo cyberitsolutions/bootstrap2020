@@ -765,7 +765,7 @@ MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43340-sdio.predia-
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac4335-sdio.bin",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43362-sdio.bin",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43362-sdio.cubietech,cubietruck.txt",
-MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43362-sdio.lemaker,bananapro.txt"
+MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43362-sdio.lemaker,bananapro.txt",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac4339-sdio.bin",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.AP6212.txt",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.Hampoo-D2D3_Vi8A1.txt",
@@ -773,11 +773,11 @@ MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.MUR1DX.
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.bin",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.clm_blob",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.raspberrypi,3-model-b.txt",
-MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.raspberrypi,model-zero-w.txt"
-MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m2-plus.txt"
-MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m2-ultra.txt"
-MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m2-zero.txt"
-MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m3.txt"
+MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.raspberrypi,model-zero-w.txt",
+MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m2-plus.txt",
+MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m2-ultra.txt",
+MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m2-zero.txt",
+MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430-sdio.sinovoip,bpi-m3.txt",
 MUST NOT,multiple,raspi-firmware,"/lib/firmware/brcm/brcmfmac43430-sdio.txt",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430a0-sdio.bin",
 MUST NOT,radio,firmware-brcm80211,"/lib/firmware/brcm/brcmfmac43430a0-sdio.ilife-S806.txt",
@@ -847,7 +847,7 @@ SHOULD NOT,dvb,firmware-siano,"/lib/firmware/cmmb_vega_12mhz.inp",
 SHOULD NOT,dvb,firmware-siano,"/lib/firmware/cmmb_venice_12mhz.inp",
 SHOULD NOT,server,firmware-qlogic,"/lib/firmware/ct2fw-3.2.5.1.bin",
 SHOULD NOT,audio,firmware-misc-nonfree,"/lib/firmware/ctefx.bin",https://github.com/torvalds/linux/blob/v6.5/sound/pci/hda/Kconfig#L239-L251
-SHOULD NOT,server,firmware-qlogic,"/lib/firmware/ctfw-3.2.5.1.bin"
+SHOULD NOT,server,firmware-qlogic,"/lib/firmware/ctfw-3.2.5.1.bin",
 SHOULD NOT,audio,firmware-misc-nonfree,"/lib/firmware/ctspeq.bin",https://github.com/torvalds/linux/blob/v6.5/sound/pci/hda/patch_ca0132.c#L629
 SHOULD NOT,server,firmware-misc-nonfree,"/lib/firmware/cxgb3/ael2005_opt_edc.bin",https://github.com/torvalds/linux/blob/v6.5/drivers/net/ethernet/chelsio/Kconfig
 SHOULD NOT,server,firmware-misc-nonfree,"/lib/firmware/cxgb3/ael2005_twx_edc.bin",
