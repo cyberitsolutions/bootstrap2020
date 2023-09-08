@@ -188,7 +188,10 @@ if enabled_naughty_words := {
 #
 #       We never use that source package, but it was sort of a sanity check / safety net.
 #       I had to turn it off in 4.17.17 because it had a quilt problem (debian/patches/series).
-subprocess.check_call(['nice', 'make', 'bindeb-pkg'])
+#
+# NOTE: KDEB_SOURCE_COMPRESS=zstd is not supported as at Linux 6.4.4.
+#       https://github.com/torvalds/linux/blob/v6.4/scripts/Makefile.package#L97-L99
+subprocess.check_call(['nice', 'make', 'bindeb-pkg', 'KDEB_SOURCE_COMPRESS=xz'])
 
 # ls -hlS ../*deb
 # dcmd cp -rLv ../*.changes /usr/src/PrisonPC-built/
