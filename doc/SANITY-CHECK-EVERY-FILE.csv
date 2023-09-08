@@ -225,10 +225,10 @@ y,../debian-12-PrisonPC.files/gnome/lockdown.locks.ini
 y,../debian-12-PrisonPC.files/gnome/lockdown.locks.ini.tarinfo
 y,../debian-12-PrisonPC.files/gnome/theme.defaults.ini
 y,../debian-12-PrisonPC.files/gnome/theme.defaults.ini.tarinfo
-phys,../debian-12-PrisonPC.files/infrared-tv-remote-control/PrisonPC.toml
-phys,../debian-12-PrisonPC.files/infrared-tv-remote-control/PrisonPC.toml.tarinfo
-phys,../debian-12-PrisonPC.files/infrared-tv-remote-control/rc_maps.cfg
-phys,../debian-12-PrisonPC.files/infrared-tv-remote-control/rc_maps.cfg.tarinfo
+y,../debian-12-PrisonPC.files/infrared-tv-remote-control/PrisonPC.toml
+y,../debian-12-PrisonPC.files/infrared-tv-remote-control/PrisonPC.toml.tarinfo
+y,../debian-12-PrisonPC.files/infrared-tv-remote-control/rc_maps.cfg
+y,../debian-12-PrisonPC.files/infrared-tv-remote-control/rc_maps.cfg.tarinfo
 y,../debian-12-PrisonPC.files/libreoffice/debian9-libreoffice6.1-lockdown.xcd
 y,../debian-12-PrisonPC.files/libreoffice/debian9-libreoffice6.1-lockdown.xcd.tarinfo
 y,../debian-12-PrisonPC.files/live-boot-hide-rootfs-components.rules
@@ -646,8 +646,8 @@ y,../debian-12-main-netboot-only.files/etc-initramfs-tools-conf.d-bootstrap2020-
 y,../debian-12-main-netboot-only.files/etc-initramfs-tools-conf.d-bootstrap2020-netboot-only.tarinfo
 y,../debian-12-main-netboot-only.files/etc-live-boot-bootstrap2020-netboot-only
 y,../debian-12-main-netboot-only.files/etc-live-boot-bootstrap2020-netboot-only.tarinfo
-phys,../debian-12-main-netboot.files/nfs4-needs-nfsmount.sh
-phys,../debian-12-main-netboot.files/nfs4-needs-nfsmount.sh.tarinfo
+y,../debian-12-main-netboot.files/nfs4-needs-nfsmount.sh
+y,../debian-12-main-netboot.files/nfs4-needs-nfsmount.sh.tarinfo
 y,../debian-12-main-netboot.files/smb3-needs-crypto.conf
 y,../debian-12-main-netboot.files/smb3-needs-crypto.conf.tarinfo
 y,../debian-12-main-unattended-upgrades.toml
@@ -695,8 +695,8 @@ y,../debian-12-main.files/systemd.preset
 y,../debian-12-main.files/systemd.preset.tarinfo
 y,../debian-12-main.files/systemd-networkd-wait-online-any.service.conf
 y,../debian-12-main.files/systemd-networkd-wait-online-any.service.conf.tarinfo
-phys,../debian-12-main.files/wake-on-lan.link
-phys,../debian-12-main.files/wake-on-lan.link.tarinfo
+y,../debian-12-main.files/wake-on-lan.link
+y,../debian-12-main.files/wake-on-lan.link.tarinfo
 y,../debian-12-main.hooks/customize10-apt-clean.py
 y,../debian-12-main.hooks/customize50-dynamic-dns-resolv-conf.py
 y,../debian-12-main.hooks/customize50-dynamic-hostid.py
