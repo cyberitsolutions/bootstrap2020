@@ -5,6 +5,7 @@
     <property name="default" type="empty">
       <property name="&lt;Primary&gt;Escape" type="string" value="xfce4-popup-applicationsmenu"/>
       <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-applicationsmenu"/>
+      <property name="XF86MenuKB" type="string" value="xfce4-popup-applicationsmenu"/>  <!-- for infrared-tv-remote-control -->
       <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xfce4-session-logout"/>
       <property name="XF86Display" type="string" value="xfce4-display-settings --minimal"/>
       <property name="&lt;Super&gt;p" type="string" value="xfce4-display-settings --minimal"/>
