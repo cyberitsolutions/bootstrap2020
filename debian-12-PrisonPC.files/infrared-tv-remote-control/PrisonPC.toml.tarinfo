@@ -1,2 +1,75 @@
 name = "etc/rc_keymaps/PrisonPC.toml"
-include = ["ir-keytable"]
+include = [
+    "ir-keytable",
+
+    # 15:53 <twb> OK kmod gets installed into inmate SOE.
+    # 15:54 <twb> Cannot see why it woul- oh maybe that happens when we switch to tiny-initramfs as part of purge-bad-packages.
+    # 15:54 <twb> Seems unlikely.
+    # 16:01 <twb> OK so "apt purge --autoremove amd64-microcode intel-microcode tiny-initramfs+ '?installed?name(plymouth)' initramfs-tools" removes kmod.
+    # 16:02 <twb> But we actually want kmod still.  I think.
+    # 16:06 <twb> kmod is the only difference between what is removed with stock kernel and with inmate kernel (--physical-only).
+    # 16:08 <twb> udev uses libkmod2 so maybe it doesn't need the ACTUAL kmod package...
+    # 16:08 <twb> I will patch it to stay for now just for debugging...
+    #
+    # 16:04 <twb> Can a kernel do insmod/modprobe without having kmod actually installed?
+    # 16:04 <twb> i.e. does it have an internal equivalent
+    # 16:04 <twb> I noticed when I switch from initramfs-tools to tiny-initramfs, kmod gets remove by --auto-remove, and I think I still need it
+    # 16:05 <grawity> module loading is done by udev, and udev will use libkmod directly – it hasn't been forking modprobe for quite a while now
+    # 16:17 <twb> grawity: thanks I just sort-of worked that out myself looking at the dependencies
+    # 16:18 <twb> My actual high-level problem is the IR TV RC isn't working, and I get "kernel: rc_core: Couldn't load IR protocol module ir-nec-decoder" and "kernel: rc_core: Couldn't load IR keymap rc-rc6-mce"
+    # 16:18 <twb> But my first thing I tried was "lsmod" and "modprobe" and of course those are gone
+    # 16:22 <twb> Here's what I'm seeing:
+    #
+    #     root@bentham-wing-0c:~# find /etc -path '/etc/rc_*' -ls
+    #            82      0 drwxr-xr-x   4 root     root           53 Sep  8 16:11 /etc/rc_keymaps
+    #           412      4 -r--------   1 root     root         3833 Jan  1  1970 /etc/rc_keymaps/PrisonPC.toml
+    #           497      0 drwxr-xr-x   2 root     root            3 Mar 24 00:16 /etc/rc_keymaps/protocols
+    #          1048      3 -r--------   1 root     root         2732 Jan  1  1970 /etc/rc_maps.cfg
+    #          1049      8 -r--------   1 root     root         7692 Mar 24 00:16 /etc/rc_maps.cfg.dpkg-dist
+    #     root@bentham-wing-0c:~# grep -v ^# /etc/rc_maps.cfg
+    #     * * PrisonPC.toml
+    #
+    #     root@bentham-wing-0c:~# grep -v ^# /etc/rc_keymaps/PrisonPC.toml
+    #
+    #     [[protocols]]
+    #     name = "PrisonPC"
+    #     protocol = "nec"
+    #     variant = "nec"
+    #
+    #
+    #     [protocols.scancodes]
+    #     0x5c  = "KEY_CLOSE"
+    #     0x1e  = "KEY_MENU"
+    #     0x58  = "KEY_CONNECT"
+    #     0x1b  = "KEY_UP"
+    #     0x16  = "KEY_CHAT"
+    #     0x55  = "KEY_LEFT"
+    #     0x17  = "KEY_ENTER"
+    #     0x15  = "KEY_RIGHT"
+    #     0x59  = "KEY_ESC"
+    #     0x1a  = "KEY_DOWN"
+    #     0x18  = "KEY_HELP"
+    #     0x5d  = "KEY_MUTE"
+    #     0x1d  = "KEY_VOLUMEDOWN"
+    #     0x1c  = "KEY_VOLUMEUP"
+    #
+    #     root@bentham-wing-0c:~# journalctl --grep rc_core
+    #     Sep 08 16:17:23 bentham-wing-0c kernel: rc_core: IR keymap rc-rc6-mce not found
+    #     root@bentham-wing-0c:~# ir-keytable -a /etc/rc_maps.cfg
+    #     Old keytable cleared
+    #     Wrote 14 keycode(s) to driver
+    #     Protocols changed to nec
+    #     root@bentham-wing-0c:~# journalctl --grep rc_core
+    #     Sep 08 16:17:23 bentham-wing-0c kernel: rc_core: IR keymap rc-rc6-mce not found
+    #     root@bentham-wing-0c:~#
+    #
+    # 16:22 <twb> It seems like whatever is loading the maps (udev?) is ignoring rc_maps.cfg?
+    # 16:23 <twb> Oh according to my notes it used to say "IR keymap rc-rc6-mce not found" even when it IS working
+    # 16:25 <twb> Looks like *either* reinstalling kmod, or running "ir-keytable -a /etc/rc_maps.cfg" by hand, fixed it.  Let me isolate that further...
+    # 16:29 <twb> OK, yeah, kmod is still needed for some reason.
+    # 16:34 <twb> grawity: AFAICT it's not literally calling modprobe here:
+    #             https://sources.debian.org/src/v4l-utils/1.22.1-5/utils/keytable/
+    #             Any idea why it'd need kmod?  This is on Debian 12.
+    # 16:35 <twb> This is happening with a custom kernel (which is why kmod can be purged in the first place), but I can't think why that'd cause this weirdness.
+    'kmod',
+]
