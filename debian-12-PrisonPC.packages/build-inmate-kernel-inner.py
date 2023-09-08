@@ -200,8 +200,13 @@ subprocess.check_call(['nice', 'make', 'bindeb-pkg', 'KDEB_SOURCE_COMPRESS=xz'])
 ############################################################
 # Generate stub metapackage
 ############################################################
+# NOTE: "make bindeb-pkg" in 6.4 omits $localversion from the deb version.
+#       So instead we must now get kernel_version from the deb name (not deb version).
+#       WAS: linux-image-6.1.38inmate_6.1.38inmate-1690539126_amd64.deb
+#       NOW: linux-image-6.4.4inmate_6.4.4-1693435459_amd64.deb
+#                                         ^ no "inmate" suffix here!
 package_name, package_version, _ = next(pathlib.Path('..').glob('linux-image-*_*_amd64.deb')).name.split('_')
-kernel_version, _ = package_version.split('-')
+_, _, kernel_version = package_name.split('-')
 root = pathlib.Path('../A/debian').resolve()
 root.mkdir(parents=True)
 os.chdir(root.parent)
