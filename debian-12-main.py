@@ -664,6 +664,8 @@ if args.ssh_server != 'openssh-server' and any(
 # FIXME: often this takes 5-10 seconds on my laptop - why?
 #        Since there's a delay anyway do it AFTER all the warnings appear.
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
+if not apt_proxy:
+    logging.warning('Failed to auto-detect apt proxy -- build will be slow!')
 
 for template in args.templates:
 
