@@ -631,3 +631,7 @@
 /usr/share/nfs-common/nfsconvert.py
 /usr/share/nfs-common/conffiles/nfs-common.default
 /etc/default/nfs-common
+
+
+# See customize50-dpkg-dist-diff.py
+*/*.dpkg-dist
