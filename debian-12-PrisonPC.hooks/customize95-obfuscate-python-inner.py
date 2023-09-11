@@ -158,7 +158,7 @@ dir_path = pathlib.Path('/usr/lib/libreoffice')
 if dir_path.exists():
     logging.debug('compiling %s', dir_path)
     subprocess.check_call(['python3', '-m', 'compileall', dir_path, '-b', '-q'])
-    subprocess.check_call(['find', dir_path, '-xdev', '-name', '*.py',
+    subprocess.check_call(['find', '-O3', dir_path, '-xdev', '-name', '*.py',
                            # Skip bugged lightproof extension.
                            '-not', '-path', '*/extensions/*',
                            '-delete'])

@@ -37,7 +37,8 @@ with tempfile.TemporaryDirectory() as td:
         # Remove the file so it won't show up in unexpected_paths.
         tar_path.unlink()
     # Double-check that wget did not download anything else.
-    if unexpected_paths := subprocess.check_output(['find', td, '-not', '-type', 'd']).splitlines():
+    if unexpected_paths := subprocess.check_output(
+            ['find', '-O3', td, '-not', '-type', 'd']).splitlines():
         raise RuntimeError('File downloaded by not handled', unexpected_paths)
 
 # Upstream ownership and permissions are routinely broken.
@@ -46,13 +47,13 @@ with tempfile.TemporaryDirectory() as td:
 # Therefore make this find's problem.
 # See also https://lintian.debian.org/tags/executable-not-elf-or-script.html
 subprocess.check_call([
-    'find', destdir,
+    'find', '-O3', destdir,
     '-type', 'd', '-exec', 'chmod', '-c', '0755', '{}', '+',
     '-o', '-exec', 'chmod', '-c', '0644', '{}', '+'])
 # Avoid duplicate copies of GPL licenses. —twb, Dec 2016
 # The size is different because the OpenTTD versions use literal tabs instead of spaces.
 subprocess.check_call([
-    'find', destdir, '-name', 'license.txt',
+    'find', '-O3', destdir, '-name', 'license.txt',
     '(', '-size', '17987c', '-exec', 'ln', '-nsfv', '/usr/share/common-licenses/GPL-2', '{}', ';', ')', '-o',
     '(', '-size', '35147c', '-exec', 'ln', '-nsfv', '/usr/share/common-licenses/GPL-3', '{}', ';', ')'])
 
