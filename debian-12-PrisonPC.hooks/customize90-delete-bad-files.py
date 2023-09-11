@@ -228,7 +228,7 @@ shitlist = frozenset({
     if not line.startswith('#')})
 stdout = subprocess.check_output(
     ['chroot', args.chroot_path,
-     'find', '/', '-xdev', '-depth',
+     'find', '-O3', '/', '-xdev', '-depth',
      '-print0'],
     text=True)
 paths = [

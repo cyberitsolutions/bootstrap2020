@@ -23,7 +23,7 @@ acceptable_risks = {
 
 find_stdout = subprocess.check_output(
     ['chroot', args.chroot_path,
-     'find', '/', '-xdev',
+     'find', '-O3', '/', '-xdev',
      '-perm', '/7000',          # any combination of suid/sgid/sticky
      '-printf', '%M %u:%-6g %p\n'],
     text=True)

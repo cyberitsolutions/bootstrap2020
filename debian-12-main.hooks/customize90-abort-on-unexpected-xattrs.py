@@ -28,7 +28,7 @@ parser.set_defaults(goodlist_path=(
 args = parser.parse_args()
 
 stdout = subprocess.check_output(
-    ['find', '.', '-xdev', '-exec',
+    ['find', '-O3', '.', '-xdev', '-exec',
      'getfattr', '--no-dereference', '--match=system', '--dump', '{}', '+'],
     text=True,
     cwd=args.chroot_path)
