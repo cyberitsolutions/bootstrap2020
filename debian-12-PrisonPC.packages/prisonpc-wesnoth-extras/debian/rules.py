@@ -4,6 +4,7 @@ import pathlib
 import subprocess
 import tempfile
 
+# FIXME: convert this to toml.
 lookup_table = configparser.ConfigParser()
 lookup_table.read('debian/addons.ini')
 addons = frozenset(
