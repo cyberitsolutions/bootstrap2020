@@ -180,6 +180,8 @@ for broken_path_str in subprocess.check_output(
          '-name', '*.py',
          '-print0'],
         text=True).strip('\0').split('\0'):
+    if broken_path_str == '':
+        continue      # ∵ ''.split() == [], but ''.split('x') == ['']!
     if broken_path_str in harmless:
         continue
     if any(pathlib.Path(broken_path_str).is_relative_to(executable_dir_path)
