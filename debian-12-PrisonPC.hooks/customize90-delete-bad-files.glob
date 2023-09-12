@@ -208,7 +208,6 @@
 # From libc-bin.  FIXME: remove more?
 *bin/ldd
 *bin/pldd
-*bin/catchsegv
 # Every Python library using ctypes needs /sbin/ldconfig at runtime.
 # https://docs.python.org/3/library/ctypes.html#finding-shared-libraries
 # *bin/ldconfig
