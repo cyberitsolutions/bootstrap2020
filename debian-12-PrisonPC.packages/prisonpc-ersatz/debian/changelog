@@ -1,3 +1,9 @@
+prisonpc-ersatz (12.15) bookworm; urgency=medium
+
+  * Block python3-lib2to3 (not just 2to3).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 12 Sep 2023 12:27:39 +1000
+
 prisonpc-ersatz (12.14) bookworm; urgency=medium
 
   * Block EVERYTHING that uses fuse (except gvfs-fuse/ntfs3g, for staff)
