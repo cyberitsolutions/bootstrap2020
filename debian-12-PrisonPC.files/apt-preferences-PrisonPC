@@ -14,6 +14,6 @@ Pin: release o=Cyber
 Pin-Priority: 500
 
 Explanation: denylist package (supplements prisonpc-bad-package-conflicts-everyone, can glob, cannot virtual packages)
-Package: *-dev
+Package: *-dev *-dbg *-dbgsym
 Pin: version *
 Pin-Priority: -1
