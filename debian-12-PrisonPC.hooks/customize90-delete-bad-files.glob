@@ -312,10 +312,6 @@
 # This *is* used by libreoffice, but I'm 70% sure it's only used when gdb debugging...
 # https://codesearch.debian.net/search?q=libstdcxx+filetype%3Apython&literal=0
 /usr/share/gcc/python
-# If you do a dev build with --optimize=speed (save 30s),
-# customize95-obfuscate-python.py warns about this harmless tree.
-# Remove it explicitly here just to avoid that needless warning.
-/usr/share/doc/python3-uno/demo
 
 
 ## Useless & confusing menu items SHOULD be hidden (#30257)
