@@ -256,7 +256,6 @@
 # From systemd.  FIXME: remove more?
 # NOTE: this is likely to piss me off when debugging!
 *bin/loginctl
-*bin/systemd-analyze
 *bin/systemd-cgls
 *bin/systemd-cgtop
 *bin/systemd-delta
