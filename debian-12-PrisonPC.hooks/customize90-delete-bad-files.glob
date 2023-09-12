@@ -420,7 +420,6 @@
 # This is hidden (NoDisplay=true and Terminal=true), but
 # sounds scary enough to forcibly remove.
 */python*.desktop
-*/mono-runtime*.desktop
 # This lets inmates play .midi files directly.
 # It is mostly harmless, but not needed.
 # timidity is pulled in by openttd.
