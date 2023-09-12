@@ -300,7 +300,6 @@
 /usr/lib/valgrind
 /usr/share/apport
 /usr/share/bug
-/usr/share/dh-python
 /usr/share/gdb
 /usr/share/lintian
 /usr/src
