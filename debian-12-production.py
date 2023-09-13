@@ -2,7 +2,7 @@
 # FIXME: merge this "preset" and "loop" functionality into main.py
 
 import subprocess
-import datetime
+
 for template in (
         'understudy',
         'tvserver',
@@ -10,8 +10,7 @@ for template in (
         'desktop-inmate-amc',
         'desktop-inmate-amc-library'):
     subprocess.check_call([
-        './debian-11-main.py',
-        '--remove',
+        './debian-12-main.py',
         # Hard-code $LANG and $TZ instead of inheriting from build host.
         '--LANG', 'en_AU.UTF-8', '--TZ', 'Australia/Canberra',
         '--netboot-only',       # no ISO/USB
@@ -20,6 +19,6 @@ for template in (
         *(['--physical-only']
           if template != 'desktop-staff-amc' else []),
         '--ssh=openssh-server',  # PrisonPC needs this
-        f'--reproducible={datetime.date.today()}',
+        '--production',
         '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
         '--template', template])
