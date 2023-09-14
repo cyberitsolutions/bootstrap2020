@@ -21,4 +21,6 @@ for args in [
         '--netboot-only',       # no ISO/USB
         '--ssh=openssh-server',  # PrisonPC needs this
         '--production',
-        '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com'])
+        '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
+        *args,
+    ])
