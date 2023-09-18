@@ -1,0 +1,363 @@
+bash5$ ./debian-12-main.py --virtual --local --boot --backdoor
+W: debian-12-main.hooks/customize90-check-support-status.grepF is named like a hook but not executable
+W: debian-12-main.hooks/customize90-abort-on-unexpected-xattrs.grepF is named like a hook but not executable
+I: automatically chosen mode: unshare
+I: chroot architecture amd64 is equal to the host's architecture
+I: finding correct signed-by value...
+done
+I: automatically chosen format: tar
+I: using /tmp/mmdebstrap.fARKWUm5RF as tempdir
+I: running apt-get update...
+done
+I: downloading packages with apt...
+done
+I: extracting archives...
+done
+I: installing essential packages...
+done
+I: running --essential-hook in shell: sh -c '{ echo tzdata tzdata/Areas select Australia; echo tzdata tzdata/Zones/Australia select Melbourne; echo locales locales/default_environment_locale select en_AU.UTF-8; echo locales locales/locales_to_be_generated multiselect en_AU.UTF-8 UTF-8;} | chroot $1 debconf-set-selections' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running special hook: tar-in /tmp/bootstrap2020-f7dtxfig/ssh.tar /
+I: running special hook: tar-in /tmp/bootstrap2020-f7dtxfig/debian-12-main.files.tar /
+I: running --essential-hook directly: debian-12-main.hooks/essential10-apt-clean.py /tmp/mmdebstrap.fARKWUm5RF
+I: installing remaining packages inside the chroot...
+done
+done
+done
+done
+done
+I: running --customize-hook directly: debian-12-main.hooks/customize10-apt-clean.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize50-dynamic-dns-resolv-conf.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize50-dynamic-hostid.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize50-dynamic-hostname.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize50-dynamic-ssh-host-keys.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize90-abort-on-missing-microcode.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize90-abort-on-unexpected-upgrade.py /tmp/mmdebstrap.fARKWUm5RF
+Check for expected upgrades...
+qemu-guest-agent/stable-backports 1:8.0.4+dfsg-1~bpo12+1 amd64 [upgradable from: 1:7.2+dfsg-7+deb12u1]
+Check for unexpected upgrades...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+I: running --customize-hook directly: debian-12-main.hooks/customize90-abort-on-unexpected-xattrs.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook directly: debian-12-main.hooks/customize90-check-support-status.py /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook in shell: sh -c 'echo root: | chroot $1 chpasswd --crypt-method=NONE' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook in shell: sh -c 'chroot $1 adduser x --gecos x --disabled-password --quiet' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook in shell: sh -c 'echo x:x | chroot $1 chpasswd' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook in shell: sh -c 'echo kernel.yama.ptrace_scope=0 >>$1/etc/sysctl.d/zz-allow-strace.conf' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook in shell: sh -c 'chronic chroot $1 systemctl preset-all' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running --customize-hook in shell: sh -c 'chronic chroot $1 systemctl preset-all --user --global' exec /tmp/mmdebstrap.fARKWUm5RF
+I: running special hook: download /var/lib/dpkg/status /tmp/bootstrap2020-f7dtxfig/main-2023-09-18-1695021468/dpkg.status
+I: running special hook: download vmlinuz /tmp/bootstrap2020-f7dtxfig/main-2023-09-18-1695021468/vmlinuz
+I: running special hook: download initrd.img /tmp/bootstrap2020-f7dtxfig/main-2023-09-18-1695021468/initrd.img
+I: running --customize-hook in shell: sh -c 'rmdir $1/var/log/journal && mkdir $1/var/log/journal' exec /tmp/mmdebstrap.fARKWUm5RF
+I: cleaning package lists and apt cache...
+done
+done
+I: creating tarball...
+I: done
+I: removing tempdir /tmp/mmdebstrap.fARKWUm5RF...
+I: success in 53.2728 seconds
+139M	main-2023-09-18-1695021468/filesystem.squashfs
+24M	main-2023-09-18-1695021468/initrd.img
+16M	main-2023-09-18-1695021468/vmlinuz
+168K	main-2023-09-18-1695021468/dpkg.status
+178M	main-2023-09-18-1695021468
+qemu-system-x86_64: warning: nic virtio-net-pci.1 has no peer
+cSeaBIOS (version 1.16.2-debian-1.16.2-1)
+
+
+iPXE (http://ipxe.org) 00:01.0 C000 PCI2.10 PnP PMM+1EFCEBF0+1EF0EBF0 C000
+                                                                               
+
+
+
+
+iPXE (http://ipxe.org) 00:03.0 C100 PCI2.10 PnP PMM 1EFCEBF0 1EF0EBF0 C100
+                                                                               
+
+
+Booting from ROM...
+PPrroobbiinngg  EEDDDD  ((eedddd==ooffff  ttoo  ddiissaabbllee))......  ook
+c[    0.000000] Linux version 6.4.0-0.deb12.2-cloud-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.4.4-3~bpo12+1 (2023-08-08)
+[    0.000000] Command line: boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs earlyprintk=ttyS0 console=ttyS0 TERM=dumb loglevel=1 
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x000000001ffdbfff] usable
+[    0.000000] BIOS-e820: [mem 0x000000001ffdc000-0x000000001fffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000b0000000-0x00000000bfffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fed1c000-0x00000000fed1ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000feffc000-0x00000000feffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved
+[    0.000000] printk: bootconsole [earlyser0] enabled
+Memory KASLR using RDRAND RDTSC...
+Poking KASLR using RDRAND RDTSC...
+Loading, please wait...
+Starting systemd-udevd version 252.16-1~deb12u1
+Begin: Loading essential drivers ... done.
+Begin: Running /scripts/init-premount ... done.
+Begin: Mounting root file system ... Begin: Running /scripts/live-top ... done.
+Begin: Running /scripts/live-premount ... done.
+done.
+Begin: Running /scripts/live-bottom ... done.
+Begin: Running /scripts/init-bottom ... done.
+
+Welcome to Debian GNU/Linux 12 (bookworm)!
+
+[  OK  ] Created slice system-getty.slice - Slice /system/getty.
+[  OK  ] Created slice system-modprobe.slice - Slice /system/modprobe.
+[  OK  ] Created slice system-serial\x2dgett…lice - Slice /system/serial-getty.
+[  OK  ] Created slice user.slice - User and Session Slice.
+[  OK  ] Started systemd-ask-password-consol…quests to Console Directory Watch.
+[  OK  ] Started systemd-ask-password-wall.p… Requests to Wall Directory Watch.
+[  OK  ] Set up automount proc-sys-fs-binfmt…rmats File System Automount Point.
+[  OK  ] Reached target cryptsetup.target - Local Encrypted Volumes.
+[  OK  ] Reached target integritysetup.targe…Local Integrity Protected Volumes.
+[  OK  ] Reached target paths.target - Path Units.
+[  OK  ] Reached target remote-cryptsetup.target - Remote Encrypted Volumes.
+[  OK  ] Reached target remote-fs.target - Remote File Systems.
+[  OK  ] Reached target remote-veritysetup.t…- Remote Verity Protected Volumes.
+[  OK  ] Reached target slices.target - Slice Units.
+[  OK  ] Reached target swap.target - Swaps.
+[  OK  ] Reached target veritysetup.target - Local Verity Protected Volumes.
+[  OK  ] Listening on systemd-initctl.socket… initctl Compatibility Named Pipe.
+[  OK  ] Listening on systemd-journald-audit.socket - Journal Audit Socket.
+[  OK  ] Listening on systemd-journald-dev-l…ocket - Journal Socket (/dev/log).
+[  OK  ] Listening on systemd-journald.socket - Journal Socket.
+[  OK  ] Listening on systemd-networkd.socket - Network Service Netlink Socket.
+[  OK  ] Listening on systemd-udevd-control.socket - udev Control Socket.
+[  OK  ] Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+         Mounting dev-hugepages.mount - Huge Pages File System...
+         Mounting dev-mqueue.mount - POSIX Message Queue File System...
+         Mounting sys-kernel-debug.mount - Kernel Debug File System...
+         Mounting sys-kernel-tracing.mount - Kernel Trace File System...
+         Starting kmod-static-nodes.service …ate List of Static Device Nodes...
+         Starting modprobe@configfs.service - Load Kernel Module configfs...
+         Starting modprobe@dm_mod.service - Load Kernel Module dm_mod...
+         Starting modprobe@drm.service - Load Kernel Module drm...
+         Starting modprobe@efi_pstore.servic…- Load Kernel Module efi_pstore...
+         Starting modprobe@fuse.service - Load Kernel Module fuse...
+         Starting modprobe@loop.service - Load Kernel Module loop...
+         Starting systemd-journald.service - Journal Service...
+         Starting systemd-modules-load.service - Load Kernel Modules...
+         Starting systemd-network-generator.… units from Kernel command line...
+         Starting systemd-remount-fs.service…nt Root and Kernel File Systems...
+         Starting systemd-udev-trigger.service - Coldplug All udev Devices...
+[  OK  ] Mounted dev-hugepages.mount - Huge Pages File System.
+[  OK  ] Mounted dev-mqueue.mount - POSIX Message Queue File System.
+[  OK  ] Mounted sys-kernel-debug.mount - Kernel Debug File System.
+[  OK  ] Mounted sys-kernel-tracing.mount - Kernel Trace File System.
+[  OK  ] Finished kmod-static-nodes.service …reate List of Static Device Nodes.
+[  OK  ] Finished modprobe@configfs.service - Load Kernel Module configfs.
+[  OK  ] Finished modprobe@drm.service - Load Kernel Module drm.
+[  OK  ] Finished modprobe@efi_pstore.service - Load Kernel Module efi_pstore.
+[  OK  ] Finished modprobe@dm_mod.service - Load Kernel Module dm_mod.
+[  OK  ] Finished modprobe@fuse.service - Load Kernel Module fuse.
+[  OK  ] Finished modprobe@loop.service - Load Kernel Module loop.
+[  OK  ] Finished systemd-network-generator.…rk units from Kernel command line.
+[  OK  ] Reached target network-pre.target - Preparation for Network.
+         Mounting sys-fs-fuse-connections.mount - FUSE Control File System...
+         Mounting sys-kernel-config.mount - Kernel Configuration File System...
+[  OK  ] Finished systemd-modules-load.service - Load Kernel Modules.
+[  OK  ] Finished systemd-remount-fs.service…ount Root and Kernel File Systems.
+[  OK  ] Mounted sys-fs-fuse-connections.mount - FUSE Control File System.
+[  OK  ] Mounted sys-kernel-config.mount - Kernel Configuration File System.
+         Starting systemd-random-seed.service - Load/Save Random Seed...
+         Starting systemd-sysctl.service - Apply Kernel Variables...
+         Starting systemd-sysusers.service - Create System Users...
+[  OK  ] Started systemd-journald.service - Journal Service.
+         Starting systemd-journal-flush.serv…h Journal to Persistent Storage...
+[  OK  ] Finished systemd-random-seed.service - Load/Save Random Seed.
+[  OK  ] Finished systemd-journal-flush.serv…ush Journal to Persistent Storage.
+[  OK  ] Finished systemd-udev-trigger.service - Coldplug All udev Devices.
+[  OK  ] Finished systemd-sysctl.service - Apply Kernel Variables.
+[  OK  ] Finished systemd-sysusers.service - Create System Users.
+         Starting systemd-tmpfiles-setup-dev…ate Static Device Nodes in /dev...
+[  OK  ] Finished systemd-tmpfiles-setup-dev…reate Static Device Nodes in /dev.
+[  OK  ] Reached target local-fs-pre.target …reparation for Local File Systems.
+         Starting systemd-udevd.service - Ru…ger for Device Events and Files...
+[  OK  ] Started systemd-udevd.service - Rul…nager for Device Events and Files.
+         Starting systemd-networkd.service - Network Configuration...
+[  OK  ] Found device dev-ttyS0.device - /dev/ttyS0.
+[  OK  ] Started systemd-networkd.service - Network Configuration.
+         Starting systemd-networkd-wait-onli…it for Network to be Configured...
+         Mounting tmp.mount - /tmp...
+[  OK  ] Mounted tmp.mount - /tmp.
+[  OK  ] Reached target local-fs.target - Local File Systems.
+         Starting systemd-binfmt.service - Set Up Additional Binary Formats...
+         Starting systemd-tmpfiles-setup.ser… Volatile Files and Directories...
+         Mounting proc-sys-fs-binfmt_misc.mo…utable File Formats File System...
+[  OK  ] Mounted proc-sys-fs-binfmt_misc.mou…ecutable File Formats File System.
+[  OK  ] Finished systemd-binfmt.service - Set Up Additional Binary Formats.
+[  OK  ] Finished systemd-tmpfiles-setup.ser…te Volatile Files and Directories.
+         Starting systemd-resolved.service - Network Name Resolution...
+         Starting systemd-timesyncd.service - Network Time Synchronization...
+         Starting systemd-update-utmp.servic…rd System Boot/Shutdown in UTMP...
+[  OK  ] Finished systemd-update-utmp.servic…cord System Boot/Shutdown in UTMP.
+[  OK  ] Started systemd-timesyncd.service - Network Time Synchronization.
+[  OK  ] Reached target time-set.target - System Time Set.
+[  OK  ] Started systemd-resolved.service - Network Name Resolution.
+[  OK  ] Reached target network.target - Network.
+[  OK  ] Reached target nss-lookup.target - Host and Network Name Lookups.
+[  OK  ] Reached target sysinit.target - System Initialization.
+[  OK  ] Started apt-daily.timer - Daily apt download activities.
+[  OK  ] Started apt-daily-upgrade.timer - D… apt upgrade and clean activities.
+[  OK  ] Started dpkg-db-backup.timer - Daily dpkg database backup timer.
+[  OK  ] Started fstrim.timer - Discard unused blocks once a week.
+[  OK  ] Started systemd-tmpfiles-clean.time… Cleanup of Temporary Directories.
+[  OK  ] Reached target timers.target - Timer Units.
+[  OK  ] Listening on dbus.socket - D-Bus System Message Bus Socket.
+[  OK  ] Listening on tinysshd.socket - TinySSH server socket.
+[  OK  ] Reached target sockets.target - Socket Units.
+[  OK  ] Reached target basic.target - Basic System.
+         Starting bootstrap2020-ethernet-spe…- Log negotiated ethernet speed...
+         Starting systemd-logind.service - User Login Management...
+         Starting systemd-user-sessions.service - Permit User Sessions...
+         Starting dbus-broker.service - D-Bus System Message Bus...
+[  OK  ] Finished systemd-user-sessions.service - Permit User Sessions.
+[  OK  ] Started getty@tty1.service - Getty on tty1.
+[  OK  ] Started serial-getty@ttyS0.service - Serial Getty on ttyS0.
+[  OK  ] Reached target getty.target - Login Prompts.
+[  OK  ] Finished bootstrap2020-ethernet-spe…e - Log negotiated ethernet speed.
+[  OK  ] Started dbus-broker.service - D-Bus System Message Bus.
+[  OK  ] Started systemd-logind.service - User Login Management.
+         Starting systemd-hostnamed.service - Hostname Service...
+[  OK  ] Started systemd-hostnamed.service - Hostname Service.
+         Starting polkit.service - Authorization Manager...
+[  OK  ] Started polkit.service - Authorization Manager.
+[  OK  ] Finished systemd-networkd-wait-onli…Wait for Network to be Configured.
+[  OK  ] Reached target network-online.target - Network is Online.
+         Starting bootstrap2020-get-config-f…- Get configuration from DNS-SD...
+[  OK  ] Finished bootstrap2020-get-config-f…e - Get configuration from DNS-SD.
+[  OK  ] Started msmtpd.service - msmtp daemon.
+[  OK  ] Reached target multi-user.target - Multi-User System.
+[  OK  ] Reached target graphical.target - Graphical Interface.
+         Starting systemd-update-utmp-runlev… Record Runlevel Change in UTMP...
+[  OK  ] Finished systemd-update-utmp-runlev… - Record Runlevel Change in UTMP.
+
+Debian GNU/Linux 12 main.lan ttyS0
+
+main login: root
+root
+Linux main.lan 6.4.0-0.deb12.2-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.4.4-3~bpo12+1 (2023-08-08) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+root@main:~# poweroff
+poweroff
+root@main:~#          Stopping session-1.scope - Session 1 of User root...
+[  OK  ] Removed slice system-modprobe.slice - Slice /system/modprobe.
+[  OK  ] Stopped target graphical.target - Graphical Interface.
+[  OK  ] Stopped target multi-user.target - Multi-User System.
+[  OK  ] Stopped target getty.target - Login Prompts.
+[  OK  ] Stopped target network-online.target - Network is Online.
+[  OK  ] Stopped target nss-lookup.target - Host and Network Name Lookups.
+[  OK  ] Stopped target remote-cryptsetup.target - Remote Encrypted Volumes.
+[  OK  ] Stopped target remote-veritysetup.t…- Remote Verity Protected Volumes.
+[  OK  ] Stopped target timers.target - Timer Units.
+[  OK  ] Stopped apt-daily-upgrade.timer - D… apt upgrade and clean activities.
+[  OK  ] Stopped apt-daily.timer - Daily apt download activities.
+[  OK  ] Stopped dpkg-db-backup.timer - Daily dpkg database backup timer.
+[  OK  ] Stopped fstrim.timer - Discard unused blocks once a week.
+[  OK  ] Stopped systemd-tmpfiles-clean.time… Cleanup of Temporary Directories.
+[  OK  ] Stopped target time-set.target - System Time Set.
+         Stopping getty@tty1.service - Getty on tty1...
+         Stopping msmtpd.service - msmtp daemon...
+         Stopping polkit.service - Authorization Manager...
+         Stopping serial-getty@ttyS0.service - Serial Getty on ttyS0...
+         Stopping systemd-hostnamed.service - Hostname Service...
+[  OK  ] Stopped systemd-networkd-wait-onlin…Wait for Network to be Configured.
+         Stopping systemd-random-seed.service - Load/Save Random Seed...
+[  OK  ] Stopped getty@tty1.service - Getty on tty1.
+[  OK  ] Stopped serial-getty@ttyS0.service - Serial Getty on ttyS0.
+[  OK  ] Stopped systemd-hostnamed.service - Hostname Service.
+[  OK  ] Stopped polkit.service - Authorization Manager.
+[  OK  ] Stopped msmtpd.service - msmtp daemon.
+[  OK  ] Stopped systemd-random-seed.service - Load/Save Random Seed.
+[  OK  ] Stopped session-1.scope - Session 1 of User root.
+[  OK  ] Removed slice system-getty.slice - Slice /system/getty.
+[  OK  ] Removed slice system-serial\x2dgett…lice - Slice /system/serial-getty.
+         Stopping systemd-logind.service - User Login Management...
+         Stopping systemd-user-sessions.service - Permit User Sessions...
+         Stopping user@0.service - User Manager for UID 0...
+[  OK  ] Stopped systemd-user-sessions.service - Permit User Sessions.
+[  OK  ] Stopped target network.target - Network.
+[  OK  ] Stopped target remote-fs.target - Remote File Systems.
+         Stopping systemd-networkd.service - Network Configuration...
+[  OK  ] Stopped user@0.service - User Manager for UID 0.
+[  OK  ] Stopped systemd-networkd.service - Network Configuration.
+[  OK  ] Stopped systemd-logind.service - User Login Management.
+[  OK  ] Stopped target network-pre.target - Preparation for Network.
+[  OK  ] Stopped systemd-network-generator.s…rk units from Kernel command line.
+         Stopping user-runtime-dir@0.service…r Runtime Directory /run/user/0...
+[  OK  ] Unmounted run-user-0.mount - /run/user/0.
+[  OK  ] Stopped user-runtime-dir@0.service …ser Runtime Directory /run/user/0.
+[  OK  ] Removed slice user-0.slice - User Slice of UID 0.
+[  OK  ] Stopped target basic.target - Basic System.
+[  OK  ] Stopped target paths.target - Path Units.
+[  OK  ] Stopped target slices.target - Slice Units.
+[  OK  ] Removed slice user.slice - User and Session Slice.
+[  OK  ] Stopped target sockets.target - Socket Units.
+[  OK  ] Closed systemd-networkd.socket - Network Service Netlink Socket.
+[  OK  ] Closed tinysshd.socket - TinySSH server socket.
+         Stopping dbus-broker.service - D-Bus System Message Bus...
+[  OK  ] Stopped dbus-broker.service - D-Bus System Message Bus.
+[  OK  ] Closed dbus.socket - D-Bus System Message Bus Socket.
+[  OK  ] Stopped target sysinit.target - System Initialization.
+[  OK  ] Stopped target cryptsetup.target - Local Encrypted Volumes.
+[  OK  ] Stopped systemd-ask-password-consol…quests to Console Directory Watch.
+[  OK  ] Stopped systemd-ask-password-wall.p… Requests to Wall Directory Watch.
+[  OK  ] Stopped target integritysetup.targe…Local Integrity Protected Volumes.
+[  OK  ] Stopped target veritysetup.target - Local Verity Protected Volumes.
+         Stopping systemd-binfmt.service - Set Up Additional Binary Formats...
+         Stopping systemd-resolved.service - Network Name Resolution...
+[  OK  ] Stopped systemd-sysctl.service - Apply Kernel Variables.
+[  OK  ] Stopped systemd-modules-load.service - Load Kernel Modules.
+         Stopping systemd-timesyncd.service - Network Time Synchronization...
+         Stopping systemd-update-utmp.servic…rd System Boot/Shutdown in UTMP...
+[  OK  ] Unmounted run-credentials-systemd\x…redentials/systemd-sysctl.service.
+[  OK  ] Stopped systemd-resolved.service - Network Name Resolution.
+[  OK  ] Stopped systemd-timesyncd.service - Network Time Synchronization.
+[  OK  ] Stopped systemd-binfmt.service - Set Up Additional Binary Formats.
+[  OK  ] Unset automount proc-sys-fs-binfmt_…rmats File System Automount Point.
+[  OK  ] Stopped systemd-update-utmp.service…cord System Boot/Shutdown in UTMP.
+[  OK  ] Stopped systemd-tmpfiles-setup.serv…te Volatile Files and Directories.
+[  OK  ] Stopped target local-fs.target - Local File Systems.
+         Unmounting run-credentials-systemd\…ntials/systemd-sysusers.service...
+         Unmounting run-credentials-systemd\…/systemd-tmpfiles-setup.service...
+         Unmounting run-credentials-systemd\…temd-tmpfiles-setup-dev.service...
+         Unmounting run-live-medium.mount - /run/live/medium...
+         Unmounting run-live-overlay.mount - /run/live/overlay...
+         Unmounting run-live-rootfs-filesyst…t - /run/live/rootfs/filesystem...
+         Unmounting tmp.mount - /tmp...
+         Unmounting usr-lib-live-mount-mediu…nt - /usr/lib/live/mount/medium...
+         Unmounting usr-lib-live-mount-overl…t - /usr/lib/live/mount/overlay...
+         Unmounting usr-lib-live-mount-rootf…ib/live/mount/rootfs/filesystem...
+[  OK  ] Unmounted run-credentials-systemd\x…dentials/systemd-sysusers.service.
+[  OK  ] Unmounted run-credentials-systemd\x…ls/systemd-tmpfiles-setup.service.
+[  OK  ] Unmounted run-credentials-systemd\x…ystemd-tmpfiles-setup-dev.service.
+[  OK  ] Unmounted run-live-medium.mount - /run/live/medium.
+[  OK  ] Unmounted run-live-overlay.mount - /run/live/overlay.
+[  OK  ] Unmounted run-live-rootfs-filesyste…unt - /run/live/rootfs/filesystem.
+[  OK  ] Unmounted tmp.mount - /tmp.
+[  OK  ] Unmounted usr-lib-live-mount-medium…ount - /usr/lib/live/mount/medium.
+[  OK  ] Unmounted usr-lib-live-mount-overla…unt - /usr/lib/live/mount/overlay.
+[  OK  ] Unmounted usr-lib-live-mount-rootfs…/lib/live/mount/rootfs/filesystem.
+         Unmounting usr-lib-live-mount.mount - /usr/lib/live/mount...
+[  OK  ] Unmounted usr-lib-live-mount.mount - /usr/lib/live/mount.
+[  OK  ] Stopped target local-fs-pre.target …reparation for Local File Systems.
+[  OK  ] Stopped target swap.target - Swaps.
+[  OK  ] Reached target umount.target - Unmount All Filesystems.
+[  OK  ] Stopped systemd-tmpfiles-setup-dev.…reate Static Device Nodes in /dev.
+[  OK  ] Stopped systemd-sysusers.service - Create System Users.
+[  OK  ] Stopped systemd-remount-fs.service …ount Root and Kernel File Systems.
+[  OK  ] Reached target shutdown.target - System Shutdown.
+[  OK  ] Reached target final.target - Late Shutdown Services.
+[  OK  ] Finished systemd-poweroff.service - System Power Off.
+[  OK  ] Reached target poweroff.target - System Power Off.
+[   15.363494] reboot: Power down
