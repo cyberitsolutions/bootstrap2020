@@ -372,9 +372,11 @@ def do_boot_test():
             *(['--nographic', '--vga', 'none']
               if not template.startswith('desktop') else
               ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
-            '--net', 'nic,model=virtio',
-            '--net', ','.join([
-                'user',
+            '--device', 'virtio-net-pci,netdev=OutclassMountingBoggle',
+            '--device', 'virtio-net-pci',  # unused second NIC
+            '--netdev', ','.join([
+                'id=OutclassMountingBoggle',
+                'type=user',
                 f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
                 f'hostname={template}.{domain}',
                 f'dnssearch={domain}',
@@ -389,7 +391,6 @@ def do_boot_test():
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
                    for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
                   if port_forward_bullshit else [])]),
-            '--device', 'virtio-net-pci',  # second NIC; not plugged in
             *(['--kernel', testdir / 'vmlinuz',
                '--initrd', testdir / 'initrd.img',
                '--append', ' '.join([
