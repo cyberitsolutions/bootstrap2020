@@ -12,30 +12,50 @@
 #
 # NOTE: pxelinux.0 adds BOOTIF= to /proc/cmdline when pxelinux.cfg contains IPAPPEND 2.
 #
-# NOTE: systemd-network-generator understands ifname= (not BOOTIF=) so we can't use it.
-
-[ prereqs = "$1" ] && exit      # do nothing at ramdisk build time
-[ -n "$BOOTIF" ] || exit  # do nothing unless BOOTIF= in /proc/cmdline
-
+#       systemd-network-generator understands ifname= (not BOOTIF=) so we can't use it.
+#
+#       ipxe.efi doesn't set BOOTIF= nor ifname= nor anything else, so
+#       now we look at /usr/lib/klibc/bin/ipconfig's output statefiles.
+#
+#       Therefore for now look for klibc-utils ipconfig output.
+#
+#       This will break if our ramdisk stops using klibc-utils ipconfig, but
+#       that is unlikely to happen until someone makes live-boot work on a 'pure systemd' initrd.
+#       And when that happens, systemd-networkd will be the DHCP client in the initrd, and
+#       rootfs systemd-networkd can probably be trusted to correctly receive config from initrd systemd-networkd.
+#
 # NOTE: I tried putting this into /run/systemd/network, but systemd-networkd v247 just ignored it.
-mkdir -p /root/etc/systemd/network/50-bootstrap2020.network.d
-cat     >/root/etc/systemd/network/50-bootstrap2020.network.d/inherit-pxelinux-nic.conf <<-EOF
-[Match]
-MACAddress=${BOOTIF#01-}
-EOF
-
-cat     >/root/etc/systemd/network/50-bootstrap2020.network.d/my-rootfs-is-on-this.conf <<-EOF
-# Tell systemd-network that we need this iface to access our root filesystem.
-# Without this, systemd-networkd lowers the interface at shutdown time,
-# then can't find the /sbin/shutdown program to do the final shutdown/reboot!
-# NOTE: in systemd v243 DHCP.CriticalConnection became Network.KeepConnection
-# NOTE: in systemd v243 you can see "yes" (dhcp|static) or simply "dhcp".
+#
+# NOTE: KeepConfiguration= tells systemd-network that we need this iface to access our root filesystem.
+#       Without this, systemd-networkd lowers the interface at shutdown time,
+#       then can't find the /sbin/shutdown program to do the final shutdown/reboot!
+#
+#       In systemd v243 DHCP.CriticalConnection became Network.KeepConnection
+#
+#       In systemd v243 you can see "yes" (dhcp|static) or simply "dhcp".
 #       As we do not use static configuration, downgrade this to "dhcp".
 #       Hopefully it will nerf this warning?
 #           23	admin	systemd-networkd	enp1s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
 #           36	admin	systemd-networkd	enp2s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
 #           7	inmate	systemd-networkd	enp1s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
 #           202	inmate	systemd-networkd	enp2s0: DHCPv4 connection considered critical, ignoring request to reconfigure it.
-[Network]
-KeepConfiguration=dhcp
-EOF
+#
+# NOTE: If we are NOT booting off the network, then
+#       there will be no netconfig-*.config files at all.
+#       sed will probably exit, but we do not care.
+#
+#       If ipconfig manages to create multiple files, MEH.
+#       In that case sed will print multiple MACs and
+#       systemd-networkd will use all matching ones.
+#
+#       The "2>/dev/null" is to hide this error.
+#       (dash lacks nullglob features, and hand-rolling ad-hoc code for that isn't worth it.)
+
+[ prereqs = "$1" ] && exit      # do nothing at ramdisk build time
+
+mkdir -p /root/etc/systemd/network/50-bootstrap2020.network.d
+sed -rn \
+    's/^IP-Config: .* hardware address ([0-9a-fA-F:]+) .*/[Match]\nMACAddress=\1\n[Network]\nKeepConfiguration=dhcp/p' \
+    /netboot-*.config \
+    >/root/etc/systemd/network/50-bootstrap2020.network.d/inherit-ipconfig-nic.conf \
+    2>/dev/null
