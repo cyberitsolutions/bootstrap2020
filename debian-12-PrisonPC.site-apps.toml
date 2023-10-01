@@ -12,7 +12,7 @@ applications = ["nwipe"]
 [desktop]
 applications = [
     # Browser
-    "chromium", "chromium-l10n",
+    "microsoft-edge-stable",
     # Core office suite (word processor, spreadsheet, slideshow)
     "libreoffice-calc", "libreoffice-impress", "libreoffice-writer", "libreoffice-math",
     # Stuff to make office work better

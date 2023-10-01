@@ -756,6 +756,7 @@ for template in args.templates:
              'bookworm',
              destdir / 'filesystem.squashfs',
              'debian-12.sources',
+             'debian-12-microsoft-edge.sources',
              *(['debian-12-PrisonPC-desktop.sources']
                if template.startswith('desktop-staff') or template.startswith('desktop-inmate') else []),
              # For cyber-zfs-backup (understudy) and tv-grab-dvb (tvserver)
