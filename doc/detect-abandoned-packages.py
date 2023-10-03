@@ -51,8 +51,10 @@ with pathlib.Path('detect-abandoned-packages.tsv').open('w') as f:
                  '--file', path,
                  '--show-field', field_name],
                 text=True).strip()
+        age = (datetime.datetime.now() -
+               datetime.datetime.fromtimestamp(
+                   int(field('Timestamp'))))
         tsv.writerow({
             'Binary package name': path.parent.name,
             'Source package name': field('Source'),
-            'Last Debian change': datetime.datetime.fromtimestamp(
-                int(field('Timestamp')))})
+            'Last Debian change': f'{age.days} days ago'})
