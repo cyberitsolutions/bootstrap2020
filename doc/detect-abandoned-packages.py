@@ -7,7 +7,7 @@ import subprocess
 
 __documentation__ = """ detect packages with no upstream/Debian updates for 5+ years
 
-Such packages are probably full of sercurity issues and /de facto/
+Such packages are probably full of security issues and /de facto/
 abandoned, but they do not get removed from Debian until they someone
 notices, since there's no explicit FTBFS failures for packages once
 built, except maybe when a new arch is added, or a major library
