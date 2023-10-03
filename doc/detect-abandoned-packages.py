@@ -45,15 +45,12 @@ with pathlib.Path('detect-abandoned-packages.tsv').open('w') as f:
 
         # No dpkg-parsechangelog --format=json, so
         # get each field separately -- sigh.
-        def field(f):
-            with subprocess.Popen(
-                    ['zcat', path], stdout=subprocess.PIPE) as zcat_proc:
-                return subprocess.check_output(
-                    ['dpkg-parsechangelog',
-                     '--file=-',
-                     '--show-field', f],
-                    # text=True,
-                    stdin=zcat_proc.stdout).decode().strip()
+        def field(field_name):
+            return subprocess.check_output(
+                ['dpkg-parsechangelog',
+                 '--file', path,
+                 '--show-field', field_name],
+                text=True).strip()
         tsv.writerow({
             'Binary package name': path.parent.name,
             'Source package name': field('Source'),
