@@ -1,0 +1,7 @@
+# -*-conf-*-
+# 16:56 <twb> Remind me: which package gets the usr/lib/*/*.a and *.la files?
+# 16:56 <pabs> bin them I think
+# 16:57 <pabs> unless you care about static linking, then keep the .a
+# 16:57 <pabs> .la I think gets binned always
+usr/lib/*/lib*.a
+usr/lib/*/lib*.la

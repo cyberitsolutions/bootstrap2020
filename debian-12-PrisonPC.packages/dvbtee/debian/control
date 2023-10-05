@@ -1,0 +1,61 @@
+Source: dvbtee
+Section: video
+Priority: optional
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ libdvbpsi-dev,
+ libhdhomerun-dev,
+ libcurl4-openssl-dev | libcurl-dev,
+ pkgconf,
+Standards-Version: 4.5.1
+Homepage: https://github.com/mkrufky/libdvbtee
+
+Package: dvbtee
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: digital television streamer / parser / service information aggregator
+ libdvbtee is a stream parser and service information aggregator library for
+ MPEG2 transport streams.  The library includes a program service information
+ (PSI) parser and support for various network streaming methods and is aware of
+ the linux-dvb kernel API as well as HDHomeRun network streaming APIs.
+ .
+ The library contains enough functionality to power a full featured television
+ middleware application, including the ability to acquire and stream data
+ through UDP, TCP, HTTP, DMA and various other mechanisms.
+
+Package: libdvbtee-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends:
+ libdvbtee0 (= ${binary:Version}),
+ ${misc:Depends},
+Description: digital television streamer / parser / service information aggregator
+ libdvbtee is a stream parser and service information aggregator library for
+ MPEG2 transport streams.  The library includes a program service information
+ (PSI) parser and support for various network streaming methods and is aware of
+ the linux-dvb kernel API as well as HDHomeRun network streaming APIs.
+ .
+ The library contains enough functionality to power a full featured television
+ middleware application, including the ability to acquire and stream data
+ through UDP, TCP, HTTP, DMA and various other mechanisms.
+
+Package: libdvbtee0
+Architecture: any
+Multi-Arch: same
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: digital television streamer / parser / service information aggregator
+ libdvbtee is a stream parser and service information aggregator library for
+ MPEG2 transport streams.  The library includes a program service information
+ (PSI) parser and support for various network streaming methods and is aware of
+ the linux-dvb kernel API as well as HDHomeRun network streaming APIs.
+ .
+ The library contains enough functionality to power a full featured television
+ middleware application, including the ability to acquire and stream data
+ through UDP, TCP, HTTP, DMA and various other mechanisms.
