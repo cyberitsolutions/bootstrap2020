@@ -186,7 +186,7 @@ def exactly_one(xs):
 def parse_crid(event_obj, kind, fallback_value):
     magic = {'item': 'c4', 'series': 'c8'}[kind]
     if values := event_obj.xpath(f'./DESC[@id="0x76"]/@value[starts-with(., "{magic}")][not(starts-with(., "{magic}00"))]'):
-        return binascii.unhexlify(exactly_one(values))[2:]
+        return binascii.unhexlify(exactly_one(values))[2:].decode('UTF-8')
     else:
         return fallback_value
 
