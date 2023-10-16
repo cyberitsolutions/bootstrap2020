@@ -1,5 +1,0 @@
-# The actual upstream is a svn repo with no source tarball.
-# It has not changed between 2007 and 2022.
-# This is just meant to make build-misc.py less whingy.
-version=4
-opts="mode=svn" https://www.darkskiez.co.uk/svn/tv_grab_dvb/trunk HEAD
