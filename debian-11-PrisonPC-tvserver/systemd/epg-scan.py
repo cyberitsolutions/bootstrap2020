@@ -236,7 +236,13 @@ else:
         raise RuntimeError('No service IDs found?')
     programmes = []
     for service_id in service_ids:
-        programmes += get_programmes(dvblastctl('get_eit_schedule', service_id))
+        try:
+            programmes += get_programmes(dvblastctl('get_eit_schedule', service_id))
+        except subprocess.CalledProcessError as e:
+            # SBS Melbourne's SID 805 and SID 806 have no EPG data.
+            # Downgrade this from "halt and catch fire" to "whinge".
+            # Otherwise we would lose EPG for *all* of SBS.
+            logging.warning('%s', e)
 
 with tvserver.cursor() as cur:
 
