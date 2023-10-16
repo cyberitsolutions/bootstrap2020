@@ -216,7 +216,7 @@ def get_programmes(obj):
                     fallback_value=f'crid://PrisonPC/{title}'),
                 'crid_item': parse_crid(
                     event_obj, kind='item',
-                    fallback_value=f'crid://PrisonPC/{start}/{title}')})
+                    fallback_value=f'crid://PrisonPC/{title}/{start}')})
     return programmes
 
 
