@@ -1,9 +1,5 @@
 name = "usr/sbin/tvserver-epg-scan"
 include = [
     "python3-lxml",
-    # NOTE: tv-grab-dvb is in-house packaging!
-    # https://github.com/cyberitsolutions/bootstrap2020/commits/main/debian-11-PrisonPC.packages/tv-grab-dvb/debian
-    # https://github.com/cyberitsolutions/bootstrap2020/commits/twb/debian-12-PrisonPC.packages/tv-grab-dvb/debian
-    # tv-grab-dvb: tv_grab_dvb
-    "tv-grab-dvb"
+    "dvblast"
 ]
