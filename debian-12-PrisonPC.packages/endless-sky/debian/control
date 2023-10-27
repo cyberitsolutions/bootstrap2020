@@ -16,6 +16,12 @@ Build-Depends: debhelper-compat (= 13),
  libopenal-dev,
  libmad0-dev,
  uuid-dev,
+# FIXME: this package STILL fails to build when I enable unit tests, but
+#        the tests that fail are the ones that need a GUI?
+#        The unit tests take, like, hours, so I gave up waiting.
+#        --twb, October 2023
+ xvfb <!nocheck>,
+ xauth <!nocheck>,
 
 Package: endless-sky
 Architecture: any
