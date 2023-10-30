@@ -39,5 +39,5 @@ subprocess.run(
     check=True,
     text=True,
     input='''
-    GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE stations, channels, programmes TO "myapp";
+    GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE stations, channels, programmes, statuses TO "myapp";
     ''')
