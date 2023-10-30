@@ -293,7 +293,7 @@ with tempfile.TemporaryDirectory() as td_str:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
-         '--include=nginx-light postgresql postgresql-contrib python3-fastapi uvicorn',
+         '--include=nginx-light postgresql postgresql-contrib python3-fastapi uvicorn python3-psycopg2 libnss-systemd',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'

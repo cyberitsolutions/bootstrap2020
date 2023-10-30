@@ -21,3 +21,23 @@ for dbname in {'epg', 'prisonpc', 'tca'}:
              '&& runuser -u postgres -- createdb', dbname,
              '&& runuser -u postgres -- pg_restore --no-privileges --dbname', dbname],
             stdin=source_proc.stdout)
+
+# myapp.service has User= DynamicUser=yes.
+# That means it spins up a new UID each time, and
+# while it is running, that UID reverse-resolves back to "myapp".
+# (As long as libnss-systemd is installed.)
+# So we need to tell postgres to know that "myapp" exists and
+# is allowed to read from some tables.
+subprocess.run(
+    ['ssh', 'root@localhost',
+     '-oPort=2022',
+     '-oStrictHostKeyChecking=no',
+     '-oUserKnownHostsFile=/dev/null',
+     'cd /',            # ∵ runuser doesn't like /root
+     '&& runuser -u postgres -- createuser myapp'
+     '&& runuser -u postgres -- psql epg'],
+    check=True,
+    text=True,
+    input='''
+    GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE stations, channels, programmes TO "myapp";
+    ''')
