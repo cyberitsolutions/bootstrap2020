@@ -293,6 +293,7 @@ with tempfile.TemporaryDirectory() as td_str:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
+         '--include=nginx-light postgresql postgresql-contrib python3-fastapi',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'
@@ -866,7 +867,7 @@ if args.boot_test:
             '--enable-kvm',
             '--machine', 'q35',
             '--cpu', 'host',
-            '-m', '2G' if template_wants_GUI else '512M',
+            '-m', '2G',
             '--smp', '2',
             # no virtio-sound in qemu 6.1 ☹
             '--device', 'ich9-intel-hda', '--device', 'hda-output',
