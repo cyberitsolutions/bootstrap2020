@@ -27,7 +27,8 @@
 #            https://github.com/django/daphne/search?q=systemd
 #            https://github.com/pgjones/hypercorn/search?q=systemd
 
-Type=notify
+## BROKEN -- no systemd support in uvicorn ## Type=notify
+Type=simple
 
 ExecStart=uvicorn myapp:app --fd 3
 StandardError=journal
