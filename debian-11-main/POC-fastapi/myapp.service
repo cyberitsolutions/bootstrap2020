@@ -1,0 +1,74 @@
+[Service]
+
+# FIXME: guvicorn doesn't support systemd sd_notify(READY=1).
+#        It doesn't support socket activation either, but
+#        we can MOSTLY just hard-code it to $LISTEN_FDS.
+#
+#        gunicorn supports it:
+#            https://github.com/benoitc/gunicorn/blob/430dcdd997b955fa1a8569a07d9cdcbac686fb35/gunicorn/systemd.py#L12C1-L12C1
+#        We COULD use gunicorn to front guvicorn, but yuch:
+#
+#            -uvicorn myapp:application --host 0.0.0.0 --port 8080
+#            +gunicorn --bind 0.0.0.0:8000 myapp -w 4 -k uvicorn.workers.UvicornWorker
+#
+# NOTE: upstream examples use --reload.
+#       This just adding inotify hooks for every source file, so
+#       if any of them change, it auto-HUPs itself.
+#       I *DO NOT WANT* that for production instances, where
+#       unexpected source file changes INDICATE AN ATTACK.
+#
+# FIXME: do we EVEN WANT uvicorn?
+#
+#            <twb> mattcen: do you have any preference yet on ASGI servers?
+#            <mattcen> twb: No. I've not dealt with them enough.
+#            <mattcen> uvicorn is the one I've played with, but it's not a preference as much as a "default" in my brain
+#
+#            https://github.com/encode/uvicorn/search?q=systemd
+#            https://github.com/django/daphne/search?q=systemd
+#            https://github.com/pgjones/hypercorn/search?q=systemd
+
+Type=notify
+
+ExecStart=uvicorn myapp:app --fd 3
+StandardError=journal
+NotifyAccess=all
+KillSignal=SIGQUIT
+
+# Tell systemd that we're socket-activated.
+[Unit]
+Requires=myapp.socket
+After=myapp.socket
+[Install]
+Also=myapp.socket
+
+# Security lockdown.
+[Service]
+User=
+Group=
+DynamicUser=yes
+CacheDirectory=%p
+PrivateNetwork=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX
+RestrictNamespaces=yes
+DevicePolicy=closed
+IPAddressDeny=any
+PrivateDevices=yes
+PrivateUsers=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+RestrictRealtime=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+UMask=0077
+ProtectHostname=yes
+ProcSubset=pid

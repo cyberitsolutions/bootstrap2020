@@ -293,7 +293,7 @@ with tempfile.TemporaryDirectory() as td_str:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
-         '--include=nginx-light postgresql postgresql-contrib python3-fastapi',
+         '--include=nginx-light postgresql postgresql-contrib python3-fastapi uvicorn',
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'
@@ -884,6 +884,7 @@ if args.boot_test:
                 f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
                 f'hostname={args.template}.{domain}',
                 f'dnssearch={domain}',
+                f'hostfwd=tcp::8000-:80',  # route 8000 to the guest's http
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template_wants_PrisonPC else []),
