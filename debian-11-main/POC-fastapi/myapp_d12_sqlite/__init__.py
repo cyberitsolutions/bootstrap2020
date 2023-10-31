@@ -418,3 +418,9 @@ def create_realm(realm: Realm) -> None:
 def read_hosts() -> list[Host]:
     with session() as sess:
         return sess.exec(sqlmodel.select(Host)).all()
+
+
+@app.get('/cups_jobs/latest')
+def read_cups_jobs() -> CupsJob:
+    with session() as sess:
+        return sess.exec(sqlmodel.select(CupsJob).order_by(CupsJob.ts.desc()).limit(1)).one()
