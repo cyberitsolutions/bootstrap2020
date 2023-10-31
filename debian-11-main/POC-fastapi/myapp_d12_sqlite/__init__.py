@@ -373,3 +373,48 @@ def session():
         # https://docs.sqlalchemy.org/en/13/dialects/sqlite.html#foreign-key-support
         sess.exec('PRAGMA foreign_keys = ON')
         yield sess
+
+
+# https://en.wikipedia.org/wiki/CRUD #######################
+
+
+@app.get('/SOEs')
+def read_SOEs() -> list[SOE]:
+    with session() as sess:
+        return sess.exec(sqlmodel.select(SOE)).all()
+
+
+@app.post('/SOEs')
+def create_SOE(soe: SOE) -> SOE:
+    with session() as sess:
+        sess.add(soe)
+        sess.commit()
+        sess.refresh(soe)
+        return soe
+
+
+# NOTE: if you do "-> list[Realm]",
+#       the you CANNOT do somethign like
+#           select(Realm, SOE).join(SOE)
+#       because pydantic knows the SOE doesn't belong.
+#       Also, it does not return a single table like you would expect.
+#       Instead you get [{"Realm": <realm dict>, "SOE": <soe dict>}, ...].
+#       I do not understand why that happens, but it does NOT happen asking for specific fields:
+#       select(Realm.name, SOE.name).join(SOE)
+@app.get('/realms')
+def read_realms() -> list[Realm]:
+    with session() as sess:
+        return sess.exec(sqlmodel.select(Realm)).all()
+
+
+@app.post('/realms')
+def create_realm(realm: Realm) -> None:
+    with session() as sess:
+        sess.add(realm)
+        sess.commit()
+
+
+@app.get('/host')
+def read_hosts() -> list[Host]:
+    with session() as sess:
+        return sess.exec(sqlmodel.select(Host)).all()
