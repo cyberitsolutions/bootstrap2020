@@ -379,13 +379,13 @@ def session():
 
 
 @app.get('/SOEs')
-def read_SOEs() -> list[SOE]:
+async def read_SOEs() -> list[SOE]:
     with session() as sess:
         return sess.exec(sqlmodel.select(SOE)).all()
 
 
 @app.post('/SOEs')
-def create_SOE(soe: SOE) -> SOE:
+async def create_SOE(soe: SOE) -> SOE:
     with session() as sess:
         sess.add(soe)
         sess.commit()
@@ -402,25 +402,25 @@ def create_SOE(soe: SOE) -> SOE:
 #       I do not understand why that happens, but it does NOT happen asking for specific fields:
 #       select(Realm.name, SOE.name).join(SOE)
 @app.get('/realms')
-def read_realms() -> list[Realm]:
+async def read_realms() -> list[Realm]:
     with session() as sess:
         return sess.exec(sqlmodel.select(Realm)).all()
 
 
 @app.post('/realms')
-def create_realm(realm: Realm) -> None:
+async def create_realm(realm: Realm) -> None:
     with session() as sess:
         sess.add(realm)
         sess.commit()
 
 
 @app.get('/host')
-def read_hosts() -> list[Host]:
+async def read_hosts() -> list[Host]:
     with session() as sess:
         return sess.exec(sqlmodel.select(Host)).all()
 
 
 @app.get('/cups_jobs/latest')
-def read_cups_jobs() -> CupsJob:
+async def read_cups_jobs() -> CupsJob:
     with session() as sess:
         return sess.exec(sqlmodel.select(CupsJob).order_by(CupsJob.ts.desc()).limit(1)).one()
