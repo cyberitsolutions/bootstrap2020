@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.9
 __doc__ = """
 USAGE:
     ssh tweak sudo -u postgres python3 - < copy-old-data-to-sqlite3.py >tmp.sql
