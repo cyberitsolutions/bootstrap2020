@@ -73,13 +73,19 @@ class Realm(sqlmodel.SQLModel, table=True):
 class Host(sqlmodel.SQLModel, table=True):
     name: str = sqlmodel.Field(primary_key=True)
     realm_name: str = sqlmodel.Field(foreign_key='realm.name')
-    mac: str                    # FIXME
+    mac: str = sqlmodel.Field(unique=True)  # FIXME: wrong datatype
     ip: int          # FIXME: ipaddress.IPv4Interface, & INET in pg...
     user_group: typing.Optional[str]
     enabled: bool
     last_uid: typing.Optional[str]
     last_ping: typing.Optional[datetime.datetime] = TIMESTAMPTZ_workaround(nullable=True)
     last_boot: typing.Optional[datetime.datetime] = TIMESTAMPTZ_workaround(nullable=True)
+    __table_args__ = (
+        # You cannot have two hosts with "0.0.0.4/32" in the same realm.
+        # This is a stand in for "you can't have two hosts with the same IP address,
+        # where the host's IP address is (host.ip + realm.cidr)".
+        sqlmodel.UniqueConstraint('realm_name', 'ip'),
+    )
 
 # dbname='prisonpc' ########################################
 
