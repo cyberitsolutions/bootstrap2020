@@ -43,7 +43,7 @@ def hostname_or_fqdn_with_optional_user_at(s: str) -> str:
         raise ValueError()
 
 
-def get_site_apps(template: str) -> set:
+def get_site_apps(template: str) -> list:
     "Get long, boring app lists from an .ini (instead of inline in main.py)"
     if not args.apps:
         return []
@@ -239,8 +239,8 @@ def do_boot_test():
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if staff_network else
         ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
-    with tempfile.TemporaryDirectory(dir=destdir) as testdir:
-        testdir = pathlib.Path(testdir)
+    with tempfile.TemporaryDirectory(dir=destdir) as testdir_str:
+        testdir = pathlib.Path(testdir_str)
         validate_unescaped_path_is_safe(testdir)
         for name in {'vmlinuz', 'initrd.img', 'filesystem.squashfs'}:
             (testdir / name).hardlink_to(destdir / name)
@@ -681,8 +681,8 @@ if not apt_proxy:
 
 for template in args.templates:
 
-    with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td:
-        td = pathlib.Path(td)
+    with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td_str:
+        td = pathlib.Path(td_str)
         validate_unescaped_path_is_safe(td)
         destdir = td / f'{template}-{args.now}'
         validate_unescaped_path_is_safe(destdir)

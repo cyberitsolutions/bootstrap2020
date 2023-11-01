@@ -136,8 +136,8 @@ def simplify_number(n, significant_digits=2):
 # List the upsteam Debian popularity.
 # Just use rank for now (smaller is better).
 def crunch_popcon():
-    with tempfile.TemporaryDirectory() as td:
-        td = pathlib.Path(td)
+    with tempfile.TemporaryDirectory() as td_str:
+        td = pathlib.Path(td_str)
         with urllib.request.urlopen('https://popcon.debian.org/by_vote.gz') as f:
             (td / 'x.gz').write_bytes(f.read())
         with gzip.open(td / 'x.gz', mode='rt') as f:
@@ -419,11 +419,11 @@ metapackages = sorted(set(
     if (package_version.source_name in ('debian-edu', 'debian-games', 'debian-science') or
         package_version.package.name in ('kdeedu', 'kdegames', 'gnome-games'))
     if package.name not in package_shitlist))
-with open('/tmp/app-reviews.csv') as f:
-    g = csv.DictReader(f)
+with open('/tmp/app-reviews.csv') as p:
+    q = csv.DictReader(p)
     verdicts = {
         row['Package']: row['Verdict'] or 'TODO'
-        for row in g
+        for row in q
         if row['Package']}
 with open('/var/log/install-footprint.csv', 'w') as f:
     g = csv.writer(f)

@@ -24,8 +24,8 @@ args = parser.parse_args()
 args.target_file.parent.mkdir(parents=True, exist_ok=True)
 with tempfile.TemporaryDirectory(
         dir=args.target_file.parent,
-        prefix='tvserver-record.') as tempdir:
-    tempdir = pathlib.Path(tempdir)
+        prefix='tvserver-record.') as tempdir_str:
+    tempdir = pathlib.Path(tempdir_str)
     try:
         multicat_output = subprocess.check_output(
             ['multicat',

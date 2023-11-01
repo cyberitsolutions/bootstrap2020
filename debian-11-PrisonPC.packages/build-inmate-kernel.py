@@ -107,8 +107,8 @@ args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     subprocess.check_call(
         ['mmdebstrap',
          '--variant=buildd',

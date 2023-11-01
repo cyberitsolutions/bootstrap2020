@@ -17,14 +17,14 @@ os.environ['MAKEFLAGS'] = f'j{processors_online}'
 os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processors_online}'
 
 
-parser = configparser.ConfigParser()
-parser.read('build-inmate-kernel.ini')
+config_parser = configparser.ConfigParser()
+config_parser.read('build-inmate-kernel.ini')
 policy = {'SHOULD': set(),
           'SHOULD NOT': set(),
           'MUST': set(),
           'MUST NOT': set()}
-for section in parser.sections():
-    for key, value_str in parser[section].items():
+for section in config_parser.sections():
+    for key, value_str in config_parser[section].items():
         policy[key.upper()] |= {value.upper()
                                 for value in value_str.split()}
 # Sanity check.

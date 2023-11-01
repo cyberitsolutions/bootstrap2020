@@ -44,8 +44,8 @@ echo '"Boot with default options" "boot=live"' >$1/boot/refind_linux.conf
 mcopy -vspm -i /boot/USB/filesystem.img@@{esp_offset} /boot/EFI /boot/refind_linux.conf /boot/vmlinuz* /boot/initrd.img* ::
 """
 
-with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td_str:
+    td = pathlib.Path(td_str)
     td.chmod(0o0711)           # Let unshare(2) euid access the script
     (td / 'create_disk_image.sh').write_text(create_disk_image_script)
     subprocess.check_call(

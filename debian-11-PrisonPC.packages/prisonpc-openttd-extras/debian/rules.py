@@ -20,8 +20,8 @@ bananas2local = {
 destdir = pathlib.Path('debian/prisonpc-openttd-extras/usr/share/games/openttd')
 for path in {destdir / path for path in bananas2local.values()}:
     path.mkdir(parents=True, exist_ok=True)
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     subprocess.check_call(['wget2', '-P', td, '-i', 'debian/urls', '-x', '-nH'])
     for tar_path in td.glob('*/*/*/*.tar.gz'):
         bananas_dir = tar_path.parent.parent.parent.name  # yuk

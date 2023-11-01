@@ -3,8 +3,8 @@ import tempfile
 import pathlib
 import subprocess
 
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     subprocess.check_call(['yt-dlp', '-o', td / 'test.webm', 'https://youtu.be/BVKEiXNSnB4'])
     (td / 'test.xml').write_text(
         # Taken from http://dvdauthor.sourceforge.net/doc/x35.html

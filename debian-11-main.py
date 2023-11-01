@@ -225,20 +225,20 @@ if subprocess.check_output(
         ' make the /run/systemd/resolve/stub-resolv.conf line run much later.')
 
 # Use a separate declarative file for these long, boring lists.
-parser = configparser.ConfigParser()
-parser.read('debian-11-PrisonPC.site-apps.ini')
+config_parser = configparser.ConfigParser()
+config_parser.read('debian-11-PrisonPC.site-apps.ini')
 if any('applications' != key.lower()
-       for section_dict in parser.values()
+       for section_dict in config_parser.values()
        for key in section_dict):
     raise NotImplementedError('Typo in .ini file?')
 site_apps = {
     package_name
-    for section_name, section_dict in parser.items()
+    for section_name, section_dict in config_parser.items()
     if args.template.startswith(section_name.lower())
     for package_name in section_dict.get('applications', '').split()}
 
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     validate_unescaped_path_is_safe(td)
     # FIXME: use SSH certificates instead, and just trust a static CA!
     authorized_keys_tar_path = td / 'ssh.tar'
@@ -688,8 +688,8 @@ if args.boot_test:
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if template_wants_PrisonPC_staff_network else
         ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
-    with tempfile.TemporaryDirectory(dir=destdir) as testdir:
-        testdir = pathlib.Path(testdir)
+    with tempfile.TemporaryDirectory(dir=destdir) as testdir_str:
+        testdir = pathlib.Path(testdir_str)
         validate_unescaped_path_is_safe(testdir)
         subprocess.check_call(['ln', '-vt', testdir, '--',
                                destdir / 'vmlinuz',

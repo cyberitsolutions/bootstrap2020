@@ -62,8 +62,8 @@ Package = collections.namedtuple('Package', 'name version')
 
 
 def get_packages_one(status_path):
-    with tempfile.TemporaryDirectory() as td:
-        td = pathlib.Path(td)
+    with tempfile.TemporaryDirectory() as td_str:
+        td = pathlib.Path(td_str)
         (td / 'status').write_bytes(
             status_path.read_bytes())
         stdout = subprocess.check_output(

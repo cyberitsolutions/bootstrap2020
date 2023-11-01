@@ -55,12 +55,12 @@ if debug_parse_results:
 print('kName kCode xCode xKey xSym')
 print('===== ===== ===== ==== ====')
 for code, name in linux_code2name.items():
-    line = [name, code]
+    words = [name, code]
     code += 8                   # xorg code = 8 + linux code
     if code in xorg_code2key:
         key = xorg_code2key[code]
-        line += [code, key]
+        words += [code, key]
         if key in xorg_key2sym:
-            line += [xorg_key2sym[key]]
+            words += [xorg_key2sym[key]]
 
-    print(*line, sep='\t')
+    print(*words, sep='\t')

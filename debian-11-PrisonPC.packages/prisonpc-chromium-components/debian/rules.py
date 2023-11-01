@@ -7,8 +7,8 @@ import zipfile
 destdir = pathlib.Path('debian/prisonpc-chromium-components/usr/share/chromium/components/')
 destdir.mkdir(parents=True)
 
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     subprocess.check_call([
         'wget2',
         '--input-file=debian/rules.urls',

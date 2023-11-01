@@ -13,8 +13,8 @@ with tarfile.open(name='NNNNN-udev-audit.tar',
     for package_name in subprocess.check_output(
             ['apt-file', 'search', '--package-only', 'lib/udev/rules.d/'],
             text=True).strip().splitlines():
-        with tempfile.TemporaryDirectory() as td:
-            td = pathlib.Path(td)
+        with tempfile.TemporaryDirectory() as td_str:
+            td = pathlib.Path(td_str)
             subprocess.check_call(['apt', 'download', package_name], cwd=td)
             subprocess.check_call(['dpkg', '-x', *list(td.glob('*.deb')), '.'], cwd=td)
             for path in sorted(list(td.glob('**/lib/udev/rules.d/**/*.rules'))):

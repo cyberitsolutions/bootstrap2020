@@ -32,7 +32,7 @@ args = parser.parse_args()
 
 # These are all things that definitely *aren't*
 # lib/modules/5.16.0-0.bpo.4-amd64/updates/extra/media/pci/saa716x/saa716x_tbs-dvb.ko
-shitlist = '''
+shitlist_str = '''
 ## media_camera_support
 ## media_analog_tv_support
 ## media_radio_support
@@ -75,7 +75,7 @@ shitlist = '''
 
 shitlist = frozenset({
     word.upper()
-    for line in shitlist.splitlines()
+    for line in shitlist_str.splitlines()
     if not line.startswith('#')
     for word in line.split()})
 

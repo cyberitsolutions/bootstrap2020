@@ -160,8 +160,8 @@ UPDATE Dec 2022:
 
 """
 
-with tempfile.TemporaryDirectory() as td:
-    root = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    root = pathlib.Path(td_str)
     dest = pathlib.Path('.')
 
     # Create an empty nssdb keyring.

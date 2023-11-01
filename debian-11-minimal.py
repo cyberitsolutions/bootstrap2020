@@ -30,8 +30,8 @@ esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 live_media_path = 'debian-live'
 
-with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td_str:
+    td = pathlib.Path(td_str)
     subprocess.check_call(
         ['mmdebstrap',
          '--mode=unshare',

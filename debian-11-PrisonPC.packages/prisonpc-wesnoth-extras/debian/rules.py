@@ -12,8 +12,8 @@ addons = frozenset(
 
 destdir = pathlib.Path('debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.14/data/add-ons/')
 destdir.mkdir(exist_ok=True, parents=True)
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     # Download every addon.
     # Use wget2 so we get fast HTTP/2 parallel downloads.
     with (td / 'URLs').open('w') as f:

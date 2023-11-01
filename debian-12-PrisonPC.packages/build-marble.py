@@ -11,8 +11,8 @@ args = parser.parse_args()
 
 apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     apt_sources_including_sources = td / 'debian-12-inc-src.sources'
     apt_sources_including_sources.write_text(
         pathlib.Path('../debian-12.sources').read_text().replace(

@@ -108,8 +108,8 @@ find_stdout = subprocess.check_output(
      'find', '/', '-xdev', '-depth',
      '-print0'],
     text=True)
-for path in find_stdout.strip('\0').split('\0'):
-    path = pathlib.Path(path)
+for path_str in find_stdout.strip('\0').split('\0'):
+    path = pathlib.Path(path_str)
     matching_globs = [
         glob for glob in shitlist
         if path.match(glob)]

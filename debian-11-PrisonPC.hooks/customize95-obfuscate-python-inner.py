@@ -80,8 +80,8 @@ for py_path in pathlib.Path('/usr/lib').glob('python*/**/*.py'):
 def obfuscate_executable(src: pathlib.Path, shebang) -> None:
     compiler = re.match(rb'.*(python[0-9.]*)', shebang).group(1)
     logging.debug('compiling and zipping %s', src)
-    with tempfile.TemporaryDirectory() as td:
-        td = pathlib.Path(td)
+    with tempfile.TemporaryDirectory() as td_str:
+        td = pathlib.Path(td_str)
         py_path = td / '__main__.py'
         pyc_path = td / '__main__.pyc'
         zip_path = td / '__main__.pyc.zip'
@@ -140,8 +140,8 @@ for src in pathlib.Path('/usr/share/inkscape').glob('**/__pycache__/*.cpython-3*
         tree = xml.etree.ElementTree.parse(inx_path)
         command_element, = tree.findall('.//{http://www.inkscape.org/namespace/inkscape/extension}command')
         command_element.text = str(dst.relative_to(inx_path.parent))
-        with inx_path.open('w') as f:
-            tree.write(f, xml_declaration=True, encoding='unicode')
+        with inx_path.open('w') as g:
+            tree.write(g, xml_declaration=True, encoding='unicode')
 
 
 # LibreOffice has about 40 .py files, of which 2 have a __pycache__ already.

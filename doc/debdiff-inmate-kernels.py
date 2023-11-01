@@ -34,8 +34,8 @@ deb_paths = [
                                                     ).glob('*/linux-image-*inmate*_amd64.deb'))))
                                ).stdout.splitlines()]
 
-with tempfile.TemporaryDirectory() as td:
-    td = pathlib.Path(td)
+with tempfile.TemporaryDirectory() as td_str:
+    td = pathlib.Path(td_str)
     manifest_path = td / 'manifest.txt'
     subprocess.check_call(['git', 'init', '--quiet'], cwd=td)
     subprocess.check_call(['git', 'config', 'user.name', 'X'], cwd=td)
