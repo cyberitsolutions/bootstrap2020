@@ -126,7 +126,7 @@ if __name__ == '__main__':
     # dbus.String('kvm', variant_level=1) for VM or
     # dbus.String('', variant_level=1) for physical host.
     if not virtualization_type:
-        logging.notice('Running on physical hardware -- nothing for me to do')
+        logging.info('Running on physical hardware -- nothing for me to do')
         exit()
 
     try:
