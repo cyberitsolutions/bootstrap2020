@@ -37,7 +37,7 @@ with tempfile.TemporaryDirectory(
         # We can't trust multicat to exit(-1)? --twb, Oct 2018
         if any(line.strip()
                for line in multicat_output.splitlines()
-               if not line.startswith('debug')):
+               if not line.startswith(b'debug')):
             raise RuntimeError('multicat succeded, but printed non-debug line(s)', multicat_output)
         subprocess.check_call(
             ['ffmpeg', '-y',
