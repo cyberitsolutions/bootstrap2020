@@ -13,12 +13,9 @@ FIXME: this workaround is only needed for systemd v252.
 # FIXME: for "TERM=x TERM=y", which should win?
 # FIXME: /proc/cmdline might not be UTF-8 clean.
 cmdline = pathlib.Path('/proc/cmdline').read_text()
-try:
-    console, = re.search(r'console=(\w+)', cmdline).groups()
-    term, = re.search(r'(?:systemd.tty.term.console|TERM)=(\w+)', cmdline).groups()
-except AttributeError:
-    logging.debug('Did not find both keys; doing nothing')
-else:
+if ((m := re.search(r'console=(\w+)', cmdline)) and
+    (n := re.search(r'(?:systemd.tty.term.console|TERM)=(\w+)', cmdline))):
+    console, term = m.group(1), n.group(1)
     # FIXME: systemd-escape console
     erratum_path = pathlib.Path(
         f'/run/systemd/generator/serial-getty@{console}.service.d/foo.conf')
@@ -26,3 +23,5 @@ else:
     erratum_path.write_text(
         '[Service]\n'
         f'Environment=TERM={term}\n')
+else:
+    logging.debug('Did not find both keys; doing nothing')

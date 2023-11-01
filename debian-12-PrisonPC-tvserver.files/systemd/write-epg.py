@@ -90,7 +90,10 @@ with tvserver.cursor() as cur:
 
     for programme in programmes:
         channel = programme['channel']
-        sid = int(re.match(r'^(\d+)', channel).group(0))
+        if m := re.match(r'^(\d+)', channel):
+            sid = int(m.group(0))
+        else:
+            raise RuntimeError('No integer in channel "name"?', channel)
         start = programme['start']
         stop = programme['stop']
         title = programme['title'][0][0]

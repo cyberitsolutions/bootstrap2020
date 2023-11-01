@@ -78,7 +78,10 @@ for py_path in pathlib.Path('/usr/lib').glob('python*/**/*.py'):
 
 
 def obfuscate_executable(src: pathlib.Path, shebang) -> None:
-    compiler = re.match(rb'.*(python[0-9.]*)', shebang).group(1)
+    if m := re.match(rb'.*(python[0-9.]*)', shebang):
+        compiler = m.group(1)
+    else:
+        raise RuntimeError('bad shebang?', shebang)
     logging.debug('compiling and zipping %s', src)
     with tempfile.TemporaryDirectory() as td_str:
         td = pathlib.Path(td_str)
