@@ -53,7 +53,7 @@ for path in (args.chroot_path / 'usr/share/applications').glob('**/*.desktop'):
     app = configparser.RawConfigParser()
     # By default "Name[zh_CN]=Fart" becomes "name[zh_cn]" in Python.
     # This definitely breaks xfce4-panel=4.16.2-1, so disable it.
-    app.optionxform = lambda _: _
+    app.optionxform = str       # type: ignore
     app.read(path)
 
     # Rename GenericName[xx] to Name[xx].
