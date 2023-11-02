@@ -230,6 +230,7 @@ for xcd_path in config_root.glob('**/*.xcd'):
     for node in filter_nodes:
         name = node.attrib[f'{{{namespaces["oor"]}}}name']
         flags_node, = node.findall('./prop[@oor:name="Flags"]/value', namespaces=namespaces)
+        assert flags_node.text is not None, 'appease mypy'
         old_flags = set(flags_node.text.split())
         # Remove encryption flags.
         new_flags = old_flags - shit_flags

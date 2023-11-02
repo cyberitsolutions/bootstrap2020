@@ -260,7 +260,7 @@ with tempfile.TemporaryDirectory() as td_str:
             f.seek(0)
             t.addfile(member, f)
 
-    def create_tarball(src_path: pathlib.Path) -> pathlib.Path:
+    def create_tarball(src_path: pathlib.Path | str) -> pathlib.Path:
         src_path = pathlib.Path(src_path)
         assert src_path.exists(), 'The .glob() does not catch this!'
         # FIXME: this can still collide
@@ -835,7 +835,7 @@ if args.boot_test:
                   if template_wants_PrisonPC_or_tvserver else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
-            *(['--kernel', testdir / 'vmlinuz',
+            *(['--kernel', testdir / 'vmlinuz',  # type: ignore
                '--initrd', testdir / 'initrd.img',
                '--append', ' '.join([
                    'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',

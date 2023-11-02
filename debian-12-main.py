@@ -134,6 +134,7 @@ def do_stuff(keyword: str, when: bool = True) -> list:
     toml_path = pathlib.Path(f'debian-12-{keyword}.toml')
     dpkg_path = pathlib.Path(f'debian-12-{keyword}.dpkg.cfg')
     tarball_path = create_tarball(td, files_dir)
+    acc: list[str | pathlib.Path]
     acc = [f'--essential-hook=tar-in {tarball_path} /']
     if hooks_dir.exists():
         acc += [f'--hook-dir={hooks_dir}']

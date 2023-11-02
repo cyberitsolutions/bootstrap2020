@@ -19,6 +19,7 @@ os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processo
 
 config_parser = configparser.ConfigParser()
 config_parser.read('build-inmate-kernel.ini')
+policy: dict[str, set[str]]
 policy = {'SHOULD': set(),
           'SHOULD NOT': set(),
           'MUST': set(),

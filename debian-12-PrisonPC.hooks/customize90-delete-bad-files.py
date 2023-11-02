@@ -235,6 +235,7 @@ paths = [
     pathlib.Path(path)
     for path in stdout.strip('\0').split('\0')
     if path]          # ∵ ''.split() == [], but ''.split('x') == ['']!
+ever_matching_globs: set[pathlib.Path]
 ever_matching_globs = set()
 for path in paths:
     if matching_globs := frozenset({

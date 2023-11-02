@@ -25,6 +25,7 @@ import tvserver
 
 
 with tvserver.cursor() as cur:
+    card_sids: dict[int, list[int]]
     card_sids = {}
     # first, find every card this tvserver is meant to be using. we can't
     # do this as part of the next query since that means we can't disable
