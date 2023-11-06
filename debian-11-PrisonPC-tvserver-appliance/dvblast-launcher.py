@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import pathlib
-import urllib.request
+import socket
 
 
 __doc__ = """ run "dvblast --adapter X --frequency Y" forwarding everything to 10.0.0.1:Z """
@@ -16,17 +16,17 @@ args = parser.parse_args()
 
 # We don't need write access to postgresql anymore.
 # So avoid psql ENTIRELY on the client.
-# Instead just get a "desired config" JSON object from eric/pete.
-# This also means we do not need to know our own IP address (_outbound).
-# Instead pete can just look at where the request came from.
+# Instead just get a "desired config" JSON object from NFS.
+# We still need to know our own IP address (_outbound).
 #
-# NOTE: because systemd launches us in response to udev device triggers,
-#       this will make one HTTP request per adapter,
-#       rather than one HTTP request per host.
-#       The number of adapters is small, so IMO this is acceptable.
-with urllib.request.urlopen('https://PPC-Services/IPTV_tuner_config') as f:
+# {"10.1.2.3":                      # host
+#     {"0":                         # read from this card/adapter/tuner
+#         {"frequency": 634500000,  # tune to this
+#          "port": 6001}}}          # write to this port
+my_ip_address: str = socket.gethostbyname('_outbound')
+with pathlib.Path('/srv/tv/legacy-tvserver/config.json').open() as f:
     config_all_tuners: dict[str, dict[str, int]]
-    config_all_tuners = json.load(f)
+    config_all_tuners = json.load(f)[str(my_ip_address)]
 
 if str(args.adapter) not in config_all_tuners:
     logging.warning('Tuner %s not configured, exiting', args.adapter)

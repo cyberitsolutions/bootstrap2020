@@ -1,6 +1,7 @@
 [Unit]
 Wants=systemd-networkd-wait-online.target
 After=systemd-networkd-wait-online.target
+RequiresMountsFor=/srv/tv/legacy-tvserver
 
 [Service]
 DynamicUser=yes
