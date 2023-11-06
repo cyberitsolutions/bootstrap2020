@@ -17,3 +17,41 @@ ExecStart=dvblast-launcher --adapter=%i
 [Service]
 Restart=on-failure
 RestartSec=30s
+
+
+# Systemd hardening
+[Service]
+ProtectClock=yes
+CapabilityBoundingSet=
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+SystemCallArchitectures=native
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+ProtectKernelModules=yes
+ProtectHostname=yes
+LockPersonality=yes
+ProtectKernelTunables=yes
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+RestrictRealtime=yes
+ProtectHome=yes
+DevicePolicy=closed
+ProtectProc=noaccess
+ProcSubset=pid
+PrivateUsers=yes
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged
+SystemCallFilter=~@resources
+IPAddressDeny=any
+UMask=0077
+# We need access to /dev/dvb/*
+PrivateDevices=no
+DeviceAllow=char-DVB
+# We need access to rtp://10.0.0.1:610XX
+PrivateNetwork=no
+RestrictAddressFamilies=AF_INET AF_INET6
+IPAddressAllow=10.0.0.1/32
+# FIXME: Do we want realtime privileges?
+#        https://sources.debian.org/src/dvblast/3.4-1/README/#L297-L298
+#        We have never used this in the past, so
+#        I think it's fine to omit this for now.
