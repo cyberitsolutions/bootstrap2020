@@ -1,0 +1,18 @@
+[Unit]
+Wants=systemd-networkd-wait-online.target
+After=systemd-networkd-wait-online.target
+
+[Service]
+DynamicUser=yes
+User=tvserver
+Group=video
+RuntimeDirectory=dvblast@%i
+WorkingDirectory=/run/dvblast@%i
+ExecStart=dvblast-launcher --adapter=%i
+
+
+# FIXME: remove these?
+#        They should not be needed anymore...
+[Service]
+Restart=on-failure
+RestartSec=30s

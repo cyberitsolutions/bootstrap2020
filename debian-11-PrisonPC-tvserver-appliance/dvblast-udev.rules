@@ -1,0 +1,2 @@
+# -*- conf -*-
+SUBSYSTEM=="dvb", ENV{DVB_DEVICE_TYPE}=="demux", TAG+="systemd", ENV{SYSTEMD_WANTS}="dvblast@$env{DVB_ADAPTER_NUM}.service"

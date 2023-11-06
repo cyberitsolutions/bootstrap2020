@@ -72,6 +72,7 @@ parser.add_argument('--template', default='main',
                              'dban',
                              'zfs',
                              'tvserver',
+                             'tvserver-appliance',
                              'understudy',
                              'datasafe3',
                              'desktop',
@@ -92,6 +93,7 @@ parser.add_argument('--template', default='main',
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
                         'tvserver: turn free-to-air DVB-T into rtp:// IPTV;'
+                        'tvserver-appliance: turn free-to-air DVB-T into station-wide rtp:// IPTV, and NOTHING else;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4 (or ZFS); '
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
@@ -184,9 +186,9 @@ template_wants_PrisonPC = (
     args.template.startswith('desktop-inmate') or  # noqa: W504
     args.template.startswith('desktop-staff'))
 template_wants_PrisonPC_or_tvserver = (  # UGH!
-    template_wants_PrisonPC or args.template == 'tvserver')
+    template_wants_PrisonPC or args.template.startswith('tvserver'))
 template_wants_PrisonPC_staff_network = (   # UGH!
-    args.template.startswith('desktop-staff') or args.template == 'tvserver')
+    args.template.startswith('desktop-staff') or args.template.startswith('tvserver'))
 
 if args.template == 'datasafe3' and args.ssh_server != 'openssh-server':
     raise NotImplementedError('datasafe3 only supports OpenSSH')
@@ -194,7 +196,7 @@ if template_wants_PrisonPC and args.ssh_server != 'openssh-server':
     logging.warning('prisonpc.tca3 server code expects OpenSSH')
 if template_wants_GUI and args.virtual_only:
     logging.warning('GUI on cloud kernel is a bit hinkey')
-if args.template == 'tvserver' and args.virtual_only:
+if args.template.startswith('tvserver') and args.virtual_only:
     # The error message is quite obscure:
     #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
     raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
@@ -383,7 +385,9 @@ with tempfile.TemporaryDirectory() as td_str:
             if args.virtual_only else
             '--include=linux-headers-amd64']
            if args.template in ('zfs', 'understudy') else []),
-         *([f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-tvserver")} /',
+         *([f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-tvserver")} /'
+            if args.template == 'tvserver' else
+            f'--essential-hook=tar-in {create_tarball("debian-11-PrisonPC-tvserver-appliance")} /',
             # workarounds for garbage hardware
             *('--include=firmware-bnx2',  # HCC's tvserver has evil Broadcom NICs
               '--hook-dir=debian-11-PrisonPC-tvserver.hooks',
@@ -400,8 +404,10 @@ with tempfile.TemporaryDirectory() as td_str:
             '    procps'         # pkill (for update-config.py - FIXME: use systemctl reload)
             '    python3-psycopg2 python3-lxml'  # DVB-T → XML → postgres (EPG)
             '    w-scan'  # Used at new sites to find frequency MHz.
+            if args.template == 'tvserver' else
+            '--include=dvblast python3 libnss-systemd'  # get config, tune, & serve only!
             ]
-           if args.template == 'tvserver' else []),
+           if args.template.startswith('tvserver') else []),
          # FIXME: remove this block once PrisonPC is ZFS! (ext4 -> ext4)
          *(['--include=mdadm lvm2 rsync'
             '    e2fsprogs'  # no slow fsck on failover (e2scrub_all.timer)
@@ -645,7 +651,7 @@ def maybe_dummy_DVD(testdir: pathlib.Path) -> list:
 
 
 def maybe_tvserver_ext2(testdir: pathlib.Path) -> list:
-    if not args.template == 'tvserver':
+    if not args.template.startswith('tvserver'):
         return []               # add no args to qemu cmdline
     # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
     # containing a specific password file.

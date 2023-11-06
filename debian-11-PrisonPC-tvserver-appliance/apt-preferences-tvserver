@@ -1,0 +1,4 @@
+Explanation: use 5.10 kernel because as at 2023-08-28 third-party TBS driver builds but does not work for Linux 6.1+ kernels
+Package: src:linux src:linux-signed-amd64 src:zfs-linux
+Pin: release a=bullseye-backports
+Pin-Priority: -1000
