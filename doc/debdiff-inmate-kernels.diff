@@ -1,3 +1,39 @@
+81e7b9b 6.5.3-1699518412 (was 6.4.4-1694145420)
+diff --git a/manifest.txt b/manifest.txt
+index 18e1e71..9b0f5df 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -33,7 +33,6 @@ kernel/drivers/char/agp/intel-gtt.ko
+ kernel/drivers/char/hangcheck-timer.ko
+ kernel/drivers/char/hw_random/
+ kernel/drivers/char/hw_random/intel-rng.ko
+-kernel/drivers/char/hw_random/rng-core.ko
+ kernel/drivers/cpufreq/
+ kernel/drivers/cpufreq/acpi-cpufreq.ko
+ kernel/drivers/cpufreq/cpufreq_ondemand.ko
+@@ -148,21 +147,7 @@ kernel/drivers/usb/host/ohci-pci.ko
+ kernel/drivers/usb/host/uhci-hcd.ko
+ kernel/drivers/usb/host/xhci-hcd.ko
+ kernel/drivers/usb/host/xhci-pci.ko
+-kernel/drivers/video/
+-kernel/drivers/video/fbdev/
+-kernel/drivers/video/fbdev/core/
+-kernel/drivers/video/fbdev/core/cfbcopyarea.ko
+-kernel/drivers/video/fbdev/core/cfbfillrect.ko
+-kernel/drivers/video/fbdev/core/cfbimgblt.ko
+-kernel/drivers/video/fbdev/core/fb_sys_fops.ko
+-kernel/drivers/video/fbdev/core/syscopyarea.ko
+-kernel/drivers/video/fbdev/core/sysfillrect.ko
+-kernel/drivers/video/fbdev/core/sysimgblt.ko
+ kernel/fs/
+-kernel/fs/fscache/
+-kernel/fs/fscache/fscache.ko
+-kernel/fs/netfs/
+-kernel/fs/netfs/netfs.ko
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko
+ kernel/fs/nls/nls_utf8.ko
+4310aa0 6.4.4-1694145420 (was 6.4.4-1693435459)
 850b69a 6.4.4-1693435459 (was 6.4.4-1693432497)
 diff --git a/manifest.txt b/manifest.txt
 index af385ff..18e1e71 100644
