@@ -1,4 +1,4 @@
-81e7b9b 6.5.3-1699518412 (was 6.4.4-1694145420)
+e229dc7 6.5.3-1699518412 (was 6.4.4-1694145420)
 diff --git a/manifest.txt b/manifest.txt
 index 18e1e71..9b0f5df 100644
 --- a/manifest.txt
@@ -33,8 +33,8 @@ index 18e1e71..9b0f5df 100644
  kernel/fs/nls/
  kernel/fs/nls/nls_ascii.ko
  kernel/fs/nls/nls_utf8.ko
-4310aa0 6.4.4-1694145420 (was 6.4.4-1693435459)
-850b69a 6.4.4-1693435459 (was 6.4.4-1693432497)
+9643e10 6.4.4-1694145420 (was 6.4.4-1693435459)
+f4aa3d6 6.4.4-1693435459 (was 6.4.4-1693432497)
 diff --git a/manifest.txt b/manifest.txt
 index af385ff..18e1e71 100644
 --- a/manifest.txt
@@ -79,12 +79,20 @@ index af385ff..18e1e71 100644
  kernel/sound/soc/codecs/
  kernel/sound/soc/codecs/snd-soc-cx2072x.ko
  kernel/sound/soc/codecs/snd-soc-da7213.ko
-2d0198a 6.4.4-1693432497 (was 6.1.38inmate-1690539126)
+456e1f3 6.4.4-1693432497 (was 6.1.55inmate-1699523633)
 diff --git a/manifest.txt b/manifest.txt
-index 9f070ab..af385ff 100644
+index 6a3b230..af385ff 100644
 --- a/manifest.txt
 +++ b/manifest.txt
-@@ -52,7 +52,6 @@ kernel/drivers/edac/
+@@ -33,6 +33,7 @@ kernel/drivers/char/agp/intel-gtt.ko
+ kernel/drivers/char/hangcheck-timer.ko
+ kernel/drivers/char/hw_random/
+ kernel/drivers/char/hw_random/intel-rng.ko
++kernel/drivers/char/hw_random/rng-core.ko
+ kernel/drivers/cpufreq/
+ kernel/drivers/cpufreq/acpi-cpufreq.ko
+ kernel/drivers/cpufreq/cpufreq_ondemand.ko
+@@ -51,7 +52,6 @@ kernel/drivers/edac/
  kernel/drivers/edac/e752x_edac.ko
  kernel/drivers/edac/i3000_edac.ko
  kernel/drivers/edac/i3200_edac.ko
@@ -92,7 +100,17 @@ index 9f070ab..af385ff 100644
  kernel/drivers/edac/i5100_edac.ko
  kernel/drivers/edac/i5400_edac.ko
  kernel/drivers/edac/i7300_edac.ko
-@@ -125,6 +124,9 @@ kernel/drivers/platform/x86/intel/pmc/
+@@ -77,6 +77,9 @@ kernel/drivers/hid/hid-generic.ko
+ kernel/drivers/hid/hid.ko
+ kernel/drivers/hid/usbhid/
+ kernel/drivers/hid/usbhid/usbhid.ko
++kernel/drivers/hwmon/
++kernel/drivers/hwmon/sht3x.ko
++kernel/drivers/hwmon/sht4x.ko
+ kernel/drivers/input/
+ kernel/drivers/input/sparse-keymap.ko
+ kernel/drivers/leds/
+@@ -121,6 +124,9 @@ kernel/drivers/platform/x86/intel/pmc/
  kernel/drivers/platform/x86/intel/pmc/intel_pmc_core.ko
  kernel/drivers/platform/x86/intel/pmc/intel_pmc_core_pltdrv.ko
  kernel/drivers/platform/x86/wmi.ko
@@ -102,15 +120,49 @@ index 9f070ab..af385ff 100644
  kernel/drivers/scsi/
  kernel/drivers/scsi/scsi_common.ko
  kernel/drivers/scsi/scsi_mod.ko
-@@ -200,6 +202,7 @@ kernel/sound/soc/amd/raven/
- kernel/sound/soc/amd/raven/snd-acp3x-i2s.ko
- kernel/sound/soc/amd/raven/snd-acp3x-pcm-dma.ko
- kernel/sound/soc/amd/raven/snd-pci-acp3x.ko
+@@ -163,18 +169,11 @@ kernel/fs/netfs/netfs.ko
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko
+ kernel/fs/nls/nls_utf8.ko
++kernel/lib/
++kernel/lib/crc8.ko
+ kernel/net/
+ kernel/net/core/
+ kernel/net/core/selftests.ko
+-kernel/net/ipv4/
+-kernel/net/ipv4/netfilter/
+-kernel/net/ipv4/netfilter/nf_defrag_ipv4.ko
+-kernel/net/ipv6/
+-kernel/net/ipv6/netfilter/
+-kernel/net/ipv6/netfilter/nf_defrag_ipv6.ko
+-kernel/net/netfilter/
+-kernel/net/netfilter/nf_conntrack.ko
+-kernel/net/netfilter/nft_ct.ko
+ kernel/sound/
+ kernel/sound/core/
+ kernel/sound/core/snd-compress.ko
+@@ -198,6 +197,20 @@ kernel/sound/pci/hda/snd-hda-codec-realtek.ko
+ kernel/sound/pci/hda/snd-hda-codec.ko
+ kernel/sound/pci/hda/snd-hda-intel.ko
+ kernel/sound/soc/
++kernel/sound/soc/amd/
++kernel/sound/soc/amd/raven/
++kernel/sound/soc/amd/raven/snd-acp3x-i2s.ko
++kernel/sound/soc/amd/raven/snd-acp3x-pcm-dma.ko
++kernel/sound/soc/amd/raven/snd-pci-acp3x.ko
 +kernel/sound/soc/amd/snd-acp-config.ko
- kernel/sound/soc/amd/vangogh/
- kernel/sound/soc/amd/vangogh/snd-acp5x-i2s.ko
- kernel/sound/soc/amd/vangogh/snd-acp5x-pcm-dma.ko
-@@ -282,6 +285,7 @@ kernel/sound/soc/sof/
++kernel/sound/soc/amd/vangogh/
++kernel/sound/soc/amd/vangogh/snd-acp5x-i2s.ko
++kernel/sound/soc/amd/vangogh/snd-acp5x-pcm-dma.ko
++kernel/sound/soc/amd/vangogh/snd-pci-acp5x.ko
++kernel/sound/soc/amd/yc/
++kernel/sound/soc/amd/yc/snd-acp6x-pdm-dma.ko
++kernel/sound/soc/amd/yc/snd-pci-acp6x.ko
++kernel/sound/soc/amd/yc/snd-soc-acp6x-mach.ko
+ kernel/sound/soc/codecs/
+ kernel/sound/soc/codecs/snd-soc-cx2072x.ko
+ kernel/sound/soc/codecs/snd-soc-da7213.ko
+@@ -272,6 +285,7 @@ kernel/sound/soc/sof/
  kernel/sound/soc/sof/intel/
  kernel/sound/soc/sof/intel/snd-sof-intel-atom.ko
  kernel/sound/soc/sof/intel/snd-sof-intel-hda-common.ko
@@ -118,6 +170,70 @@ index 9f070ab..af385ff 100644
  kernel/sound/soc/sof/intel/snd-sof-intel-hda.ko
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-apl.ko
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-cnl.ko
+1d0a34c 6.1.55inmate-1699523633 (was 6.1.38inmate-1690539126)
+diff --git a/manifest.txt b/manifest.txt
+index 9f070ab..6a3b230 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -33,7 +33,6 @@ kernel/drivers/char/agp/intel-gtt.ko
+ kernel/drivers/char/hangcheck-timer.ko
+ kernel/drivers/char/hw_random/
+ kernel/drivers/char/hw_random/intel-rng.ko
+-kernel/drivers/char/hw_random/rng-core.ko
+ kernel/drivers/cpufreq/
+ kernel/drivers/cpufreq/acpi-cpufreq.ko
+ kernel/drivers/cpufreq/cpufreq_ondemand.ko
+@@ -78,9 +77,6 @@ kernel/drivers/hid/hid-generic.ko
+ kernel/drivers/hid/hid.ko
+ kernel/drivers/hid/usbhid/
+ kernel/drivers/hid/usbhid/usbhid.ko
+-kernel/drivers/hwmon/
+-kernel/drivers/hwmon/sht3x.ko
+-kernel/drivers/hwmon/sht4x.ko
+ kernel/drivers/input/
+ kernel/drivers/input/sparse-keymap.ko
+ kernel/drivers/leds/
+@@ -167,11 +163,18 @@ kernel/fs/netfs/netfs.ko
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko
+ kernel/fs/nls/nls_utf8.ko
+-kernel/lib/
+-kernel/lib/crc8.ko
+ kernel/net/
+ kernel/net/core/
+ kernel/net/core/selftests.ko
++kernel/net/ipv4/
++kernel/net/ipv4/netfilter/
++kernel/net/ipv4/netfilter/nf_defrag_ipv4.ko
++kernel/net/ipv6/
++kernel/net/ipv6/netfilter/
++kernel/net/ipv6/netfilter/nf_defrag_ipv6.ko
++kernel/net/netfilter/
++kernel/net/netfilter/nf_conntrack.ko
++kernel/net/netfilter/nft_ct.ko
+ kernel/sound/
+ kernel/sound/core/
+ kernel/sound/core/snd-compress.ko
+@@ -195,19 +198,6 @@ kernel/sound/pci/hda/snd-hda-codec-realtek.ko
+ kernel/sound/pci/hda/snd-hda-codec.ko
+ kernel/sound/pci/hda/snd-hda-intel.ko
+ kernel/sound/soc/
+-kernel/sound/soc/amd/
+-kernel/sound/soc/amd/raven/
+-kernel/sound/soc/amd/raven/snd-acp3x-i2s.ko
+-kernel/sound/soc/amd/raven/snd-acp3x-pcm-dma.ko
+-kernel/sound/soc/amd/raven/snd-pci-acp3x.ko
+-kernel/sound/soc/amd/vangogh/
+-kernel/sound/soc/amd/vangogh/snd-acp5x-i2s.ko
+-kernel/sound/soc/amd/vangogh/snd-acp5x-pcm-dma.ko
+-kernel/sound/soc/amd/vangogh/snd-pci-acp5x.ko
+-kernel/sound/soc/amd/yc/
+-kernel/sound/soc/amd/yc/snd-acp6x-pdm-dma.ko
+-kernel/sound/soc/amd/yc/snd-pci-acp6x.ko
+-kernel/sound/soc/amd/yc/snd-soc-acp6x-mach.ko
+ kernel/sound/soc/codecs/
+ kernel/sound/soc/codecs/snd-soc-cx2072x.ko
+ kernel/sound/soc/codecs/snd-soc-da7213.ko
 1897ce8 6.1.38inmate-1690539126 (was 6.1.38inmate-1690535873)
 diff --git a/manifest.txt b/manifest.txt
 index 892e3bc..9f070ab 100644
