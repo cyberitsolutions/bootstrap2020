@@ -9,6 +9,46 @@ import socket
 
 __doc__ = """ run "dvblast --adapter X --frequency Y" forwarding everything to 10.0.0.1:Z
 
+• --ttl 1 asserts no router hops between sender (us) and receiver.
+  This helps routers drop packets if/when we screw up our routing.
+  https://en.wikipedia.org/wiki/Time_to_live#IP_packets
+  https://sources.debian.org/src/dvblast/3.4-1/dvblast.1/#L195-L197
+
+  NOTE: because THIS dvblast sends to a unicast address (10.0.0.1),
+        both "--ttl 1" and "/ttl=1" are silently ignored, and
+        the actual measured TTL is 64.
+
+• --logger tells dvblast to log to syslog (not stdout).
+  This helps journald see the correct process name & message priority.
+  "lock status: [0|1]" still prints to stdout.
+
+• --quiet --quiet --quiet suppresses constant logspam about "TS discontinuity".
+  The default is "DEFAULT_VERBOSITY 4".
+  Each --quiet reduces that by 1.
+  We need to be STRICTLY LESS THAN "VERB_WARN 2".
+  That means we need at least --quiet --quiet --quiet.
+  We should still get "VERB_ERR 1", at least.
+
+• ToS / DSCP / Diffserv.
+  This tells switches/routers what kind of packet we are, and
+  how best to queue us.
+
+      <twb> Remind me, what TOS/DSCP do I set for real-time audio/video streams?
+            OpenSSH defaults to -o 'IPQoS=lowdelay throughput', but
+            I can never remember how that maps to "cs1" &c
+            https://en.wikipedia.org/wiki/Differentiated_services#Configuration_guidelines says AF31/AF32/AF33
+            https://en.wikipedia.org/wiki/Differentiated_services#Assured_Forwarding
+            AF31 = 0b011010 = 26
+            But the smallest two bits are the ECN, so you actually need to left-shift that 2 bits:
+            AF31 & no ECN = 0b01101000 = 104
+
+            Initially I will use
+            AF31 (drop less) for the unicast station stream (bootstrap2020.git), and
+            AF32 (drop more) for the multicast channel streams (prisonpc.git).
+
+      <twb> OK you can't set "dvblast --tos" but you *can* set it in dvblast.conf.
+
+
 NOTE: It is CRITICALLY IMPORTANT that "--quiet" is specified enough times to suppress this:
 
           dvblast[3391932]: warning: TS discontinuity on pid  833 expected_cc  8 got 10 (H.264/14496-10 vide
@@ -63,7 +103,7 @@ port: int = config_one_tuner['port']
 #
 # Tell dvblast to send the entire station as-is to the main server.
 # https://sources.debian.org/src/dvblast/3.4-1/README/#L214-L225
-pathlib.Path('dvblast.conf').write_text(f'10.0.0.1:{port} 1 *\n')
+pathlib.Path('dvblast.conf').write_text(f'10.0.0.1:{port}/tos=104 1 *\n')
 
 # NOTE: exec(2) (not check_call or run) so
 #       the wrapper process goes away, and
@@ -82,5 +122,7 @@ os.execvp(
      # We don't actually use this anymore, but
      # it does not hurt to create it.
      '--remote-socket', 'dvblast.socket',
+     '--ttl', '1',
+     '--logger',
      # Suppress constant logspam about "TS discontinuity".
      '--quiet', '--quiet', '--quiet'])
