@@ -7,7 +7,28 @@ import pathlib
 import socket
 
 
-__doc__ = """ run "dvblast --adapter X --frequency Y" forwarding everything to 10.0.0.1:Z """
+__doc__ = """ run "dvblast --adapter X --frequency Y" forwarding everything to 10.0.0.1:Z
+
+NOTE: It is CRITICALLY IMPORTANT that "--quiet" is specified enough times to suppress this:
+
+          dvblast[3391932]: warning: TS discontinuity on pid  833 expected_cc  8 got 10 (H.264/14496-10 vide
+
+      By default (no --quiet) when the TV signal is bad,
+      dvblast will logspam >100G/day.
+      This makes logrotate and logcheck take >1d to run each, causing overlapping instances.
+      This makes the load average go over 100%.
+      This makes journald consume 50% of total RAM.
+      This makes SSH unreliable (i.e. you cannot get in to fix it).
+      Even when debugging, you MUST NOT remove the last --quiet.
+
+      Debian 9 & 11 tvserver SOEs simply did "dvblast &>/dev/null".
+
+      Another videolan product (vlc) caused enough logspam to DOS us:
+      https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-11-PrisonPC/xdm/logrotate-xsession-errors.py
+      https://github.com/cyberitsolutions/bootstrap2020/blob/main/doc/30648-stfu-dbus.txt
+      https://alloc.cyber.com.au/task/task.php?taskID=24889
+      https://alloc.cyber.com.au/task/task.php?taskID=30648
+"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--adapter', type=int)
