@@ -625,3 +625,42 @@
 /usr/share/nfs-common/nfsconvert.py
 /usr/share/nfs-common/conffiles/nfs-common.default
 /etc/default/nfs-common
+
+
+# Debian 11 shipped vlc 3 and ffmpeg 4.
+# This makes vlc > Tools > Preferences > Input/Codecs > Hardware-accelerated decoding offer:
+#
+#     Automatic             		(default, equivalent to the next line)
+#     VA-API video decoder  		(Intel, works fine)
+#     VDPAU video decoder   		(NVidia, COMPLETELY FUCKED on Intel GPUs)
+#     VA-API video decoder via DRM
+#     Disable               		(works fine)
+#
+# Debian 12 ships vlc 3 and ffmpeg 5.
+# This makes vlc > Tools > Preferences > Input/Codecs > Hardware-accelerated decoding offer:
+#
+#     Automatic             		(default, equivalent to the next line)
+#     VDPAU video decoder   		(NVidia, COMPLETELY FUCKED on Intel GPUs)
+#     Disable               		(works fine)
+#
+# https://imgur.com/a/rgc9dWS
+#
+# This issue affects staff desktops, because (since the dvdrip changes) they run stock Debian vlc:
+#
+#     https://github.com/cyberitsolutions/bootstrap2020/commit/43f7b54e75d3d47e8c8942875e5a09b83294a77b
+#
+# This issue DOES NOT affect inmate desktops, as PrisonPC custom vlc has VDPAU explicitly removed:
+#
+#     https://github.com/cyberitsolutions/bootstrap2020/commit/abea66b1f105a4c7e189c5ce6e5f41cabdd77a94
+#
+# This issue affects upstream Debian users:
+#
+#     https://bugs.debian.org/1021601
+#     https://bugs.debian.org/1021664
+#
+# Since we do not have to support NVidia hardware at all,
+# the simple short-term workaround is to remove vdpau files.
+# VLC will then remain "Automatic" by default, falling through to
+# "Disable" (for now) and to
+# "VA-API" (when Debian fixes the upstream issue).
+/usr/lib/*/vlc/plugins/vdpau
