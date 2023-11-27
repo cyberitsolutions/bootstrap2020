@@ -27,7 +27,7 @@ __doc__ = """ build simple Debian Live image that can boot
 
 This uses mmdebstrap to do the heavy lifting;
 it can run entirely without root privileges.
-Bootloader is out-of-scope (but --boot-test --netboot-only has an example PXELINUX.cfg).
+Bootloader is out-of-scope (but --boot-test --netboot-only has an example iPXE script).
 """
 
 
@@ -65,8 +65,6 @@ group.add_argument('--host-port-for-boot-test-vnc', type=int, default=5900, meta
 group.add_argument('--opengl-for-boot-test-ssh', action='store_true',
                    help='Enable OpenGL in --boot-test (requires qemu 7.1)')
 group.add_argument('--measure-install-footprints', action='store_true')
-parser.add_argument('--efi-stub', action='store_true',
-                    help='Generate UEFI binary with embedded vmlinuz, initrd.img, etc.')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
@@ -598,9 +596,8 @@ with tempfile.TemporaryDirectory() as td_str:
            if args.optimize != 'simplicity' else []),
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
-         *([f'--customize-hook=download  /usr/lib/systemd/boot/efi/linuxx64.efi.stub {destdir}/linuxx64.efi.stub',
-            f'--customize-hook=download  /etc/os-release {destdir}/os-release']
-           if args.efi_stub else []),
+         f'--customize-hook=download /usr/lib/systemd/boot/efi/linuxx64.efi.stub {destdir}/linuxx64.efi.stub',
+         f'--customize-hook=download /etc/os-release {destdir}/os-release',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--dpkgopt=debian-11-PrisonPC/omit-low-level-docs.conf',
@@ -624,7 +621,7 @@ with tempfile.TemporaryDirectory() as td_str:
            if args.template in ('zfs', 'understudy') and args.optimize == 'speed' and not args.virtual_only else []),
          ])
 
-if args.efi_stub:
+if True:   # ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
     root_args = ''
     if template_wants_PrisonPC:
         nfs_server = '10.0.0.1' if template_wants_PrisonPC_staff_network else '10.128.0.1'
@@ -750,10 +747,7 @@ if args.boot_test:
         testdir = pathlib.Path(testdir_str)
         validate_unescaped_path_is_safe(testdir)
         subprocess.check_call(['ln', '-vt', testdir, '--',
-                               *([destdir / 'vmlinuz',
-                                  destdir / 'initrd.img']
-                                 if not args.efi_stub else
-                                 [destdir / 'linuxx64.efi']),
+                               destdir / 'linuxx64.efi',  # was vmlinuz + initrd.img
                                destdir / 'filesystem.squashfs'])
         common_boot_args = ' '.join([
             ('quiet splash'
@@ -815,24 +809,7 @@ if args.boot_test:
                         input='\n'.join([
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
-        if args.netboot_only and not args.efi_stub:
-            subprocess.check_call(['cp', '-t', testdir, '--',
-                                   '/usr/lib/PXELINUX/pxelinux.0',
-                                   '/usr/lib/syslinux/modules/bios/ldlinux.c32'])
-            (testdir / 'pxelinux.cfg').mkdir(exist_ok=True)
-            (testdir / 'pxelinux.cfg/default').write_text(
-                'DEFAULT linux\n'
-                'LABEL linux\n'
-                '  IPAPPEND 2\n'
-                '  KERNEL vmlinuz\n'
-                '  INITRD initrd.img\n'
-                '  APPEND ' + ' '.join([
-                    'boot=live',
-                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
-                     if have_smbd else
-                     f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
-                    common_boot_args]))
-        elif args.netboot_only:
+        if args.netboot_only:
             # There's some issues with Qemu/OVMF & syslinux, but it uses ipxe internally anyway, so just configure that.
             # FIXME: Why do we even need tftp at this point?
             (testdir / 'ipxe-script.ipxe').write_text('\n'.join([
@@ -873,8 +850,7 @@ if args.boot_test:
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
-            *(['--bios', '/usr/share/qemu/OVMF.fd']
-              if args.efi_stub else []),
+            '--bios', '/usr/share/qemu/OVMF.fd',
             '--enable-kvm',
             '--machine', 'q35',
             '--cpu', 'host',
@@ -899,9 +875,8 @@ if args.boot_test:
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template_wants_PrisonPC else []),
                 *([f'smb={testdir}'] if have_smbd else []),
-                *([f'tftp={testdir}', 'bootfile=pxelinux.0']
-                  if args.netboot_only and not args.efi_stub else [f'tftp={testdir}', 'bootfile=ipxe-script.ipxe'
-                                                                   if args.netboot_only else []]),
+                *([f'tftp={testdir}', 'bootfile=ipxe-script.ipxe']
+                  if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
@@ -911,9 +886,8 @@ if args.boot_test:
                   if template_wants_PrisonPC_or_tvserver else []),
             ]),
             '--device', 'virtio-net-pci',  # second NIC; not plugged in
-            *([*(['--kernel', testdir / 'vmlinuz',  # type: ignore
-                  '--initrd', testdir / 'initrd.img']
-                 if not args.efi_stub else ['--kernel', testdir / 'linuxx64.efi']),
+            *(['--kernel', testdir / 'linuxx64.efi',  # type: ignore
+               # NOTE: no --initrd as --kernel UKI includes vmlinuz + initrd.img
                '--append', ' '.join([
                    'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
                    common_boot_args]),
