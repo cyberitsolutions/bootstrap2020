@@ -649,8 +649,10 @@ if args.efi_stub:
     objcopy_args = ['objcopy', 'linuxx64.efi.stub', 'linuxx64.efi']
 
     # I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
-    stub_section_headers = subprocess.check_output(text=True,
-                                                   args=['objdump', '--headers', '/usr/lib/systemd/boot/efi/linuxx64.efi.stub'])
+    stub_section_headers = subprocess.check_output(
+        ['objdump', '--headers', 'linuxx64.efi.stub'],
+        cwd=destdir,
+        text=True)
     # We only care about lines with 7 columns
     stub_section_headers = [line for line in stub_section_headers.splitlines() if len(line.split()) == 7]
     stub_section_offset = int(stub_section_headers[-1].split()[2], 16) + int(stub_section_headers[-1].split()[3], 16)
