@@ -598,6 +598,11 @@ with tempfile.TemporaryDirectory() as td_str:
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
          f'--customize-hook=copy-out /usr/lib/systemd/boot/efi/linuxx64.efi.stub /etc/os-release {td}',
+         # Ugh.  linux64.efi.stub moved from systemd/bullseye to systemd-boot-efi/bullseye-backports.
+         # So we need to --include=systemd-boot-efi IF AND ONLY IF we enable systemd backports.
+         # Currently this is only done in the tvserver & tvserver-appliance (for _outbound).
+         *(['--include=systemd-boot-efi']
+           if args.template.startswith('tvserver') else []),
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--dpkgopt=debian-11-PrisonPC/omit-low-level-docs.conf',
