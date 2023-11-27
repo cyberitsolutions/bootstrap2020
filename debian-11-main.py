@@ -378,7 +378,7 @@ with tempfile.TemporaryDirectory() as td_str:
             '--include=mmdebstrap auto-apt-proxy',  # for installing
             # FIXME: this speed optimization is NOT SUSTAINABLE.
             #        https://github.com/cyberitsolutions/bootstrap2020/blob/d67b9525/debian-11-PrisonPC.packages/build-zfs-modules.py
-            *(['--include=zfs-modules-6.1.0-0.deb11.7-amd64']
+            *(['--include=zfs-modules-6.1.0-0.deb11.11-amd64']
               if args.optimize == 'speed' and not args.virtual_only else
               ['--include=zfs-dkms']),
             '--include=linux-headers-cloud-amd64'
