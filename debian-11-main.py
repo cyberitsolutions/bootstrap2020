@@ -597,7 +597,7 @@ with tempfile.TemporaryDirectory() as td_str:
          # NOTE: symlinks need "download" (not "copy-out").
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
-         f'--customize-hook=copy-out /usr/lib/systemd/boot/efi/linuxx64.efi.stub /etc/os-release {destdir}',
+         f'--customize-hook=copy-out /usr/lib/systemd/boot/efi/linuxx64.efi.stub /etc/os-release {td}',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--dpkgopt=debian-11-PrisonPC/omit-low-level-docs.conf',
@@ -621,7 +621,7 @@ with tempfile.TemporaryDirectory() as td_str:
            if args.template in ('zfs', 'understudy') and args.optimize == 'speed' and not args.virtual_only else []),
          ])
 
-if True:   # ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
+    # ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
     root_args = ''
     if template_wants_PrisonPC:
         nfs_server = '10.0.0.1' if template_wants_PrisonPC_staff_network else '10.128.0.1'
@@ -634,21 +634,22 @@ if True:   # ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
     else:
         # FIXME: This is definitely never valid currently, figure out a suitable "default" cmdline here.
         root_args = f'fetch=http://bootserver/SOE/{destdir.name}/filesystem.squashfs'
-    (destdir / 'cmdline.txt').write_text(f"panic=10 boot=live noprompt noeject quiet systemd.log_level=notice splash {root_args}")
+    (td / 'cmdline.txt').write_text(f"panic=10 boot=live noprompt noeject quiet systemd.log_level=notice splash {root_args}")
     # FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will do all of this with a single command
     stub_new_sections = {
         '.linux': destdir / 'vmlinuz',
         '.initrd': destdir / 'initrd.img',
         # FIXME: Is os-release even useful?
-        '.osrel': destdir / 'os-release',
-        '.cmdline': destdir / 'cmdline.txt',
+        '.osrel': td / 'os-release',
+        '.cmdline': td / 'cmdline.txt',
     }
-    objcopy_args = ['objcopy', 'linuxx64.efi.stub', 'linuxx64.efi']
+
+    objcopy_args = ['objcopy', td / 'linuxx64.efi.stub', 'linuxx64.efi']
 
     # I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
     stub_section_headers = subprocess.check_output(
         ['objdump', '--headers', 'linuxx64.efi.stub'],
-        cwd=destdir,
+        cwd=td,
         text=True)
     # We only care about lines with 7 columns
     stub_section_headers = [line for line in stub_section_headers.splitlines() if len(line.split()) == 7]
@@ -661,12 +662,6 @@ if True:   # ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
     subprocess.check_call(cwd=destdir, args=objcopy_args)
     # FIXME: Sign the resulting binary for secureboot using 'sbsign' (and the squashfs somehow)
     #        'ukify' will also sign the result when doing all the section header math too
-
-    # Cleanup the files we only copied out for this step anyway
-    (destdir / 'linuxx64.efi.stub').unlink()
-    # FIXME: os-release might actually be a useful one to leave here for referencing later (similar to dpkg.status)
-    (destdir / 'os-release').unlink()
-    (destdir / 'cmdline.txt').unlink()
 
 subprocess.check_call(
     ['du', '--human-readable', '--all', '--one-file-system', destdir])
