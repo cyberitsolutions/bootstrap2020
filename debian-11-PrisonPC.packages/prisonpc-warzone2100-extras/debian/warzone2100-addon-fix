@@ -38,9 +38,12 @@ if proc.returncode != 1:
     raise RuntimeError('warzone2100 --version should always exit(1)!')
 
 # Example: Warzone 2100 - Version: 3.3.0, Built: 2020-10-16
-version = re.fullmatch(
-    r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
-    proc.stdout.strip()).group(1)
+if m := re.fullmatch(
+        r'Warzone 2100 - Version: (\d+\.\d+\.\d+), .*',
+        proc.stdout.strip()):
+    version = m.group(1)
+else:
+    raise RuntimeError('Failed to parse version from %s', proc.stdout)
 
 src_root = pathlib.Path('/usr/share/games/warzone2100/')
 dst_root = pathlib.Path.home() / f'.local/share/warzone2100-{version}'
