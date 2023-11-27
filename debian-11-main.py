@@ -622,19 +622,10 @@ with tempfile.TemporaryDirectory() as td_str:
          ])
 
     # ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
-    root_args = ''
-    if template_wants_PrisonPC:
-        nfs_server = '10.0.0.1' if template_wants_PrisonPC_staff_network else '10.128.0.1'
-        # FIXME: We should stop disabling IPv6 eventually
-        root_args = f'ipv6.disable=1 netboot=nfs nfsroot={nfs_server}:/srv/netboot/images/{destdir.name} live-media-path='
-    elif args.template == 'understudy':
-        # FIXME: This is specific to PrisonPC understudies, and this doesn't properly allow for personality.cpio
-        # FIXME: We should be able to use http here instead of tftp, same for personality.cpio
-        root_args = f'fetch=tftp://10.0.0.1/srv/tftp/SOE/{destdir.name}/filesystem.squashfs'
-    else:
-        # FIXME: This is definitely never valid currently, figure out a suitable "default" cmdline here.
-        root_args = f'fetch=http://bootserver/SOE/{destdir.name}/filesystem.squashfs'
-    (td / 'cmdline.txt').write_text(f"panic=10 boot=live noprompt noeject quiet systemd.log_level=notice splash {root_args}")
+    # FIXME: As at 2023, /proc/cmdline must be specified at boot time (not ukify time).
+    #        At a minimum this is needed for understudy's personality=alice hack.
+    #        For secure boot, that MUST become a static /proc/cmdline, done here.
+    (td / 'cmdline.txt').write_text('boot=live')
     # FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will do all of this with a single command
     stub_new_sections = {
         '.linux': destdir / 'vmlinuz',
