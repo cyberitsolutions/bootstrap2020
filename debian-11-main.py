@@ -594,10 +594,10 @@ with tempfile.TemporaryDirectory() as td_str:
          # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
          *([f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status']
            if args.optimize != 'simplicity' else []),
+         # NOTE: symlinks need "download" (not "copy-out").
          f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
          f'--customize-hook=download initrd.img {destdir}/initrd.img',
-         f'--customize-hook=download /usr/lib/systemd/boot/efi/linuxx64.efi.stub {destdir}/linuxx64.efi.stub',
-         f'--customize-hook=download /etc/os-release {destdir}/os-release',
+         f'--customize-hook=copy-out /usr/lib/systemd/boot/efi/linuxx64.efi.stub /etc/os-release {destdir}',
          *(['--customize-hook=rm $1/boot/vmlinuz* $1/boot/initrd.img*']  # save 27s 27MB
            if args.optimize != 'simplicity' and not template_wants_big_uptimes else []),
          *(['--dpkgopt=debian-11-PrisonPC/omit-low-level-docs.conf',
