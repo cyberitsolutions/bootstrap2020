@@ -9,6 +9,7 @@ include = [
     'ca-certificates',
     'publicsuffix',
     'debian-security-support',  # for customize90-check-support-status.py
+    'systemd-boot-efi',         # for linuxx64.efi.stub (ukify)
 
     # Make things work better with systemd-networkd
     'libnss-myhostname',        # replaces /etc/hostname and stub /etc/hosts
