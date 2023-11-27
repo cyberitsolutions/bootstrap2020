@@ -644,22 +644,34 @@ with tempfile.TemporaryDirectory() as td_str:
         '.cmdline': td / 'cmdline.txt',
     }
 
-    objcopy_args = ['objcopy', td / 'linuxx64.efi.stub', 'linuxx64.efi']
-
-    # I reverse engineered this math from: https://wiki.archlinux.org/title/Unified_kernel_image#Manually
-    stub_section_headers = subprocess.check_output(
-        ['objdump', '--headers', 'linuxx64.efi.stub'],
-        cwd=td,
+    # We want to add new sections to the PE object.
+    # Start by finding where the last existing section stops.
+    # https://wiki.archlinux.org/title/Unified_kernel_image#Manually
+    objdump_stdout = subprocess.check_output(
+        ['objdump', '--section-headers', td / 'linuxx64.efi.stub'],
         text=True)
-    # We only care about lines with 7 columns
-    stub_section_headers = [line for line in stub_section_headers.splitlines() if len(line.split()) == 7]
-    stub_section_offset = int(stub_section_headers[-1].split()[2], 16) + int(stub_section_headers[-1].split()[3], 16)
-    for section_name in stub_new_sections:
-        objcopy_args += ['--add-section', f'{section_name}={stub_new_sections[section_name]}']
-        objcopy_args += ['--change-section-vma', f'{section_name}={stub_section_offset}']
-        stub_section_offset += stub_new_sections[section_name].stat().st_size
+    for line in objdump_stdout.splitlines():
+        try:
+            # e.g. "7 .sdmagic 0034 019100 019100 011200 2**2"
+            _, _, size_str, vma_str, _, _, _ = line.split()
+        except ValueError:
+            logging.debug('Not a section line: %s', line.strip())
+            continue
+        size = int(size_str, 16)  # hexadecimal
+        vma = int(vma_str, 16)    # hexadecimal
+        section_offset = size + vma
+    # section_offset is now where the last stub section ends.
+    objcopy_cmd = [
+        'objcopy',
+        td / 'linuxx64.efi.stub',
+        destdir / 'linuxx64.efi']
+    for section_name, section_path in stub_new_sections.items():
+        objcopy_cmd += [
+            '--add-section', f'{section_name}={section_path}',
+            '--change-section-vma', f'{section_name}={section_offset}']
+        section_offset += section_path.stat().st_size
+    subprocess.check_call(objcopy_cmd)
 
-    subprocess.check_call(cwd=destdir, args=objcopy_args)
     # FIXME: Sign the resulting binary for secureboot using 'sbsign' (and the squashfs somehow)
     #        'ukify' will also sign the result when doing all the section header math too
 
