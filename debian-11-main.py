@@ -813,18 +813,27 @@ if args.boot_test:
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
         if args.netboot_only:
-            # There's some issues with Qemu/OVMF & syslinux, but it uses ipxe internally anyway, so just configure that.
-            # FIXME: Why do we even need tftp at this point?
-            (testdir / 'ipxe-script.ipxe').write_text('\n'.join([
-                '#!ipxe',
-                'kernel linuxx64.efi ' + ' '.join([
-                    'boot=live',
-                    (f'netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
-                     if have_smbd else
-                     f'fetch=tftp://{tftp_address}/filesystem.squashfs'),
-                    common_boot_args]),
-                'boot'
-            ]))
+            ipxe_boot_args = ' '.join(
+                ['boot=live',
+                 'netboot=cifs', 'nfsopts=ro,guest,vers=3.1.1',
+                 f'nfsroot=//{smb_address}/qemu live-media-path=',
+                 # Tell initrd and rootfs "use this NIC, don't retry *all* NICs".
+                 # https://wiki.syslinux.org/wiki/index.php?title=SYSLINUX#SYSAPPEND_bitmask
+                 # https://git.kernel.org/pub/scm/libs/klibc/klibc.git/tree/usr/kinit/ipconfig
+                 # https://salsa.debian.org/live-team/live-boot/-/blob/debian/1%2520230131/components/9990-networking.sh?ref_type=tags#L5-53
+                 # https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-main.files/bootstrap2020-systemd-networkd
+                 # https://git.cyber.com.au/prisonpc/blob/4e5fd5ef09cd49e9bcb74de50afb65d61079d75e/prisonpc/tcb.py
+                 # https://github.com/systemd/systemd/blob/v254/src/network/generator/network-generator.c#L18-L44
+                 # https://ipxe.org/cfg/mac
+                 # https://ipxe.org/cmd/ifconf
+                 # NOTE: ${mac} is expanded by ipxe.efi, not us.
+                 'BOOTIF=01-${mac}']
+                if have_smbd else
+                ['boot=live',
+                 f'fetch=tftp://{tftp_address}/filesystem.squashfs'])
+            (testdir / 'netboot.ipxe').write_text(
+                '#!ipxe\n'
+                f'boot --replace linuxx64.efi {ipxe_boot_args} {common_boot_args}\n')
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
@@ -878,7 +887,7 @@ if args.boot_test:
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template_wants_PrisonPC else []),
                 *([f'smb={testdir}'] if have_smbd else []),
-                *([f'tftp={testdir}', 'bootfile=ipxe-script.ipxe']
+                *([f'tftp={testdir}', 'bootfile=netboot.ipxe']
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
