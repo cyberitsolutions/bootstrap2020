@@ -1,0 +1,9 @@
+# FIXME: merge this with tox.ini.
+# https://docs.astral.sh/ruff/settings/#pycodestyle-max-line-length
+# https://docs.astral.sh/ruff/settings/#line-length
+# FIXME: as at November 2023,
+#        Debian sid has ruff 0.0.291, which
+#        supports line-length but not max-line-length.
+#        Trying to set the latter makes ruff crash.
+[tool.ruff]
+line-length = 131
