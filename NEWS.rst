@@ -2,6 +2,36 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs December 2023 (since September 2023)
+======================================================================
+• Enhancements:
+
+  • Inmate kernel bumped to 6.5.3 (was 6.4.4).
+  • Endless Sky upgraded to 0.10.4 (new game content).
+  • TV server now reads the TV guide ("EPG") using modern tools.
+  • SOEs now build Unified Kernel Images (UKI), which is useful for secure boot.
+
+• Bugfixes:
+
+  • Leading & trailing whitespace in usernames is now banned.
+    Previously it was silently removed in most (but not all) places.
+    For example " p123 " was treated as "p123".
+
+  • Recording TV shows (time shifting) works again.
+    It was broken in all Debian 11 versions due to
+    improper migration of the script from Python 2 to Python 3.
+
+  • Staff desktops now show HD TV (1080p) correctly.
+    An upstream change caused the video player to use a buggy driver.
+    Inmate desktops were never affected.
+
+• TBS tuner cards require an out-of-tree driver.
+  This driver is currently broken for all Debian 11bpo and Debian 12 kernels.
+  As a result, we are currently shipping Debian 11 (non-bpo) TV server SOEs.
+
+
+
+======================================================================
  Changes in SOEs September 2023 (since August 2023)
 ======================================================================
 • New major OS release (Debian 12).
