@@ -17,3 +17,12 @@ DHCP=yes
 UseDomains=yes
 [IPv6AcceptRA]
 UseDomains=yes
+
+
+# If the DHCP server says "the local timezone in Australia/Melbourne", believe it.
+# WARNING: as at systemd v247, UseTimezone=yes is not implemented for DHCPv6!
+#          i.e. a IPv6-only network (single-stack) will not get a timezone!
+# WARNING: as at systemd v247, UseTimezone=yes only checks tzdb-timezone, not posix-timezone.
+#          A DHCP server set up for IOT devices might lack the appropriate setting.
+[DHCPv4]
+UseTimezone=yes
