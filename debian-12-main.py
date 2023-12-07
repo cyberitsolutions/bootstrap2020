@@ -287,7 +287,7 @@ def do_boot_test():
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if staff_network else
         ('10.128.2.0/24', '10.128.2.2', '10.128.2.3', '10.128.2.4', '10.128.2.100'))
-    with tempfile.TemporaryDirectory(dir=destdir) as testdir_str:
+    with tempfile.TemporaryDirectory(dir=destdir, prefix='boot-test-') as testdir_str:
         testdir = pathlib.Path(testdir_str)
         validate_unescaped_path_is_safe(testdir)
         for name in {'linuxx64.efi', 'filesystem.squashfs'}:
@@ -464,16 +464,44 @@ def do_boot_test():
 def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
     if not when:
         return []
-    dummy_DVD_path = testdir / 'dummy.iso'
-    subprocess.check_call([
-        'wget2',
-        '--quiet',
-        '--output-document', dummy_DVD_path,
-        '--http-proxy', apt_proxy,
-        'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso'])
-    return (                    # add these args to qemu cmdline
-        ['--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
-         '--boot', 'order=n'])  # don't try to boot off the dummy disk
+    dummy_DVD_path = testdir / 'mini.iso'
+    dummy_UAS_path = testdir / 'boot.img'  # "removable" USB drive
+    dummy_MS_path = testdir / 'boot2.img'  # "removable" USB drive
+    dummy_MTP_path = testdir               # "removable" MTP camera
+    subprocess.check_call(
+        ['wget2',
+         '--quiet',
+         '--http-proxy', apt_proxy,
+         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso',
+         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/hd-media/boot.img.gz',
+         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/boot-screens/splash.png'],
+        cwd=testdir)
+    subprocess.check_call(['gunzip', 'boot.img.gz'], cwd=testdir)
+    dummy_MS_path.write_bytes(dummy_UAS_path.read_bytes())  # UGH
+    subprocess.check_call(['find', testdir, '-ls'])
+    return ([                   # add these args to qemu cmdline
+        # DVD attached via SCSI (or ATAPI?)
+        # '--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
+        # Inmates shouldn't be able to access content on UAS or MTP.
+        # So we provide test instances of these to make sure they CAN'T!
+        # USB mass storage (not UAS).
+        '-device', 'qemu-xhci,id=LanguageNeurosisTurkey',  # XHCI bullshit
+        '-device', 'usb-storage,bus=LanguageNeurosisTurkey.0,drive=AntiquityChewingConcert',
+        '-drive', f'if=none,id=AntiquityChewingConcert,format=raw,file={dummy_MS_path}',
+        # DVD attached via USB optical drive (UAS).
+        # reuses qemu-xhci from previous block
+        '-device', 'usb-uas,id=PostalMobilitySufferer,bus=LanguageNeurosisTurkey.0',  # UAS bullshit
+        '-device', 'scsi-cd,bus=PostalMobilitySufferer.0,scsi-id=0,lun=0,drive=BrethrenSlopedSubmarine',
+        '-drive', f'if=none,id=BrethrenSlopedSubmarine,format=raw,file={dummy_DVD_path}',
+        # USB key attached via UAS
+        # reuses qemu-xhci from previous block
+        # reuses usb-uas from previous block
+        '-device', 'scsi-hd,bus=PostalMobilitySufferer.0,scsi-id=0,lun=1,drive=VanillaPlasterUnwound',
+        '-drive', f'if=none,id=VanillaPlasterUnwound,format=raw,file={dummy_UAS_path}',
+        # MTP (i.e. a digital camera)
+        '-device', f'usb-mtp,bus=LanguageNeurosisTurkey.0,readonly=off,rootdir={dummy_MTP_path}',
+        # don't try to boot off the dummy disk
+        '--boot', 'order=n'])
 
 
 def qemu_tvserver_ext2(testdir: pathlib.Path, when: bool = True) -> list:
