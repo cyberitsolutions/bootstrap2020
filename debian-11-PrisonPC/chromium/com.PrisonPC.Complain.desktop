@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 Name=Lodge Complaint
 Icon=mail-mark-important
-Exec=chromium --app=http://PrisonPC/Complain
+Exec=chromium --app=https://PrisonPC/Complain
 Categories=Network;Email;
 
 # https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
