@@ -481,7 +481,7 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
     subprocess.check_call(['find', testdir, '-ls'])
     return ([                   # add these args to qemu cmdline
         # DVD attached via SCSI (or ATAPI?)
-        # '--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
+        '--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
         # Inmates shouldn't be able to access content on UAS or MTP.
         # So we provide test instances of these to make sure they CAN'T!
         # USB mass storage (not UAS).
@@ -491,8 +491,10 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         # DVD attached via USB optical drive (UAS).
         # reuses qemu-xhci from previous block
         '-device', 'usb-uas,id=PostalMobilitySufferer,bus=LanguageNeurosisTurkey.0',  # UAS bullshit
-        '-device', 'scsi-cd,bus=PostalMobilitySufferer.0,scsi-id=0,lun=0,drive=BrethrenSlopedSubmarine',
-        '-drive', f'if=none,id=BrethrenSlopedSubmarine,format=raw,file={dummy_DVD_path}',
+        # FIXME: work out how to have both SCSI (above) and UAS (below) DVD drives.
+        #        Only the former works due to debian-12-PrisonPC-inmate.dpkg.cfg.
+        # '-device', 'scsi-cd,bus=PostalMobilitySufferer.0,scsi-id=0,lun=0,drive=BrethrenSlopedSubmarine',
+        # '-drive', f'if=none,id=BrethrenSlopedSubmarine,format=raw,file={dummy_DVD_path}',
         # USB key attached via UAS
         # reuses qemu-xhci from previous block
         # reuses usb-uas from previous block

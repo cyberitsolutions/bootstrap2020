@@ -1,0 +1,27 @@
+# -*-conf-*-
+
+# Inmates MUST be able to insert, mount, umount, and eject DVD discs.
+# Inmates MUST NOT be able to access USB keys (thumb drives) the same way.
+# That also applies to accessing content on external hard drives, smartphones, cameras, &c.
+#
+# Mechanically the main defense against this is compiling a custom kernel which entirely lacks the undesirable drivers.
+# However, as defense-in-depth, it's desirable to limit
+# One easy way to do this is to prevent thunar --dbus--> udisks mount/umount/eject requests.
+# I initially thought to do this by tweaking the polkit policy.js to only approve mounts with specific arguments.
+# https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-PrisonPC.files/polkit-policy.js
+# This may still not be possible even in the js version of polkit - I didn't reach a conclusion.
+# While looking into that, I realized an easier method is to tell udisks2 "don't manage this device".
+# This already happens for devices udisks2 considers "non-removable", so we can easily generalize it.
+# https://sources.debian.org/src/udisks2/2.9.4-4/data/80-udisks2.rules/
+#
+# For simplicity, I am limiting this to EXACTLY the first SCSI generic DVD drive.
+# AFAICT This is named sr0 whether it's plugged in via
+# ATAPI (typical physical hardware) or
+# SCSI (typical qemu) or
+# USB UAS (current --boot-test).
+#
+# I considered limiting to somethihing like SUBSYTEM=="block", but
+# I'm not sure if I need to name e.g. mmc and usb as well, and
+# I'm pretty sure adding UDISKS_IGNORE=1 to *everything* is cheap.
+
+KERNEL!="sr0", ENV{UDISKS_IGNORE}="1"
