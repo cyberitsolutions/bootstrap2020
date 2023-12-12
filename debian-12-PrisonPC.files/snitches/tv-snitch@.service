@@ -15,11 +15,39 @@ WatchdogSec=10m
 # Probably the user can't clear this without a reboot, but
 # this state is pretty hard to get into, right?
 #
-# FIXME: this is untested.
-#        nftables.service is already running, so
-#        this might just be a noop...
+# NOTE: this doesn't work, because
+#       nftables.service is already running (it's not Type=oneshot), so
+#       this becomes a noop.
 #
-#        There's a try/finally in tv-snitch.py, so
-#        actually let's just continue relying on that, for now, though
-#        it is not perfect.
-#OnFailure=nftables.service
+# OnFailure=nftables.service
+
+# 10:59 <twb> OK so snitches have different watchdog timeouts. session-snitch times out in 1m, the others 10m
+# 11:05 <mike> Oh! That explains some of my release testing fails
+# 11:06 <mike> I didn't consider them showstoppers since they're desktop SOE issues, not server. But was noticable
+# 11:07 <mike> I have issues with disc-snitch being 10m because that, in theory, means up to 10mins of time with a contraband disc. Usb-snitch being 10mins should be OK though because they can't **use** bad USB things anyway
+# 11:10 <twb> No
+# 11:10 <twb> This is after they manage to attack the system enough to crash the snitch daemon
+# 11:10 <twb> If they just put the disc in, none of this happens, it gets blocked by the snitcher
+# 11:15 <twb> Hrm, OK, I stopped the process and then waited 10 minutes and a reboot hasn't been forced
+# 11:17 <twb> OK that at least makes sense to me now, but can be improved...
+# 11:18 <twb> https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-PrisonPC.files/snitches/tv-snitch%40.service#L13-L25
+# 11:18 <twb> What happens currently is:
+# 11:18 <twb> systemd[1]: bootstrap2020-tv-snitch@p.service: Watchdog timeout (limit 10min)!
+# 11:18 [cjb goes afk for about 1 hour]
+# 11:18 <twb> systemd[1]: bootstrap2020-tv-snitch@p.service: Killing process 917 (bootstrap2020-t) with signal SIGABRT.
+# 11:19 <twb> Then it does not start up again, because no OnFailure=restart, and ALSO doesn't reboot the whole system
+# 11:19 <twb> I think tv-snitch process should be restarted if it fails with watchdog state
+# 11:20 <twb> Restart=on-watchdog
+#
+# OK, this is working now.
+#
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: bootstrap2020-tv-snitch@p.service: Watchdog timeout (limit 10min)!
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: bootstrap2020-tv-snitch@p.service: Killing process 682 (bootstrap2020-t) with signal SIGABRT.
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: bootstrap2020-tv-snitch@p.service: Main process exited, code=killed, status=6/ABRT
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: bootstrap2020-tv-snitch@p.service: Failed with result 'watchdog'.
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: bootstrap2020-tv-snitch@p.service: Scheduled restart job, restart counter is at 1.
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: Stopped bootstrap2020-tv-snitch@p.service.
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: Starting bootstrap2020-tv-snitch@p.service...
+# Dec 12 12:10:50 desktop-inmate.lan systemd[1]: Started bootstrap2020-tv-snitch@p.service.
+# Dec 12 12:10:51 desktop-inmate.lan bootstrap2020-tv-snitch[2320]: Granting TV access (None)
+Restart=on-watchdog
