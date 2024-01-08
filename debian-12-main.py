@@ -478,7 +478,6 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         cwd=testdir)
     subprocess.check_call(['gunzip', 'boot.img.gz'], cwd=testdir)
     dummy_MS_path.write_bytes(dummy_UAS_path.read_bytes())  # UGH
-    subprocess.check_call(['find', testdir, '-ls'])
     return ([                   # add these args to qemu cmdline
         # DVD attached via SCSI (or ATAPI?)
         '--drive', f'file={dummy_DVD_path},format=raw,media=cdrom',
