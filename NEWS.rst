@@ -2,6 +2,43 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs January 2024 (since December 2023)
+======================================================================
+• Enhancements:
+
+  • Removable media (inc. USB keys) are now blocked by multiple defense layers.
+    Previously we removed undesirable drivers at kernel compile time.
+    We now *also* remove undesirable drivers at SOE build time.
+    We now *also* instruct the GUI layer to hide & block all removable devices except the first optical (DVD) drive.
+    Any one of these layers is sufficient to block the unwanted behaviour.
+    Lab test VMs also include additional removable media types (e.g. MTP camera).
+    There is no evidence of any production SOEs ever being affected.
+    All removable media types remain available on staff desktops.
+
+• Bugfixes:
+
+  • Per-user/group "watch TV" curfews are enforced at the desktop.
+    The desktop asks the server "should I allow TV right now?"
+    If the server doesn't answer (due to an outage),
+    the desktop now correctly reboots.
+    Previously it would continue using the server's last answer.
+
+  • The boot-time timezone now overrides the build-time timezone.
+    At all existing sites, they are identical, so
+    there is no user-visible impact for existing sites.
+
+  • Some internal URL links used "http" (not "https").
+    HSTS self-heals this immediately, but
+    it gave misleading errors to new users if
+    an unrelated outage was underway when they first opened the browser.
+
+  • New users must choose a new password on first login in an upcoming PrisonPC server update.
+    Desktops now implement this correctly.
+    Desktops previously misreported this as "invalid password".
+
+
+
+======================================================================
  Changes in SOEs December 2023 (since September 2023)
 ======================================================================
 • Enhancements:
