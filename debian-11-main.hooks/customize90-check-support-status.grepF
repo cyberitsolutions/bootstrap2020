@@ -29,6 +29,8 @@ The following packages found on this system are affected by this:
 # samba<->samba AD (where AD = LDAP+krb+dns).
 
 * Source:samba
+  Affected binary packages:
+  Affected binary package:
   Details: Only non-AD Domain Controller use cases are supported. See https://lists.debian.org/debian-security-announce/2023/msg00169.html
   - libsmbclient:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u5)
   - libwbclient0:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u5)
