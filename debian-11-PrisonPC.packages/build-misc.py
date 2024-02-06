@@ -38,6 +38,7 @@ watch_path = (args.package_path / 'debian/watch')
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--variant=buildd',    # "build-dep" would do this anyway
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',

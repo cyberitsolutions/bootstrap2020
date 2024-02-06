@@ -29,6 +29,7 @@ apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--variant=buildd',
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',

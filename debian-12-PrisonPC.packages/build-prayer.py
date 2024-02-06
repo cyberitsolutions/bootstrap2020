@@ -14,6 +14,7 @@ os.environ['DEB_BUILD_OPTIONS'] = 'terse'
 with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--variant=apt',
          '--include=build-essential,devscripts,lintian',
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',

@@ -293,6 +293,7 @@ with tempfile.TemporaryDirectory() as td_str:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--dpkgopt=force-confold',  # https://bugs.debian.org/981004
          '--aptopt=APT::AutoRemove::SuggestsImportant "false"',  # fix autoremove
          '--include=linux-image-cloud-amd64'

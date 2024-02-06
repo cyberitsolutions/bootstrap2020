@@ -43,6 +43,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     (td / 'EFI/BOOT').mkdir(parents=True)
     subprocess.check_call(
         ['mmdebstrap', 'trixie', 'live/filesystem.squashfs',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',

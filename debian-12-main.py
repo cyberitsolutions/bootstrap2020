@@ -765,6 +765,7 @@ for template in args.templates:
 
         mmdebstrap_but_zstd(
             ['mmdebstrap',
+             '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
              # Build faster
              *['--variant=apt',             # save 12s 30MB
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',

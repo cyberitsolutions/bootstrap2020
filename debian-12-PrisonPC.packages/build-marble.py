@@ -20,6 +20,7 @@ with tempfile.TemporaryDirectory() as td_str:
             'Types: deb deb-src'))
     subprocess.check_call(
         ['mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--variant=apt',
          f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',

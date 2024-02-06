@@ -50,6 +50,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     (td / 'create_disk_image.sh').write_text(create_disk_image_script)
     subprocess.check_call(
         ['mmdebstrap', 'bookworm', 'filesystem.squashfs',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',

@@ -46,6 +46,7 @@ with tempfile.TemporaryDirectory() as td:
     subprocess.check_call(
         ['nice', 'ionice', '-c3', 'chrt', '--idle', '0',
          'mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          # NOTE: --variant=buildd includes ?priority(required), which includes e2fsprogs,
          #       which interacts negatively with prisonpc-ersatz-e2fsprogs.
          '--variant=apt',

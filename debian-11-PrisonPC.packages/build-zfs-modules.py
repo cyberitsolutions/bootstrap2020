@@ -61,6 +61,7 @@ with tempfile.TemporaryDirectory() as td:
     for use_backports in {True, False}:
         subprocess.check_call(
             ['mmdebstrap',
+             '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
              '--variant=buildd',    # "build-dep" would do this anyway
              f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
              '--aptopt=Acquire::https::Proxy "DIRECT"',

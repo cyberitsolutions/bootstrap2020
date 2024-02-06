@@ -73,6 +73,7 @@ def main():
     subprocess.check_call(['sudo', 'rm', '-rf', '/tmp/bootstrap/live'])  # allow unshare (mild security issue)
     subprocess.run(
         ['mmdebstrap',
+         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--mode=unshare',      # let me do all this as non-root user, hooray
          '--variant=minbase',
          '--include=init,initramfs-tools,xz-utils,live-boot,nfs-common,linux-image-cloud-amd64'
