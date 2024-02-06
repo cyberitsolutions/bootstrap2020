@@ -1,0 +1,7 @@
+buster,bullseye,bookworm,trixie,sid,task
+129MiB,149MiB,151MiB,152MiB,152MiB,task-xfce-desktop
+137MiB,155MiB,183MiB,181MiB,181MiB,task-lxde-desktop
+164MiB,190MiB,202MiB,202MiB,202MiB,task-lxqt-desktop
+235MiB,244MiB,250MiB,222MiB,222MiB,task-mate-desktop
+415MiB,453MiB,327MiB,284MiB,284MiB,task-cinnamon-desktop
+437MiB,399MiB,345MiB,379MiB,380MiB,task-gnome-flashback-desktop
