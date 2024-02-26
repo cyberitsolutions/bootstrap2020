@@ -201,8 +201,12 @@ def get_programmes(obj):
                 .replace(' UTC', '+00:00'))  # Appease fromisoformat
             duration = datetime.timedelta(seconds=int(
                 event_obj.get('duration')))
-            title = exactly_one(
-                event_obj.xpath('./DESC/SHORT_EVENT_DESC/@event_name'))
+            try:
+                title = exactly_one(
+                    event_obj.xpath('./DESC/SHORT_EVENT_DESC/@event_name'))
+            except ValueError:  # FIXME: use a dedicated exception?
+                logging.warning("Ignoring broken programme %s", lxml.etree.tostring(event_obj, encoding=str))
+                continue
             programmes.append({
                 'channel': None,    # not used anymore
                 'sid': service_id,
