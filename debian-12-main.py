@@ -282,7 +282,7 @@ def do_boot_test():
     # Therefore, qemu needs to use compatible IP addresses.
     staff_network = not template.startswith('desktop-inmate')
     disk_bullshit = template in {'dban', 'understudy', 'datasafe3'}
-    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate') or template == 'tvserver'
+    port_forward_bullshit = True
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if staff_network else
@@ -385,7 +385,7 @@ def do_boot_test():
         # We need a simple A record in the guest.
         # This is a quick-and-dirty way to achieve that (FIXME: do better).
         if port_forward_bullshit:
-            (testdir / 'filesystem.module').write_text('filesystem.squashfs site.dir')
+            (testdir / 'filesystem.module').write_text('filesystem.squashfs site.squashfs')
             (testdir / 'site.dir').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
@@ -405,6 +405,56 @@ def do_boot_test():
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
                     f'[Service]\nEnvironment=X11VNC_EXTRA_ARGS="-allow {tftp_address}"\n')
+
+            # FUUUUUUUUUUUUUUCK
+#             import textwrap
+            (testdir / 'site.dir/etc/systemd/system/multi-user.target.wants').mkdir(exist_ok=True, parents=True)
+            (testdir / 'site.dir/etc/systemd/system/multi-user.target.wants/prisonpc-dvd-check.service').symlink_to(
+                '../prisonpc-dvd-check.service')
+            (testdir / 'site.dir/etc/systemd/system/prisonpc-dvd-check.service').write_text(
+                """
+# If you uncomment this, it bricks the entire system.
+#[Unit]
+#After=rsyslog.service
+#Wants=rsyslog.service
+[Service]
+# We can delay start by *up to* 90s without a separate .timer.
+ExecStartPre=sleep 89s
+ExecStart=prisonpc-dvd-check
+""")
+            (testdir / 'site.dir/usr/bin').mkdir(exist_ok=True, parents=True)
+            (testdir / 'site.dir/usr/bin/prisonpc-dvd-check').write_text(
+                """#!/usr/bin/python3
+import pathlib
+import pwd
+import subprocess
+
+dvd_path = pathlib.Path('/dev/sr0')
+if dvd_path.exists():
+    main_str = f'<7>{dvd_path} exists'
+else:
+    main_str = f'<3>{dvd_path} missing'
+
+# loginctl isn't available on inmate desktops
+#who_str = subprocess.check_output(['loginctl'], text=True)
+#who_str = ' '.join(who_str.split())
+try:
+    names = sorted(
+        pwd.getpwuid(int(path.name)).pw_name
+        for path in pathlib.Path('/run/user').glob('[0-9]*[0-9]'))
+except Exception:
+    names = ['ERROR']
+
+addrs = sorted(
+    address_path.read_text().strip()
+    for address_path in pathlib.Path('/sys/class/net/').glob('*/address'))
+
+print(main_str, *names, *addrs)""")
+            (testdir / 'site.dir/usr/bin/prisonpc-dvd-check').chmod(0o0755)
+
+            subprocess.check_call(['gensquashfs', '-u', '0', '-g', '0', '-D', 'site.dir', 'site.squashfs'], cwd=testdir)
+
+
         subprocess.check_call([
             # NOTE: doesn't need root privs
             'qemu-system-x86_64',
