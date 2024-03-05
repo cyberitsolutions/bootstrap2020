@@ -1,0 +1,35 @@
+# -*-conf-*-
+# NOTE: in Debian 9 we hard-coded msmtprc as "mail WITHOUT TLS to host 'mail:25'":
+#
+#           https://git.cyber.com.au/bootstrap.attic/blob/master/bootstrap#L-92
+#
+#       and then in "server" SOEs we overrode it with a handwritten config "mail WITH TLS to mail:587 with username X and password Y"
+#
+#           https://git.cyber.com.au/bootstrap.attic/blob/prisonpc-tvserver-tbs/bootstrap#L-135
+#
+#       except then it WASN'T done for understudy SOEs (which should have had it), and
+#       then some sites didn't have a persistent USB key inside all the servers, so
+#       they had to have site-local override hacks (which understudy
+#       doesn't support due to using fetch=, so understudy had
+#       DIFFERENT override hacks in personality=)...
+#
+#       in Debian 11/12 we tried to configure this dynamically based on DNS:
+#
+#           https://github.com/cyberitsolutions/bootstrap2020/blob/df325aeeb89a167fff850cab1dc2964b8348dad8/debian-11-main/get-config-from-dnssd.py#L119-L137
+#
+#       This was a really clever idea, but it ran into a lot of problems.
+#       (Mostly with rsyslog, admittedly.)
+#
+#       Therefore we're going back to "just hard-code msmtprc to ALWAYS mail WITHOUT TLS to mail:25".
+#       Except that brings back issues of how do deal with servers that we want to use TLS and username+password.
+#       Also also for e.g. understudy/datasafe3 running outside PrisonPC (NOT A THING ANYMORE),
+#       we'd want to use the FQDN so that the TLS cert is actually valid.
+#
+#       So... this all gets a bit hard, doesn't it?
+#       Maybe we should keep the "use DNS-SD" part for mail, for now?
+
+account default
+  syslog LOG_MAIL
+  auto_from on
+  host mail
+  port 25

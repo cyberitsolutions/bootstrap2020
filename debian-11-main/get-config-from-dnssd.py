@@ -102,6 +102,8 @@ if rr := lookup_service('smtp'):
     #
     # NOTE: apparmor severely limits what msmtp can do.
     #       But it allows "cat", and that cat runs unconfined.
+    #
+    # FIXME: this is wrong because it's still using port 25.
     tvserver_path = pathlib.Path('/etc/prisonpc-persist/msmtp-psk')
     if tvserver_path.exists():
         with pathlib.Path('/etc/msmtprc').open('a') as f:

@@ -845,7 +845,7 @@ if args.boot_test:
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
-                f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm logserv')
+                f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm logserv mail')
             (testdir / 'site.dir/prayer.errata').write_text(
                 'ERRATA=--config-option default_domain=tweak.prisonpc.com')
             if 'inmate' in args.template:
@@ -892,7 +892,7 @@ if args.boot_test:
                   if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432, 2514}
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432, 2514, 587, 465}
                    for host in {'prisonpc-staff.lan'
                                 if template_wants_PrisonPC_staff_network else
                                 'prisonpc-inmate.lan'}]
