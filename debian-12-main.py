@@ -763,6 +763,10 @@ for template in args.templates:
         validate_unescaped_path_is_safe(destdir)
         destdir.mkdir()
 
+        # FIXME: remove this once build host has this upstream fix:
+        #        https://gitlab.mister-muffin.de/josch/mmdebstrap/commit/c66b41eb7e8a7417e5ccca6b7f7a579f85e6e238
+        os.environ['DPKG_PAGER'] = 'cat'
+
         mmdebstrap_but_zstd(
             ['mmdebstrap',
              '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
@@ -770,6 +774,8 @@ for template in args.templates:
              *['--variant=apt',             # save 12s 30MB
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
                '--aptopt=Acquire::https::Proxy "DIRECT"',
+               '--hook-dir=/usr/share/mmdebstrap/hooks/merged-usr',
+               '--hook-dir=/usr/share/mmdebstrap/hooks/eatmydata',
                ],
              *['--include=tzdata locales',
                ('--essential-hook={'
