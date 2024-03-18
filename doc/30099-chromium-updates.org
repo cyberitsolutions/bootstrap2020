@@ -221,8 +221,6 @@ SYNOPSIS: "http://example.com/sitelist.xml"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -294,8 +292,6 @@ SYNOPSIS: ["ie.com", "!open-in-chrome.ie.com", "foobar.com/ie-only/"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -578,120 +574,6 @@ SYNOPSIS: false
     type: boolean
   type: main
 
-* ChromeFrameContentTypes — Allow Google Chrome Frame to handle the following content types
- Allow Google Chrome Frame to handle the following content types.
-
-** ChromeFrameContentTypes (DEPRECATED) — Allow Google Chrome Frame to handle the listed content types
-SYNOPSIS: ["text/xml", "application/xml"]
- If this policy is set, the specified content types are handled by Google Chrome Frame.
-
-           If this policy is not set, the default renderer is used for all sites. (The ChromeFrameRendererSettings policy may be used to configure the default renderer.)
-
-  features:
-    dynamic_refresh: false
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_frame:8-32
-  type: list
-
-* ChromeFrameRendererSettings — Default HTML renderer for Google Chrome Frame
- Allows you to configure the default HTML renderer when Google Chrome Frame is installed.
-       The default setting is to allow the host browser do the rendering, but you can optionally override this and have Google Chrome Frame render HTML pages by default.
-
-** AdditionalLaunchParameters (DEPRECATED) — Additional command line parameters for Google Chrome
-SYNOPSIS: "--enable-media-stream --enable-media-source"
- Allows you to specify additional parameters that are used when Google Chrome Frame launches Google Chrome.
-
-           If this policy is not set the default command line will be used.
-
-  features:
-    dynamic_refresh: false
-  schema:
-    type: string
-  supported_on:
-  - chrome_frame:19-32
-  type: string
-
-** ChromeFrameRendererSettings (DEPRECATED) — Default HTML renderer for Google Chrome Frame
-SYNOPSIS: 1
- Allows you to configure the default HTML renderer when Google Chrome Frame is installed.
-           The default setting used when this policy is left not set is to allow the host browser do the rendering, but you can optionally override this and have Google Chrome Frame render HTML pages by default.
-
-  features:
-    dynamic_refresh: false
-  items:
-  - caption: Use the host browser by default
-    name: RenderInHost
-    value: 0
-  - caption: Use Google Chrome Frame by default
-    name: RenderInChromeFrame
-    value: 1
-  schema:
-    enum:
-    - 0
-    - 1
-    type: integer
-  supported_on:
-  - chrome_frame:8-32
-  type: int-enum
-
-** RenderInChromeFrameList (DEPRECATED) — Always render the following URL patterns in Google Chrome Frame
-SYNOPSIS: ["https://www.example.com", "https://www.example.edu"]
- Customize the list of URL patterns that should always be rendered by Google Chrome Frame.
-
-           If this policy is not set the default renderer will be used for all sites as specified by the 'ChromeFrameRendererSettings' policy.
-
-           For example patterns see https://www.chromium.org/developers/how-tos/chrome-frame-getting-started.
-
-  features:
-    dynamic_refresh: false
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_frame:8-32
-  type: list
-
-** RenderInHostList (DEPRECATED) — Always render the following URL patterns in the host browser
-SYNOPSIS: ["https://www.example.com", "https://www.example.edu"]
- Customize the list of URL patterns that should always be rendered by the host browser.
-
-           If this policy is not set the default renderer will be used for all sites as specified by the 'ChromeFrameRendererSettings' policy.
-
-           For example patterns see https://www.chromium.org/developers/how-tos/chrome-frame-getting-started.
-
-  features:
-    dynamic_refresh: false
-  schema:
-    items:
-      type: string
-    type: array
-  supported_on:
-  - chrome_frame:8-32
-  type: list
-
-** SkipMetadataCheck (DEPRECATED) — Skip the meta tag check in Google Chrome Frame
-SYNOPSIS: false
- Normally pages with X-UA-Compatible set to chrome=1 will be rendered in Google Chrome Frame regardless of the 'ChromeFrameRendererSettings' policy.
-
-           If you enable this setting, pages will not be scanned for meta tags.
-
-           If you disable this setting, pages will be scanned for meta tags.
-
-           If this policy is not set, pages will be scanned for meta tags.
-
-  features:
-    dynamic_refresh: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_frame:31-32
-  type: main
-
 * CloudReporting — Cloud Reporting
  Configure cloud reporting policies.
 
@@ -718,8 +600,6 @@ SYNOPSIS: true
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Create and upload extension install requests to the Admin console
     value: true
@@ -752,7 +632,6 @@ SYNOPSIS: true
     per_profile: true
   future_on:
   - chrome.*
-  - fuchsia
   items:
   - caption: Enable managed profile cloud reporting
     value: true
@@ -780,8 +659,6 @@ SYNOPSIS: true
     cloud_only: true
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable managed browser cloud reporting
     value: true
@@ -810,8 +687,6 @@ SYNOPSIS: 12
     cloud_only: true
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     maximum: 24
     minimum: 3
@@ -844,8 +719,6 @@ SYNOPSIS: ["example.com", "www.example.edu/path"]
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1054,8 +927,6 @@ SYNOPSIS: ["{\"pattern\":\"https://www.example.com\",\"filter\":{\"ISSUER\":{\"C
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1111,8 +982,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1132,8 +1001,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1161,8 +1028,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu", "https://www.example.co
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1184,8 +1049,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1207,8 +1070,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -1228,8 +1089,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable Data URL support in SVGUseElement.
     value: true
@@ -1253,8 +1112,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to use the clipboard site permission
     name: BlockClipboard
@@ -1282,8 +1139,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow all sites to set local data
     name: AllowCookies
@@ -1343,8 +1198,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to request read access to files and directories via
       the File System API
@@ -1375,8 +1228,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to request write access to files and directories
     name: BlockFileSystemWrite
@@ -1408,8 +1259,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow sites to track the users' physical location
     name: AllowGeolocation
@@ -1442,8 +1291,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow all sites to show all images
     name: AllowImages
@@ -1472,8 +1319,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to load mixed content
     name: BlockInsecureContent
@@ -1504,8 +1349,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow any site to run JavaScript JIT
     name: AllowJavaScriptJit
@@ -1532,8 +1375,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow all sites to run JavaScript
     name: AllowJavaScript
@@ -1591,8 +1432,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Denies the Local Fonts permission on all sites by default
     name: BlockLocalFonts
@@ -1646,8 +1485,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow sites to show desktop notifications
     name: AllowNotifications
@@ -1709,8 +1546,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow all sites to show pop-ups
     name: AllowPopups
@@ -1737,8 +1572,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow sites to access sensors
     name: AllowSensors
@@ -1765,8 +1598,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to request access to serial ports via the Serial
       API
@@ -1797,8 +1628,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow third-party storage partitioning to be enabled.
     name: AllowPartitioning
@@ -1825,8 +1654,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to request access to Bluetooth devices via the Web
       Bluetooth API
@@ -1858,8 +1685,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to request access to HID devices via the WebHID API
     name: BlockWebHid
@@ -1916,8 +1741,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow any site to request access to USB devices via the WebUSB API
     name: BlockWebUsb
@@ -1950,8 +1773,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Denies the Window Management permission on all sites by default
     name: BlockWindowManagement
@@ -1980,8 +1801,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Denies the Window Placement permission on all sites by default
     name: BlockWindowPlacement
@@ -2059,8 +1878,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2084,8 +1901,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2129,8 +1944,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2154,8 +1967,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2196,8 +2007,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2219,8 +2028,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2240,8 +2047,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2261,8 +2066,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2282,8 +2085,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2303,8 +2104,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2328,8 +2127,6 @@ SYNOPSIS: ["[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2355,8 +2152,6 @@ SYNOPSIS: ["[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2449,8 +2244,6 @@ SYNOPSIS: ["www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2470,8 +2263,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2491,8 +2282,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2512,8 +2301,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2533,8 +2320,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2554,8 +2339,6 @@ SYNOPSIS: ["example.com", "google.com"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2615,8 +2398,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2636,8 +2417,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2659,8 +2438,6 @@ SYNOPSIS: [{"default": true, "protocol": "mailto", "url": "https://mail.google.c
     can_be_recommended: true
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -2696,8 +2473,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2719,8 +2494,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2742,8 +2515,6 @@ SYNOPSIS: ["https://www.example.com"]
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2767,8 +2538,6 @@ SYNOPSIS: [{"devices": [{"product_id": 5678, "vendor_id": 1234}], "urls": ["http
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -2817,8 +2586,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2844,8 +2611,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2865,8 +2630,6 @@ SYNOPSIS: ["www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2888,8 +2651,6 @@ SYNOPSIS: ["https://google.com", "https://chromium.org"]
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -2911,8 +2672,6 @@ SYNOPSIS: [{"devices": [{"product_id": 5678, "vendor_id": 1234}], "urls": ["http
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -2957,8 +2716,6 @@ SYNOPSIS: [{"urls": ["https://google.com", "https://chromium.org"], "usages": [{
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -3013,8 +2770,6 @@ SYNOPSIS: ["https://google.com", "https://chromium.org"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3046,8 +2801,6 @@ SYNOPSIS: ["https://google.com", "https://chromium.org"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3109,8 +2862,6 @@ SYNOPSIS: [{"devices": [{"product_id": 5678, "vendor_id": 1234}], "urls": ["http
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -3155,8 +2906,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3180,8 +2929,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3203,8 +2950,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3226,8 +2971,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3247,8 +2990,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3268,8 +3009,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3380,8 +3119,6 @@ SYNOPSIS: ["https://search.my.company/suggest#q={searchTerms}", "https://search.
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3405,8 +3142,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable the default search provider
     value: true
@@ -3431,8 +3166,6 @@ SYNOPSIS: ["UTF-8", "UTF-16", "GB2312", "ISO-8859-1"]
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3477,8 +3210,6 @@ SYNOPSIS: "https://search.my.company/searchbyimage/upload"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3505,8 +3236,6 @@ SYNOPSIS: "content={google:imageThumbnail},url={google:imageURL},sbisrc={google:
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3561,8 +3290,6 @@ SYNOPSIS: "mis"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3579,8 +3306,6 @@ SYNOPSIS: "My Intranet Search"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3599,8 +3324,6 @@ SYNOPSIS: "https://search.my.company/newtab"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3635,8 +3358,6 @@ SYNOPSIS: "https://search.my.company/search?q={searchTerms}"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3655,8 +3376,6 @@ SYNOPSIS: "q={searchTerms},ie=utf-8,oe=utf-8"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3673,8 +3392,6 @@ SYNOPSIS: "https://search.my.company/suggest?q={searchTerms}"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3691,8 +3408,6 @@ SYNOPSIS: "q={searchTerms},ie=utf-8,oe=utf-8"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -3803,8 +3518,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Block installation of external extensions
     value: true
@@ -3855,7 +3568,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:113-121
-  - fuchsia:113-121
   tags:
   - system-security
   type: main
@@ -3915,8 +3627,6 @@ SYNOPSIS: ["hosted_app"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Extension
     name: extension
@@ -3974,8 +3684,6 @@ SYNOPSIS: ["chrome-extension://abcdefghijklmnopabcdefghijklmnop/", "chrome-exten
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -3995,8 +3703,6 @@ SYNOPSIS: ["extension_id1", "extension_id2"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Extension IDs to exempt from the blocklist
   schema:
     items:
@@ -4017,8 +3723,6 @@ SYNOPSIS: ["extension_id1", "extension_id2"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Extension IDs the user should be prevented from installing (or * for all)
   schema:
     items:
@@ -4051,8 +3755,6 @@ SYNOPSIS: ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;https://clients2.google.com/service
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Extension/App IDs and update URLs to be silently installed
   schema:
     items:
@@ -4075,8 +3777,6 @@ SYNOPSIS: ["https://corp.mycompany.com/*"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: URL patterns to allow extension, app, and user script installs from
   schema:
     id: ExtensionInstallSources
@@ -4134,8 +3834,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Default browser behavior
     name: Default
@@ -4173,8 +3871,6 @@ SYNOPSIS: {"*": {"allowed_types": ["hosted_app"], "blocked_install_message": "Cu
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     patternProperties:
       ^[a-p]{32}(?:,[a-p]{32})*,?$:
@@ -4356,7 +4052,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:113-
-  - fuchsia:113-
   type: main
 
 ** FirstPartySetsOverrides — Override First-Party Sets.
@@ -4457,7 +4152,6 @@ SYNOPSIS: {"additions": [{"associatedSites": ["https://associate2.test"], "ccTLD
     type: object
   supported_on:
   - chrome.*:113-
-  - fuchsia:113-
   type: dict
 
 * FloatingSso — Floating SSO Settings
@@ -4688,8 +4382,6 @@ SYNOPSIS: 60
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     minimum: 0
     type: integer
@@ -4708,8 +4400,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: User will be given the option in the Google Cast menu to select cast devices
       by using an access code or by scanning a QR code.
@@ -4733,8 +4423,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to use Google Cast
     value: true
@@ -4758,8 +4446,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow Google Cast to connect to devices on all IP addresses
     value: true
@@ -4786,8 +4472,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Always show the Google Cast icon in the toolbar
     value: true
@@ -4813,8 +4497,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show media controls for Google Cast sessions started by other devices
     value: true
@@ -4839,8 +4521,6 @@ SYNOPSIS: ["*.example.com"]
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -4861,8 +4541,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow third-party images to show an authentication prompt
     value: true
@@ -4885,8 +4563,6 @@ SYNOPSIS: "*.example.com,foobar.example.com"
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -4939,8 +4615,6 @@ SYNOPSIS: "basic,digest,ntlm,negotiate"
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -4958,8 +4632,6 @@ SYNOPSIS: "*.example.com,example.com"
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -4978,8 +4650,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Basic authentication is allowed on HTTP connections
     value: true
@@ -5002,8 +4672,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Disable CNAME lookup during Kerberos authentication
     value: true
@@ -5025,8 +4693,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Include non-standard port in generated Kerberos SPN
     value: true
@@ -5165,8 +4831,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Prevent sites with abusive experiences from opening new windows or tabs
     value: true
@@ -5206,8 +4870,6 @@ SYNOPSIS: false
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Use an anonymous Google service to provide automatic descriptions for unlabeled
       images
@@ -5239,8 +4901,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow additional DNS query types
     value: true
@@ -5262,8 +4922,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow ads on all sites
     name: AllowAds
@@ -5288,8 +4946,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Users enrolled in the Advanced Protection program will receive extra protections
     value: true
@@ -5346,7 +5002,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:116-
-  - fuchsia:117-
   type: main
 
 ** AllowDeletingBrowserHistory — Enable deleting browser and download history
@@ -5359,8 +5014,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable deleting browser and download history
     value: true
@@ -5386,8 +5039,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable dinosaur easter egg game
     value: true
@@ -5412,8 +5063,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow file selection dialogs
     value: true
@@ -5558,8 +5207,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow WebAuthn API requests on sites with broken TLS certificates.
     value: true
@@ -5587,8 +5234,6 @@ SYNOPSIS: "managedchrome.com,example.com"
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -5613,7 +5258,6 @@ SYNOPSIS: ["managedchrome.com", "example.com"]
     per_profile: true
   future_on:
   - chrome.*
-  - fuchsia
   schema:
     items:
       type: string
@@ -5632,8 +5276,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable alternate error pages
     value: true
@@ -5682,8 +5324,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Always open PDF files using an external PDF viewer
     value: true
@@ -5718,8 +5358,6 @@ SYNOPSIS: 0
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable ambient authentication in regular sessions only.
     name: RegularOnly
@@ -5777,8 +5415,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable audio input
     value: true
@@ -5799,8 +5435,6 @@ SYNOPSIS: ["https://www.example.com/", "https://[*.]example.edu/"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -5905,8 +5539,6 @@ SYNOPSIS: [{"allowed_origins": ["example.com", "http://www.example.com:8080"], "
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -5938,8 +5570,6 @@ SYNOPSIS: ["example.com", "https://ssl.server.com", "hosting.com/good_path", "ht
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -5961,8 +5591,6 @@ SYNOPSIS: ["exe", "txt"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -5981,8 +5609,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable AutoFill for addresses
     value: true
@@ -6004,8 +5630,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable AutoFill for credit cards
     value: true
@@ -6028,8 +5652,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow Chrome to autoplay media
     value: true
@@ -6050,8 +5672,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -6155,8 +5775,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show cancel dialog when event.preventDefault() is called for beforeunload
       event. Do not show cancel dialog when event.returnValue is the empty string for
@@ -6185,8 +5803,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Block 3rd party cookies
     value: true
@@ -6211,8 +5827,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable bookmark bar
     value: true
@@ -6237,8 +5851,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow adding new profiles
     value: true
@@ -6285,8 +5897,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow guest browser logins
     value: true
@@ -6307,8 +5917,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Only allow guest browser logins
     value: true
@@ -6332,8 +5940,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable browser experimental features toolbar entrypoint
     value: true
@@ -6357,8 +5963,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow queries to a Google server to retrieve an accurate timestamp
     value: true
@@ -6385,8 +5989,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Disable browser sign-in
     name: Disable
@@ -6423,8 +6025,6 @@ SYNOPSIS: "#FFFFFF"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     description: Hex color which will be used to generate and apply a theme to the browser.
     type: string
@@ -6447,8 +6047,6 @@ SYNOPSIS: [{"data_types": ["browsing_history"], "time_to_live_in_hours": 24}, {"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -6488,8 +6086,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Always use the built-in DNS client if available
     value: true
@@ -6571,8 +6167,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Support CORS non-wildcard request headers.
     value: true
@@ -6601,8 +6195,6 @@ SYNOPSIS: ["sha256/AAAAAAAAAAAAAAAAAAAAAA==", "sha256//////////////////////w=="]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -6624,8 +6216,6 @@ SYNOPSIS: ["sha256/AAAAAAAAAAAAAAAAAAAAAA==", "sha256//////////////////////w=="]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -6647,8 +6237,6 @@ SYNOPSIS: ["example.com", ".example.com"]
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -6758,8 +6346,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable all variations
     name: VariationsEnabled
@@ -6791,8 +6377,6 @@ SYNOPSIS: ["browsing_history", "download_history", "cookies_and_other_site_data"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Browsing history
     name: browsing_history
@@ -6866,8 +6450,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to send phone numbers from Chrome to their Android device
     value: true
@@ -6893,8 +6475,6 @@ SYNOPSIS: true
     dynamic_refresh: false
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Prevent Chrome from launching if not enrolled into Chrome Browser Cloud
       Management
@@ -6917,8 +6497,6 @@ SYNOPSIS: "37185d02-e055-11e7-80c1-9a214cf093ae"
     dynamic_refresh: false
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -6939,8 +6517,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     metapolicy_type: precedence
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Cloud machine policies take precedence over platform machine policies
     value: true
@@ -6967,8 +6543,6 @@ SYNOPSIS: true
     dynamic_refresh: true
     metapolicy_type: merge
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable merging of user-level cloud policies.
     value: true
@@ -6995,8 +6569,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     metapolicy_type: precedence
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow user cloud policies to override machine cloud policies.
     value: true
@@ -7020,8 +6592,6 @@ SYNOPSIS: ["example.com"]
     dynamic_refresh: true
     internal_only: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -7044,8 +6614,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Show security warnings when potentially dangerous command-line flags are
       used
@@ -7071,8 +6639,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable updates for all components
     value: true
@@ -7126,8 +6692,6 @@ SYNOPSIS: {"disable": ["not-sensitive.example.com"], "enable": ["*"], "minimum_d
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     properties:
       disable:
@@ -7252,8 +6816,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Perform DNS interception checks
     value: true
@@ -7509,8 +7071,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable the default browser check on startup
     value: true
@@ -7538,8 +7098,6 @@ SYNOPSIS: "/home/${user_name}/Downloads"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -7562,8 +7120,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable access to the default search provider context menu
     value: true
@@ -7602,8 +7158,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable desktop sharing hub
     value: true
@@ -7633,8 +7187,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Disallow usage of the Developer Tools on apps and extensions installed
       by enterprise policy or, since version 114 and if this is a managed user, extensions
@@ -7799,8 +7351,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Disable support for 3D graphics APIs
     value: true
@@ -7860,8 +7410,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow users to take screenshots or video recordings
     value: true
@@ -7981,8 +7529,6 @@ SYNOPSIS: "${user_home}/Chrome_cache"
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   label: Set disk cache directory
   schema:
     type: string
@@ -8003,8 +7549,6 @@ SYNOPSIS: 104857600
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   label: Set disk cache size
   schema:
     type: integer
@@ -8059,8 +7603,6 @@ SYNOPSIS: "off"
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Disable DNS-over-HTTPS
     name: 'off'
@@ -8096,8 +7638,6 @@ SYNOPSIS: "https://dns.example.net/dns-query{?dns}"
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -8136,8 +7676,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Domain Reliability data may be sent to Google depending on Chrome User
       Metrics (UMA) policy
@@ -8194,8 +7732,6 @@ SYNOPSIS: "/home/${user_name}/Downloads"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Set download directory
   schema:
     type: string
@@ -8233,8 +7769,6 @@ SYNOPSIS: 4
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: No special restrictions. Default.
     name: DefaultDownloadSecurity
@@ -8276,8 +7810,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable bookmark editing
     value: true
@@ -8401,8 +7933,6 @@ SYNOPSIS: ["ExtensionInstallAllowlist", "ExtensionInstallBlocklist"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -8422,8 +7952,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow online OCSP/CRL checks to be performed
     value: true
@@ -8529,8 +8057,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable the TLS Encrypted ClientHello experiment
     value: true
@@ -8600,8 +8126,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow managed extensions to use the Enterprise Hardware Platform API
     value: true
@@ -8630,8 +8154,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Check the option to keep existing browsing data by default
     value: true
@@ -8658,8 +8180,6 @@ SYNOPSIS: 1
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Real time URL check is disabled.
     name: Disabled
@@ -8763,8 +8283,6 @@ SYNOPSIS: [{"domains": ["https://example.com", "example2.com"], "file_extension"
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       id: DomainFiletypePair
@@ -8800,8 +8318,6 @@ SYNOPSIS: ["10080"]
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: port 554 (can be unblocked until 2021/10/15)
     name: '554'
@@ -8905,8 +8421,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to select "Always allow" when an external protocol dialog is
       shown to skip future confirmation prompts
@@ -8931,8 +8445,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable in-product surveys
     value: true
@@ -8959,8 +8471,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     maximum: 5
     minimum: 0
@@ -8991,8 +8501,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -9067,8 +8575,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Clear profile data on disk when user session ends
     value: true
@@ -9090,8 +8596,6 @@ SYNOPSIS: false
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Force the use of SafeSearch in Google Search
     value: true
@@ -9207,7 +8711,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:117-
-  - fuchsia:117-
   type: main
 
 ** ForceSafeSearch (DEPRECATED) — Force SafeSearch
@@ -9256,8 +8759,6 @@ SYNOPSIS: 0
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not enforce Restricted Mode on YouTube
     name: 'Off'
@@ -9322,8 +8823,6 @@ SYNOPSIS: ["en-US"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -9343,8 +8842,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow fullscreen mode
     value: true
@@ -9355,25 +8852,6 @@ SYNOPSIS: true
   supported_on:
   - chrome.linux:31-
   type: main
-
-** GCFUserDataDir (DEPRECATED) — Set Google Chrome Frame user data directory
-SYNOPSIS: "${user_home}/Chrome Frame"
- Configures the directory that Google Chrome Frame will use for storing user data.
-
-       If you set this policy, Google Chrome Frame will use the provided directory.
-
-       See https://support.google.com/chrome/a?p=Supported_directory_variables for a list of variables that can be used.
-
-       If this setting is left not set the default profile directory will be used.
-
-  features:
-    dynamic_refresh: false
-  label: Set user data directory
-  schema:
-    type: string
-  supported_on:
-  - chrome_frame:12-32
-  type: string
 
 ** GloballyScopeHTTPAuthCacheEnabled — Enable globally scoped HTTP auth cache
 SYNOPSIS: false
@@ -9390,8 +8868,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable globally scoped HTTP authentication cache
     value: true
@@ -9472,8 +8948,6 @@ SYNOPSIS: ["meet"]
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       pattern: ^[a-z0-9-]*$
@@ -9494,8 +8968,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable graphics acceleration
     value: true
@@ -9530,7 +9002,6 @@ SYNOPSIS: 2
     type: integer
   supported_on:
   - chrome.*:91-
-  - fuchsia:106-
   type: int-enum
 
 ** HideWebStoreIcon — Hide the web store from the New Tab Page and app launcher
@@ -9544,8 +9015,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not show the Chrome Web Store icon in the Google ChromeOS launcher or
       on the new tab page
@@ -9613,8 +9082,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Chrome history page organized into groups will be visible at chrome://history/grouped.
     value: true
@@ -9681,7 +9148,6 @@ SYNOPSIS: ["testserver.example.com", "[*.]example.org"]
     type: array
   supported_on:
   - chrome.*:112-
-  - fuchsia:112-
   tags:
   - system-security
   type: list
@@ -9720,7 +9186,6 @@ SYNOPSIS: "disallowed"
     type: string
   supported_on:
   - chrome.*:94-
-  - fuchsia:112-
   type: string-enum
 
 ** HttpsUpgradesEnabled — Enable automatic HTTPS upgrades
@@ -9751,7 +9216,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:112-
-  - fuchsia:112-
   type: main
 
 ** ImportAutofillFormData — Import autofill form data from default browser on first run
@@ -9764,8 +9228,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable import of autofill form data on first run
     value: true
@@ -9791,8 +9253,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable import of bookmarks on first run
     value: true
@@ -9818,8 +9278,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable import of browsing history on first run
     value: true
@@ -9843,8 +9301,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable import of homepage on first run
     value: true
@@ -9872,8 +9328,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable import of saved passwords on first run
     value: true
@@ -9898,8 +9352,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable import of default search engine on first run
     value: true
@@ -9954,8 +9406,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Incognito mode available
     name: Enabled
@@ -9992,8 +9442,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show warnings and disable autofill on insecure forms
     value: true
@@ -10026,7 +9474,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:114-
-  - fuchsia:114-
   tags:
   - system-security
   type: main
@@ -10084,8 +9531,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Force throttling of background JavaScript timers
     value: true
@@ -10113,8 +9558,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Use default browser behavior.
     name: Default
@@ -10159,8 +9602,6 @@ SYNOPSIS: "https://a.example.com/,https://othersite.org/,https://[*.]corp.exampl
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -10182,7 +9623,6 @@ SYNOPSIS: false
     per_profile: true
   future_on:
   - chrome.*
-  - fuchsia
   items:
   - caption: Enable Isolated Apps Developer Mode
     value: true
@@ -10230,8 +9670,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable JavaScript
     value: true
@@ -10279,8 +9717,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show the Google Lens button in the search box on the New Tab page.
     value: true
@@ -10300,8 +9736,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable Google Lens region search.
     value: true
@@ -10411,8 +9845,6 @@ SYNOPSIS: ["foo.example.com", "example.org"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -10468,8 +9900,6 @@ SYNOPSIS: "primary_account"
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: A Managed account must be a primary account and importing existing browsing
       data is allowed at the time of profile creation
@@ -10516,8 +9946,6 @@ SYNOPSIS: [{"toplevel_name": "My managed bookmarks folder"}, {"name": "Google", 
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       id: BookmarkType
@@ -10548,8 +9976,6 @@ SYNOPSIS: [{"managed_configuration_hash": "asd891jedasd12ue9h", "managed_configu
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -10579,8 +10005,6 @@ SYNOPSIS: 32
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: integer
   supported_on:
@@ -10597,8 +10021,6 @@ SYNOPSIS: 10000
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     maximum: 300000
     minimum: 1000
@@ -10633,8 +10055,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show media recommendations to the user
     value: true
@@ -10665,8 +10085,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable reporting of usage and crash-related data
     value: true
@@ -10697,8 +10115,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: New Tab Page will show cards if content is available
     value: true
@@ -10724,8 +10140,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Users can customize the New Tab page background
     value: true
@@ -10750,8 +10164,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: New Tab Page will show the middle slot announcement if it is available
     value: true
@@ -10826,8 +10238,6 @@ SYNOPSIS: 1
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Predict network actions on any network connection
     name: NetworkPredictionAlways
@@ -10884,8 +10294,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: NewBaseUrlInheritanceBehavior feature available
     value: true
@@ -10952,8 +10360,6 @@ SYNOPSIS: [{"block_until_verdict": 0, "default_action": "allow", "custom_message
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -11065,8 +10471,6 @@ SYNOPSIS: [{"block_large_files": false, "block_password_protected": true, "block
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -11179,8 +10583,6 @@ SYNOPSIS: [{"block_large_files": true, "block_password_protected": false, "block
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -11291,8 +10693,6 @@ SYNOPSIS: [{"block_large_files": true, "block_until_verdict": 0, "default_action
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -11392,8 +10792,6 @@ SYNOPSIS: [{"enabled_event_names": ["passwordChangedEvent", "sensitiveDataEvent"
     cloud_only: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -11473,8 +10871,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: By default, documents may be put in origin-keyed agent clusters. document.domain
       is not settable for such documents.
@@ -11499,8 +10895,6 @@ SYNOPSIS: ["http://testserver.example.com/", "*.example.org"]
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -11592,8 +10986,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow websites to check if the user has payment methods saved
     value: true
@@ -11630,7 +11022,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:115-
-  - fuchsia:115-
   type: main
 
 ** PersistentQuotaEnabled (DEPRECATED) — Force persistent quota to be enabled
@@ -11668,8 +11059,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable policy atomic groups
     value: true
@@ -11699,8 +11088,6 @@ SYNOPSIS: ["ExtensionSettings"]
     dynamic_refresh: true
     metapolicy_type: merge
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Managed user manual exception URLs
     name: ContentPackManualBehaviorURLs
@@ -11758,8 +11145,6 @@ SYNOPSIS: ["ExtensionInstallAllowlist", "ExtensionInstallBlocklist"]
     dynamic_refresh: true
     metapolicy_type: merge
     per_profile: true
-  future_on:
-  - fuchsia
   label: Allow merging list policies from different sources
   schema:
     items:
@@ -11780,8 +11165,6 @@ SYNOPSIS: 3600000
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     maximum: 86400000
     minimum: 1800000
@@ -11805,7 +11188,6 @@ SYNOPSIS: true
     per_profile: true
   future_on:
   - chrome.*
-  - fuchsia
   items:
   - caption: Policy test page is accessible
     value: true
@@ -11835,8 +11217,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Use Default Value for Kyber post-quantum key agreement for TLS
     value: null
@@ -11911,8 +11291,6 @@ SYNOPSIS: 0
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Profile picker available at startup
     name: Enabled
@@ -11967,8 +11345,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable showing full-tab promotional content
     value: true
@@ -11990,8 +11366,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Ask the user where to save the file before downloading
     value: true
@@ -12015,8 +11389,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Prompt the user to select the client certificate whenever the auto-selection
       policy matches multiple certificates.
@@ -12084,8 +11456,6 @@ SYNOPSIS: {"ProxyBypassList": "https://www.example1.com,https://www.example2.com
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     properties:
       ProxyBypassList:
@@ -12127,8 +11497,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow QUIC
     value: true
@@ -12208,7 +11576,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:116-
-  - fuchsia:116-
   tags:
   - system-security
   type: main
@@ -12224,8 +11591,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Show a recurring prompt to the user indicating that a relaunch is recommended
     name: Recommended
@@ -12253,8 +11618,6 @@ SYNOPSIS: 604800000
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   label: Time period (milliseconds)
   schema:
     minimum: 3600000
@@ -12277,8 +11640,6 @@ SYNOPSIS: {"entries": [{"duration_mins": 240, "start": {"hour": 2, "minute": 15}
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   label: Relaunch time window
   schema:
     properties:
@@ -12328,8 +11689,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow use of the remote debugging
     value: true
@@ -12353,8 +11712,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Perform revocation checks for successfully validated server certificates
       signed by locally installed CA certificates
@@ -12378,8 +11735,6 @@ SYNOPSIS: ".*@example\\.com"
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -12419,8 +11774,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable creation of roaming profiles
     value: true
@@ -12470,8 +11823,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to click through SSL warning pages
     value: true
@@ -12496,8 +11847,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -12658,8 +12007,6 @@ SYNOPSIS: 0
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not filter sites for adult content
     name: SafeSitesFilterDisabled
@@ -12698,8 +12045,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow Chrome to block navigations to external protocols inside sandboxed
       iframe
@@ -12724,8 +12069,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Disable saving browser history
     value: true
@@ -12780,8 +12123,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -12802,8 +12143,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow sites to scroll to specific text fragments via URL
     value: true
@@ -12827,8 +12166,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable search suggestions
     value: true
@@ -12847,8 +12184,6 @@ SYNOPSIS: ["example.com"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -12940,8 +12275,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow sites to use SharedArrayBuffers
     value: true
@@ -12972,8 +12305,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable the shared clipboard feature
     value: true
@@ -13018,8 +12349,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show the apps shortcut in the bookmark bar
     value: true
@@ -13047,8 +12376,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Display the full URL
     value: true
@@ -13093,8 +12420,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable showing default search engine results pages in a Browser side panel.
     value: true
@@ -13116,8 +12441,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Accept web contents served as Signed HTTP Exchanges
     value: true
@@ -13168,8 +12491,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable signin interception
     value: true
@@ -13197,8 +12518,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Require site isolation for all websites
     value: true
@@ -13271,8 +12590,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Use a Google web service to help resolve spelling errors
     value: true
@@ -13300,8 +12617,6 @@ SYNOPSIS: false
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable spellcheck
     value: true
@@ -13412,8 +12727,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Scripts for workers (Web Workers, Service Workers, etc.) require a JavaScript
       MIME type, like text/javascript. Worker scripts with legacy MIME types, like text/ascii,
@@ -13453,18 +12766,6 @@ SYNOPSIS: true
   - chrome.*:80-84
   type: main
 
-** SuppressChromeFrameTurndownPrompt (DEPRECATED) — Suppress the Google Chrome Frame turndown prompt
-SYNOPSIS: true
- Suppresses the turndown prompt that appears when a site is rendered by Google Chrome Frame.
-
-  features:
-    dynamic_refresh: false
-  schema:
-    type: boolean
-  supported_on:
-  - chrome_frame:29-32
-  type: main
-
 ** SuppressDifferentOriginSubframeDialogs — Suppress JavaScript Dialogs triggered from different origin subframes
 SYNOPSIS: true
  As described in https://www.chromestatus.com/feature/5148698084376576 , JavaScript modal dialogs, triggered by window.alert, window.confirm, and window.prompt, will be blocked in Google Chrome if triggered from a subframe whose origin is different from the main frame origin.
@@ -13479,8 +12780,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Block JavaScript dialogs triggered from a different origin subframe.
     value: true
@@ -13501,8 +12800,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Suppress warnings when Chrome is running on an unsupported system
     value: true
@@ -13530,8 +12827,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Disable Chrome Sync
     value: true
@@ -13557,8 +12852,6 @@ SYNOPSIS: ["bookmarks"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -13680,8 +12973,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to end processes with the Chrome task manager
     value: true
@@ -13703,8 +12994,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: ThrottleDisplayNoneAndVisibilityHiddenCrossOriginIframes feature available
     value: true
@@ -13754,8 +13043,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Always offer translation
     value: true
@@ -13837,8 +13124,6 @@ SYNOPSIS: ["example.com", "https://ssl.server.com", "hosting.com/good_path", "ht
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -13893,7 +13178,6 @@ SYNOPSIS: ["example.com", "https://ssl.server.com", "hosting.com/bad_path", "htt
     type: array
   supported_on:
   - chrome.*:86-
-  - fuchsia:106-
   tags:
   - filtering
   type: list
@@ -13957,8 +13241,6 @@ SYNOPSIS: ["http://testserver.example.com/", "*.example.org"]
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -14017,8 +13299,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: URL-keyed anonymized data collection is always active
     value: true
@@ -14048,7 +13328,6 @@ SYNOPSIS: true
     per_profile: true
   future_on:
   - chrome.*
-  - fuchsia
   items:
   - caption: URL-keyed metrics collection is allowed
     value: true
@@ -14170,8 +13449,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Allow the updated User-Agent GREASE algorithm to be run.
     value: true
@@ -14196,8 +13473,6 @@ SYNOPSIS: 0
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: User Agent reduction will be controllable via Field-Trials and Origin-Trials.
     name: Default
@@ -14258,8 +13533,6 @@ SYNOPSIS: 3
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     minimum: 0
     type: integer
@@ -14277,8 +13550,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to file feedback
     value: true
@@ -14302,8 +13573,6 @@ SYNOPSIS: "restricted"
     dynamic_refresh: false
     internal_only: true
     per_profile: false
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -14321,8 +13590,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable video input
     value: true
@@ -14343,8 +13610,6 @@ SYNOPSIS: ["https://www.example.com/", "https://[*.]example.edu/"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -14367,8 +13632,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable Web Proxy Auto-Discovery (WPAD) optimizations
     value: true
@@ -14434,8 +13697,6 @@ SYNOPSIS: [{"create_desktop_shortcut": true, "default_launch_container": "window
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: URLs for Web Apps to be silently installed.
   schema:
     items:
@@ -14485,8 +13746,6 @@ SYNOPSIS: [{"manifest_id": "https://foo.example/index.html", "run_on_os_login": 
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       properties:
@@ -14524,8 +13783,6 @@ SYNOPSIS: true
     internal_only: true
     per_profile: true
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow CRD to execute WebAuthn API requests proxied from a remote host.
     value: true
@@ -14621,8 +13878,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow WebRTC event log collection from Google services
     value: true
@@ -14644,8 +13899,6 @@ SYNOPSIS: "default"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: WebRTC will use all available interfaces when searching for the best path.
     name: default
@@ -14683,8 +13936,6 @@ SYNOPSIS: ["https://www.example.com", "*example.com*"]
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -14702,8 +13953,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow WebRTC text log collection from Google Services
     value: true
@@ -14726,8 +13975,6 @@ SYNOPSIS: "10000-11999"
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -14742,8 +13989,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Force WebSQL to be enabled.
     value: true
@@ -14811,8 +14056,6 @@ SYNOPSIS: ["com.native.messaging.host.name1", "com.native.messaging.host.name2"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Names of the native messaging hosts to exempt from the blocklist
   schema:
     items:
@@ -14831,8 +14074,6 @@ SYNOPSIS: ["com.native.messaging.host.name1", "com.native.messaging.host.name2"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Names of the forbidden native messaging hosts (or * for all)
   schema:
     items:
@@ -14851,8 +14092,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow both user-level and system-level native messaging hosts
     value: true
@@ -14886,8 +14125,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not uppercase request methods except for DELETE/GET/HEAD/OPTIONS/POST/PUT
     value: true
@@ -14913,8 +14150,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Block truncated cookies
     value: true
@@ -14937,8 +14172,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Accept web contents use compression dictionary transport feature
     value: true
@@ -14974,7 +14207,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:120-
-  - fuchsia:120-
   type: main
 
 ** OutOfProcessSystemDnsResolutionEnabled — Enable system DNS resolution outside of the network service
@@ -15025,8 +14257,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: false
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Enable advertising zstd content-encoding in the Accept-Encoding header
     value: true
@@ -15051,8 +14281,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable dismissing compromised password alerts
     value: true
@@ -15075,8 +14303,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable password leak detection
     value: true
@@ -15125,8 +14351,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable saving passwords using the password manager
     value: true
@@ -15152,8 +14376,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable sharing user credentials
     value: true
@@ -15179,8 +14401,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable Google Cloud Print proxy
     value: true
@@ -15249,8 +14469,6 @@ SYNOPSIS: "{ \"kind\": \"local\", \"idPattern\": \".*public\", \"namePattern\": 
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -15282,8 +14500,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: false
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Disable print preview
     value: true
@@ -15331,8 +14547,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show headers and footers in print preview
     value: true
@@ -15360,8 +14574,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Print as image option defaults to set for print previews of PDF documents
       when it is available.
@@ -15386,8 +14598,6 @@ SYNOPSIS: false
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Use the system default printer as the default choice in Print Preview
     value: true
@@ -15413,8 +14623,6 @@ SYNOPSIS: 300
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     minimum: 0
     type: integer
@@ -15439,8 +14647,6 @@ SYNOPSIS: ["local", "pdf"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Zeroconf-based (mDNS + DNS-SD) protocol destinations (Deprecated)
     name: privet
@@ -15486,8 +14692,6 @@ SYNOPSIS: "enabled"
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow printing both with and without background graphics
     name: any
@@ -15516,8 +14720,6 @@ SYNOPSIS: "enabled"
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable background graphics printing mode by default
     name: enabled
@@ -15544,8 +14746,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable printing
     value: true
@@ -15569,8 +14769,6 @@ SYNOPSIS: {"custom_size": {"height": 297000, "width": 210000}, "name": "custom"}
     can_be_recommended: false
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     properties:
       custom_size:
@@ -15746,8 +14944,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to turn on or off the Privacy Sandbox Ad measurement setting
       on their device.
@@ -15773,8 +14969,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to to turn on or off the Privacy Sandbox Ad topics setting
       on their device.
@@ -15804,8 +14998,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow Google Chrome to determine whether to show the Privacy Sandbox prompt.
     value: true
@@ -15830,8 +15022,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow users to turn on or off the Privacy Sandbox Site-suggested ads setting
       on their device.
@@ -15867,8 +15057,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow websites to make requests to any network endpoint in an insecure
       manner.
@@ -15897,8 +15085,6 @@ SYNOPSIS: ["http://www.example.com:8080", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -15923,8 +15109,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: false
-  future_on:
-  - fuchsia
   items:
   - caption: Apply restrictions to requests to more-private network endpoints
     value: true
@@ -15996,8 +15180,6 @@ SYNOPSIS: "direct"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Never use a proxy
     name: ProxyDisabled
@@ -16097,8 +15279,6 @@ SYNOPSIS: 2
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Never use a proxy
     name: ProxyServerDisabled
@@ -16150,7 +15330,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:120-
-  - fuchsia:120-
   type: main
 
 ** RelatedWebsiteSetsOverrides — Override Related Website Sets.
@@ -16250,7 +15429,6 @@ SYNOPSIS: {"additions": [{"associatedSites": ["https://associate2.test"], "ccTLD
     type: object
   supported_on:
   - chrome.*:120-
-  - fuchsia:120-
   type: dict
 
 * RemoteAccess — Remote access
@@ -16289,8 +15467,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable PIN-less authentication for the remote access host
     value: true
@@ -16313,8 +15489,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable remote access users to transfer files to and from the remote host
     value: true
@@ -16340,8 +15514,6 @@ SYNOPSIS: true
     internal_only: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable gnubby authentication for the remote access host
     value: true
@@ -16390,8 +15562,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable the use of relay servers by the remote access host
     value: true
@@ -16414,8 +15584,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow remote access connections to this machine
     value: true
@@ -16442,8 +15610,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow remote support connections to this machine
     value: true
@@ -16511,8 +15677,6 @@ SYNOPSIS: ["my-awesome-domain.com", "my-auxiliary-domain.com"]
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -16540,8 +15704,6 @@ SYNOPSIS: 1048576
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     maximum: 2147483647
     minimum: 0
@@ -16594,8 +15756,6 @@ SYNOPSIS: ["my-awesome-domain.com", "my-auxiliary-domain.com"]
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -16616,8 +15776,6 @@ SYNOPSIS: false
     internal_only: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable connection-related UI on the remote host desktop when a connection
       is active
@@ -16641,8 +15799,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable firewall traversal from remote access host
     value: true
@@ -16686,8 +15842,6 @@ SYNOPSIS: 1200
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     maximum: 10080
     minimum: 30
@@ -16706,8 +15860,6 @@ SYNOPSIS: false
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable curtaining of the remote access host
     value: true
@@ -16774,8 +15926,6 @@ SYNOPSIS: "https://example.com/issue"
     internal_only: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -16793,8 +15943,6 @@ SYNOPSIS: "Example Certificate Authority"
     internal_only: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -16812,8 +15960,6 @@ SYNOPSIS: "https://example.com/validate"
     internal_only: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -16834,8 +15980,6 @@ SYNOPSIS: "12400-12409"
     dynamic_refresh: true
     per_profile: false
     platform_only: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -16856,8 +16000,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Do not allow user to bypass Safe Browsing warning
     value: true
@@ -16882,8 +16024,6 @@ SYNOPSIS: "https://mydomain.com/change_password.html"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     type: string
   supported_on:
@@ -16903,8 +16043,6 @@ SYNOPSIS: ["https://mydomain.com/login.html", "https://login.mydomain.com"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -16932,8 +16070,6 @@ SYNOPSIS: 1
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Password protection warning is off
     name: PasswordProtectionWarningOff
@@ -16970,8 +16106,6 @@ SYNOPSIS: ["mydomain.com", "myuniversity.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -17051,8 +16185,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable reporting of system information and page content to help improve
       Safe Browsing
@@ -17091,8 +16223,6 @@ SYNOPSIS: 2
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Safe Browsing is never active.
     name: NoProtection
@@ -17142,8 +16272,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow higher-protection proxied lookups
     value: true
@@ -17167,8 +16295,6 @@ SYNOPSIS: true
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Enable receiving Safe Browsing surveys
     value: true
@@ -17201,8 +16327,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -17231,8 +16355,6 @@ SYNOPSIS: false
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Allow sites to prompt the user to share a video stream of their screen
     value: true
@@ -17260,8 +16382,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -17287,8 +16407,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -17312,8 +16430,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -17446,8 +16562,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Use New Tab Page as homepage
     value: true
@@ -17479,8 +16593,6 @@ SYNOPSIS: "https://www.chromium.org"
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: Home page URL
   schema:
     type: string
@@ -17507,8 +16619,6 @@ SYNOPSIS: "https://www.chromium.org"
   features:
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   label: New Tab page URL
   schema:
     type: string
@@ -17534,8 +16644,6 @@ SYNOPSIS: 4
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Open New Tab Page
     name: RestoreOnStartupIsNewTabPage
@@ -17576,8 +16684,6 @@ SYNOPSIS: ["https://example.com", "https://www.chromium.org"]
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   schema:
     items:
       type: string
@@ -17596,8 +16702,6 @@ SYNOPSIS: true
     can_be_recommended: true
     dynamic_refresh: true
     per_profile: true
-  future_on:
-  - fuchsia
   items:
   - caption: Show the Home button on the toolbar
     value: true

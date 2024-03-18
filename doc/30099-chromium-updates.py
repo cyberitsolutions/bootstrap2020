@@ -22,7 +22,7 @@ root = resp.json()
 json_path.write_text(json.dumps(root, indent=4))
 
 # Remove policies that are not available on Chromium Linux.
-shit_prefixes = frozenset({'chrome_os', 'android', 'ios', 'webview_android', 'chrome.win', 'chrome.mac'})
+shit_prefixes = frozenset({'chrome_os', 'android', 'ios', 'webview_android', 'chrome.win', 'chrome.mac', 'chrome_frame', 'fuchsia'})
 for policy in root['policy_definitions']:
     if 'supported_on' not in policy:
         continue
