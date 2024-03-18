@@ -1,0 +1,9 @@
+// No thanks.
+// Quite apart from whether AI is legal or good, this ALSO involves "send us relevant data to help improve our AI".
+// Which sounds like a deeply ungood kind of telemetry.
+// As at March 2024, all of these are "supported_on: chrome.*:121-" and "value: 2 name: Disabled".
+{
+    "CreateThemesSettings": 2,
+    "HelpMeWriteSettings": 2,
+    "TabOrganizerSettings": 2
+}

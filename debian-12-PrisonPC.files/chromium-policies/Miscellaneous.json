@@ -18,7 +18,37 @@
     // 14:45 <mike> AIUI, no web browser is going to stop the user from being able to add their own certs. Which is the only thing we are leveraging anyway
     // 14:45 <mike> They might change how, but not break entirely
     // 14:45 <twb> mike: that makes sense
-    "ChromeRootStoreEnabled": true,
+    //
+    // UPDATE: as at March 2024, this setting is not supported in chromium/bookworm.
+    // "ChromeRootStoreEnabled": true,
+
+    // This is mean to prevent "data leaks", but
+    // it really only blocks configurable subsets of:
+    // CLIPBOARD (copy-paste), FILE_ATTACH (upload), FILE_DOWNLOAD, PRINTING
+    // I don't think we care about this AT ALL.
+    // As at March 2024, it is not supported anywhere.
+    // "DataControlsRules": [
+    //     {
+    //         "description": "Block copying from non-incognito to incognito between profiles or to the OS clipboard",
+    //         "name": "Block copying between profiles",
+    //         "destinations": {
+    //             "incognito": true,
+    //             "os_clipboard": true,
+    //             "other_profile": true
+    //         },
+    //         "sources": {
+    //             "incognito": false,
+    //             "os_clipboard": false,
+    //             "other_profile": false
+    //         },
+    //         "restrictions": [
+    //             {
+    //                 "class": "CLIPBOARD",
+    //                 "level": "BLOCK"
+    //             }
+    //         ]
+    //     }
+    // ],
 
     // There is no point Chromium checking if it's the default browser.
     // It should be the only browser installed.
@@ -204,10 +234,6 @@
     // not see the Google Lens button in the search box on the New Tab
     // page.
     "LensDesktopNTPSearchEnabled": false,
-
-    // Requires chromium 92+, so not tested yet...
-    "InsecurePrivateNetworkRequestsAllowed": false,
-    "InsecurePrivateNetworkRequestsAllowedForUrls": [],
 
     // Allow webGL for modern browser-based video games (which use webGL even for 2D acceleration).
     // https://alloc.cyber.com.au/task/task.php?taskID=34964
@@ -447,6 +473,9 @@
     // Not an interesting thing to lock.
     // "PromptForDownloadLocation": false,
 
+    // This is for CLIENT certificates; we do not use those.
+    // "PromptOnMultipleMatchingCertificates": true
+
     // Prevent users from turning OFF this security feature.
     // "all sites are already isolated by default on Desktop platforms"
     // "IsolateOrigins": "https://a.example.com/,https://othersite.org/,https://[*.]corp.example.com",
@@ -469,6 +498,10 @@
     "ExplicitlyAllowedNetworkPorts": [],
     "WebSQLInThirdPartyContextEnabled": false,
     "CORSNonWildcardRequestHeadersSupport": true,
+    "ForcePermissionPolicyUnloadDefaultEnabled": false,
+    "NativeClientForceAllowed": false,
+    "NetworkServiceSandboxEnabled": true,
+    "WebSQLAccess": false,
 
     // We cannot set this because there is no variable for $HOME.
     // It's not interesting to set, though, so meh.
@@ -504,6 +537,11 @@
     //     https://developers.google.com/gmail/promotab/
     // In any case, I'm pretty sure it means "google ads".
     "PromotionalTabsEnabled": false,
+
+    // I don't know what this is, but
+    // I *think* it's only for logging into *google* at the browser level.
+    // We don't allow that, so we don't care?
+    // "ProfileReauthPrompt": 1,
 
     // I think this means "block porn?"
     // Where does the blocklist come from?
@@ -639,6 +677,37 @@
     // Not interesting as users aren't logged into google.
     // "SigninInterceptionEnabled": true,
 
+    // FIXME: revisit this sometime as a "feature" rather than "security hardening"? --twb, March 2024
+    // "SiteSearchSettings": [
+    //     {
+    //         "featured": true,
+    //         "name": "Wikipedia",
+    //         "shortcut": "wikipedia",
+    //         "url": "https://en.wikipedia.org/Special:Search/%s"
+    //     },
+    //     {
+    //         "name": "AustLII — Australasian Legal Information Institute",
+    //         "shortcut": "austlii",
+    //         "url": "https://www.austlii.edu.au/cgi-bin/sinosrch.cgi?method=auto&query=%s"
+    //     },
+    //     {
+    //         "name": "Federal Register of Legislation",
+    //         "shortcut": "legislation",
+    //         "url": "https://www.legislation.gov.au/search/text%%28%%22%s%%22,nameAndText,contains%%29/pointintime%%28Latest%%29"
+    //     },
+    //     {
+    //         "name": "ACT Legislation Register",
+    //         "shortcut": "act",
+    //         "url": "https://legislation.act.gov.au/results?category=cAct&classifier=&status=Current&alpha=&query=%s&action=browse"
+    //     }
+    // ],
+
+
+
+    // supported_on: chrome.*:120-
+    // has no effect if MetricsReportingEnabled is set to Disabled
+    "FeedbackSurveysEnabled": false,
+
     // I don't know what this is, but it sounds boring.
     // "FetchKeepaliveDurationSecondsOnShutdown": 1,
 
@@ -676,7 +745,14 @@
     // NOTE: as at chromium 90, this DOES NOT break chrome://apps.
     //       This only break (I think) "written specially for chrome" apps???
     //       Which are banned from June 2021 in non-ChOS Chrome.
-    "ChromeAppsEnabled": false
+    "ChromeAppsEnabled": false,
+
+    // supported_on: chrome.*:123-
+    // This is basically Selenium, I think?
+    // https://developer.chrome.com/blog/chrome-for-testing/
+    // Specifically this is bad because it allows the user to *deliberately* roll back to an old, insecure version of Chrome.
+    // They probably can't do this *on Debian*, but the policy doesn't explicitly say that.
+    "ChromeForTestingAllowed": false
 
     // These are ChromeOS features that are not supported yet.
     // As a result, the "supported_on" is ABSENT rather than EMPTY.

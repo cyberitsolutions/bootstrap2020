@@ -5,6 +5,12 @@
 //
 // We do not use SAML.
 // The only option in here is not interesting to us.
+//
+// UPDATE: the settings below are "supported_on: chrome.*:119-",
+//         I do not know if they are SAML-related anymore!
+//         --twb, March 2024
 {
-    // "DeviceSamlLoginAuthenticationType": 0
+    // "ProfileSeparationSettings": 1,
+    // "ProfileSeparationDataMigrationSettings": 3,
+    // "ProfileSeparationDomainExceptionList": []
 }

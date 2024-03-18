@@ -20,6 +20,8 @@
 
     // Has no effect because entire feature is disabled above.
     // "SafeBrowsingAllowlistDomains": [],
+    // "SafeBrowsingDeepScanningEnabled": false,
+    // "SafeBrowsingSurveysEnabled": false,
 
     // FIXME: CAN we use password protection (when safe browsing is off)?
     // FIXME: do we WANT to use password protection?

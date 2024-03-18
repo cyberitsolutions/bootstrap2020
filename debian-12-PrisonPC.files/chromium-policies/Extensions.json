@@ -1,5 +1,16 @@
 // Block all extensions.
 {
+    // ExtensionInstallTypeBlocklist supported_on: chrome.*:120-
+    // This new one will break "apt install webext-X", because for chromium that ultimately turns into
+    //     /usr/lib/chromium/chromium
+    //         --show-component-extension-options
+    //         ⋯
+    //         --enable-remote-extensions
+    //         --load-extension=/usr/share/chromium/extensions/privacy-badger,/usr/share/chromium/extensions/ublock-origin
+    //         ⋯
+    // As at March 2024, we do not install any webexts via apt.
+    "ExtensionInstallTypeBlocklist": ["command-line"],
+
     "ExtensionUnpublishedAvailability": 1,
     "ExtensionInstallAllowlist": [],
     "ExtensionInstallBlocklist": ["*"],
