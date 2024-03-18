@@ -1,0 +1,8 @@
+{
+    "ProfileSeparationDataMigrationSettings": 1,
+    "ProfileSeparationDomainExceptionList": [
+        "domain.com",
+        "otherdomain.com"
+    ],
+    "ProfileSeparationSettings": 1
+}

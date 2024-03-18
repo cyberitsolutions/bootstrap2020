@@ -1,21 +1,16 @@
 {
     "CloudPrintProxyEnabled": true,
-    "DefaultPrinterSelection": "{ \"kind\": \"cloud\", \"idPattern\": \".*public\", \"namePattern\": \".*Color\" }",
-    "DeviceExternalPrintServers": {
-        "hash": "deadbeefdeadbeefdeadbeefdeadbeefdeafdeadbeefdeadbeef",
-        "url": "https://example.com/printserverpolicy"
-    },
-    "DeviceExternalPrintServersAllowlist": [
-        "id1",
-        "id2",
-        "id3"
-    ],
+    "DefaultPrinterSelection": "{ \"kind\": \"local\", \"idPattern\": \".*public\", \"namePattern\": \".*Color\" }",
     "DisablePrintPreview": false,
+    "OopPrintDriversAllowed": true,
+    "PrintHeaderFooter": false,
+    "PrintPdfAsImageDefault": true,
+    "PrintPreviewUseSystemDefaultPrinter": false,
+    "PrintRasterizePdfDpi": 300,
     "PrinterTypeDenyList": [
         "local",
         "pdf"
     ],
-    "PrintHeaderFooter": false,
     "PrintingAllowedBackgroundGraphicsModes": "enabled",
     "PrintingBackgroundGraphicsDefault": "enabled",
     "PrintingEnabled": true,
@@ -25,8 +20,5 @@
             "width": 210000
         },
         "name": "custom"
-    },
-    "PrintPdfAsImageDefault": true,
-    "PrintPreviewUseSystemDefaultPrinter": false,
-    "PrintRasterizePdfDpi": 300
+    }
 }

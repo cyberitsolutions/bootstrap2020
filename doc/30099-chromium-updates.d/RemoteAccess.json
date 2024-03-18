@@ -2,9 +2,11 @@
     "RemoteAccessHostAllowClientPairing": false,
     "RemoteAccessHostAllowFileTransfer": false,
     "RemoteAccessHostAllowGnubbyAuth": true,
+    "RemoteAccessHostAllowPinAuthentication": true,
     "RemoteAccessHostAllowRelayedConnection": false,
     "RemoteAccessHostAllowRemoteAccessConnections": false,
     "RemoteAccessHostAllowRemoteSupportConnections": false,
+    "RemoteAccessHostAllowUrlForwarding": false,
     "RemoteAccessHostClientDomainList": [
         "my-awesome-domain.com",
         "my-auxiliary-domain.com"

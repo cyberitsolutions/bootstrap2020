@@ -1,4 +1,6 @@
 {
+    "AccessCodeCastDeviceDuration": 60,
+    "AccessCodeCastEnabled": true,
     "EnableMediaRouter": true,
     "MediaRouterCastAllowAllIPs": false,
     "ShowCastIconInToolbar": false,

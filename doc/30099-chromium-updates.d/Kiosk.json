@@ -1,0 +1,24 @@
+{
+    "DeviceWeeklyScheduledSuspend": [
+        {
+            "start": {
+                "day_of_week": "TUESDAY",
+                "time": 12840000
+            },
+            "end": {
+                "day_of_week": "TUESDAY",
+                "time": 21720000
+            }
+        },
+        {
+            "start": {
+                "day_of_week": "FRIDAY",
+                "time": 38640000
+            },
+            "end": {
+                "day_of_week": "MONDAY",
+                "time": 57600000
+            }
+        }
+    ]
+}

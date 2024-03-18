@@ -1,3 +1,4 @@
 {
-    "DeviceChannelDowngradeBehavior": 1
+    "DeviceChannelDowngradeBehavior": 1,
+    "DeviceExtendedAutoUpdateEnabled": true
 }

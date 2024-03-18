@@ -1,0 +1,12 @@
+{
+    "FloatingSsoDomainBlocklist": [
+        "*",
+        "example.com",
+        "*.example.com"
+    ],
+    "FloatingSsoDomainBlocklistExceptions": [
+        "example.com",
+        "*.example.com"
+    ],
+    "FloatingSsoEnabled": true
+}

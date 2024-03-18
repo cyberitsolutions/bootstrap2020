@@ -12,7 +12,9 @@
     ],
     "CookiesAllowedForUrls": [
         "https://www.example.com",
-        "[*.]example.edu"
+        "[*.]example.edu",
+        "https://www.example.com/,https://www.toplevel.com/",
+        "*,https://www.toplevel.com/"
     ],
     "CookiesBlockedForUrls": [
         "https://www.example.com",
@@ -40,6 +42,7 @@
     "DefaultThirdPartyStoragePartitioningSetting": 1,
     "DefaultWebBluetoothGuardSetting": 2,
     "DefaultWebHidGuardSetting": 2,
+    "DefaultWebPrintingSetting": 2,
     "DefaultWebUsbGuardSetting": 2,
     "DefaultWindowManagementSetting": 2,
     "FileSystemReadAskForUrls": [
@@ -216,6 +219,14 @@
     "WebHidBlockedForUrls": [
         "https://google.com",
         "https://chromium.org"
+    ],
+    "WebPrintingAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "WebPrintingBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
     ],
     "WebUsbAllowDevicesForUrls": [
         {
