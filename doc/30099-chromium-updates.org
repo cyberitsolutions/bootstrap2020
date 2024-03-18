@@ -319,183 +319,6 @@ SYNOPSIS: ["ie.com", "!open-in-chrome.ie.com", "foobar.com/ie-only/"]
   - chrome.*:71-
   type: list
 
-* Bruschetta — Bruschetta
- Controls policies related to the Bruschetta subsystem.
-
-** BruschettaInstallerConfiguration — Configure the installer for Bruschetta VMs on Google ChromeOS devices
-SYNOPSIS: {"display_name": "AwesomeNix", "learn_more_url": "https://example.com/learn_more"}
- Sets metadata used by the installer for Bruschetta VMs on Google ChromeOS devices, prior to it
- being installed.
-
-  features:
-    cloud_only: true
-    dynamic_refresh: true
-    per_profile: false
-    unlisted: true
-  schema:
-    description: Installer metadata
-    properties:
-      display_name:
-        description: 'Name to show in the installer UI e.g. Happy VM. If unset will
-          show a
-
-          fallback name, either derived from the first (by display order) entry in
-
-          the BruschettaVMConfiguration policy, or failing that, a generic name.'
-        type: string
-      learn_more_url:
-        description: 'A URL for users to visit to learn more. If unset there will
-
-          be no "learn more" URL in the installer. If present, it must use
-
-          the https scheme.'
-        type: string
-    type: object
-  tags:
-  - system-security
-  type: dict
-
-** BruschettaVMConfiguration — Configure Bruschetta VMs on Google ChromeOS
-SYNOPSIS: {"vm-type": {"name": "Standard Virtual Machine", "enabled_state": "INSTALL_ALLOWED", "installer_image_x86_64": {"url": "https://example.com/installer_image", "hash": "761b22509ee7bd3e1a3da9eb9e37c6443acfc582670b733601ca5a1de44b99de"}, "uefi_pflash_x86_64": {"url": "https://example.com/uefi_pflash", "hash": "4d9a81e8feb96abb6da0d92642996a26edea6e94345da12a19999470c57bb0a6"}, "vtpm": {"enabled": true, "policy_update_action": "NONE"}, "oem_strings": ["example config string"], "display_order": 5}}
- Configure installation and runtime policies for Bruschetta VMs on
- Google ChromeOS. This allows for
- third-party VMs to be installed by users. This feature is disabled by default.
-
- This policy is a map of configuration IDs to VM configurations. When a VM is
- installed from a configuration it is persistently associated with that
- configuration ID, and any runtime policies in that configuration apply to that
- VM. Multiple VMs may be installed from the same configuration on the same device.
-
-  features:
-    cloud_only: true
-    dynamic_refresh: true
-    per_profile: false
-    unlisted: true
-  schema:
-    description: Mapping from persistent IDs to VM configurations
-    patternProperties:
-      '[a-zA-Z0-9-_]+':
-        description: A VM configuration. Denotes a type of VM that the user can install,
-          which will be persistently associated with the ID of this configuration, and
-          controls that apply to this type of VM.
-        properties:
-          display_order:
-            description: The order in which the VM configuration will be displayed in
-              the installer. When multiple VM configurations are specified, the one
-              with the smallest display_order value is displayed at the top of the list.
-              Defaults to zero.
-            type: integer
-          enabled_state:
-            description: Controls whether VMs using this configuration can be installed
-              and run (INSTALL_ALLOWED), run but not installed (RUN_ALLOWED), or cannot
-              be run (BLOCKED). Note that to install a VM the installer_image_x86_64
-              key must also be set. Removing a configuration entirely implicitly sets
-              this to BLOCKED, preventing VMs from running without a policy.
-            enum:
-            - BLOCKED
-            - RUN_ALLOWED
-            - INSTALL_ALLOWED
-            type: string
-          installer_image_x86_64:
-            description: The UEFI-bootable disk image used to install the VM on x86_64
-              devices.
-            properties:
-              hash:
-                description: Hexadecimal encoded SHA-256 hash of the disk image.
-                type: string
-              url:
-                description: URL of the disk image to download.
-                type: string
-            required:
-            - url
-            - hash
-            type: object
-          name:
-            description: User visible name for this configuration
-            type: string
-          oem_strings:
-            description: SMBIOS OEM strings to pass to the VM during install. Defaults
-              to the empty list.
-            items:
-              type: string
-            type: array
-          uefi_pflash_x86_64:
-            description: The initial non-volatile UEFI data used by the VM firmware.
-            properties:
-              hash:
-                description: Hexadecimal encoded SHA-256 hash of the data.
-                type: string
-              url:
-                description: URL of the data to download.
-                type: string
-            required:
-            - url
-            - hash
-            type: object
-          vtpm:
-            description: Controls if VMs using this configuration have access to a vTPM,
-              defaults to false and FORCE_SHUTDOWN_IF_MORE_RESTRICTED if unset.
-            properties:
-              enabled:
-                description: Controls whether VMs using this configuration have access
-                  to a vTPM, defaults to false.
-                type: boolean
-              policy_update_action:
-                description: Controls how to treat running VMs that don't match this
-                  policy setting, defaults to FORCE_SHUTDOWN_IF_MORE_RESTRICTED.
-                enum:
-                - NONE
-                - FORCE_SHUTDOWN_IF_MORE_RESTRICTED
-                - FORCE_SHUTDOWN_ALWAYS
-                type: string
-            required:
-            - enabled
-            type: object
-        required:
-        - name
-        - enabled_state
-        type: object
-    type: object
-  tags:
-  - system-security
-  type: dict
-
-* CastReceiver — Cast Receiver
- Configure the Cast Receiver in Google ChromeOS.
-
-** CastReceiverEnabled (DEPRECATED) — Enable casting content to the device
-SYNOPSIS: false
- Allow content to be cast to the device using Google Cast.
-
-           If this policy is set to False, users will not be able to cast content to their device. If this policy is set to True, users are allowed to cast content. If this policy is not set, users are not allowed to cast content to enrolled ChromeOS devices, but can cast to non enrolled devices.
-
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Enable casting content to the device
-    value: true
-  - caption: Disable casting content to the device
-    value: false
-  schema:
-    type: boolean
-  type: main
-
-** CastReceiverName (DEPRECATED) — Name of the Google Cast destination
-SYNOPSIS: "My Chromebook"
- Determine the name advertised as a Google Cast destination.
-
-           If this policy is set to a non empty string, that string will be used as the name of the Google Cast destination. Otherwise, the destination name will be the device name. If this policy is not set, the destination name will be the device name, and the owner of the device (or a user from the domain managing the device) will be allowed to change it. The name is limited to 24 characters.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  type: string
-
 * CertificateManagement — Certificate management settings
  Controls user and device policies for certificate management.
 
@@ -1703,34 +1526,6 @@ SYNOPSIS: 2
   - website-sharing
   type: int-enum
 
-** DefaultWebPrintingSetting — Control use of the WebPrinting API
-SYNOPSIS: 2
- Setting the policy to 2 automatically blocks sites from using the WebPrinting API.
-
- Setting the policy to 3 will prompt the user when a site wants to use the WebPrinting API.
-
- Leaving it unset lets websites ask for local printer access, but users can change this setting.
-
-  default: null
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Do not allow any site to request access to local printers via the WebPrinting
-      API
-    name: BlockWebPrinting
-    value: 2
-  - caption: Allow sites to ask the user to grant access to local printers via the WebPrinting
-      API
-    name: AskWebPrinting
-    value: 3
-  schema:
-    enum:
-    - 2
-    - 3
-    type: integer
-  type: int-enum
-
 ** DefaultWebUsbGuardSetting — Control use of the WebUSB API
 SYNOPSIS: 2
  Setting the policy to 3 lets websites ask for access to connected USB devices. Setting the policy to 2 denies access to connected USB devices.
@@ -2809,44 +2604,6 @@ SYNOPSIS: ["https://google.com", "https://chromium.org"]
   - chrome.*:100-
   type: list
 
-** WebPrintingAllowedForUrls — Allow WebPrinting API on these sites
-SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
- Setting the policy lets you list the URL patterns that specify which sites are automatically granted access to local printers via the WebPrinting API.
-
- Leaving the policy unset means DefaultWebPrintingSetting applies for all sites, if it's set. If not, users' personal settings apply.
-
- URL patterns must not conflict with WebPrintingBlockedForUrls. Neither policy takes precedence if a URL matches with both.
-
- For detailed information on valid url patterns, please see https://cloud.google.com/docs/chrome-enterprise/policies/url-patterns. * is not an accepted value for this policy.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  type: list
-
-** WebPrintingBlockedForUrls — Block WebPrinting API on these sites
-SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
- Setting the policy lets you list the URL patterns that specify which sites are automatically denied access to local printers via the WebPrinting API.
-
- Leaving the policy unset means DefaultWebPrintingSetting applies for all sites, if it's set. If not, users' personal settings apply.
-
- URL patterns must not conflict with WebPrintingAllowedForUrls. Neither policy takes precedence if a URL matches with both.
-
- For detailed information on valid url patterns, please see https://cloud.google.com/docs/chrome-enterprise/policies/url-patterns. * is not an accepted value for this policy.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  type: list
-
 ** WebUsbAllowDevicesForUrls — Automatically grant permission to these sites to connect to USB devices with the given vendor and product IDs.
 SYNOPSIS: [{"devices": [{"product_id": 5678, "vendor_id": 1234}], "urls": ["https://google.com"]}]
  Setting the policy lets you list the URL patterns that specify which sites are automatically granted permission to access a USB device with the given vendor and product IDs. Each item in the list requires both devices and urls fields for the policy to be valid. Each item in the devices field can have a vendor_id and product_id field. Omitting the vendor_id field will create a policy matching any device. Omitting the product_id field will create a policy matching any device with the given vendor ID. A policy which has a product_id field without a vendor_id field is invalid.
@@ -3016,95 +2773,6 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   supported_on:
   - chrome.*:100-
   type: list
-
-* Crostini — Linux container
- Controls settings for the Linux container (Crostini).
-
-** CrostiniArcAdbSideloadingAllowed — Control usage of Android apps from untrusted sources for the user
-SYNOPSIS: 1
- This policy controls the usage of Android apps from untrusted sources (other than Google Play Store) on a per-user basis.
-
-       If the value for this policy is not set, then the functionality is treated as disallowed.
-
-       If the user's device is managed, the availability of this functionality is additionally dependant on the corresponding device policy.
-
-       If the user's device is not managed, the availability of this functionality is additionally dependant on whether the user is the device owner.
-
-  default: 0
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Prevent the user from using Android apps from untrusted sources
-    name: Disallow
-    value: 0
-  - caption: Allow the user to use Android apps from untrusted sources
-    name: Allow
-    value: 1
-  schema:
-    enum:
-    - 0
-    - 1
-    type: integer
-  tags:
-  - system-security
-  type: int-enum
-
-** CrostiniRootAccessAllowed — User is allowed to have root access to Crostini containers
-SYNOPSIS: false
- Allow this user root access to Crostini containers.
-
- If the policy is set to true or left unset root access to Crostini containers will be granted to the user.
- If the policy is set to false, root access to both existing and new Crostini containers will not be granted to the user.
-
-  default: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Enable root access to Linux virtual machines
-    value: true
-  - caption: Disable root access to Linux virtual machines
-    value: false
-  schema:
-    type: boolean
-  tags:
-  - system-security
-  type: main
-
-** DeviceCrostiniArcAdbSideloadingAllowed — Control usage of Android apps from untrusted sources for the device
-SYNOPSIS: 1
- This policy controls the usage of Android apps from untrusted sources (other than Google Play Store) for a device.
-
-       If the value for this policy is not set, then the functionality is treated as disallowed.
-
-       The availability of this functionality is additionally dependant on the corresponding user policy.
-
-  default: 0
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Prevent users of this device from using ADB sideloading, without forcing
-      a powerwash, which might leave the device in a questionable state security-wise
-    name: Disallow
-    value: 0
-  - caption: Prevent users of this device from using ADB sideloading and force a device
-      powerwash if sideloading was enabled before
-    name: DisallowWithPowerwash
-    value: 1
-  - caption: Allow affiliated users of this device to use ADB sideloading
-    name: AllowForAffiliatedUsers
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  tags:
-  - system-security
-  type: int-enum
 
 * DefaultSearchProvider — Default search provider
  Configures the default search provider. You can specify the default search provider that the user will use or choose to disable default search.
@@ -3413,93 +3081,6 @@ SYNOPSIS: "q={searchTerms},ie=utf-8,oe=utf-8"
   supported_on:
   - chrome.*:29-
   type: string
-
-* DeskConnector — Desk Connector Settings
- Controls settings for the desk connector API.
-
-** DeskAPIDeskSaveAndShareEnabled — Enable Save and Share API for third-party Google ChromeOS control.
-SYNOPSIS: true
- If the policy is set to Enabled allows third-party web applications to use Desk API to save and share Google ChromeOS desks. If the policy is set to Disabled the user will not be able to save and share desk data through the Desk API. If the policy is unset the behavior will be the same as disabled. The policy will only take effect on enrolled devices.
-
-  default: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Enable Save and Share API for third-party Google ChromeOS control.
-    value: true
-  - caption: Do not enable Save and Share API for third-party Google ChromeOS control.
-    value: false
-  schema:
-    type: boolean
-  type: main
-
-* DeviceUpdate — Device update settings
- Controls how and when Google ChromeOS updates are applied.
-
-** DeviceChannelDowngradeBehavior — Channel downgrade behavior
-SYNOPSIS: 1
- This policy specifies channel downgrade behavior on enrolled devices. With channel downgrade we mean switching to a more stable channel, e.g. beta to stable.
-
-       The value of this policy affects user-initiated channel downgrades as well as admin initiated channel downgrades.
-
-       On a channel downgrade, the device can either roll back its version and reset or wait for its current (or a higher) version to become available on the channel and receive no update until then.
-
-       If an enrolled user initiates a channel downgrade, they can decide to reset or wait, or the choice is made for them depending on this policy's value. If an admin initiates a channel downgrade via setting ChromeOsReleaseChannel, the device is rolled back on the next update check only if rollback was selected. Otherwise, the device will wait for the target channel to catch up with its current version.
-
-       If unset or invalid, the behavior is the same as for "Wait for target channel to catch up on channel downgrade".
-
-  default: 1
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Wait for the target channel to catch up on channel downgrade
-    name: WaitForVersionCatchUp
-    value: 1
-  - caption: Roll back and reset the device on channel downgrade, try to preserve enrollment
-    name: Rollback
-    value: 2
-  - caption: User decides on channel downgrade behavior
-    name: AllowUserToConfigure
-    value: 3
-  schema:
-    enum:
-    - 1
-    - 2
-    - 3
-    type: integer
-  type: int-enum
-
-** DeviceExtendedAutoUpdateEnabled — Enable/disable Extended Automatic Updates
-SYNOPSIS: true
- Allow eligible devices that will lose Android support to be opted into
- Extended Automatic Updates.
-
- If the policy is Enabled, devices will opt in to Extended Automatic Updates.
-
- If the policy is Disabled or unset, devices will stop receiving updates
- after the original Auto Update Expiration date.
-
- This policy is only relevant for older models not automatically receiving
- extended updates.
-
- For more details please see
- https://support.google.com/chrome/a/?p=extended_updates_support.
-
-  default: false
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Allow extended automatic updates
-    value: true
-  - caption: Do not allow extended automatic updates
-    value: false
-  schema:
-    type: boolean
-  type: main
 
 * Extensions — Extensions
  Configures extension-related policies. The user is not allowed to install blocked extensions unless they are whitelisted. You can also force Google Chrome to automatically install extensions by specifying them in ExtensionInstallForcelist. Force-installed extensions are installed regardless whether they are present in the blocklist.
@@ -4154,68 +3735,6 @@ SYNOPSIS: {"additions": [{"associatedSites": ["https://associate2.test"], "ccTLD
   - chrome.*:113-
   type: dict
 
-* FloatingSso — Floating SSO Settings
- Controls if Floating SSO is enabled and the cookie domain blocklist and its exceptions.
-
-** FloatingSsoDomainBlocklist — Floating SSO Service blocked domain list
-SYNOPSIS: ["*", "example.com", "*.example.com"]
- Configures a list of blocked cookie domains that will not be moved when a user switches between Google ChromeOS devices, when the Floating SSO Service is enabled.
-
- If a cookie is set for a domain which matches one of the provided filters, the cookie is excluded from the move. Cookie domains are matched according to "host" field rules outlined in https://support.google.com/chrome/a?p=url_blocklist_filter_format, all other fields are ignored. Wildcards, *, are allowed.
-
- The FloatingSsoDomainBlocklistExceptions policy takes precedence.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  type: list
-
-** FloatingSsoDomainBlocklistExceptions — Floating SSO Service domain blocklist exception list
-SYNOPSIS: ["example.com", "*.example.com"]
- Configures the list of blocklist excepted cookie domains to be moved when a user switches between Google ChromeOS devices, when the Floating SSO Service is enabled.
-
- If a cookie is set for a domain which matches one of the provided filters, the cookie is included into the move. Cookie domains are matched according to "host" field rules outlined in https://support.google.com/chrome/a?p=url_blocklist_filter_format, all other fields are ignored. Wildcards, *, are allowed.
-
- Leaving the policy empty allows no exceptions to FloatingSsoDomainBlocklist. To only allow a limited number of domains to be moved, block all domains by setting the FloatingSsoDomainBlocklist policy to *, and configure the blocklist exceptions here.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      type: string
-    type: array
-  type: list
-
-** FloatingSsoEnabled — Enable Floating SSO Service
-SYNOPSIS: true
- When a user switches between Google ChromeOS devices, the Floating SSO Service will restore the user's web service authentication state from the previous device onto the new device. This is achieved by moving user's cookies across devices.
-
- Setting the policy to Enabled will restore the user's web service authentication state from the user's last used Google ChromeOS device automatically upon login.
- Setting the policy to Disabled or leaving it unset will not restore the user's web service authentication state upon login on a different device.
-
- The web service domains blocked from being restored can be configured using the FloatingSsoDomainBlocklist policy, while exceptions to that policy can be configured using the FloatingSsoDomainBlocklistExceptions policy.
- If both of these policies are unset, all web service authentications, except Google authentications, will be moved.
-
-  default: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Enable Floating SSO and move the user's web service authentications to
-      new device
-    value: true
-  - caption: Disable Floating SSO and do not move the user's web service authentications
-      to new device
-    value: false
-  schema:
-    type: boolean
-  type: main
-
 * GenerativeAI — Generative AI
  Configure the various features that use Generative AI.
 
@@ -4743,57 +4262,6 @@ SYNOPSIS: true
   tags:
   - website-sharing
   type: main
-
-* Kiosk — Kiosk settings
- Controls public session and kiosk account types.
-
-** DeviceWeeklyScheduledSuspend — Schedule weekly suspend intervals
-SYNOPSIS: [{"start": {"day_of_week": "TUESDAY", "time": 12840000}, "end": {"day_of_week": "TUESDAY", "time": 21720000}}, {"start": {"day_of_week": "FRIDAY", "time": 38640000}, "end": {"day_of_week": "MONDAY", "time": 57600000}}]
- This policy establishes a series of weekly intervals for scheduling automated suspension. When an interval starts, the Google ChromeOS device will enter suspend mode, and wake up when the interval ends.
-
- Schedules with overlapping intervals are not supported. This policy will not have any effect if it contains any two overlapping intervals.
-
- Google ChromeOS devices will use the system timezone to apply these intervals.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-  schema:
-    items:
-      properties:
-        end:
-          properties:
-            day_of_week:
-              enum:
-              - MONDAY
-              - TUESDAY
-              - WEDNESDAY
-              - THURSDAY
-              - FRIDAY
-              - SATURDAY
-              - SUNDAY
-              type: string
-            time:
-              type: integer
-          type: object
-        start:
-          properties:
-            day_of_week:
-              enum:
-              - MONDAY
-              - TUESDAY
-              - WEDNESDAY
-              - THURSDAY
-              - FRIDAY
-              - SATURDAY
-              - SUNDAY
-              type: string
-            time:
-              type: integer
-          type: object
-      type: object
-    type: array
-  type: dict
 
 * LocallyManagedUsers — Locally managed users settings
  Configure settings for managed users.
@@ -7131,23 +6599,6 @@ SYNOPSIS: true
   - chrome.*:85-
   type: main
 
-** DeskTemplatesEnabled — Allow users to select a desk template layout to load
-SYNOPSIS: true
- Setting the policy to Enabled allows users to use desktop layout templates.  Setting the policy to Disabled or unset means these templates will be unavailable.
-
-  default: false
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Allow users to use desk templates
-    value: true
-  - caption: Do not allow users to use desk templates
-    value: false
-  schema:
-    type: boolean
-  type: main
-
 ** DesktopSharingHubEnabled — Enable desktop sharing in the omnibox and 3-dot menu
 SYNOPSIS: true
  Setting the policy to True or leaving it unset lets users share or save the current webpage using actions provided by the desktop sharing hub. The sharing hub is accessed through either an omnibox icon or the 3-dot menu.
@@ -7237,109 +6688,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:9-
-  type: main
-
-** DeviceDlcPredownloadList — Select DLCs (Downloadable Content) that need to be pre downloaded
-SYNOPSIS: ["scanner_drivers"]
- This policy allows to set a list of DLCs (Downloadable Content) to be downloaded as soon as possible. Downloaded DLCs are then available for all users on the device.
-
- This is useful when the administrator knows that a feature that requires the presence of the DLC will likely be used by the users of the device.
-
-  device_only: true
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Scanner drivers
-    name: scanner_drivers
-    value: scanner_drivers
-  schema:
-    items:
-      enum:
-      - scanner_drivers
-      type: string
-    type: array
-  type: string-enum-list
-
-** DeviceLoginScreenTouchVirtualKeyboardEnabled — Enable the touch virtual keyboard on the login screen
-SYNOPSIS: true
- Controls the touch virtual keyboard on the login screen, acting as a supplementary policy to the DeviceLoginScreenVirtualKeyboardEnabled policy.
-
-     If accessibility virtual keyboard is turned on, this policy has no effect.
-
-     Otherwise, this policy has the following effect on the login screen:
-     If this policy is not set, the virtual keyboard is displayed based on the default system heuristics, such as whether there are keyboards attached.
-     If this policy is set to True, the virtual keyboard is always displayed.
-     If this policy is set to False, the virtual keyboard is never displayed.
-
-     The virtual keyboard may change to a compact layout depending on the input method.
-
-  default: null
-  device_only: true
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-  items:
-  - caption: Enable touch virtual keyboard on the login screen
-    value: true
-  - caption: Disable touch virtual keyboard on the login screen
-    value: false
-  - caption: Enable touch virtual keyboard based on the default system heuristics on
-      the login screen
-    value: null
-  schema:
-    type: boolean
-  type: main
-
-** DeviceLoginScreenWebUILazyLoading — Load Login WebUI only when needed.
-SYNOPSIS: true
- This policy controls whether the WebUI part of the sign-in screen will be always loaded at start or only before showing it. This policy applies to the sign-in screen.
-
-       If this policy is enabled, the WebUI part of the sign-in UI will be loaded only before showing it. This speeds up the login process.
-
-       If this policy is disabled, the WebUI part of the sign-in screen will always be loaded on boot (legacy behavior).
-
-       If unset, behavior will be controlled by kEnableLazyLoginWebUILoading feature.
-
-       This policy should be removed after kEnableLazyLoginWebUILoading is fully rolled out.
-
-  default: false
-  device_only: true
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: Enable Lazy Login WebUI loading.
-    value: true
-  - caption: Disable Lazy Login WebUI loading.
-    value: false
-  schema:
-    type: boolean
-  type: main
-
-** DeviceSystemAecEnabled — Enable system audio echo cancellation
-SYNOPSIS: false
- Enable the system audio echo cancellation (AEC) feature. System AEC is an acoustic echo canceller,
- i.e. an audio processing module which removes system audio playback (echo) from the microphone signal.
- This policy is temporary and will be removed as soon as system audio echo cancellation is launched.
-
-   If this policy is set to true, system audio echo cancellation will always be enabled.
-
-   If this policy is set to false or unset, system audio echo cancellation may still be
-   enabled based on its launch plan, but it is not enforced by this policy.
-
-  default: false
-  device_only: true
-  features:
-    dynamic_refresh: false
-    per_profile: false
-  items:
-  - caption: Enable system audio echo cancellation
-    value: true
-  - caption: Do not enforce system audio echo cancellation
-    value: false
-  schema:
-    type: boolean
   type: main
 
 ** Disable3DAPIs — Disable support for 3D graphics APIs
@@ -8509,20 +7857,23 @@ SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
   - chrome.*:113-
   type: list
 
-** FloatingWorkspaceV2Enabled — Enable Google Chrome V2 Service
-SYNOPSIS: true
- When a user switches between Google ChromeOS devices, Google Chrome V2 Service V2 Service will launch browser and app windows from the previous device onto the new device.
- Setting the policy to Enabled will launch browser and app windows from current user's last used Google ChromeOS device automatically upon login.
- Setting the policy to Disabled or leaving it unset will let full restore settings determine what to be launched upon login.
+** ForceBrowserSignin (DEPRECATED) — Enable force sign in for Google Chrome
+SYNOPSIS: false
+ This policy is deprecated, consider using BrowserSignin instead.
 
-  default: false
+       If this policy is set to true, user has to sign in to Google Chrome with their profile before using the browser. And the default value of BrowserGuestModeEnabled will be set to false. Note that existing unsigned profiles will be locked and inaccessible after enabling this policy. For more information, see help center article.
+
+       If this policy is set to false or not configured, user can use the browser without sign in to Google Chrome.
+
   features:
     dynamic_refresh: false
     per_profile: false
+  future_on:
+  - chrome.linux
   items:
-  - caption: Enable Google Chrome V2 Service and launch remote desk upon login
+  - caption: Force the user to sign in before using the browser
     value: true
-  - caption: Disable Google Chrome V2 Service and do not launch remote desk upon login
+  - caption: Allow the user to use the browser without signing in
     value: false
   schema:
     type: boolean
@@ -8878,39 +8229,6 @@ SYNOPSIS: false
   supported_on:
   - chrome.*:80-
   type: main
-
-** GoogleLocationServicesEnabled — Control Google ChromeOS access to Google location services
-SYNOPSIS: 1
- Set Google ChromeOS system geolocation access level.
-
- This is additional layer of control, sitting below the permission layer for apps and websites. E.g. If this policy is set to either Block or OnlyAllowedForSystemServices, no apps or websites can resolve location, regardless of their respective location permission. But if it's set to Allow, apps and websites can individually configure the location permission, that'll effectively define their ability to resolve location.
-
- Users can't override the admin selection. Leaving the policy unset gives users the consumer experience, i.e. they can freely modify the system location setting.
-
- Note: This policy deprecates the ArcGoogleLocationServicesEnabled policy.
- Also when this policy is set, DefaultGeolocationSetting will no longer affect the Android location preference on ChromeOS.
-
-  default: null
-  features:
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Block system geolocation access to all clients
-    name: Block
-    value: 0
-  - caption: Allow system geolocation access
-    name: Allow
-    value: 1
-  - caption: Only allow system geolocation access to system services
-    name: OnlyAllowedForSystemServices
-    value: 2
-  schema:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-  type: int-enum
 
 ** GoogleSearchSidePanelEnabled — Enable Google Search Side Panel
 SYNOPSIS: true
@@ -9632,31 +8950,6 @@ SYNOPSIS: false
     type: boolean
   type: main
 
-** IsolatedWebAppInstallForceList — Configure list of force-installed Isolated Web Apps
-SYNOPSIS: [{"update_manifest_url": "https://example.com/isolated_web_app/update_manifest.json", "web_bundle_id": "aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"}]
- Setting the policy specifies a list of isolated web apps (IWAs) that install silently.
-       IWAs are applications that have useful security properties unavailable to normal web pages. They are packaged in a Signed Web Bundle. The public key of the Signed Web Bundle is used to create the Web Bundle ID that identifies the IWA.
-       So far this policy works for Managed Guest Session only.
-
-       Each list item of the policy is an object with the update manifest URL and Web Bundle ID of the Isolated Web App. Both fields are mandatory.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  schema:
-    items:
-      properties:
-        update_manifest_url:
-          type: string
-        web_bundle_id:
-          type: string
-      required:
-      - update_manifest_url
-      - web_bundle_id
-      type: object
-    type: array
-  type: dict
-
 ** JavascriptEnabled (DEPRECATED) — Enable JavaScript
 SYNOPSIS: true
  This policy is deprecated, please use DefaultJavaScriptSetting instead.
@@ -9788,26 +9081,6 @@ SYNOPSIS: true
     type: boolean
   supported_on:
   - chrome.*:81-87
-  type: main
-
-** LocalUserFilesAllowed — Enable local user files
-SYNOPSIS: true
- This policy controls whether Google ChromeOS users can store data locally or not.
-       Setting this policy to False blocks local storage on Google ChromeOS - users cannot store any data locally, and cannot access any local directories.
-       Setting this policy to True or leaving it unset allows local storage on Google ChromeOS - there are no restrictions on where users can store data, or which directories they can access.
-
-  default: true
-  features:
-    can_be_recommended: false
-    dynamic_refresh: true
-    per_profile: false
-  items:
-  - caption: Enable storing user files locally
-    value: true
-  - caption: Disable storing user files locally
-    value: false
-  schema:
-    type: boolean
   type: main
 
 ** LockIconInAddressBarEnabled (DEPRECATED) — Enable lock icon in the omnibox for secure connections
@@ -11232,27 +10505,6 @@ SYNOPSIS: true
   - system-security
   type: main
 
-** PreconfiguredDeskTemplates — Allow users to select a preconfigured desktop layout to load
-SYNOPSIS: {"hash": "842841a4c75a55ad050d686f4ea5f77e83ae059877fe9b6946aa63d3d057ed32", "url": "https://example.com/a.json"}
- If set, this policy contains information to download a desk template file.  The file contains a desk template to be provisioned for the current user.
-       If not set, no preconfigured desk template will be included in the list of desk templates.  If the DeskTemplatesEnabled
-       policy is not set to true, this policy has no effect.
-
-  features:
-    dynamic_refresh: true
-    per_profile: true
-  max_size: 1048576
-  schema:
-    properties:
-      hash:
-        description: The SHA-256 hash of the desk template.
-        type: string
-      url:
-        description: The URL from which the desk template can be downloaded.
-        type: string
-    type: object
-  type: external
-
 ** PrefixedStorageInfoEnabled (DEPRECATED) — Re-enable the deprecated window.webkitStorageInfo API
 SYNOPSIS: false
  Starting in M110, the non-standard API window.webkitStorageInfo will be removed. This policy re-enables the API.
@@ -11400,31 +10652,6 @@ SYNOPSIS: true
   supported_on:
   - chrome.*:96-
   type: main
-
-** ProvisionManagedClientCertificateForUser — Enables the provisioning of client certificates for a managed user or profile
-SYNOPSIS: 0
- Setting this policy to Enabled (value 1) will make the browser request a client certificate from the device management server for a managed user or profile. This certificate will be made available for, e.g., mTLS connections.
-
- Setting this policy to Disabled (value 0) will prevent the browser from requesting the client certificate. If a profile's managed client certificate had already been provisioned, due to this policy being enabled before, it will not be deleted, but it won't be available for mTLS connections and won't be renewed when it expires.
-
-  default: 0
-  features:
-    cloud_only: true
-    dynamic_refresh: true
-    per_profile: true
-  items:
-  - caption: Disable client certificate provisioning
-    name: Disabled
-    value: 0
-  - caption: Enable client certificate provisioning
-    name: Enabled
-    value: 1
-  schema:
-    enum:
-    - 0
-    - 1
-    type: integer
-  type: int-enum
 
 ** ProxySettings — Proxy settings
 SYNOPSIS: {"ProxyBypassList": "https://www.example1.com,https://www.example2.com,https://internalsite/", "ProxyMode": "fixed_servers", "ProxyServer": "123.123.123.123:8080"}
@@ -12080,29 +11307,6 @@ SYNOPSIS: true
   - chrome.*:8-
   type: main
 
-** ScreenCaptureLocation — Set location to store screen captures
-SYNOPSIS: "${google_drive}/ScreenCapture"
- Sets the directory where Screen Captures (both screenshot and screen recordings) are being saved.
- If the policy is set as recommended, the value will be used by default, but user will be able to change it.
- Otherwise the user can't change it and the captures are always saved to the defined directory.
-
- The policy uses same format as DownloadDirectory policy
- The location could be set to either local filesystem or Google Drive (with '${google_drive}' prefix) or Microsoft OneDrive (with '${onedrive}' prefix).
- If the policy is set to empty string, it'll force the screen captures to be stored in the local "Downloads" directory.
- See a list of variables you can use ( https://www.chromium.org/administrators/policy-list-3/user-data-directory-variables ).
-
- Leaving the policy unset means Google ChromeOS uses the default "Downloads" directory to store screen captures, and users can change it.
-
-  features:
-    can_be_recommended: true
-    dynamic_refresh: true
-    per_profile: false
-  schema:
-    type: string
-  tags:
-  - local-data-access
-  type: string
-
 ** ScreenCaptureWithoutGestureAllowedForOrigins — Allow screen capture without prior user gesture
 SYNOPSIS: ["https://www.example.com", "[*.]example.edu"]
  For security reasons, the
@@ -12387,27 +11591,6 @@ SYNOPSIS: false
     type: boolean
   supported_on:
   - chrome.*:86-
-  type: main
-
-** ShowHumanPresenceSensorScreenEnabled — Enable displaying human presence sensor screen during sign-in
-SYNOPSIS: false
- This policy controls if the human presence sensor screen is shown to the user during the first sign-in.
-     If set to false, the human presence sensor screen will not be displayed.
-     If set to true, the human presence sensor screen will be displayed.
-     If the policy is left not set, the default value false applies for enterprise-managed users and true will be used for non-managed users.
-
-  default: true
-  default_for_enterprise_users: false
-  features:
-    dynamic_refresh: false
-    per_profile: true
-  items:
-  - caption: Display the human presence sensor screen during sign-in
-    value: true
-  - caption: Do not display the human presence sensor screen during sign-in
-    value: false
-  schema:
-    type: boolean
   type: main
 
 ** SideSearchEnabled — Allow showing the most recent default search engine results page in a Browser side panel
@@ -16712,65 +15895,6 @@ SYNOPSIS: true
   supported_on:
   - chrome.*:8-
   type: main
-
-* UserAndDeviceReporting — User and device reporting
- Controls what kind of user and device information is reported.
-
-** ReportDeviceLocation (DEPRECATED) — Report device location
-SYNOPSIS: false
- This policy is deprecated.
-
-       Setting the policy to Enabled has enrolled devices periodically report their location.
-
-       Setting the policy to Disabled or leaving it unset means enrolled devices don't report their location.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    dynamic_refresh: true
-  items:
-  - caption: Enable device location reporting
-    value: true
-  - caption: Disable device location reporting
-    value: false
-  schema:
-    type: boolean
-  tags:
-  - admin-sharing
-  type: main
-
-** ReportDeviceSignalStrengthEventDrivenTelemetry — Telemetry data to report on signal strength event.
-SYNOPSIS: ["https_latency"]
- List of telemetry data to be reported on signal strength change events.
-
-       Each telemetry data specified will only be reported if it was not disabled by its controlling policy.
-       Controlling policy for https_latency and network_telemetry is ReportDeviceNetworkStatus.
-
-       If not set, no additional telemetry data will be reported on signal strength change events.
-
-  arc_support: This policy has no effect on the logging done by Android.
-  device_only: true
-  features:
-    cloud_only: true
-    dynamic_refresh: true
-    unlisted: true
-  items:
-  - caption: Network Telemetry
-    name: network_telemetry
-    value: network_telemetry
-  - caption: Https Latency
-    name: https_latency
-    value: https_latency
-  schema:
-    items:
-      enum:
-      - network_telemetry
-      - https_latency
-      type: string
-    type: array
-  tags:
-  - admin-sharing
-  type: string-enum-list
 
 * X-GrouplessPolicies — These policies have no group!
  FIXME

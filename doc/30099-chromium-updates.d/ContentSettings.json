@@ -42,7 +42,6 @@
     "DefaultThirdPartyStoragePartitioningSetting": 1,
     "DefaultWebBluetoothGuardSetting": 2,
     "DefaultWebHidGuardSetting": 2,
-    "DefaultWebPrintingSetting": 2,
     "DefaultWebUsbGuardSetting": 2,
     "DefaultWindowManagementSetting": 2,
     "FileSystemReadAskForUrls": [
@@ -219,14 +218,6 @@
     "WebHidBlockedForUrls": [
         "https://google.com",
         "https://chromium.org"
-    ],
-    "WebPrintingAllowedForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "WebPrintingBlockedForUrls": [
-        "https://www.example.com",
-        "[*.]example.edu"
     ],
     "WebUsbAllowDevicesForUrls": [
         {

@@ -475,15 +475,8 @@
     "DefaultBrowserSettingEnabled": true,
     "DefaultDownloadDirectory": "/home/${user_name}/Downloads",
     "DefaultSearchProviderContextMenuAccessAllowed": true,
-    "DeskTemplatesEnabled": true,
     "DesktopSharingHubEnabled": true,
     "DeveloperToolsAvailability": 2,
-    "DeviceDlcPredownloadList": [
-        "scanner_drivers"
-    ],
-    "DeviceLoginScreenTouchVirtualKeyboardEnabled": true,
-    "DeviceLoginScreenWebUILazyLoading": true,
-    "DeviceSystemAecEnabled": false,
     "Disable3DAPIs": false,
     "DisableScreenshots": true,
     "DiskCacheDir": "${user_home}/Chrome_cache",
@@ -529,7 +522,6 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "FloatingWorkspaceV2Enabled": true,
     "ForceEphemeralProfiles": true,
     "ForceGoogleSafeSearch": false,
     "ForcePermissionPolicyUnloadDefaultEnabled": true,
@@ -539,7 +531,6 @@
     ],
     "FullscreenAllowed": true,
     "GloballyScopeHTTPAuthCacheEnabled": false,
-    "GoogleLocationServicesEnabled": 1,
     "GoogleSearchSidePanelEnabled": true,
     "HSTSPolicyBypassList": [
         "meet"
@@ -568,16 +559,9 @@
     "IntranetRedirectBehavior": 1,
     "IsolateOrigins": "https://a.example.com/,https://othersite.org/,https://[*.]corp.example.com",
     "IsolatedAppsDeveloperModeAllowed": false,
-    "IsolatedWebAppInstallForceList": [
-        {
-            "update_manifest_url": "https://example.com/isolated_web_app/update_manifest.json",
-            "web_bundle_id": "aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
-        }
-    ],
     "LacrosSecondaryProfilesAllowed": true,
     "LensDesktopNTPSearchEnabled": true,
     "LensRegionSearchEnabled": true,
-    "LocalUserFilesAllowed": true,
     "LookalikeWarningAllowlistDomains": [
         "foo.example.com",
         "example.org"
@@ -949,16 +933,11 @@
     "PolicyRefreshRate": 3600000,
     "PolicyTestPageEnabled": true,
     "PostQuantumKeyAgreementEnabled": true,
-    "PreconfiguredDeskTemplates": {
-        "hash": "842841a4c75a55ad050d686f4ea5f77e83ae059877fe9b6946aa63d3d057ed32",
-        "url": "https://example.com/a.json"
-    },
     "ProfilePickerOnStartupAvailability": 0,
     "ProfileReauthPrompt": 1,
     "PromotionalTabsEnabled": false,
     "PromptForDownloadLocation": false,
     "PromptOnMultipleMatchingCertificates": true,
-    "ProvisionManagedClientCertificateForUser": 0,
     "ProxySettings": {
         "ProxyBypassList": "https://www.example1.com,https://www.example2.com,https://internalsite/",
         "ProxyMode": "fixed_servers",
@@ -992,7 +971,6 @@
     "SafeSitesFilterBehavior": 0,
     "SandboxExternalProtocolBlocked": true,
     "SavingBrowserHistoryDisabled": true,
-    "ScreenCaptureLocation": "${google_drive}/ScreenCapture",
     "ScreenCaptureWithoutGestureAllowedForOrigins": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -1007,7 +985,6 @@
     "ShoppingListEnabled": true,
     "ShowAppsShortcutInBookmarkBar": false,
     "ShowFullUrlsInAddressBar": false,
-    "ShowHumanPresenceSensorScreenEnabled": false,
     "SideSearchEnabled": false,
     "SignedHTTPExchangeEnabled": true,
     "SigninInterceptionEnabled": true,
