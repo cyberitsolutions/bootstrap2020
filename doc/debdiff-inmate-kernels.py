@@ -46,6 +46,7 @@ with tempfile.TemporaryDirectory() as td_str:
         with manifest_path.open('w') as f:
             subprocess.check_call(['dpkg-deb', '--contents', deb_path], text=True, stdout=f)
         subprocess.check_call(['sed', '-nrsi', 's#.*/lib/modules/[^/]+/##p', manifest_path])
+        subprocess.check_call(['sed', '-rsi', 's#.xz$##', manifest_path])
         subprocess.check_call(['git', 'add', manifest_path], cwd=td)
         subprocess.check_call(['git', 'commit', '--allow-empty', '--quiet', '-m',
                                f'{current_version} (was {previous_version})'], cwd=td)
