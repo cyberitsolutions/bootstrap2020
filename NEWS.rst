@@ -2,6 +2,21 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs March 2024 (since January 2024)
+======================================================================
+• Sometimes SBS forget to name a programme in their programme guide.
+  When this happens, limit breakage to that show (not that station).
+  https://alloc.cyber.com.au/task/task.php?taskID=35088
+
+• Hardcode (not DNS-SD auto-configure) logging.
+  Hopefully this will fix a recurring issue where early boot messages don't make it to the central log server.
+  https://alloc.cyber.com.au/task/task.php?taskID=34836
+
+• Update Chromium enterprise policy to 123 (was 115).
+• Inmate kernel bumped to 6.5.3 (was 6.4.4).
+
+
+======================================================================
  Changes in SOEs January 2024 (since December 2023)
 ======================================================================
 • Enhancements:
