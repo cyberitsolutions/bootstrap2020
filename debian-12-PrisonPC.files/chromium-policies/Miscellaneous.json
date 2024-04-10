@@ -117,10 +117,19 @@
     // Something about chrome://history/journeys
     // "HistoryClustersVisible": false,
     "AllowDinosaurEasterEgg": false,
-    // Block "female presenting nipple" and other things that upset _American_ corporate culture.
+    // Block "not safe for work" content.
+    // Worldwide, enforces _American_ views on what counts as "NSFW", i.e.
+    // https://de.wikipedia.org/wiki/FKK is considered "NSFW", but
+    // https://de.wikipedia.org/wiki/SS is considered "SFW".
     // Only affects google/youtube search, so will only apply to staff.
-    "ForceGoogleSafeSearch": true,
-    "ForceYouTubeRestrict": 2,
+    // UPDATE: Removed these restrictions at the request of AMC.
+    //         "AMC education staff complained [⋯] they are unable to watch youtube with certain keywords for example "Criminology"."
+    //         As a specific example, this is blocked by "ForceYouTubeRestrict": 2:
+    //             https://www.youtube.com/watch?v=wCTG_q1hziw
+    //             Frank Tannenbaum: The Making of a Convict Criminologist by Matthew G. Yeager
+    //         --twb, April 2024, https://alloc.cyber.com.au/task/task.php?taskID=35099&sbs_link=comments
+    // "ForceGoogleSafeSearch": true,
+    // "ForceYouTubeRestrict": 2,
 
     // Do not send telemetry to google.
     // The sending is almost certainly blocked anyway, so
