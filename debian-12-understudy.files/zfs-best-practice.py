@@ -51,6 +51,27 @@ if 'special' in args.vdevs and ('special', 'mirror') not in zip(args.vdevs, args
 subprocess.check_call([
     'zpool', 'create',
     '-o', 'ashift=12',
+
+    # PrisonPC-specific workaround.
+    # At time of upgrade,
+    # PrisonPC main server is still Debian 11 / ZFS 2.0; but
+    # PrisonPC understudy is Debian 12 / ZFS 2.2.
+    # We must explicitly tell ZFS to create a pool ZFS 2.0 understands.
+    # Later, we can do "zpool upgrade" to add features -- AFTER the PrisonPC main server is Debian 12 / ZFS 2.2.
+    #
+    # Here are the features we'll miss -- none look very interesting (to us).
+    #
+    # bash5$ git diff --no-index -U0 /usr/share/zfs/compatibility.d/{openzfs-2.0-linux,openzfs-2.1-linux}
+    # https://manpages.debian.org/bookworm/zfsutils-linux/zpool-features.7.en.html#draid
+    # bash5$ git diff --no-index -U0 /usr/share/zfs/compatibility.d/{openzfs-2.0-linux,openzfs-2.2}
+    # https://manpages.debian.org/bookworm-backports/zfsutils-linux/zpool-features.7.en.html#blake3
+    # https://manpages.debian.org/bookworm-backports/zfsutils-linux/zpool-features.7.en.html#block_cloning
+    # https://manpages.debian.org/bookworm-backports/zfsutils-linux/zpool-features.7.en.html#draid
+    # https://manpages.debian.org/bookworm-backports/zfsutils-linux/zpool-features.7.en.html#head_errlog
+    # https://manpages.debian.org/bookworm-backports/zfsutils-linux/zpool-features.7.en.html#vdev_zaps_v2
+    # https://manpages.debian.org/bookworm-backports/zfsutils-linux/zpool-features.7.en.html#zilsaxattr
+    '-o', 'compatibility=openzfs-2.0-linux',
+
     # https://git.cyber.com.au/cyber-ansible/blob/April-2023/roles/cyber_bcp/tasks/70-zfs.yaml#L-43
     # '-O', 'autotrim=on',
     '-O', 'acltype=posixacl',
