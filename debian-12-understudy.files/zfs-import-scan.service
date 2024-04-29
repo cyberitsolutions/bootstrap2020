@@ -1,3 +1,4 @@
 # This probably might fail miserably if you have MULTIPLE pools...
 [Service]
-Environment=ZPOOL_IMPORT_OPTS="-o altroot=/srv/backup/zfs"
+#Environment=ZPOOL_IMPORT_OPTS="-o altroot=/srv/backup/zfs"
+EnvironmentFile=/etc/default/zfs-for-understudy
