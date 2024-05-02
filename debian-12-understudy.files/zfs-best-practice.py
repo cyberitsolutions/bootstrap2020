@@ -187,8 +187,8 @@ create('var/mail/mailsec', refquota='1.5T', quota='2T')  # 1.1TB at AMC in 2023Q
 # REGARDING "SECURE" AND "INSECURE", SEE https://git.cyber.com.au/prisonpc/blob/22.09.1/client/exports.prisonpc#L-3
 # tweak.prisonpc.com needs ",insecure" on the next two datasets (for --boot-test VMs).
 # All other datasets & all other hosts can remain on the implied default (",secure").
-create('home/prisoners', canmount='off', refquota='512G', exec='off', sharenfs='root_squash,rw=10.128.0.0/16')
-create('home/staff', canmount='off', refquota='512G', exec='off', sharenfs='root_squash,rw=10.0.0.0/16')
+create('home/prisoners', canmount='off', refquota='512G', exec='off', sharenfs='async,root_squash,rw=10.128.0.0/16')
+create('home/staff', canmount='off', refquota='512G', exec='off', sharenfs='async,root_squash,rw=10.0.0.0/16')
 # FIXME: Need one of these for each user, seeded from the quota rules...
 # create('home/prisoners/p123', refquota='128M')
 # create('home/staff/s123', refquota='128M')
@@ -202,13 +202,13 @@ create('var/lib', canmount='off')
 create('var/lib/postgresql', refquota='4G', quota='64G', compression='lz4', recordsize='64K')
 
 create('srv/archive', refquota='8G')
-create('srv/netboot', refquota='96G', quota='256G', sharenfs='no_root_squash,ro=10.0.0.0/16,ro=10.128.0.0/16,insecure_locks')
+create('srv/netboot', refquota='96G', quota='256G', sharenfs='async,no_root_squash,ro=10.0.0.0/16,ro=10.128.0.0/16,insecure_locks')
 # refquota is small because you SHOULD make a child dataset
 # FIXME: I think parts of /srv/share should have more restrictive sharenfs!  I don't think all of these should be inmate-readable.
-create('srv/share', refquota='8G', quota='256G', sharenfs='root_squash,rw=10.0.0.0/16,ro=10.128.0.0/16')
+create('srv/share', refquota='8G', quota='256G', sharenfs='async,root_squash,rw=10.0.0.0/16,ro=10.128.0.0/16')
 create('srv/share/media', refquota='64G', recordsize='1M')
 create('srv/share/custodial', refquota='32G', quota='128G', recordsize='1M')
 create('srv/share/printjobs', refquota='32G', quota='64G', recordsize='1M')  # at AMC, 93% of PDFs are >1MiB
-create('srv/tv', refquota='32G', quota='128G', recordsize='1M', sharenfs='root_squash,rw=10.0.0.0/16')
+create('srv/tv', refquota='32G', quota='128G', recordsize='1M', sharenfs='async,root_squash,rw=10.0.0.0/16')
 
 # REMINDER: remove all entries from /etc/exports; the sharenfs properties above replace it.
