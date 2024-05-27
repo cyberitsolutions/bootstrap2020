@@ -2,6 +2,20 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs May 2024 (since March 2024)
+======================================================================
+• Previously the browser told Google to block not-safe-for-work (NSFW) content.
+  It turns out Google considers academic lectures on criminology to be NSFW.
+  https://www.youtube.com/watch?v=wCTG_q1hziw
+  Therefore this layer of defence-in-depth is now disabled.
+  Detainee web access remains restricted by other layers.
+
+• Inmate kernel bumped to 6.7.12 (was 6.6.13, was 6.5.10, was 6.5.3).
+• "Vulnerability changes in PrisonPC SOEs" report is now HTML.
+• Miscellaneous minor bugfixes to ZFS-based understudy SOE.
+
+
+======================================================================
  Changes in SOEs March 2024 (since January 2024)
 ======================================================================
 • Sometimes SBS forget to name a programme in their programme guide.
