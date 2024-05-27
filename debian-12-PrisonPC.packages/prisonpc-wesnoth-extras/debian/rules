@@ -25,8 +25,6 @@ override_dh_auto_install:
 	## If a campaign sets too many of these properties at once, the generated filename doesn't exist!
 	## As a workaround, make symlinks from known-missing images to ones that DO exist.
 	mkdir -p $e
-	ln -s ellipse-leader-bottom.png        $e/ellipse-hero-leader-bottom.png
-	ln -s ellipse-leader-top.png           $e/ellipse-hero-leader-top.png
 	ln -s ellipse-nozoc-top.png            $e/ellipse-noczoc-nozoc-top.png
 	ln -s ellipse-nozoc-bottom.png         $e/ellipse-noczoc-nozoc-bottom.png
 	ln -s ellipse-nozoc-leader-top.png     $e/ellipse-noczoc-leader-nozoc-top.png
