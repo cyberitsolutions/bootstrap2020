@@ -25,28 +25,28 @@ import sqlite3
 import subprocess
 import sys
 
-sys.path.append('/usr/share/games/wesnoth/1.16/data/tools')
+sys.path.append('/usr/share/games/wesnoth/1.18/data/tools')
 import wesnoth.campaignserver_client  # noqa: E402
 
 
 def main():
     # campaignserver_client needs wesnoth in $PATH (add /usr/games).
     os.environ['PATH'] = '/bin:/sbin:/usr/games'
-    with sqlite3.connect('31556-wesnoth-addons-1.16.db') as conn:
+    with sqlite3.connect('31556-wesnoth-addons-1.18.db') as conn:
         conn.execute(CREATE_QUERY)
         campaigns, = wesnoth.campaignserver_client.CampaignClient('add-ons.wesnoth.org').list_campaigns().get_all(tag='campaigns')
         for campaign in campaigns.get_all(tag='campaign'):
             upsert(conn, campaign)
     # ICBF working out how to do pretty-printing from within python2.
     # Just use sqlite3's CLI tool.
-    with pathlib.Path('31556-wesnoth-addons-1.16.txt').open('w') as f:
+    with pathlib.Path('31556-wesnoth-addons-1.18.txt').open('w') as f:
         subprocess.check_call(
-            ['sqlite3', '-line', '31556-wesnoth-addons-1.16.db', SELECT_QUERY],
+            ['sqlite3', '-line', '31556-wesnoth-addons-1.18.db', SELECT_QUERY],
             text=True,
             stdout=f)
-    with pathlib.Path('31556-wesnoth-addons-1.16.csv').open('w') as f:
+    with pathlib.Path('31556-wesnoth-addons-1.18.csv').open('w') as f:
         subprocess.check_call(
-            ['sqlite3', '-csv', '-header', '31556-wesnoth-addons-1.16.db', SELECT_QUERY],
+            ['sqlite3', '-csv', '-header', '31556-wesnoth-addons-1.18.db', SELECT_QUERY],
             text=True,
             stdout=f)
 

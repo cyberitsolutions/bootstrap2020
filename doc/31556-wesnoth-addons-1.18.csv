@@ -1,0 +1,879 @@
+filename,size,timestamp,downloads,type,version,dependencies,description,status,DL_per_day,megabytes
+Wesnoth_Creepypasta,578040,1716689593,24,campaign,0.1,,"A fictional tale about a lost campaign from the early days of Wesnoth and the ends that one might go to recover it. Includes themes of death, loss, and marital unhappiness, and has some imagery that may be unsettling, but no gore.
+	
+Also serves as an introduction to the Loyalists faction, with units introduced a few at a time and the core recruit group is the same as the multiplayer faction. Includes a leader unit with custom advancements.
+
+Nine scenarios, eight playable.",,24.1138710577728,0.551261901855469
+A_Group_in_a_War,392808,1709356214,2007,campaign,0.3.0b,Tamanegi_Jukebox,"You are the leader of a small troop. Lead your troop to finish the war. 
+
+A simple RPG style campaign. There are some strange features in the gameplay, so the first time players should not choose Hard level.
+UMC Music Books (especially 1 and 8-11) are not required but recommended.",,23.3719003942517,0.374610900878906
+A_Fiery_Birth,1122249,1708994043,1375,campaign,1.4.2,,"A scholar of the great academy travels to the land of the drakes to discover their secret origin.
+
+This is a campaign designed to give players experience in the Drake/Saurian faction. The first level is a bonus level with a fire dragon. 9 scenarios.",,15.2668969723482,1.0702600479126
+An_Independence_War,439013,1711179514,754,campaign,0.4.1a,Tamanegi_Jukebox,"Fight against the world to save your people.
+This is a sequel to A Group in a War campaign.
+
+Intermediate to Expert level (containing very strange features).
+The game system is completely different from the standard of BfW.
+Main units in this campaign are troops which consist of multiple units.
+
+Tamanegi Jukebox addon is required.
+UMC Music Books (1-12) and West's Chronicles (I and II) are not required but recommended to install.",,11.6413104837305,0.418675422668457
+Genesis,3588910,1711660931,733,campaign,0.2.13,Genesis_Resources,"This campaign is the prequel to Invasion from the Unknown and After the Storm.
+
+In the cycle before our own, the civilization of the First Gods was eradicated by a cataclysmic force that was beyond their control. On the brink of utter destruction, the few survivors harnessed the ten aspects of creation to end their cycle and shape the development of a new universe. In the process, however, many errors were introduced into the fabric of the new worlds, which would eventually resurface when the Guardians of the new universe began to unveil the secrets of their creation.
+
+(Expert level, Episode 1 - 23 scenarios)
+
+Wesnoth 1.14.0 or later required.
+
+Discussion thread in the Wesnoth.org forums: http://forums.wesnoth.org/viewtopic.php?f=8&t=43023",,12.3823038664981,3.42265129089355
+A_Magicians_Tale,6164516,1712597717,697,campaign,3.16.10,,"A campaign in which the protagonists are an unusual group of magicians, of any race, with unusual abilities.
+The magical special abilities of the magician's can be activated by opening the Item menu (right-click on the character's tile).
+In this campaign, it is not possible to recruit supporters in the usual way, but they can be selected, hired, summoned and/or met in many different ways.
+Since the entire campaign is set for winter, a twelve-shift day is used, with a low prevalence of night shifts.
+
+(Difficult level, 10 battle scenarios, 5 dialogue and others things scenarios.)",,14.4142419052014,5.87894058227539
+A_Vision_Blinded,4777835,1711543415,781,campaign,1.0.28,,"Defend the northern forest against what appeared like a routine orcish raid, and unravel the greater conspiracies that lie below its waves.
+
+You fight with Elfes against Dwarves, Orcs, Humans and Undead.
+Later in the campaign you can recruit Trolls, Humans and Woses.
+
+13 scenarios total.
+1 of them is dialogue only.",,12.8968286580902,4.55649852752686
+Heir,1782144,1716330923,49,campaign,0.1.2,,"The Grand Orcish Leader has united all orcish tribes, forging an unstoppable force. As the capital teeters on the brink of collapse, Princess Alice and her comrades must undertake a daring mission to assassinate the Grand Orcish Leader before it's too late. Can they succeed in eliminating this formidable foe and halt the impending doom looming over Wesnoth?
+
+(Master level, 5 playable scenarios.)
+
+
+It's working in progress, unfinished yet. Please leave your feedback if you gave it a try. ^^
+",,9.52093950011469,1.6995849609375
+Ashevieres_Shadow,1100666,1709339325,725,campaign,1.4.3,,"Even in the deserts far to the south of Wesnoth, Queen Asheviere's shadow darkens the land.
+
+This is a campaign designed to give players experience in the Dunefolk faction, with the same as in the multiplayer faction. Units are introduced a few at a time. Dune Paragon is enabled, and Jinn and Wyvern Riders are included as enemies.",,8.42358927740558,1.0496768951416
+An_Orcish_Incursion,7627811,1708530792,1337,campaign,1.0.4.1,,"Defend the forests of the elves against the first orcs to reach the Great Continent, learning valuable tactics as you do so. (Novice level, 7 scenarios)",,14.0108793513676,7.27444744110107
+3rd_Army,1025063,1714677906,175,campaign,0.1.1,,"Don't fool with this yet, it is under construction",,7.20796651918621,0.97757625579834
+russia_coquests,1670318,1716752208,2,campaign,0.2.0,desertwar_addon,"Russia Conquests is a campaign about a fictional attack by Russia on Europe",,7.39188090858536,1.59293937683105
+Sanctuary,24885,1709228707,433,campaign,1.2.8,,"Four heroes holding their well-fortified sanctuary against a flood of enemies, four scenarios, each on the same map. In the first scenario, all level 0 and level 1 units can appear as enemies, in the second all level 2 units, in the third all level 3 units, and in the fourth all level 4 and 5 units.
+
+If desired, a custom “Battle Mage” unit with quite a number of AMLAs can be recruited (fully functional, but without any new graphics).
+
+(Intermediate level, 4 scenarios.)",,4.95717566919725,0.0237321853637695
+Lifetime_of_Stones,136116,1709063335,449,campaign,1.1.0,,"After the Second Great War, the life of trolls changed forever. The echoes of the defeat at Durn-Turum have traveled through the centuries and reached even the little troll Grump, who was recently born in the Heat Caves. Grump has no idea what adventures the legacy of gray antiquity will lead him into. 
+
+(Intermediate level, 11 scenarios)",,5.03012739472917,0.129810333251953
+Town_of_Arnsreach,302104,1714315788,147,campaign,0.1.5,Town_of_Arnsreach_Resources_1,"The beginnings of a campaign, spanning over decades, centered around the development of a town.
+
+You can find Durzi and Refumee on Wesnoth Discord if you have feedback
+
+Features:
+-..
+
+Translations: 
+-..
+
+Version 0.1 - 0.1.5
+-First scenario at 95% completed state (playable).
+-Some game-breaking bugs fixed, and more.
+-Utility added, movement on snow ect..
+-Secrets expanded, firestorm, bugfixes..
+-firestorm sound, animals added, bug fixes..
+-bug fixes..
+
+",,5.16335291082963,0.288108825683594
+The_Dark_Master_full_pack_beta,5371075,1711225946,635,campaign,1.0.7c,"The_Dark_Master_Project_Resources_Music,The_Dark_Master_full_pack_Images01,The_Dark_Master_full_pack_Images02","There was a time when all the inhabitants of Wesnoth knew the name of Argan, the servant of Ragan, and passed his story among them from fathers to sons.
+However, despite the habits of Alduin's wizards of digging up and recording every notable historical event, the story of the beginning of his baffling rise remained unknown and marred until Elynia, his heroic wife - and then his greatest enemy -, decided to risk publishing some passages from his diaries that he wrote to overcome the amnesia that afflicts those who wander between dimensional gates or Shassangoth the Immortal.
+This is a story of Argan, who the light of his great accomplishments, and his heroic followers, lit up the skies of the realm of Irdya just as the darkness of his black robe threatened every living being and nearly destroyed all hope of escaping from his might.
+The story of the rise of a hero among heroes and a monster among monsters...
+Inspired by many works from BfW 1.0, 1.2 and 1.4
+finished, playable, tested on normal, 22 campaigns (more may be added later), new units. 10 scenarios + 12 scenarios + 13 scenarios + 08 scenarios + 06 scenarios + 05 scenarios + 16 scenarios + 08 scenarios + 07 scenarios + 07 scenarios + 12 scenarios + 10 scenarios + 8 scenarios + 09 scenarios + 30 scenarios + 30 scenarios + 08 scenarios + 16 scenarios + 08 scenarios + 11 scenarios + 16 scenarios + 14 scenarios + 13 scenarios. Each campaign can be played separately (but the story can be confusing in this case). Another campaign is under construction.",,9.88604844387175,5.1222562789917
+Roar_of_the_Woses,422348,1711261135,328,campaign,1.2.15,,"Fight to save a swamp as the saurian Kylix, gathering allies along the way. 11 playable scenarios + 1 dialog.",,5.13908005331447,0.402782440185547
+Return_from_the_Abyss,3584738,1711213264,512,campaign,1.1.14f,RftA_Music,"After taking part to a disastrous expedition, Khafir and his men are lost and isolated from their people, thousands of miles away from home, bound by a pact sealed with a powerful dwarvish king. Help him escape from the depth of Irdya and finding his way back, in an adventure across two worlds during the rise of a sinister force in the Great Continent. 
+	
+Expert level, finished (19 playable scenarios).",,7.95293906985951,3.41867256164551
+Drunkards_Dwarves_And_Doubloons,28692,1709395758,385,campaign,1.3,,"A criminal mastermind gathers a team to pull of a heist in the richest part of Wesnoth: the tax-collecting city-state of Elensefar.
+
+This is a campaign designed to give players experience in the Knalgan faction, with the same units as in the multiplayer faction introduced a couple at a time. Dwarvish Runesmith and Arcanister are unlocked, but you can choose not to use them for a more authentic experience.
+
+10 playable scenarios.",,4.50742273497739,0.0273628234863281
+A_Starry_Forest,3830237,1711408572,492,campaign,1.0.2,,"A near future where glory and decline are repeated. Elven Captain Xlorien encounters an unidentified undead attack near the border of Wesmere.
+
+(Novice level, 6 scenarios.)
+
+The campaign was created and inspired by the movie 'Patlabor 2: The Movie' directed by Mamoru Oshii. I would like to take this opportunity to thank them.",,7.92038327464457,3.65279865264893
+Dungeons_of_Wesnoth,1389116,1711149260,359,campaign,"0.64 Beta",,"A heavily wounded lich discovers the magic to build an own dungeon lair and different dungeons rooms which will allow him to call new units, to place traps and to research spells. His new opponent is a overmotivated paladin, who can build a village with different buildings which will unlock new units and abilities. Guide them on their way. This is Parody Dungeon Defence Game, in the style of Dungeon Keeper and preform of a multiplayer campaign. This is a very fast paced campaign, and needs some balancing as well as overwork of techtrees and buildingtrees. 4 Scenarios.
+
+0.6 - added two, :p, new dungeon levels and a little bit of storyline, as well as some fixes and funny descriptions.
+0.61 - added some options, when you jump to a new level, added cheat mode and additional dialogues, design improvements
+0.62 - color changes, reduced some deprecated macros, repaired some icons missing after the merge to 1.18
+0.63 - thanks to ForestDragon, I could find and replace more missing images and fixed the royalarmory message spam",,5.51294139602671,1.32476425170898
+For_Power,1526704,1713632048,201,campaign,0.6.5.7,,"Sometimes the fate has a quite interesting sense of humor. Some people wish to be good but it has something different prepared for them. It was also the case of a young mage Clare from the Northlands.
+She only wanted to protect her home village from the still more aggressive orcs but just one event completely changed her whole life. It has become very thrilling and much longer but everything has its price. She had to do many a thing what she did not like. Watch with your own eyes what happened and how she dealt with it. Watch her path to power but also her descent.
+work in progress (chapters 1 to 5 are completed, some scenarios from chapter 6 are present)
+git repository: https://github.com/irdyansages/For_Power",,5.524477682305,1.45597839355469
+LoS_tutorial,30833,1715194242,73,campaign,1.0.1a,Lifetime_of_Stones,"Have you ever thought that the Wesnoth tutorial is a bit... lacking? It doesn't explain at all how you would play trolls. Hopefully, the Rolling Stones tribe agreed to help us. They will show you training of the chief's son. Follow his path and you'll learn to be a worthy troll too.
+
+(Tutorial, 2 scenarios)
+
+Upon completing, we recommend you to proceed with the Lifetime of Stones campaign.",,3.98850850195056,0.0294046401977539
+Children_of_the_Dust,3021079,1711212966,438,campaign,1.0.5b,,"In the aftermath of the Fall, the glorious civilization of the dwarves is on its knees. Strongholds who resisted entire eras have vanished together with their inhabitants, the very same mountains and caves that protected them for so long finally collapsed and became their grave. The few survivors are scattered around the continent and in disarray, hunted by old and new enemies and abandoned by their old allies.
+
+But dwarves are no folk to give up easily, nor to wallow in self-pity. Help Walhort and his fellows escape destruction, reclaim their spot in this new, hostile, world, and lay the foundation on which dwarves could build their future and, one day, flourish again. (10 playable scenarios)",,6.80312636907183,2.88112545013428
+Story_of_Wose,971724,1711138273,310,campaign,0.11.0,,"The trees are not always what they seem.",,4.7512005721876,0.926708221435547
+Goblins_Glory,138775,1709429243,334,campaign,1.1.2,,"In his dreams, the goblin Shlag is called to glory! But who is this figure in his visions, and what does this glory entail?
+
+This is a campaign designed to give players experience with the entire Northerners faction. It includes two bonus scenarios: an opening dream sequence where you play as an Armageddon Imp, and a later survival game scenario where six small teams face off in an arena with magical weapons.
+
+9 playable scenarios.",,3.92815907563247,0.132346153259277
+Two_Brothers,3787401,1711401500,442,campaign,1.2.3,,"Do you think A Tale of Two Brothers is too easy? Do you want it to be a challenge?
+Now it is! Play the main campaign A tale of two brothers in this crazy version. Face higher level enemies, fight more enemies and create new strategies. Now Arvith is an Ice Knight, who possesses a powerful holy spear that freezes his enemies. But he is weaker against the undead!
+
+Do you accept the challenge?",,7.1061027132991,3.61194705963135
+Only_Death_Behind,1435483,1712482726,239,campaign,1.0.5,,"Legends of the Emerald Forest, chapter II: Only Death Behind.
+
+Three ghosts have escaped from the land of the dead. Yet they don't remember anything about their past.
+
+This is an Undead campaign that references certain characters and events from 'The Flight of Drakes', yet it can be played separately.
+
+(Intermediate level, 7 scenarios.)",,4.81022088076967,1.36898326873779
+The_Sun_Engineers,2562696,1711734944,339,campaign,1.0.0,,"There was a time, before the plains of Irdya turned into deserts, when the two suns shone together as a testament to human ingenuity. Now Naia has changed its orbit, burning and scarring the lands below. But the blighted people on the surface do not know that this was the price to pay to save them from a much worse fate.
+
+Many heroes fight for eternal glory, but this is the tale of those who had to accept oblivion to save others. Of those who had to give up everything, so that they could find themselves. This is the tale of the Sun Engineers.
+
+(This is an intermediate-difficulty campaign with a heavy focus on narrative. It is recommended to be familiar with the events from 'Under the Burning Suns' before playing. 12 playable scenarios.)",,5.81068955317389,2.44397735595703
+Electrifyre,903953,1709881741,337,campaign,1.0.7,War_of_Legends,"An ancient relic from the First Elemental War being guarded by an aragwaith village has been stolen. It is up to the local militia to bring it back.
+
+(Rookie Level, 5 out of 9 scenarios)
+
+This campaign features the Aragwaithi.
+The tutorial difficulty of this campaign is aimed at first time players.
+
+Requires War of Legends to be installed.
+
+Please give feedback in either the Wesnoth UMC Discord server or the Forum Thread.",,4.22359426758134,0.862076759338379
+Missing_Scepter,1104321,1713643917,149,campaign,0.9.1,,"Warlock Homz must track down the villian Morganfurzty before he can use the crystals of the scepter.",,4.11078058082785,1.05316257476807
+Across_the_Ocean,5299850,1711914513,454,campaign,0.5.7,Refumees_Saurian_Pack,"A campaign of Saurian adventures, 17 playable scenarios and a few others, playable all.
+
+Version 0.5.7: Bugfixes for Scenario 1, 6 and 7. Plaxar seems to be an important character for S7, no more. Extended the prerecruit event.
+Version 0.5.6: Bugfixes for Seeker Smokebomb and adding Spearthrower line.
+Version 0.5.5c: Several Bugfixes, SPEAK_NARRATOR + images and recall bugs who break the game.
+Version 0.5.5b: Minor Bugfix for Dialog.
+Version 0.5.5a: Skaphee advances to Sage now. No more chosing for the player.
+Version 0.5.5: Adding my Saurian Pack to this addon. Not Savegame compatible!
+Version 0.5.4b: Skaphee do not advances to Seer anymore for the first advancement. Now the player can decide which part they want. 
+Version 0.5.4a: Waklex starts with traits now.
+Version 0.5.4: Changed up the Ants and Scorpions to modern sprites. Changed the set up in S6, now it should be bug free. Waklex is now, not a new unit in S3, keeping all XP form S1.
+",,8.06933120924767,5.05433082580566
+Mages_University,41715,1713538047,114,campaign,0.0.2,,"Join Makar as he goes through the Mage university..07 scenario/ (under construction)",,3.04231178135979,0.0397825241088867
+Shakespeares_Ghost,25995,1709511998,247,campaign,1.1,,"A ghost makes enemies with all text taken from Shakespeare.
+
+This is a campaign with all text taken from Shakespeare, with occasional minor modification. It's designed to give familiarity with the standard undead faction, and features match-ups with all seven factions. Allows Ancient Lich and Death Knight advancements.
+
+Has an item allowing you to 'possess' exactly one other unit in the game, letting you keep and level a unit from any faction.
+
+9 playable scenarios.",,2.93805250766598,0.0247907638549805
+wildpeasantsvsdevouringcorpses,749590,1711149333,219,campaign,"0.55 Beta",,"My first multiplayer campaign. Build up a dungeon or a village and defeat the enemy hero. Gather ressources by crafted buildings and research new ones. Unlock powerful spells and summon a variety of units to help your cause. Build tricky traps and barricades or transform the land in the way you think. Its your choice to find a unique way to play and win.",,3.36309145057847,0.714864730834961
+Marbuss_Escape,4001940,1711285278,406,campaign,1.1.2,,"Many years passed, since orcs incited fear in hearts of elves, humans and dwarves. Many, since they dared to set foot on lands of Wesnoth. Many, since they were rolling in wealth. Among surviving orcish clans, there was also a certain Marbus's clan, too small to have a name, history or future. Will he successfully lead orcs through wild North, controlled by blood-thirsty, dark powers?
+
+Created by members of wesnoth.com.pl community and some friends.",,6.38915091633309,3.81654739379883
+The_Flight_of_Drakes,1044768,1712508935,169,campaign,1.0.5,,"Legends of the Emerald Forest, chapter I: The Flight of Drakes.
+
+Follow drake king Klader on his quest to find the Crown of Light, a legendary artifact from pre-historic times.
+
+This campaign is the first chapter of a trilogy; the second chapter is an Undead campaign and it's called 'Only Death Behind'.
+
+(Intermediate level, 7 scenarios.)",,3.42226336821628,0.996368408203125
+Struggle_For_Freedom,3817849,1708531447,576,campaign,1.0.8,War_of_Legends,"Follow the Eastern Elves in the time of Asheviere (506 YW). Will they succeed in their struggle for freedom, or will a betrayal at their heart strike them at the brink of victory?
+(Intermediate Level, 9 scenarios)",,6.03658017369433,3.64098453521729
+Inky_Quest,4313466,1711650971,386,campaign,1.7.0,,"The Cuttlefish Campaign
+Are the cuttlefish mere beasts or something more? What stories would they tell if they could speak? This story provides one possible answer.The easiest difficulty provides hints for novice players.
+(Beginner level, 12 scenarios)",,6.5078852768228,4.1136417388916
+Tale_of_Vaniyera,1888593,1711285010,257,campaign,0.12.1,,"115-116 SI
+
+The expansionist Lavinian Legion, led by the Imperator himself, has invaded the northern forests of the Sidhe. It is up to the young Vaniyera to push its armies back from the border...
+
+(Easy level appropriate for imperial era beginners; Hard is a challenge. 5 scenarios.)",,4.04416659457343,1.80110263824463
+WML_Guide,668871,1715074032,54,campaign,1.0.3,,"PORTED BY ZombieKnight
+This simple campaign can be played, but it is not really intended for that. Instead, it is intended to be studied as an example of Wesnoth Markup Language. Almost every line of code is explained in the code files themselves. To find the code, use the blue [ i ] icon on the bottom left of the Wesnoth main screen to open your add-ons folder, then open WML_Guide. The code is in _main.cfg, and three other .cfg files in the scenarios and units folders.
+
+Feel free to use this add-on as the foundation of your own campaign!",,2.74196572190229,0.637885093688965
+Frost_Mage,2025529,1708676330,369,campaign,0.11.4b,,"Magic takes turns in unexpected ways. Meet the Frost Mage as she takes her first step into the big world and the great challenges that appear in her path. Let the story unfold! (9 scenarios done out of 12+ planned, part-I done.)",,3.9363620481143,1.93169498443604
+Santa_Must_Die,241038,1709444225,171,campaign,1.2,,"For his crimes against humanity, Santa must die.
+
+This is a campaign designed to give players experience with the entire Rebels multiplayer faction. It does not introduce new units (outside of Santa himself) and features battles against the standard factions including Dunefolk. This is in no way related to standard Wesnoth continuity.
+
+9 scenarios (1 dialogue only).",,2.01523319002204,0.22987174987793
+In_Defense_of_Kharos,4608144,1712565380,297,campaign,0.2.5,"Era_of_Magic,Era_of_Magic_Resources","The peaceful lands of Kharos are in grave danger of mysterious invaders from the east. Stem yourself against the tide of darkness that wants to consume the land of sun and light! Requires the Era of Magic add-on. 9 scenarios (1 dialogue-only)",,6.09490511744678,4.39466857910156
+Vendraxis_Prophecy,2698424,1708899447,350,campaign,1.2.8b,Refumees_Saurian_Pack,"I created an small saurian campaign with 8 scenarios, based on a prophecy from a saurian soothsayer called Vendraxis. He is known from the campaign, Secret of the Ancients. I also added an Era with deep-saurians as an independent saurian faction for tests..
+
+The main heros got their own advancement tree like the heros of UtBs.
+Advancementtree of this campaign (not heros) can be found in the forum.
+
+Version 1.2.8b: Code clean up.
+Version 1.2.8a: Bugfix S6 and code clean up of civilian count.
+Version 1.2.8: Some Map updates. Fixing some Ghostly Flanker, being able to have traits.
+Version 1.2.7a: Bugfix Bola-Events.
+Version 1.2.7: Fixed images on S04. Rebalance S08.
+Version 1.2.6: Nerfing of the last scenario, for enemy and allies.
+Version 1.2.5: New Campaign Icon. Zanza is able to recruit Bandits and Deep Saurian as soon as she is able to. No more Golden Ones units for the player in the last scenario.
+Version 1.2.4: Updating the credits. Fixed some sprites for deep saurian fighter line. New structure for the add-on.
+
+",,3.83944516970119,2.57341766357422
+Voyage_of_a_Drake,3561406,1713241686,190,campaign,1.2.0,,"Once there was a small village called Raplice. It was an ordinary village, full of ordinary people with ordinary lives. But when Voadar's life suddenly turned upside down, the young drake was forced to explore the community, unearth its hairy secrets, and rally the citizens to set things right.
+
+Voyage of a Drake is a Wesnoth RPG unlike any other. Instead of focusing on collecting items or leveling skill trees, this campaign is about interacting with complicated NPCs and completing puzzles, mini-games, and boss fights. Come prepared for a few hours of unique gameplay and abundant dialog.
+
+All feedback welcome on the forums.",,4.64529405056568,3.39642143249512
+Born_to_Live,4483011,1711064795,365,campaign,2.1.1,"","Year 417, time marking the Dark Age of Wesnoth, when Garard I ascended the throne ending the rule of self lords.
+
+Witness a story hitherto unknown to any prince or sage of Alduin, a story of great significance but forgotten: about the loss of loved ones, fear and desperation moving forward. Lend your ears to hear of daredevils born to live during this sad time, chosen to move the whells of their fate.
+
+(Expert level, 4 scenarios.)",,5.52217819250927,4.2753324508667
+ArchiveDC,1168945,1708572561,223,campaign,1.0.3,,"As a Khalifate scholar, you have always been engrossed in history. You have heard of the land of Wesnoth, and you yearn to learn more. From asking around town to searching through the library, you have cobbled together these tales. What could you possibly imagine to find inside?
+
+Each tale is a single-player mini campaign, between 1-3 scenarios. You can access these tales from the campaign menu.
+(Contains 4 Tales)
+
+Atreides ported from 1.12 to 1.14/16. Completely debugged. Any bugs you find are only in your head. Kidding of course, please report them to me or on the forum and they will be squashed.",,2.34879234779759,1.1147928237915
+Glubul_Saga,6101057,1714676385,167,campaign,1.0.1,,"Since when you hit rock bottom you can always start digging, here's a campaign focused on Ogres, where all you have to do is to squash enemies and have fun.
+
+(Easy/ Intermediate level - 10 scenarios)
+
+The campaigns is complete, conclusive and tested in intermediate difficulty, but susceptible to further changes, even substantial ones, in subsequent versions.
+
+For every issue write an email to argesilao2019@yahoo.com or send a PM to Argesilao2 in the Wesnoth's Forum",,6.8734756097561,5.81842136383057
+Soliton_Bugcampaign,525908,1713460922,59,campaign,0.4,,"A campaign for Soliton to analyze a bug. You shouldn't download this campaign it is just meant for bugtesting. But probably you will and it will be my most successful campaign. Please don't. It is based on a Simple Campaign by Anonymissimus, opensourcejunkie. Thanks you two for this amazing campaign. This is a stub of a campaign, intended to make life easier in creating a campaign. Contains about the bare minimum that's needed for a campaign and some helpful comments.",,1.53789389750934,0.501544952392578
+Tales_of_the_Rubies,4125869,1711222169,308,campaign,2.1.4,,"It doesn't matter how powerful a magical artifact can be, or how precious a jewel can be; they are useless and worthless as long as they remains hidden in a hole in the ground.
+In 25 YW king Haldric II decides it's time for the Ruby of Fire to cease to be useless and worthless.
+
+(Intermediate level - 13 scenarios)",,4.79186144167842,3.93473529815674
+Horn_of_Faith,4317657,1711064804,324,campaign,2.1.9,"","The king of Hoorl, Hor II falls into a trap set by the landarses, the cultists of a long gone elvish traitor. In order to save life he needs to break alongside his most faithful men to the no man's land. Accompany the bold king of horned dwarves and see for your own eyes the inner demon of the bearded folk.
+
+(Expert level, 8/9 scenarios.)",,4.90188644950664,4.11763858795166
+Modern_Warfes,2028167,1714417431,74,campaign,0.1.0,desertwar_addon,"a set of  fictional campaigns set in modern wars (there is only one campaign for now, new ones will be added in the future).",,2.71127330954637,1.93421077728271
+Campaigns_1_16_Core,6634560,1713107375,293,campaign,0.2.1,"Support_1_12_Core,Support_1_16_Core_Resources,Support_1_16_Core_Portraits","Warning: The official updated campaigns are distributed as part of mainline.
+
+This is an attempt to recover translations for two 1.16 campaigns before overhaul. This is brought to you with no warranty.
+
+The goal of this add-on is to make these campaigns available again to play in fully translated version.
+This is done by using outdated scenarios, so there may be playability and balance issues and shortcomings in the plot.
+
+Available translations: Catalan (ca), Chinese (zh_CN), French (fr), German (de), Italian (it), Portuguese (Brazil) (pt_BR), Russian (ru), Spanish (es), Turkish (tr).
+
+The campaigns are released as part of an emulator, they can be selected following these steps:
+-   In main 'Title Screen', press 'k' to open 'core' selection dialog.
+-   Select 'Wesnoth (1.16)' core.
+-   The 1.16 campaigns are now available in the 'Campaigns' menu.
+
+The next time you start Battle for Wesnoth, it will start with the last active core.
+To go back to 1.18: you have to press 'k' and select the 'Wesnoth (Default)' core.
+
+Please do not report any problem with this add-on in the official feedback threads for mainline campaigns.
+
+Available campaigns:
+-   Eastern Invasion (1.16)
+-   Under the Burning Suns (1.16)",,6.90124065961327,6.32720947265625
+Forgotten_Legacy,2219353,1713098732,114,campaign,0.7.7b,Refumees_Saurian_Pack,"This is a campaign focusing on the saurian faction. It is focused mainly on storyline and diversity. Most of the saurian units are new custom ones so don't expect to be playing on familiar territory. 
+
+At this time, the campaign has only 5 completed scenarios.
+
+Version 0.7.7b: Adding some gold carry over information to objectives. Several bugfixes that broke S06.
+Version 0.7.7a: Bugfix with Normal difficulty, it wasn't working.
+Version 0.7.7: Working on S7.
+Version 0.7.6: Exchange a lot of Naga Sprites. New Elhis Naga Sprite.
+Version 0.7.5: Working on S7 and S8. Maps are ready.
+Version 0.7.4: Reworked map of S2 and S3. Skalds are exchanged for Thief units from VP. Skald is now the name of the vagabound saurians here.
+Version 0.7.3: Adding battlecries to the scenarios. Adding Scenario 6.
+Version 0.7.2: Small Map adjustment S02 + animation for the ambush. New Sprites für S'sakin and Witch doctor.
+Version 0.7.1: Adding dependencies.
+Version 0.7.0: Major changes. Savegames will be not compatible, go back to 0.6.2a. New Map, new Unit Sprites, more Unit diversity, more mainline. New Map for S01.
+",,2.67881256063269,2.11653995513916
+Xalzar_Quest,4086585,1711198148,255,campaign,3.0.0,,"After the Saurgrath destruction by the elves, a saurian named Xalzar leads what remains of his people in search of a new home
+
+(Intermediate level, 6 scenarios.)",,3.95020149936252,3.89727115631104
+Trapped,4766846,1711149029,298,campaign,1.15,,"This a short, replayable RPG about a streetkid trapped in an underground arena for illegal bloodsport. It contains various rpg elements, different endings and different descriptions, skills, equipable weapons, armors, shields and abilities for each character. Also includes two fractions, a reputation and hiring system, infinite arenarounds, 5 additional, optional scenarios, extended missions for each fraction, more troops to hire and a rightclick helpmenu. Each difficulty reprents a unique character with different endings, different dialogues and abilities.
+
+1.15 fixes concerning kilma and missing graphics, added forest dragon as a boss
+1.14 fixes some issues, Bossbattles - each boss will now show the number of times he was defeated and becomes stronger after each defeat, deactivate npc movement, dim torch option
+1.13 patch for BoW 1.16, improvements: wording boss arena fights, zombie ending, npc movement, guide and helpmenu options
+1.12 fixed free movement for and teleport for Thief and Footpad, repaired extra income skill",,4.5760141727906,4.54601860046387
+The_Wolves_Last_Path,4028411,1711213611,224,campaign,0.1.4c,TWLP_Music,"What's the secret of immortal power and glory? What does it take to become a hero, a legend, or at least a reputable man? Dysagrest has never woken up early enough in the morning to find it out, nor has his boss, a wealthy and unpredictable merchant dwarf, ever encouraged him in this direction. However, chance can forge fate just as well as the strongest will, and may surprise the unwary sailors even in the most quiet waters. The cold and harsh north is certainly not what a traveler would call calm waters, yet it is there, hundreds of miles away from any place he used to call home, that Dysagrest will have to come to terms with his past... 
+
+Incomplete (10 playable scenarios)",,3.47962791627577,3.84179210662842
+Ashen_Hearts,5635840,1708506614,467,campaign,3.0.1,,"In the ancient Heartfang mountains, a once powerful population of drakes has begun to weaken due to a mysterious force dimming their inner fire. Guide Herkarth, the heir of the Menor kings, and his companion Uluthur on a journey to delve into drakes' past and reignite the flames of their ashen hearts.
+(Expert difficulty, 8 scenarios)
+
+Published by the Wesnoth Modders Guild (WMG)",,4.87954305318038,5.374755859375
+Two_Brothers_SR,3811063,1713239604,126,campaign,1.1.0,,"A retelling of the story of A Tale of Two Brothers, by Sire.
+
+The town of Maghre is terrorized by Mordak the Necromaner. The Mage Baran requests aid from his brother Arvith, who runs a mercenary company of horsemen. Lead the brothers against Mordak, and save the freehold of Maghre!
+
+4 scenarios, Novice Level
+
+Version 1.1.0
+-- Scenario 2 now has a more detailed note about the Elf Leader's death.
+-- Scenario 3 now has a note explaining how the two map sections work.
+-- Scenario 4 is now harder on all difficulties.
+=== A new enemy has been added to Scenario 4.
+=== Fixed a bug where Baran would say his lines when Arvith attacked.
+
+Version 1.0.0
+-- Official Release! Campaign Fully Complete!",,3.07874957472905,3.63451290130615
+The_Three_Sisters_Saga,8634925,1711215825,473,campaign,4.0.0,,"For fifty years the life of the settlers of the islands called -the Three Sisters- has passed peaceful; the descendants of those who rebelled to the Queen Ashviere, and were forced to flee from the Mainland, have now completely colonized the island of Wessild, and begin to turn their attention to the other two sisters, Ansaldid and Boresild, but also someone else began to be interested in the three islands.
+
+(Intermediate level, 12 scenarios.)",,7.35053311653741,8.23490619659424
+A_Song_of_Fire,22159138,1708506413,1912,campaign,1.0.7,War_of_Legends,"In a long-forgotten era, at the heart of the Great Continent, an ancestral evil is awakened, threatening to destroy the whole world. Follow young Myra in the war that will alter the future of Irdya and its peoples forever. (Part I of the Dragon Trilogy
+SP Campaign, (36 scenarios +  5 dialog-only)
+Requires War of Legends add-on
+
+Note: the port does not include the ASoF Music add-on yet. Play without it for now.
+
+Note 2: The port is working, but is slightly buggy so feedback is appreciated.
+
+Please send Feedback to the Wesnoth Modders Guild Discord server directly. Will be missed/not read otherwise.
+https://discord.gg/rsePgjHRPA
+
+This has been ported by the Wesnoth Modders Guild because we care.",,19.9774294209868,21.1326007843018
+Epical,5284637,1711149197,250,campaign,1.13,,"Epical is a Science Fiction / Cyberpunk Campaign in a near future of the real world. The young hacker Dimitri makes a discovery, that will change his life forever. It features two fully animated factions.",,3.83905269242007,5.03982257843018
+The_Rootless,6774890,1708718583,453,campaign,1.2.6,,"Lich-Lord Jevyan is defeated, and the orcs are left in disarray. With the magical gates from the far East sealed, the warlords resort to their traditional ways—seeking to overcome adversity with blood and razor-sharp steel. Amid this chaos, a cunning assassin named Arshag embarks on a quest to secure a new homeland for his people.
+
+(Rookie level, 7 scenarios.)",,4.85778705280202,6.46103858947754
+Dwarf_Dwarfson_Dwarvenminer,6031359,1711197800,249,campaign,0.7,,"Play as a dwarven miner and mine ore and gold. Upgrade your equipment in a city and mine even more ore in procedual generated levels. This add-on is part of the WML Code Advent Calendar II and every part of the development is documented so other user can use parts and piece of code this campaign.
+
+Playable Beta.
+
+0.7 merged to 1.18, aggression fix, tavern, statistic, hire living miners
+0.61 smaller changes, additional amla pathes, ai is more aggressive, greater variabilty in berserker dungeons 
+0.6 new biomes, 2 new dungeontypes, new enemies, bombs, traps, improved upgrading, storage of ore, bugfixes 
+0.5 biomes and dungeontypes, storyline, scaling upgrades, new infinite upgrades such as fireball improvement 
+0.4 digging walls, random levels, unique encounters, improved stores, tutorial, general improvements and fixes
+0.3 headquarter and processing ore, infinite gameplay, spells
+0.2 city npcs, dialogues, store
+0.1 base version",,3.85701492617589,5.75195217132568
+The_Hammer_of_Thursagan_with_Bosses,7292572,1712502821,245,campaign,1.2.0,Project_Thursagan_Music,"Pretty much the same campaign you are used to... Wait, is that a Mechanical Goliath?!
+
+Original premise:
+In the first years of the Northern Alliance, an expedition from Knalga seeks out their kin at Kal Kartha and to learn the fate of the legendary Hammer of Thursagan. The perils of their journey through the wild Northern Lands, though great, pale beside the evil they will face at its end.
+
+(Upper-intermediate level, 11 scenarios.)
+
+Fight the overpowerered enemies with overpowerered allies, overcome the overwhelming boss battles and expect the nastiest things at the most unexpected moments.
+
+Plot and dialogue is mostly unchanged, you can play this campaign if you haven't played the original one, but, naturally, there are obvious deviations from the mainline lore. Translations for the most part of the campaign are used from the mainline.
+
+Heavily influenced by the addons “Invasion from the Unknown” and “After the Storm”.
+
+Music addons “Invasion from the Unknown Music” and “After the Storm Music” are recommended for a better atmosphere of epicness.
+
+Have fun and good luck, you will need it A LOT! ;)
+
+Bugreports and feature requests: https://github.com/kabachuha/The_Hammer_of_Thursagan_with_Bosses. If you want to contact me, find me on Wesnoth's Discord server under nickname kabachuha#6934",,4.95417018117546,6.95473861694336
+Epic_Between_the_Tides,6375566,1709840958,310,campaign,3.0.0,,"A Merfolk Campaign (with some occasionally strange allies).
+
+This version of the campaign, in some scenarios of the second part, presents significant differences compared to the version published for version 1.15 of BfW.
+
+14-16 scenarios (5 dialogue only) of intermediate/difficult difficulty.
+
+For any problem you can write on the topic relating to the campaign, or directly to Argesilao2019@yahoo.com.
+In both case the problem will be noted, but in the fisrt one it's better don't expect for answer.",,3.86235625939218,6.08021354675293
+Fate_of_a_Princess,17178021,1713197023,579,campaign,1.5.0-4,,"This is a two-part campaign with 26-29 scenarios depending on the path chosen. Some scenarios are dialogue-only. The game is playable all scenarios.
+
+This upload is part of vghetto port project.
+",,13.9792464123858,16.3822374343872
+Dirty_Blood,11322528,1710011938,647,campaign,1.0.0,,"Being a half-breed, since his very birth Moog was an outcast in the Cold Blood clan. But shamans knew that spirits were relentlessly asserting: He shall rule! However, nobody could ever imagine what it would mean for the orcs of the Cold Blood and even for the whole of the orcish country...
+
+(Intermediate level, 12 scenarios.)",,8.26489022860004,10.7980041503906
+An_Orcish_Might,8746584,1712801133,261,campaign,1.0.0,,"Play as a young orcish chief, that has to prove himself worthy of the bloodthorn throne. Experience his story as he goes for the biggest prize of them all Wesnoth. Learn how the history of the kingdom of Wesnoth is changed forever by the orcish tribe of Bloodthorns, a civil war is averted, alliances forged that only a few years early may have seemed impossible.
+
+What makes this campaign special: 
+-Interesting and changing objectives (Big battles, race to kill, survive, 3/5 scenarios have no turn limit, different/changing team combinations...)
+-Many colorful, changing and realistic characters.
+-Integrates with established wesnoth lore and expands it (Can be seen as a prequel to ‘Descent into Darkness’)
+-Varied map size and terrain
+-Fight mostly against different humans and some elves and other orcs
+-A lot of specially coded unique mechanics/events (rallying fleeing troops to fight for you, comedic ghouls and trolls, special map-wide attacks...)
+If you encounter any bugs, please notify me, so they can be fixed.
+NOW FINISHED
+5 scenarios (all battle) - medium difficulty level. ",,5.6738388084697,8.34139251708984
+The_South_Guard_Revised,7825640,1714440249,128,campaign,1.0.4,,"Learn the basics of Wesnoth gameplay with the young knight Deoran, who accompanies Captain Mari to the southern province of Kerlath. Expecting a mostly mundane delegation, they are surprised to encounter a string of strange events centered around the local magistrate and the elves of the Aethenwood. Contains tutorial elements for first-time players.
+
+Discussion thread in the Wesnoth.org forums: https://forums.wesnoth.org/viewtopic.php?t=58159",,4.73559265133582,7.46311187744141
+Sand_In_The_Wind,6035299,1709518861,234,campaign,1.2,,"A new colony threatens the way of life for a group of Windriders. The young rider Musa must fight for the survival of his people.
+
+A four-scenario Dunefolk campaign, meant to introduce the faction to players.",,2.78605056496568,5.75570964813232
+Beyond_the_Eternal_Morning,7955103,1711722215,251,campaign,"0.0.7 Beta",,"In another universe where humans thrive. Earerion, young officer of the Empire of Aigalas, encounters an onslaught of orcs with newfound powers. Their battle soon develops into warfare that engulfs the entire world...
+
+(Unfinished, 4 scenarios completed.)
+
+Note: In version 0.0.6 Beta, the previous scenario was completely remade. RPG elements were added and unique events were implemented. Please do not use the old save data and restart the campaign.
+
+This campaign will run on different world lines than the regular Wesnoth.
+It is planned to create 10 scenarios for each of the two episodes. This campaign is still in the process of being created and may undergo significant changes in the future.",,4.29147281912862,7.58657741546631
+Ashievieres_Dogs,11738551,1713477644,291,campaign,1.1.0,,"King Garard II is treacherously slain, Wesnoth is falling into the chaos of a civil war. But what's a woe for a human, a chance for an orc. Join Queen Asheviere, crush the rebels and obtain yourself fame and spoils that other chieftains can only dream about!
+    
+(Intermediate level, 7 scenarios)",,7.62366579632565,11.1947546005249
+The_Garardine_Ascendancy,16327769,1709841247,942,campaign,3.1.3,,"In the 417 YW, ending years of strife and division, Garard I seizes the throne and becomes king of Wesnoth, beginning the Garardine Dynasty.
+
+A concise phrase that hides a lot of events, as well as the long and difficult road that the young Garard, born count of Dan'Tonk, had to travel to reach the throne of Wesnoth.
+If you want to travel that long road, here is its beginning.
+
+(Hard Level, 28 scenarios.)",,11.7370684844033,15.5713739395142
+Merry_Christmas,5865423,1708558908,159,campaign,1.4.1,,"Christmas-Themed Mini-Campaign
+
+Santa's elves have run out of Christmas trees during decorating and must travel to the Lintanir Forest for more. The guardians of the woods are not well pleased with this and will seek to oppose you. Can you gather enough trees to save Christmas in time?
+
+Three difficulty levels based on a time limit. Unlike most campaigns the time limit is for the whole campaign not a single scenario. If you waste too much time on one scenario you may be doomed no matter how quickly you do the others.
+
+Features a unique modify terrain ability. Alter the landscape to favour your side.",,1.67191676148399,5.5937032699585
+Waves_of_Distant_Shore,9716651,1712258178,197,campaign,1.1.3,"","The boundless ocean... dead silence.
+
+A young mermaid is summoned by a forgotten being. Receiving a task wrapped in the thick darkness of mystery, she swims away, floating on endless ocean waves, to fulfill the forbidden will.
+	
+(Hard level, 4 scenarios - 3 battle and 1 story-only scenarios.)",,3.76782521477476,9.26652050018311
+Dream_in_the_Sand,14867425,1711064784,467,campaign,2.1.3a,"","The days were numbered, the nights hopeless. In the chambers of silver the bearded race started to dream about wealth and soon victory over cunning oponnent till one day when everything changed. When the golden lamp again shined under the sun to be rubed by a sinister hand.
+
+(Expert level, 15 scenarios - 7/8 battle and 7 story-only scenarios.)",,7.06534862622599,14.1786813735962
+Free_Cities,12517237,1712355724,233,campaign,0.0.7,1The_Great_Steppe_Era,"From slavery to liberation, four heroes emerged. They founded the Free-cities, defying the chains that bound them. This is their story.  under further developpement. For now, 12/? scenarios. Requires The Great Steppe Era",,4.55471337220786,11.93736743927
+The_Thelien_Attack,11181981,1711471872,179,campaign,1.1.1,,"It is said the Elvish Invasion of the Far North had been crushed by the might of Great Chief Kapou’e, Son of the Black-Eye. Little known was the part played by the Saurians of the Black Marshes. This is their yarn, perhaps the most significant in the downfall of the last of Landar's Elves.
+
+(Hard level, 6 scenarios.)",,2.91599488886371,10.6639680862427
+Five_Fates,18093252,1711149153,511,campaign,1.14.2,,"Five unique heroes try to recover a mysterious artifact. On their way they have to defeat five guardians with great powers. Each hero has an unique amla path allowing you to develop 20 unique skills and spells. On the way you can find random loot and make decisions that influence the dungeons. After your quest you can optionally continue your journey in the world of wesnoth and maximising your character.
+
+You can buy or find a variety of Weapons, Shields, Helmets, Armors, Rings, Shoes and Amulets. Those can be equipped in the rightclick Heromenu, that allows you to equip and unequip items, review your Skilltree and have access on consumables such as healing herbs, potions, unidentified flasks and portalscrolls.
+
+Beside the recruiting of units you can hire mercenaries. Those are expensive, but offer to summon unique and loyal units. Each character can develop up to four different right click spells allowing you to summon units, damaging, slowing or poisoning your enemies, or to teleport yourself. 
+
+Different traps and will endanger you, while secret passages allow you to take an alternative way or to discover a variety of secrets. Enemies will now cast spells. Cheat Mode, Tutorial and Skip Story Buttons are available. 
+
+0.23 'Shadows over Elensefar': This update contains a lot of wording changes. Typos and some words almost everywhere have been corrected - there is still alot to be done. Thanks to the helpers in the Wesnoth Forum. Why calling this update 'Shadows over Elensefar'? Yes Elensefar in the Worldmap is in Danger, the orcs are up for something! Right! I created 7 Random missions that can be done for the cityguards of different cities in the Worldmap. Deliver Parcels, Scout Areas, Destroy Orcish Outposts/Watchtowers, Take out random generated Banditcamps and Monsternests and finally destroy the secret superweapon of the orcs! You can now buy 'true' teleport scrolls and use them from your menu. Dwarven Bombs have to be used from the Consumables Menu as well.
+0.231 Bugfix repairing a pick and lockpick bug, portalscroll will now work as intended and allows you to teleport back, from where you came. Teleport Scroll light price reduce.
+0.24 Added a variety of spells. Each character will now be able to cast at least 6 spells and can transform into one being of great power. Bugs Missions solved, changing maps for encounters, monsternests and banditcamps. Added more items and equipment. Bosses spawn a randomloot when defeated. Details see forum.
+0.241 Avoidgiving Objects repaired, Werhare spell added to spellshop as well as repairing graphics and little phonetic-notmothertongue-related mistakes. Randomencounters now work on every terrain.
+0.242 Small Bugfix: Repaired Maps within the Banditcamp and Monsternest
+0.99 A big jump, but the story and development of Five Fates will finally come to an end: bugfixes,enemy spellcasting,randomgenerated dungeons in 6 different side mission, new powerful enemies, negative stats, new items with the opportunity to use items on allies, two additional endings (bossfight and worldconquer), new equipment with specials and abilites, improved worldmap and encounters
+1.00 Bugfixes: enchanted spell concept that will now work with animations and fires last breath events, repaired picturepathes - dwarvish machine, Path to Trader replaced (required Trader to be installed), bandage repaired, enemy will just attack your side with spells
+1.01 Bugfixes and Performance Upgrade: Repaired Skillpath of Bowmaid, Repaired Pictures, Reduced Save File Size
+1.02 Bugfixes: Portal Animation added, fixed scavenger bug which blocked the airship entrance, world conquer image and text changes, manaconsumption of arrowrain and other massiveeffectspells fixed
+1.03 Bugfixes: Randomdungeon macro upgraded, Harmspell1 Spells have been repaired, Added Ford to the Worldmap.
+1.04 Bugfix: repaired Detect Hidden spell in the hope of getting rid of save game corruptions, thanks to herlaziness
+1.05 Ported to 12.0, small changes to make it work, there might be issues with graphics
+1.06 Ported to 14.1, added tutorial and hints, smaller text corrections repaired graphics
+1.07 Ported to 14.1, smaller grammar and wording changes, improved portrait graphics and decisions
+1.08 various bugfixes, added smaller skilltree option for smaller devices, repaired random dungeons
+1.09 port to 1.16, smaller text changes.
+1.10 'Dark Ones': various changes and improvements, optimized worldmap and worldconquer scenario
+1.11 fixes problems with saved games
+1.12 fixed and improved Bossloot
+1.13 various fixes and map improvements
+1.14 fixes, new units, abilities, characterbased options and portraits
+1.14.1 fixes, fix for death elf guardian, added missing animation
+1.14.2 bugfix for bad ending, swamp resistance and improved enemy spells",,7.84696233776575,17.255069732666
+Bad_Moon_Rising,23485914,1708920348,1106,campaign,1.18.3,"Archaic_Era,Archaic_Resources,Archaic_Sounds","An expedition to gather treasure from the cold north sets off compounding disaster.  Follow a prisoner of the undead in his quest for revenge, then join a rebellion, learn to get along with the natives, and save the world.
+
+SP Campaign in three parts, though Part 1 is very quick and is an introduction to the inventory/equipment system.  
+Long campaign, design is a bit more like old JRPGs in Parts 2 and 3.  Requires 'Archaic Era', 'Archaic Resources', and 'Archaic Sounds' add-ons
+
+Known problems:  
+ - Has some issues with GUI widget size and scrollbars at smaller resolutions  
+ - The state of some translations is questionable.
+
+If you have any comments, either good or bad, please leave a note at the forums.wesnoth.org link.",,12.1649289512207,22.397912979126
+Rustling_in_the_Wind,17582645,1711064819,406,campaign,2.1.8,"","The Forests of Bright Shade are dying. The former sanctuary of elven race and its wose friends lies soaked by the dark powers feeding on the goodness of this place. Join Laneenfe the elvish priestess and her squad made of mysterious daredevils to overcome evil sprouted in the sacred lands of their kind.
+
+(Intermediate level, 8 scenarios - 5 battle and 3 story-only scenarios.)",,6.14250347501544,16.7681169509888
+Mages_University_alternative,18568805,1715184544,128,campaign,0.0.3,,"Embark on a journey with Ivesi far south of Wesnoth, in the Faehen Empire. Witness the fall of the theocracy as he strives to establish a new university of magic. Join Ivesi in a captivating tale of ambition, resilience, and the pursuit of knowledge in a world filled with challenges and mysteries...
+15 scenarios.",,6.95092081222294,17.708592414856
+Ascension,17746676,1712719069,247,campaign,1.2.4,,"The orcish homeland is gripped in a spiral of blood feuds and revenge raiding.  Can a mysterious stranger's offer of new lands to conquer allow the orc Brurbar to bring renewed glory and power to the ragged orcish clans?",,5.26086917936476,16.9245491027832
+Strange_Legacy_Light,15256071,1711195217,185,campaign,1.16.26.1,,"Strange Legacy Light: 
+<i>This is the light version of Strange Legacy, with a smaller size, but no portraits, story images and sounds. 
+For a better experience with portraits and included sounds, you can download the full version.</i>
+
+The Orc invasion came without warning and with a brutality that caught the Human Alliance completely off guard and unprepared for. Before the year was over the Orcs controlled half of the Northland. The Winter finally halted their advance. Meh, what's the big deal. I never cared much for politics or policy. But when my uncle was gone, I started into the greatest adventure of my life.
+
+This campaign is a classical rpg that offers a variety of options, you will just control one hero and bring him to fortune. You can trade, pickpocket, be a bard, bounty- or treasurehunter, or working as a craftsman selling your goods. You can also run a building and upgrade it or doing random generated missions. There are a lot of ways to make a fortune. But the world around isn't always friendly and it will react on your character level. You might encounter thieves, orcs, bandits or wild animals and therefore you will need a proper equipment to defend yourself.
+
+Equip your charcter with: helmets, armors, shoes, shields, instruments, rings, amulets, ranged or meleeweapons or learn more than 80 powerful spells to gain an advantage. Hire one of 35 mercs to defend your load and recall them using your warhorn. Try to conquer an enemy town to gain a constant tax income. Encounter all kind of enemies each on changing maps, according to the terrain - even your ship might be attacked by naga warriors or dangerous pirates. Follow the storyline with 34 missions that will force you to explore the world of Strange legacy. A new amla system will allow you to create a character in the way you like him, allowing you to solve the game differently each time you play and the difficulty is increasing with each level up. 
+For the most recent changes check the forum thread. Equip your uncles house with furniture allowing you to craft weapons, armors and cook food. If you like to have a classic RPG try out the RPG Mode. Have fun! 
+
+
+
+(1.16.23.1 23/04/01: light version of Strange Legacy with a way smaller size
+1.16.23.2 smaller fixes
+1.16.24 new fishing and skill mechanics, graphic improvement, fishmarket
+1.16.24.1 smaller fixes
+1.16.24.2 minor changes, dishes added
+1.16.24.3 bugfixes, companions upgrade
+1.16.24.4 bugfixes concerning rpg mode, animal decorations
+1.16.25 bugfixes, animal pet options, better stamina abilities
+1.16.26.1 bugfixes, overworked building mechanics",,2.86432722716495,14.5493230819702
+The_Bees_Journey,16088742,1709731817,281,campaign,24.03.23,,"That summer, the hornets invasion destroyed the Kingdom of Bees. You, the princess, must lead the bees on their journey to rebuild the homeland.
+
+(Unfinished, 8 scenarios completed.)",,3.44679154679711,15.3434200286865
+The_Nameless_Fellowship_Saga,20294324,1711205777,475,campaign,1.4.2,,"A dunefolk centered campaign with some strange issue, set in the Sandy Wastes, and surroundings, during the time of the Mal-Ravanal invasion.
+
+It's advisable to read all the dialogues carefully to understand the game and the story.
+
+The campaign is complete, and it's even fully tested, at least at normal difficulty, but there is always the Murphy's law.
+
+(Intermediate level, 36 scenarios.)
+
+advice:
+The author has no intention of participating in a forum in which the moderators deem admissible a campaign like Russia Conquests,
+and the same moderators deem inadmissible a harmless discussion about green trolls.
+Therefore any error reports must be sent directly to the email argesilao2019@yahoo.com
+
+logs:
+1.0.1
+Fixed incorrect description about isawati's special ability to cure allied units
+Fixed Troll Shaman - Troll Sorcerer issue in scenario 16
+
+1.0.2
+Fixed surians counter's issue in scenario 23 (The Convoy)
+
+1.1.0
+Fixed the error that prevented some important events in scenario 26 (the Battle for Qalaba) from taking place
+
+1.2.0
+Fixed the error in scenario 34 (The Hidden valley): replaced passive_leader=yes with max_moves=0 so orc leaders don't leave their keep, and therefore they can't be killed outside their keep; when this happened Dundrain the dwarf was not released, and it was not possible to finish the scenario.
+Fixed minor issue in the same scenario
+
+1.3.0
+Added the Italian Translation
+fixed a lot of minor typos
+
+1.3.1
+Minor change in dialogues and fixed some typos in Italian translation
+fixed the skeleton archer typos in scenario 09 (The Canyon of the Undead)
+fixed the error which make not appears the Troll Chief in scenario 16 when playing in Italian
+fixed the possible error in the FRAB Sorcerer advancement
+
+1.3.2
+Fixed two errors which appears in scenario 2 when selected the HARD difficulty
+
+1.3.3
+Fixed the error in scenario 27 (Sumir Last Stand) which prevented Clitus and/or Gerbal from being saved if they were killed and couldn't move
+
+1.3.4
+Fixed a bug in the rats' respawn in scenario 12 (Maqadash Underground)
+
+1.4.0
+scenario 26: Sumir is now a passive leader even in HARD difficulty; Kycilia has a limitated mobility to avoid suicidal behavior
+			 Deprecated the drawbridge's option
+			 Changes in Sumir's side behavior and composition
+scenario 27: Fixed three falcon->Falcon bugs in HARD difficulty
+			 no more used Hell Bat
+Fixed various weird aggression's values
+units: higher castle's defense for Wallkeeper and Gatekeeper (50%->60%)
+	   lower HP for Undead Catapult (50->40)
+
+1.4.1
+scenario 31: More castle tiles for undead's side
+scenario 35: More cautious behavior for the enemy leaders
+			 new income for enemies side
+units: Higher HP and doubled attaks for Smoking Tower
+
+1.4.2
+allowed Saurian Skirmisher to level up like Saurian Spearthrower
+",,7.36829707594948,19.354175567627
+Drums_of_War,23262089,1712746467,237,campaign,2.0.4,,"For five years the kingdom of Anduria has been at war.
+The orc warlord, Sreng, has pushed the realm to its limits.
+King Ethylin-Mor gathers the heroes of Anduria for one last effort to rid the land of this plague once and for all.
+If Anduria is to survive, Sreng must die.
+(6 scenarios: Beginner - Intermediate Level)
+
+This upload is part of vghetto port project.
+",,5.08220409528835,22.1844568252563
+LSB,25887881,1709632287,569,campaign,1.0.1,,"The first orcs from the far west were far more powerful than later generations.
+So why did they not conquer all of the Great Continent?
+And how did they lose or forget so much heritage and lore?
+
+Set in the early years of Wesnoth, you command the few denizens of the far north who faced the overwhelming might of the horde.
+Why is this story not known?
+Did the defenders win?
+And if so, how?
+This is their story.
+
+Intermediate difficulty classic skirmish style campaign with enhanced recruitment options plus a few surprises.
+16 scenarios, 14 playable of which 13 will actually be played depending on choices made.
+
+Complete, playable, only tested on normal difficulty.
+Comments/feedback greatly appreciated.
+
+1.0.1
+- Various bugfixes and dialogue tweaks (gameplay changes are minor).
+  Added context menu item to display combat training progress.
+  Thanks to Konrad2.
+
+1.0.0
+- Added suggestions, tweaks and bug fixes.
+  Thanks to white_haired_uncle and Sandsculpture.
+- Scenario 13 redesigned, otherwise gameplay largely unchanged.",,6.88219923066348,24.6886072158813
+To_Lands_Unknown,52786336,1708783054,2795,campaign,3.10.0,"Era_of_Magic,To_Lands_Unknown_Resources_1,To_Lands_Unknown_Resources_2","Hear the story of Mehir, a young city guard from al-Kamija - an isolated city in the middle of the Great Desert, where people and jinn live together. Reveal Mehir's destiny, visit many exotic places, encounter strange nations and learn about their intentions.
+
+This is the most visually sophisticated add-on ever created for the Battle for Wesnoth. It has the following features:
+- multihex terrain visuals (images covering entire maps to simulate height for example)
+- animated cutscenes (video clips)
+- more than 200 unique animated units (all from the Era of Magic add-on)
+- a completely different universe, not BfW-related
+- an innovative map screen which keeps track of player's achievements
+- a special gameplay mode offering an alternative story progression
+- custom music
+
+(25 scenarios, some of which are dialog-only - Requires 'Era of Magic' add-on)
+
+If you encounter any bugs, please notify the campaign author, so the patch can be delivered.
+
+If you have problems with downloading this add-on, try using add-on server web interface:
+http://addons.wesnoth.org
+
+If you enjoy the add-on and wish to support its development further, you can now do so at:
+https://ko-fi.com/inferno8",,30.2142087406355,50.3409729003906
+SXRPG,29306154,1715440367,92,campaign,6.0.5b,,"SX RPG ADDON is a stand-alone multiplayer ADD ON for Battle of Wesnoth.
+
+!!Doza min doza teye!!!
+
+What does SX mean:
+-----------------------------------
+
+Originally SX meant --Survival Extreme-- which became throughout the history of wesnoth-add-ons a synomyn
+for maps that feature stand-alone-Heroes, that can be upgraded in so-called --shops--, fighting against an army of creeps,
+which constantly increase in strengh while the game proceed. For killing creeps players are granted with gold, that
+is used on their side to upgrade their heroes as well, to keep up with stonger creeps and to finally kill the ai leaders.
+Gold from killing creeps will be generally given to ALL players. So no matter who kills the creeps, its always a good thing.
+
+A major fun factor is that players gain additional temporary moves and attacks from killing enemy units,
+so they are able to perform well planned killing streaks that bring even more gold to the players.
+
+In order to win, players had to kill all enemy leaders, which were boosted in strengh greatly.
+Players need to grow stronger from killing creeps and/or find gold from other sources to achieve this goal.
+All 10ish turn ai als release a batch of bosses, exceptional strong units, which need some teamplay to win against,
+or a very well developed single hero.
+
+
+SXRPG ADDON:
+--------------------------------
+
+Featuring SXgameplay with RPG elements.
+
+While SX is a basic hack-n-slay rpg-like approach, which attracted many players,
+SXRPG features elaborated maps, adding adventure and dungeon-exploring gameplay to it.
+
+On Top of the already existing differences among the different units,
+SXRPG adds 6 classes of Warriors, Clerics, Rangers, Mages,
+Rogues and Roguemages all with different strenghs and weaknesses.
+
+It contains so far 6 elaborated Maps/Scenarios which need 80 to 120 turn to finish in average.
+Each scenerio in this ADD ON is an adventure for 1 - 5 players. Any number of Players is welcome.
+
+Less players means more Gold for each player to get started with. While less players get more gold at start,
+but it is obvious that more players means more total income, since all players get the gold for killing creeps.
+
+As a special Feature you can define the -Starting Level- in -advanced Options- in Game-Creation-Menu,
+default is 0, but for more elaborated starting-Heroes you can chose higher Starting Levels.
+The higher the starting Level, the higher the starting gold, but all enemies also rise accordingly
+to the Level. I.E.: on lvl-0-start mobs start also at lvl 0, at lvl-4-start mobs start at lvl 4.
+(Level is NOT the default level of wesnoth units, instead a sx-dependent measure for stat multipliers)
+Starting at different Levels may change the Gaming Expierience and Gameplay.
+
+This Map-Pack also features new units, new terrain, theres an additional soundfile.
+The stuff included was mostly done by parts of the wesnoth-community and hopefully put to good use here.
+Credits goes out to all who find their work here implemented. Thx to all contributors.
+
+Big thx to all playtesters and people who gave suggestions. Many things implemented were suggested by
+players and without these ideas SXRPG would be a lot different. :)
+
+Have Fun.
+Give Feedback in SXRPG Thread in Wesnoth.org Forums",,5.95318517275831,27.9485263824463
+Forgotten_Conflicts,30699029,1711472721,316,campaign,1.1,,"These are tales long lost in the shadows of the past. Some of valor, others of loss and betrayal. Knitting together fragments of the past, the battles shall reveal the strife of ones disregarded by the keepers of our lore.
+
+(Expert level, 12 scenarios.)",,5.14861403196461,29.2768754959106
+Tunnel_Wars,44241269,1714573460,400,campaign,"18.0.1 beta",Halfelven,"Sapper heroines and heroes who must perform seek and destroy missions in urban areas and hostile underground to defend their nation against a sneaking up fanatical threat from the dark and dank below. Learn valuable tactics in urban warfare. A halfelven campaign.",,15.6939319975024,42.19176197052
+Trader,57090017,1711194344,1314,campaign,1.16.27,,"Strange Legacy: The Orc invasion came without warning and with a brutality that caught the Human Alliance completely off guard and unprepared for. Before the year was over the Orcs controlled half of the Northland. The Winter finally halted their advance. Meh, what's the big deal. I never cared much for politics or policy. But when my uncle was gone, I started into the greatest adventure of my life.
+
+This campaign is a classical rpg that offers a variety of options, you will just control one hero and bring him to fortune. You can trade, pickpocket, be a bard, bounty- or treasurehunter, or working as a craftsman selling your goods. You can also run a building and upgrade it or doing random generated missions. There are a lot of ways to make a fortune. But the world around isn't always friendly and it will react on your character level. You might encounter thieves, orcs, bandits or wild animals and therefore you will need a proper equipment to defend yourself.
+
+Equip your charcter with: helmets, armors, shoes, shields, instruments, rings, amulets, ranged or meleeweapons or learn more than 80 powerful spells to gain an advantage. Hire one of 35 mercs to defend your load and recall them using your warhorn. Try to conquer an enemy town to gain a constant tax income. Encounter all kind of enemies each on changing maps, according to the terrain - even your ship might be attacked by naga warriors or dangerous pirates. Follow the storyline with 34 missions that will force you to explore the world of Strange legacy. A new amla system will allow you to create a character in the way you like him, allowing you to solve the game differently each time you play and the difficulty is increasing with each level up. 
+For the most recent changes check the forum thread. Equip your uncles house with furniture allowing you to craft weapons, armors and cook food. If you like to have a classic RPG try out the RPG Mode. Have fun! 
+(1.0 decent bug fixes and essential new features
+1.01 bugfixes, details see forum
+1.02 bandage and junkstore bug fixed)
+1.03 spell changes, ability changes, performance upgrades
+1.04 repaired outpost scenario, small corrections to the text, you will now not encounter an army, when you are on a mission
+1.05 massive performance upgrade, bug fixes: storymission upgrade outpost, snow upgrade of elves can now be found in a workshop, small corrections to the text, embedded encounters and npc movement directly into the scenarios, encounters are now randomevents, intromission changes!
+1.06 a slightly more balanced version featuring a dynamic market, a different load upgrade system and a crafting system based on consumables, instead of goods that require space. This update will make trading a little harder and increases the sense of own buildings.
+1.07 several bugfixes, randomdungeons integrated, changed starting scenario to reduce redundancy and added a playable tutorial.
+1.071 smaller bugfixes concerning helpmenu and loner ability
+1.072 bugfixes concerning version 11.7 compatibility
+1.08 leaner code of helpmenu, selloption consumables, improved advanced randomdungeons and encounters, heal wound temple option will heal wounded stats, recipes added, seasons added, marketreset repaired)
+1.09 smaller bugfixes: fixed several bugs and replacing unnecessary macros for better performance, glas and sand prices repaired, goldgain when ending turn repaired, swampcity added, ratmissions changed, added bridgebuilding mission, added 16 unique mercs, Swampcity Scenario, Infinite Dungeons with Random Places of Interest, higher effect of the level on the game difficulty
+1.091 infinite turns in infinite dungeons, tavern upgrade changed, challenges added, randomsummonscroll added, slight text changes, indenting, halos added for loot and points of interest, changes to treasurehunting and randomloot
+1.092 repaired: shipencounter bug, sewerage bug, randomspawn id, enemyspellcasting, changes: drunk can be healed by sleeping and by temple curing wounds, added: sage which can identify flask, new graphics for elementals, demon, orcorcunits, spells, added new units: toads from era of magic, Fatalblade, Deathblade, Medusa
+1.093 repaired: several bugfixes, changes: cheaper ingredients and improved crafting macro, slight balancing changes, scattered images different obstacles in dungeons and more places of interest, new monsters: mummies,snakes,flies,panther, new consumeables: movementpotions,attackpotions, different new skills requiring exhaustion
+1.100 repaired: several bugfixes (last reported see bugfixes), improved cutscences and music, overlay for hero unit (equipped armors,weapons will show - thanks dugi for the better approach), additional storymissions with really hard quests, added consumables: full mana potion, stamina potion, greaterwarhorn, added ability to destroy walls with picks and bombs, added wisp that can have 11 levels and unlocks up to 10 different spells in infinite dungeons, new spells added: Stonebridge, Gap, Earthshaker, Swampcreation, Entrap, Flyswarm, abilities: smash,rangedshot,wound,whirlwind,cripple,netattack
+1.101 repaired: several bugfixes, text changes and balancing issues, dynamic market has less effect and it is again a little easier to trade, the level does no longer effect of enemies in an encounter has this caused still winable, but annyoing battles
+1.102 repaired: elvenspells in elvencity, capturing towns works again, new spell woodcreation added
+1.103 repaired: all transformspell related bugs, swampdungeon and randomdungeon ship bug, boxmission bugs, added: throwaway all goods of a type button
+1.104 repaired: several smaller bugs, modified shipupgrades and battles
+1.105 new bardspells, changed crafting, changed trading prices, new monsters, repaired: several bugs in all parts of the game
+1.1051 repaired stamina related bugs with bards and pickpocket ability, text changes, dogs, price balancing to improve crafting, food and consumables
+1.1052 repaired ship menu
+1.1053 repaired infinite dungeon issues, improved code and behaviour, grammar fixes
+1.11 repaired crafting issues, random dungeon fix, balancing issues, slight performance improvement, new missions and elements
+1.12 repaired several issues, balancing, price changes, new elements such as units, negative states, placesofinterest, improvement of cities and maps
+1.13 repaired: boarded encounter, armorspecials, pocket thiefing without stamina, projectile animation enemy spellcasting new features: wolffaction, portraits for john and wolf faction, spellcasting
+1.13.1 repaired: ranged special, ranged damage, treasure hunting, increased scholar income
+1.13.2 repaired: goods mission, bareskin, treasure after encounter, added enemies with hitchance, eliminated moving carts and objects, added magic and marksman attack specials
+1.14 bugfixes: global events, famegain, market-balancing, camping, textcorrection added: citywalls, icons and portraits, equip units, unlimited numeric inventory, buildingworkers, additional dungeons events, faction system
+1.14.1 bugfixes: dark wisp and wicked wisps will now spawn, darkwood and volcano will now increase in level, number of equipment (rings,amulet,helmet,boots), furniture will now be useable and some furniture can be crafted
+1.14.2 bugfixes: reputationgain saurians repaired, added explaintextes to delivering, put reputations into the status, repaired book of crafting
+1.14.3 bugfixes: equip/unequip torch will no longer cause problems, repaired orphan options, levelup equipment works now (basic magic)
+1.14.4 bugfixes: wispbuying, ghostarmor, ellipse, desk, macro for factiondelivery, upgraded factiondelivery, added factions orcs, khalifate, nomads, game reacts on reputation and fame
+1.15.1 bugfixes: damagegain + several others, overworked factions, added RPG difficulty, overworked faction ambushes, added dark temples and options for darksiders, added 5 different chooseable randomevents + chanceincrease...
+1.15.2 bugfixes: herorpg changes, leftweapon, double spell bug, waterbased encounters, cast spells will now work on fields again, traps will show and work again.
+1.15.3 bugfixes: avoid/damageup armorspecial, scmitar/rapier/armor overlays, new races/heroclasses, new equipment, overworked herographics, overworked inventory hide/show equipment, randomnpcs and randomattacker, castle
+1.15.4 bugfixes: repaired various bugs, wording corrections, balancing, increased mission rewards, blood altar, new skills, new missions, infinite dungeon changes: new factions/traps/random encounters based on dungeon ...
+1.15.5 bugfixes: Infinite Dungeons lockpick and shovel problem, you can no longer equip a npc two times, strange legacy amla - wardog repair, reduced goldincome by pickpocket and singing, added books and thief/bardequipment
+1.15.51 bugfix: repaired fishingground naga catcher spawn
+1.15.6 multiple buy, vampirecity and castle scenarios, bugfixes such as becharm, see complete list in the forum
+1.15.7 bugfixes, weapons special changes, manageable village, graphic changes, race/class based upgrades
+1.16 bank and treasure vault, temple fix, reduced selling prices for consumables
+1.16.1 bug fix concering sandcave, corrected some minor typo
+1.16.2 seasons, weather effect, three new scenarios and global events, duels, more/upgraded randomevents, npc equipable weapons, complete list in the forum
+1.16.2.1 several fixes
+1.16.2.2 several fixes
+1.16.3 many bugfixes, several new features such as escorts, assassinationmissions, balancing, encounter changes
+1.16.3.1 bugfixes, added randompotion effect
+1.16.3.2 bugfixes
+1.16.4 bugfixes for version 1.14, mapchanges with new terrainelements, overworked randomdungeon with different sizes and new typesofinterest
+1.16.5 bugfixed achievements, changed the achievement picture
+1.16.5.1 fixed treasurehunt, fixed duel, improved duel
+1.16.5.2 fixed transformations, fixed merman/guards, wording corrections/changes, new class paladin and new female hero
+1.16.5.4 fixed spellprojectile bug and some minor issues, craft own weapons and create own spells, alchemy and mining skill, collect materials from worldmap
+1.16.6 updated performance, improved helpmenu, crafting customizable bows, armors and equipment, new monsternests and scavenging, experience for actions, overworked graphics, halloween content
+1.16.6.1 you can place pumpkins via right click, fixed all problems with error messages, wording and portrait correction
+1.16.6.2 repaired random dungeons, hindered random missions and nests to be spawned on cities, credited Mik3art
+1.16.6.3 bugfixes
+1.16.6.4 bugfixes, create unique Summon Spells, added the ascension as random event, drop wintertrees on snow, winter effects more areas and cities, improved movement
+1.16.7 bug and glitchfixes, bargaining update, sell/buy all changes, armies, townupgrades, skill spells, sea encounter changes
+1.16.7.1 bugfixes reported by Stahlrohr
+1.16.7.2 bugfixes / changes pickpocket and thiefguild quest
+1.16.7.3 fixed Mr. Caufield Bug (extrastrikes by equipment now work as intended)
+1.16.7.4 fixed several wordings and smaller bugs, added bank-robber scenario
+1.16.8 added: mounts, disguises, decorations, third sewer level with infinite exploration, fixed + improved infinite dungeons
+1.16.9 repaired glitches in overlay, church, overworked miracles, added new mounts, halloween ends, areatraps, randomtraps
+1.16.9.1 added Twilight gods, balancing, bugfixes
+1.16.9.2 increased performance, RPG Mode Difficulty, simplified trade, prod + global event changes, added hidden temples
+1.16.10 less source code, sounds integrated, city markets, faction diplomacy, new spells and equipment, archaelogy, various improvements
+1.16.11 bugfixes, illusion and haircuts, new drawbacks for rpg and difficulties
+1.16.12 fixed broken saved games in 1.15. BoW version
+1.16.13 many fixes such as haggling and carousing, new spells, recipes, carvan concept and balancing changes
+1.16.14 basic fixes, new options for wildlifes, monsternest spawn on every worldmap, season changes for all worldmaps
+1.16.15 increased number of overlays, fixed several bugs, some 1.15 related bugs, various changes for translation, german translation
+1.16.16 fixes, improved options as vampire, poison weapons, crafting changes
+1.16.17 improvements to random dungeons,taverns and temples, bombs, fixes, dragonchild perk
+1.16.18 improvements, new units and fixes to class selection problem
+1.16.19 improvements + bugfixes, options to counter competitors, 4 new scenarios, overhauled event concept, event log
+1.16.20 ship events upgrade, random drop repaired improved, new graphics / terrains, titan boss monsters, dog companion, new spells / stores
+1.16.20.1 fixed small bug, that caused allies to attack side 1 instead of the enemy of a side
+1.16.21 halloween decorations, disguises + haircuts, improvement to titans, haunted house, fixes
+1.16.22 bugfixes, improvements, new setting and transform options for companion
+1.16.22.1 bugfix: expeditions deleted the mission state, will now be more forgiving
+1.16.23 bugfixes, overhaul of cheating and pickpocketing, shadow poi, pirate costume, different exploration mechanics more active terrains and biomes in dungeons
+1.16.23.1 small fix to flask store
+1.16.23.2 smaller fixes to transport shop, arena and treasurehunt
+1.16.24 fishing mechanics, reworked several skills and building options, improved harbourcity
+1.16.24.1 fixed typo, smaller bugfixes
+1.16.24.2 made some options clearer in the interface, added some new dishes
+1.16.24.3 bugfixes, companion overwork: new companions and orders, new decorations and disguises for ascension 
+1.16.24.4 movement type bugfixes for rpg mode, animal decorations, decorations show ammount
+1.16.25 catch pet mechanic, vampire overhaul, skills overhaul, animal pictures as decoration, bugfixes
+1.16.26 bugfixes, building reworks, enter buildings and village, additional options
+1.16.26.1 bugfixes
+1.16.27",,20.3412825212171,54.4452829360962
+Red_Winter_Reborn,45413248,1711326270,251,campaign,0.16.2,,"501 – Years Wesnoth – Season of Winter
+The Turmoil of Asheviere…
+
+The isolated populace of the Estmark Mountains are known for their warrior prowess and for their military academy at Estlyn. Asheviere, desiring to use these warriors to strengthen her hold on the throne, sent emissaries in an attempt to gain their aid. The proud people of the Estmarks declined to join Asheviere, and the Dark Queen would soon respond with an answer of her own...
+
+Play as these proud Humans from the Estmarks, resist against Queen Asheviere, and discover the legacy of the Esterian people. All the while, as mortal forces clash in combat, an unseen force seeks release from her prison...
+
+Features:
+-- A Planned 7 Scenario Loyalist campaign, with story interludes. (2 Scenarios, 1 Interlude Ready)
+-- Emphasis on Story and Characters, with custom traits to make the characters more unique!
+-- Custom music from the UMC Music Books.
+-- A focus on higher level units. All of the player's units are level 2 or higher!
+-- Limited forces. You cannot recruit new units for this campaign, only recall!
+-- 3 Planned Massive Battle Engagements (Scenario One, Four, and Seven)
+
+Note: This addon includes some UMC music, which is included in this campaign. This is why the file size is relatively large.
+Note 2: For detailed patch notes, please visit the forum thread.
+
+Version 0.16.2
+- Ported over to 1.18.
+-- Estlyn Interlude included. Scenario Three playable, but not fully finished.
+
+Version 0.16.1
+- Public Release, Two Scenarios Ready",,3.9796561586181,43.3094482421875
+War_of_Life_and_Death,78273482,1711177135,1063,campaign,"0.4.0.0 (Pre-Alpha)",,"647 YW - The Silver Age of Wesnoth - This tells the tale of the Elvish Lord Ardonath, as he defends the Great Northern Forest in a Grand Alliance as it stands against an invasion of the Dead. (Intermediate level, 18 scenarios, 4 dialogue only, work in progress)
+
+
+This campaign includes several hundred custom units most of which were taken from (or derived from) the Reign of the Lords Era add-on by The_Gnat and some of the mainline campaigns. A huge thanks goes to The_Gnat for letting me use his fantastic Era for this campaign. I highly recommend trying out the Reign of the Lords add-on for yourself.
+
+This campaign shall see you fight with, and against, a wide variety of factions with changing objectives and use of custom items you can find in certain scenarios. With custom units providing a wide range of choices of advancements for your units, and unique AMLAs for certain heroes, you should not worry about running out of ways to strengthen your army.
+
+This campaign includes repeated references to mainline campaign lore, so it is recommended (although not strictly necessary) to first play Northern Rebirth and Eastern Invasion. There are also some minor references to The Legend of Wesmere, Heir to the Throne, and Delfador's Memoirs.
+
+This is a work in progress released for Pre-Alpha testing.
+
+This campaign is partly translated to Simplified Chinese (zh_CN) up to and including Scenario 11 thanks to the efforts of ERROR1025 (thank you for your contributions).
+
+Note: All future updates will occur on version 1.18 of the Wesnoth add-on server.
+
+Enjoy :)",,16.4051121292501,74.6474094390869
+Red_Winter,65234434,1711326059,130,campaign,0.16.b,,"This is the original version of Red Winter, created back in the 1.12 days. It has been looked over to work with 1.18, but remains incomplete.
+-- Scenarios 1-4 should be polished enough for regular play.
+-- Scenario 5 should function, but may not be polished.
+-- Scenario 6 is incomplete, but is playable. The rest of the campaign remains unfinished.
+-- This add-on has been uploaded for archival purposes, and to those curious what the original version of Red Winter was like.
+
+Red Winter is replaced by Red Winter Reborn, which remakes the entirity of this campaign from the ground up. You can find it on this Add-On server.
+
+Note: This addon includes some UMC music, which is included in this campaign. This is why the file size is relatively large.
+
+Version 0.16.b
+- Ported to Wesnoth the 1.18 branch.",,2.06109668987725,62.2124042510986
+The_Return_of_the_Sea_Hag,71525971,1711222951,443,campaign,1.0.8,,"A Nagas centered campaign.
+
+Hoping that no one will feel offended, hurted, wounded or distraught by the 'nostalgic' exhumation of some old units, I wish you all a lot of fun.
+
+(Intermediate level, 13-14 scenarios.)
+
+P.S. I have no intention of opening, on the forum, a thread which could be closed arbitrarily for unforeseeable reasons, so if anyone encounters problems with the campaign, he can write an email to argesilao2019@yahoo.com, or open a forum thread related to the campaign under his own responsibility.
+",,6.89316097549379,68.2124814987183
+War_Plan_Scarlet,83134742,1714573522,411,campaign,"18.0.1 beta",Halfelven,"Defend the savannah marches of the halfelven against the first raids of dunefolk clans to reach the southern borders of Wesnoth, learning valuable tactics as you do so.",,16.1259691480216,79.28346824646
+Napoleonic_Wars,87982820,1714079560,150,campaign,0.2.0-i18n.1,Support_1_12_Core,"Warning: The official 'Napoleonic Wars' add-on is not available for BFW-1.16. This add-on was not uploaded by its author.
+
+Napoleonic Wars
+
+11 scenarios and a tutorial following the career of Napoleon Bonaparte. Is about 98% complete and released for beta-testing.
+
+(Original version: 0.2.0; last updated on Feb 26 2020)
+
+
+Only the 'easy' difficulty level is available for selection.
+
+NB: to play this campaign, you have to load the core 'Bienvenue' available after the dependency add-on is installed. You'll be ready to select the 'Napoleonic Wars' scenario through the 'Campaign' menu.
+
+The needed 'core' can be loaded following these steps:
+-   Start wesnoth and go to -> 'Preferences' -> 'Hotkeys' 
+-   In 'Search' box, enter 'core'
+-   Press 'Add Hotkey' then press CTRL+SHIFT+k, and close dialog.
+
+-   In main 'Title Screen', press CTRL+SHIFT+k to open 'core' selection dialog.
+-   Select item 'Bienvenue (Wesnoth 1.14 core)'.
+
+The next time you start Battle for Wesnoth, it will start with the last active core.
+To go back to 1.16: you have to press CTRL+SHIFT+k and select the 'Wesnoth (Default)' core.
+
+Please do not report any problem with this add-on in the official feedback thread for 'Napoleonic Wars'.",,4.80707708570952,83.9069557189941
