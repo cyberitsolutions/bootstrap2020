@@ -35,3 +35,6 @@ The following packages found on this system are affected by this:
   - libsmbclient:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u5)
   - libwbclient0:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u5)
   - samba-libs:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u5)
+  - libsmbclient:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u6)
+  - libwbclient0:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u6)
+  - samba-libs:amd64 (installed version: 2:4.13.13+dfsg-1~deb11u6)
