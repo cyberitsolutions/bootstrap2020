@@ -1,3 +1,29 @@
+4b089f6 6.7.12-1716770423 (was 6.6.13-1710807909)
+diff --git a/manifest.txt b/manifest.txt
+index c03f530..ee822a2 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -232,9 +232,12 @@ kernel/sound/soc/intel/boards/
+ kernel/sound/soc/intel/boards/snd-skl_nau88l25_max98357a.ko
+ kernel/sound/soc/intel/boards/snd-soc-cml_rt1011_rt5682.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-hda-dsp-common.ko
++kernel/sound/soc/intel/boards/snd-soc-intel-sof-board-helpers.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-cirrus-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-maxim-common.ko
++kernel/sound/soc/intel/boards/snd-soc-intel-sof-nuvoton-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-realtek-common.ko
++kernel/sound/soc/intel/boards/snd-soc-intel-sof-ssp-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-kbl_da7219_max98357a.ko
+ kernel/sound/soc/intel/boards/snd-soc-kbl_da7219_max98927.ko
+ kernel/sound/soc/intel/boards/snd-soc-kbl_rt5663_max98927.ko
+@@ -243,7 +246,6 @@ kernel/sound/soc/intel/boards/snd-soc-skl_nau88l25_ssm4567.ko
+ kernel/sound/soc/intel/boards/snd-soc-skl_rt286.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof-ssp-amp.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_cs42l42.ko
+-kernel/sound/soc/intel/boards/snd-soc-sof_da7219_max98373.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_nau8825.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_rt5682.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-bxt-da7219_max98357a.ko
 4053cf2 6.6.13-1710807909 (was 6.5.10-1702255184)
 diff --git a/manifest.txt b/manifest.txt
 index 9b0f5df..c03f530 100644
