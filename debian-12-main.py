@@ -769,6 +769,7 @@ for template in args.templates:
 
         mmdebstrap_but_zstd(
             ['mmdebstrap',
+             '--include=sshguard,collectd,nftables,python3,libpython3.11,python3-nftables',
              '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
              # Build faster
              *['--variant=apt',             # save 12s 30MB
