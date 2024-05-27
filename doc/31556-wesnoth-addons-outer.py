@@ -17,5 +17,6 @@ subprocess.check_call(
      '--customize-hook=chroot $1 python3 - < 31556-wesnoth-addons.py',
      '--customize-hook=download 31556-wesnoth-addons-1.16.db 31556-wesnoth-addons-1.16.db',
      '--customize-hook=download 31556-wesnoth-addons-1.16.txt 31556-wesnoth-addons-1.16.txt',
+     '--customize-hook=download 31556-wesnoth-addons-1.16.csv 31556-wesnoth-addons-1.16.csv',
      'bookworm',
      '/dev/null'])

@@ -44,6 +44,11 @@ def main():
             ['sqlite3', '-line', '31556-wesnoth-addons-1.16.db', SELECT_QUERY],
             text=True,
             stdout=f)
+    with pathlib.Path('31556-wesnoth-addons-1.16.csv').open('w') as f:
+        subprocess.check_call(
+            ['sqlite3', '-csv', '-header', '31556-wesnoth-addons-1.16.db', SELECT_QUERY],
+            text=True,
+            stdout=f)
 
 
 def upsert(conn, row):
