@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-d := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.16/data/add-ons/
-e := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.16/images/misc/
+d := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.18/data/add-ons/
+e := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.18/images/misc/
 %:
 	dh $@
 override_dh_auto_install:
