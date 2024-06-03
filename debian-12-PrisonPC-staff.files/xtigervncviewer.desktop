@@ -1,17 +1,17 @@
-# gvncviewer is invoked like "gvncviewer hostname[:display]"
+# xtigervncviewer is invoked like "xtigervncviewer hostname[:display]"
 # chromium wants to open a URL like "vnc://hostname[:display]".
 # The sh below just throws away everything up to the last slash,
 # so the latter becomes the former.
 
 [Desktop Entry]
 Version=1.0
-Name=gVNCviewer
+Name=xtigervncviewer
 Comment=Connect to a remote desktop over VNC
 GenericName=Remote Desktop viewer (URL handler)
-TryExec=gvncviewer
-Exec=sh -c 'exec gvncviewer "${1##*/}"' -- %U
+TryExec=xtigervncviewer
+Exec=sh -c 'exec xtigervncviewer -ViewOnly 1 "${1##*/}"' -- %U
 # Old python version.
-#Exec=python -c 'import urlparse, sys, subprocess; subprocess.Popen(["gvncviewer", urlparse.urlsplit(sys.argv[1]).netloc])' %U
+#Exec=python -c 'import urlparse, sys, subprocess; subprocess.Popen(["xtigervncviewer", urlparse.urlsplit(sys.argv[1]).netloc])' %U
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/vnc;
@@ -20,4 +20,5 @@ MimeType=x-scheme-handler/vnc;
 NoDisplay=true
 
 # https://docs.gtk.org/gtk3/type_func.Window.set_auto_startup_notification.html
+# FIXME: is this wrong for now we're  xtigervncviewer (FLTK) not gvncviewer (GTK3)?
 StartupNotify=true

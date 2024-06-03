@@ -418,6 +418,13 @@
 # If we want them to "do midi" we should give them musescore3.
 */timidity.desktop
 
+# Unlike gvncviewer, xtigervncviewer provides a .desktop Start menu item (that we don't want).
+# Clobbering it it didn't Just Work.
+# Rather than try to fix that ordering problem,
+# just delete the unwanted file and
+# independently create a new file with a different name.
+*/xtigervncviewer.desktop
+
 # magnus screen magnifier ships an auto-start file, which
 # means every inmate gets it opened on every login.
 # We also hide the xfce4-session configuration app, so they cannot change it.
