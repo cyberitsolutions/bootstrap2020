@@ -114,6 +114,6 @@ candidate_line, = [
 if 'PrisonPC' in candidate_line:
     logging.info("apt believes PrisonPC's vlc is the newest vlc")
 else:
-    logging.error("apt believes Debian's vlc is newer than PrisonPC's vlc -- REBUILD NEEDED!")
+    logging.error("apt believes Debian's vlc is newer than PrisonPC's vlc -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-vlc.py")
     print(policy_stdout, end='', flush=True)
     exit(1)
