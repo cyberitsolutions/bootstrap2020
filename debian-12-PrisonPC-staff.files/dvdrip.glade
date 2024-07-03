@@ -46,6 +46,7 @@
             </child>
             <child>
               <object class="GtkEntry" id="entry_dvd_name">
+                <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-left">20</property>
                 <property name="margin-right">20</property>
