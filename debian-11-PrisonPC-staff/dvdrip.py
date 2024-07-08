@@ -61,7 +61,7 @@ class DVDBackup:
         dest_dir = pathlib.Path('/srv/tv/iptv-queue/.ripped')
         dest_path = dest_dir / f'{self.dvd_title}.ts'
         final_path = pathlib.Path('/srv/tv/recorded/local') / dest_path.name
-        with tempfile.TemporaryDirectory(dir=dest_dir.parent, prefix='dvdrip') as td:
+        with tempfile.TemporaryDirectory(dir=dest_dir, prefix='dvdrip') as td:
             temp_path = pathlib.Path(td) / 'tmp.ts'
             if dest_path.exists():  # TOCTTOU here, but we mostly don't care
                 return GUI_message(f'"{dest_path}" already exists.  Rip aborted.')
