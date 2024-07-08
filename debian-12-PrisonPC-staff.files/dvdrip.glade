@@ -8,10 +8,11 @@
     <property name="title" translatable="yes">DVDRip</property>
     <signal name="delete-event" handler="closeApplication" swapped="no"/>
     <child type="titlebar">
-      <object class="GtkHeaderBar">
+      <object class="GtkHeaderBar" id="title_bar">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="title" translatable="yes">DVD Ripper</property>
+        <property name="subtitle" translatable="yes">To rip a movie file, right-click Send To &gt; Rip a Movie File</property>
         <property name="show-close-button">True</property>
         <child>
           <object class="GtkImage">
@@ -36,7 +37,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">DVD Name</property>
+                <property name="label" translatable="yes">Name</property>
               </object>
               <packing>
                 <property name="expand">False</property>
