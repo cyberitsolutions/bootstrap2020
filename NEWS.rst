@@ -2,6 +2,23 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs June 2024 (since May 2024)
+======================================================================
+• VNC client ("Control desktop" in ppcadm) now defaults to view-only mode.
+  To enable remote control, press F8 and change the connection setting.
+
+• IPTV local channel media import:
+
+  • A movie file can now be imported directly by right-clicking on it and
+    choosing `Send To > Rip a Movie File`.
+
+  • Fixed a bug since 2023-11-09 that incorrectly reported for all DVDs
+    "Permission denied when attempting to write to the IPTV queue"
+
+• Wesnoth game bumped to 1.18 (was 1.16); DLCs updated to match.
+
+
+======================================================================
  Changes in SOEs May 2024 (since March 2024)
 ======================================================================
 • Previously the browser told Google to block not-safe-for-work (NSFW) content.
