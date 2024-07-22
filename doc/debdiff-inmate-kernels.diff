@@ -1,3 +1,82 @@
+e873371 6.9.7-1721685034 (was 6.7.12-1716770423)
+diff --git a/manifest.txt b/manifest.txt
+index ee822a2..5882f42 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -21,8 +21,6 @@ kernel/drivers/ata/ahci.ko
+ kernel/drivers/ata/libahci.ko
+ kernel/drivers/ata/libata.ko
+ kernel/drivers/base/
+-kernel/drivers/base/firmware_loader/
+-kernel/drivers/base/firmware_loader/firmware_class.ko
+ kernel/drivers/base/regmap/
+ kernel/drivers/base/regmap/regmap-i2c.ko
+ kernel/drivers/cdrom/
+@@ -79,8 +77,6 @@ kernel/drivers/hid/hid-generic.ko
+ kernel/drivers/hid/hid.ko
+ kernel/drivers/hid/usbhid/
+ kernel/drivers/hid/usbhid/usbhid.ko
+-kernel/drivers/input/
+-kernel/drivers/input/sparse-keymap.ko
+ kernel/drivers/leds/
+ kernel/drivers/leds/led-class-multicolor.ko
+ kernel/drivers/leds/led-class.ko
+@@ -104,25 +100,15 @@ kernel/drivers/net/ethernet/
+ kernel/drivers/net/ethernet/intel/
+ kernel/drivers/net/ethernet/intel/igbvf/
+ kernel/drivers/net/ethernet/intel/igbvf/igbvf.ko
+-kernel/drivers/net/ethernet/realtek/
+-kernel/drivers/net/ethernet/realtek/r8169.ko
+-kernel/drivers/net/mdio/
+-kernel/drivers/net/mdio/acpi_mdio.ko
+-kernel/drivers/net/mdio/fwnode_mdio.ko
+-kernel/drivers/net/phy/
+-kernel/drivers/net/phy/fixed_phy.ko
+-kernel/drivers/net/phy/libphy.ko
+-kernel/drivers/net/phy/mdio_devres.ko
+-kernel/drivers/net/phy/realtek.ko
++kernel/drivers/pinctrl/
++kernel/drivers/pinctrl/intel/
++kernel/drivers/pinctrl/intel/pinctrl-meteorlake.ko
++kernel/drivers/pinctrl/intel/pinctrl-meteorpoint.ko
+ kernel/drivers/platform/
+ kernel/drivers/platform/x86/
+ kernel/drivers/platform/x86/intel/
+-kernel/drivers/platform/x86/intel/intel-hid.ko
+ kernel/drivers/platform/x86/intel/intel_vsec.ko
+ kernel/drivers/platform/x86/intel/intel_vsec_tpmi.ko
+-kernel/drivers/platform/x86/intel/pmc/
+-kernel/drivers/platform/x86/intel/pmc/intel_pmc_core.ko
+-kernel/drivers/platform/x86/intel/pmc/intel_pmc_core_pltdrv.ko
+ kernel/drivers/platform/x86/wmi.ko
+ kernel/drivers/powercap/
+ kernel/drivers/powercap/intel_rapl_common.ko
+@@ -156,9 +142,6 @@ kernel/fs/
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko
+ kernel/fs/nls/nls_utf8.ko
+-kernel/net/
+-kernel/net/core/
+-kernel/net/core/selftests.ko
+ kernel/sound/
+ kernel/sound/core/
+ kernel/sound/core/snd-compress.ko
+@@ -181,6 +164,7 @@ kernel/sound/pci/hda/snd-hda-codec-hdmi.ko
+ kernel/sound/pci/hda/snd-hda-codec-realtek.ko
+ kernel/sound/pci/hda/snd-hda-codec.ko
+ kernel/sound/pci/hda/snd-hda-intel.ko
++kernel/sound/pci/hda/snd-hda-scodec-component.ko
+ kernel/sound/soc/
+ kernel/sound/soc/codecs/
+ kernel/sound/soc/codecs/snd-soc-cs35l41-i2c.ko
+@@ -193,6 +177,7 @@ kernel/sound/soc/codecs/snd-soc-da7213.ko
+ kernel/sound/soc/codecs/snd-soc-da7219.ko
+ kernel/sound/soc/codecs/snd-soc-dmic.ko
+ kernel/sound/soc/codecs/snd-soc-es8316.ko
++kernel/sound/soc/codecs/snd-soc-es83xx-dsm-common.ko
+ kernel/sound/soc/codecs/snd-soc-hdac-hda.ko
+ kernel/sound/soc/codecs/snd-soc-hdac-hdmi.ko
+ kernel/sound/soc/codecs/snd-soc-max98090.ko
 4b089f6 6.7.12-1716770423 (was 6.6.13-1710807909)
 diff --git a/manifest.txt b/manifest.txt
 index c03f530..ee822a2 100644
