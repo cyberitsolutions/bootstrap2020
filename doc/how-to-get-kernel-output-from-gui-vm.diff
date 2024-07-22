@@ -1,0 +1,35 @@
+diff --git i/debian-12-PrisonPC.packages/build-inmate-kernel.ini w/debian-12-PrisonPC.packages/build-inmate-kernel.ini
+index c481189..b5db56b 100644
+diff --git i/debian-12-main.py w/debian-12-main.py
+index 078cf73..e4198bf 100755
+--- i/debian-12-main.py
++++ w/debian-12-main.py
+@@ -293,15 +293,7 @@ def do_boot_test():
+         for name in {'linuxx64.efi', 'filesystem.squashfs'}:
+             (testdir / name).hardlink_to(destdir / name)
+         common_boot_args = ' '.join([
+-            ('quiet splash'
+-             if template.startswith('desktop') else
+-             # FIXME: in systemd v254+ change
+-             #            TERM=$TERM
+-             #        to both(!) of these
+-             #            systemd.tty.term.console=$TERM
+-             #            systemd.tty.term.ttyS0=$TERM
+-             #        https://github.com/systemd/systemd/issues/29097
+-             f'earlyprintk=ttyS0 console=ttyS0 TERM={os.environ["TERM"]} loglevel=1'),
++            (f'earlyprintk=ttyS0 console=ttyS0 TERM={os.environ["TERM"]} systemd.journald.forward_to_console=1'),
+             (f'break={args.maybe_break}'
+              if args.maybe_break else '')])
+ 
+@@ -416,9 +408,9 @@ def do_boot_test():
+             '--smp', '2',
+             # no virtio-sound in qemu 6.1 ☹
+             '--device', 'ich9-intel-hda', '--device', 'hda-output',
+-            *(['--nographic', '--vga', 'none']
++            *(['--nographic', '--vga', 'none', '--display', 'none']
+               if not template.startswith('desktop') else
+-              ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on']),
++              ['--device', 'virtio-vga-gl', '--display', 'gtk,gl=on', '-serial', 'stdio']),
+             '--device', 'virtio-net-pci,netdev=OutclassMountingBoggle',
+             '--device', 'virtio-net-pci',  # unused second NIC
+             '--netdev', ','.join([
