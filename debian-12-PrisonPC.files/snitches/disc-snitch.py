@@ -79,12 +79,29 @@ def str_to_bool(s: str):
         raise NotImplementedError(f"Unknown boolean value from string: {s}")
 
 
+# NOTE: the benefit of JournalHandler() is that "journalctl -o verbose" includes
+#       stuff like CODE_FILE= and CODE_LINE=, and multi-line exceptions are single events.
+# NOTE: Old versions of this code used print() which looked like this:
+#           2023-12-31T21:09:37.174531+11:00 xru-1-19 bootstrap2020-disc-snitch[373]: Disc "THE_REVENANT" was inserted.
+#       After changing this to logging.info() w/ JournalHandler(), I saw this in syslog:
+#           2024-07-24T22:08:00.340432+10:00 xrc2-a-2 -[421]: INFO:root:Disc "THE_PACIFIC_DISC6" was inserted.
+#       It looks like JournalHandler() without arguments results in "journalctl -o verbose" seeing this:
+#           SYSLOG_IDENTIFIER=/usr/sbin/bootstrap2020-disc-snitch
+#       when I expected
+#           SYSLOG_IDENTIFIER=bootstrap2020-disc-snitch
+#       Then, SOMEHOW, that turns into "-" in rsyslog.  Possibly due to field lengths in RELP?
+#       Rather than try to understand this properly, the simple fix is to set an explicit identifier:
+#           JournalHandler(SYSLOG_IDENTIFIER='disc-snitch')
+#       https://alloc.cyber.com.au/task/task.php?taskID=35214
+#       https://www.freedesktop.org/software/systemd/python-systemd/journal.html#journalhandler-class
+
 def main():
     if sys.stdin.isatty():
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO,
-                            handlers={systemd.journal.JournalHandler()})
+                            handlers={systemd.journal.JournalHandler(
+                                SYSLOG_IDENTIFIER='disc-snitch')})
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
     monitor.filter_by_tag('disc-snitch')
