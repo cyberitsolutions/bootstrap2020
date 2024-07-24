@@ -1,0 +1,34 @@
+# https://bugs.debian.org/1076861
+# https://alloc.cyber.com.au/task/task.php?taskID=35215
+#
+# Prevent this happening when you SSH in as root
+# (and the SSH server has UsePAM=yes, the Debian default for openssh-server).
+#
+# We *ACTUALLY* don't want to run wireplumber for any SSH user, but
+# "don't run wireplumber as root" is Good Enough for now.
+#
+# This is consistent with existing rules.
+# They should all use "ConditionUser=!@system", like we do.
+#
+#     /lib/systemd/user/pipewire-pulse.service:ConditionUser=!root
+#     /lib/systemd/user/pipewire-pulse.socket:ConditionUser=!root
+#     /lib/systemd/user/pipewire.service:ConditionUser=!root
+#     /lib/systemd/user/pipewire.socket:ConditionUser=!root
+#
+# Before:
+#
+#     systemd[725]: pipewire.service - PipeWire Multimedia Service was skipped because of an unmet condition check (ConditionUser=!root).
+#     systemd[725]: wireplumber.service: Bound to unit pipewire.service, but unit isn't active.
+#     systemd[725]: Dependency failed for wireplumber.service - Multimedia Service Session Manager.
+#     systemd[725]: wireplumber.service: Job wireplumber.service/start failed with result 'dependency'.
+#     systemd[725]: pipewire-pulse.service - PipeWire PulseAudio was skipped because of an unmet condition check (ConditionUser=!root).
+#
+# After:
+#
+#     systemd[700]: pipewire-pulse.socket - PipeWire PulseAudio was skipped because of an unmet condition check (ConditionUser=!root).
+#     systemd[700]: pipewire.socket - PipeWire Multimedia System Socket was skipped because of an unmet condition check (ConditionUser=!root).
+#     systemd[700]: pipewire.service - PipeWire Multimedia Service was skipped because of an unmet condition check (ConditionUser=!root).
+#     systemd[700]: wireplumber.service - Multimedia Service Session Manager was skipped because of an unmet condition check (ConditionUser=!root).
+#     systemd[700]: pipewire-pulse.service - PipeWire PulseAudio was skipped because of an unmet condition check (ConditionUser=!root).
+[Unit]
+ConditionUser=!root
