@@ -14,6 +14,9 @@ include = [
     "usermode",                         # password reset tool
     "librsvg2-common",                  # SVG icons in GTK3 apps
     "gnome-themes-extra", "adwaita-qt",  # theming
+    # FIXME: Right now, vlc is always installed and is Qt5. --twb, July 2024
+    #        When vlc is Qt6, or we add some other Qt6 apps,
+    #        install "adwaita-qt6" here, and audit the Qt6 libraries properly.
     "at-spi2-core", "gnome-accessibility-themes",
     "plymouth-themes",
 
