@@ -22,7 +22,9 @@ with open('/usr/include/linux/input-event-codes.h') as fh:
             code = (int(match.group(3), 16)
                     if '0x' == match.group(2) else
                     int(match.group(3)))
-            if 0 < code < 256:  # Skip codes X11 cannot represent.
+            # FIXME: it seems some kernel keycodes >>256 have X keysyms... HOW?
+            # if 0 < code < 256:  # Skip codes X11 cannot represent.
+            if True:
                 linux_code2name[code] = name
         elif debug_match_failures:
             sys.stderr.write('SKIPPED input.h: {}'.format(line))
