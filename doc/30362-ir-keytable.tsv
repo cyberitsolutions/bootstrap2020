@@ -1,244 +1,508 @@
-kName                 kCode  xCode  xKey  xSym
-=====                 =====  =====  ====  ====
-KEY_ESC               1      9      ESC
-KEY_1                 2      10     AE01
-KEY_2                 3      11     AE02
-KEY_3                 4      12     AE03
-KEY_4                 5      13     AE04
-KEY_5                 6      14     AE05
-KEY_6                 7      15     AE06
-KEY_7                 8      16     AE07
-KEY_8                 9      17     AE08
-KEY_9                 10     18     AE09
-KEY_0                 11     19     AE10
-KEY_MINUS             12     20     AE11
-KEY_EQUAL             13     21     AE12
-KEY_BACKSPACE         14     22     BKSP  [     BackSpace,              BackSpace,      Delete      ]
-KEY_TAB               15     23     TAB
-KEY_Q                 16     24     AD01
-KEY_W                 17     25     AD02
-KEY_E                 18     26     AD03
-KEY_R                 19     27     AD04
-KEY_T                 20     28     AD05
-KEY_Y                 21     29     AD06
-KEY_U                 22     30     AD07
-KEY_I                 23     31     AD08
-KEY_O                 24     32     AD09
-KEY_P                 25     33     AD10
-KEY_LEFTBRACE         26     34     AD11
-KEY_RIGHTBRACE        27     35     AD12
-KEY_ENTER             28     36     RTRN
-KEY_LEFTCTRL          29     37     LCTL
-KEY_A                 30     38     AC01
-KEY_S                 31     39     AC02
-KEY_D                 32     40     AC03
-KEY_F                 33     41     AC04
-KEY_G                 34     42     AC05
-KEY_H                 35     43     AC06
-KEY_J                 36     44     AC07
-KEY_K                 37     45     AC08
-KEY_L                 38     46     AC09
-KEY_SEMICOLON         39     47     AC10
-KEY_APOSTROPHE        40     48     AC11
-KEY_GRAVE             41     49     TLDE
-KEY_LEFTSHIFT         42     50     LFSH
-KEY_BACKSLASH         43     51     BKSL
-KEY_Z                 44     52     AB01
-KEY_X                 45     53     AB02
-KEY_C                 46     54     AB03
-KEY_V                 47     55     AB04
-KEY_B                 48     56     AB05
-KEY_N                 49     57     AB06
-KEY_M                 50     58     AB07
-KEY_COMMA             51     59     AB08
-KEY_DOT               52     60     AB09
-KEY_SLASH             53     61     AB10
-KEY_RIGHTSHIFT        54     62     RTSH
-KEY_KPASTERISK        55     63     KPMU  [     KP_Multiply             ]
-KEY_LEFTALT           56     64     LALT
-KEY_SPACE             57     65     SPCE
-KEY_CAPSLOCK          58     66     CAPS
-KEY_F1                59     67     FK01  [     XF86Back                ]
-KEY_F2                60     68     FK02  [     XF86Forward             ]
-KEY_F3                61     69     FK03  [     XF86Reload              ]
-KEY_F4                62     70     FK04  [     F11                     ]
-KEY_F5                63     71     FK05
-KEY_F6                64     72     FK06  [     XF86MonBrightnessDown   ]
-KEY_F7                65     73     FK07  [     XF86MonBrightnessUp     ]
-KEY_F8                66     74     FK08  [     XF86AudioMute           ]
-KEY_F9                67     75     FK09  [     XF86AudioLowerVolume    ]
-KEY_F10               68     76     FK10  [     XF86AudioRaiseVolume    ]
-KEY_NUMLOCK           69     77     NMLK
-KEY_SCROLLLOCK        70     78     SCLK
-KEY_KP7               71     79     KP7   [     KP_7                    ]
-KEY_KP8               72     80     KP8   [     KP_8                    ]
-KEY_KP9               73     81     KP9   [     KP_9                    ]
-KEY_KPMINUS           74     82     KPSU  [     KP_Subtract             ]
-KEY_KP4               75     83     KP4   [     KP_4                    ]
-KEY_KP5               76     84     KP5   [     KP_5                    ]
-KEY_KP6               77     85     KP6   [     KP_6                    ]
-KEY_KPPLUS            78     86     KPAD  [     KP_Add                  ]
-KEY_KP1               79     87     KP1   [     KP_1                    ]
-KEY_KP2               80     88     KP2   [     KP_2                    ]
-KEY_KP3               81     89     KP3   [     KP_3                    ]
-KEY_KP0               82     90     KP0   [     KP_0                    ]
-KEY_KPDOT             83     91     KPDL  [     KP_Decimal              ]
-KEY_ZENKAKUHANKAKU    85
-KEY_102ND             86     94     LSGT
-KEY_F11               87     95     FK11
-KEY_F12               88     96     FK12
-KEY_RO                89     97     AB11
-KEY_KATAKANA          90     98     KATA  [     Katakana                ]
-KEY_HIRAGANA          91     99     HIRA  [     Hiragana                ]
-KEY_HENKAN            92     100    HENK  [     Henkan                  ]
-KEY_KATAKANAHIRAGANA  93     101    HKTG  [     XF86Launch7             ]
-KEY_MUHENKAN          94     102    MUHE  [     Muhenkan                ]
-KEY_KPJPCOMMA         95     103    JPCM
-KEY_KPENTER           96     104    KPEN
-KEY_RIGHTCTRL         97     105    RCTL  [     XF86Paste               ]
-KEY_KPSLASH           98     106    KPDV  [     KP_Divide               ]
-KEY_SYSRQ             99     107    PRSC  [     XF86MyComputer          ]
-KEY_RIGHTALT          100    108    RALT
-KEY_LINEFEED          101    109    LNFD  [     Linefeed                ]
-KEY_HOME              102    110    HOME  [     XF86RotationPB          ]
-KEY_UP                103    111    UP    [     Up,                     Up,             Prior,      Up       ]
-KEY_PAGEUP            104    112    PGUP
-KEY_LEFT              105    113    LEFT  [     Left,                   Left,           Home,       Left     ]
-KEY_RIGHT             106    114    RGHT  [     Right,                  Right,          End,        Right    ]
-KEY_END               107    115    END   [     Undo                    ]
-KEY_DOWN              108    116    DOWN  [     Down,                   Down,           Next,       Down     ]
-KEY_PAGEDOWN          109    117    PGDN
-KEY_INSERT            110    118    INS
-KEY_DELETE            111    119    DELE
-KEY_MACRO             112    120    I120
-KEY_MUTE              113    121    MUTE  [     XF86AudioMute           ]
-KEY_VOLUMEDOWN        114    122    VOL-  [     XF86AudioLowerVolume    ]
-KEY_VOLUMEUP          115    123    VOL+  [     XF86AudioRaiseVolume    ]
-KEY_POWER             116    124    POWR  [     XF86PowerOff            ]
-KEY_KPEQUAL           117    125    KPEQ  [     KP_Equal                ]
-KEY_KPPLUSMINUS       118    126    I126  [     plusminus               ]
-KEY_PAUSE             119    127    PAUS  [     XF86UserPB              ]
-KEY_SCALE             120    128    I128  [     XF86LaunchA             ]
-KEY_KPCOMMA           121    129    I129
-KEY_HANGEUL           122    130    HNGL  [     Hangul                  ]
-KEY_HANJA             123    131    HJCV  [     Hangul_Hanja            ]
-KEY_YEN               124    132    AE13  [     XF86Launch4             ]
-KEY_LEFTMETA          125    133    LWIN  [     Super_L,                Super_L,        Caps_Lock,  Super_L  ]
-KEY_RIGHTMETA         126    134    RWIN  [     XF86Eject               ]
-KEY_COMPOSE           127    135    COMP
-KEY_STOP              128    136    STOP  [     Cancel                  ]
-KEY_AGAIN             129    137    AGAI  [     Redo                    ]
-KEY_PROPS             130    138    PROP  [     SunProps                ]
-KEY_UNDO              131    139    UNDO  [     Undo                    ]
-KEY_FRONT             132    140    FRNT  [     SunFront                ]
-KEY_COPY              133    141    COPY  [     XF86Copy                ]
-KEY_OPEN              134    142    OPEN  [     XF86Open                ]
-KEY_PASTE             135    143    PAST  [     XF86Paste               ]
-KEY_FIND              136    144    FIND  [     Find                    ]
-KEY_CUT               137    145    CUT   [     XF86Cut                 ]
-KEY_HELP              138    146    HELP  [     Help                    ]
-KEY_MENU              139    147    I147  [     XF86MenuKB              ]
-KEY_CALC              140    148    I148  [     XF86Calculator          ]
-KEY_SETUP             141    149    I149
-KEY_SLEEP             142    150    I150  [     XF86Sleep               ]
-KEY_WAKEUP            143    151    I151  [     XF86WakeUp              ]
-KEY_FILE              144    152    I152  [     XF86Explorer            ]
-KEY_SENDFILE          145    153    I153  [     XF86Send                ]
-KEY_DELETEFILE        146    154    I154
-KEY_XFER              147    155    I155  [     XF86Xfer                ]
-KEY_PROG1             148    156    I156  [     XF86Launch1             ]
-KEY_PROG2             149    157    I157  [     XF86Launch2             ]
-KEY_WWW               150    158    I158  [     XF86WWW                 ]
-KEY_MSDOS             151    159    I159  [     XF86DOS                 ]
-KEY_COFFEE            152    160    I160  [     XF86ScreenSaver         ]
-KEY_ROTATE_DISPLAY    153    161    I161  [     XF86RotateWindows       ]
-KEY_CYCLEWINDOWS      154    162    I162  [     XF86TaskPane            ]
-KEY_MAIL              155    163    I163  [     XF86AudioPrev           ]
-KEY_BOOKMARKS         156    164    I164  [     XF86AudioPlay,          XF86AudioPause  ]
-KEY_COMPUTER          157    165    I165  [     XF86AudioNext           ]
-KEY_BACK              158    166    I166  [     XF86Back                ]
-KEY_FORWARD           159    167    I167  [     XF86Forward             ]
-KEY_CLOSECD           160    168    I168
-KEY_EJECTCD           161    169    I169  [     XF86Eject               ]
-KEY_EJECTCLOSECD      162    170    I170  [     XF86Eject,              XF86Eject       ]
-KEY_NEXTSONG          163    171    I171  [     XF86AudioNext           ]
-KEY_PLAYPAUSE         164    172    I172  [     XF86AudioPlay,          XF86AudioPause  ]
-KEY_PREVIOUSSONG      165    173    I173  [     XF86AudioPrev           ]
-KEY_STOPCD            166    174    I174  [     XF86AudioStop,          XF86Eject       ]
-KEY_RECORD            167    175    I175  [     XF86AudioRecord         ]
-KEY_REWIND            168    176    I176  [     XF86AudioRewind         ]
-KEY_PHONE             169    177    I177  [     XF86Phone               ]
-KEY_ISO               170    178    I178
-KEY_CONFIG            171    179    I179  [     XF86Tools               ]
-KEY_HOMEPAGE          172    180    I180  [     XF86HomePage            ]
-KEY_REFRESH           173    181    I181  [     XF86Reload              ]
-KEY_EXIT              174    182    I182  [     XF86Close               ]
-KEY_MOVE              175    183    I183
-KEY_EDIT              176    184    I184
-KEY_SCROLLUP          177    185    I185  [     XF86ScrollUp            ]
-KEY_SCROLLDOWN        178    186    I186  [     XF86ScrollDown          ]
-KEY_KPLEFTPAREN       179    187    I187  [     parenleft               ]
-KEY_KPRIGHTPAREN      180    188    I188  [     parenright              ]
-KEY_NEW               181    189    I189  [     XF86New                 ]
-KEY_REDO              182    190    I190  [     Redo                    ]
-KEY_F13               183    191    FK13  [     XF86MailForward         ]
-KEY_F14               184    192    FK14  [     XF86New                 ]
-KEY_F15               185    193    FK15  [     XF86Open                ]
-KEY_F16               186    194    FK16  [     XF86Close               ]
-KEY_F17               187    195    FK17  [     XF86Reply               ]
-KEY_F18               188    196    FK18  [     XF86Launch9             ]
-KEY_F19               189    197    FK19
-KEY_F20               190    198    FK20  [     XF86AudioMicMute        ]
-KEY_F21               191    199    FK21  [     XF86TouchpadToggle      ]
-KEY_F22               192    200    FK22  [     XF86TouchpadOn          ]
-KEY_F23               193    201    FK23  [     XF86TouchpadOff         ]
-KEY_F24               194    202    FK24
-KEY_PLAYCD            200    208    I208  [     XF86AudioPlay           ]
-KEY_PAUSECD           201    209    I209  [     XF86AudioPause          ]
-KEY_PROG3             202    210    I210  [     XF86Launch3             ]
-KEY_PROG4             203    211    I211  [     XF86Launch4             ]
-KEY_DASHBOARD         204    212    I212  [     XF86LaunchB             ]
-KEY_SUSPEND           205    213    I213  [     XF86Suspend             ]
-KEY_CLOSE             206    214    I214  [     XF86Close               ]
-KEY_PLAY              207    215    I215  [     XF86AudioPlay           ]
-KEY_FASTFORWARD       208    216    I216  [     XF86AudioForward        ]
-KEY_BASSBOOST         209    217    I217
-KEY_PRINT             210    218    I218  [     Print                   ]
-KEY_HP                211    219    I219
-KEY_CAMERA            212    220    I220  [     XF86WebCam              ]
-KEY_SOUND             213    221    I221  [     XF86AudioPreset         ]
-KEY_QUESTION          214    222    I222
-KEY_EMAIL             215    223    I223  [     XF86Mail                ]
-KEY_CHAT              216    224    I224  [     XF86Messenger           ]
-KEY_SEARCH            217    225    I225  [     XF86Search              ]
-KEY_CONNECT           218    226    I226  [     XF86Go                  ]
-KEY_FINANCE           219    227    I227  [     XF86Finance             ]
-KEY_SPORT             220    228    I228  [     XF86Game                ]
-KEY_SHOP              221    229    I229  [     XF86Shop                ]
-KEY_ALTERASE          222    230    I230
-KEY_CANCEL            223    231    I231  [     Cancel                  ]
-KEY_BRIGHTNESSDOWN    224    232    I232  [     XF86MonBrightnessDown   ]
-KEY_BRIGHTNESSUP      225    233    I233  [     XF86MonBrightnessUp     ]
-KEY_MEDIA             226    234    I234  [     XF86AudioMedia          ]
-KEY_SWITCHVIDEOMODE   227    235    I235  [     XF86Display             ]
-KEY_KBDILLUMTOGGLE    228    236    I236  [     XF86KbdLightOnOff       ]
-KEY_KBDILLUMDOWN      229    237    I237  [     XF86KbdBrightnessDown   ]
-KEY_KBDILLUMUP        230    238    I238  [     XF86KbdBrightnessUp     ]
-KEY_SEND              231    239    I239  [     XF86Send                ]
-KEY_REPLY             232    240    I240  [     XF86Reply               ]
-KEY_FORWARDMAIL       233    241    I241  [     XF86MailForward         ]
-KEY_SAVE              234    242    I242  [     XF86Save                ]
-KEY_DOCUMENTS         235    243    I243  [     XF86Documents           ]
-KEY_BATTERY           236    244    I244  [     XF86Battery             ]
-KEY_BLUETOOTH         237    245    I245  [     XF86Bluetooth           ]
-KEY_WLAN              238    246    I246  [     XF86WLAN                ]
-KEY_UWB               239    247    I247
-KEY_UNKNOWN           240    248    I248
-KEY_VIDEO_NEXT        241    249    I249
-KEY_VIDEO_PREV        242    250    I250
-KEY_BRIGHTNESS_CYCLE  243    251    I251  [     XF86MonBrightnessCycle  ]
-KEY_BRIGHTNESS_AUTO   244    252    I252
-KEY_DISPLAY_OFF       245    253    I253
-KEY_WWAN              246    254    I254  [     XF86WWAN                ]
-KEY_RFKILL            247    255    I255  [     XF86RFKill              ]
-KEY_MICMUTE           248
+kName	kCode	xCode	xKey	xSym
+=====	=====	=====	====	====
+KEY_RESERVED	0			
+KEY_ESC	1	9	ESC	
+KEY_1	2	10	AE01	
+KEY_2	3	11	AE02	
+KEY_3	4	12	AE03	
+KEY_4	5	13	AE04	
+KEY_5	6	14	AE05	
+KEY_6	7	15	AE06	
+KEY_7	8	16	AE07	
+KEY_8	9	17	AE08	
+KEY_9	10	18	AE09	
+KEY_0	11	19	AE10	
+KEY_MINUS	12	20	AE11	
+KEY_EQUAL	13	21	AE12	
+KEY_BACKSPACE	14	22	BKSP	[ BackSpace, BackSpace, Delete ]
+KEY_TAB	15	23	TAB	
+KEY_Q	16	24	AD01	
+KEY_W	17	25	AD02	
+KEY_E	18	26	AD03	
+KEY_R	19	27	AD04	
+KEY_T	20	28	AD05	
+KEY_Y	21	29	AD06	
+KEY_U	22	30	AD07	
+KEY_I	23	31	AD08	
+KEY_O	24	32	AD09	
+KEY_P	25	33	AD10	
+KEY_LEFTBRACE	26	34	AD11	
+KEY_RIGHTBRACE	27	35	AD12	
+KEY_ENTER	28	36	RTRN	
+KEY_LEFTCTRL	29	37	LCTL	
+KEY_A	30	38	AC01	
+KEY_S	31	39	AC02	
+KEY_D	32	40	AC03	
+KEY_F	33	41	AC04	
+KEY_G	34	42	AC05	
+KEY_H	35	43	AC06	
+KEY_J	36	44	AC07	
+KEY_K	37	45	AC08	
+KEY_L	38	46	AC09	
+KEY_SEMICOLON	39	47	AC10	
+KEY_APOSTROPHE	40	48	AC11	
+KEY_GRAVE	41	49	TLDE	
+KEY_LEFTSHIFT	42	50	LFSH	
+KEY_BACKSLASH	43	51	BKSL	
+KEY_Z	44	52	AB01	
+KEY_X	45	53	AB02	
+KEY_C	46	54	AB03	
+KEY_V	47	55	AB04	
+KEY_B	48	56	AB05	
+KEY_N	49	57	AB06	
+KEY_M	50	58	AB07	
+KEY_COMMA	51	59	AB08	
+KEY_DOT	52	60	AB09	
+KEY_SLASH	53	61	AB10	
+KEY_RIGHTSHIFT	54	62	RTSH	
+KEY_KPASTERISK	55	63	KPMU	[ KP_Multiply ]
+KEY_LEFTALT	56	64	LALT	
+KEY_SPACE	57	65	SPCE	
+KEY_CAPSLOCK	58	66	CAPS	
+KEY_F1	59	67	FK01	[ XF86Back ]
+KEY_F2	60	68	FK02	[ XF86Forward ]
+KEY_F3	61	69	FK03	[ XF86Reload ]
+KEY_F4	62	70	FK04	[ F11 ]
+KEY_F5	63	71	FK05	
+KEY_F6	64	72	FK06	[ XF86MonBrightnessDown ]
+KEY_F7	65	73	FK07	[ XF86MonBrightnessUp ]
+KEY_F8	66	74	FK08	[ XF86AudioMute ]
+KEY_F9	67	75	FK09	[ XF86AudioLowerVolume ]
+KEY_F10	68	76	FK10	[ XF86AudioRaiseVolume ]
+KEY_NUMLOCK	69	77	NMLK	
+KEY_SCROLLLOCK	70	78	SCLK	
+KEY_KP7	71	79	KP7	[ KP_7 ]
+KEY_KP8	72	80	KP8	[ KP_8 ]
+KEY_KP9	73	81	KP9	[ KP_9 ]
+KEY_KPMINUS	74	82	KPSU	[ KP_Subtract ]
+KEY_KP4	75	83	KP4	[ KP_4 ]
+KEY_KP5	76	84	KP5	[ KP_5 ]
+KEY_KP6	77	85	KP6	[ KP_6 ]
+KEY_KPPLUS	78	86	KPAD	[ KP_Add ]
+KEY_KP1	79	87	KP1	[ KP_1 ]
+KEY_KP2	80	88	KP2	[ KP_2 ]
+KEY_KP3	81	89	KP3	[ KP_3 ]
+KEY_KP0	82	90	KP0	[ KP_0 ]
+KEY_KPDOT	83	91	KPDL	[ KP_Decimal ]
+KEY_ZENKAKUHANKAKU	85			
+KEY_102ND	86	94	LSGT	
+KEY_F11	87	95	FK11	
+KEY_F12	88	96	FK12	
+KEY_RO	89	97	AB11	
+KEY_KATAKANA	90	98	KATA	[ Katakana ]
+KEY_HIRAGANA	91	99	HIRA	[ Hiragana ]
+KEY_HENKAN	92	100	HENK	[ Henkan ]
+KEY_KATAKANAHIRAGANA	93	101	HKTG	[ XF86Launch7 ]
+KEY_MUHENKAN	94	102	MUHE	[ Muhenkan ]
+KEY_KPJPCOMMA	95	103	JPCM	
+KEY_KPENTER	96	104	KPEN	
+KEY_RIGHTCTRL	97	105	RCTL	[ XF86Paste ]
+KEY_KPSLASH	98	106	KPDV	[ KP_Divide ]
+KEY_SYSRQ	99	107	PRSC	[ XF86MyComputer ]
+KEY_RIGHTALT	100	108	RALT	
+KEY_LINEFEED	101	109	LNFD	[ Linefeed ]
+KEY_HOME	102	110	HOME	[ XF86RotationPB ]
+KEY_UP	103	111	UP	[ Up, Up, Prior, Up ]
+KEY_PAGEUP	104	112	PGUP	
+KEY_LEFT	105	113	LEFT	[ Left, Left, Home, Left ]
+KEY_RIGHT	106	114	RGHT	[ Right, Right, End, Right ]
+KEY_END	107	115	END	[ Undo ]
+KEY_DOWN	108	116	DOWN	[ Down, Down, Next, Down ]
+KEY_PAGEDOWN	109	117	PGDN	
+KEY_INSERT	110	118	INS	
+KEY_DELETE	111	119	DELE	
+KEY_MACRO	112	120	I120	
+KEY_MUTE	113	121	MUTE	[ XF86AudioMute ]
+KEY_VOLUMEDOWN	114	122	VOL-	[ XF86AudioLowerVolume ]
+KEY_VOLUMEUP	115	123	VOL+	[ XF86AudioRaiseVolume ]
+KEY_POWER	116	124	POWR	[ XF86PowerOff ]
+KEY_KPEQUAL	117	125	KPEQ	[ KP_Equal ]
+KEY_KPPLUSMINUS	118	126	I126	[ plusminus ]
+KEY_PAUSE	119	127	PAUS	[ XF86UserPB ]
+KEY_SCALE	120	128	I128	[ XF86LaunchA ]
+KEY_KPCOMMA	121	129	I129	
+KEY_HANGEUL	122	130	HNGL	[ Hangul ]
+KEY_HANJA	123	131	HJCV	[ Hangul_Hanja ]
+KEY_YEN	124	132	AE13	[ XF86Launch4 ]
+KEY_LEFTMETA	125	133	LWIN	[ Super_L, Super_L, Caps_Lock, Super_L ]
+KEY_RIGHTMETA	126	134	RWIN	[ XF86Eject ]
+KEY_COMPOSE	127	135	COMP	
+KEY_STOP	128	136	STOP	[ Cancel ]
+KEY_AGAIN	129	137	AGAI	[ Redo ]
+KEY_PROPS	130	138	PROP	[ SunProps ]
+KEY_UNDO	131	139	UNDO	[ Undo ]
+KEY_FRONT	132	140	FRNT	[ SunFront ]
+KEY_COPY	133	141	COPY	[ XF86Copy ]
+KEY_OPEN	134	142	OPEN	[ XF86Open ]
+KEY_PASTE	135	143	PAST	[ XF86Paste ]
+KEY_FIND	136	144	FIND	[ Find ]
+KEY_CUT	137	145	CUT	[ XF86Cut ]
+KEY_HELP	138	146	HELP	[ Help ]
+KEY_MENU	139	147	I147	[ XF86MenuKB ]
+KEY_CALC	140	148	I148	[ XF86Calculator ]
+KEY_SETUP	141	149	I149	
+KEY_SLEEP	142	150	I150	[ XF86Sleep ]
+KEY_WAKEUP	143	151	I151	[ XF86WakeUp ]
+KEY_FILE	144	152	I152	[ XF86Explorer ]
+KEY_SENDFILE	145	153	I153	[ XF86Send ]
+KEY_DELETEFILE	146	154	I154	
+KEY_XFER	147	155	I155	[ XF86Xfer ]
+KEY_PROG1	148	156	I156	[ XF86Launch1 ]
+KEY_PROG2	149	157	I157	[ XF86Launch2 ]
+KEY_WWW	150	158	I158	[ XF86WWW ]
+KEY_MSDOS	151	159	I159	[ XF86DOS ]
+KEY_COFFEE	152	160	I160	[ XF86ScreenSaver ]
+KEY_ROTATE_DISPLAY	153	161	I161	[ XF86RotateWindows ]
+KEY_CYCLEWINDOWS	154	162	I162	[ XF86TaskPane ]
+KEY_MAIL	155	163	I163	[ XF86AudioPrev ]
+KEY_BOOKMARKS	156	164	I164	[ XF86AudioPlay, XF86AudioPause ]
+KEY_COMPUTER	157	165	I165	[ XF86AudioNext ]
+KEY_BACK	158	166	I166	[ XF86Back ]
+KEY_FORWARD	159	167	I167	[ XF86Forward ]
+KEY_CLOSECD	160	168	I168	
+KEY_EJECTCD	161	169	I169	[ XF86Eject ]
+KEY_EJECTCLOSECD	162	170	I170	[ XF86Eject ]
+KEY_NEXTSONG	163	171	I171	[ XF86AudioNext ]
+KEY_PLAYPAUSE	164	172	I172	[ XF86AudioPlay, XF86AudioPause ]
+KEY_PREVIOUSSONG	165	173	I173	[ XF86AudioPrev ]
+KEY_STOPCD	166	174	I174	[ XF86AudioStop, XF86Eject ]
+KEY_RECORD	167	175	I175	[ XF86AudioRecord ]
+KEY_REWIND	168	176	I176	[ XF86AudioRewind ]
+KEY_PHONE	169	177	I177	[ XF86Phone ]
+KEY_ISO	170	178	I178	
+KEY_CONFIG	171	179	I179	[ XF86Tools ]
+KEY_HOMEPAGE	172	180	I180	[ XF86HomePage ]
+KEY_REFRESH	173	181	I181	[ XF86Reload ]
+KEY_EXIT	174	182	I182	[ XF86Close ]
+KEY_MOVE	175	183	I183	
+KEY_EDIT	176	184	I184	
+KEY_SCROLLUP	177	185	I185	[ XF86ScrollUp ]
+KEY_SCROLLDOWN	178	186	I186	[ XF86ScrollDown ]
+KEY_KPLEFTPAREN	179	187	I187	[ parenleft ]
+KEY_KPRIGHTPAREN	180	188	I188	[ parenright ]
+KEY_NEW	181	189	I189	[ XF86New ]
+KEY_REDO	182	190	I190	[ Redo ]
+KEY_F13	183	191	FK13	[ XF86MailForward ]
+KEY_F14	184	192	FK14	[ XF86New ]
+KEY_F15	185	193	FK15	[ XF86Open ]
+KEY_F16	186	194	FK16	[ XF86Close ]
+KEY_F17	187	195	FK17	[ XF86Reply ]
+KEY_F18	188	196	FK18	[ XF86Launch9 ]
+KEY_F19	189	197	FK19	
+KEY_F20	190	198	FK20	[ XF86AudioMicMute ]
+KEY_F21	191	199	FK21	[ XF86TouchpadToggle ]
+KEY_F22	192	200	FK22	[ XF86TouchpadOn ]
+KEY_F23	193	201	FK23	[ XF86TouchpadOff ]
+KEY_F24	194	202	FK24	
+KEY_PLAYCD	200	208	I208	[ XF86AudioPlay ]
+KEY_PAUSECD	201	209	I209	[ XF86AudioPause ]
+KEY_PROG3	202	210	I210	[ XF86Launch3 ]
+KEY_PROG4	203	211	I211	[ XF86Launch4 ]
+KEY_ALL_APPLICATIONS	204	212	I212	[ XF86LaunchB ]
+KEY_SUSPEND	205	213	I213	[ XF86Suspend ]
+KEY_CLOSE	206	214	I214	[ XF86Close ]
+KEY_PLAY	207	215	I215	[ XF86AudioPlay ]
+KEY_FASTFORWARD	208	216	I216	[ XF86AudioForward ]
+KEY_BASSBOOST	209	217	I217	
+KEY_PRINT	210	218	I218	[ Print ]
+KEY_HP	211	219	I219	
+KEY_CAMERA	212	220	I220	[ XF86WebCam ]
+KEY_SOUND	213	221	I221	[ XF86AudioPreset ]
+KEY_QUESTION	214	222	I222	
+KEY_EMAIL	215	223	I223	[ XF86Mail ]
+KEY_CHAT	216	224	I224	[ XF86Messenger ]
+KEY_SEARCH	217	225	I225	[ XF86Search ]
+KEY_CONNECT	218	226	I226	[ XF86Go ]
+KEY_FINANCE	219	227	I227	[ XF86Finance ]
+KEY_SPORT	220	228	I228	[ XF86Game ]
+KEY_SHOP	221	229	I229	[ XF86Shop ]
+KEY_ALTERASE	222	230	I230	
+KEY_CANCEL	223	231	I231	[ Cancel ]
+KEY_BRIGHTNESSDOWN	224	232	I232	[ XF86MonBrightnessDown ]
+KEY_BRIGHTNESSUP	225	233	I233	[ XF86MonBrightnessUp ]
+KEY_MEDIA	226	234	I234	[ XF86AudioMedia ]
+KEY_SWITCHVIDEOMODE	227	235	I235	[ XF86Display ]
+KEY_KBDILLUMTOGGLE	228	236	I236	[ XF86KbdLightOnOff ]
+KEY_KBDILLUMDOWN	229	237	I237	[ XF86KbdBrightnessDown ]
+KEY_KBDILLUMUP	230	238	I238	[ XF86KbdBrightnessUp ]
+KEY_SEND	231	239	I239	[ XF86Send ]
+KEY_REPLY	232	240	I240	[ XF86Reply ]
+KEY_FORWARDMAIL	233	241	I241	[ XF86MailForward ]
+KEY_SAVE	234	242	I242	[ XF86Save ]
+KEY_DOCUMENTS	235	243	I243	[ XF86Documents ]
+KEY_BATTERY	236	244	I244	[ XF86Battery ]
+KEY_BLUETOOTH	237	245	I245	[ XF86Bluetooth ]
+KEY_WLAN	238	246	I246	[ XF86WLAN ]
+KEY_UWB	239	247	I247	[ XF86UWB ]
+KEY_UNKNOWN	240	248	I248	
+KEY_VIDEO_NEXT	241	249	I249	[ XF86Next_VMode ]
+KEY_VIDEO_PREV	242	250	I250	[ XF86Prev_VMode ]
+KEY_BRIGHTNESS_CYCLE	243	251	I251	[ XF86MonBrightnessCycle ]
+KEY_BRIGHTNESS_AUTO	244	252	I252	[ XF86BrightnessAuto ]
+KEY_DISPLAY_OFF	245	253	I253	[ XF86DisplayOff ]
+KEY_WWAN	246	254	I254	[ XF86WWAN ]
+KEY_RFKILL	247	255	I255	[ XF86RFKill ]
+KEY_MICMUTE	248	256	I256	[ XF86AudioMicMute ]
+KEY_OK	352	360	I360	
+KEY_SELECT	353	361	I361	
+KEY_GOTO	354	362	I362	
+KEY_CLEAR	355	363	I363	
+KEY_POWER2	356	364	I364	
+KEY_OPTION	357	365	I365	
+KEY_INFO	358	366	I366	[ XF86Info ]
+KEY_TIME	359	367	I367	
+KEY_VENDOR	360	368	I368	
+KEY_ARCHIVE	361	369	I369	
+KEY_PROGRAM	362	370	I370	
+KEY_CHANNEL	363	371	I371	
+KEY_FAVORITES	364	372	I372	[ XF86Favorites ]
+KEY_EPG	365	373	I373	
+KEY_PVR	366	374	I374	
+KEY_MHP	367	375	I375	
+KEY_LANGUAGE	368	376	I376	
+KEY_TITLE	369	377	I377	
+KEY_SUBTITLE	370	378	I378	
+KEY_ANGLE	371	379	I379	[ XF86CycleAngle ]
+KEY_FULL_SCREEN	372	380	I380	[ XF86FullScreen ]
+KEY_MODE	373	381	I381	
+KEY_KEYBOARD	374	382	I382	[ XF86Keyboard ]
+KEY_ASPECT_RATIO	375	383	I383	[ XF86AspectRatio ]
+KEY_PC	376	384	I384	
+KEY_TV	377	385	I385	
+KEY_TV2	378	386	I386	
+KEY_VCR	379	387	I387	
+KEY_VCR2	380	388	I388	
+KEY_SAT	381	389	I389	
+KEY_SAT2	382	390	I390	
+KEY_CD	383	391	I391	
+KEY_TAPE	384	392	I392	
+KEY_RADIO	385	393	I393	
+KEY_TUNER	386	394	I394	
+KEY_PLAYER	387	395	I395	
+KEY_TEXT	388	396	I396	
+KEY_DVD	389	397	I397	[ XF86DVD ]
+KEY_AUX	390	398	I398	
+KEY_MP3	391	399	I399	
+KEY_AUDIO	392	400	I400	[ XF86Audio ]
+KEY_VIDEO	393	401	I401	[ XF86Video ]
+KEY_DIRECTORY	394	402	I402	
+KEY_LIST	395	403	I403	
+KEY_MEMO	396	404	I404	
+KEY_CALENDAR	397	405	I405	[ XF86Calendar ]
+KEY_RED	398	406	I406	
+KEY_GREEN	399	407	I407	
+KEY_YELLOW	400	408	I408	
+KEY_BLUE	401	409	I409	
+KEY_CHANNELUP	402	410	I410	[ XF86ChannelUp ]
+KEY_CHANNELDOWN	403	411	I411	[ XF86ChannelDown ]
+KEY_FIRST	404	412	I412	
+KEY_LAST	405	413	I413	
+KEY_AB	406	414	I414	
+KEY_NEXT	407	415	I415	
+KEY_RESTART	408	416	I416	
+KEY_SLOW	409	417	I417	
+KEY_SHUFFLE	410	418	I418	[ XF86AudioRandomPlay ]
+KEY_BREAK	411	419	I419	[ XF86Break ]
+KEY_PREVIOUS	412	420	I420	
+KEY_DIGITS	413	421	I421	
+KEY_TEEN	414	422	I422	
+KEY_TWEN	415	423	I423	
+KEY_VIDEOPHONE	416	424	I424	[ XF86VideoPhone ]
+KEY_GAMES	417	425	I425	[ XF86Game ]
+KEY_ZOOMIN	418	426	I426	[ XF86ZoomIn ]
+KEY_ZOOMOUT	419	427	I427	[ XF86ZoomOut ]
+KEY_ZOOMRESET	420	428	I428	[ XF86ZoomReset ]
+KEY_WORDPROCESSOR	421	429	I429	[ XF86Word ]
+KEY_EDITOR	422	430	I430	[ XF86Editor ]
+KEY_SPREADSHEET	423	431	I431	[ XF86Excel ]
+KEY_GRAPHICSEDITOR	424	432	I432	[ XF86GraphicsEditor ]
+KEY_PRESENTATION	425	433	I433	[ XF86Presentation ]
+KEY_DATABASE	426	434	I434	[ XF86Database ]
+KEY_NEWS	427	435	I435	[ XF86News ]
+KEY_VOICEMAIL	428	436	I436	[ XF86Voicemail ]
+KEY_ADDRESSBOOK	429	437	I437	[ XF86Addressbook ]
+KEY_MESSENGER	430	438	I438	[ XF86Messenger ]
+KEY_DISPLAYTOGGLE	431	439	I439	[ XF86DisplayToggle ]
+KEY_SPELLCHECK	432	440	I440	[ XF86SpellCheck ]
+KEY_LOGOFF	433	441	I441	[ XF86LogOff ]
+KEY_DOLLAR	434	442	I442	[ dollar ]
+KEY_EURO	435	443	I443	[ EuroSign ]
+KEY_FRAMEBACK	436	444	I444	[ XF86FrameBack ]
+KEY_FRAMEFORWARD	437	445	I445	[ XF86FrameForward ]
+KEY_CONTEXT_MENU	438	446	I446	[ XF86ContextMenu ]
+KEY_MEDIA_REPEAT	439	447	I447	[ XF86MediaRepeat ]
+KEY_10CHANNELSUP	440	448	I448	[ XF8610ChannelsUp ]
+KEY_10CHANNELSDOWN	441	449	I449	[ XF8610ChannelsDown ]
+KEY_IMAGES	442	450	I450	[ XF86Images ]
+KEY_NOTIFICATION_CENTER	444	452	I452	[ XF86NotificationCenter ]
+KEY_PICKUP_PHONE	445	453	I453	[ XF86PickupPhone ]
+KEY_HANGUP_PHONE	446	454	I454	[ XF86HangupPhone ]
+KEY_DEL_EOL	448	456	I456	
+KEY_DEL_EOS	449	457	I457	
+KEY_INS_LINE	450	458	I458	
+KEY_DEL_LINE	451	459	I459	
+KEY_FN	464	472	I472	[ XF86Fn ]
+KEY_FN_ESC	465	473	I473	[ XF86Fn_Esc ]
+KEY_FN_F1	466	474	I474	
+KEY_FN_F2	467	475	I475	
+KEY_FN_F3	468	476	I476	
+KEY_FN_F4	469	477	I477	
+KEY_FN_F5	470	478	I478	
+KEY_FN_F6	471	479	I479	
+KEY_FN_F7	472	480	I480	
+KEY_FN_F8	473	481	I481	
+KEY_FN_F9	474	482	I482	
+KEY_FN_F10	475	483	I483	
+KEY_FN_F11	476	484	I484	
+KEY_FN_F12	477	485	I485	
+KEY_FN_1	478	486	I486	
+KEY_FN_2	479	487	I487	
+KEY_FN_D	480	488	I488	
+KEY_FN_E	481	489	I489	
+KEY_FN_F	482	490	I490	
+KEY_FN_S	483	491	I491	
+KEY_FN_B	484	492	I492	
+KEY_FN_RIGHT_SHIFT	485	493	I493	[ XF86FnRightShift ]
+KEY_BRL_DOT1	497	505	I505	[ braille_dot_1 ]
+KEY_BRL_DOT2	498	506	I506	[ braille_dot_2 ]
+KEY_BRL_DOT3	499	507	I507	[ braille_dot_3 ]
+KEY_BRL_DOT4	500	508	I508	[ braille_dot_4 ]
+KEY_BRL_DOT5	501	509	I509	[ braille_dot_5 ]
+KEY_BRL_DOT6	502	510	I510	[ braille_dot_6 ]
+KEY_BRL_DOT7	503	511	I511	[ braille_dot_7 ]
+KEY_BRL_DOT8	504	512	I512	[ braille_dot_8 ]
+KEY_BRL_DOT9	505	513	I513	[ braille_dot_9 ]
+KEY_BRL_DOT10	506	514	I514	[ braille_dot_1 ]
+KEY_NUMERIC_0	512	520	I520	[ XF86Numeric0 ]
+KEY_NUMERIC_1	513	521	I521	[ XF86Numeric1 ]
+KEY_NUMERIC_2	514	522	I522	[ XF86Numeric2 ]
+KEY_NUMERIC_3	515	523	I523	[ XF86Numeric3 ]
+KEY_NUMERIC_4	516	524	I524	[ XF86Numeric4 ]
+KEY_NUMERIC_5	517	525	I525	[ XF86Numeric5 ]
+KEY_NUMERIC_6	518	526	I526	[ XF86Numeric6 ]
+KEY_NUMERIC_7	519	527	I527	[ XF86Numeric7 ]
+KEY_NUMERIC_8	520	528	I528	[ XF86Numeric8 ]
+KEY_NUMERIC_9	521	529	I529	[ XF86Numeric9 ]
+KEY_NUMERIC_STAR	522	530	I530	[ XF86NumericStar ]
+KEY_NUMERIC_POUND	523	531	I531	[ XF86NumericPound ]
+KEY_NUMERIC_A	524	532	I532	[ XF86NumericA ]
+KEY_NUMERIC_B	525	533	I533	[ XF86NumericB ]
+KEY_NUMERIC_C	526	534	I534	[ XF86NumericC ]
+KEY_NUMERIC_D	527	535	I535	[ XF86NumericD ]
+KEY_CAMERA_FOCUS	528	536	I536	[ XF86CameraFocus ]
+KEY_WPS_BUTTON	529	537	I537	[ XF86WPSButton ]
+KEY_TOUCHPAD_TOGGLE	530	538	I538	[ XF86TouchpadToggle ]
+KEY_TOUCHPAD_ON	531	539	I539	[ XF86TouchpadOn ]
+KEY_TOUCHPAD_OFF	532	540	I540	[ XF86TouchpadOff ]
+KEY_CAMERA_ZOOMIN	533	541	I541	[ XF86CameraZoomIn ]
+KEY_CAMERA_ZOOMOUT	534	542	I542	[ XF86CameraZoomOut ]
+KEY_CAMERA_UP	535	543	I543	[ XF86CameraUp ]
+KEY_CAMERA_DOWN	536	544	I544	[ XF86CameraDown ]
+KEY_CAMERA_LEFT	537	545	I545	[ XF86CameraLeft ]
+KEY_CAMERA_RIGHT	538	546	I546	[ XF86CameraRight ]
+KEY_ATTENDANT_ON	539	547	I547	[ XF86AttendantOn ]
+KEY_ATTENDANT_OFF	540	548	I548	[ XF86AttendantOff ]
+KEY_ATTENDANT_TOGGLE	541	549	I549	[ XF86AttendantToggle ]
+KEY_LIGHTS_TOGGLE	542	550	I550	[ XF86LightsToggle ]
+KEY_ALS_TOGGLE	560	568	I568	[ XF86ALSToggle ]
+KEY_ROTATE_LOCK_TOGGLE	561	569	I569	[ XF86RotationLockToggle ]
+KEY_BUTTONCONFIG	576	584	I584	[ XF86Buttonconfig ]
+KEY_TASKMANAGER	577	585	I585	[ XF86Taskmanager ]
+KEY_JOURNAL	578	586	I586	[ XF86Journal ]
+KEY_CONTROLPANEL	579	587	I587	[ XF86ControlPanel ]
+KEY_APPSELECT	580	588	I588	[ XF86AppSelect ]
+KEY_SCREENSAVER	581	589	I589	[ XF86Screensaver ]
+KEY_VOICECOMMAND	582	590	I590	[ XF86VoiceCommand ]
+KEY_ASSISTANT	583	591	I591	[ XF86Assistant ]
+KEY_KBD_LAYOUT_NEXT	584	592	I592	[ ISO_Next_Group ]
+KEY_EMOJI_PICKER	585	593	I593	[ XF86EmojiPicker ]
+KEY_DICTATE	586			
+KEY_CAMERA_ACCESS_ENABLE	587			
+KEY_CAMERA_ACCESS_DISABLE	588			
+KEY_CAMERA_ACCESS_TOGGLE	589			
+KEY_BRIGHTNESS_MIN	592	600	I600	[ XF86BrightnessMin ]
+KEY_BRIGHTNESS_MAX	593	601	I601	[ XF86BrightnessMax ]
+KEY_KBDINPUTASSIST_PREV	608	616	I616	[ XF86KbdInputAssistPrev ]
+KEY_KBDINPUTASSIST_NEXT	609	617	I617	[ XF86KbdInputAssistNext ]
+KEY_KBDINPUTASSIST_PREVGROUP	610	618	I618	[ XF86KbdInputAssistPrevgroup ]
+KEY_KBDINPUTASSIST_NEXTGROUP	611	619	I619	[ XF86KbdInputAssistNextgroup ]
+KEY_KBDINPUTASSIST_ACCEPT	612	620	I620	[ XF86KbdInputAssistAccept ]
+KEY_KBDINPUTASSIST_CANCEL	613	621	I621	[ XF86KbdInputAssistCancel ]
+KEY_RIGHT_UP	614	622	I622	[ XF86RightUp ]
+KEY_RIGHT_DOWN	615	623	I623	[ XF86RightDown ]
+KEY_LEFT_UP	616	624	I624	[ XF86LeftUp ]
+KEY_LEFT_DOWN	617	625	I625	[ XF86LeftDown ]
+KEY_ROOT_MENU	618	626	I626	[ XF86RootMenu ]
+KEY_MEDIA_TOP_MENU	619	627	I627	[ XF86MediaTopMenu ]
+KEY_NUMERIC_11	620	628	I628	[ XF86Numeric11 ]
+KEY_NUMERIC_12	621	629	I629	[ XF86Numeric12 ]
+KEY_AUDIO_DESC	622	630	I630	[ XF86AudioDesc ]
+KEY_3D_MODE	623	631	I631	[ XF863DMode ]
+KEY_NEXT_FAVORITE	624	632	I632	[ XF86NextFavorite ]
+KEY_STOP_RECORD	625	633	I633	[ XF86StopRecord ]
+KEY_PAUSE_RECORD	626	634	I634	[ XF86PauseRecord ]
+KEY_VOD	627	635	I635	[ XF86VOD ]
+KEY_UNMUTE	628	636	I636	[ XF86Unmute ]
+KEY_FASTREVERSE	629	637	I637	[ XF86FastReverse ]
+KEY_SLOWREVERSE	630	638	I638	[ XF86SlowReverse ]
+KEY_DATA	631	639	I639	[ XF86Data ]
+KEY_ONSCREEN_KEYBOARD	632	640	I640	[ XF86OnScreenKeyboard ]
+KEY_PRIVACY_SCREEN_TOGGLE	633	641	I641	[ XF86PrivacyScreenToggle ]
+KEY_SELECTIVE_SCREENSHOT	634	642	I642	[ XF86SelectiveScreenshot ]
+KEY_NEXT_ELEMENT	635			
+KEY_PREVIOUS_ELEMENT	636			
+KEY_AUTOPILOT_ENGAGE_TOGGLE	637			
+KEY_MARK_WAYPOINT	638			
+KEY_SOS	639			
+KEY_NAV_CHART	640			
+KEY_FISHING_CHART	641			
+KEY_SINGLE_RANGE_RADAR	642			
+KEY_DUAL_RANGE_RADAR	643			
+KEY_RADAR_OVERLAY	644			
+KEY_TRADITIONAL_SONAR	645			
+KEY_CLEARVU_SONAR	646			
+KEY_SIDEVU_SONAR	647			
+KEY_NAV_INFO	648			
+KEY_BRIGHTNESS_MENU	649			
+KEY_MACRO1	656	664	I664	[ XF86Macro1 ]
+KEY_MACRO2	657	665	I665	[ XF86Macro2 ]
+KEY_MACRO3	658	666	I666	[ XF86Macro3 ]
+KEY_MACRO4	659	667	I667	[ XF86Macro4 ]
+KEY_MACRO5	660	668	I668	[ XF86Macro5 ]
+KEY_MACRO6	661	669	I669	[ XF86Macro6 ]
+KEY_MACRO7	662	670	I670	[ XF86Macro7 ]
+KEY_MACRO8	663	671	I671	[ XF86Macro8 ]
+KEY_MACRO9	664	672	I672	[ XF86Macro9 ]
+KEY_MACRO10	665	673	I673	[ XF86Macro10 ]
+KEY_MACRO11	666	674	I674	[ XF86Macro11 ]
+KEY_MACRO12	667	675	I675	[ XF86Macro12 ]
+KEY_MACRO13	668	676	I676	[ XF86Macro13 ]
+KEY_MACRO14	669	677	I677	[ XF86Macro14 ]
+KEY_MACRO15	670	678	I678	[ XF86Macro15 ]
+KEY_MACRO16	671	679	I679	[ XF86Macro16 ]
+KEY_MACRO17	672	680	I680	[ XF86Macro17 ]
+KEY_MACRO18	673	681	I681	[ XF86Macro18 ]
+KEY_MACRO19	674	682	I682	[ XF86Macro19 ]
+KEY_MACRO20	675	683	I683	[ XF86Macro20 ]
+KEY_MACRO21	676	684	I684	[ XF86Macro21 ]
+KEY_MACRO22	677	685	I685	[ XF86Macro22 ]
+KEY_MACRO23	678	686	I686	[ XF86Macro23 ]
+KEY_MACRO24	679	687	I687	[ XF86Macro24 ]
+KEY_MACRO25	680	688	I688	[ XF86Macro25 ]
+KEY_MACRO26	681	689	I689	[ XF86Macro26 ]
+KEY_MACRO27	682	690	I690	[ XF86Macro27 ]
+KEY_MACRO28	683	691	I691	[ XF86Macro28 ]
+KEY_MACRO29	684	692	I692	[ XF86Macro29 ]
+KEY_MACRO30	685	693	I693	[ XF86Macro30 ]
+KEY_MACRO_RECORD_START	688	696	I696	[ XF86MacroRecordStart ]
+KEY_MACRO_RECORD_STOP	689	697	I697	[ XF86MacroRecordStop ]
+KEY_MACRO_PRESET_CYCLE	690	698	I698	[ XF86MacroPresetCycle ]
+KEY_MACRO_PRESET1	691	699	I699	[ XF86MacroPreset1 ]
+KEY_MACRO_PRESET2	692	700	I700	[ XF86MacroPreset2 ]
+KEY_MACRO_PRESET3	693	701	I701	[ XF86MacroPreset3 ]
+KEY_KBD_LCD_MENU1	696	704	I704	[ XF86KbdLcdMenu1 ]
+KEY_KBD_LCD_MENU2	697	705	I705	[ XF86KbdLcdMenu2 ]
+KEY_KBD_LCD_MENU3	698	706	I706	[ XF86KbdLcdMenu3 ]
+KEY_KBD_LCD_MENU4	699	707	I707	[ XF86KbdLcdMenu4 ]
+KEY_KBD_LCD_MENU5	700	708	I708	[ XF86KbdLcdMenu5 ]
+KEY_MAX	767			
