@@ -2,6 +2,15 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs August 2024 (since June 2024)
+======================================================================
+• Inmate kernel bumped to 6.9.7 (was 6.7.12).
+• GNUCash (finance management) bumped to 5.6 (was 4.13).
+• SMART monitoring bumped to 7.4 (was 7.3) for understudy.
+• Fix wireplumber (GUI middleware) starting for system accounts.
+• Fix disc-snitch logging as "-".
+
+======================================================================
  Changes in SOEs June 2024 (since May 2024)
 ======================================================================
 • VNC client ("Control desktop" in ppcadm) now defaults to view-only mode.
