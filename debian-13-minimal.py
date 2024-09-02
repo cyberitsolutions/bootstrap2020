@@ -32,12 +32,12 @@ parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.i
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 
+
 filesystem_img_size = '512M'    # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
 esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 
-if not args.boot_test:
-  with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td_str:
+with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td_str:
     td = pathlib.Path(td_str)
     (td / 'live').mkdir()
     (td / 'EFI/BOOT').mkdir(parents=True)
@@ -52,8 +52,9 @@ if not args.boot_test:
 
          # Workaround https://bugs.debian.org/602788
          # Let root login with no password.  UPDATE: *no* password is forbidden in Debian 13+?
+         # UPDATE: this is still not working, and I don't know why.  I give up and let's just do SSH instead...
          '--customize-hook=echo root:root | chroot $1 chpasswd',
-         '--include=man-db,mokutil',    # DEBUGGING
+         '--include=man-db mokutil efibootmgr python3-virt-firmware dialog',    # DEBUGGING
 
          '--include=linux-image-cloud-amd64 init initramfs-tools live-boot netbase',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
@@ -61,12 +62,15 @@ if not args.boot_test:
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
          # FIXME: once the host OS runs Debian 13, move this to the host.
          '--include=systemd-boot systemd-ukify sbsigntool',
-         # "The password for the key is 'snakeoil'."
+         # "The password for the key is 'snakeoil'." (for "Enter PEM pass phrase:").
          # https://salsa.debian.org/qemu-team/edk2/-/blob/debian/2024.05-1/debian/ovmf.README.Debian?ref_type=tags#L65
-         '--customize-hook=upload /usr/share/ovmf/PkKek-1-snakeoil.key /PRIVATE-KEY-IF-ATTACKER-GETS-THIS-WE-ARE-FUCKED',
-         '--customize-hook=upload /usr/share/ovmf/PkKek-1-snakeoil.pem /cert',
-         '--customize-hook=chroot $1 /lib/systemd/ukify build --linux=/vmlinuz --initrd=/initrd.img --cmdline="boot=live console=ttyS0 earlyprintk=ttyS0 loglevel=2" --secureboot-private-key=/PRIVATE-KEY-IF-ATTACKER-GETS-THIS-WE-ARE-FUCKED --secureboot-certificate=/cert',
-         '--customize-hook=rm --verbose -- "$1/PRIVATE-KEY-IF-ATTACKER-GETS-THIS-WE-ARE-FUCKED" "$1/cert"',
+         # '--customize-hook=upload /usr/share/ovmf/PkKek-1-snakeoil.key /PRIVATE-KEY-IF-ATTACKER-GETS-THIS-WE-ARE-FUCKED',
+         # '--customize-hook=upload /usr/share/ovmf/PkKek-1-snakeoil.pem /cert',
+         # FIXME: adding "ukify --measure" does hash stuff, but actually booting, "bootctl" still reports "Measured UKI: no".
+         '--customize-hook=chroot $1 ukify genkey --secureboot-private-key=/tmp/key --secureboot-certificate=/tmp/cert',
+         '--customize-hook=chroot $1 ukify build --linux=/vmlinuz --initrd=/initrd.img --cmdline="boot=live console=ttyS0 earlyprintk=ttyS0 loglevel=2 rescue" --secureboot-private-key=/tmp/key --secureboot-certificate=/tmp/cert',
+         '--customize-hook=download /tmp/cert cert',
+         '--customize-hook=rm --verbose -- "$1/tmp/key" "$1/tmp/cert"',
          '--customize-hook=download /vmlinuz.efi EFI/BOOT/BOOTX64.EFI'],
         cwd=td)
 
@@ -93,20 +97,52 @@ if not args.boot_test:
          '::'],                 # destdir is root of fs
         cwd=td)
 
+    # For args.boot_test, create an OVMF config that
+    #   0. has secure boot turned on
+    #   1. trusts the keypair we just created (it exists in DB and/or KEK)
+    #   2. does NOT trust microsoft (MS keys and signatures are not in DB nor KEK)
+    #   3. FIXME: *really* does not trust microsoft (MS keys and signatures in DBX)
+    #
+    # FIXME: When I just make an RSA-2048 keypair (e.g. with ukify --genkey), and then
+    #        I want to create a new OVMF_VARS_4M.twb.fd from scratch and add it as the KEK,
+    #        how do I know what the GUID should be (for virt-fw-vars --add-kek GUID FILE)?
+    #        Do I just make up a new UUID4?
+    #        Or is it somehow inferred/computed from something else?
+    # Sanity-check the template does NOT contain any trusted keys.
+    ovmf_template_path = pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.fd')
+    fd_path = args.output_file.with_suffix(f'.{ovmf_template_path.name}')
+    _ = subprocess.check_output(['virt-fw-dump', '--input', ovmf_template_path], text=True)
+    assert 'end of variable list at offset 0x0' in _
+    assert 'KEK' not in _.lower()
+    assert 'PK' not in _.lower()
+    assert 'db' not in _.lower()
+    assert 'dbx' not in _.lower()
+    uuid_str = subprocess.check_output(['uuidgen'], text=True).strip()
+    subprocess.check_call(
+      ['virt-fw-vars',
+       '--input', ovmf_template_path,
+       '--secure-boot',
+       '--set-pk', uuid_str, './cert',
+       '--add-kek', uuid_str, './cert',
+       # FIXME: there is no --add-dbx, only --set-dbx...
+       # '--add-dbx', '77fa9abd-0359-4d32-bd60-28f4e78f784b', 'db-77fa9abd-0359-4d32-bd60-28f4e78f784b-MicrosoftWindowsProductionPCA2011.pem',
+       '--output', fd_path],
+      cwd=td)
+
 # NOTE: this invocation is concise, NOT efficient!
 if args.boot_test:
   # SIGH, need transient files because fucking OVMF
-  with tempfile.TemporaryDirectory(prefix='fuck-you-ovmf.') as td_str:
-    td = pathlib.Path(td_str)
-    # You can't just initialize OVMF_VARS_4M.fd to be all zeros.
-    # If you do that, EDK2 straight-up crashes!
-    # That is fucking sloppy and shit!
-    if False:
-        subprocess.check_call(['truncate', '--size=540672', td / 'VARS.FD'])
-    else:
-        fuckₚath = td / 'VARS.FD'
-        fuckₚath.write_bytes(pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.snakeoil.fd').read_bytes())  # TRUST SNAKEOIL (BUT NOT MS?)
-        # fuckₚath.write_bytes(pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.ms.fd').read_bytes())  # TRUST MS BUT NOT SNAKEOIL
+  # with tempfile.TemporaryDirectory(prefix='fuck-you-ovmf.') as td_str:
+  #   td = pathlib.Path(td_str)
+  #   # You can't just initialize OVMF_VARS_4M.fd to be all zeros.
+  #   # If you do that, EDK2 straight-up crashes!
+  #   # That is fucking sloppy and shit!
+  #   if False:
+  #       subprocess.check_call(['truncate', '--size=540672', td / 'VARS.FD'])
+  #   else:
+  #       fuckₚath = td / 'VARS.FD'
+  #       fuckₚath.write_bytes(pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.snakeoil.fd').read_bytes())  # TRUST SNAKEOIL (BUT NOT MS?)
+  #       # fuckₚath.write_bytes(pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.ms.fd').read_bytes())  # TRUST MS BUT NOT SNAKEOIL
 
     # NOTE: You SHOULD NOT use OVMF_CODE_4M.fd as it allows "enforce -machine ⋯,smm=off".
     #       Apparently smm=on is safer, somehow.
@@ -124,12 +160,20 @@ if args.boot_test:
     #                    OVMF_VARS_4M.secboot.fd           MISSING?
     # 2479528601  540672 OVMF_VARS_4M.snakeoil.fd     2389
 
-    subprocess.check_call(
-        ['wget2', '--http-proxy=http://localhost:3142',
-         'http://deb.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/mini.iso',
-         # 'http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.6.0-amd64-netinst.iso',
-         ],
-        cwd=td)
+    # subprocess.check_call(
+    #     ['wget2', '--http-proxy=http://localhost:3142',
+    #      'http://deb.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/mini.iso',
+    #      # 'http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.6.0-amd64-netinst.iso',
+    #      ],
+    #     cwd=td)
+
+    # WHAT THE FUCK, after trying to boot, my minimal
+    # OVMF_VARS_4M.twb.fd (based on OVMF_VARS_4M.fd, i.e. containing
+    # only *MY* keys), has substantially changed!
+    # It contains things like "variable=guid:EfiGlobalVariable nsize=0xc dsize=0x22 attr=0x7 name=ConIn (deleted)" now!
+    # Take a backup of this file before starting the VM, so I can compare before-and-after.
+    fd_path.with_suffix('.FUCK-YOU-BACKUP').write_bytes(fd_path.read_bytes())
+
     subprocess.check_call([
         'kvm',
         # Can't use -nographic easily because https://bugs.debian.org/602788
@@ -137,18 +181,23 @@ if args.boot_test:
         '--serial', 'mon:stdio', '--vga', 'none', '--display', 'none',
 
         '--machine', 'q35,smm=on',
-        '--bios', 'OVMF.fd',
+        # '--bios', 'OVMF.fd',
 
         '--global', 'driver=cfi.pflash01,property=secure,value=on',
         '--drive', 'if=pflash,format=raw,unit=0,file=/usr/share/OVMF/OVMF_CODE_4M.snakeoil.fd,readonly=on',
-        '--drive', f'if=pflash,format=raw,unit=1,file={fuckₚath},readonly=off',
+        # '--drive', f'if=pflash,format=raw,unit=1,file={fuckₚath},readonly=off',
+        '--drive', f'if=pflash,format=raw,unit=1,file={fd_path},readonly=off',
 
         '-m', '1G',
 
         '--boot', 'menu=on',
 
+        # https://github.com/tianocore/edk2/blob/master/OvmfPkg/README#L88
+        # '-debugcon', 'mon:stdio', '-global', 'isa-debugcon.iobase=0x402',
+
         # SIGNED BY MICROSOFT VIA SHIM?
-        '--drive', f'if=none,id=OutpourDemystifyPatchy,file={td / "mini.iso"},format=raw,readonly=on',
+        # '--drive', f'if=none,id=OutpourDemystifyPatchy,file={td / "mini.iso"},format=raw,readonly=on',
+        '--drive', f'if=none,id=OutpourDemystifyPatchy,file=https://deb.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/mini.iso,format=raw,readonly=on',
         '--device', 'virtio-blk-pci,drive=OutpourDemystifyPatchy,serial=HackerTibiaRetype',
 
         # UKI SIGNED BY SNAKEOIL, FILESYSTEM.SQUASHFS NOT SIGNED AT ALL!
