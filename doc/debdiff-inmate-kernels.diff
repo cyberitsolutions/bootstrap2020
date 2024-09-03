@@ -1,3 +1,74 @@
+cf3a50a 6.10.6-1725344604 (was 6.9.7-1721685034)
+diff --git a/manifest.txt b/manifest.txt
+index 5882f42..15c626f 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -60,6 +60,9 @@ kernel/drivers/edac/x38_edac.ko
+ kernel/drivers/firmware/
+ kernel/drivers/firmware/cirrus/
+ kernel/drivers/firmware/cirrus/cs_dsp.ko
++kernel/drivers/firmware/efi/
++kernel/drivers/firmware/efi/capsule-loader.ko
++kernel/drivers/firmware/efi/efibc.ko
+ kernel/drivers/gpu/
+ kernel/drivers/gpu/drm/
+ kernel/drivers/gpu/drm/display/
+@@ -67,7 +70,6 @@ kernel/drivers/gpu/drm/display/drm_display_helper.ko
+ kernel/drivers/gpu/drm/drm.ko
+ kernel/drivers/gpu/drm/drm_buddy.ko
+ kernel/drivers/gpu/drm/drm_kms_helper.ko
+-kernel/drivers/gpu/drm/drm_panel_orientation_quirks.ko
+ kernel/drivers/gpu/drm/i915/
+ kernel/drivers/gpu/drm/i915/i915.ko
+ kernel/drivers/gpu/drm/ttm/
+@@ -80,8 +82,6 @@ kernel/drivers/hid/usbhid/usbhid.ko
+ kernel/drivers/leds/
+ kernel/drivers/leds/led-class-multicolor.ko
+ kernel/drivers/leds/led-class.ko
+-kernel/drivers/leds/trigger/
+-kernel/drivers/leds/trigger/ledtrig-audio.ko
+ kernel/drivers/media/
+ kernel/drivers/media/rc/
+ kernel/drivers/media/rc/ir-jvc-decoder.ko
+@@ -215,14 +215,12 @@ kernel/sound/soc/intel/atom/sst/snd-intel-sst-acpi.ko
+ kernel/sound/soc/intel/atom/sst/snd-intel-sst-core.ko
+ kernel/sound/soc/intel/boards/
+ kernel/sound/soc/intel/boards/snd-skl_nau88l25_max98357a.ko
+-kernel/sound/soc/intel/boards/snd-soc-cml_rt1011_rt5682.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-hda-dsp-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-board-helpers.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-cirrus-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-maxim-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-nuvoton-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-realtek-common.ko
+-kernel/sound/soc/intel/boards/snd-soc-intel-sof-ssp-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-kbl_da7219_max98357a.ko
+ kernel/sound/soc/intel/boards/snd-soc-kbl_da7219_max98927.ko
+ kernel/sound/soc/intel/boards/snd-soc-kbl_rt5663_max98927.ko
+@@ -233,7 +231,6 @@ kernel/sound/soc/intel/boards/snd-soc-sof-ssp-amp.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_cs42l42.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_nau8825.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_rt5682.ko
+-kernel/sound/soc/intel/boards/snd-soc-sst-bxt-da7219_max98357a.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-cx2072x.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-da7213.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-es8316.ko
+@@ -243,7 +240,6 @@ kernel/sound/soc/intel/boards/snd-soc-sst-cht-bsw-max98090_ti.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-cht-bsw-nau8824.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-cht-bsw-rt5645.ko
+ kernel/sound/soc/intel/boards/snd-soc-sst-cht-bsw-rt5672.ko
+-kernel/sound/soc/intel/boards/snd-soc-sst-glk-rt5682_max98357a.ko
+ kernel/sound/soc/intel/catpt/
+ kernel/sound/soc/intel/catpt/snd-soc-catpt.ko
+ kernel/sound/soc/intel/common/
+@@ -259,6 +255,7 @@ kernel/sound/soc/sof/
+ kernel/sound/soc/sof/intel/
+ kernel/sound/soc/sof/intel/snd-sof-intel-atom.ko
+ kernel/sound/soc/sof/intel/snd-sof-intel-hda-common.ko
++kernel/sound/soc/sof/intel/snd-sof-intel-hda-generic.ko
+ kernel/sound/soc/sof/intel/snd-sof-intel-hda-mlink.ko
+ kernel/sound/soc/sof/intel/snd-sof-intel-hda.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-apl.ko
 e873371 6.9.7-1721685034 (was 6.7.12-1716770423)
 diff --git a/manifest.txt b/manifest.txt
 index ee822a2..5882f42 100644
