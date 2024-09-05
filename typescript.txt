@@ -1,0 +1,98 @@
+bash5$ python3 outer.py
+I: automatically chosen mode: unshare
+I: chroot architecture amd64 is equal to the host's architecture
+I: finding correct signed-by value...
+done
+I: automatically chosen format: null
+I: using /tmp/mmdebstrap.Y8T1IMcyku as tempdir
+I: running apt-get update...
+done
+I: downloading packages with apt...
+done
+I: extracting archives...
+done
+I: installing essential packages...
+done
+I: installing remaining packages inside the chroot...
+done
+done
+done
+I: running special hook: upload snponly_x64.efi /snponly_x64.unsigned.efi
+I: running special hook: copy-in inner.py /
+I: running --customize-hook in shell: sh -c 'chroot $1 python3 inner.py' exec /tmp/mmdebstrap.Y8T1IMcyku
+Writing SecureBoot private key to /tmp/key
+Writing SecureBoot certificate to /tmp/cert
++ sbverify --list /vmlinuz
+Kernel version not specified, starting autodetection 😖.
+Found uname version: 6.10.6-cloud-amd64
++ sbsign --key /tmp/key --cert /tmp/cert /tmp/uki9juumo0s --output vmlinuz.efi
+Signing Unsigned original image
+Wrote signed vmlinuz.efi
+Signing Unsigned original image
+INFO: reading raw edk2 varstore from /usr/share/OVMF/OVMF_VARS_4M.fd
+INFO: var store range: 0x64 -> 0x40000
+INFO: create variable PK
+INFO: clear PK sigdb
+INFO: add PK cert /tmp/cert
+/usr/lib/python3/dist-packages/virt/firmware/efi/siglist.py:182: CryptographyDeprecationWarning: Properties that return a naïve datetime object have been deprecated. Please switch to not_valid_before_utc.
+  ts = siglist.x509.not_valid_before
+INFO: create variable KEK
+INFO: add KEK cert /tmp/cert
+INFO: create variable db
+INFO: add db cert /tmp/cert
+INFO: add dummy dbx entry
+INFO: create variable dbx
+INFO: create variable SecureBootEnable
+INFO: set variable SecureBootEnable: True
+INFO: create variable CustomMode
+INFO: set variable CustomMode: False
+INFO: writing raw edk2 varstore to /tmp/OVMF_VARS_4M.fd
+Copying EFI
+Copying BOOT
+BdsDxe: failed to load Boot0001 "UEFI Misc Device" from PciRoot(0x0)/Pci(0x3,0x0): Not Found
+
+
+
+iPXE 1.0.0+git-20190125.36a4c85-5.1 -- Open Source Network Boot Firmware -- http://ipxe.org
+Features: DNS HTTP iSCSI NFS TFTP AoE EFI Menu
+
+net0: 52:54:00:12:34:56 using virtio-net on 0000:00:02.0 (open)
+  [Link:up, TX:0 TXE:0 RX:0 RXE:0]
+Configuring (net0 52:54:00:12:34:56)...... ok
+net0: 10.0.2.15/255.255.255.0 gw 10.0.2.2
+net0: fec0::5054:ff:fe12:3456/64 gw fe80::2
+net0: fe80::5054:ff:fe12:3456/64
+Next server: 10.0.2.2
+Filename: netboot.ipxe
+tftp://10.0.2.2/netboot.ipxe... ok
+netboot.ipxe : 38 bytes [script]
+snponly_x64.efi... ok
+iPXE initialising devices...
+Could not start download: Operation not supported (https://ipxe.org/3c092083)
+Could not start download: Operation not supported (https://ipxe.org/3c092083)
+
+
+PrisonPC's iPXE bootloader
+iPXE 1.0.0+ -- PrisonPC network bootloader -- https://prisonpc.com
+Features: DNS HTTPS VLAN EFI Menu
+Start of embeded script...
+Configuring (net0 52:54:00:12:34:56)...... ok
+log-server: 
+gateway (also used for NTP): 10.0.2.2
+Could not get time and date: Connection timed out (https://ipxe.org/4c496092)
+"NTP failed, https verification may struggle."
+"Fetching boot script"
+https://bootserver/boot.ipxe.......... Error 0x3e11618e (https://ipxe.org/3e11618e)
+Could not boot image: Error 0x7f04828e (http://ipxe.org/7f04828e)
+
+BdsDxe: failed to load Boot0002 "UEFI PXEv4 (MAC:525400123456)" from PciRoot(0x0)/Pci(0x2,0x0)/MAC(525400123456,0x1): Not Found
+BdsDxe: No bootable option or device was found.
+BdsDxe: Press any key to enter the Boot Manager Menu.
+^Ax
+QEMU: Terminated
+I: cleaning package lists and apt cache...
+done
+done
+I: removing tempdir /tmp/mmdebstrap.Y8T1IMcyku...
+I: success in 86.2243 seconds
+bash5$

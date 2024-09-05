@@ -17,6 +17,12 @@ subprocess.check_call([
     '--linux=/vmlinuz',
     '--initrd=/initrd.img',
     '--cmdline=console=ttyS0 earlyprintk=ttyS0 loglevel=2 break'])
+subprocess.check_call([
+    'sbsign',
+    '--key=/tmp/key',
+    '--cert=/tmp/cert',
+    '--output=/snponly_x64.efi',
+    '/snponly_x64.unsigned.efi'])
 uuid_str = uuid.uuid4().hex
 subprocess.check_call([
     'virt-fw-vars',
@@ -40,7 +46,8 @@ with tempfile.TemporaryDirectory() as td_str:
     td = pathlib.Path(td_str)
     (td / 'EFI').mkdir()
     (td / 'EFI/BOOT').mkdir()
-    (td / 'EFI/BOOT/BOOTX64.EFI').write_bytes(pathlib.Path('/vmlinuz.efi').read_bytes())
+    # (td / 'EFI/BOOT/BOOTX64.EFI').write_bytes(pathlib.Path('/vmlinuz.efi').read_bytes())
+    # (td / 'EFI/BOOT/BOOTX64.EFI').write_bytes(pathlib.Path('/snponly_x64.efi').read_bytes())
     subprocess.check_call(      # ≈ mount, cp, umount
         ['mcopy', '-i', '/tmp/vda@@1048576',
          '-vspm',
@@ -48,10 +55,14 @@ with tempfile.TemporaryDirectory() as td_str:
          '::'],                     # destdir is root of fs
         cwd=td)
 # Actually boot it.
+pathlib.Path('/netboot.ipxe').write_text('#!ipxe\nboot --replace vmlinuz.efi\n')
+pathlib.Path('/netboot.ipxe').write_text('#!ipxe\nboot --replace snponly_x64.efi\n')
 subprocess.check_call([
     'qemu-system-x86_64',
     '-nographic',  # WARNING: still needs a 2D terminal, because OVMF config screens requires it :/
     '-nic', 'none',  # make OVMF not try to fall back to onboard iPXE, for now
+    '-device', 'virtio-net-pci,netdev=OutclassMountingBoggle',
+    '-netdev', 'id=OutclassMountingBoggle,type=user,tftp=/,bootfile=netboot.ipxe',
     '-machine', 'q35,smm=on',
     '-m', '1G',   # SIGH: "BdsDxe: failed to load ⋯: Out of Resources"
     '-global', 'driver=cfi.pflash01,property=secure,value=on',
