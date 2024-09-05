@@ -1,3 +1,54 @@
+bash5$ python3 outer.py
+I: automatically chosen mode: unshare
+I: chroot architecture amd64 is equal to the host's architecture
+I: finding correct signed-by value...
+done
+I: automatically chosen format: null
+I: using /tmp/mmdebstrap.G_Jij7gyz8 as tempdir
+I: running apt-get update...
+done
+I: downloading packages with apt...
+done
+I: extracting archives...
+done
+I: installing essential packages...
+done
+I: installing remaining packages inside the chroot...
+done
+done
+done
+I: running special hook: copy-in inner.py /
+I: running --customize-hook in shell: sh -c 'chroot $1 python3 inner.py' exec /tmp/mmdebstrap.G_Jij7gyz8
+Writing SecureBoot private key to /tmp/key
+Writing SecureBoot certificate to /tmp/cert
++ sbverify --list /vmlinuz
+Kernel version not specified, starting autodetection 😖.
+Found uname version: 6.10.6-cloud-amd64
++ sbsign --key /tmp/key --cert /tmp/cert /tmp/ukicawh24u7 --output vmlinuz.efi
+Signing Unsigned original image
+Wrote signed vmlinuz.efi
+INFO: reading raw edk2 varstore from /usr/share/OVMF/OVMF_VARS_4M.fd
+INFO: var store range: 0x64 -> 0x40000
+INFO: create variable PK
+INFO: clear PK sigdb
+INFO: add PK cert /tmp/cert
+/usr/lib/python3/dist-packages/virt/firmware/efi/siglist.py:182: CryptographyDeprecationWarning: Properties that return a naïve datetime object have been deprecated. Please switch to not_valid_before_utc.
+  ts = siglist.x509.not_valid_before
+INFO: create variable KEK
+INFO: add KEK cert /tmp/cert
+INFO: create variable db
+INFO: add db cert /tmp/cert
+INFO: add dummy dbx entry
+INFO: create variable dbx
+INFO: create variable SecureBootEnable
+INFO: set variable SecureBootEnable: True
+INFO: create variable CustomMode
+INFO: set variable CustomMode: False
+INFO: writing raw edk2 varstore to /tmp/OVMF_VARS_4M.fd
+BdsDxe: failed to load Boot0001 "UEFI Misc Device" from PciRoot(0x0)/Pci(0x3,0x0): Not Found
+
+
+
 iPXE 1.0.0+git-20190125.36a4c85-5.1 -- Open Source Network Boot Firmware -- http://ipxe.org
 Features: DNS HTTP iSCSI NFS TFTP AoE EFI Menu
 
@@ -8,26 +59,41 @@ net0: 10.0.2.15/255.255.255.0 gw 10.0.2.2
 net0: fec0::5054:ff:fe12:3456/64 gw fe80::2
 net0: fe80::5054:ff:fe12:3456/64
 Next server: 10.0.2.2
-Filename: FUCK.IPXE
-tftp://10.0.2.2/FUCK.IPXE... ok
-FUCK.IPXE : 38 bytes [script]
-snponly_x64.efi... ok
-iPXE initialising devices...
-Could not start download: Operation not supported (https://ipxe.org/3c092083)
-Could not start download: Operation not supported (https://ipxe.org/3c092083)
-
-
-PrisonPC's iPXE bootloader
-iPXE 1.0.0+ -- PrisonPC network bootloader -- https://prisonpc.com
-Features: DNS HTTPS VLAN EFI Menu
-Start of embeded script...
-Configuring (net0 52:54:00:12:34:56)...... ok
-log-server:
-gateway (also used for NTP): 10.0.2.2
-"Fetching boot script"
-https://bootserver/boot.ipxe... ok
-"Running boot script"
-/AUTO/linuxx64.efi... ok
-Passing off to kernel image
+Filename: netboot.ipxe
+tftp://10.0.2.2/netboot.ipxe... ok
+netboot.ipxe : 83 bytes [script]
+vmlinuz.efi... ok
 EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
 EFI stub: UEFI Secure Boot is enabled.
+[    0.000000] Linux version 6.10.6-cloud-amd64 (debian-kernel@lists.debian.org) (x86_64-linux-gnu-gcc-13 (Debian 13.3.0-5) 13.3.0, GNU ld (GNU Binutils for Debian) 2.43.1) #1 SMP PREEMPT_DYNAMIC Debian 6.10.6-1 (2024-08-19)
+[    0.000000] Command line: vmlinuz.efi console=ttyS0 earlyprintk=ttyS0 loglevel=2 break
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000002ffff] usable
+[    0.000000] BIOS-e820: [mem 0x0000000000030000-0x000000000004ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000050000-0x000000000009efff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009f000-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x00000000007fffff] usable
+[    0.000000] BIOS-e820: [mem 0x0000000000800000-0x0000000000805fff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x0000000000806000-0x0000000000806fff] usable
+[    0.000000] BIOS-e820: [mem 0x0000000000807000-0x0000000000807fff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x0000000000808000-0x000000000080afff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000080b000-0x000000000080bfff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x000000000080c000-0x0000000000810fff] usable
+[    0.000000] BIOS-e820: [mem 0x0000000000811000-0x0000000001a0ffff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x0000000001a10000-0x000000003e4ecfff] usable
+[    0.000000] BIOS-e820: [mem 0x000000003e4ed000-0x000000003e76cfff] reserved
+[    0.000000] BIOS-e820: [mem 0x000000003e76d000-0x000000003e77efff] ACPI data
+[    0.000000] BIOS-e820: [mem 0x000000003e77f000-0x000000003e7fefff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x000000003e7ff000-0x000000003ef77fff] usable
+[    0.000000] BIOS-e820: [mem 0x000000003ef78000-0x000000003effffff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x000000003f000000-0x000000003fffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000e0000000-0x00000000efffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x000000fd00000000-0x000000ffffffffff] reserved
+[    0.000000] printk: legacy bootconsole [earlyser0] enabled
+Memory KASLR using RDTSC...
+Poking KASLR using RDTSC...
+Loading, please wait...
+Starting systemd-udevd version 256.5-1
+Begin: Loading essential drivers ... done.
+Spawning shell within the initramfs
+(initramfs) 
