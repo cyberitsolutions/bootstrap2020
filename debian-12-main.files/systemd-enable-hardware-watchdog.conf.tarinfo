@@ -1,0 +1,2 @@
+name = "etc/systemd/system.conf.d/bootstrap2020-enable-hardware-watchdog.conf"
+mode = 292
