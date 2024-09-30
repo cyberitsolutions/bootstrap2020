@@ -2,6 +2,24 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs September 2024 (since August 2024)
+======================================================================
+• Inmate kernel bumped to 6.10.6 (was 6.9.7).
+
+• Inmate kernel now includes an EFI stub.
+  This lets it boot on new desktops (with EFI and without CSM).
+
+• Hardware watchdogs are now enabled.
+  If the kernel (linux) or first process (systemd) hangs for 30s,
+  either due to a bug or sophisticated detainee attack,
+  the system will now reboot.
+
+  Software watchdogs were already in place for critical processes
+  (e.g. account sharing, contraband smartphone).
+  These continue to work as before.
+
+
+======================================================================
  Changes in SOEs August 2024 (since June 2024)
 ======================================================================
 • Inmate kernel bumped to 6.9.7 (was 6.7.12).
@@ -9,6 +27,7 @@ This is a summary of user-visible changes over time.
 • SMART monitoring bumped to 7.4 (was 7.3) for understudy.
 • Fix wireplumber (GUI middleware) starting for system accounts.
 • Fix disc-snitch logging as "-".
+
 
 ======================================================================
  Changes in SOEs June 2024 (since May 2024)
