@@ -495,7 +495,6 @@
     "SandboxExternalProtocolBlocked": true,
     "DisplayCapturePermissionsPolicyEnabled": true,
     "AbusiveExperienceInterventionEnforce": true,
-    "OverrideSecurityRestrictionsOnInsecureOrigin": [],
     "EnterpriseHardwarePlatformAPIEnabled": false,
     "CommandLineFlagSecurityWarningsEnabled": true,
     "HSTSPolicyBypassList": [],
@@ -511,6 +510,38 @@
     "NativeClientForceAllowed": false,
     "NetworkServiceSandboxEnabled": true,
     "WebSQLAccess": false,
+
+    // Problem recipe:
+    //   1. Applications > Mail Reader
+    //   2. Log in.
+    //   3. Open a message with an attachment (📎)
+    //   4. Click on the attachment.
+    //
+    // Problem symptom:
+    //
+    //   * Chromium popup says "Insecure download blocked [Keep]"
+    //
+    // Problem aetiology:
+    //
+    //   * Chromium (the browser) now (October 2024) complains about non-https links (which is mostly reasonable).
+    //     https://support.google.com/chrome/answer/6261569?visit_id=638634392543413668-532704262&p=ib_download_blocked&rd=1
+    //
+    //   * Prayer (the mail client) runs on the desktop itself, so
+    //     it is easier to detect & stop account sharing (clandestine communication).
+    //
+    //   * Because prayer runs on the desktop,
+    //     it doesn't have access to any trusted server certificates, so
+    //     it is http://webmail (not https://webmail).
+    //
+    // Problem workaround:
+    //
+    //   * Tell chromium that http://webmail is a legacy intranet site,
+    //     that can't easily be moved to https, and therefore
+    //     Chromium should not complain about it.
+    //
+    // https://alloc.cyber.com.au/task/task.php?taskID=35275
+    // https://chromeenterprise.google/policies/#OverrideSecurityRestrictionsOnInsecureOrigin
+    "OverrideSecurityRestrictionsOnInsecureOrigin": ["http://webmail"],
 
     // We cannot set this because there is no variable for $HOME.
     // It's not interesting to set, though, so meh.
