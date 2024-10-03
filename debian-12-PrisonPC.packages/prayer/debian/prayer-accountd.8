@@ -1,0 +1,78 @@
+.Dd 27 March 2011
+.Os "The Prayer Webmail Interface"
+.ds volume-operating-system
+.Dt PRAYER-ACCOUNTD 8
+.Sh NAME
+.Nm prayer-accountd
+.Nd Prayer system account helper daemon
+.Sh SYNOPSIS
+.Nm
+.Oo Fl -config-file 
+.Ar file Oc
+.Oo Oo Fl -config-option
+.Ar name Ns = Ns Ar value Oc
+.Ar ... Oc
+.Op Fl -enable-fork | -disable-fork
+.
+.Sh DESCRIPTION
+.Nm
+is an auxilliary daemon that allows users to perform various tasks
+with respect to their UNIX system account:
+.Bl -bullet
+.It
+Change passwords
+.It
+Change their name
+.It
+Check filesystem quota
+.El
+.Pp
+Furthermore it can help users set up an 
+.Sy ( Exim-only )
+.Pa .forward 
+file for Spam filtering, vacation auto-replies etc.
+.Pp
+.Nm
+can be installed on a separate host from the main Prayer services if necessary.
+It needs to be able to run
+.Xr passwd 1 ,
+.Xr chfn 1 ,
+and
+.Xr quota 1
+for the user, and access users' home directories.
+.Pp
+.Nm
+accepts the following command-line options:
+.Bl -tag -width indent
+.It Fl -config-file Ar file
+Reads configuration from
+.Ar file
+instead of the default.
+.It Fl -config-option Ar name Ns = Ns Ar value
+Sets (overrides) the configuration option
+.Ar name No to Ar value .
+Any number of options can be specified in this manner.
+.It Fl -enable-fork
+Fork subprocesses as requests come in. This is the default.
+.It Fl -disable-fork
+Don't fork; process one request in at the time (debug mode).
+.El
+.
+.Sh FILES
+.
+.Bl -tag -compact
+.It Pa /etc/prayer/accountd.cf
+Default configuration file.
+.El
+.
+.Sh BUGS
+.Nm
+is rather customized to the needs of the University of Cambridge,
+though some patches have been applied to the Debian package. System
+administrators should study the source code to see what this means.
+.
+.Sh AUTHORS
+.
+This introductory manual page was put together for Debian by
+.An -nosplit
+.An "Magnus Holmgren" <holmgren@debian.org> .

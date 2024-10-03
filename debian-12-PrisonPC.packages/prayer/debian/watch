@@ -1,0 +1,4 @@
+version=3
+
+opts=dversionmangle=s/-dfsg\d*$// \
+ftp://ftp.csx.cam.ac.uk/pub/software/email/prayer/prayer-(.*)\.tar\.gz

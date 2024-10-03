@@ -1,0 +1,8 @@
+/var/log/prayer/prayer /var/log/prayer/prayer_session /var/log/prayer/access_log /var/log/prayer/session_log {
+  rotate 28
+  daily
+  compress
+  delaycompress
+  missingok
+  notifempty
+}

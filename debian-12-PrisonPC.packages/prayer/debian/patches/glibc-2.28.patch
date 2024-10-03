@@ -1,0 +1,23 @@
+Description: drop wrong prototype for crypt()
+ The code provides its own prototype for crypt, claiming that Linux doesn't
+ have one in its system headers.  Not only is that wrong, but the local
+ prototype is now incorrect, causing a build failure.
+Author: Steve Langasek <steve.langasek@ubuntu.com>
+Last-Modified: 2018-11-15
+
+Index: prayer-1.3.5-dfsg1/accountd/authenticate.c
+===================================================================
+--- prayer-1.3.5-dfsg1.orig/accountd/authenticate.c
++++ prayer-1.3.5-dfsg1/accountd/authenticate.c
+@@ -94,11 +94,6 @@
+ /* Definies a whole series of different authentication methods, including
+  * PAM if PAM support configured in ../Config */
+ 
+-/* No prototype for crypt, at least on Linux */
+-#if HAVE_SHADOW
+-extern char *crypt(char *password, char *salt);
+-#endif
+-
+ /* ====================================================================== */
+ 
+ #ifdef ACCOUNTD_PAM_ENABLE

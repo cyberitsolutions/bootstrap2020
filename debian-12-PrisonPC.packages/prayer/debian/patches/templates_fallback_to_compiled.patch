@@ -1,0 +1,45 @@
+--- a/lib/template_expand.c
++++ b/lib/template_expand.c
+@@ -475,11 +475,11 @@ template_expand_call(struct template_cal
+     char *s, *t;
+     char *err = NIL;
+ 
+-    if (tvals->use_compiled)
++    if (tvals->use_compiled ||
++        !(template = template_parse(tvals->dir, tvals->set,
++                                    item->name, tvals->pool)))
+         template = template_find(tvals->set, item->name, tvals->pool);
+-    else
+-        template = template_parse(tvals->dir, tvals->set,
+-                                  item->name, tvals->pool);
++
+     if (!template) {
+         str_printf(state->error,
+                    "Template \"%s\" not found (CALL from template \"%s\")\n",
+@@ -558,11 +558,11 @@ template_expand(char *name, struct templ
+     struct str *error = tvals->error;
+     char *err;
+ 
+-    if (tvals->use_compiled) {
++    if (tvals->use_compiled ||
++        !(template = template_parse(tvals->dir, tvals->set,
++                                    name, tvals->pool)))
+         template = template_find(tvals->set, name, tvals->pool);
+-    } else {
+-        template = template_parse(tvals->dir, tvals->set, name, tvals->pool);
+-    }
++
+     if (!template) {
+         str_printf(tvals->error,
+                    "Template %s not found (top level template_expand())\n",
+--- a/files/etc/prayer.cf.SRC
++++ b/files/etc/prayer.cf.SRC
+@@ -455,7 +455,7 @@ pid_dir             = "$var_prefix"
+ ######################################################################
+ # Template stuff
+ 
+-template_path = "__PREFIX__/templates"
++template_path = "/etc/prayer/templates"
+ template_set  = "old"
+ template_use_compiled = TRUE
+ 

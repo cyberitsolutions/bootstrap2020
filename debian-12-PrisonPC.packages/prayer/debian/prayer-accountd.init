@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+### BEGIN INIT INFO
+# Provides:          prayer-accountd
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Should-Start:      
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Prayer account helper daemon
+# Description:       Lets users change passwords, manage filters and other things not supported by IMAP itself
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/prayer-accountd
+PIDFILE=/var/run/prayer-accountd.pid
+DESC="Prayer account helper server"
+
+test -x $DAEMON || exit 0
+
+egrep -iq "^[[:space:]]*accountd_port[[:space:]]*=[[:space:]]*[[:digit:]]+[[:space:]]*$" /etc/prayer/accountd.cf || exit 0
+
+. /lib/lsb/init-functions
+
+# Include prayer defaults if available
+if [ -f /etc/default/prayer-accountd ] ; then
+	. /etc/default/prayer-accountd
+fi
+
+set +e
+
+start() {
+    log_daemon_msg "Starting $DESC" "accountd"
+    start-stop-daemon --start --background --make-pidfile --pidfile $PIDFILE \
+	--exec $DAEMON -- $DAEMON_OPTS
+    log_end_msg $?
+}
+
+stop() {
+    log_daemon_msg "Stopping $DESC" 
+    if [ -f "$PIDFILE" ]; then
+	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+	log_progress_msg "accountd"
+    fi
+    rm -f "$PIDFILE"
+    log_end_msg 0
+}
+
+case "$1" in
+  start)
+	start
+	;;
+
+  stop)
+	stop
+	;;
+
+  restart|force-reload)
+	stop
+	sleep 1
+	start
+	;;
+  *)
+	N=/etc/init.d/prayer-accountd
+	# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+	log_failure_msg "Usage: $N {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

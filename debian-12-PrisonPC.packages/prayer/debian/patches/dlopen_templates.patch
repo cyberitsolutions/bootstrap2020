@@ -1,0 +1,241 @@
+Experimental support for dynamically loading templates. Low-level template handling is unchanged;
+main programs call dlopen_templates() at appropriate times. If template set has changed, the old
+one is unloaded first.
+--- /dev/null
++++ b/shared/dlopen_templates.c
+@@ -0,0 +1,34 @@
++#include <dlfcn.h>
++#include "shared.h"
++
++struct template_map_index template_map_index[] = {
++    {NIL, NIL, NIL},
++    {NIL, NIL, NIL}
++};
++
++struct template_map_index *
++dlopen_templates(const char *set, const char *suffix)
++{
++    struct template_map_index *tmi = &template_map_index[0];
++    static void *handle = 0;
++
++    if (!handle || strcmp(tmi->name, set)) {
++        char *filename = pool_printf(NIL, "/usr/lib/prayer/templates/%s%s.so",
++                                     set, suffix);
++
++        if (handle) {
++            dlclose(handle);
++            free(tmi->name);
++        }
++        tmi->name = pool_strdup(NIL, set);
++        if (!(handle = dlopen(filename, RTLD_NOW))
++            || !(tmi->template_map = dlsym(handle, "template_map"))
++            || !(tmi->count = dlsym(handle, "template_map_count"))) {
++            log_fatal("Failed to load template library: %s",
++                      dlerror());
++        }
++        log_debug("Loaded library %s with %d templates", filename, *tmi->count);
++        free(filename);
++    }
++    return tmi;
++}
+--- /dev/null
++++ b/shared/dlopen_templates.h
+@@ -0,0 +1 @@
++struct template_map_index *dlopen_templates(const char *set, const char *suffix);
+--- a/templates/cam/Makefile
++++ b/templates/cam/Makefile
+@@ -6,12 +6,16 @@ else
+ include ../../Config
+ endif
+ 
+-CFLAGS  = $(BASECFLAGS)
+-LDFLAGS = $(BASELDFLAGS)
++MYCFLAGS  = $(BASECFLAGS) -fPIC
++MYLDFLAGS = $(BASELDFLAGS) -fPIC
++LDFLAGS_TEMPLATELIB = \
++	-Wl,--defsym=template_map=template_map_$(TYPE) \
++	-Wl,--defsym=template_map_count=template_map_$(TYPE)_count
++MYLDFLAGS += $(LDFLAGS_TEMPLATELIB)
+ 
+ TYPE=cam
+ 
+-TARGETS=templates.a templates_frontend.a
++TARGETS=templates.a templates_frontend.a $(TYPE).so $(TYPE)_frontend.so
+ 
+ T_FILES_FRONTEND=login.t login_hermes.t \
+   frontend_login_error.t frontend_security.t frontend_session.t \
+@@ -111,8 +115,14 @@ templates.a: $(O_FILES)
+ 	rm -f templates.a
+ 	ar q templates.a $(O_FILES)
+ 
++$(TYPE)_frontend.so: $(O_FILES_FRONTEND)
++	$(CC) $(MYLDFLAGS) -shared -o $@ $(O_FILES_FRONTEND)
++
++$(TYPE).so: $(O_FILES)
++	$(CC) $(MYLDFLAGS) -shared -o $@ $(O_FILES)
++
+ %.o: %.c Makefile
+-	$(CC) $(CFLAGS) -I../../lib -c $<
++	$(CC) $(MYCFLAGS) -I../../lib -c $<
+ 
+ _template_index_frontend.c:
+ 	../src/build_index.pl $(TYPE) $(T_FILES_FRONTEND) > _template_index_frontend.c
+@@ -129,6 +139,10 @@ install:
+ 	cp *.t $(BROOT)$(PREFIX)/templates/$(TYPE)
+ 	cp *.vars $(BROOT)$(PREFIX)/templates/$(TYPE)
+ 
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_DIR) -d \
++	  $(BROOT)$(LIB_PREFIX)/templates
++	cp *.so $(BROOT)$(LIB_PREFIX)/templates/
++
+ clean:
+ 	rm -f $(TARGETS) *.html *.o *.c \#*\# *~
+ 
+--- a/templates/old/Makefile
++++ b/templates/old/Makefile
+@@ -6,12 +6,16 @@ else
+ include ../../Config
+ endif
+ 
+-CFLAGS  = $(BASECFLAGS)
+-LDFLAGS = $(BASELDFLAGS)
++MYCFLAGS  = $(BASECFLAGS) -fPIC
++MYLDFLAGS = $(BASELDFLAGS) -fPIC
++LDFLAGS_TEMPLATELIB = \
++	-Wl,--defsym=template_map=template_map_$(TYPE) \
++	-Wl,--defsym=template_map_count=template_map_$(TYPE)_count
++MYLDFLAGS += $(LDFLAGS_TEMPLATELIB)
+ 
+ TYPE=old
+ 
+-TARGETS=templates.a templates_frontend.a
++TARGETS=templates.a templates_frontend.a $(TYPE).so $(TYPE)_frontend.so
+ 
+ T_FILES_FRONTEND=login.t \
+   frontend_login_error.t frontend_security.t frontend_session.t \
+@@ -110,8 +114,14 @@ templates.a: $(O_FILES)
+ 	rm -f templates.a
+ 	ar q templates.a $(O_FILES)
+ 
++$(TYPE)_frontend.so: $(O_FILES_FRONTEND)
++	$(CC) $(MYLDFLAGS) -shared -o $@ $(O_FILES_FRONTEND)
++
++$(TYPE).so: $(O_FILES)
++	$(CC) $(MYLDFLAGS) -shared -o $@ $(O_FILES)
++
+ %.o: %.c Makefile
+-	$(CC) $(CFLAGS) -I../../lib -c $<
++	$(CC) $(MYCFLAGS) -I../../lib -c $<
+ 
+ _template_index_frontend.c:
+ 	../src/build_index.pl $(TYPE) $(T_FILES_FRONTEND) > _template_index_frontend.c
+@@ -128,6 +138,10 @@ install:
+ 	cp *.t $(BROOT)$(PREFIX)/templates/$(TYPE)
+ 	cp *.vars $(BROOT)$(PREFIX)/templates/$(TYPE)
+ 
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_DIR) -d \
++	  $(BROOT)$(LIB_PREFIX)/templates
++	cp *.so $(BROOT)$(LIB_PREFIX)/templates/
++
+ clean:
+ 	rm -f $(TARGETS) *.html *.o *.c \#*\# *~
+ 
+--- a/servers/prayer_chroot.c
++++ b/servers/prayer_chroot.c
+@@ -255,6 +255,8 @@ int main(int argc, char *argv[])
+     if (list_length(prayer->http_port_list) == 0L)
+         prayer_fatal(prayer, "No HTTP or HTTPS ports active");
+ 
++    dlopen_templates(config->template_set, "_frontend");
++
+     if (config->prayer_background && !want_foreground) {
+         pid_t pid = fork();
+ 
+--- a/shared/Makefile
++++ b/shared/Makefile
+@@ -33,7 +33,7 @@ MYCFLAGS  = $(BASECFLAGS)
+ 
+ SHARED_OBJS = \
+  config.o gzip.o html_common.o log.o \
+- request.o response.o user_agent.o
++ request.o response.o user_agent.o dlopen_templates.o
+ 
+ 
+ all: $(SHARED_OBJS)
+--- a/servers/prayer_main.c
++++ b/servers/prayer_main.c
+@@ -290,6 +290,8 @@ int main(int argc, char *argv[])
+ 
+     prayer_log_open(prayer);
+ 
++    dlopen_templates(config->template_set, "_frontend");
++
+     if (config->limit_vm)
+         os_limit_vm(config->limit_vm);
+ 
+--- a/shared/shared.h
++++ b/shared/shared.h
+@@ -40,3 +40,4 @@ extern int errno;               /* just
+ #include "setproctitle.h"
+ #include "mymutex.h"
+ #include "log.h"
++#include "dlopen_templates.h"
+--- a/servers/Makefile
++++ b/servers/Makefile
+@@ -60,8 +60,8 @@ ifeq ($(strip $(ACCOUNTD_ENABLE)), true)
+   endif
+ endif
+ 
+-PRAYER_LIBS   = $(BASE_LIBS) $(SERVER_SSL_LIBS)
+-SESSION_LIBS  = $(CCLIENT_LIBS) $(BASE_LIBS) 
++PRAYER_LIBS   = $(BASE_LIBS) $(SERVER_SSL_LIBS) -ldl
++SESSION_LIBS  = $(CCLIENT_LIBS) $(BASE_LIBS) -ldl
+ 
+ # Add SSL if c-client needs SSL
+ ifeq ($(strip $(CCLIENT_SSL_ENABLE)), true)
+@@ -90,15 +90,13 @@ TEMPLATES_FRONTEND= ../templates/index.o
+  ../templates/cam/templates_frontend.a
+ 
+ PRAYER_OBJS= prayer.o prayer_login.o prayer_server.o portlist.o \
+-  ../shared/shared.a $(LIB) $(TEMPLATES_FRONTEND)
++  ../shared/shared.a $(LIB)
+ 
+ SESSION_OBJS= \
+    session_config.o session_exchange.o session_unix.o session_server.o \
+    session_main.o portlist.o ../cmd/cmd.a ../session/session.a \
+    ../shared/shared.a ../lib/lib_nossl.a
+ 
+-SESSION_OBJS += $(TEMPLATES)
+-
+ #########################################################################
+ 
+ all:	$(BIN)
+--- a/Makefile
++++ b/Makefile
+@@ -28,7 +28,7 @@ install-cert:
+ install:
+ 	$(MAKE) -C files install
+ 	$(MAKE) -C man   install
+-#	$(MAKE) -C templates install
++	$(MAKE) -C templates install
+ 	$(MAKE) -C servers install
+ 	$(MAKE) -C utils install
+ ifeq ($(strip $(ACCOUNTD_ENABLE)), true)
+--- a/servers/session_exchange.c
++++ b/servers/session_exchange.c
+@@ -146,6 +146,8 @@ BOOL session_exchange(struct session * s
+     else
+         template_set = config->template_set;   /* Safe default */
+ 
++    dlopen_templates(template_set, "");
++
+     /* Set up template_vars ready for dispatch */
+     session->template_vals = tvals
+         = template_vals_create(request->pool,
+--- a/servers/prayer_shared.h
++++ b/servers/prayer_shared.h
+@@ -44,3 +44,4 @@ extern int errno;               /* just
+ #include "mymutex.h"
+ #include "log.h"
+ #include "utf8.h"
++#include "dlopen_templates.h"

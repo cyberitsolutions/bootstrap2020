@@ -1,0 +1,14 @@
+makefile_install_config.patch
+templates_fallback_to_compiled.patch
+dlopen_templates.patch
+unbrand_cam_template.patch
+unbrand_accountd.patch
+template_sdk.patch
+no_db_version_check.patch
+hurd.patch
+disable_ssl3.patch
+openssl1.1.patch
+no-referrer.patch
+glibc-2.28.patch
+glibc-2.30.patch
+template_index_externs.patch

@@ -1,0 +1,154 @@
+# $Cambridge: hermes/src/prayer/defaults/Config,v 1.12 2008/05/21 13:25:13 dpc22 Exp $
+#
+# Prayer - a Webmail Interface
+#
+# Copyright (c) University of Cambridge 2000 - 2002
+# See the file NOTICE for conditions of use and distribution.
+#
+# Conventional Configure file.
+
+SSL_ENABLE           = true   # SSL requires OpenSSL
+SESSION_CACHE_ENABLE = true   # SSL session cache Requires Berkeley DB 3 or 4
+GZIP_ENABLE          = true   # Enable on the fly compression of pages
+LDAP_ENABLE          = true   # Add LDAP interface
+FENCE_ENABLE         = false  # Use Electric Fence to catch malloc problems
+MUTEX_SEMAPHORE      = true   # Use SYSV mutexes rather than file locking
+TIDY_ENABLE          = true   # Use libtidy for HTML sanitisation
+
+# Following depend on the way that you have configured c-client
+CCLIENT_SSL_ENABLE   = false  # C-client was built with SSL support
+CCLIENT_PAM_ENABLE   = false  # C-client was built with PAM support
+CCLIENT_KERB_ENABLE  = false  # C-client was built with Kerberos support
+
+# Probably don't need the following
+ACCOUNTD_ENABLE      = true  # Only of use in Cambridge at the moment.
+ACCOUNTD_SSL_ENABLE  = false   # Enable SSL support in account management daemon
+ACCOUNTD_PAM_ENABLE  = true   # Enable PAM support in account management daemon
+ACCOUNTD_USE_BSD_PTY = false  # Use Berkeley PTYs rather than Sys V PTYs
+
+############################################################################
+# Location of compiler
+CC           = gcc
+# Location of make program (GNU make required)
+MAKE         = make
+# Location of install program (GNU install or compatible required)
+INSTALL      = install
+
+# Base Compiler options for GCC (use CFLAGS, CPPFLAGS and LDFLAGS if passed in)
+BASECFLAGS   := $(CFLAGS)
+BASECFLAGS   ?= -Wall -g -O2
+BASECFLAGS   += $(CPPFLAGS)
+
+BASELDFLAGS  := $(LDFLAGS)
+BASELDFLAGS  ?= -g
+
+# Minimal libraries needed by Linux
+BASE_LIBS    = -lcrypt -lutil
+# FreeBSD needs some extra libraries:
+# BASE_LIBS   = -lcrypt -liconv -lutil
+# Solaris needs even more libararies:
+# BASE_LIBS   = -lcrypt -lxnet -lnsl -lsocket
+
+# Base Compiler options for Sun SUNWspro compiler
+#CC          = /opt/SUNWspro/bin/cc
+#BASECFLAGS  = -fast
+#BASELDFLAGS = -s
+
+############################################################################
+# Location of various include files and libraries.
+############################################################################
+
+# Location of c-client library.
+CCLIENT_DIR=/usr/include/c-client
+CCLIENT_INCLUDE=-I$(CCLIENT_DIR)
+CCLIENT_LIBS=-lc-client
+
+# Electric fence (required if FENCE_ENABLE set)
+FENCE_INCLUDE=
+FENCE_LIBS=-lmcheck
+
+# Tidy library (required if TIDY_ENABLE set)
+TIDY_INCLUDE=-I/usr/include/tidy
+TIDY_LIBS=-ltidy
+
+# Zlib (required if GZIP_ENABLE set)
+Z_INCLUDE =
+Z_LIBS    = -lz
+
+# LDAP (required if LDAP_ENABLE set)
+LDAP_INCLUDE = 
+LDAP_LIBS    = -lldap
+
+# Pam (required if CCLIENT_PAM_ENABLE set)
+PAM_INCLUDE =
+PAM_LIBS    = -lpam
+
+# Kerberos (required if CCLIENT_KERB_ENABLE set)
+KERB_INCLUDE =
+KERB_LIBS    = -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err
+
+# SSL definitions (required if SSL_ENABLE or CCLIENT_SSL_ENABLE set)
+#
+# Following suitable for Linux and FreeBSD which have SSL preinstalled
+# (Header files from OpenSSL 0.9.7 want to include various Kerboros stuff)
+#
+SSL_INCLUDE=
+SSL_LIBS=-lssl -lcrypto
+OPENSSL=openssl
+
+# Following definitions suitable for our Sun systems.
+#SSL_BASE=/opt/local/ssl/current
+#SSL_INCLUDE=-I ${SSL_BASE}/include
+#SSL_LIBS=-L ${SSL_BASE}/lib -lssl -lcrypto
+#OPENSSL=${SSL_BASE}/bin/openssl
+
+# DB definitions (required if SESSION_CACHE_ENABLE set)
+#
+# Following suitable for Redhat Linux which has DB 3 preinstalled
+DB_INCLUDE=
+DB_LIBS=-ldb
+
+# Following suitable for FreeBSD with DB 4 package installed
+#DB_INCLUDE=-I/usr/local/include/db4
+#DB_LIBS=-L/usr/local/lib -ldb4
+
+############################################################################
+
+# Install location of prayer configuration and support files. The initial
+# config file runs prayer processes as user "prayer" and group "prayer".
+# If you are using SSL, the certificate file must be readable by RW_USER or
+# RW_GROUP. It is important that nothing else can read the certificate file.
+
+# Build root (used by Redhat RPM system)
+BROOT=$(CURDIR)/../debian/tmp
+
+# Directory, User and group for read-write files: log files, sockets etc
+VAR_PREFIX = /var/run/prayer
+RW_USER    = root
+RW_GROUP   = root
+
+# Root Directory, User and group for read-only configuration files.
+# Default configuration and permissions does not allow prayer user to
+# update prayer configuration file.
+
+PREFIX    = /usr/share/prayer
+LIB_PREFIX = /usr/lib/prayer
+SHLIBEXT = .so
+
+RO_USER   = root
+RO_GROUP  = root
+
+# Access permissions for general objects (wrt above users and groups)
+PUBLIC_EXEC  = 0755
+PUBLIC_DIR   = 0755
+PUBLIC_FILE  = 0644
+
+# Access permissions for private objects (wrt above users and groups)
+PRIVATE_EXEC = 0750
+PRIVATE_DIR  = 0750
+PRIVATE_FILE = 0640
+
+# Location of configuration files and binaries
+PRAYER_CONFIG_FILE   = /etc/prayer/prayer.cf
+BIN_DIR              = /usr/sbin
+ACCOUNTD_CONFIG_FILE = /etc/prayer/accountd.cf
