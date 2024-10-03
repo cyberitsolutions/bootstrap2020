@@ -1,3 +1,10 @@
+prayer (1.3.5-dfsg1-8PrisonPC1) bookworm; urgency=medium
+
+  * Show timestamps in local timezone where possible
+    https://alloc.cyber.com.au/task/task.php?taskID=35276
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 03 Oct 2024 17:41:25 +1000
+
 prayer (1.3.5-dfsg1-8) unstable; urgency=low
 
   * Breaking Build-Depends into Build-Depends and Build-Depends-Arch is
