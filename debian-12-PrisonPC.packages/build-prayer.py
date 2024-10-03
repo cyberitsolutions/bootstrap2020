@@ -29,7 +29,8 @@ with tempfile.TemporaryDirectory() as td:
          'bookworm',
          '/dev/null',
          '../debian-12.sources',
-         'deb-src https://deb.debian.org/debian unstable main'])
+         'deb-src [check-valid-until=no] https://snapshot.debian.org/archive/debian/20200816 unstable main'
+         ])
     # debsign here?
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
