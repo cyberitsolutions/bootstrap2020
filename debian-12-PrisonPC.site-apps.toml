@@ -37,6 +37,30 @@ applications = [
     "libdvdcss2",
 ]
 
+[desktop-staff]
+applications = [
+    # Let staff 'look inside' an iso like
+    # /srv/share/custodial/user-backup/p_1970-01-01.iso
+    # without first burning it to a DVD.
+    # https://alloc.cyber.com.au/task/task.php?taskID=35304
+    # NOTE: "thunar-archive-plugin" can only EXTRACT an iso -- we do not want this.
+    # NOTE: xarchiver uses 7z to for ISO files:
+    #       https://github.com/ib/xarchiver/blob/0.5.4.20/src/main.c#L468-L481
+    #
+    #           type = XARCHIVETYPE_ISO;
+    #           path = (is7z ? g_strconcat(sevenz, " -tiso", NULL) : NULL);
+    # UPDATE: when I tested this,
+    #         I also had to move p7zip-full from
+    #         prisonpc-bad-package-conflicts-everyone to
+    #         prisonpc-bad-package-conflicts-inmates.
+    #         MUCH WORSE, in an initial test, xarchiver showed "TRANS.TBL" elements in the .iso, and gibberish filenames.
+    #         That strongly implies that /bin/7z -tiso does not understand Joliet / Rock Ridge extensions, OR
+    #         xarchiver does not correctly parse the output from 7z.
+    #         Trying to use this is a complete waste of time.
+    #         Therefore (and since nobody at AMC is asking for this), I am giving up on it for now.
+    #         --twb, November 2024
+    # "xarchiver", "p7zip-full",
+]
 
 
 # Site apps for "demo" prison:
