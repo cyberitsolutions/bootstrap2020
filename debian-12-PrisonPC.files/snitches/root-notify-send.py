@@ -4,6 +4,7 @@ import logging
 import os
 import pathlib
 import sys
+import time
 
 import gi
 gi.require_version('Notify', '0.7')
@@ -169,13 +170,21 @@ elif len(paths) == 1:
     path, = paths
     os.environ['DBUS_SESSION_BUS_ADDRESS'] = f'unix:path={path}'
     os.seteuid(path.stat().st_uid)  # equivalent of "runuser -u s123 -- notify-send ..."
-    gi.repository.Notify.init('notify-send')
-    notification = gi.repository.Notify.Notification.new(
-        summary='System message',
-        body=body,
-        icon='dialog-error-symbolic')
-    notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
-    notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
-    notification.show()
+    for i in range(10):
+        try:
+            gi.repository.Notify.init('notify-send')
+            notification = gi.repository.Notify.Notification.new(
+                summary='System message',
+                body=body,
+                icon='dialog-error-symbolic')
+            notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
+            notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
+            notification.show()
+            break
+        except gi.repository.GLib.GError:
+            logging.debug('retrying...')
+            time.sleep(1)
+    else:
+        raise RuntimeError('Could not connect to use dbus?')
 else:
     raise NotImplementedError('Cannot have multiple GUI users at once!', paths)
