@@ -1,3 +1,9 @@
+alephone (20240822-0~prisonpc8) bookworm; urgency=medium
+
+  * New upstream version.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 19 Nov 2024 03:52:21 +1100
+
 alephone (20230529-0~prisonpc7) bookworm; urgency=medium
 
   * Bump upstream version

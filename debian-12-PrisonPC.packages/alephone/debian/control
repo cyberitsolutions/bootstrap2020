@@ -15,6 +15,7 @@ Build-Depends: debhelper-compat (= 13),
 # support for opengl:
  libgl-dev,
  libglu-dev,
+ libopenal-dev,
 # support for mp3 and audio:
  libasound2-dev,
  libmad0-dev,
