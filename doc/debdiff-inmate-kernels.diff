@@ -1,3 +1,21 @@
+9cad4c2 6.11.5-1731928415 (was 6.10.11-1728440193)
+diff --git a/manifest.txt b/manifest.txt
+index 15c626f..b49b337 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -108,12 +108,10 @@ kernel/drivers/platform/
+ kernel/drivers/platform/x86/
+ kernel/drivers/platform/x86/intel/
+ kernel/drivers/platform/x86/intel/intel_vsec.ko
+-kernel/drivers/platform/x86/intel/intel_vsec_tpmi.ko
+ kernel/drivers/platform/x86/wmi.ko
+ kernel/drivers/powercap/
+ kernel/drivers/powercap/intel_rapl_common.ko
+ kernel/drivers/powercap/intel_rapl_msr.ko
+-kernel/drivers/powercap/intel_rapl_tpmi.ko
+ kernel/drivers/scsi/
+ kernel/drivers/scsi/scsi_common.ko
+ kernel/drivers/scsi/scsi_mod.ko
 4431b43 6.10.11-1728440193 (was 6.10.6-1725344604)
 cf3a50a 6.10.6-1725344604 (was 6.9.7-1721685034)
 diff --git a/manifest.txt b/manifest.txt
