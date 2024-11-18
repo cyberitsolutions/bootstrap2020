@@ -22,6 +22,8 @@ Build-Depends: debhelper-compat (= 13),
 #        --twb, October 2023
  xvfb <!nocheck>,
  xauth <!nocheck>,
+#FIXME# catch2 <!nocheck>,
+#FIXME# libcatch2-dev <!nocheck>,
 
 Package: endless-sky
 Architecture: any

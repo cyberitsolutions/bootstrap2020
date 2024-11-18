@@ -1,3 +1,11 @@
+endless-sky (0.10.10-1~PrisonPC4) bookworm; urgency=medium
+
+  * New upstream version.
+  * NOTE: to build with unit tests (without DEB_BUILD_OPTIONS=nocheck),
+    this requires libcatch2-dev, which is NOT IN DEBIAN 12.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 19 Nov 2024 04:06:31 +1100
+
 endless-sky (0.10.4-1~PrisonPC3) bookworm; urgency=medium
 
   * Bump upstream version.
