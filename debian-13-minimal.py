@@ -58,6 +58,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
 
          '--include=linux-image-cloud-amd64 init initramfs-tools live-boot netbase',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
+         '--include=login',        # https://bugs.debian.org/960638
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
          # FIXME: once the host OS runs Debian 13, move this to the host.
