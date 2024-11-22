@@ -1,3 +1,4 @@
+PrisonPC-401-on-login-error.patch
 makefile_install_config.patch
 templates_fallback_to_compiled.patch
 dlopen_templates.patch
