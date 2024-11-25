@@ -2,6 +2,20 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs November 2024 (since September 2024)
+======================================================================
+• Mail now shows timestamps in local time.
+• Chromium no longer complains that Mail (webmail) is insecure.
+• Endless Sky bumped to 0.10.10 (new game content), DLCs added.
+• Inmate kernel bumped to 6.11 (was 6.10).
+• Better support for recent Intel graphics.
+• Better recovery when CMOS clock battery is dead.
+• Fix popup when detainee isn't allowed to use a computer due to group restrictions.
+• Fix a bug where TV could remain accessible during TV curfew.
+  There is no evidence this ever occured in production.
+
+
+======================================================================
  Changes in SOEs September 2024 (since August 2024)
 ======================================================================
 • Inmate kernel bumped to 6.10.6 (was 6.9.7).
