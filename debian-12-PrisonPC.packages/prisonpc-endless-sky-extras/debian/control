@@ -1,4 +1,4 @@
-Source: prisonpc-endless-sky-addons
+Source: prisonpc-endless-sky-extras
 Section: games
 Priority: optional
 Standards-Version: 4.3.0
@@ -11,11 +11,11 @@ Build-Depends:
  wget2,
  unzip,
 
-Package: prisonpc-endless-sky-addons
+Package: prisonpc-endless-sky-extras
 Depends: ${misc:Depends},
  endless-sky,
 Enhances: endless-sky
 Architecture: all
 Description: Endless Sky plugins
- There are a bunch of third-party addons at https://endless-sky.github.io/plugins.html.
+ There are a bunch of third-party plugins at https://endless-sky.github.io/plugins.html.
  This package provides (some of) them pre-downloaded.

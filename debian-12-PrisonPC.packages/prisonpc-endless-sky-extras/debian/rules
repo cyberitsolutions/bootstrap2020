@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-D := debian/prisonpc-endless-sky-addons/usr/share/games/endless-sky/plugins
-E := debian/prisonpc-endless-sky-addons/tmp
+D := debian/prisonpc-endless-sky-extras/usr/share/games/endless-sky/plugins
+E := debian/prisonpc-endless-sky-extras/tmp
 %:
 	dh $@
 override_dh_auto_install:
