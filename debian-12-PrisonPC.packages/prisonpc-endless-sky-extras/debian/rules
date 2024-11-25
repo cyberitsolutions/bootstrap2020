@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+D := debian/prisonpc-endless-sky-addons/usr/share/games/endless-sky/plugins
+E := debian/prisonpc-endless-sky-addons/tmp
+%:
+	dh $@
+override_dh_auto_install:
+	wget2 -P $E -x -i $(CURDIR)/debian/plugins.urls
+	find $E -name '*.zip' -exec unzip -d $D {} \;
+	rm -rf $E
+	# Delete Hi-DPI versions of images, to save space.
+	# For example Beccas-Endless-Expansion goes from 6.2M to 1.4M.
+	find $D -name '*@2x.png' -delete

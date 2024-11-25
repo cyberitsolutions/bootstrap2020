@@ -94,7 +94,7 @@ applications = [
     # Games Tetris
     "blockattack", "stax", "cuyo", "quadrapassel",
     # Games Strategy
-    "singularity", "qonk", "endless-sky", "pingus", "frozen-bubble",
+    "singularity", "qonk", "prisonpc-endless-sky-extras", "pingus", "frozen-bubble",
     # Games FPS
     "freedoom", "billard-gl",
 ]
@@ -115,7 +115,7 @@ applications = [
     "gnome-crosswords", "gnome-crosswords-addons-theguardian",  # Games > Logic > Crosswords
 #   EXTREMELY POPULAR (MONTHS PER SITE-YEAR)
     "aisleriot",                # Games > Card > Solitaire
-    "endless-sky",              # Games > Other > Endless Sky
+    "prisonpc-endless-sky-extras",              # Games > Other > Endless Sky
     "xmoto",                    # Games > Sports > Elastomania clone
     "prisonpc-wesnoth-addons",  # Games > Strategy > The Battle for Wesnoth
     "prisonpc-warzone2100-addons",  # Games > Strategy > Warzone 2100
@@ -401,7 +401,7 @@ applications = [
     "freedroid",
     "numptyphysics",
     ## New Oct 2022
-    "endless-sky",
+    "prisonpc-endless-sky-extras",
     "gnome-2048",
     "freedoom",
     "swell-foop",
