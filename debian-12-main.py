@@ -391,8 +391,7 @@ def do_boot_test():
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
                 f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm logserv mail')
-            (testdir / 'site.dir/prayer.errata').write_text(
-                'ERRATA=--config-option default_domain=tweak.prisonpc.com')
+            (testdir / 'site.dir/etc/mailname').write_text('tweak.prisonpc.com')
             if 'inmate' in template:
                 # Simulate a site-specific desktop image (typically not done for staff).
                 (testdir / 'site.dir/wallpaper.jpg').write_bytes(pathlib.Path('wallpaper.svg').read_bytes())
