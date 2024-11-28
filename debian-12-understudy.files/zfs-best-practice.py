@@ -202,7 +202,7 @@ create('var/lib', canmount='off')
 create('var/lib/postgresql', refquota='4G', quota='64G', compression='lz4', recordsize='64K')
 
 create('srv/archive', refquota='8G')
-create('srv/netboot', refquota='96G', quota='256G', sharenfs='async,no_root_squash,ro=10.0.0.0/16,ro=10.128.0.0/16,insecure_locks')
+create('srv/netboot', refquota='96G', quota='256G', sharenfs='async,root_squash,ro=10.0.0.0/16,ro=10.128.0.0/16,insecure_locks')
 # refquota is small because you SHOULD make a child dataset
 # FIXME: I think parts of /srv/share should have more restrictive sharenfs!  I don't think all of these should be inmate-readable.
 create('srv/share', refquota='8G', quota='256G', sharenfs='async,root_squash,rw=10.0.0.0/16,ro=10.128.0.0/16')
