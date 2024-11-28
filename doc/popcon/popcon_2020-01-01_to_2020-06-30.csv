@@ -105,6 +105,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Gnome-help,00:00:50
 0,Accessories > Archive Manager,00:00:30
 0,Exo-open,00:00:20
-0,Chooser,00:00:10
-0,System > Terminal Emulator,00:00:10
 0,Multimedia > Audacity,00:00:10
+0,System > Terminal Emulator,00:00:10
+0,Chooser,00:00:10
