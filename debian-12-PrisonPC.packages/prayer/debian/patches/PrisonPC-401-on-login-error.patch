@@ -43,7 +43,7 @@ Index: prayer/servers/prayer_login.c
  }
  
  /* ====================================================================== */
-@@ -378,7 +378,6 @@ prayer_login_process(struct prayer *pray
+@@ -378,6 +378,7 @@ prayer_login_process(struct prayer *pray
          if (config->referer_block_invalid) {
              prayer_template_setup(prayer);  /* Adds $url_prefix automatically */
              template_expand("frontend_security", prayer->template_vals, b);
