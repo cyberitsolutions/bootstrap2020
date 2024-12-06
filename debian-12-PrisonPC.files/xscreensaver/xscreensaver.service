@@ -1,0 +1,8 @@
+# FIXME: This file shouldn't be necessary at all!
+# For some reason, running `systemctl preset-all --user --global` gives this error about the default alias:
+#     Failed to preset unit, cannot alias xscreensaver.service as org.jwz.xscreensaver.
+# Is the default alias invalid? Is this an upstream bug?
+# The preset-all still carries on and works, but it exits non-zero, causing all of debian-12-main.py to bail out.
+[Install]
+# Alias=org.jwz.xscreensaver
+Alias=

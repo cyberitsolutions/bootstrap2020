@@ -1,0 +1,12 @@
+[Unit]
+Description=XScreenSaver Logout on lock
+After=graphical-session-pre.target xscreensaver.service
+PartOf=graphical-session.target xscreensaver.service
+ConditionUser=!@system
+
+[Service]
+ExecStart=/usr/libexec/xscreensaver/xscreensaver-autologout.py
+Restart=on-failure
+
+[Install]
+WantedBy=xscreensaver.service

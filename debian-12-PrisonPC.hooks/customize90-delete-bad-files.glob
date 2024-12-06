@@ -671,3 +671,8 @@
 # "Disable" (for now) and to
 # "VA-API" (when Debian fixes the upstream issue).
 /usr/lib/*/vlc/plugins/vdpau
+
+# XScreenSaver comes with this setuid binary for doing PAM auth.
+# We automatically log out as soon as the screen gets locked anyway,
+# so just delete this binary since it should never be run anyway.
+/usr/libexec/xscreensaver/xscreensaver-auth

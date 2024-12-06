@@ -52,4 +52,8 @@ include = [
     # <twb> include firmware-misc-nonfree, and then dpkg path-exclude=/lib/firmware/badthings.
     "firmware-linux-free",
     "firmware-misc-nonfree",
+
+    # Screensaver used for screen locking & auto-logout
+    # Why does this bring in so much perl? Even with `--no-install-recommends`?
+    "xscreensaver",
 ]

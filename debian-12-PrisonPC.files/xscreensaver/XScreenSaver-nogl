@@ -1,0 +1,46 @@
+#error Do not run app-defaults files through xrdb!
+#error That does not do what you might expect.
+#error Put this file in /usr/lib/X11/app-defaults/XScreenSaver instead.
+
+! /* (xrdb prevention kludge: whole file)
+
+*mode:			one
+*timeout:		0:01:00
+! We actually use 'lock' for 'logout' instead
+*lock:			True
+! NOTE: This lockTimeout is **after** the base timeout above
+*lockTimeout:		0:01:00
+
+*fade:			True
+*unfade:		False
+*fadeSeconds:	0:00:03
+*fadeTicks:		20
+
+! Disable splash screen on startup
+*splash:			False
+*splashDuration:	0:00:00
+
+! FIXME: These should probably be set to something more sensible
+*nice:			10
+*memoryLimit:		0
+
+! If a screensaver is based on images, make sure it's the current desktop
+*grabDesktopImages:	True
+*grabVideoFrames:	False
+*chooseRandomImages:	False
+! NOTE: This must be set, even if empty, otherwise xscreensaver puts a 'Loading...' text on the middle of the screen **before** it captures the desktop image.
+!       Which results in 'Loading...' permanently plastered across the middle of the screensaver
+! This can be a local directory name, or the URL of an RSS or Atom feed.
+*imageDirectory:	
+
+! If a screensaver is based on text, grab the AUP
+*textMode:		url
+*textURL:		https://ppc-services/motd
+
+! FIXME: Actually could we just make this run something like `timeout 15m ripples --root ; xfce4-session-logout --logout
+! FIXME: I don't think this screensaver is visually distinct enough,
+!        but it's the only base one that keeps the current desktop and doesn't make it unrecognisable.
+! FIXME: Why doesn't `--grayscale` work?
+*programs:								      \
+				ripples --root --rate 1 --fluidity 16 --stir --oily	  \n\
+

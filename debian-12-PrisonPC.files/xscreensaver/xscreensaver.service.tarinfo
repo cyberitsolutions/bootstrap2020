@@ -1,0 +1,2 @@
+name = "etc/systemd/user/xscreensaver.service.d/remove-alias.conf"
+mode = 292
