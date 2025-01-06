@@ -1,0 +1,127 @@
+/* xss -- trivial xautolock using MIT-SCREEN-SAVER
+ *
+ * xss program [arguments..] -
+ *  run program when xscreensaver activates,
+ *  and kill it (with SIGTERM) when deactivates.
+ * also sends idle events to logind if running.
+ *
+ * gcc -Wall -W -O2 xss.c -lXss -lX11 -lsystemd
+ */
+
+#include <sys/wait.h>
+#include <unistd.h>
+#include <signal.h>
+#include <stdio.h>
+
+#include <X11/X.h>
+#include <X11/extensions/scrnsaver.h>
+#include <sysexits.h>
+
+#include <systemd/sd-bus.h>
+
+static pid_t child;
+
+static void sigchld(int signum) {
+  (void)signum;                 /* -Wunused-parameter ( FIXME: __attribute__((unused)) ) */
+  waitpid(-1, NULL, WNOHANG);
+  child = 0;
+}
+
+static void set_idle_hint(int idle) {
+  sd_bus *bus = NULL;
+  sd_bus_error error = SD_BUS_ERROR_NULL;
+  int r;
+
+  /* Connect to the system bus */
+  r = sd_bus_open_system(&bus);
+  if (r < 0) {
+    static int once;
+    if (!once++)
+      fprintf(stderr, "Failed to connect to system bus: %s\n", strerror(-r));
+    return;
+  }
+
+  /* Issue the method call and store the respons message in m */
+  r = sd_bus_call_method(bus,
+                         "org.freedesktop.login1",               /* service to contact */
+                         "/org/freedesktop/login1/session/self", /* object path */
+                         "org.freedesktop.login1.Session",       /* interface name */
+                         "SetIdleHint",                          /* method name */
+                         &error,                                 /* object to return error in */
+                         NULL,                                   /* return message on success */
+                         "b",                                    /* input signature */
+                         idle);                                  /* first argument */
+  if (r < 0) {
+    static int once;
+    if (!once++)
+      fprintf(stderr, "Failed to issue method call: %s\n", error.message);
+  }
+
+  sd_bus_error_free(&error);
+  sd_bus_unref(bus);
+}
+
+int main(int argc, char *argv[]) {
+  Display *display = NULL;
+  int screen;
+  int ss_event, ss_error;
+  Window root;
+  XEvent event;
+  XScreenSaverNotifyEvent *sevent;
+
+  if (argc < 2) {
+    fprintf(stderr, "Usage: %s PROGRAM [ARGUMENT ...]\n", argv[0]);
+    return EX_USAGE;
+  }
+
+  display = XOpenDisplay(NULL);
+  if (!display) {
+    fprintf(stderr, "%s: Can not open display.\n", argv[0]);
+    return EX_UNAVAILABLE;
+  }
+  screen = DefaultScreen(display);
+  if (!XScreenSaverQueryExtension(display, &ss_event, &ss_error)) {
+    //XCloseDisplay(display);
+    fprintf(stderr, "%s: X server does not support MIT-SCREEN-SAVER extension.", argv[0]);
+    return EX_UNAVAILABLE;
+  }
+
+  root = RootWindow(display, screen);
+  XScreenSaverSelectInput(display, root, ScreenSaverNotifyMask);
+
+  signal(SIGCHLD, sigchld);
+  ++argv; --argc;
+
+  while (XNextEvent(display, &event) == 0) {
+    if (event.type != ss_event)
+      continue;
+    sevent = (XScreenSaverNotifyEvent *)&event;
+    if (sevent->state == ScreenSaverOn) {
+fprintf(stderr, "ScreenSaverOn\n");
+      set_idle_hint(1);
+      if (!child) { /* there's a race condition here: child exit vs new fork */
+        child = fork();
+        if (child == 0) {
+          execvp(argv[0], argv);
+          perror(argv[0]);
+          return 1; // exit
+        }
+        else if (child < 0) {
+          perror("fork");
+          child = 0;
+        }
+      }
+    }
+    else if (sevent->state == ScreenSaverOff) {
+fprintf(stderr, "ScreenSaverOff\n");
+      set_idle_hint(0);
+      if (child > 0)
+        kill(child, SIGKILL);
+    }
+    else {
+fprintf(stderr, "ScreenSaverEvent %d\n", sevent->state);
+    }
+  }
+
+  return 0;
+}
