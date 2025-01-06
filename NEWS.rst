@@ -2,6 +2,19 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs January 2025 (since November 2024)
+======================================================================
+• Inmate kernel bumped to 6.11.10 (was 6.11.5).
+
+• Support standard methods of setting host name, mail domain, and time zone.
+  This allows PrisonPC 25 to drop legacy PrisonPC-specific methods.
+
+• Return standard HTTP 401 on login failure in PrisonPC-patched prayer.
+  This will allow HTTP-layer blocks on brute-force password guessing.
+  (LDAP-layer blocks on brute-force password guessing already exist.)
+
+
+======================================================================
  Changes in SOEs November 2024 (since September 2024)
 ======================================================================
 • Mail now shows timestamps in local time.
