@@ -2,6 +2,7 @@
 import subprocess
 
 import dbus
+import logging
 import Xlib.display
 import Xlib.ext.screensaver
 import gi
@@ -101,50 +102,50 @@ if False:
 """
 
 
-def main():
+def main() -> None:
+
+    # setup for X11 MIT-SCREEN-SAVER (input)
+    display = Xlib.display.Display()
+    root_window = display.screen().root
+    # FIXME: is there a better way to get this magic number?
+    notify_event_type: int = display.query_extension(Xlib.ext.screensaver.extname).first_event
+    Xlib.ext.screensaver.select_input(root_window, Xlib.ext.screensaver.NotifyMask)
     # NOTE: this overrides "xset -dpms s off" in xdm/xdm-pre-prompt.py!
     # FIXME: do this via xlib instead of subprocess?
     subprocess.check_call([
         'xset',
         # 's', 'on',       # screensaver on with defaults
-        's', '5', '0',     # no input for X seconds counts as "idle"
+        's', '5', '5',     # no input for X seconds counts as "idle"
         's', 'noblank',    # don't ACTUALLY blank the screen
         's', 'noexpose',   # REALLY don't actually blank the screen
         ])
 
+    # setup for XDG notify (output)
     gi.repository.Notify.init('autologout')
     idle_notification = gi.repository.Notify.Notification.new(
         summary='Are you still there?',
         body='Idle sessions that are not watching TV may log out automatically, losing any unsaved work.')
 
-    display = Xlib.display.Display()
-    root_window = display.screen().root
-
+    # setup for systemd-login (output)
     logind = dbus.Interface(
         dbus.SystemBus().get_object(
             'org.freedesktop.login1',
-            '/org/freedesktop/login1/session/self'),
+            '/org/freedesktop/login1/session/auto'),
         'org.freedesktop.login1.Session')
 
-    Xlib.ext.screensaver.select_input(root_window, Xlib.ext.screensaver.NotifyMask)
-    logind.SetIdleHint(False)  # tell logind that X-to-logind glue is present at all
-    print(subprocess.check_output(['xset', 'q'], text=True), end='', flush=True)  # DEBUGGING
     while True:
         event = display.next_event()
-        print('I think the MIT-SCREEN-SAVER state is', event.state, flush=True)  # DEBUGGING
-        if event.type != Xlib.ext.screensaver.Notify:
-            continue
-        if event.state not in {
-                Xlib.ext.screensaver.StateOn,
-                Xlib.ext.screensaver.StateOff}:
-            continue
-        if event.state == Xlib.ext.screensaver.StateOn:
-            # is idle (according to MIT-SCREEN-SAVER)
+        if event.type != notify_event_type:
+            logging.warning('unexpected X11 event type %d', event.type)
+        elif event.state == Xlib.ext.screensaver.StateOn:
+            logging.debug('MIT-SCREEN-SAVER says idle')
             idle_notification.show()
-            print(logind.SetIdleHint(True), flush=True)
+            logind.SetIdleHint(True)
+        elif event.state == Xlib.ext.screensaver.StateOff:
+            logging.debug('MIT-SCREEN-SAVER says not idle')
+            logind.SetIdleHint(False)
         else:
-            # is not idle (according to MIT-SCREEN-SAVER)
-            print(logind.SetIdleHint(False), flush=True)
+            logging.warning('unexpected X11 event state %d', event.state)
 
 
 if __name__ == '__main__':
