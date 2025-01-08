@@ -1,10 +1,8 @@
 #!/usr/bin/python3
-import subprocess
-
-import dbus
-import logging
 import Xlib.display
 import Xlib.ext.screensaver
+import dbus
+import logging
 import gi
 gi.require_version('Notify', '0.7')
 import gi.repository.Notify     # noqa: E402
@@ -74,15 +72,21 @@ if False:
         pprint.pprint(event)
 
 /join #systemd
-18:16 <twb> Hey so dumb question.  logind has a "kill sessions that are idle for X seconds", OK. And Xorg can generate an X11 event after Y seconds without user input.
+18:16 <twb> Hey so dumb question.
+            logind has a "kill sessions that are idle for X seconds", OK.
+            And Xorg can generate an X11 event after Y seconds without user input.
 18:16 <twb> But if I glue those together, I can only do it via dbus SetIdleHint call to login1
-18:17 <twb> So if I wait until the user hasn't pushed a button for 5 minutes, then say "right now, it's idle" to logind, won't logind then think the idleness *started* then, rather than 5 minutes ago?
+18:17 <twb> So if I wait until the user hasn't pushed a button for 5 minutes, then say
+            "right now, it's idle" to logind,
+            won't logind then think the idleness *started* then,
+            rather than 5 minutes ago?
 05:46 <gdamjan> twb: then call the setidlehint sooner? (and reset it)
-05:47 <gdamjan> azahi: recent systemd versions can have same RuntimeDirectory and/or you can just put the socket in /run directly
 05:56 <twb> My point is that the idle time in logind.conf, by design, cannot be the full idle time
 05:56 <twb> it has to be the real idle time less the X idle time
 05:57 <twb> i.e. I haven't mis-understood something fundamental - it really is designed that way
-05:58 <twb> So e.g. if X is set to blank the screen after 5 minutes without input (xset s 300) then and systemd is set to suspend after 3 minutes of idlehint, that's effectively 8 minutes before suspend, not 3
+05:58 <twb> So e.g. if X is set to blank the screen after 5 minutes without input (xset s 300) and
+            systemd is set to suspend after 3 minutes of idlehint,
+            that's effectively 8 minutes before suspend, not 3
 06:05 <mjt0k> twb: no. it just means X has no built-in way to tell logind about it being idle or not
 06:07 <mjt0k> the screensaver hook in X11 to tell logind is a hack
 06:08 <mjt0k> (this is actually true for a few other environments)
@@ -93,7 +97,10 @@ if False:
 06:13 <twb> To be clear: I'm not saying "this design is dumb" I'm asking "have I understood this correctly?"
 06:14 <mjt0k> yup. You call it when you enter idle state. or becomes busy again
 06:14 <mjt0k> it looks like no one bothers about the idle accuracy
-06:15 <twb> Righto.  I wonder if this is intentional, or if it just arose organically out of initially implementing it for ttys (where logind can check directly) and then the X/WL stuff being hacked in
+06:15 <twb> Righto.
+            I wonder if this is intentional, or
+            if it just arose organically out of initially implementing it for ttys
+            (where logind can check directly) and then the X/WL stuff being hacked in
 06:16 <twb> cos if it's intentional I don't understand what the benefit is
 06:18 <mjt0k> the benefit of what?
 06:20 <twb> of SetIdleHint being bool not float
@@ -111,20 +118,18 @@ def main() -> None:
     notify_event_type: int = display.query_extension(Xlib.ext.screensaver.extname).first_event
     Xlib.ext.screensaver.select_input(root_window, Xlib.ext.screensaver.NotifyMask)
     # NOTE: this overrides "xset -dpms s off" in xdm/xdm-pre-prompt.py!
-    # FIXME: do this via xlib instead of subprocess?
-    subprocess.check_call([
-        'xset',
-        # 's', 'on',       # screensaver on with defaults
-        's', '5', '5',     # no input for X seconds counts as "idle"
-        's', 'noblank',    # don't ACTUALLY blank the screen
-        's', 'noexpose',   # REALLY don't actually blank the screen
-        ])
+    display.set_screen_saver(
+        timeout=5,              # seconds
+        interval=5,             # seconds (FIXME: not needed?)
+        prefer_blank=False,     # don't blank the screen!
+        allow_exposures=False)  # FIXME: needed -- but why?
 
     # setup for XDG notify (output)
     gi.repository.Notify.init('autologout')
     idle_notification = gi.repository.Notify.Notification.new(
         summary='Are you still there?',
-        body='Idle sessions that are not watching TV may log out automatically, losing any unsaved work.')
+        body='Idle sessions that are not watching TV may log out automatically, losing any unsaved work.',
+        icon='face-yawn')
 
     # setup for systemd-login (output)
     logind = dbus.Interface(
