@@ -1,3 +1,12 @@
+dovecot-fts-flatcurve (1.0.5-1~twb3) bookworm; urgency=medium
+
+  * New upstream version.
+  * Pinch some packaging improvements from
+    https://salsa.debian.org/debian/dovecot-fts-flatcurve/
+    (Probably I should merge MY bits into THEIR repo...)
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 20 Jan 2025 15:21:48 +1100
+
 dovecot-fts-flatcurve (0.3.3-1~twb2) bookworm; urgency=medium
 
   * Migrate from fts-xapian to fts-flatcurve for dovecot 2.3.x.

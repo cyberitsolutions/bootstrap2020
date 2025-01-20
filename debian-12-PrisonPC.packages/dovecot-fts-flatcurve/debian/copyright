@@ -1,0 +1,41 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: dovecot-fts-flatcurve
+Upstream-Contact: Michael Slusarz <slusarz@curecanti.org>
+Source: https://github.com/slusarz/dovecot-fts-flatcurve
+
+Files: *
+Copyright: 2020-2024, Michael Slusarz <slusarz@curecanti.org>
+License: LGPL-2.1+
+
+Files: m4/*
+Copyright: 2010, Dennis Schridde
+           2008-2015, Free Software Foundation, Inc
+           2013, Red Hat, Inc
+License: FSFULLR or LGPL-2.1+
+
+Files: debian/*
+Copyright: 2022-2024, Trent W. Buck <trentbuck@gmail.com>
+           2024, Joseph Nahmias <jello@debian.org>
+License: LGPL-2.1+
+
+License: FSFULLR
+ This file is free software; the authors give
+ unlimited permission to copy and/or distribute it, with or without
+ modifications, as long as this notice is preserved.
+
+License: LGPL-2.1+
+ This package is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+ .
+ You should have received a copy of the GNU Lesser General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU Lesser General
+ Public License can be found in "/usr/share/common-licenses/LGPL-2.1".

@@ -5,19 +5,46 @@ Maintainer: Trent W. Buck <trentbuck@gmail.com>
 Uploaders: Joseph Nahmias <jello@debian.org>
 Build-Depends:
  debhelper-compat (= 13),
+ dovecot-dev (>= 1:2.3.17~),
  dovecot-dev (<< 1:2.4~),
- libxapian-dev (>= 1.2.22~),
- libicu-dev (>= 60~),
- pkg-config,
-Standards-Version: 4.6.0
+ libxapian-dev (>= 1.4~),
+# Needless since https://github.com/slusarz/dovecot-fts-flatcurve/commit/28f7c50
+# libicu-dev (>= 60~),
+ pkgconf | pkg-config,
+Standards-Version: 4.6.2
 Homepage: https://github.com/slusarz/dovecot-fts-flatcurve
 Rules-Requires-Root: no
+Vcs-Browser: https://github.com/cyberitsolutions/bootstrap2020/tree/dovecot-fts-flatcurve/
 
 Package: dovecot-fts-flatcurve
 Architecture: any
 Provides: fts-xapian
 Enhances: dovecot-imapd, dovecot-pop3d
 Replaces: dovecot-fts-xapian
+Conflicts: dovecot-imapd (>> 1:2.4~), dovecot-pop3d (>> 1:2.4~)
 Depends: ${shlibs:Depends}, ${misc:Depends}, dovecot-abi-${dovecot:ABI-Version}
-Description: full-text search for dovecot using xapian
- FIXME
+Description: dovecot full-text search using xapian
+ This is a Dovecot FTS (Full Text Search) plugin to enable message indexing
+ using the Xapian Open Source Search Engine Library.
+ .
+ The plugin relies on Dovecot to do the necessary stemming.
+ It is intended to act as a simple interface to the Xapian storage/search query
+ functionality.
+ .
+ This driver supports match scoring and substring matches, which means
+ it is RFC 3501 (IMAP4rev1) compliant (although substring searches are off by
+ default).
+ This driver does not support fuzzy searches, as
+ there is no built-in support in Xapian for it.
+ .
+ The driver passes all of the ImapTest search tests.
+ .
+ Important Note
+ .
+ FTS Flatcurve will become the default Dovecot Community Edition (CE) FTS driver
+ in v2.4 (merged into Dovecot core in April 2022).
+ .
+ FTS Flatcurve will continued to be maintained separately in GitHub for
+ backwards support with Dovecot CE v2.3.x.
+ However, it is possible that configuration and features may differ between this
+ v2.3 code and core v2.4 code.
