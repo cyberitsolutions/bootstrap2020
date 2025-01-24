@@ -5,14 +5,6 @@ import random
 import time
 import typing
 
-import collections
-import psutil
-import random
-import dbus.service
-import dbus.mainloop.glib
-import time
-import typing
-
 import Xlib.display
 import Xlib.ext.screensaver
 import dbus
@@ -116,6 +108,14 @@ if False:
 06:15 <twb> Righto.
             I wonder if this is intentional, or
             if it just arose organically out of initially implementing it for ttys
+            (where logind can check directly) and then the X/WL stuff being hacked in
+06:16 <twb> cos if it's intentional I don't understand what the benefit is
+06:18 <mjt0k> the benefit of what?
+06:20 <twb> of SetIdleHint being bool not float
+06:22 <twb> https://github.com/systemd/systemd/blob/main/src/login/logind-session.c#L1161-L1162
+
+"""
+
 LOGOUT_DELAY_SECS: int = 60
 NOTIFICATION_TEMPLATE: str = "Idle sessions will be logged out automatically, losing any unsaved work.\n\nLogging out in {remaining_time}s."
 
@@ -155,182 +155,6 @@ class DBusListener(dbus.service.Object):
         else:
             return True
 
-    # @dbus.service.method("org.freedesktop.ScreenSaver")
-    # def GetActive(self) -> dbus.Boolean:
-    #     """Query the state of the locker"""
-    #     return dbus.Boolean(self.xss.idle_state)
-
-    # @dbus.service.method("org.freedesktop.ScreenSaver")
-    # def GetActiveTime(self):
-    #     """Query the length of time the locker has been active"""
-    #     # xscreenssaver-command -time
-    #     pass
-
-    # @dbus.service.method("org.freedesktop.ScreenSaver")
-    # def GetSessionIdleTime(self):
-    #     """Query the idle time of the locker"""
-    #     # Doesn't have it's own dedicated light-locker-command argument,
-    #     # but gets called instead of GetActiveTime when GetActive returns False
-
-    #     # xscreenssaver-command -time ?
-    #     pass
-
-    # @dbus.service.method("org.freedesktop.ScreenSaver")
-    # def Lock(self):
-    #     """Tells the running locker process to lock the screen immediately"""
-    #     # xscreenssaver-command -lock
-    #     pass
-
-    # @dbus.service.method("org.freedesktop.ScreenSaver")
-    # def SetActive(self, activate):
-    #     """Blank or unblank the screensaver"""
-    #     # xscreensaver-command -deactivate or -activate
-    #     activate = bool(activate)  # DBus booleans turn into ints, I want bools
-
-    # @dbus.service.method("org.freedesktop.ScreenSaver")
-    # def SimulateUserActivity(self):
-    #     """Poke the running locker to simulate user activity"""
-    #     pass
-
-    @dbus.service.method("org.freedesktop.ScreenSaver", sender_keyword='dbus_sender')
-    def Inhibit(self, caller: dbus.String, reason: dbus.String, dbus_sender: str):
-        """Inhibit the screensaver from activating."""
-
-        inhibitor: inhibitor_type = inhibitor_type(
-            # Since DBus uses unsigned 32bit integers, make sure isn't any larger than that
-            # NOTE: I could start at 0, but I've decided not to for easier debugging
-            # FIXME: This won't handle randomly generating duplicates
-            id=random.randint(1, 4294967296),
-            caller=caller,
-            reason=reason,
-            caller_process=psutil.Process(self._get_procid(dbus_sender)))
-        if inhibitor.id in self._inhibitors:
-            # FIXME: Better exception?
-            raise Exception("Already working on that inhibitor")
-        self._inhibitors.update({inhibitor.id: inhibitor})
-        logging.debug(f'Inhibitor requested by "{inhibitor.caller}" ({inhibitor.caller_process.name()}) for reason "{inhibitor.reason}". Given ID {inhibitor.id}')
-
-        return dbus.UInt32(inhibitor.id)
-
-    @dbus.service.method("org.freedesktop.ScreenSaver")
-    def UnInhibit(self, inhibitor_id):
-        if inhibitor_id not in self._inhibitors:
-            # FIXME: Better exception?
-            raise Exception("Can't find that inhibitor")
-        inhibitor = self._inhibitors.pop(inhibitor_id)
-        logging.debug(f'Removed inhibitor for "{inhibitor["caller"]}" ({inhibitor["caller_process"].name()}) with ID {inhibitor_id}')
-        # FIXME: If last inhibitor removed, and X11 is currently idle, start the logout timer
-            (where logind can check directly) and then the X/WL stuff being hacked in
-
-class xss_handler(object):
-    def __init__(self, inhibitors_handler: DBusListener) -> None:
-        self.idle_state: bool = False
-        self.inhibitors_handler: DBusListener = inhibitors_handler
-06:18 <mjt0k> the benefit of what?
-        # setup for X11 MIT-SCREEN-SAVER (input)
-        self.display: Xlib.display.Display = Xlib.display.Display()
-        root_window: Xlib.display.Window = self.display.screen().root
-        # FIXME: is there a better way to get this magic number?
-        self._notify_event_type: int = self.display.query_extension(Xlib.ext.screensaver.extname).first_event
-        Xlib.ext.screensaver.select_input(root_window, Xlib.ext.screensaver.NotifyMask)
-        # NOTE: this overrides "xset -dpms s off" in xdm/xdm-pre-prompt.py!
-        self.display.set_screen_saver(
-            timeout=5,              # seconds
-            interval=5,             # seconds (FIXME: not needed?)
-            prefer_blank=False,     # don't blank the screen!
-            allow_exposures=False)  # FIXME: needed -- but why?
-    def __init__(self) -> None:
-        # setup for XDG notify (output)
-        gi.repository.Notify.init('autologout')
-        self.idle_notification: gi.repository.Notify.Notification = gi.repository.Notify.Notification.new(
-            summary='Are you still there?',
-            body=NOTIFICATION_TEMPLATE.format(remaining_time=60),
-            icon='face-yawn')
-        self.idle_notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
-        self.idle_notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
-        # Note this could be turned into a progress-bar/volume-meter but that completely hides the summary & body text
-        # So I'm sticking with just updating the text instead of this:
-        #     idle_notification.set_hint('value', gi.repository.GLib.Variant.new_int32(99))
-        super().__init__(bus_name, '/org/freedesktop/ScreenSaver')
-        # setup for systemd-login (output)
-        self.logind = dbus.Interface(
-            dbus.SystemBus().get_object(
-                'org.freedesktop.login1',
-                '/org/freedesktop/login1/session/auto'),
-            'org.freedesktop.login1.Session')
-    def is_inhibited(self) -> bool:
-        # GIO doesn't notice events on the X11 socket/fd until we do this at least once.
-        self.display.pending_events()
-
-        # This idle_add version super inefficient as it causes the fans on my gaming PC to spin up fast
-        # # Run the xss event handler function whenever the main loop is idle.
-        # # This should maybe have a greater priority, but it'll probably be fine
-        # # https://amolenaar.pages.gitlab.gnome.org/pygobject-docs/GLib-2.0/functions.html#gi.repository.GLib.idle_add
-        # # gi.repository.GLib.idle_add(xss.handle_events)
-        # More efficient, but kinda messy
-        # # gi.repository.GLib.timeout_add_seconds(1, xss.handle_events)
-        # Should be most efficient, but isn't working
-        # # ref: https://gist.github.com/fphammerle/d81ca3ff0a169f062a9f28e57b18f04d
-        # # ref: https://lazka.github.io/pgi-docs/#GLib-2.0/classes/IOChannel.html#GLib.IOChannel
-        # # gi.repository.GLib.io_add_watch(gi.repository.GLib.IOChannel.unix_new(xss.display.display.socket.fileno()), gi.repository.GLib.IOCondition.IN, xss.handle_events)
-        # Alternatively, is this useful? https://amolenaar.pages.gitlab.gnome.org/pygobject-docs/GLib-2.0/functions.html#gi.repository.GLib.poll
-        # Oh wait, this looks far more promising: https://amolenaar.pages.gitlab.gnome.org/pygobject-docs/GLib-2.0/functions.html#gi.repository.GLib.unix_fd_add_full
-        gi.repository.GLib.unix_fd_add_full(
-            priority=gi.repository.GLib.PRIORITY_DEFAULT,
-            fd=self.display.display.socket.fileno(),
-            condition=gi.repository.GLib.IOCondition.IN,
-            function=lambda fileno, condition: self.handle_events())
-
-    def handle_events(self) -> typing.Literal[True]:
-        # FIXME: What if inhibitors change while the system is idle? Like at the end of a movie when VLC closes itself.
-        while self.display.pending_events():
-            event = self.display.next_event()
-            if event.type != self._notify_event_type:
-                # FIXME: I keep seeing type 34, figure out what it is and ignore it explicitly
-                # FIXME: What about when X11 tells us to close?
-                logging.warning('unexpected X11 event type %d', event.type)
-            elif event.state == Xlib.ext.screensaver.StateOn:
-                logging.debug('MIT-SCREEN-SAVER says idle')
-                if self.inhibitors_handler.is_inhibited:
-                    logging.debug(msg='Ignoring because org.freedesktop.ScreenSaver is currently inhibited')
-                else:
-                    logging.debug(msg='Setting idle state')
-                    self.idle_state = True
-                    self.idle_notification.show()
-                    self.logind.SetIdleHint(True)
-                    gi.repository.GLib.timeout_add_seconds(1, self._notification_timer, time.monotonic())
-            elif event.state == Xlib.ext.screensaver.StateOff:
-                logging.debug('MIT-SCREEN-SAVER says not idle')
-                self.idle_state = False
-                self.idle_notification.close()
-                self.logind.SetIdleHint(False)
-            else:
-                logging.warning('unexpected X11 event state %d', event.state)
-            return False
-        # Must return True otherwise the mainloop will just stop running this function
-        return True
-
-    def _notification_timer(self, idle_since: int) -> bool:
-        if not self.idle_state:
-            return False
-        remaining_time: float = LOGOUT_DELAY_SECS - (time.monotonic() - idle_since)
-        self.idle_notification.set_property('body', NOTIFICATION_TEMPLATE.format(remaining_time=int(remaining_time)))
-        self.idle_notification.show()
-        if remaining_time > 0:
-            return self.idle_state
-        else:
-            # Should this use GLib.spawn_async, GLib.spawn_check_wait_status (or GLib.spawn_check_exit_status), GLib.spawn_sync, or just subprocess.check_call?
-            logging.info("Should log out here")
-            return False
-
-        else:
-            return True
-    logging.basicConfig(level=logging.DEBUG)
-    mainloop = dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-
-    xss = xss_handler(inhibitors_handler = DBusListener())
-
-    gi.repository.GLib.MainLoop().run()
     # @dbus.service.method("org.freedesktop.ScreenSaver")
     # def GetActive(self) -> dbus.Boolean:
     #     """Query the state of the locker"""
