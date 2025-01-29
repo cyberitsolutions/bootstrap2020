@@ -1,7 +1,16 @@
 {
     // Allow cookies, but downgrade persistent cookies to session cookies.
     // https://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie
-    "DefaultCookiesSetting": 4,
+    // UPDATE: AMC *want* tracking cookies to work, because
+    //         they created a survey at https://www.surveymonkey.com/r/HPR25detainedpeople, and
+    //         they want to discourage detainees from submitting multiple copies of it.
+    //         SurveyMonkey detects this by setting a persistent cookie listing all the surveys you've finished.
+    //         With DefaultCookiesSetting=4, restarting the browser is sufficient to delete that cookie.
+    //         With the default setting, Factory Reset (or similar) is required to delete that cookie
+    //         There is no easy way to allow persistent cookies ONLY for surveymonkey.com.
+    //         As this is a relatively minor privacy risk, enable persistent cookies everywhere forever.
+    //         https://alloc.cyber.com.au/task/task.php?taskID=35376
+    // "DefaultCookiesSetting": 4,
 
     // https://developer.mozilla.org/en-US/docs/Web/API/FileSystem
     // https://developer.chrome.com/docs/extensions/reference/fileSystem/
