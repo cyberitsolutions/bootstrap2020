@@ -1,10 +1,11 @@
 #!/usr/bin/python3
-import collections
-import psutil
+import dataclasses
 import random
+import subprocess
 import time
 import typing
 
+import psutil
 import Xlib.display
 import Xlib.ext.screensaver
 import dbus
@@ -116,15 +117,24 @@ if False:
 
 """
 
-LOGOUT_DELAY_SECS: int = 60
-NOTIFICATION_TEMPLATE: str = "Idle sessions will be logged out automatically, losing any unsaved work.\n\nLogging out in {remaining_time}s."
+# Time before session is considered idle
+IDLE_DELAY_SECS: int = 60 * 10
+# Time after session goes idle before session is logged out
+LOGOUT_DELAY_SECS: int = 60 * 5
+NOTIFICATION_TEMPLATE: str = "Idle sessions will be logged out automatically, losing any unsaved work.\n\nLogging out in {remaining_time:.0f}s."
 
-inhibitor_type: type = collections.namedtuple('Inhibitor', ['id', 'caller', 'reason', 'caller_process'])
 
+@dataclasses.dataclass
+class InhibitorType:
+    """Auto logout inhibitor object."""
+    id: int
+    caller: str
+    reason: str
+    caller_process: psutil.Process
 
 class DBusListener(dbus.service.Object):
     def __init__(self) -> None:
-        self._inhibitors: dict[int, inhibitor_type] = {}
+        self._inhibitors: dict[int, InhibitorType] = {}
 
         session_bus = dbus.SessionBus()
         # FIXME: Also trigger for org.gnome.ScreenSaver?
@@ -193,16 +203,17 @@ class DBusListener(dbus.service.Object):
     #     pass
 
     @dbus.service.method("org.freedesktop.ScreenSaver", sender_keyword='dbus_sender')
-    def Inhibit(self, caller: dbus.String, reason: dbus.String, dbus_sender: str):
+    def Inhibit(self, caller: dbus.String, reason: dbus.String, dbus_sender: str) -> dbus.UInt32:
         """Inhibit the screensaver from activating."""
 
-        inhibitor: inhibitor_type = inhibitor_type(
+        inhibitor: InhibitorType = InhibitorType(
             # Since DBus uses unsigned 32bit integers, make sure isn't any larger than that
             # NOTE: I could start at 0, but I've decided not to for easier debugging
             # FIXME: This won't handle randomly generating duplicates
-            id=random.randint(1, 4294967296),
-            caller=caller,
-            reason=reason,
+            # FIXME: UUIDs would be a better idea, but they are 128-bit
+            id=random.randint(1, 2 ** 32-1),
+            caller=str(caller),
+            reason=str(reason),
             caller_process=psutil.Process(self._get_procid(dbus_sender)))
         if inhibitor.id in self._inhibitors:
             # FIXME: Better exception?
@@ -235,8 +246,9 @@ class xss_handler(object):
         Xlib.ext.screensaver.select_input(root_window, Xlib.ext.screensaver.NotifyMask)
         # NOTE: this overrides "xset -dpms s off" in xdm/xdm-pre-prompt.py!
         self.display.set_screen_saver(
-            timeout=5,              # seconds
-            interval=5,             # seconds (FIXME: not needed?)
+            # FIXME: Tune these numbers!
+            timeout=IDLE_DELAY_SECS,              # seconds
+            interval=IDLE_DELAY_SECS,             # seconds (FIXME: not needed?)
             prefer_blank=False,     # don't blank the screen!
             allow_exposures=False)  # FIXME: needed -- but why?
 
@@ -244,7 +256,7 @@ class xss_handler(object):
         gi.repository.Notify.init('autologout')
         self.idle_notification: gi.repository.Notify.Notification = gi.repository.Notify.Notification.new(
             summary='Are you still there?',
-            body=NOTIFICATION_TEMPLATE.format(remaining_time=60),
+            body=NOTIFICATION_TEMPLATE.format(remaining_time=LOGOUT_DELAY_SECS),
             icon='face-yawn')
         self.idle_notification.set_timeout(gi.repository.Notify.EXPIRES_NEVER)
         self.idle_notification.set_urgency(gi.repository.Notify.Urgency.CRITICAL)
@@ -252,12 +264,13 @@ class xss_handler(object):
         # So I'm sticking with just updating the text instead of this:
         #     idle_notification.set_hint('value', gi.repository.GLib.Variant.new_int32(99))
 
-        # setup for systemd-login (output)
-        self.logind = dbus.Interface(
-            dbus.SystemBus().get_object(
-                'org.freedesktop.login1',
-                '/org/freedesktop/login1/session/auto'),
-            'org.freedesktop.login1.Session')
+        # FIXME: Don't do this without telling logind that we're a power manager!
+        # # setup for systemd-login (output)
+        # self.logind = dbus.Interface(
+        #     dbus.SystemBus().get_object(
+        #         'org.freedesktop.login1',
+        #         '/org/freedesktop/login1/session/auto'),
+        #     'org.freedesktop.login1.Session')
 
         # GIO doesn't notice events on the X11 socket/fd until we do this at least once.
         self.display.pending_events()
@@ -297,13 +310,13 @@ class xss_handler(object):
                     logging.debug(msg='Setting idle state')
                     self.idle_state = True
                     self.idle_notification.show()
-                    self.logind.SetIdleHint(True)
+                    # self.logind.SetIdleHint(True)
                     gi.repository.GLib.timeout_add_seconds(1, self._notification_timer, time.monotonic())
             elif event.state == Xlib.ext.screensaver.StateOff:
                 logging.debug('MIT-SCREEN-SAVER says not idle')
                 self.idle_state = False
                 self.idle_notification.close()
-                self.logind.SetIdleHint(False)
+                # self.logind.SetIdleHint(False)
             else:
                 logging.warning('unexpected X11 event state %d', event.state)
 
@@ -314,13 +327,17 @@ class xss_handler(object):
         if not self.idle_state:
             return False
         remaining_time: float = LOGOUT_DELAY_SECS - (time.monotonic() - idle_since)
-        self.idle_notification.set_property('body', NOTIFICATION_TEMPLATE.format(remaining_time=int(remaining_time)))
+        self.idle_notification.set_property('body', NOTIFICATION_TEMPLATE.format(remaining_time=remaining_time))
         self.idle_notification.show()
         if remaining_time > 0:
             return self.idle_state
         else:
-            # Should this use GLib.spawn_async, GLib.spawn_check_wait_status (or GLib.spawn_check_exit_status), GLib.spawn_sync, or just subprocess.check_call?
-            logging.info("Should log out here")
+            # Should this use GLib.spawn_async, GLib.spawn_check_wait_status (or GLib.spawn_check_exit_status), GLib.spawn_sync?
+            # They all got too confusing for me so I gave up
+            # Does leaving out '--fast' mean it defaults to saving the session?
+            # Can we explicitly tell it to save the session? If so, can we ensure that saved session is only used once instead of re-used after every future unsaved session.
+            # FIXME: Logout triggers a reboot, do we want a shutdown? We can do '--halt' explicitly
+            subprocess.check_call(['xfce4-session-logout', '--logout'])
             return False
 
 

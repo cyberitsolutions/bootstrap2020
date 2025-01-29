@@ -3,4 +3,5 @@ include = [
     "nftables",
     "fonts-prisonpc",
     "prisonpc-chromium-hunspell-dictionaries",
+    "python3-psutil",
 ]
