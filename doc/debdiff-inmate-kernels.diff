@@ -1,3 +1,100 @@
+18bed69 6.12.9-1738150712 (was 6.11.10-1736096323)
+diff --git a/manifest.txt b/manifest.txt
+index b49b337..d399f82 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -69,11 +69,19 @@ kernel/drivers/gpu/drm/display/
+ kernel/drivers/gpu/drm/display/drm_display_helper.ko
+ kernel/drivers/gpu/drm/drm.ko
+ kernel/drivers/gpu/drm/drm_buddy.ko
++kernel/drivers/gpu/drm/drm_exec.ko
++kernel/drivers/gpu/drm/drm_gpuvm.ko
+ kernel/drivers/gpu/drm/drm_kms_helper.ko
++kernel/drivers/gpu/drm/drm_suballoc_helper.ko
++kernel/drivers/gpu/drm/drm_ttm_helper.ko
+ kernel/drivers/gpu/drm/i915/
+ kernel/drivers/gpu/drm/i915/i915.ko
++kernel/drivers/gpu/drm/scheduler/
++kernel/drivers/gpu/drm/scheduler/gpu-sched.ko
+ kernel/drivers/gpu/drm/ttm/
+ kernel/drivers/gpu/drm/ttm/ttm.ko
++kernel/drivers/gpu/drm/xe/
++kernel/drivers/gpu/drm/xe/xe.ko
+ kernel/drivers/hid/
+ kernel/drivers/hid/hid-generic.ko
+ kernel/drivers/hid/hid.ko
+@@ -176,8 +184,8 @@ kernel/sound/soc/codecs/snd-soc-da7219.ko
+ kernel/sound/soc/codecs/snd-soc-dmic.ko
+ kernel/sound/soc/codecs/snd-soc-es8316.ko
+ kernel/sound/soc/codecs/snd-soc-es83xx-dsm-common.ko
++kernel/sound/soc/codecs/snd-soc-hda-codec.ko
+ kernel/sound/soc/codecs/snd-soc-hdac-hda.ko
+-kernel/sound/soc/codecs/snd-soc-hdac-hdmi.ko
+ kernel/sound/soc/codecs/snd-soc-max98090.ko
+ kernel/sound/soc/codecs/snd-soc-max98357a.ko
+ kernel/sound/soc/codecs/snd-soc-max98373-i2c.ko
+@@ -194,6 +202,7 @@ kernel/sound/soc/codecs/snd-soc-rt1015.ko
+ kernel/sound/soc/codecs/snd-soc-rt1015p.ko
+ kernel/sound/soc/codecs/snd-soc-rt1308.ko
+ kernel/sound/soc/codecs/snd-soc-rt286.ko
++kernel/sound/soc/codecs/snd-soc-rt5514.ko
+ kernel/sound/soc/codecs/snd-soc-rt5640.ko
+ kernel/sound/soc/codecs/snd-soc-rt5645.ko
+ kernel/sound/soc/codecs/snd-soc-rt5651.ko
+@@ -211,20 +220,27 @@ kernel/sound/soc/intel/atom/snd-soc-sst-atom-hifi2-platform.ko
+ kernel/sound/soc/intel/atom/sst/
+ kernel/sound/soc/intel/atom/sst/snd-intel-sst-acpi.ko
+ kernel/sound/soc/intel/atom/sst/snd-intel-sst-core.ko
++kernel/sound/soc/intel/avs/
++kernel/sound/soc/intel/avs/boards/
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-da7219.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-dmic.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-hdaudio.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-max98373.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-max98927.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-nau8825.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-rt286.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-rt5514.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-rt5663.ko
++kernel/sound/soc/intel/avs/boards/snd-soc-avs-ssm4567.ko
++kernel/sound/soc/intel/avs/snd-soc-avs.ko
+ kernel/sound/soc/intel/boards/
+-kernel/sound/soc/intel/boards/snd-skl_nau88l25_max98357a.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-hda-dsp-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-board-helpers.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-cirrus-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-maxim-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-nuvoton-common.ko
+ kernel/sound/soc/intel/boards/snd-soc-intel-sof-realtek-common.ko
+-kernel/sound/soc/intel/boards/snd-soc-kbl_da7219_max98357a.ko
+-kernel/sound/soc/intel/boards/snd-soc-kbl_da7219_max98927.ko
+-kernel/sound/soc/intel/boards/snd-soc-kbl_rt5663_max98927.ko
+ kernel/sound/soc/intel/boards/snd-soc-skl_hda_dsp.ko
+-kernel/sound/soc/intel/boards/snd-soc-skl_nau88l25_ssm4567.ko
+-kernel/sound/soc/intel/boards/snd-soc-skl_rt286.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof-ssp-amp.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_cs42l42.ko
+ kernel/sound/soc/intel/boards/snd-soc-sof_nau8825.ko
+@@ -242,11 +258,6 @@ kernel/sound/soc/intel/catpt/
+ kernel/sound/soc/intel/catpt/snd-soc-catpt.ko
+ kernel/sound/soc/intel/common/
+ kernel/sound/soc/intel/common/snd-soc-acpi-intel-match.ko
+-kernel/sound/soc/intel/common/snd-soc-sst-dsp.ko
+-kernel/sound/soc/intel/common/snd-soc-sst-ipc.ko
+-kernel/sound/soc/intel/skylake/
+-kernel/sound/soc/intel/skylake/snd-soc-skl-ssp-clk.ko
+-kernel/sound/soc/intel/skylake/snd-soc-skl.ko
+ kernel/sound/soc/snd-soc-acpi.ko
+ kernel/sound/soc/snd-soc-core.ko
+ kernel/sound/soc/sof/
+@@ -261,6 +272,7 @@ kernel/sound/soc/sof/intel/snd-sof-pci-intel-cnl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-icl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-lnl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-mtl.ko
++kernel/sound/soc/sof/intel/snd-sof-pci-intel-ptl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-skl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-tgl.ko
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-tng.ko
 e3e98f2 6.11.10-1736096323 (was 6.11.5-1731928415)
 9cad4c2 6.11.5-1731928415 (was 6.10.11-1728440193)
 diff --git a/manifest.txt b/manifest.txt
