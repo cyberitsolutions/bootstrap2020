@@ -2,6 +2,13 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs February 2025 (since January 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.9 (was 6.11.10).
+• Idle (no input and no TV) desktops log out after 15 minutes.
+
+
+======================================================================
  Changes in SOEs January 2025 (since November 2024)
 ======================================================================
 • Inmate kernel bumped to 6.11.10 (was 6.11.5).
