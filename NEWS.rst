@@ -6,6 +6,7 @@ This is a summary of user-visible changes over time.
 ======================================================================
 • Inmate kernel bumped to 6.12.9 (was 6.11.10).
 • Idle (no input and no TV) desktops log out after 15 minutes.
+• The browser no longer downgrades persistent cookies to session cookies.
 
 
 ======================================================================
