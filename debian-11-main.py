@@ -63,7 +63,6 @@ group.add_argument('--host-port-for-boot-test-vnc', type=int, default=5900, meta
                    help='so you can run two of these at once')
 group.add_argument('--opengl-for-boot-test-ssh', action='store_true',
                    help='Enable OpenGL in --boot-test (requires qemu 7.1)')
-group.add_argument('--measure-install-footprints', action='store_true')
 parser.add_argument('--destdir', type=lambda s: pathlib.Path(s).resolve(),
                     default='/tmp/bootstrap2020/')
 parser.add_argument('--template', default='main',
@@ -370,11 +369,6 @@ with tempfile.TemporaryDirectory() as td_str:
             '--customize-hook=PAGER=cat LOGNAME=root USERNAME=root USER=root HOME=/root chroot $1 bash -i; false',
             '--customize-hook=rm -f $1/etc/debian_chroot']
            if args.debug_shell else []),
-         *(['--customize-hook=upload doc/debian-11-app-reviews.csv /tmp/app-reviews.csv',
-            '--customize-hook=chroot $1 python3 < debian-11-install-footprint.py',
-            '--customize-hook=download /var/log/install-footprint.csv'
-            f'    doc/debian-11-install-footprint.{args.template}.csv']
-           if args.measure_install_footprints else []),
          # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
          # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
          *([f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status']
