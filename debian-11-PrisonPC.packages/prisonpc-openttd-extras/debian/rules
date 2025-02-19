@@ -1,7 +1,0 @@
-#!/usr/bin/make -f
-export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-D := debian/prisonpc-openttd-extras/usr/share/games/openttd
-%:
-	dh $@
-override_dh_auto_install:
-	debian/rules.py

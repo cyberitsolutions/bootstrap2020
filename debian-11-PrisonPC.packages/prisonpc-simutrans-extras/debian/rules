@@ -1,9 +1,0 @@
-#!/usr/bin/make -f
-export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-D := debian/prisonpc-simutrans-extras/usr/share/games/simutrans/pak
-%:
-	dh $@
-override_dh_auto_clean:
-	rm -rf tmp
-override_dh_auto_install:
-	wget2 -P tmp -i debian/urls
