@@ -1,5 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=Remove Debian 9 browser bookmarks
-Exec=bootstrap2020-remove-debian9-bookmarks
-Type=application

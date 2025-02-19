@@ -1,6 +1,0 @@
-# This first line of this -*-conf-*- file is ignored due to a bug: http://bugs.debian.org/739258
-no-allow-failsafe
-no-allow-user-resources
-no-allow-user-xsession
-no-use-session-dbus
-no-use-ssh-agent

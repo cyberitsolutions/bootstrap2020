@@ -1,9 +1,0 @@
-Explanation: use quota with server-side code disabled
-Package: src:quota
-Pin: release o=Cyber
-Pin-Priority: 500
-
-Explanation: use ORC-less pulseaudio because all user-writable areas are -o noexec --- NOT NEEDED in Debian 12
-Package: src:pulseaudio
-Pin: release o=Cyber
-Pin-Priority: 500

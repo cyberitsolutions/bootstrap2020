@@ -1,4 +1,0 @@
-# Make sure lib/systemd/system-generators/bootstrap2020-user-home-mount-generator runs
-# at least once AFTER the LDAP client is up and running.
-[Service]
-ExecStartPost=!systemctl daemon-reload

@@ -1,9 +1,0 @@
-# https://sources.debian.org/src/exo/4.16.2-1/exo/exo-execute.c/?hl=106#L106
-# https://sources.debian.org/src/xfce4-panel/4.16.3-1/plugins/directorymenu/directorymenu.c/?hl=779#L778-L801
-#
-# The left hand side can be exactly and only one of four categories.
-# The right hand side is the X in /usr/share/xfce4/helpers/X.desktop.
-FileManager=thunar
-WebBrowser=chromium
-MailReader=com.PrisonPC.Mail
-TerminalEmulator=com.PrisonPC.log-terminal-attempt

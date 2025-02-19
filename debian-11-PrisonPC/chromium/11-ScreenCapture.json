@@ -1,8 +1,0 @@
-// Web apps may not take screenshots.
-{
-    "ScreenCaptureAllowed": false,
-    "ScreenCaptureAllowedByOrigins": [],
-    "WindowCaptureAllowedByOrigins": [],
-    "TabCaptureAllowedByOrigins": [],
-    "SameOriginTabCaptureAllowedByOrigins": []
-}

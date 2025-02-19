@@ -1,8 +1,0 @@
-# This is what makes tv-snitch start at all.
-# It's a dropin only so staff can NOT start it.
-
-# Make this also start up tv-snitch@p123.service
-# This is slightly cleaner than doing it in xdm.
-# Don't need After=/Before= because they're TRULY connected.
-[Unit]
-Wants=bootstrap2020-tv-snitch@%i.service

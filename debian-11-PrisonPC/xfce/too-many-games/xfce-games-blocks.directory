@@ -1,9 +1,0 @@
-# -*-conf-desktop-*-
-# GTK3 (Adwaita) provides no icons for game SUB-categories.
-# So for now, use the same game icon for all.  :-(
-[Desktop Entry]
-Version=1.0
-Type=Directory
-Icon=applications-games
-Name=Falling Blocks
-Comment=Falling block puzzle games (like Tetris)
