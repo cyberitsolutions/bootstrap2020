@@ -115,7 +115,9 @@ if gi.repository.Gtk.ResponseType.YES == dialog.run():
                      # These are in Debian 12 -- are they are problem?
                      # FIXME: find out, instead of assuming they are a problem.
                      'pipewire-pulse.service',
+                     'pipewire-pulse.socket',
                      'pipewire.service',
+                     'pipewire.socket',
                      'wireplumber.service',
                      ])
 
