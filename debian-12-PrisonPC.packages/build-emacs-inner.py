@@ -21,6 +21,7 @@ processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']
 # builddeps:./ : Depends: gcc-13 but it is not installable
 #                Depends: libgccjit-13-dev but it is not installable
 # https://bugs.debian.org/1042185
+# UPDATE: "Those should be 14 -> 12 now" --twb, February 2025 (Emacs 30.1)
 for path in {
         source_dir / 'debian/control',
         source_dir / 'debian/rules'}:
@@ -29,8 +30,8 @@ for path in {
     # emacs-29.1+1/debian/rules: makefile script, ISO-8859 text
     # https://udd.debian.org/lintian/?packages=emacs  "national-encoding"
     path.write_bytes(path.read_bytes()
-                     .replace(b'gcc-13', b'gcc-12')
-                     .replace(b'libgccjit-13-dev', b'libgccjit-12-dev'))
+                     .replace(b'gcc-14', b'gcc-12')
+                     .replace(b'libgccjit-14-dev', b'libgccjit-12-dev'))
 subprocess.check_call(['chronic', 'apt', 'build-dep', '-y', './'], cwd=source_dir)
 subprocess.check_call(['debchange', '--bpo', '--distribution', 'bookworm', 'Backport to Debian 12.'], cwd=source_dir)
 subprocess.check_call(['debuild', '-uc', '-us', '-tc', f'-j{processors_online}'], cwd=source_dir)
