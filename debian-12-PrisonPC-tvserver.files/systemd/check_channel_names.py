@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 __doc__ = """ backported from
 https://git.cyber.com.au/prisonpc/blob/32814-TECH5-16DT-in-2023/prisonpc/iptv/station2epg.py#L-284
 
