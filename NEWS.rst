@@ -2,6 +2,19 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs March 2025 (since February 2025)
+======================================================================
+• Idle logout is disabled again.
+• The TV server SOE now runs Debian 12.
+• Endless Sky bumped to 0.10.12 (new game content).
+• Bugfixes:
+
+  • TV configurator was killing TV EPG scanner.
+  • TV time-shifting had a type error.
+  • Factory Reset was generating needless logspam.
+
+
+======================================================================
  Changes in SOEs February 2025 (since January 2025)
 ======================================================================
 • Inmate kernel bumped to 6.12.9 (was 6.11.10).
