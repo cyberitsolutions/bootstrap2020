@@ -1,0 +1,2 @@
+path = "etc/systemd/system/dvblast@.service"
+mode = 292

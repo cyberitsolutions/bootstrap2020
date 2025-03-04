@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3
 import argparse
 import json
 import logging
@@ -87,7 +87,7 @@ args = parser.parse_args()
 my_ip_address: str = socket.gethostbyname('_outbound')
 with pathlib.Path('/srv/tv/legacy-tvserver/config.json').open() as f:
     config_all_tuners: dict[str, dict[str, int]]
-    config_all_tuners = json.load(f)[str(my_ip_address)]
+    config_all_tuners = json.load(f).get(str(my_ip_address), {})
 
 if str(args.adapter) not in config_all_tuners:
     logging.warning('Tuner %s not configured, exiting', args.adapter)
