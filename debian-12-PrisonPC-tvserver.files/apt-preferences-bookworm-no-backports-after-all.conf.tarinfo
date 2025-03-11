@@ -1,0 +1,4 @@
+# NOTE: this MUST sort before
+#       https://github.com/cyberitsolutions/bootstrap2020/tree/main/debian-12-main.files/apt-preferences-bookworm-backports.conf.tarinfo
+#       otherwise it won't "win" and will be de facto ignored.
+name = "etc/apt/preferences.d/000-bootstrap2020-no-backports-after-all"
