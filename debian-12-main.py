@@ -282,10 +282,7 @@ def do_boot_test():
     # Therefore, qemu needs to use compatible IP addresses.
     staff_network = not template.startswith('desktop-inmate')
     disk_bullshit = template in {'dban', 'understudy', 'datasafe3'}
-    port_forward_bullshit = (
-        template.startswith('desktop-staff') or
-        template.startswith('desktop-inmate') or
-        template.startswith('tvserver'))
+    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate') or template == 'tvserver'
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if staff_network else
@@ -508,7 +505,6 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
 
 
 def qemu_tvserver_ext2(testdir: pathlib.Path, when: bool = True) -> list:
-    # NOTE: not used for tvserver-appliance.
     if not when:
         return []
     # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
@@ -607,7 +603,6 @@ parser.add_argument('--templates',
                     choices=('main',
                              'dban',
                              'tvserver',
-                             'tvserver-appliance',
                              'understudy',
                              'datasafe3',
                              'desktop',
@@ -628,7 +623,6 @@ parser.add_argument('--templates',
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
                         'tvserver: turn free-to-air DVB-T into rtp:// IPTV;'
-                        'tvserver-appliance: turn free-to-air DVB-T into station-wide rtp:// IPTV, and NOTHING else;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4 (or ZFS); '
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
@@ -798,7 +792,6 @@ for template in args.templates:
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *do_stuff('main-unattended-upgrades', when=template in {'understudy', 'datasafe3'}),
              *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
-             *do_stuff('PrisonPC-tvserver-appliance', when=template == 'tvserver-appliance'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
              *do_stuff('smartd', when=template in {'dban', 'understudy', 'datasafe3'} and not args.virtual_only),
@@ -815,7 +808,7 @@ for template in args.templates:
                       'linux-image-amd64' if not (template.startswith('desktop-inmate') and args.physical_only) else
                       'linux-image-inmate'),
                      # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
-                     (template in {'understudy', 'tvserver', 'tvserver-appliance'},
+                     (template in {'understudy', 'tvserver'},
                       'linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64'),
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template.startswith('desktop') and not template.startswith('desktop-inmate'),
@@ -850,7 +843,7 @@ for template in args.templates:
                if template.startswith('desktop-staff') or template.startswith('desktop-inmate') else []),
              # For cyber-zfs-backup (understudy) and tv-grab-dvb (tvserver)
              *(['debian-12-PrisonPC-server.sources']
-               if template in {'understudy', 'tvserver', 'tvserver-appliance'} else []),
+               if template in {'understudy', 'tvserver'} else []),
              ])
 
         subprocess.check_call(

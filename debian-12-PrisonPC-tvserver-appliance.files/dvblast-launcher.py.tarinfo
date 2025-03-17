@@ -1,3 +1,0 @@
-path = "usr/local/bin/dvblast-launcher"
-mode = 365
-include = ["dvblast"]
