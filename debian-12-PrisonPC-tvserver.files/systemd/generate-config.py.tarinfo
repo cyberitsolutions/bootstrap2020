@@ -1,5 +1,0 @@
-name = "usr/sbin/tvserver-generate-config"
-include = [
-    # DVB-T → rtp://
-    "dvblast",
-]

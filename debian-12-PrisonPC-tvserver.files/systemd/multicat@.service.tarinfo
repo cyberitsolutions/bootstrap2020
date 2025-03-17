@@ -1,3 +1,0 @@
-name = "etc/systemd/system/multicat@.service"
-mode = 292
-include = ["multicat"]

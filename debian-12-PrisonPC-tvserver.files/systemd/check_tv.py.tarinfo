@@ -1,5 +1,0 @@
-name = "usr/sbin/tvserver-check_tv"
-include = [
-    # dvb-apps provides /usr/bin/femon
-    "dvb-apps",
-]

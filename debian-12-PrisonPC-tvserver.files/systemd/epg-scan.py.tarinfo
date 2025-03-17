@@ -1,5 +1,0 @@
-name = "usr/sbin/tvserver-epg-scan"
-include = [
-    "python3-lxml",
-    "dvblast"
-]
