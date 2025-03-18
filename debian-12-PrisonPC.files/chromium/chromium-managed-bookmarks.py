@@ -5,6 +5,9 @@ import urllib.request
 
 __doc__ = """ copy https://PrisonPC/ManagedBookmarks to chromium policy
 
+https://chromeenterprise.google/policies/#ManagedBookmarks
+https://git.cyber.com.au/prisonpc/blob/stable/eric/squid.py
+
 Includes per-user bookmarks, so
 MUST run after session-snitch.py hits
 https://ppc-services/login/<USER>.
