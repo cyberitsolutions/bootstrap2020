@@ -103,7 +103,7 @@ port: int = config_one_tuner['port']
 #
 # Tell dvblast to send the entire station as-is to the main server.
 # NOTE: we MUST also pass --budget-mode (-u) on the CLI, else
-#       "*" means "no streams" (no "all streams")
+#       "*" means "no streams" (not "all streams")
 # https://sources.debian.org/src/dvblast/3.4-1/README/#L214-L225
 pathlib.Path('dvblast.conf').write_text(f'10.0.0.1:{port}/tos=104 1 *\n')
 
