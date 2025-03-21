@@ -9,6 +9,10 @@ import subprocess
 
 __doc__ = """ provide an equivalent of hdhomerun_config 10.1.2.3 get /tunerN/status
 
+This version is meant to be run by hand, or by monit (the other end isn't written yet):
+https://git.cyber.com.au/prisonpc/blob/25.03_rc2/prisonpc/iptv/stations2status.py#L-109
+https://git.cyber.com.au/prisonpc/blob/35425-appliance-soe-monit/prisonpc/iptv/stations2status.py#L-110
+
 "hdhomerun_config ⋯ /tunerN/status" output looks like this:
 
     ch=auto7t:184500000 lock=t7dvbt ss=100 snq=100 seq=100 bps=23101440 pps=2194 rtp://10.0.0.1:61002 no_clear
