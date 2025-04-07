@@ -2,6 +2,15 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs April 2025 (since March 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.12 (was 6.12.9).
+• TBS (TV tuner) driver appeared to run on Debian 12 at last.
+  But actually, a random process segfaults about once per hour.
+  Therefore, immediately rolled back to Debian 11 again.
+
+
+======================================================================
  Changes in SOEs March 2025 (since February 2025)
 ======================================================================
 • Idle logout is disabled again.
