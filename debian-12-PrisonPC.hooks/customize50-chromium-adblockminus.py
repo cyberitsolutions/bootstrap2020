@@ -9,10 +9,14 @@ Detainees have a default-deny list, where EVERYTHING is blocked unless it is exp
 Staff have a default-allow list, but still have plugins disabled, so they can't install ad blockers even if they want to.
 We also can't easily ship actual an adblock-plus plugin without other security tradeoffs.
 
-We mostly consider this FineTM - if staff want to do personal browsing from their PrisonPC staff account instead of their government account, that's their business.
+We mostly consider this FineTM - if staff want to do personal browsing
+from their PrisonPC staff account instead of their government account,
+that's their business.
 Also we are/were a bit concerned about breaking something.
 
-But having recently had to do an audit/analysis of browsing history from two staff accounts over a 1h period each, the amount of telemetry was astonishing.
+But having recently had to do an audit/analysis of browsing history
+from two staff accounts over a 1h period each, the amount of telemetry
+was astonishing.
 Just to make *that analysis* easier next time, do some absolute bare-bones ad blocking.
 
 This adapts some ancient code I (twb) had set up personally to block things via /etc/hosts, so
@@ -68,4 +72,4 @@ for list_url in list_urls:
             {'URLBlocklist': domains},
             f,
             indent=4,
-            sortkeys=True)
+            sort_keys=True)
