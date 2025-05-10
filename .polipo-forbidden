@@ -1,0 +1,52 @@
+# -*- conf -*-
+# If it looks like an FQDN, that FQDN is forbidden.  Otherwise, it's
+# an unanchored extended regexp, matched against the URL.
+#
+# See http://adblockplus.org/en/subscriptions huge block lists.
+# This little munger makes EREs of its globbing-plus-NIH syntax.
+#
+# sed -n s/^##//p .polipo-forbidden | sh
+#
+## {
+##   curl -sSL http://easylist.adblockplus.org/easyprivacy.txt
+##   curl -sSL http://easylist.adblockplus.org/easylist_noelemhide.txt
+## } |
+##				   # Ref. http://adblockplus.org/en/filters
+## sed 's/^\[/# &/' |	           # leading [ means section (comment)
+## sed 's/^!/#/' |		   # leading ! means comment
+## sed 's/^@@|*/#WHITELIST /' |	   # leading @@ means whitelist (not handled)
+## sed 's/[.?]/\\&/g' |		   # any . or ? is a literal . or ?
+## sed 's!\*!.*!g' |		   # any * means anything-at-all
+## sed 's!\^![^[:alnum:].%-]!g' |  # any ^ means separator
+## sed 's!^||!https?://!' |	   # leading || means any-protocol
+## sed 's/|$/$/' |		   # trailing | means end-of-string
+## sed 's/^|/^/' |		   # leading | means beginning-of-string
+## sed '/^[^#].*\$/ s/^/#OPTIONS /' # any $ means "options" (not handled)
+## sed '/^[^#].*|/ s/^/#JUJU /' |  # any other | is bad juju
+
+### UPDATE: I no longer do this.  The resulting file wasn't valid
+### according to polipo, and polipo wouldn't report the regex parse
+### error, so it was too hard to fix.  Instead, I am using the
+### following to blacklist a strict subset.
+###
+### NOTE: the script below also demonstrates how to sort an list of
+### FQDNs right-to-left, i.e. most significant part first.
+
+# hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
+# printf '%s ' 127.254.254.254 blacklisted.invalid $(curl -sSL http://easylist.adblockplus.org/easyprivacy.txt http://easylist.adblockplus.org/easylist_noelemhide.txt | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev)
+
+
+# UPDATED VERSION FEB 2017
+# FIREFOX COULD NOT HANDLE HAVING MILLIONS OF ENTRIES ON ONE LINE IN /ETC/HOSTS,
+# AND AS A SIDE EFFECT ALSO DISABLED *ALL DNS* HOSTNAME RESOLUTION.
+
+#!/bin/bash
+hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
+for URL in https://easylist.to/easylist/{easyprivacy,easylist,fanboy-annoyance}.txt; do echo "## FROM $URL $(date -I)"; curl -sSfL "$URL" | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev | sed 's/^/127.254.254.254 blacklisted.invalid    /'; done
+
+## UPDATED AGAIN, TO RIGHT-ALIGN THE DOMAINS --twb, Sep 2020
+# hostrev () { local a fqdn new; while IFS=. read -ra fqdn; do new=(); for ((a = ${#fqdn[@]} - 1; a >= 0; a--)); do new+=("${fqdn[a]}"); done; ( IFS=.; printf '%s\n' "${new[*]}" ); done; }
+# for l in {easyprivacy,easylist,fanboy-annoyance}; do URL=https://easylist.to/easylist/$l.txt; echo "## FROM $URL $(date -I)"; curl -sSfL "$URL" | grep '^||[a-z0-9.]*[a-z][a-z0-9.]*\^$' | tr -d '|^' | hostrev | sort | hostrev | while read -r domain; do printf '127.254.254.254 %s.blacklisted.invalid %32s\n' "$l" "$domain"; done; done
+
+
+# FIXME: integrate this list?  http://adaway.org/hosts.txt
