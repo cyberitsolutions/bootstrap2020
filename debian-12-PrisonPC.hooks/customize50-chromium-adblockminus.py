@@ -4,6 +4,8 @@ import json
 import pathlib
 import requests
 
+import jsmin
+
 __doc__ = """ bare-bones 60% ad/telemetry blocker
 Detainees have a default-deny list, where EVERYTHING is blocked unless it is explicitly allowed.
 Staff have a default-allow list, but still have plugins disabled, so they can't install ad blockers even if they want to.
@@ -66,10 +68,7 @@ for list_url in list_urls:
         if rule.startswith('||') and rule.endswith('^')
         if '/' not in rule
     ]
-    dest_path = dest_dir / f'50-AdblockMinus-{pathlib.Path(list_url).stem}.json'
-    with dest_path.open('w') as f:
-        json.dump(
-            {'URLBlocklist': domains},
-            f,
-            indent=4,
-            sort_keys=True)
+    dest_path = dest_dir / f'10-URLs.json'
+    policy_dict = json.loads(jsmin.jsmin(dest_path.read_text()))
+    policy_dict['URLBlocklist'] = policy_dict.get('URLBlocklist', {}) + domains
+    dest_path.write_text(json.dumps(policy_dict))
