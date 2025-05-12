@@ -1,3 +1,16 @@
+be744ab 6.12.22-1747013796 (was 6.12.12-1742436586)
+diff --git a/manifest.txt b/manifest.txt
+index d399f82..636c9d2 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -110,6 +110,7 @@ kernel/drivers/net/ethernet/intel/igbvf/
+ kernel/drivers/net/ethernet/intel/igbvf/igbvf.ko
+ kernel/drivers/pinctrl/
+ kernel/drivers/pinctrl/intel/
++kernel/drivers/pinctrl/intel/pinctrl-intel-platform.ko
+ kernel/drivers/pinctrl/intel/pinctrl-meteorlake.ko
+ kernel/drivers/pinctrl/intel/pinctrl-meteorpoint.ko
+ kernel/drivers/platform/
 0d4306d 6.12.12-1742436586 (was 6.12.9-1738150712)
 18bed69 6.12.9-1738150712 (was 6.11.10-1736096323)
 diff --git a/manifest.txt b/manifest.txt
