@@ -2,6 +2,16 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs May 2025 (since April 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.22 (was 6.12.12).
+• Staff browser now blocks the "top ten" telemetry/ad networks.
+  This saves 5-8% of the work when auditing staff activity.
+  (Full-feature blockers are themselves blocked by PrisonPC hardening.)
+  (Detainee browser needs no blocker, because it's default-deny.)
+
+
+======================================================================
  Changes in SOEs April 2025 (since March 2025)
 ======================================================================
 • Inmate kernel bumped to 6.12.12 (was 6.12.9).
