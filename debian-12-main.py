@@ -16,7 +16,6 @@ import types
 
 import hyperlink                # URL validation
 import requests                 # FIXME: h2 support!
-import pypass                   # for tvserver PSKs
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2021 Trent W. Buck"
@@ -282,7 +281,7 @@ def do_boot_test():
     # Therefore, qemu needs to use compatible IP addresses.
     staff_network = not template.startswith('desktop-inmate')
     disk_bullshit = template in {'dban', 'understudy', 'datasafe3'}
-    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate') or template == 'tvserver'
+    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate')
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if staff_network else
@@ -445,7 +444,6 @@ def do_boot_test():
                '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
               if not args.netboot_only else []),
             *qemu_dummy_DVD(testdir, when=template.startswith('desktop')),
-            *qemu_tvserver_ext2(testdir, when=template == 'tvserver'),
             *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
                '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
                '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
@@ -502,42 +500,6 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         '-device', f'usb-mtp,bus=LanguageNeurosisTurkey.0,readonly=off,rootdir={dummy_MTP_path}',
         # don't try to boot off the dummy disk
         '--boot', 'order=n'])
-
-
-def qemu_tvserver_ext2(testdir: pathlib.Path, when: bool = True) -> list:
-    if not when:
-        return []
-    # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
-    # containing a specific password file.
-    tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
-    tvserver_tar_path = testdir / 'prisonpc-persist.tar'
-    with tarfile.open(tvserver_tar_path, 'w') as t:
-        for name in {'pgpass', 'msmtp-psk'}:
-            with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
-                f.write(
-                    pypass.PasswordStore().get_decrypted_password(
-                        f'PrisonPC/tvserver/{name}').encode())
-                f.flush()
-                member = tarfile.TarInfo()
-                member.name = name
-                member.mode = (
-                    0o0444 if name == 'msmtp-psk' else  # FIXME: yuk
-                    0o0400)
-                member.size = f.tell()
-                f.seek(0)
-                t.addfile(member, f)
-    subprocess.check_call(
-        ['genext2fs',
-         '--volume-label=prisonpc-persist'
-         '--block-size=1024',
-         '--size-in-blocks=1024',  # 1MiB
-         '--number-of-inodes=128',
-         '--tarball', tvserver_tar_path,
-         tvserver_ext2_path])
-    tvserver_tar_path.unlink()
-    return (                    # add these args to qemu cmdline
-        ['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
-         '--boot', 'order=n'])  # don't try to boot off the dummy disk
 
 
 def do_upload_to(host):
@@ -602,7 +564,6 @@ group.add_argument('--measure-install-footprints', action='store_true')
 parser.add_argument('--templates',
                     choices=('main',
                              'dban',
-                             'tvserver',
                              'understudy',
                              'datasafe3',
                              'desktop',
@@ -622,7 +583,6 @@ parser.add_argument('--templates',
                         'main: small CLI image; '
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
-                        'tvserver: turn free-to-air DVB-T into rtp:// IPTV;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4 (or ZFS); '
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
@@ -733,10 +693,6 @@ if args.boot_test and not (args.netboot_only and have_smbd) and any(
         'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
         ' Without these, site.dir cannot patch /etc/hosts, so'
         ' boot-test ldap/nfs/squid/pete redirect will not work!')
-if args.virtual_only and 'tvserver' in args.templates:
-    # The error message is quite obscure:
-    #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
-    raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
 if args.ssh_server != 'openssh-server' and 'datasafe3' in args.templates:
     raise NotImplementedError('datasafe3 only supports OpenSSH')
 if args.ssh_server != 'openssh-server' and any(
@@ -791,7 +747,6 @@ for template in args.templates:
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *do_stuff('main-unattended-upgrades', when=template in {'understudy', 'datasafe3'}),
-             *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
              *do_stuff('smartd', when=template in {'dban', 'understudy', 'datasafe3'} and not args.virtual_only),
@@ -807,8 +762,8 @@ for template in args.templates:
                       'linux-image-cloud-amd64' if args.virtual_only else
                       'linux-image-amd64' if not (template.startswith('desktop-inmate') and args.physical_only) else
                       'linux-image-inmate'),
-                     # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
-                     (template in {'understudy', 'tvserver'},
+                     # For zfs-dkms (understudy)
+                     (template == 'understudy',
                       'linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64'),
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template.startswith('desktop') and not template.startswith('desktop-inmate'),
@@ -841,9 +796,9 @@ for template in args.templates:
              'debian-12.sources',
              *(['debian-12-PrisonPC-desktop.sources']
                if template.startswith('desktop-staff') or template.startswith('desktop-inmate') else []),
-             # For cyber-zfs-backup (understudy) and tv-grab-dvb (tvserver)
+             # For cyber-zfs-backup (understudy)
              *(['debian-12-PrisonPC-server.sources']
-               if template in {'understudy', 'tvserver'} else []),
+               if template == 'understudy' else []),
              ])
 
         subprocess.check_call(

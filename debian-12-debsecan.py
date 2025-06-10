@@ -44,7 +44,6 @@ parser.add_argument('--no-only-fixed', action='store_false', dest='only_fixed')
 parser.add_argument('--suite', default='bookworm', choices=(
     'stretch', 'buster', 'bullseye', 'bookworm'))
 parser.add_argument('--templates', nargs='+', default={
-    'tvserver',
     'understudy',
     'desktop-inmate-amc',
     'desktop-inmate-amc-library',
