@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Name=Factory Reset
 Comment=Reset your account to factory defaults
-Exec=systemd-cat --identifier=factory-reset factory-reset
-TryExec=factory-reset
+Exec=systemd-cat --identifier=factory-reset factory-reset-request
+TryExec=factory-reset-request
 Terminal=false
 Type=Application
 Categories=X-Red-Hat-Base;X-GNOME-PersonalSettings;Settings;

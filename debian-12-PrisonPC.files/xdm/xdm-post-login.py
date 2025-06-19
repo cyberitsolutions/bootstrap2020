@@ -19,6 +19,13 @@ subprocess.check_call([
     'systemctl', 'start',
     f'bootstrap2020-session-snitch@{os.environ["USER"]}'])
 
+# As the user, before any problematic user processes (e.g. chromium, pipewire) have started,
+# move ~/.??* into the trash iff ~/.factory-reset-request exists (otherwise, do nothing).
+subprocess.check_call([
+    'systemd-cat', '--identifier=factory-reset',
+    'runuser', '--user', os.environ['USER'], '--',
+    'factory-reset-action'])
+
 # Slurp https://PrisonPC/ManagedBookmarks into /etc/chromium/.
 # MUST happen after session-snitch does /login, so
 # (for now) we cannot put them in the same "systemctl start" call.

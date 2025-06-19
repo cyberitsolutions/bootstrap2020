@@ -1,0 +1,3 @@
+name = "usr/bin/factory-reset-action"
+mode = 365
+include = ["trash-cli"]
