@@ -1,0 +1,16 @@
+SOEs	Source Package	Binary Package	Origin	New Version	Arch	Old Version	Comment
+1	tevent	libtevent0	bullseye-backports	0.13.0-2~bpo11+1	amd64	0.10.2-1	REJECT.  Only if needed for src:samba.
+1	elfutils	libelf1	bullseye-backports	0.187-1~bpo11+1	amd64	0.183-1	REJECT.  Only present for ffmpeg, which isn't really used anymore.
+1	e2fsprogs	libcom-err2	bullseye-backports	1.46.6-1~bpo11+1	amd64	1.46.2-2+deb11u1	REJECT.  We only use ext4 for edge case stuff like /boot, not worth caring about.
+1	e2fsprogs	logsave	bullseye-backports	1.46.6-1~bpo11+1	amd64	1.46.2-2+deb11u1	''
+1	init-system-helpers	init-system-helpers	bullseye-backports	1.64~bpo11+1	all	1.60	REJECT.  Lets a deb start/stop systemd user units at install time.  We do not care (TV SOE has no local human users).  Fixes recursive symlink bug. 
+1	init-system-helpers	init	bullseye-backports	1.64~bpo11+1	amd64	1.60	''
+1	git	git-man	bullseye-backports	1:2.39.2-1~bpo11+1	all	1:2.30.2-1+deb11u4	REJECT.  Only installed to build the third-party TBS driver.
+1	git	git	bullseye-backports	1:2.39.2-1~bpo11+1	amd64	1:2.30.2-1+deb11u4	''
+1	qemu	qemu-guest-agent	bullseye-backports	1:7.2+dfsg-7+deb12u2~bpo11+1	amd64	1:5.2+dfsg-11+deb11u4	REJECT.  Not used nor useful for TVs.
+1	talloc	libtalloc2	bullseye-backports	2.3.4-2~bpo11+1	amd64	2.3.1-2+b1	REJECT.  Only if needed for src:samba.
+1	samba	libwbclient0	bullseye-backports	2:4.17.12+dfsg-0+deb12u1~bpo11+1	amd64	2:4.13.13+dfsg-1~deb11u6	REJECT.  I **think** the only reason any samba components are installed is they're compile-time dependencies, and we do not actually use them at runtime.  (Except for --boot-test netbooted VMs.)
+1	linux	linux-libc-dev	bullseye	6.1.55inmate-1699523633	amd64	5.10.237-1	REJECT.  False positive.
+1	curl	libcurl3-gnutls	bullseye-backports	7.88.1-10+deb12u6~bpo11+1	amd64	7.74.0-1.3+deb11u14	REJECT?  There is a *lot* of stuff in this upgrade, and a lot of CVEs, but it's not clear if they're fixing things that the security team didn't (which seems unlikely).
+1	rsyslog	rsyslog-relp	bullseye-backports	8.2302.0-1~bpo11+1	amd64	8.2102.0-2+deb11u1	REJECT.  All the rsyslog changes seem to be for local logfiles, and TV only uses rsyslog for forwarding (omrelp).
+1	rsyslog	rsyslog	bullseye-backports	8.2302.0-1~bpo11+1	amd64	8.2102.0-2+deb11u1	''
