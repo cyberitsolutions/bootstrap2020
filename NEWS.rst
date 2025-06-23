@@ -2,6 +2,14 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs June 2025 (since May 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.30 (was 6.12.22).
+• New SOE "tvserver-appliance", which
+  makes legacy TV servers act like appliance tuners.
+
+
+======================================================================
  Changes in SOEs May 2025 (since April 2025)
 ======================================================================
 • Inmate kernel bumped to 6.12.22 (was 6.12.12).
