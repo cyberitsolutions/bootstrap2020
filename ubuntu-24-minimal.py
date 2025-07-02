@@ -32,7 +32,7 @@ parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.i
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 
-filesystem_img_size = '1G'      # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
+filesystem_img_size = '2G'      # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
 esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 
@@ -77,6 +77,8 @@ network_config_str = """
 # live-config doesn't support systemd-networkd yet (only ifupdown), AND
 # Ubuntu 20.04 doesn't support ifupdown anymore.
 # As a minimal workaround, hard-code a minimal .network.
+#
+# FIXME: this isn't enough to fix /etc/resolv.conf at boot time.
 [Match]
 Type=ether
 Name=en*
@@ -104,8 +106,9 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--include=linux-image-generic init initramfs-tools live-boot netbase',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
+         '--include=systemd-resolved',  # fix /etc/resolv.conf at boot time *iff* your build host is using resolved!
          f'--customize-hook=copy-in "{network_config_path.name}" /etc/systemd/network/',
-         '--customize-hook=systemctl --root="$1" enable systemd-networkd',
+         '--customize-hook=systemctl --root="$1" enable systemd-networkd systemd-resolved',
          # FIXME: once the host OS runs Debian 13, move this to the host.
          '--include=systemd-boot systemd-ukify',
          '--customize-hook=chroot $1 /lib/systemd/ukify build --linux=/boot/vmlinuz --initrd=/boot/initrd.img --cmdline=boot=live',
