@@ -1,0 +1,3 @@
+version=3
+opts="uversionmangle=s/\-nodeps// dversionmangle=s/\+dfsg\d*$//" \
+http://crawl.develz.org/release/stone_soup-(.+)\.t(?:ar.)?(?:gz|bz2|xz)

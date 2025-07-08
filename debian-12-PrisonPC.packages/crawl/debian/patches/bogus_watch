@@ -1,0 +1,15 @@
+Description: workaround doubled watch file
+ uscan does a deep scan for watch files, preferring random ones from the
+ upstream tarball over /debian/watch.  It also provides no way to delete
+ them.  #905866
+ .
+ Thus, we need to patch the bogus one to be a copy of ours.
+
+--- crawl-0.22.1.orig/source/debian/watch
++++ crawl-0.22.1/source/debian/watch
+@@ -1,3 +1,3 @@
+ version=3
+-opts=uversionmangle=s/\-nodeps// \
+-http://sf.net/crawl-ref/stone_soup-(.+)\.t(?:ar.)?(?:gz|bz2|xz)
++opts="uversionmangle=s/\-nodeps// dversionmangle=s/\+dfsg\d*$//" \
++http://crawl.develz.org/release/stone_soup-(.+)\.t(?:ar.)?(?:gz|bz2|xz)
