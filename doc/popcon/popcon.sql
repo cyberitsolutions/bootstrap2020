@@ -10,7 +10,7 @@ WHERE date BETWEEN now() - INTERVAL '6 months' AND now()
   AND (application NOT LIKE 'Internet > Web Browser (%' AND application NOT LIKE '%webmail%')
   AND application NOT LIKE 'Graphics > Photo Editor (%'
   -- consider 'p123' but not 'intel.analyst'.  Not perfect, but close enough.
-  AND username LIKE 'p%'
+  AND username ~ '^p[0-9]+$'
 GROUP BY application
 ORDER BY sum(duration) DESC
 LIMIT 1000
