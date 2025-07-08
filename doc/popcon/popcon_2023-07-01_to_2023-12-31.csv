@@ -1,30 +1,30 @@
 Rank,Application,"Duration (6 months, all detainees)"
-4546,Multimedia > Media player,14 years 1 mon 3 days 11:40:10
-2472,NO APPLICATION,7 years 7 mons 28 days 18:09:20
-1774,Internet > Web Browser,5 years 5 mons 29 days 08:50:30
-230,LibreOffice (libreoffice-writer),8 mons 16 days 23:26:50
-149,System > File Manager,5 mons 15 days 21:01:50
-119,Games > Card > Solitaire,4 mons 12 days 23:03:40
-90,Games > Sports > Elastomania clone,3 mons 10 days 20:31:00
-60,Games > Other > Endless Sky,2 mons 7 days 09:31:20
-51,Graphics > Image Viewer,1 mon 26 days 13:42:20
+4624,Multimedia > Media player,14 years 1 mon 3 days 11:39:20
+2487,NO APPLICATION,7 years 6 mons 28 days 22:13:40
+1734,Internet > Web Browser,5 years 3 mons 12 days 14:42:20
+234,LibreOffice (libreoffice-writer),8 mons 16 days 23:23:30
+121,Games > Card > Solitaire,4 mons 12 days 23:03:40
+92,Games > Sports > Elastomania clone,3 mons 10 days 20:31:00
+78,System > File Manager,2 mons 25 days 21:08:30
+61,Games > Other > Endless Sky,2 mons 7 days 09:31:20
+52,Graphics > Image Viewer,1 mon 26 days 13:42:20
 47,Games > Strategy > Warzone 2100,1 mon 22 days 00:52:50
 47,Games > Strategy > The Battle for Wesnoth,1 mon 21 days 22:53:10
 43,Games > Board > Chess,1 mon 17 days 13:55:40
 42,Games > Board > Mahjong Solitaire,1 mon 16 days 11:19:30
-33,Games > Falling Blocks > Tetris clone,1 mon 7 days 07:25:30
-33,Accessories > Calculator,1 mon 6 days 19:23:10
-30,LibreOffice (libreoffice-calc),1 mon 3 days 23:53:40
+34,Games > Falling Blocks > Tetris clone,1 mon 7 days 07:25:30
+34,Accessories > Calculator,1 mon 6 days 19:23:10
+31,LibreOffice (libreoffice-calc),1 mon 3 days 23:53:40
 22,Games > Strategy > Transport Tycoon Deluxe clone,24 days 06:30:00
-20,LibreOffice (libreoffice-draw),22 days 18:46:50
+21,LibreOffice (libreoffice-draw),22 days 18:46:50
 18,Graphics > Photo Editor,19 days 13:25:40
 16,Games > Arcade > Super Mario clone,18 days 02:19:40
 16,Games > Arcade > Mario Kart clone,17 days 13:46:10
 16,Games > Logic > Sudoku,17 days 11:54:40
-15,Taskbar,17 days 00:12:00
+16,Taskbar,17 days 00:11:40
 12,Games > Adventure > Dungeon Crawl,13 days 02:23:30
 11,Games > Strategy > Civilization clone,12 days 11:03:30
-8,LibreOffice,9 days 00:33:30
+8,LibreOffice,9 days 00:33:00
 8,DOOM clone (all campaigns),8 days 19:31:00
 8,Games > Arcade > Power Manga,8 days 12:52:20
 5,Allegro-based game,5 days 23:26:30
@@ -102,11 +102,10 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Settings > Notifications,01:14:40
 0,Settings > Password Reset,01:12:10
 0,xfce4-mime-helper,00:55:30
-0,UNKNOWN APPLICATION,00:49:30
+0,UNKNOWN APPLICATION,00:49:20
 0,Office > Project Planner,00:49:20
 0,file-pdf-load (Gimp-2.10),00:47:50
-0,Accessories > Archive Manager,00:41:30
-0,helper-dialog,00:34:30
+0,helper-dialog,00:34:10
 0,Games > Other > Paradroid clone,00:33:50
 0,Settings > Accessibility,00:33:50
 0,Settings > Mouse and Touchpad,00:30:00
@@ -118,33 +117,31 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,factory-reset,00:16:10
 0,Games > Arcade > Zarathrusta clone,00:14:20
 0,Settings > Colour Profiles,00:10:40
-0,Accessories > Screenshot,00:07:30
 0,file-webp (Gimp-2.10),00:07:20
-0,Multimedia > Burn a Data Disc,00:06:00
-0,Web Browser,00:01:20
 0,plugin-browser (Gimp-2.10),00:01:20
+0,Web Browser,00:01:20
 0,lighting (Gimp-2.10),00:01:00
 0,xmessage,00:00:50
 0,despeckle (Gimp-2.10),00:00:50
 0,xfsettingsd,00:00:40
 0,destripe (Gimp-2.10),00:00:40
-0,file-pdf-save (Gimp-2.10),00:00:30
-0,metadata-viewer (Gimp-2.10),00:00:30
 0,cartoon (Gimp-2.10),00:00:30
+0,file-pdf-save (Gimp-2.10),00:00:30
 0,thunar-volman,00:00:30
-0,gimpressionist (Gimp-2.10),00:00:20
-0,file-svg (Gimp-2.10),00:00:20
+0,metadata-viewer (Gimp-2.10),00:00:30
 0,Internet > Mail (Gimp-2.10),00:00:20
+0,file-svg (Gimp-2.10),00:00:20
+0,gimpressionist (Gimp-2.10),00:00:20
 0,warp (Gimp-2.10),00:00:20
-0,gradient-flare (Gimp-2.10),00:00:10
-0,depth-merge (Gimp-2.10),00:00:10
-0,align-layers (Gimp-2.10),00:00:10
-0,Log Out,00:00:10
-0,animation-play (Gimp-2.10),00:00:10
-0,gimp-debug-tool-2.0,00:00:10
-0,procedure-browser (Gimp-2.10),00:00:10
-0,wavelet-decompose (Gimp-2.10),00:00:10
 0,file-aa (Gimp-2.10),00:00:10
-0,Multimedia > Sound Editor,00:00:10
+0,gimp-debug-tool-2.0,00:00:10
+0,animation-play (Gimp-2.10),00:00:10
+0,align-layers (Gimp-2.10),00:00:10
 0,file-heif (Gimp-2.10),00:00:10
 0,file-bmp (Gimp-2.10),00:00:10
+0,Log Out,00:00:10
+0,wavelet-decompose (Gimp-2.10),00:00:10
+0,procedure-browser (Gimp-2.10),00:00:10
+0,Multimedia > Sound Editor,00:00:10
+0,depth-merge (Gimp-2.10),00:00:10
+0,gradient-flare (Gimp-2.10),00:00:10

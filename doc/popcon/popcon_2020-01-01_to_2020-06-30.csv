@@ -1,42 +1,42 @@
 Rank,Application,"Duration (6 months, all detainees)"
-2791,NO APPLICATION,7 years 9 mons 20 days 10:52:20
-2538,Multimedia > Media player,7 years 1 mon 5 days 01:34:40
-2489,Multimedia > Watch TV,6 years 11 mons 15 days 21:42:10
-685,Internet > Web Browser,1 year 11 mons 01:41:20
-278,Games > Solitaire,9 mons 10 days 10:03:10
-171,Office > Word Processor (libreoffice),5 mons 22 days 06:02:00
-166,Graphics > Image Viewer,5 mons 16 days 17:57:40
-157,Games > Elastomania clone,5 mons 7 days 14:08:10
-91,Games > The Battle for Wesnoth,3 mons 1 day 09:09:00
-67,Games > Warzone 2100,2 mons 7 days 19:05:40
+2764,NO APPLICATION,7 years 7 mons 21 days 08:12:40
+2567,Multimedia > Media player,7 years 1 mon 4 days 22:38:00
+2517,Multimedia > Watch TV,6 years 11 mons 15 days 14:50:30
+640,Internet > Web Browser,1 year 9 mons 6 days 12:57:20
+282,Games > Solitaire,9 mons 10 days 10:03:10
+172,Office > Word Processor (libreoffice),5 mons 20 days 23:03:10
+168,Graphics > Image Viewer,5 mons 16 days 17:24:50
+158,Games > Elastomania clone,5 mons 7 days 14:08:10
+92,Games > The Battle for Wesnoth,3 mons 1 day 09:09:00
+68,Games > Warzone 2100,2 mons 7 days 19:05:40
 62,Games > Transport Tycoon Deluxe clone,2 mons 2 days 03:35:00
 58,Games > Mahjong Solitaire,1 mon 28 days 01:41:50
-56,System > File Manager,1 mon 26 days 18:51:50
-37,Games > Super Mario clone,1 mon 7 days 14:34:40
+56,System > File Manager,1 mon 25 days 10:06:10
+38,Games > Super Mario clone,1 mon 7 days 14:34:40
 37,Office > Dictionary,1 mon 7 days 00:24:00
 30,Games > Arkanoid (Breakout) clone,29 days 19:21:20
-27,Accessories > Calculator,27 days 09:07:50
-27,Taskbar,27 days 00:05:30
+28,Accessories > Calculator,27 days 09:07:50
+27,Taskbar,27 days 00:03:00
 22,Games > Chess,21 days 21:41:50
-21,Office > Spreadsheet (libreoffice),21 days 10:04:20
-19,DOOM clone (all campaigns),19 days 05:57:30
-16,Games > Asteroids clone,16 days 14:37:40
+22,Office > Spreadsheet (libreoffice),21 days 10:03:40
+19,DOOM clone (all campaigns),19 days 05:57:00
+17,Games > Asteroids clone,16 days 14:37:40
 16,UNKNOWN APPLICATION,16 days 01:31:30
 15,Games > Tetris clone,14 days 20:12:10
 15,Games > Oxyd clone,14 days 18:07:50
 12,Games > Civilization clone,12 days 01:16:00
 11,perl,11 days 09:45:40
-11,Graphics > Photo Editor,10 days 15:35:50
+11,Graphics > Photo Editor,10 days 15:29:20
 8,Games > Sudoku,8 days 09:08:50
 8,Games > Blob Wars : Metal Blob Solid,8 days 01:36:50
-6,Office > Drawing Program (libreoffice),5 days 18:03:20
+6,Office > Drawing Program (libreoffice),5 days 17:15:00
 5,Games > Lemmings clone,4 days 17:22:10
-4,LibreOffice,4 days 06:33:10
+4,LibreOffice,4 days 06:15:40
 4,Games > Torus Trooper,3 days 17:22:10
 4,Education > Terrestrial Globe,3 days 15:08:40
 3,Games > Worms clone,3 days 08:18:20
 3,Graphics > Vector Graphics Editor,2 days 18:13:40
-2,Games > SimCity clone,2 days 11:47:40
+3,Games > SimCity clone,2 days 11:47:40
 2,Games > MiniGolf,2 days 08:20:20
 2,Games > Project: Starfighter,2 days 06:36:10
 2,Games > BurgerTime clone,1 day 17:57:10
@@ -55,7 +55,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 1,Education > Japanese/English Dictionary,16:44:50
 1,Education > SPSS Statistics clone,16:12:00
 1,Interactive Fiction Games (GLULX),12:50:40
-1,Accessories > Find Files,12:35:50
+1,Accessories > Find Files,12:35:40
 0,knavalbattle,11:40:50
 0,Games > Jezzball clone,10:55:40
 0,Games > Tron,10:28:30
@@ -63,7 +63,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games > Edutainment Suite — GCompris,08:22:50
 0,Settings > Appearance,08:19:20
 0,Games > Zarathrusta clone,07:48:00
-0,Office > Presentation (libreoffice),07:31:50
+0,Office > Presentation (libreoffice),07:28:40
 0,Games > Bosconian clone,07:08:30
 0,Accessories > Help,06:21:10
 0,NPhysics,06:17:40
@@ -77,7 +77,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,kig,03:28:50
 0,Graphics > Computer Aided Design (CAD),03:12:20
 0,Games > Edutainment Suite — Child’s Play,03:06:20
-0,Helper-dialog,02:55:10
+0,Helper-dialog,02:54:10
 0,Interactive Fiction Games (Inform),02:51:00
 0,libreoffice-startcenter (libreoffice),02:46:40
 0,Games > Paradroid clone,02:22:50
@@ -89,7 +89,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Volume (systray applet),01:28:30
 0,Games > Tetris Attack clone,01:23:50
 0,Log Out,01:12:40
-0,Accessories > Screenshot,01:05:50
 0,step,00:51:10
 0,Settings > Accessibility,00:49:20
 0,Settings > Notifications,00:39:30
@@ -101,10 +100,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Education > Graphics Calculator,00:05:00
 0,Thunar-volman,00:04:10
 0,Advsys,00:01:10
-0,Gvncviewer,00:01:00
 0,Gnome-help,00:00:50
-0,Accessories > Archive Manager,00:00:30
 0,Exo-open,00:00:20
-0,Multimedia > Audacity,00:00:10
-0,System > Terminal Emulator,00:00:10
 0,Chooser,00:00:10
+0,Multimedia > Audacity,00:00:10

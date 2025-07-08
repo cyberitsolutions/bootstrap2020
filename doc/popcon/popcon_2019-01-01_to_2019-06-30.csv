@@ -1,38 +1,38 @@
 Rank,Application,"Duration (6 months, all detainees)"
-3250,Multimedia > Watch TV,11 years 8 mons 18 days 13:17:30
-2635,NO APPLICATION,9 years 6 mons 20:54:00
-1511,Multimedia > Media player,5 years 5 mons 11 days 21:09:50
-514,Internet > Web Browser,1 year 10 mons 7 days 00:51:50
-401,Games > Solitaire,1 year 5 mons 10 days 00:53:10
-210,Graphics > Image Viewer,9 mons 2 days 11:53:40
-199,Office > Word Processor (libreoffice),8 mons 17 days 23:03:00
-191,Games > Elastomania clone,8 mons 7 days 16:20:10
-179,Games > Warzone 2100,7 mons 22 days 09:17:30
-148,Games > Mahjong Solitaire,6 mons 12 days 06:36:40
-123,Games > The Battle for Wesnoth,5 mons 9 days 17:29:00
-70,Games > Super Mario clone,3 mons 17:53:20
-43,Office > Dictionary,1 mon 25 days 23:55:00
-41,System > File Manager,1 mon 23 days 20:42:00
+3289,Multimedia > Watch TV,11 years 8 mons 18 days 13:17:20
+2608,NO APPLICATION,9 years 3 mons 15 days 11:58:50
+1530,Multimedia > Media player,5 years 5 mons 11 days 20:20:10
+459,Internet > Web Browser,1 year 7 mons 18 days 03:28:00
+405,Games > Solitaire,1 year 5 mons 10 days 00:53:10
+212,Graphics > Image Viewer,9 mons 2 days 06:29:50
+201,Office > Word Processor (libreoffice),8 mons 17 days 20:00:10
+193,Games > Elastomania clone,8 mons 7 days 16:20:10
+181,Games > Warzone 2100,7 mons 22 days 09:17:30
+150,Games > Mahjong Solitaire,6 mons 12 days 06:36:40
+125,Games > The Battle for Wesnoth,5 mons 9 days 17:29:00
+71,Games > Super Mario clone,3 mons 17:53:20
+44,Office > Dictionary,1 mon 25 days 23:55:00
+42,System > File Manager,1 mon 23 days 20:22:00
 38,Games > Sudoku,1 mon 19 days 04:42:50
 35,Accessories > Calculator,1 mon 15 days 05:49:30
-33,Games > Transport Tycoon Deluxe clone,1 mon 13 days 03:40:40
-31,Games > Oxyd clone,1 mon 10 days 19:52:20
+34,Games > Transport Tycoon Deluxe clone,1 mon 13 days 03:40:40
+32,Games > Oxyd clone,1 mon 10 days 19:52:20
 30,DOOM clone (all campaigns),1 mon 8 days 09:05:40
-27,Taskbar,1 mon 5 days 12:04:10
+28,Taskbar,1 mon 5 days 12:04:10
 24,Games > Arkanoid (Breakout) clone,1 mon 14:55:40
-20,Office > Spreadsheet (libreoffice),26 days 03:57:00
+20,Office > Spreadsheet (libreoffice),26 days 03:36:20
 20,Games > Blob Wars : Metal Blob Solid,25 days 16:49:40
 19,Games > Chess,24 days 06:45:10
 16,Games > Tetris clone,20 days 06:53:40
 14,Games > Zarathrusta clone,18 days 13:49:30
-13,Games > Civilization clone,17 days 10:17:30
+14,Games > Civilization clone,17 days 10:17:30
 11,UNKNOWN APPLICATION,13 days 16:25:10
-11,LibreOffice,13 days 16:11:40
+11,LibreOffice,13 days 16:01:20
 10,Games > Asteroids clone,13 days 08:09:20
-9,Office > Drawing Program (libreoffice),11 days 22:55:00
+9,Office > Drawing Program (libreoffice),11 days 22:51:50
 8,Games > Lemmings clone,10 days 16:14:30
 8,perl,10 days 05:39:00
-7,Graphics > Photo Editor,9 days 11:57:50
+7,Graphics > Photo Editor,9 days 11:44:40
 7,Games > SimCity clone,9 days 10:15:20
 7,Games > Minesweeper,9 days 07:44:30
 6,Games > Jezzball clone,8 days 04:23:40
@@ -54,12 +54,12 @@ Rank,Application,"Duration (6 months, all detainees)"
 2,Office > Finance Management,2 days 06:11:30
 2,Games > Raiden clone,1 day 23:19:00
 1,Games > Paradroid clone,1 day 14:40:30
-1,Office > Presentation (libreoffice),1 day 12:36:30
+1,Office > Presentation (libreoffice),1 day 12:35:50
 1,kbruch,1 day 12:03:20
 1,Games > Tetris Attack clone,1 day 07:58:40
 1,Games > Liero,1 day 05:00:50
 1,Education > Japanese/English Dictionary,1 day 04:11:40
-1,libreoffice-startcenter (libreoffice),1 day 00:29:10
+1,libreoffice-startcenter (libreoffice),1 day 00:29:00
 1,NPhysics,22:02:50
 1,Games > Edutainment Suite — GCompris,21:33:40
 1,knavalbattle,20:20:50
@@ -71,7 +71,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Education > Periodic Table,11:23:30
 0,kgeography,11:09:20
 0,Settings > Display,09:33:50
-0,Helper-dialog,07:10:10
+0,Helper-dialog,07:09:50
 0,Games > Atomix,06:32:10
 0,Graphics > Desktop Publishing — Scribus,06:21:00
 0,Graphics > Diagram Editor,05:50:30
@@ -92,7 +92,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Education > Graphics Calculator,00:55:10
 0,libreoffice-math (libreoffice),00:55:00
 0,Settings > Factory Reset,00:52:00
-0,Accessories > Screenshot,00:37:10
 0,Log Out,00:34:00
 0,Exo-helper-1,00:13:10
 0,Kig,00:12:30
@@ -101,5 +100,4 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Exo-open,00:03:30
 0,Gnome-help,00:02:20
 0,Multimedia > Audacity,00:01:00
-0,Accessories > Archive Manager,00:00:10
 0,Step,00:00:10

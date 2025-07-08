@@ -1,30 +1,30 @@
 Rank,Application,"Duration (6 months, all detainees)"
-4245,Multimedia > Media player,10 years 6 mons 1 day 23:37:30
-2096,NO APPLICATION,5 years 2 mons 7 days 09:57:50
-1213,Multimedia > Watch TV,3 years 15:13:40
-1201,Internet > Web Browser,2 years 11 mons 20 days 08:35:30
-144,Office > Word Processor (libreoffice),4 mons 8 days 01:53:50
-114,Graphics > Image Viewer,3 mons 11 days 09:08:10
-77,Games > Solitaire,2 mons 8 days 10:26:10
-76,System > File Manager,2 mons 8 days 00:19:10
-75,LibreOffice (libreoffice-writer),2 mons 7 days 01:16:20
-75,Games/Card > AisleRiot Solitaire,2 mons 7 days 00:58:10
-60,Games/Adventure > Dungeon Crawl (tiles),1 mon 23 days 11:30:10
-60,Games/Other > Space game,1 mon 23 days 05:06:50
-46,Games/Sports > Motocross game,1 mon 11 days 00:42:20
+4288,Multimedia > Media player,10 years 6 mons 1 day 17:19:50
+2112,NO APPLICATION,5 years 2 mons 2 days 10:20:20
+1225,Multimedia > Watch TV,3 years 15:13:40
+1142,Internet > Web Browser,2 years 9 mons 16 days 22:17:10
+145,Office > Word Processor (libreoffice),4 mons 8 days 01:53:30
+115,Graphics > Image Viewer,3 mons 11 days 07:56:30
+78,Games > Solitaire,2 mons 8 days 10:26:10
+76,Games/Card > AisleRiot Solitaire,2 mons 7 days 00:58:10
+76,LibreOffice (libreoffice-writer),2 mons 7 days 00:04:10
+61,Games/Adventure > Dungeon Crawl (tiles),1 mon 23 days 11:30:10
+60,Games/Other > Space game,1 mon 23 days 05:04:40
+53,System > File Manager,1 mon 16 days 12:47:20
+47,Games/Sports > Motocross game,1 mon 11 days 00:42:20
 32,Games > Elastomania clone,28 days 02:39:40
-29,Games/Strategy > Strategy Game,26 days 03:25:00
+30,Games/Strategy > Strategy Game,26 days 03:25:00
 24,Games > The Battle for Wesnoth,21 days 04:08:40
-23,Games/Arcade > A kart racing game,20 days 21:25:30
+24,Games/Arcade > A kart racing game,20 days 21:25:00
 23,Games > Mahjong Solitaire,20 days 03:56:30
 22,Games/Board > Mahjongg,19 days 11:31:40
 18,Games > Sudoku,16 days 02:18:00
 18,Games/Board > Chess Game,15 days 16:47:40
-18,Taskbar,15 days 14:14:40
-16,Games > Warzone 2100,14 days 15:04:50
+18,Taskbar,15 days 14:14:20
+17,Games > Warzone 2100,14 days 15:04:50
 16,Accessories > Galculator,14 days 02:23:30
 16,Office > Dictionary,13 days 21:41:10
-15,Games > Endless Sky,13 days 18:47:10
+16,Games > Endless Sky,13 days 18:47:10
 15,Games > Transport Tycoon Deluxe clone,13 days 07:26:00
 14,Games/Other > Post-apocalyptic roguelike,12 days 10:11:40
 14,Games/Strategy > OpenTTD,12 days 08:04:20
@@ -36,15 +36,15 @@ Rank,Application,"Duration (6 months, all detainees)"
 8,alephone,6 days 23:16:50
 8,Games > Civilization clone,6 days 16:23:20
 7,LibreOffice (libreoffice-calc),6 days 04:42:50
-7,LibreOffice,5 days 20:00:50
-6,Office > Spreadsheet (libreoffice),5 days 18:24:10
+7,LibreOffice,5 days 19:47:50
+7,Office > Spreadsheet (libreoffice),5 days 18:23:10
 6,Games > Tetris clone,5 days 07:00:30
 6,perl,5 days 05:38:10
 5,Games/Other > LBreakout2,4 days 18:31:10
 5,Games > Mario Kart clone,4 days 14:56:00
-5,Office > Presentation (libreoffice),4 days 14:04:10
+5,Office > Presentation (libreoffice),4 days 14:04:00
 5,Graphics > Photo Editor,4 days 10:06:50
-5,Graphics > Image Editor,4 days 04:18:00
+5,Graphics > Image Editor,4 days 04:17:50
 4,Games > Arkanoid (Breakout) clone,3 days 21:17:10
 4,Office > Drawing Program (libreoffice),3 days 11:24:30
 4,Games/Arcade > OpenTyrian,3 days 05:30:20
@@ -73,7 +73,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 1,LibreOffice (libreoffice-impress),19:47:40
 1,UNKNOWN APPLICATION,19:00:30
 1,Accessories > Gjiten,18:11:10
-1,Multimedia > Volume Control,17:57:30
+1,Multimedia > Volume Control,17:57:20
 1,Education > Terrestrial Globe,17:30:50
 1,Allegro-based game,17:21:20
 1,Games > Raiden clone,17:04:10
@@ -82,7 +82,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 1,Games > Project: Starfighter,15:37:30
 1,Accessories > File search,15:34:10
 1,Games/Board > Reversi,15:19:50
-1,exo-desktop-item-edit,15:15:10
 1,Games/Logic > Tangrams,15:05:30
 1,Games/Board > Mastermind,14:34:30
 1,Games > SimCity clone,13:31:00
@@ -90,6 +89,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 1,Games/Arcade > Nibbles (Gnome-nibbles),13:15:10
 1,Games > Connect4 clone,13:06:50
 1,Games/Other > gPlanarity,12:43:30
+1,exo-desktop-item-edit,12:17:00
 1,Settings > Appearance,11:41:10
 1,Graphics > Computer Aided Design (CAD),11:31:40
 1,Games/Arcade > nikwi,11:30:00
@@ -110,7 +110,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Graphics > Vector Graphics Editor (Inkscape),07:01:10
 0,Games > Nikwi Deluxe,06:55:00
 0,Games > Tron,06:40:30
-0,LibreOffice (libreoffice-math),06:36:40
 0,Settings > Display,05:47:20
 0,Games/Arcade > Starfighter,05:44:50
 0,Games/Arcade > Arcade Game,05:41:20
@@ -127,20 +126,19 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,libreoffice-startcenter (libreoffice),03:33:00
 0,run_game.py,03:20:10
 0,Games/Arcade > Bomberclone,03:05:00
-0,System > Terminal Emulator,02:43:30
 0,Games > Jezzball clone,02:42:50
 0,Games/Other > GNUbik,02:30:30
-0,Settings > Settings Manager,02:30:10
+0,Settings > Settings Manager,02:30:00
 0,Games/Logic > Numpty Physics,02:28:50
 0,Games/Arcade > dangen,02:15:30
 0,Games/Logic > Klotski,02:01:40
-0,Exo-desktop-item-edit,01:50:10
 0,Games/Logic > Swell Foop,01:50:10
+0,Exo-desktop-item-edit,01:50:10
 0,Games/Arcade > Ball Bouncing Game,01:45:10
 0,Settings > Keyboard,01:32:50
 0,Games > Edutainment Suite — GCompris,01:32:00
 0,eduactiv8.py,01:31:50
-0,LibreOffice (libreoffice-startcenter),01:24:30
+0,LibreOffice (libreoffice-startcenter),01:24:20
 0,Games > Swell Foop,01:22:20
 0,Games > Liero,01:19:40
 0,Helper-dialog,01:17:40
@@ -157,7 +155,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games/Logic > Lights Off,00:56:00
 0,Games > Qonk,00:55:20
 0,Settings > Password,00:54:20
-0,Settings > Factory Reset,00:51:40
 0,Education > Yet another touch typing tutor,00:47:50
 0,Settings > Accessibility,00:45:30
 0,Settings > Mouse and Touchpad,00:42:10
@@ -168,12 +165,13 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games > Bomberman clone,00:33:20
 0,Games/Other > Freedroid,00:33:00
 0,Education > KStars,00:31:10
-0,factory-reset,00:29:10
 0,Games/Action > lierolibre,00:29:00
 0,lighting (Gimp-2.10),00:28:30
+0,factory-reset,00:28:10
+0,Settings > Factory Reset,00:28:10
 0,Interactive Fiction Games (GLULX),00:27:50
 0,Games/Other > Allure of the Stars,00:27:40
-0,helper-dialog,00:27:10
+0,helper-dialog,00:27:00
 0,Games > BurgerTime clone,00:25:20
 0,Games/Arcade > Super Transball 2,00:25:00
 0,print (Gimp-2.10),00:19:40
@@ -181,21 +179,21 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games/Logic > Molecule puzzle game,00:15:50
 0,Volume (systray applet),00:15:40
 0,Games/Arcade > Qonk,00:15:30
-0,Games > Torus Trooper,00:14:00
 0,Games > Hitori,00:14:00
-0,Accessories > Text Editor,00:13:30
+0,Games > Torus Trooper,00:14:00
 0,Games/Logic > Hitori,00:12:40
 0,Games > Zarathrusta clone,00:11:20
 0,khangman,00:11:00
 0,file-jpeg (Gimp-2.10),00:10:00
+0,LibreOffice (libreoffice-math),00:09:40
 0,Exo-helper-1,00:08:40
 0,Games > Atomix,00:08:20
 0,file-pdf-load (Gimp-2.10),00:07:40
 0,Office > Project Planner,00:07:20
 0,Office > Project Management,00:07:10
 0,file-png (Gimp-2.10),00:06:40
-0,Settings > Dyslexic font in Chromium,00:06:30
 0,kig,00:06:30
+0,Settings > Dyslexic font in Chromium,00:06:30
 0,Games/Arcade > Kobo Deluxe,00:06:20
 0,Games > Paradroid clone,00:05:20
 0,step,00:05:20
@@ -203,7 +201,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Settings > Color Profiles,00:04:10
 0,srv_share_tv_.epg_index.html (Chromium),00:04:10
 0,thunar-volman,00:03:40
-0,Accessories > Screenshot,00:02:40
 0,Log Out,00:02:40
 0,file-webp (Gimp-2.10),00:02:20
 0,xfsettingsd,00:01:50
@@ -214,16 +211,16 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,gradient-flare (Gimp-2.10),00:01:00
 0,file-svg (Gimp-2.10),00:00:50
 0,softglow (Gimp-2.10),00:00:50
-0,nl-filter (Gimp-2.10),00:00:30
-0,Education > Graphics Calculator,00:00:30
 0,Internet > Mail (Gimp-2.10),00:00:30
-0,despeckle (Gimp-2.10),00:00:20
+0,Education > Graphics Calculator,00:00:30
+0,nl-filter (Gimp-2.10),00:00:30
 0,Education > SPSS Statistics clone,00:00:20
 0,Exo-open,00:00:20
+0,despeckle (Gimp-2.10),00:00:20
 0,Tadsr,00:00:20
-0,Kig,00:00:10
 0,Thunar-volman,00:00:10
-0,gimp-debug-tool-2.0,00:00:10
 0,Advsys,00:00:10
+0,gimp-debug-tool-2.0,00:00:10
+0,Kig,00:00:10
 0,Xfsettingsd,00:00:10
 0,xmessage,00:00:10

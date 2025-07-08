@@ -1,38 +1,38 @@
 Rank,Application,"Duration (6 months, all detainees)"
-2924,Multimedia > Watch TV,6 years 10 mons 12 days 17:19:50
-2809,Multimedia > Media player,6 years 7 mons 5 days 06:10:40
-1853,NO APPLICATION,4 years 4 mons 7 days 07:53:20
-1032,Internet > Web Browser,2 years 5 mons 3 days 00:47:20
-220,Office > Word Processor (libreoffice),6 mons 5 days 23:21:10
-217,Games > Solitaire,6 mons 3 days 10:46:20
-153,Graphics > Image Viewer,4 mons 9 days 03:41:00
-141,Games > Endless Sky,3 mons 29 days 00:01:50
-60,Games > Elastomania clone,1 mon 21 days 00:37:20
-57,Games > The Battle for Wesnoth,1 mon 18 days 10:32:40
-56,System > File Manager,1 mon 17 days 03:14:40
-45,Games > Warzone 2100,1 mon 8 days 05:26:40
+2943,Multimedia > Watch TV,6 years 10 mons 12 days 17:19:50
+2827,Multimedia > Media player,6 years 7 mons 5 days 06:08:30
+1860,NO APPLICATION,4 years 4 mons 2 days 15:54:30
+980,Internet > Web Browser,2 years 3 mons 13 days 14:54:30
+221,Office > Word Processor (libreoffice),6 mons 5 days 22:44:50
+218,Games > Solitaire,6 mons 3 days 10:46:20
+154,Graphics > Image Viewer,4 mons 9 days 03:25:50
+142,Games > Endless Sky,3 mons 29 days 00:01:50
+61,Games > Elastomania clone,1 mon 21 days 00:37:20
+58,Games > The Battle for Wesnoth,1 mon 18 days 10:32:40
+56,System > File Manager,1 mon 16 days 15:16:00
+46,Games > Warzone 2100,1 mon 8 days 05:26:40
 36,Games > Mario Kart clone,1 mon 00:41:00
-31,Games > Arkanoid (Breakout) clone,26 days 12:23:20
+32,Games > Arkanoid (Breakout) clone,26 days 12:23:20
 29,Games > Mahjong Solitaire,24 days 13:48:30
 29,Games > Transport Tycoon Deluxe clone,24 days 08:45:50
 26,Office > Dictionary,22 days 03:41:20
 26,Games > Chess,22 days 01:09:10
-25,Taskbar,20 days 19:27:50
-22,Office > Spreadsheet (libreoffice),18 days 21:19:20
+25,Taskbar,20 days 19:26:00
+22,Office > Spreadsheet (libreoffice),18 days 21:15:30
 22,Accessories > Calculator,18 days 17:40:30
-21,Games > Sudoku,18 days 03:09:50
+22,Games > Sudoku,18 days 03:09:50
 20,DOOM clone (all campaigns),16 days 20:53:30
 18,Games > Blob Wars : Metal Blob Solid,15 days 00:55:30
 17,Games > 2048,13 days 23:33:50
-14,Games > Tetris clone,12 days 05:03:40
+15,Games > Tetris clone,12 days 05:03:40
 9,Games > Super Mario clone,7 days 18:15:50
 8,UNKNOWN APPLICATION,7 days 02:38:00
 8,perl,6 days 10:10:20
-7,Office > Drawing Program (libreoffice),5 days 18:37:20
+7,Office > Drawing Program (libreoffice),5 days 18:37:10
 7,Office > Presentation (libreoffice),5 days 12:17:30
-6,LibreOffice,4 days 20:54:20
+6,LibreOffice,4 days 20:53:00
 6,Games > Asteroids clone,4 days 17:48:40
-5,Graphics > Photo Editor,3 days 19:20:50
+5,Graphics > Photo Editor,3 days 19:20:30
 4,Games > Minesweeper,3 days 01:13:20
 3,Education > Terrestrial Globe,2 days 14:52:40
 3,Games > Worms clone,2 days 10:10:30
@@ -90,8 +90,8 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games > Torus Trooper,01:02:00
 0,Settings > Display,00:57:00
 0,Settings > Mouse and Touchpad,00:46:10
-0,Volume (systray applet),00:38:10
 0,Settings > Keyboard,00:38:00
+0,Volume (systray applet),00:37:30
 0,Settings > Factory Reset,00:37:10
 0,Settings > Accessibility,00:35:50
 0,Interactive Fiction Games (GLULX),00:34:50
@@ -100,11 +100,8 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,khangman,00:22:40
 0,Exo-helper-1,00:20:20
 0,Interactive Fiction Games (Inform),00:19:30
-0,Gvncviewer,00:15:50
 0,Settings > Notifications,00:15:20
 0,Office > Project Planner,00:09:10
-0,Accessories > Screenshot,00:07:10
-0,Multimedia > Rip a Movie Disc,00:06:10
 0,Toggle-opendyslexic-in-chromium-debian9,00:04:40
 0,step,00:04:20
 0,Log Out,00:03:00
