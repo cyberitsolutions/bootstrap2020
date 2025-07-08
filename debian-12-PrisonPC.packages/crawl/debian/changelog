@@ -1,3 +1,11 @@
+crawl (2:0.33.1-1.2) bookworm; urgency=medium
+
+  * New upstream version.
+  * Use github for source tarballs.
+  * Remove needless bogus_watch patch.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 08 Jul 2025 16:15:11 +1000
+
 crawl (2:0.28.0-1.1) unstable; urgency=medium
 
   * Non-maintainer upload.
