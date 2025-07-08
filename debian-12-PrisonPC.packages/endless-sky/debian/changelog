@@ -1,4 +1,10 @@
-endless-sky (0.10.12-1~PrisonPC5) unstable; urgency=medium
+endless-sky (0.10.14-1~PrisonPC6) bookworm; urgency=medium
+
+  * New upstream version.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 08 Jul 2025 15:00:21 +1000
+
+endless-sky (0.10.12-1~PrisonPC5) bookworm; urgency=medium
 
   * New upstream version.
 
