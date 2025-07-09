@@ -2,6 +2,4 @@ name = "usr/bin/factory-reset"
 mode = 365
 include = [
     "python3-gi", "gir1.2-gtk-3.0",
-    # procps: /usr/bin/pkill
-    "procps",
 ]
