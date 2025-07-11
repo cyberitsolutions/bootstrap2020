@@ -55,7 +55,9 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
          # FIXME: once the host OS runs Debian 13, move this to the host.
-         '--include=systemd-boot systemd-ukify',
+         # FIXME: systemd-boot Depends: systemd-boot-efi-signed | systemd-boot-efi, but
+         #        with this script, it's always looking for the files from the second one.
+         '--include=systemd-boot systemd-ukify systemd-boot-efi',
          '--customize-hook=chroot $1 /lib/systemd/ukify build --linux=/vmlinuz --initrd=/initrd.img --cmdline=boot=live',
          '--customize-hook=download /vmlinuz.unsigned.efi EFI/BOOT/BOOTX64.EFI'],
         cwd=td)
