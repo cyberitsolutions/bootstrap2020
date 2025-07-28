@@ -25,5 +25,13 @@ Suites:
   bullseye
   bullseye-updates
   bullseye-proposed-updates
+# https://lists.debian.org/debian-backports-announce/2024/07/msg00000.html
+# bullseye-backports
+Components: main contrib non-free
+
+# https://lists.debian.org/debian-backports-announce/2024/07/msg00000.html
+Types: deb
+URIs: http://archive.debian.org/debian
+Suites:
   bullseye-backports
 Components: main contrib non-free
