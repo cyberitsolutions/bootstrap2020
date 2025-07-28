@@ -38,16 +38,4 @@ subprocess.check_call([
     '--ssh=openssh-server',  # PrisonPC needs this
     f'--reproducible={datetime.date.today()}',
     '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
-    '--template', 'tvserver'])
-
-subprocess.check_call([
-    './debian-11-main.py',
-    '--remove',
-    # Hard-code $LANG and $TZ instead of inheriting from build host.
-    '--LANG', 'en_AU.UTF-8', '--TZ', 'Australia/Canberra',
-    '--netboot-only',       # no ISO/USB
-    '--physical-only',
-    '--ssh=openssh-server',  # PrisonPC needs this
-    f'--reproducible={datetime.date.today()}',
-    '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
     '--template', 'tvserver-appliance'])
