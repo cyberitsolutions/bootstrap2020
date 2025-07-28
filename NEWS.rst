@@ -2,6 +2,29 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs July 2025 (since June 2025)
+======================================================================
+• Inmate-initiated Factory Reset was redesigned.
+  This *may* mitigate as-yet-undiagnosed read-only issues:
+
+  | https://alloc.cyber.com.au/task/task.php?taskID=35434
+  | https://alloc.cyber.com.au/task/task.php?taskID=35429
+  | https://alloc.cyber.com.au/task/task.php?taskID=35480
+
+• Inmate vlc (TV/DVD player) is now built without logging.
+  This should mitigate a rare bug where
+  an application log ends up in the system log.
+
+• All SOEs now refuse to install insecure browser engines.
+  Previously this only applied to PrisonPC desktop SOEs.
+
+• Endless Sky bumped to 0.10.14 (new game content).
+• Dungeon Crawl bumped to 0.33.1 (new game content).
+• Inmate kernel bumped to 6.12.33 (was 6.12.30).
+
+
+
+======================================================================
  Changes in SOEs June 2025 (since May 2025)
 ======================================================================
 • Inmate kernel bumped to 6.12.30 (was 6.12.22).
