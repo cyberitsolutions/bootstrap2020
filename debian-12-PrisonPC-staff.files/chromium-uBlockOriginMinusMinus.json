@@ -97,4 +97,14 @@
     "analytics.tiktok.com",
     "dc.services.visualstudio.com/v2/track",
     "browser-intake-datadoghq.com"
-]}
+],
+
+ // Instead just mandate that uBOLite is installed, from the Google Store.
+ // This will probably only work if squid allows staff desktops DIRECT (no SSL inspection) access to the google store.
+ // This was proposed for ChromeOS desktops, I do not remember if it actually became standard in PrisonPC!
+ // NOTE: ExtensionInstallForcelist is NOT in
+ //       debian-12-PrisonPC.files/chromium-policies/Startup.json:PolicyListMultipleSourceMergeList
+ //       therefore this is REPLACING the list that detainee SOEs get.
+ "ExtensionInstallForcelist": ["ddkjiahejlhfcafbddmgiahcphecmpfh"]
+
+}
