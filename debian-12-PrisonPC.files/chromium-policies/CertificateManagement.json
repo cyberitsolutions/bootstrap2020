@@ -6,6 +6,8 @@
 // As at Chromium 123 / March 2024, this is NOT AVAILABLE ANYWHERE.
 // It is not even visible at https://chromeenterprise.google/policies/#CACertificates
 //
+// Update: as at Chromium 135 / Debian 12, this just works.  Yay! --twb, August 2025
+//
 // The format of this is everything between "-----BEGIN CERTIFICATE-----" and "-----END CERTIFICATE-----" (exclusive) in a PEM certificate, sans newlines.
 // To turn it back into a PEM, just add those header and footer strings back in.  You don't need to bother putting the newlines back.
 //
