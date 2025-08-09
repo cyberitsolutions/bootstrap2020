@@ -49,6 +49,14 @@ The following packages found on this system are affected by this:
   - librav1e0:amd64 (installed version: 0.5.1-6)
 
 
+# Ignorelist rust-zram-generator (systemd-zram-generator), because
+#  * we could probably implement it ourselves, but ICBF right now
+#  * the detainee doesn't interact with it directly
+# This is not ideal but I think it's relatively OK as rust goes???
+* Source:rust-zram-generator
+  - systemd-zram-generator (installed version: 1.1.2-2+b2)
+
+
 # This is an A/V library to use hardware acceleration in Intel GPUs.
 # It first entered Debian in 2019 and was EOL'd upstream before 2025.
 # So I think it is probably used for hardware AMC actually have.
