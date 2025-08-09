@@ -1,3 +1,26 @@
+prayer (1.3.5-dfsg1-8PrisonPC3) unstable; urgency=medium
+
+  * Most people do not ever trim their replies.
+    As a result, as soon as someone says "XKEYSCORE" or "civil
+    rights" in an email, EVERY subsequent email on that thread also
+    gets held for review by intelligence staff.
+
+    Rather than trying to recognize quoted text and confirm it has
+    already passed review in an earlier email, it is much easier to
+    simply default to trimming the quoted text.
+
+    We originally considered not quoting ANYTHING, but quoting the
+    first few lines seems like a reasonable compromise.
+    In practice 95% of email seems to be "luv u" "luv u more" "luv u
+    most" kind of threads, where each email is effectively 1 line.
+    This approach should work very well for those.
+    It will not work perfectly for complicated emails, but
+    even lawyers usually put those into an attached docx rather than
+    in the email body itself.
+
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Sat, 09 Aug 2025 21:17:03 +1000
+
 prayer (1.3.5-dfsg1-8PrisonPC2) bookworm; urgency=medium
 
   * Return HTTP 401 Unauthorized on IMAP login error.
