@@ -107,7 +107,10 @@ group = parser.add_argument_group('customization')
 group.add_argument('--LANG', default=os.environ['LANG'], metavar='xx_XX.UTF-8',
                    help='locale used inside the image',
                    type=lambda s: types.SimpleNamespace(full=s, encoding=s.partition('.')[-1]))
-group.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().strip(),
+# Debian 13 has no /etc/timezone
+group.add_argument('--TZ', default=str(pathlib.Path('/etc/localtime')
+                                       .resolve()
+                                       .relative_to('/usr/share/zoneinfo/')),
                    help="SOE's timezone (for UTC, use Etc/UTC)", metavar='REGION/CITY',
                    type=lambda s: types.SimpleNamespace(full=s,
                                                         area=s.partition('/')[0],
