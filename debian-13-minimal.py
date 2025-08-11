@@ -24,7 +24,7 @@ NOTE: This makes a "unified kernel image" (there is NO bootloader).
 
 At time of writing, the host system needs:
 
-    apt install mmdebstrap apt-cacher-ng parted mtools qemu-kvm
+    apt install mmdebstrap squashfs-tools-ng apt-cacher-ng parted mtools qemu-kvm
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -87,7 +87,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
         ['truncate', args.output_file,
          '--size', filesystem_img_size])
     subprocess.check_call(
-        ['parted', '--script', '--align=optimal', args.output_file,
+        ['/usr/sbin/parted', '--script', '--align=optimal', args.output_file,
          'mklabel gpt',
          f'mkpart {esp_label} {esp_offset}b 100%',
          'set 1 esp on'])
