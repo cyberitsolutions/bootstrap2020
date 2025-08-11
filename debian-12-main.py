@@ -476,9 +476,10 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         ['wget2',
          '--quiet',
          '--http-proxy', apt_proxy,
-         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso',
-         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/hd-media/boot.img.gz',
-         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/boot-screens/splash.png'],
+         # I picked these because they're the smallest test images (ISO, disk image, raster).
+         'http://archive.debian.org/debian/dists/sarge/main/installer-i386/current/images/hd-media/boot.img.gz',
+         'http://archive.debian.org/debian/dists/etch/main/installer-i386/current/images/netboot/mini.iso',
+         'http://archive.debian.org/debian/dists/squeeze/main/installer-i386/current/images/netboot/debian-installer/i386/boot-screens/splash.png'],
         cwd=testdir)
     subprocess.check_call(['gunzip', 'boot.img.gz'], cwd=testdir)
     dummy_MS_path.write_bytes(dummy_UAS_path.read_bytes())  # UGH
