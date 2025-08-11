@@ -17,6 +17,7 @@ which in turn includes a UKI (kernel/ramdisk/cmdline) and filesystem.squashfs.
 
 NOTE: this is the simplest config possible.
       It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
+      Also no secure boot signing.
 
 NOTE: This makes a "unified kernel image" (there is NO bootloader).
       The kernel command line is hard-coded into EFI/BOOT/BOOTX64.EFI.
@@ -24,7 +25,7 @@ NOTE: This makes a "unified kernel image" (there is NO bootloader).
 
 At time of writing, the host system needs:
 
-    apt install mmdebstrap squashfs-tools-ng apt-cacher-ng parted mtools qemu-kvm
+    apt install mmdebstrap squashfs-tools-ng apt-cacher-ng parted mtools qemu-kvm systemd-ukify systemd-boot-efi
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -43,7 +44,6 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     (td / 'EFI/BOOT').mkdir(parents=True)
     subprocess.check_call(
         ['mmdebstrap', 'trixie', 'live/filesystem.squashfs',
-         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
@@ -54,11 +54,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--include=login',        # https://bugs.debian.org/960638
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
-         # FIXME: once the host OS runs Debian 13, move this to the host.
-         # FIXME: systemd-boot Depends: systemd-boot-efi-signed | systemd-boot-efi, but
-         #        with this script, it's always looking for the files from the second one.
-         '--include=systemd-boot systemd-ukify systemd-boot-efi',
-         '--customize-hook=chroot $1 /lib/systemd/ukify build --linux=/vmlinuz --initrd=/initrd.img --cmdline=boot=live',
+         '--customize-hook=env --chdir "$1" ukify build --linux=vmlinuz --initrd=initrd.img --cmdline=boot=live',
          '--customize-hook=download /vmlinuz.unsigned.efi EFI/BOOT/BOOTX64.EFI'],
         cwd=td)
 
