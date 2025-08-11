@@ -17,6 +17,7 @@ which in turn includes a UKI (kernel/ramdisk/cmdline) and filesystem.squashfs.
 
 NOTE: this is the simplest config possible.
       It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
+      Also no secure boot signing.
 
 NOTE: This makes a "unified kernel image" (there is NO bootloader).
       The kernel command line is hard-coded into EFI/BOOT/BOOTX64.EFI.
@@ -24,7 +25,7 @@ NOTE: This makes a "unified kernel image" (there is NO bootloader).
 
 At time of writing, the host system needs:
 
-    apt install mmdebstrap squashfs-tools-ng apt-cacher-ng parted mtools qemu-kvm
+    apt install mmdebstrap squashfs-tools-ng apt-cacher-ng parted mtools qemu-kvm systemd-ukify systemd-boot-efi sbsigntool
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -43,7 +44,6 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     (td / 'EFI/BOOT').mkdir(parents=True)
     subprocess.check_call(
         ['mmdebstrap', 'trixie', 'live/filesystem.squashfs',
-         '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
@@ -61,18 +61,13 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--include=login',        # https://bugs.debian.org/960638
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
-         # FIXME: once the host OS runs Debian 13, move this to the host.
-         # FIXME: systemd-boot Depends: systemd-boot-efi-signed | systemd-boot-efi, but
-         #        with this script, it's always looking for the files from the second one.
-         '--include=systemd-boot systemd-ukify systemd-boot-efi',
-         '--include=sbsigntool',
          # "The password for the key is 'snakeoil'." (for "Enter PEM pass phrase:").
          # https://salsa.debian.org/qemu-team/edk2/-/blob/debian/2024.05-1/debian/ovmf.README.Debian?ref_type=tags#L65
          # '--customize-hook=upload /usr/share/ovmf/PkKek-1-snakeoil.key /PRIVATE-KEY-IF-ATTACKER-GETS-THIS-WE-ARE-FUCKED',
          # '--customize-hook=upload /usr/share/ovmf/PkKek-1-snakeoil.pem /cert',
          # FIXME: adding "ukify --measure" does hash stuff, but actually booting, "bootctl" still reports "Measured UKI: no".
-         '--customize-hook=chroot $1 ukify genkey --secureboot-private-key=/tmp/key --secureboot-certificate=/tmp/cert',
-         '--customize-hook=chroot $1 ukify build --linux=/vmlinuz --initrd=/initrd.img --cmdline="boot=live console=ttyS0 earlyprintk=ttyS0 loglevel=2 rescue" --secureboot-private-key=/tmp/key --secureboot-certificate=/tmp/cert',
+         '--customize-hook=env --chdir "$1" ukify genkey --secureboot-private-key=tmp/key --secureboot-certificate=tmp/cert',
+         '--customize-hook=env --chdir "$1" ukify build --linux=vmlinuz --initrd=initrd.img --cmdline="boot=live console=ttyS0 earlyprintk=ttyS0 loglevel=2 rescue" --secureboot-private-key=tmp/key --secureboot-certificate=tmp/cert',
          '--customize-hook=download /tmp/cert cert',
          '--customize-hook=rm --verbose -- "$1/tmp/key" "$1/tmp/cert"',
          '--customize-hook=download /vmlinuz.efi EFI/BOOT/BOOTX64.EFI'],
