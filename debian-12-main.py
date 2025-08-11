@@ -664,13 +664,16 @@ if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
 
-if subprocess.check_output(
+if subprocess.run(
         ['systemctl', 'is-enabled', 'systemd-resolved'],
-        text=True).strip() != 'enabled':
+        text=True, check=False, stdout=subprocess.PIPE).stdout.strip() != 'enabled':
+    # Originally systemd-resolved was always installed with systemd.
+    # By Debian 13, it is a separate opt-in binary package.
+    # If systemd-resolved isn't installed, run() will exit non-zero.
+    # If systemd-resolved is installed but disabled, run() will print disabled.
     logging.warning(
         'If you see odd DNS errors during the build,'
-        ' either run "systemctl enable --now systemd-resolved" on your host, or'
-        ' make the /run/systemd/resolve/stub-resolv.conf line run much later.')
+        ' you may need to install & enable systemd-resolved.')
 
 if args.production:
     proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
