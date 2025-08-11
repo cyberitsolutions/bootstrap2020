@@ -136,6 +136,13 @@ def do_stuff(keyword: str, when: bool = True) -> list:
     acc: list[str | pathlib.Path]
     acc = [f'--essential-hook=tar-in {tarball_path} /']
     if hooks_dir.exists():
+        # Due to how --hook-dir works,
+        # the hook dir and ALL its parent dirs MUST be world-executable (e.g. 755 or 711).
+        # Otherwise you get a confusing error.
+        # Note /home/alice is 700 (not 711) on a fresh Debian 13 install!
+        for path in list((hooks_dir.resolve()/'fuck off python').parents):
+            if path.stat().st_mode & 0o0001 != 0o0001:
+                logging.warning('%s is not world-executable, so --hook-dir=%s is probably going to crash', path, hooks_dir)
         acc += [f'--hook-dir={hooks_dir}']
     # If debian-12-main.files/foo.py needs python3-foo,
     # you can just add ‘include = ["python3-foo"]’ to the .tarinfo.
