@@ -415,6 +415,7 @@ def do_boot_test():
             'qemu-system-x86_64',
             '--enable-kvm',
             '--bios', '/usr/share/ovmf/OVMF.fd',  # EFI (not legacy BIOS)
+            '--device', 'virtio-rng-pci',         # https://bugs.debian.org/1101493
             '--machine', 'q35',
             '--cpu', 'host',
             '-m', '2G' if template.startswith('desktop') else '512M',
