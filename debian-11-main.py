@@ -265,8 +265,8 @@ with tempfile.TemporaryDirectory() as td_str:
          *(['--dpkgopt=force-unsafe-io']  # save 20s (even on tmpfs!)
            if args.optimize != 'simplicity' else []),
          # Reduce peak /tmp usage by about 500MB
-         *(['--essential-hook=chroot $1 apt clean',
-            '--customize-hook=chroot $1 apt clean']
+         *(['--essential-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt clean',
+            '--customize-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt clean']
            if args.optimize != 'simplicity' else []),
          *(['--dpkgopt=path-exclude=/usr/share/doc/*',  # 9% to 12% smaller and
             '--dpkgopt=path-exclude=/usr/share/man/*']  # 8% faster to 7% SLOWER.
