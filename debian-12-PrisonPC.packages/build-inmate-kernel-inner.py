@@ -223,7 +223,7 @@ subprocess.check_call([
     #           can't build with source format '3.0 (native)':
     #           native package version may not have a revision
     '--newversion', package_version.replace('-', '.'),
-    '--distribution', 'bullseye-backports',
+    '--distribution', 'bookworm-backports',
     # Message copied from upstream .changes
     'Custom built Linux kernel.'])
 (root / 'control').write_text(f"""Source: linux-image-inmate
