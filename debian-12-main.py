@@ -431,8 +431,9 @@ def do_boot_test():
                 'id=OutclassMountingBoggle',
                 'type=user',
                 f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
-                f'hostname={template}.{domain}',
-                f'dnssearch={domain}',
+                (f'hostname={template}.{domain},dnsdomain={domain}'
+                  if domain else  # build host has NO domain at all
+                  f'hostname={template}'),
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template.startswith('desktop') else []),
