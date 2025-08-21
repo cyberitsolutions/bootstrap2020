@@ -753,7 +753,7 @@ for template in args.templates:
                 f' echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
-                '} | chroot $1 debconf-set-selections')],
+                '} | DPKG_ROOT=$1 debconf-set-selections')],
              *do_ssh_access(),
              *do_stuff('main'),
              *maybe_debug_shell(),  # before 'PrisonPC' breaks apt!
@@ -795,8 +795,8 @@ for template in args.templates:
                       'qemu-guest-agent'),
                  }
                  if when)],
-             '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
-             '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
+             '--customize-hook=chronic systemctl preset-all --root=$1',  # enable ALL units!
+             '--customize-hook=chronic systemctl preset-all --root=$1 --user --global',
              # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
              # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
              # NOTE: symlinks need "download" (not "copy-out").

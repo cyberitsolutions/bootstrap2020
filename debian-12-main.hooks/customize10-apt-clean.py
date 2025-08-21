@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import os
 import pathlib
 import subprocess
 
@@ -21,5 +22,6 @@ In mmdebstrap 1.5.7 (Debian 13) host, apt is not installed yet when "essential" 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
-if (args.chroot_path / 'usr/bin/apt').exists():
-    subprocess.check_call(['chroot', args.chroot_path, 'apt', 'clean'])
+os.environ['APT_CONFIG'] = os.environ['MMDEBSTRAP_APT_CONFIG']  # replaces "chroot $1" for apt
+os.environ['DPKG_ROOT'] = str(args.chroot_path)  # replaces "chroot $1" for dpkg
+subprocess.check_call(['apt', 'clean'])
