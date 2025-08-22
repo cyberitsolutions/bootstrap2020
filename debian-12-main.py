@@ -364,28 +364,56 @@ def do_boot_test():
                         input='\n'.join([
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
-        if args.netboot_only:
-            ipxe_boot_args = ' '.join(
-                ['boot=live',
-                 'netboot=cifs', 'nfsopts=ro,guest,vers=3.1.1',
-                 f'nfsroot=//{smb_address}/qemu live-media-path=',
-                 # Tell initrd and rootfs "use this NIC, don't retry *all* NICs".
-                 # https://wiki.syslinux.org/wiki/index.php?title=SYSLINUX#SYSAPPEND_bitmask
-                 # https://git.kernel.org/pub/scm/libs/klibc/klibc.git/tree/usr/kinit/ipconfig
-                 # https://salsa.debian.org/live-team/live-boot/-/blob/debian/1%2520230131/components/9990-networking.sh?ref_type=tags#L5-53
-                 # https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-main.files/bootstrap2020-systemd-networkd
-                 # https://git.cyber.com.au/prisonpc/blob/4e5fd5ef09cd49e9bcb74de50afb65d61079d75e/prisonpc/tcb.py
-                 # https://github.com/systemd/systemd/blob/v254/src/network/generator/network-generator.c#L18-L44
-                 # https://ipxe.org/cfg/mac
-                 # https://ipxe.org/cmd/ifconf
-                 # NOTE: ${mac} is expanded by ipxe.efi, not us.
-                 'BOOTIF=01-${mac}']
-                if have_smbd else
-                ['boot=live',
-                 f'fetch=tftp://{tftp_address}/filesystem.squashfs'])
-            (testdir / 'netboot.ipxe').write_text(
-                '#!ipxe\n'
-                f'boot --replace linuxx64.efi {ipxe_boot_args} {common_boot_args}\n')
+        # if args.netboot_only:
+        #     ipxe_boot_args = ' '.join(
+        #         ['boot=live',
+        #          'netboot=cifs', 'nfsopts=ro,guest,vers=3.1.1',
+        #          f'nfsroot=//{smb_address}/qemu live-media-path=',
+        #          # Tell initrd and rootfs "use this NIC, don't retry *all* NICs".
+        #          # https://wiki.syslinux.org/wiki/index.php?title=SYSLINUX#SYSAPPEND_bitmask
+        #          # https://git.kernel.org/pub/scm/libs/klibc/klibc.git/tree/usr/kinit/ipconfig
+        #          # https://salsa.debian.org/live-team/live-boot/-/blob/debian/1%2520230131/components/9990-networking.sh?ref_type=tags#L5-53
+        #          # https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-main.files/bootstrap2020-systemd-networkd
+        #          # https://git.cyber.com.au/prisonpc/blob/4e5fd5ef09cd49e9bcb74de50afb65d61079d75e/prisonpc/tcb.py
+        #          # https://github.com/systemd/systemd/blob/v254/src/network/generator/network-generator.c#L18-L44
+        #          # https://ipxe.org/cfg/mac
+        #          # https://ipxe.org/cmd/ifconf
+        #          # NOTE: ${mac} is expanded by ipxe.efi, not us.
+        #          'BOOTIF=01-${mac}']
+        #         if have_smbd else
+        #         ['boot=live',
+        #          f'fetch=tftp://{tftp_address}/filesystem.squashfs'])
+        #     (testdir / 'netboot.ipxe').write_text(
+        #         '#!ipxe\n'
+        #         f'boot --replace linuxx64.efi {ipxe_boot_args} {common_boot_args}\n')
+        #     UPDATE: after upgrading the build host from Debian 12 to Debian 13, ipxe does not "magically" load automatically anymore:
+        #             WORKS: cp /usr/lib/shim/mmx64.efi . &&
+        #                    qemu-system-x86_64 -nographic -bios /usr/share/ovmf/OVMF.fd \
+        #                        -device virtio-net-pci,netdev=alice \
+        #                        -netdev id=alice,type=user,tftp=.,bootfile=mmx64.efi \
+        #                        -device virtio-rng-pci -m 1G
+        #             FAILS: cp /usr/lib/shim/mmx64.efi . &&
+        #                    printf '#!ipxe\nboot --replace mmx64.efi\n' >script.ipxe &&
+        #                    qemu-system-x86_64 -nographic -bios /usr/share/ovmf/OVMF.fd \
+        #                        -device virtio-net-pci,netdev=alice \
+        #                        -netdev id=alice,type=user,tftp=.,bootfile=script.ipxe \
+        #                        -device virtio-rng-pci -m 1G
+        #                    --error-->
+        #                    >>Start PXE over IPv4.
+        #                      Station IP address is 10.0.2.15
+        #
+        #                      Server IP address is 10.0.2.2
+        #                      NBP filename is script.ipxe
+        #                      NBP filesize is 64 Bytes
+        #                     Downloading NBP file...
+        #
+        #                      NBP file downloaded successfully.
+        #                    BdsDxe: failed to load Boot0001 "UEFI PXEv4 (MAC:525400123456)" from PciRoot(0x0)/Pci(0x3,0x0)/MAC(525400123456,0x1)/IPv4(0.0.0.0,0x0,DHCP,0.0.0.0,0.0.0.0,0.0.0.0): Not Found
+        #
+        #             The only reason we even do ipxe in --boot-test is to try to make it closer to what is used in production.
+        #             But the production code is already using a custom version of ipxe anyway, and
+        #             I have failed miserably to understand why this *was* working, let alone *stopped* working.
+        #             And we do not really need it anyway, because -bios OVMF.fd -kernel BOOTX64.EFI works.
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
@@ -438,18 +466,21 @@ def do_boot_test():
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template.startswith('desktop') else []),
                 *([f'smb={testdir}'] if have_smbd else []),
-                *([f'tftp={testdir}', 'bootfile=netboot.ipxe']
-                  if args.netboot_only else []),
+                *([f'tftp={testdir}'] if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 2223, 5432, 2514, 587, 465}
                    for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
                   if port_forward_bullshit else [])]),
-            *(['--kernel', testdir / 'linuxx64.efi',  # was vmlinuz + initrd.img
-               '--append', ' '.join([
-                   'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
-                   common_boot_args]),
-               '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
+            '--kernel', testdir / 'linuxx64.efi',  # was vmlinuz + initrd.img
+            '--append', ' '.join([
+                'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs'
+                if not args.netboot_only else
+                f'boot=live netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
+                if have_smbd else
+                f'boot=live fetch=tftp://{tftp_address}/filesystem.squashfs',
+                common_boot_args]),
+            *(['--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
                '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
               if not args.netboot_only else []),
             *qemu_dummy_DVD(testdir, when=template.startswith('desktop')),
