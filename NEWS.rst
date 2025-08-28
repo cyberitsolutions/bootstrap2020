@@ -1,6 +1,27 @@
 This is a summary of user-visible changes over time.
 
 
+
+======================================================================
+ Changes in SOEs July 2025 (since June 2025)
+======================================================================
+• Improvements to mitigate quarantine backlog:
+
+  • Enable RAM compression, typically giving ~40% more effective RAM.
+
+  • When a web page demands more RAM than you have,
+    crash only that page (not the whole desktop).
+
+  • Automatically trim quoted text in email replies.
+    This helps keywords quarantine only the relevant email, not entire threads.
+    (This feature is coded but *not* enabled yet.)
+
+• Inmate kernel bumped to 6.12.38 (was 6.12.33).
+• Browser CA certificate now installs simpler & faster.
+• Several minor improvements for development & testing.
+
+
+
 ======================================================================
  Changes in SOEs July 2025 (since June 2025)
 ======================================================================
