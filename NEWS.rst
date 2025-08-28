@@ -3,7 +3,7 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
- Changes in SOEs July 2025 (since June 2025)
+ Changes in SOEs August 2025 (since July 2025)
 ======================================================================
 • Improvements to mitigate quarantine backlog:
 
