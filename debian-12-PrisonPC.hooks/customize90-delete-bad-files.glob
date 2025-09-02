@@ -671,3 +671,40 @@
 # "Disable" (for now) and to
 # "VA-API" (when Debian fixes the upstream issue).
 /usr/lib/*/vlc/plugins/vdpau
+
+
+# gvfs is glib/gtk/gnome generic userspace filesystem and network drivers.
+# When you open sftp://alice@sdf.org/ in nautilus/thunar, or "evince
+# https://example.com/foo.pdf" without first downloading the file into
+# ~/Downloads/, that's gvfs doing the work.
+#
+# On PrisonPC we only want/need
+# trash:// (everyone) and
+# browse p123's home" (staff only).
+# DVD movies use udisks2 and vlc, but *not* gvfs.
+# NFS mounts happen in kernel space, *not* gvfs.
+# USB keys (for staff) work like DVD discs.
+# staff could use cameras/smartphones via mtp:// prior to this denylist, but
+# AFAIK no staff user has ever done so. --twb, September 2025
+#
+# Remove gvfs (gio mount) drivers we do not actively want.
+# prisonpc-bad-package-conflicts-inmates already blocks gvfs-backends (sftp:// et al).
+# So this primarily reduces the attack surface available to evil PrisonPC staff users.
+# https://alloc.cyber.com.au/task/task.php?taskID=30333
+# As at Debian 13, these are the drivers known to Debian:
+#
+# gvfs-daemons (staff AND detainees):
+#   mounts: computer localtest trash
+#   monitors: udisks2
+# gvfs-backends (staff ONLY):
+#   mounts: admin afc afp-browse afp archive cdda dav+sd dav dns-sd
+#           ftp ftpis ftps google gphoto2 http mtp network nfs
+#           onedrive recent sftp smb-browse smb wsdd
+#   monitors: afc goa gphoto2 mtp
+/usr/share/gvfs/mounts/!(trash|sftp).mount
+/usr/lib/libexec/gvfsd-!(trash|sftp)
+/usr/lib/gvfs/gvfsd-!(trash|sftp)
+/usr/share/gvfs/remote-volume-monitors/!(udisks2).monitor
+/usr/libexec/gvfs-!(udisks2)-volume-monitor
+/usr/lib/gvfs/gvfs-!(udisks2)-volume-monitor
+/usr/lib/systemd/user/gvfs-!(udisks2)-volume-monitor.service
