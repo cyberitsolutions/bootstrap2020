@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import configparser
 import logging
+import os
 import pathlib
 import subprocess
 import tempfile
@@ -31,8 +32,11 @@ with tempfile.TemporaryDirectory() as td_str:
             print(f'http://files.wesnoth.org/addons/1.18/{addon}.tar.bz2', file=f)
     subprocess.run(
         ['wget2',
-         '--http-proxy', 'http://localhost:3142/',  # FIXME: remove when done debugging
+         # Broken, see https://bugs.debian.org/1113762
+         # '--http-proxy', 'http://localhost:3142/',
          '--input-file', 'URLs'],
+        # FIXME: remove when done debugging
+        env=os.environ | {'http_proxy': 'http://localhost:3142/'},
         check=True,
         cwd=td)
     # Extract every addon.

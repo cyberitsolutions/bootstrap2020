@@ -513,6 +513,7 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
          'http://archive.debian.org/debian/dists/sarge/main/installer-i386/current/images/hd-media/boot.img.gz',
          'http://archive.debian.org/debian/dists/etch/main/installer-i386/current/images/netboot/mini.iso',
          'http://archive.debian.org/debian/dists/squeeze/main/installer-i386/current/images/netboot/debian-installer/i386/boot-screens/splash.png'],
+        env=os.environ | {'http_proxy': apt_proxy},  # workaround https://bugs.debian.org/1113762
         cwd=testdir)
     subprocess.check_call(['gunzip', 'boot.img.gz'], cwd=testdir)
     dummy_MS_path.write_bytes(dummy_UAS_path.read_bytes())  # UGH
