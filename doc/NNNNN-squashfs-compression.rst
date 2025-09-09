@@ -52,43 +52,43 @@ I took measurements on a Thinkpad T490s running Debian 13
 .. csv-table:: Measurements
    :header: score,time,size,arguments
 
-   215,00.83s,259MiB,"--compressor=lz4"
-   260,01.11s,234MiB,"--compressor=zstd --comp-extra=level=1"
-   279,01.08s,258MiB,"--block-size=1M --compressor=lz4"
-   313,01.36s,230MiB,"--block-size=1M --compressor=zstd --comp-extra=level=1"
-   327,01.42s,230MiB,"--compressor=zstd --comp-extra=level=3 (zstd default)"
-   548,02.47s,222MiB,"--block-size=1M --compressor=zstd --comp-extra=level=3 (zstd default)"
-   739,03.16s,234MiB,"--compressor=gzip --comp-extra level=1"
-   1329,05.68s,234MiB,"--block-size=1M --compressor=gzip --comp-extra level=1"
-   2579,11.41s,226MiB,"--compressor=gzip --comp-extra=level=9"
-   2601,11.51s,226MiB,"--compressor=gzip"
-   3868,16.05s,241MiB,"--compressor=lz4 --comp-extra=hc"
-   3971,18.30s,217MiB,"--block-size=1M --compressor=zstd (level=15)"
-   4491,19.96s,225MiB,"--block-size=1M --compressor=gzip --comp-extra=level=9"
-   4534,20.15s,225MiB,"--block-size=1M --compressor=gzip"
-   4917,22.66s,217MiB,"--compressor=xz --comp-extra=level=1"
-   5869,26.80s,219MiB,"--compressor=zstd (level=15)"
-   6169,26.03s,237MiB,"--block-size=1M --compressor=lz4 --comp-extra=hc"
-   8492,39.87s,213MiB,"--compressor=xz --comp-extra=level=9"
-   8567,40.22s,213MiB,"(none) (tar2sqfs default)"
-   8699,40.84s,213MiB,"--compressor=xz --comp-extra level=6"
-   10163,47.27s,215MiB,"--compressor=xz --comp-extra level=1,x86"
-   10524,49.64s,212MiB,"--block-size=1M --compressor=xz --comp-extra=level=1"
-   11270,52.91s,213MiB,"(none) (tar2sqfs default)"
-   12280,56.33s,218MiB,"--compressor=zstd --comp-extra=level=19"
-   13074,61.96s,211MiB,"--block-size=1M --compressor=zstd --comp-extra=level=19"
-   14502,70.40s,206MiB,"--block-size=1M (mmdebstrap default)"
-   14556,70.66s,206MiB,"--block-size=1M --compressor=xz --comp-extra level=6"
-   15378,72.88s,211MiB,"--block-size=1M --compressor=zstd --comp-extra=level=22"
-   15749,76.45s,206MiB,"--block-size=1M (mmdebstrap default)"
-   16282,79.04s,206MiB,"--block-size=1M --compressor=xz --comp-extra=level=9"
-   18197,83.47s,218MiB,"--compressor=zstd --comp-extra=level=22"
-   24721,117.72s,210MiB,"--block-size=1M --compressor=xz --comp-extra level=1,x86"
+   18135.2,81.69s,222MiB,"--block-size=1M --compressor=zstd --comp-extra=level=3 (zstd default)"
+   18533.4,80.58s,230MiB,"--block-size=1M --compressor=zstd --comp-extra=level=1"
+   18547.2,80.64s,230MiB,"--compressor=zstd --comp-extra=level=3 (zstd default)"
+   18797.2,80.33s,234MiB,"--compressor=zstd --comp-extra=level=1"
+   19276.9,82.38s,234MiB,"--compressor=gzip --comp-extra level=1"
+   19866.6,84.9s,234MiB,"--block-size=1M --compressor=gzip --comp-extra level=1"
+   20482.4,90.63s,226MiB,"--compressor=gzip --comp-extra=level=9"
+   20717.4,80.3s,258MiB,"--block-size=1M --compressor=lz4"
+   21161.8,97.52s,217MiB,"--block-size=1M --compressor=zstd (level=15)"
+   22315.5,99.18s,225MiB,"--block-size=1M --compressor=gzip --comp-extra=level=9"
+   22358.2,99.37s,225MiB,"--block-size=1M --compressor=gzip"
+   22960.1,95.27s,241MiB,"--compressor=lz4 --comp-extra=hc"
+   23218.4,106.02s,219MiB,"--compressor=zstd (level=15)"
+   24944.2,105.25s,237MiB,"--block-size=1M --compressor=lz4 --comp-extra=hc"
+   25366.2,119.09s,213MiB,"--compressor=xz --comp-extra=level=9"
+   25440.7,119.44s,213MiB,"(none) (tar2sqfs default)"
+   25572.8,120.06s,213MiB,"--compressor=xz --comp-extra level=6"
+   27195.4,126.49s,215MiB,"--compressor=xz --comp-extra level=1,x86"
+   27318.3,128.86s,212MiB,"--block-size=1M --compressor=xz --comp-extra=level=1"
+   28143.7,132.13s,213MiB,"(none) (tar2sqfs default)"
+   29549.9,135.55s,218MiB,"--compressor=zstd --comp-extra=level=19"
+   30821.7,149.62s,206MiB,"--block-size=1M (mmdebstrap default)"
+   30875.3,149.88s,206MiB,"--block-size=1M --compressor=xz --comp-extra level=6"
+   32093.1,152.1s,211MiB,"--block-size=1M --compressor=zstd --comp-extra=level=22"
+   32601.6,158.26s,206MiB,"--block-size=1M --compressor=xz --comp-extra=level=9"
+   35466.4,162.69s,218MiB,"--compressor=zstd --comp-extra=level=22"
+   41357.4,196.94s,210MiB,"--block-size=1M --compressor=xz --comp-extra level=1,x86"
+   20505,90.73s,226MiB,"--compressor=gzip"
+   20733,80.05s,259MiB,"--compressor=lz4"
+   22108,101.88s,217MiB,"--compressor=xz --comp-extra=level=1"
+   29789,141.18s,211MiB,"--block-size=1M --compressor=zstd --comp-extra=level=19"
+   32068,155.67s,206MiB,"--block-size=1M (mmdebstrap default)"
 
 Here's my test script::
 
     #!/bin/bash
-    mmdebstrap --quiet --aptopt='Acquire::http::Proxy "http://localhost:3142"' '--customize-hook=rmdir $1/var/log/journal' --include='linux-image-generic init initramfs-tools live-boot netbase dbus-broker login live-config iproute2 keyboard-configuration locales sudo user-setup ifupdown dhcpcd-base' trixie deleteme.tar
+    /bin/time mmdebstrap --quiet --aptopt='Acquire::http::Proxy "http://localhost:3142"' '--customize-hook=rmdir $1/var/log/journal' --include='linux-image-generic init initramfs-tools live-boot netbase dbus-broker login live-config iproute2 keyboard-configuration locales sudo user-setup ifupdown dhcpcd-base' trixie deleteme.tar
     du -h deleteme.tar
     t() { { /bin/time tar2sqfs < deleteme.tar --quiet --no-skip --force --exportable "$@" deleteme.squashfs; du -h deleteme.squashfs; rm deleteme.squashfs; echo "$*"; } |& tr '\n' ' '; echo; }
     t                                                        # tar2sqfs default
@@ -110,6 +110,8 @@ Here's my test script::
 
 Here's the output::
 
+    69.44user 18.48system 1:19.22elapsed 110%CPU (0avgtext+0avgdata 221140maxresident)k
+    0inputs+0outputs (0major+1833550minor)pagefaults 0swaps
     385M	deleteme.tar
     358.91user 9.59system 0:52.91elapsed 696%CPU (0avgtext+0avgdata 35736maxresident)k 0inputs+0outputs (0major+1224822minor)pagefaults 0swaps 213M	deleteme.squashfs
     306.49user 1.75system 1:16.45elapsed 403%CPU (0avgtext+0avgdata 204876maxresident)k 0inputs+0outputs (0major+58064minor)pagefaults 0swaps 206M	deleteme.squashfs --block-size=1M
