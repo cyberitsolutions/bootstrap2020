@@ -49,7 +49,7 @@ Debian 13
 I took measurements on a Thinkpad T490s running Debian 13
 (apt 3.0.3, mmdebstrap 1.5.7-1+deb13u1).
 
-.. csv-table:: Measurements
+.. csv-table:: Measurements (smaller is better)
    :header: score,time,size,arguments
 
    18135.2,81.69s,222MiB,"--block-size=1M --compressor=zstd --comp-extra=level=3 (zstd default)"
