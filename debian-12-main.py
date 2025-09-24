@@ -459,7 +459,7 @@ def do_boot_test():
                 'id=OutclassMountingBoggle',
                 'type=user',
                 f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
-                (f'hostname={template}.{domain},dnsdomain={domain}'
+                (f'hostname={template}.{domain},dnssearch={domain}'
                   if domain else  # build host has NO domain at all
                   f'hostname={template}'),
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
