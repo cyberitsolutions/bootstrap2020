@@ -3,6 +3,14 @@ This is a summary of user-visible changes over time.
 
 
 ======================================================================
+ Changes in SOEs September 2025 (since August 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.43 (was 6.12.38).
+• computer:// is now disabled (it was merely hidden).
+
+
+
+======================================================================
  Changes in SOEs August 2025 (since July 2025)
 ======================================================================
 • Improvements to mitigate quarantine backlog:
