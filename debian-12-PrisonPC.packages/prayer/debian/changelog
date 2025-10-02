@@ -1,0 +1,509 @@
+prayer (1.3.5-dfsg1-8PrisonPC3) unstable; urgency=medium
+
+  * Most people do not ever trim their replies.
+    As a result, as soon as someone says "XKEYSCORE" or "civil
+    rights" in an email, EVERY subsequent email on that thread also
+    gets held for review by intelligence staff.
+
+    Rather than trying to recognize quoted text and confirm it has
+    already passed review in an earlier email, it is much easier to
+    simply default to trimming the quoted text.
+
+    We originally considered not quoting ANYTHING, but quoting the
+    first few lines seems like a reasonable compromise.
+    In practice 95% of email seems to be "luv u" "luv u more" "luv u
+    most" kind of threads, where each email is effectively 1 line.
+    This approach should work very well for those.
+    It will not work perfectly for complicated emails, but
+    even lawyers usually put those into an attached docx rather than
+    in the email body itself.
+
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Sat, 09 Aug 2025 21:17:03 +1000
+
+prayer (1.3.5-dfsg1-8PrisonPC2) bookworm; urgency=medium
+
+  * Return HTTP 401 Unauthorized on IMAP login error.
+  * Return HTTP 502 Bad Gateway on IMAP connection error.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Fri, 29 Nov 2024 11:04:05 +1100
+
+prayer (1.3.5-dfsg1-8PrisonPC1) bookworm; urgency=medium
+
+  * Show timestamps in local timezone where possible
+    https://alloc.cyber.com.au/task/task.php?taskID=35276
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 03 Oct 2024 17:41:25 +1000
+
+prayer (1.3.5-dfsg1-8) unstable; urgency=low
+
+  * Breaking Build-Depends into Build-Depends and Build-Depends-Arch is
+    not something that works when the Makefile isn't designed to build
+    arch-independent parts separately.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 15 Aug 2020 23:00:24 +0200
+
+prayer (1.3.5-dfsg1-7) unstable; urgency=low
+
+  * template_index_externs.patch: Fix FTBFS (Closes: #957707).
+  * Set home directory to /run/prayer instead of /var/run/prayer on
+    install, and create /run/prayer when starting the service, avoiding
+    the compatibility symlink.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 09 Aug 2020 21:56:58 +0200
+
+prayer (1.3.5-dfsg1-6.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix FTBFS. (Closes: #954039)
+    - Thanks to Logan Rosen.
+
+ -- Sudip Mukherjee <sudipm.mukherjee@gmail.com>  Thu, 09 Apr 2020 17:50:55 +0100
+
+prayer (1.3.5-dfsg1-6) unstable; urgency=medium
+
+  * Merge changes from Ubuntu (Closes: #913848).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 16 Dec 2018 22:27:47 +0100
+
+prayer (1.3.5-dfsg1-5ubuntu1) disco; urgency=medium
+
+  * debian/patches/glibc-2.28.patch: drop wrong prototype for crypt().
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 15 Nov 2018 22:34:06 +0000
+
+prayer (1.3.5-dfsg1-5) unstable; urgency=medium
+
+  * [SECURITY] CVE-2018-18655 (information disclosure) no-referrer.patch:
+    Add no-referrer meta header to templates (Closes: #911842).
+  * Replace exim4 dependency with default-mta.
+  * Install init script initially disabled instead of using an ENABLED
+    flag in /etc/default/prayer to prevent premature start (note: also
+    affects prayer-accountd).
+  * Upgrade Standards-Version to 4.2.1 with the preceding change.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 27 Oct 2018 22:08:08 +0200
+
+prayer (1.3.5-dfsg1-4) unstable; urgency=low
+
+  * Switch from CDBS to dh and debhelper compat level 9.
+  * openssl1.1.patch: Support OpenSSL 1.1 API changes (Closes: #828512).
+    * Support for Entropy Gathering Daemon removed because it's really old
+      and support for it is no longer enabled in OpenSSL by default.
+  * Add missing lsb-base dependencies.
+  * prayer.postrm: remove hard-coded path to deluser.
+  * Bump Standards-Version to 3.9.8.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 29 Oct 2016 14:15:05 +0200
+
+prayer (1.3.5-dfsg1-3) unstable; urgency=low
+
+  * disable_ssl3.patch (new): Disable SSL 3.0 due to CVE-2014-3566
+    (POODLE).
+  * debian/Config: Disable ACCOUNTD_SSL_ENABLE since the SSL/TLS support
+    in prayer-accountd and prayer-session is incomplete and never was
+    functional.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Wed, 29 Oct 2014 22:32:18 +0100
+
+prayer (1.3.5-dfsg1-2) unstable; urgency=high
+
+  * dlopen_templates.patch: Use MYCFLAGS (which is initialized to the
+    value of CFLAGS from dpkg-buildflags in the Config file) instead of
+    CFLAGS in templates/{src,cam,old}/Makefile (Closes: #715310, LP:
+    #1201216). The --defsym options were lost when we let CDBS override
+    CFLAGS in the previous upload.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Thu, 18 Jul 2013 22:47:08 +0200
+
+prayer (1.3.5-dfsg1-1) unstable; urgency=low
+
+  * New upstream release.
+  * Refresh patches.
+  * Drop dummy package prayer-templates.
+  * No longer override CDBS overriding CFLAGS, thereby allowing hardening
+    flags to be properly propagated. I think it caused internal include
+    flags to be lost, but since at least 1.3.2 that's no longer the case.
+  * Bump Standards-Version to 3.9.4.
+  * hurd.patch: Always define HAVE_SHADOW. The test for BSD4_4 seems
+    bogus; it is defined on Hurd, but crypt(3) is available there.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Wed, 12 Jun 2013 00:09:05 +0200
+
+prayer (1.3.4-dfsg1-1) unstable; urgency=low
+
+  * New upstream release.
+    - Drop ipv6_v6only.patch; fixed upstream.
+    * template_sdk.patch: templates/src/build_index.pl no longer need to
+      be patched.
+  * Bump Standards-Version to 3.9.2.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 27 Aug 2011 22:24:50 +0200
+
+prayer (1.3.3-dfsg1-4) unstable; urgency=low
+
+  * Merge ld-as-needed.diff from Ubuntu into dlopen_templates.patch
+    (Closes: #607559).
+  * dlopen_templates.patch: Add missing #include "dlopen_templates.h" to
+    servers/prayer_shared.h.
+  * hurd.patch (new): Use the SPT_CHANGEARGV implementation of
+    setproctitle() on the Hurd.
+  * Add basic manpage for prayer-accountd(8).
+  * unbrand_accountd.patch: Remove some Cambridge-specific parts of the
+    filter handling.
+  * Drop obsolete Build-Depends alternative libc-client2007b-dev.
+  * Increase Debhelper compat level to 7.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 27 Mar 2011 22:49:18 +0200
+
+prayer (1.3.3-dfsg1-3ubuntu1) natty; urgency=low
+
+  * Fix FTBFS with ld --as-needed.
+
+ -- Matthias Klose <doko@ubuntu.com>  Sun, 19 Dec 2010 19:07:04 +0100
+
+prayer (1.3.3-dfsg1-3) unstable; urgency=high
+
+  * ipv6_v6only.patch (new): Set the IPV6_V6ONLY socket option on
+    AF_INET6 sockets; since Prayer by default enumerates available address
+    families and calls bind() once for each, conflicts will occur
+    otherwise (Closes: #607261).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Thu, 16 Dec 2010 20:16:41 +0100
+
+prayer (1.3.3-dfsg1-2) unstable; urgency=high
+
+  * Convert (trivially, since CDBS with quilt was already used) to source
+    format 3.0 (quilt).
+  * no_db_version_check.patch: Remove unnecessary and incorrect check that
+    not only the major and minor version numbers of the current libdb are
+    the same as at compile time, but also that the patch number is equal
+    or greater, which should not be a concern (Closes: #592119).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 07 Aug 2010 21:07:53 +0200
+
+prayer (1.3.3-dfsg1-1) unstable; urgency=low
+
+  * New upstream release.
+    - Dropped kfreebsd.patch, clean_completely.patch, and
+      manpage_error.patch; all incorporated upstream.
+    * makefile_install_config.patch: Updated; some parts incorporated
+      upstream.
+  * prayer-templates-dev.install: Only template_structs.h and misc.h
+    needed henceforth, since only those files are #included by compiled
+    templates.
+  * template_sdk.patch: The #include that templates/src/build_index.pl
+    generates was not changed, though.
+  * debian/Config, debian/control: Enable libtidy for HTML parsing and
+    sanitisation, fixing certain XSS problems, which were due to simple
+    substring matching being used.
+  * prayer.init, prayer-accountd.init: Add $remote_fs to, and move
+    $local_fs to, Required-Start.
+  * Upgrade to Standards-Version 3.9.0:
+    * Use Breaks instead of Conflicts to handle the renaming of
+      prayer-templates.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Thu, 22 Jul 2010 03:27:52 +0200
+
+prayer (1.3.2-dfsg1-4) unstable; urgency=low
+
+  * Undo inadvertent inclusion of /usr/include/prayer in
+    prayer-templates-src (Closes: #557056).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Tue, 24 Nov 2009 23:14:12 +0100
+
+prayer (1.3.2-dfsg1-3) unstable; urgency=low
+
+  * Replace non-existing libc-client2007-dev with new libc-client2007e-dev
+    among the libc-client Build-Depends alternatives (Closes: #552717).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 31 Oct 2009 13:57:08 +0100
+
+prayer (1.3.2-dfsg1-2) unstable; urgency=low
+
+  * dlopen_templates.patch:
+    * templates/{cam,old}/Makefile: Define the symbols template_map and
+      template_map_count as aliases to the template_$(TYPE)_map and
+      template_$(TYPE)_map_count when linking, so that template libraries
+      can be loaded by other names than the original one. Also remove some 
+      cruft.
+    * shared/dlopen_templates.c: Use those symbols instead.
+  * Add symlinks so that template_set = xhtml_strict will still work.
+  * Update the names of the directories for locally modified templates
+    (under /etc/prayer/templates) to reflect the new template names.
+  * template_sdk.patch (new): Create makefile for building template set
+    libraries. Install it together with binaries and scripts needed.
+  * Rename prayer-templates as prayer-templates-src and add new binary
+    package prayer-templates-dev containing the aforementioned
+    template-building tools as well as a README.Debian explaining how to
+    use it all.
+  * Ship NEWS.Debian only in the prayer package. Ship TEMPLATES in
+    prayer-templates-src in addition to prayer-templates-dev.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 25 Oct 2009 19:22:13 +0100
+
+prayer (1.3.2-dfsg1-1) unstable; urgency=low
+
+  * New upstream release (Closes: #546918).
+    * The set of available template sets has changed and several
+      obsolete configuration options are no longer recognized. Please
+      see NEWS.Debian for more information.
+    - Repacked without University of Cambridge logos with dubious
+      copyright/license status (more info in debian/copyright).
+    - unbrand_cam_template.patch: Remove said Cambridge-specific graphics
+      from 'cam' template set.
+    - Drop unlimit_login_username.patch (fixed upstream when replacing
+      the old login screen with frontend templates) and
+      usernames_with_at.patch (incorporated upstream).
+    * clean_completely.patch: Partially implemented upstream.
+    * Manpages incorporated upstream.
+  * dlopen_templates.patch: Experimental support for dynamically loading
+    templates.
+  * Update README.Debian.
+  * makefile_install_config.patch(share/config.c): Change default
+    template_set to "old".
+  * makefile_install_config.patch(files/Makefile): Fix permissions on
+    icons and static files.
+  * manpage_error.patch: Fix missing .El in prayer-session(8).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Wed, 07 Oct 2009 22:50:45 +0200
+
+prayer (1.2.3-2) unstable; urgency=low
+
+  * welcome_is_template.patch wasn't fully incorporated upstream. Remove
+    the help_dir setting and check in makefile_install_config.patch instead.c
+  * Make Prayer work on kFreeBSD.  Unfortunately there is no support for
+    SysV semaphores.
+    * kfreebsd.patch: Include the right headers under glibc. Detect that 
+      semtimedop is a stub.
+    * debian/Config: Add -lutils to LIBS.
+    * makefile_install_config.patch: put back a default value for
+      lock_dir.
+  * makefile_install_config.patch: Set imap_server to localhost/notls in
+    default prayer.cf (Closes: #531801).
+  * Depend on exim4 | mail-transport-agent.
+  * Increase Standards-Version to 3.8.3.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Mon, 31 Aug 2009 23:48:04 +0200
+
+prayer (1.2.3-1) unstable; urgency=low
+
+  * New upstream release.
+    - Drop repair_ssl_session_db_on_version_mismatch.patch,
+      remove_old_db_logfiles_from_prayer-ssl-prune.patch,
+      welcome_is_template.patch, template_find_bug.patch; all incorporated
+      upstream.
+    - Update makefile_install_config.patch after welcome.html gone.
+  * kfreebsd.patch (new): Try to get Prayer to work on Debian
+    GNU/kFreeBSD.
+  * Add ${misc:Depends} to Depends for prayer-templates.
+  * Upgrade to Standards-Version 3.8.1.
+    + Add debian/README.source.
+  * clean_completely.patch (new): Fix a few makefiles that didn't remove
+    their build targets in the clean target (Closes: #521369). Thanks to
+    Simon McVittie.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Tue, 14 Apr 2009 00:50:31 +0200
+
+prayer (1.2.2.1-7) unstable; urgency=high
+
+  * Since /var/run can be a tmpfs filesystem, don't ship /var/run/prayer
+    as part of the package but create it in the init script (LP: #304071).
+    Also, var_prefix, pid_dir and prayer_user will by default be overriden
+    from the command line to make sure that they get the values expected by
+    the init script.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Fri, 31 Oct 2008 18:31:28 +0100
+
+prayer (1.2.2.1-6) unstable; urgency=low
+
+  * prayer.init: Correctly check for the presence of the executables.
+  * Split out templates to a separate arch-indep package.
+  * Change the default value of the tmp_dir option back to
+    ${var_prefix}/tmp (/var/run/prayer/tmp) because using /tmp may not be
+    secure.
+  * usernames_with_at.patch (new, from upstream CVS): If a username
+    contains an @, it will be assumed to be a valid email address and be
+    used as envelope sender address and default "From" address when
+    sending mail (Closes: #497016).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Fri, 31 Oct 2008 18:19:34 +0100
+
+prayer (1.2.2.1-5a) unstable; urgency=medium
+
+  * Prevent dh_installman from interpreting the cf in prayer.cf.5 as a
+    language code.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 17 Aug 2008 19:24:10 +0200
+
+prayer (1.2.2.1-4) unstable; urgency=medium
+
+  * Urgency medium since fixing fairly serious bug(s).
+  * debian/Config: Fix handling of CFLAGS, CPPFLAGS and LDFLAGS from the
+    environment or command line, breaking a circular definition of
+    LDFLAGS (FTBFS on Ubuntu; LP: #256220).
+  * unlimit_login_username.patch (new):
+    - servers/prayer_login.c: Remove 8 character username limit from login
+      form (Closes: #494517).
+  * prayer.init, prayer-accountd.init: Sleep 1 second between stop and
+    start in restart.
+  * Add manpages prayer(8), prayer-session(8), prayer.cf(5), and
+    prayer-ssl-prune(8) (groff-mdoc format). Remove half-done Docbook
+    versions from source package.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 17 Aug 2008 17:38:00 +0200
+
+prayer (1.2.2.1-3) unstable; urgency=low
+
+  * welcome_is_template.patch: 
+    - shared/config.c: Don't require that the help_dir option, which was
+      removed from the default prayer.cf earlier, is defined
+      (Closes: #493009).
+  * makefile_install_config.patch: 
+    - shared/config.c: Likewise don't check for lock_dir (Closes: #494011).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Wed, 06 Aug 2008 21:20:17 +0200
+
+prayer (1.2.2.1-2) unstable; urgency=low
+
+  * Acknowledge NMU, but change the build dependency to
+    libc-client2007b-dev | libc-client2007-dev | libc-client-dev 
+    (>= 7:2007~), since we need at least that version.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 27 Jul 2008 20:52:18 +0200
+
+prayer (1.2.2.1-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Build-depend on unversioned libc-client-dev to allow BinNMUs.
+    Closes: bug#492285.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Thu, 24 Jul 2008 23:42:33 +0200
+
+prayer (1.2.2.1-1) unstable; urgency=low
+
+  * New upstream release featuring XHTML templates and fixes to various
+    bugs created by the reorganisation.
+    - Drop accountd_makefile_typo.patch; fixed upstream.
+  * makefile_install_config.patch: Changes to the default config: 
+    - Disable SSL session caching.  
+    - Clean out "direct connection stuff". Remove lock_dir since we use
+      SysV semaphores.
+    * Point login_prefix_path, motd_path, and login_suffix_path towards
+      /etc/prayer.
+    * Change postponed-mail and sent-mail to Drafts and Sent.
+  * Improve SSL/TLS configuration:
+    * makefile_install_config.patch: Point ssl_cert_file and
+      ssl_privatekey_file to /etc/ssl/*/ssl-cert-snakeoil.*.
+    + Add dependency on ssl-cert (>= 1.0.11).  
+    + prayer.postinst: Add prayer to group ssl-cert on fresh install or
+      when upgrading from versions prior to this one.
+  * welcome_is_template.patch (new): Although the welcome screen is now a
+    template among others, cmd_welcome.c still tried to read the file
+    specified by welcome_path (welcome.html by default) and wouldn't show
+    the welcome screen if the option was unset or the file couldn't be
+    read. This patch removes that check as well as the welcome_path and
+    help_path options from prayer.cf.
+  * No longer install welcome.html (see above) and motd.html (no real
+    content) in /etc/prayer. Install login_prefix.html, login_suffix.html,
+    and motd.html (the versions found in files/etc.hermes in the
+    distribution tarball) in /usr/share/doc/prayer/examples instead.
+  * Do not install prayer-chroot (too experimental, hardcoded chroot path)
+    or prayer-sem-prune (does nothing that ipcrm cannot do).
+  * templates_fallback_to_compiled.patch (new): If the
+    template_use_compiled option is false, nevertheless use compiled-in
+    templates in template_expand.c if the requested template cannot be
+    found on disk. Change default template_path to /etc/prayer/templates.
+    Install said directory as well as subdirectories for available
+    template sets.
+  * Update and improve README.Debian.
+  * Add logrotate dependency.
+  * makefile_install_config.patch: Remove call to install.sh from
+    files/Makefile and replace it with single tar pipeline; thus
+    install.sh no longer needs to be patched.
+  * remove_old_db_logfiles_from_prayer-ssl-prune.patch (new): Patch
+    myarchive() in lib/mydb_db3.c so that it only deletes obsolete
+    transaction logs if dirname = NULL, then call it (via DB->archive())
+    from ssl_prune_sessions() in lib/ssl.c.
+    - prayer-db-prune thus unnecessary.
+  * template_find_bug.patch (new): Fix segfault in template_find() when
+    template_set specifies a non-existing set. Also update default set.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Tue, 24 Jun 2008 01:34:14 +0200
+
+prayer (1.2.0-1) unstable; urgency=low
+
+  * New upstream release featuring a major code reorganisation and a new
+    template system.
+    - Drop obsolete folder_list_cosmetics.patch and includes.patch.
+    - Note: SSL support has been removed from prayer-accountd for now.
+  * Changed defaults (manual intervention may be needed):
+    - Let prayer-accountd.pid reside in /var/run; letting the two packages
+      share /var/run/prayer caused too much trouble.
+    - prayer.cf (makefile_install_config.patch and debian/Config):
+      var_prefix set to /var/run/prayer and referred to in other
+      settings. socket_split_dir disabled by default and default sockets
+      directory changed to /var/run/prayer/sockets.
+  * debian/control:
+    + Build-depend on latest Berkley DB library (libdb-dev).
+    + Add Homepage field.
+  * repair_ssl_session_db_on_version_mismatch.patch: Recreate session DB
+    environment when upgrading from a version of Prayer that used an older
+    BDB library.
+  * prayer.postinst: Set HOME of prayer user to /var/run/prayer.
+  * prayer.postrm: Simply remove /var/run/prayer (since accountd doesn't use it)
+    on remove or disappear and correctly remove statoverrides (Closes: #483176).
+    Also check that deluser exists; it may be gone at purge time.
+  * Package build details:
+    - Reduce makefile_install_config.patch by not changing BROOT into DESTDIR.
+    - Override CDBS overriding CFLAGS.
+  * debian/patches/accountd_makefile_typo.patch: Fix typo that caused PAM
+    not to be used.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 31 May 2008 19:28:21 +0200
+
+prayer (1.1.0-2) unstable; urgency=low
+
+  * Define LDAP_DEPRECATED so that the deprecated LDAP interfaces can be
+    used.
+  * makefile_install_config.patch: Modify prayer/Makefile so that the
+    above definition isn't lost if CFLAGS is overridden.
+  * Improve prayer.postrm to clean /var/run/prayer on removal and
+    disappearence.
+  * Use dpkg-override to allow the administrator to change mode of
+    /var/run/prayer and /var/log/prayer.
+  * Add postinst and postrm scripts for prayer-accountd.
+  * makefile_install_config.patch: Set authtype = pam in accountd.cf so
+    that accountd will start.
+  * Bump Standards-Version to 3.7.3. No changes necessary.
+  * Override Lintian warnings about GPL code linked with OpenSSL. Special
+    exception has been granted.
+  * Don't require cdbs 0.4.27-1. Oldstable has 0.4.28-1.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Thu, 15 May 2008 22:47:14 +0200
+
+prayer (1.1.0-1) unstable; urgency=low
+
+  * First upload to unstable.
+  * New upstream release.
+    + Requires development version of the c-client library (libc-client2007-dev).
+    - Drop pidfiles_extension.patch, session_unix_bugs.patch,
+      session_server_bugs.patch; all incorporated upstream.
+    - Drop ipv6.patch; incorporated upstream.
+    - Drop utf8.patch; incorporated and improved upstream.
+    - Drop hasnochildren_means_noinferiors.patch since upstream now
+      handles dual-use mailboxes.
+  * New maintainer email address.
+  * Update README.Debian, removing lies about TLS not being possible to
+    disable (Closes: #440462).
+  * folder_list_cosmetics.patch: Remove space between expand/collapse
+    arrow and folder icon in the folder list and change the alt texts so
+    that the tree looks nicer in text browsers.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Tue, 13 May 2008 22:31:36 +0200
+
+prayer (1.0.18-1) experimental; urgency=low
+
+  * Initial release (Closes: #392823)
+
+ -- Magnus Holmgren <magnus@kibibyte.se>  Sat, 10 Mar 2007 14:24:21 +0100

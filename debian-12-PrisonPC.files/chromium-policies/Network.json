@@ -1,0 +1,17 @@
+{
+    // We don't currently support IPv6 at all ANYWAY, so
+    // we don't care. --twb, March 2024
+    // "IPv6ReachabilityOverrideEnabled": false,
+
+    // This allows a new kind of compression at the HTTP level,
+    // which is useful only for weird edge case sites.
+    // I don't think we care enough to disable it. --twb, March 2024
+    // https://github.com/WICG/compression-dictionary-transport#this-time-will-be-different
+    // "CompressionDictionaryTransportEnabled": true
+    // Likewise, but MUCH more broadly useful.
+    "ZstdContentEncodingEnabled": true,
+
+    // These are "re-enable insecure old behaviour?" options.  Force the secure defaults.
+    "AccessControlAllowMethodsInCORSPreflightSpecConformant": false,
+    "BlockTruncatedCookies": true
+}

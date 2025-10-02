@@ -1,7 +1,0 @@
-debian/*.desktop    usr/share/applications/
-debian/marathon.png usr/share/pixmaps/
-
-# And now we have a metapackage, we need to explicitly say "and also
-# install EVERYTHING from upstream's 'make install' in THIS package,
-# not THAT package".
-debian/tmp/*        /

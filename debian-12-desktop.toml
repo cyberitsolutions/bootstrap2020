@@ -14,6 +14,9 @@ include = [
     "usermode",                         # password reset tool
     "librsvg2-common",                  # SVG icons in GTK3 apps
     "gnome-themes-extra", "adwaita-qt",  # theming
+    # FIXME: Right now, vlc is always installed and is Qt5. --twb, July 2024
+    #        When vlc is Qt6, or we add some other Qt6 apps,
+    #        install "adwaita-qt6" here, and audit the Qt6 libraries properly.
     "at-spi2-core", "gnome-accessibility-themes",
     "plymouth-themes",
 
@@ -26,9 +29,11 @@ include = [
 
     # Seen on H81 and H110 Pioneer AIOs.
     # Not NEEDED, just makes journalctl -p4' quieter.
-    # FIXME: firmware-realktek includes bt/wifi firmware.
+    # FIXME: firmware-realtek includes bt/wifi firmware.
     #        We should remove that in delete-bad-files...
     "firmware-realtek", "firmware-misc-nonfree",
+    "firmware-intel-graphics",
+    "firmware-intel-misc",
 
     # <twb> Anyone have an opinion about whether
     #       I should proactively install non-free intel sound card firmware?
@@ -47,4 +52,23 @@ include = [
     # <twb> include firmware-misc-nonfree, and then dpkg path-exclude=/lib/firmware/badthings.
     "firmware-linux-free",
     "firmware-misc-nonfree",
+
+    # When (for example) chromium starts consuming as much RAM as possible,
+    # it breaks the system long before the kernel OOM killer kicks in.
+    # This seems to happen with ~100MB left in "available" column of "free -h".
+    # Increasing sysctl vm.min_free_kbytes=300000 (300MB, default is ~48MB) did NOT make the OOM killer trigger promptly.
+    # Installing earlyoom (old Fedora default) or nohang Just Worked, killing the bad Chromium backend tab.
+    # This left the system (and even chromium!) in a working state, just that one tab was marked as "Aw, snap!".
+    # Installing systemd-oomd (new Fedora default) or oomd did NOT Just Work.
+    # Note that Fedora explicitly says systemd-oomd won't work
+    # properly with XFCE, because XFCE does not create new a .scope
+    # for each /usr/share/application/foo.desktop when it is launched.
+    # I *think* it should have therefore killed the entire session,
+    # but actually the whole system stalled (equivalent to only
+    # built-in kernel oom killer).
+    # https://fedoraproject.org/wiki/Changes/EnableSystemdOomd
+    # https://alloc.cyber.com.au/task/task.php?taskID=35532
+    # https://github.com/rfjakob/earlyoom
+    # FIXME: reconsider systemd-oom if/when we switch to Gnome! --twb, August 2025
+    "earlyoom",
 ]

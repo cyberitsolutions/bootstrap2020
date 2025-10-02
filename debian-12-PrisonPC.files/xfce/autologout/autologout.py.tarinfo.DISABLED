@@ -1,0 +1,8 @@
+name = "bin/PrisonPC-autologout"
+mode = 365
+include = [
+        "gir1.2-notify-0.7",
+        "python3-gi",
+        "python3-psutil",
+        "python3-xlib",
+]

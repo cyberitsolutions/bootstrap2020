@@ -15,6 +15,7 @@ Build-Depends: debhelper-compat (= 13),
  libglew-dev,
  libopenal-dev,
  libmad0-dev,
+ libminizip-dev,
  uuid-dev,
 # FIXME: this package STILL fails to build when I enable unit tests, but
 #        the tests that fail are the ones that need a GUI?
@@ -22,6 +23,10 @@ Build-Depends: debhelper-compat (= 13),
 #        --twb, October 2023
  xvfb <!nocheck>,
  xauth <!nocheck>,
+# UPDATE: According to upstream docs/readme-developer.md, needs to be >= 3.0.
+#         This exists in bookworm's stable-backports.
+#FIXME# catch2 <!nocheck> (>= 3.0),
+#FIXME# libcatch2-dev <!nocheck> (>= 3.0),
 
 Package: endless-sky
 Architecture: any

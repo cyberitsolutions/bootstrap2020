@@ -1,0 +1,93 @@
+This package was debianized by Magnus Holmgren <magnus@kibibyte.se> on
+Tue, 24 Oct 2006 21:08:34 +0200.
+
+It was downloaded from ftp://ftp.csx.cam.ac.uk/pub/software/email/prayer
+
+However, due to dubious copyright/licensing status of the coat of
+arms/logo of the University of Cambridge, the upstream (.orig) tarball
+has been modified by removing the following files from the files/icons
+directory:
+
+  identifier.gif
+  identifier800.gif
+  ucs-id-small.jpg
+  univheader.gif
+
+Upstream author/maintainer: David Carter <dpc22@cam.ac.uk> et al.
+
+The Debian packaging is © 2006-2011 Magnus Holmgren <holmgren@debian.org>
+and is licensed under the GPL.
+
+The original licence is as follows (from the file NOTICE in the upstream
+distribution); the GPL should be in /usr/share/common-licenses/GPL on a debian
+system.
+
+
+The Prayer Webmail Interface
+----------------------------
+
+Copyright (c) 2002 University of Cambridge
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+In addition, for the avoidance of any doubt, permission is granted to
+link this program with OpenSSL or any other library package.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301,
+USA
+
+INCORPORATED CODE
+-----------------
+
+Code implementing the SSL session cache has been adapted from code used by
+the Cyrus IMAP server, which is distributed under the following copyright:
+
+/* Copyright (c) 2000 Carnegie Mellon University.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer. 
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The name "Carnegie Mellon University" must not be used to
+ *    endorse or promote products derived from this software without
+ *    prior written permission. For permission or any other legal
+ *    details, please contact  
+ *      Office of Technology Transfer
+ *      Carnegie Mellon University
+ *      5000 Forbes Avenue
+ *      Pittsburgh, PA  15213-3890
+ *      (412) 268-4387, fax: (412) 268-7395
+ *      tech-transfer@andrew.cmu.edu
+ *
+ * 4. Redistributions of any form whatsoever must retain the following
+ *    acknowledgment:
+ *    "This product includes software developed by Computing Services
+ *     at Carnegie Mellon University (http://www.cmu.edu/computing/)."
+ *
+ * CARNEGIE MELLON UNIVERSITY DISCLAIMS ALL WARRANTIES WITH REGARD TO
+ * THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS, IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY BE LIABLE
+ * FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+ * AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+ * OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+

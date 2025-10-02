@@ -34,10 +34,11 @@ def parse_args():
 
 def get_channels():             # -> [(url, name)]
     try:
-        # NOTE: the server side of this is not coded yet!
+        # This is for talking to PrisonPC 24.xx and later.
         with urllib.request.urlopen('https://PrisonPC/TV.json') as f:
-            channels = json.read(f)
+            channels = json.load(f)
     except urllib.error.HTTPError:
+        # This is for talking to PrisonPC 23.10.1 and earlier.
         # What happens if we just brute-force the entire thing?
         # i.e. this works without ANY changes to the server side.
         channels = []

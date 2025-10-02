@@ -1,9 +1,0 @@
-# -*-conf-*-
-####################
-## Report unauthorized (actually, all) USB devices
-####################
-## UPDATE: usb-snitchd does the actual reporting now. (#30332)
-## UPDATE: usb-snitchd syslogs but doesn't snitch on pre-approved
-##         device classes (Keyboard, Mouse, Hub).
-##         –twb, Dec 2016 (#31559)
-SUBSYSTEM=="usb", TAG+="usb-snitch"

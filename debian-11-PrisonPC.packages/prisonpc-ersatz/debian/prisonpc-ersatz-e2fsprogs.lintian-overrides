@@ -1,3 +1,0 @@
-# This is expected and normal because we are replacing e2fsprogs,
-# which is itself an "Essential: yes" package. --twb, Nov 2021
-prisonpc-ersatz-e2fsprogs: new-essential-package

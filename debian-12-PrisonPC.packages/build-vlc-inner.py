@@ -164,6 +164,10 @@ usr/lib/*/vlc/plugins/gui/libncurses_plugin.so
 usr/lib/*/vlc/plugins/gui/libskins2_plugin.so
 usr/lib/*/vlc/plugins/keystore/libkwallet_plugin.so
 usr/lib/*/vlc/plugins/keystore/libsecret_plugin.so
+usr/lib/*/vlc/plugins/logger/libconsole_logger_plugin.so
+usr/lib/*/vlc/plugins/logger/libfile_logger_plugin.so
+usr/lib/*/vlc/plugins/logger/libsd_journal_plugin.so
+usr/lib/*/vlc/plugins/logger/libsyslog_plugin.so
 usr/lib/*/vlc/plugins/lua/liblua_plugin.so
 usr/lib/*/vlc/plugins/misc/libaddonsfsstorage_plugin.so
 usr/lib/*/vlc/plugins/misc/libaddonsvorepository_plugin.so
@@ -278,6 +282,15 @@ for install_path in source_dir.glob('debian/*.install'):
     install_path.write_text('\n'.join([
         line for line in install_path.read_text().splitlines()
         if line.split()[0] not in shit_globs.splitlines()]))
+# Delete the logging plugins, but leave an empty makefile so "include logging/Makefile" doesn't error.
+# NOTE: if the file is empty (0 bytes), autoreconf considers it "missing" and the build fails.
+# NOTE: cannot use shit_modules, because ./configure --disable-logger does not exist.
+#       (Upstream configure.ac does not anticipate wanting to build without logging.)
+(source_dir / 'modules/logger/Makefile.am').write_text('# DISABLED\n')
+subprocess.check_call(
+    ['dpkg-source', '--commit', '.', 'stfu-vlc.patch'],
+    cwd=source_dir,
+    env=os.environ | {'EDITOR': 'touch', 'VISUAL': 'touch'})
 os.environ['DEBFULLNAME'] = 'Trent W. Buck'  # for debchange
 os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
 subprocess.check_call(
@@ -312,6 +325,12 @@ subprocess.check_call(
      '\n'
      'AMC noticed that SOME channels have some/all squares in a video changed to pure green.\n'
      'On an unlocked stock vlc, rm libgl* was enough to trigger that problem.'],
+    cwd=source_dir)
+subprocess.check_call(
+    ['debchange',
+     '--local=PrisonPC',
+     '--distribution=bookworm',
+     'Disable the logging plugins entirely.'],
     cwd=source_dir)
 
 # Build the patched source package.

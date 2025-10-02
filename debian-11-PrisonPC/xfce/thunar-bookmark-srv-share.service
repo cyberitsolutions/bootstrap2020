@@ -1,9 +1,0 @@
-[Service]
-Type=oneshot
-ExecStart=bootstrap2020-thunar-bookmark-srv-share.py
-[Install]
-WantedBy=default.target
-
-# Don't bother running this on "ssh root@desktop shutdown".
-[Unit]
-ConditionUser=!@system

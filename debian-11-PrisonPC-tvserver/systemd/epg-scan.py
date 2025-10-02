@@ -191,6 +191,49 @@ def parse_crid(event_obj, kind, fallback_value):
         return fallback_value
 
 
+def warn_about_missing_title(*, start, duration) -> None:
+    """
+    If title failed to appear, say 'failed on X at Y'.
+    Don't just print the raw XML event, which
+    1) doesn't say what the station & channel were; and
+    2) is really long and messy because it includes both raw binary and decoded.
+
+    This happened in ACT once:
+    https://alloc.cyber.com.au/task/task.php?taskID=35088
+
+    WARNING:root:Ignoring EPG event without title on station SBS, channel SBS Food
+    starting at 2024-02-26 05:29:21+11:00, for 0:53:58
+    starting at 2024-02-26 06:23:19+11:00, for 0:04:52
+    starting at 2024-02-26 06:28:11+11:00, for 0:55:00
+    starting at 2024-02-26 07:23:11+11:00, for 0:05:41
+    starting at 2024-02-26 10:30:22+11:00, for 0:54:28
+    starting at 2024-02-26 17:53:40+11:00, for 0:07:48
+
+    If we don't catch and ignore the problem, after ~7 days,
+    the PrisonPC view of SBS EPG will be empty, and
+    inmates won't be able to watch SBS at all!
+    """
+    try:
+        # Ugh, reporting which station & channel failed is annoying!
+        service_obj = exactly_one(dvblastctl('get_sdt').xpath(
+            f'/SDT/SERVICE[@sid="{service_id}"]/DESC/SERVICE_DESC'))
+        logging.warning(
+            'Ignoring EPG event without title'
+            ' on station %s, channel %s, starting at %s, for %s',
+            service_obj.get('provider'),  # SBS
+            service_obj.get('service'),   # SBS Food
+            start.astimezone(),
+            duration)
+    except Exception:
+        logging.warning(
+            'Ignoring EPG event without title'
+            ' on adapter %s, service ID %s, starting at %s, for %s',
+            args.adapter,       # global variable
+            service_id,         # global variable
+            start.astimezone(),
+            duration)
+
+
 def get_programmes(obj):
     programmes = []             # ACCUMULATOR
     for eit_obj in obj.xpath('/EIT'):
@@ -201,8 +244,12 @@ def get_programmes(obj):
                 .replace(' UTC', '+00:00'))  # Appease fromisoformat
             duration = datetime.timedelta(seconds=int(
                 event_obj.get('duration')))
-            title = exactly_one(
-                event_obj.xpath('./DESC/SHORT_EVENT_DESC/@event_name'))
+            try:
+                title = exactly_one(
+                    event_obj.xpath('./DESC/SHORT_EVENT_DESC/@event_name'))
+            except ValueError:  # FIXME: use a dedicated exception?
+                warn_about_missing_title(start=start, duration=duration)
+                continue
             programmes.append({
                 'channel': None,    # not used anymore
                 'sid': service_id,

@@ -1,0 +1,14 @@
+Description: Add extern to struct declarations in template indices.
+Bug-Debian: https://bugs.debian.org/957707
+
+--- a/templates/src/build_index.pl
++++ b/templates/src/build_index.pl
+@@ -23,7 +23,7 @@ print <<'EOM';
+ EOM
+ 
+ foreach $i (@templates) {
+-  print "struct template _template_${prefix}_${i};\n";
++  print "extern struct template _template_${prefix}_${i};\n";
+ }
+ 
+ print <<"EOM";

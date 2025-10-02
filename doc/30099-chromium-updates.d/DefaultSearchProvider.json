@@ -10,9 +10,8 @@
         "GB2312",
         "ISO-8859-1"
     ],
-    "DefaultSearchProviderIconURL": "https://search.my.company/favicon.ico",
     "DefaultSearchProviderImageURL": "https://search.my.company/searchbyimage/upload",
-    "DefaultSearchProviderImageURLPostParams": "content={imageThumbnail},url={imageURL},sbisrc={SearchSource}",
+    "DefaultSearchProviderImageURLPostParams": "content={google:imageThumbnail},url={google:imageURL},sbisrc={google:imageSearchSource}",
     "DefaultSearchProviderKeyword": "mis",
     "DefaultSearchProviderName": "My Intranet Search",
     "DefaultSearchProviderNewTabURL": "https://search.my.company/newtab",

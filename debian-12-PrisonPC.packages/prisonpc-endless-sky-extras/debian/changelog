@@ -1,0 +1,6 @@
+prisonpc-endless-sky-extras (0~0.10.10+PrisonPC2) bookworm; urgency=medium
+
+  * Initial packaging.
+    Based on https://github.com/endless-sky/endless-sky-plugins but not using their scripts at all.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 25 Nov 2024 11:49:31 +1100

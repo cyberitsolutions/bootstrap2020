@@ -1,6 +1,0 @@
-[Service]
-Type=oneshot
-ExecStart=tvserver-update-config
-[Unit]
-# Needs PGPASSFILE=/etc/prisonpc-persist/pgpass to talk to postgres.
-RequiresMountsFor=/etc/prisonpc-persist

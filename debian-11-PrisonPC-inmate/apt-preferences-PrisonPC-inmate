@@ -1,4 +1,0 @@
-Explanation: use VLC with screenshot support disabled (inmate only -- staff need sout for dvd ripping)
-Package: src:vlc
-Pin: release o=Cyber
-Pin-Priority: 500

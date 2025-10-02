@@ -1,11 +1,11 @@
 Rank,Application,"Duration (6 months, all detainees)"
-3516,Multimedia > Watch TV,11 years 9 mons 5 days 13:17:10
-2593,NO APPLICATION,8 years 8 mons 3 days 01:10:30
+3517,Multimedia > Watch TV,11 years 9 mons 5 days 13:17:10
+2593,NO APPLICATION,8 years 8 mons 2 days 19:04:10
 994,Multimedia > Media player,3 years 3 mons 27 days 02:43:10
 502,Games > Solitaire,1 year 8 mons 5 days 03:16:00
-418,Internet > Web Browser,1 year 4 mons 23 days 01:29:10
+417,Internet > Web Browser,1 year 4 mons 22 days 04:32:00
 177,Games > Warzone 2100,7 mons 2 days 18:56:10
-176,Office > Word Processor (libreoffice),7 mons 1 day 18:25:10
+176,Office > Word Processor (libreoffice),7 mons 1 day 18:23:50
 175,Graphics > Image Viewer,7 mons 16:04:50
 167,Games > Elastomania clone,6 mons 20 days 14:37:00
 143,Games > Super Mario clone,5 mons 22 days 08:11:50
@@ -13,7 +13,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 101,Games > Transport Tycoon Deluxe clone,4 mons 1 day 01:56:40
 94,Games > The Battle for Wesnoth,3 mons 23 days 16:02:30
 76,DOOM clone (all campaigns),3 mons 1 day 03:26:10
-66,System > File Manager,2 mons 19 days 23:35:30
+66,System > File Manager,2 mons 19 days 22:40:10
 65,Games > Tetris clone,2 mons 17 days 22:30:20
 63,Games > Civilization clone,2 mons 15 days 11:59:10
 55,Games > Blob Wars : Metal Blob Solid,2 mons 6 days 16:19:00
@@ -21,7 +21,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 35,Games > Arkanoid (Breakout) clone,1 mon 12 days 12:23:10
 31,Games > Chess,1 mon 6 days 19:26:50
 30,Office > Dictionary,1 mon 6 days 10:52:00
-30,Games > Sudoku,1 mon 5 days 23:03:40
+30,Games > Sudoku,1 mon 5 days 23:03:30
 25,Office > Spreadsheet (libreoffice),1 mon 14:32:50
 23,UNKNOWN APPLICATION,27 days 22:02:00
 21,Office > Drawing Program (libreoffice),25 days 11:43:10
@@ -104,7 +104,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Log Out,00:37:20
 0,Office > Project Planner,00:35:30
 0,Education > Graphics Calculator,00:22:30
-0,Accessories > Screenshot,00:14:30
 0,Interactive Fiction Games (GLULX),00:11:30
 0,Education > Physics Trainer,00:11:20
 0,Gnome-help,00:07:50
@@ -115,5 +114,5 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games > Tetris Attack clone,00:01:40
 0,Exo-open,00:01:20
 0,Tadsr,00:00:40
-0,Advsys,00:00:10
 0,Multimedia > Audacity,00:00:10
+0,Advsys,00:00:10

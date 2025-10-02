@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 import argparse
+import logging
+import os
 import pathlib
 import subprocess
-import logging
 
 
 __doc__ = """ if Debian kernel is newer than PrisonPC kernel, halt and catch fire
@@ -21,13 +22,14 @@ I am mainly concerned about 5.16 -> 5.17.
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
+os.environ['APT_CONFIG'] = os.environ['MMDEBSTRAP_APT_CONFIG']  # replaces "chroot $1" for apt
+os.environ['DPKG_ROOT'] = str(args.chroot_path)  # replaces "chroot $1" for dpkg
 
 
 def candidate_version(package_name):
     # NOTE: cannot assume python3-apt is installed.
     policy_stdout = subprocess.check_output(
-        ['chroot', args.chroot_path,
-         'apt-cache', 'policy', package_name],
+        ['apt-cache', 'policy', package_name],
         text=True)
     candidate_version, = [
         line.strip()[len('Candidate: '):]
@@ -47,7 +49,7 @@ if 0 == subprocess.call([
         inmate_version)
 else:
     logging.error(
-        "stock kernel (%s) is newer than inmate kernel (%s) -- REBUILD NEEDED!",
+        "stock kernel (%s) is newer than inmate kernel (%s) -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-inmate-kernel.py",
         stock_version,
         inmate_version)
     exit(1)

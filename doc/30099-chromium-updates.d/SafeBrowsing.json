@@ -1,4 +1,5 @@
 {
+    "DisableSafeBrowsingProceedAnyway": true,
     "PasswordProtectionChangePasswordURL": "https://mydomain.com/change_password.html",
     "PasswordProtectionLoginURLs": [
         "https://mydomain.com/login.html",
@@ -9,7 +10,9 @@
         "mydomain.com",
         "myuniversity.edu"
     ],
+    "SafeBrowsingDeepScanningEnabled": true,
     "SafeBrowsingExtendedReportingEnabled": true,
     "SafeBrowsingProtectionLevel": 2,
-    "SafeBrowsingProxiedRealTimeChecksAllowed": true
+    "SafeBrowsingProxiedRealTimeChecksAllowed": true,
+    "SafeBrowsingSurveysEnabled": true
 }

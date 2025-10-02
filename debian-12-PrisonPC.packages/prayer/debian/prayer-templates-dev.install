@@ -1,0 +1,5 @@
+/usr/lib/prayer/template_*
+/usr/lib/prayer/*.pl
+/usr/include/prayer/template_structs.h
+/usr/include/prayer/misc.h
+/usr/share/prayer/*.make

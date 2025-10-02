@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=Compress scanned PDF to 300 DPI
-Icon=document-save
-Exec=PrisonPC-compress-scanned-PDF --DPI=300 %F
-MimeType=application/pdf

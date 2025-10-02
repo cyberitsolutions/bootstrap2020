@@ -1,0 +1,100 @@
+// PrisonPC browser does not include an ad/telemetry blocker plugin because:
+//
+//   1) detainee browsing is allowlist-only anyway, and
+//      bad things aren't in the squid allowlist in the first place
+//
+//   2) chromium is made by Google, and
+//      Google is primarily an advertising company, and
+//      therefore deliberately break ad blockers.
+//
+//   3) third-party ad blocking plugins like AdBlock Plus used to be
+//      in Debian (so could be installed in /usr), but
+//      these are not properly maintained anymore and basically broken (even for Firefox).
+//      Instead you are expected to have unrestricted internet access to download the plugin itself,
+//      and space in each user's $HOME to install and maintain separate copy there.
+//
+//   4) we default-deny block chrome://extensions &c, and
+//      we don't want to allow those in order to load a blocker.
+//
+//   5) we do not necessarily trust third-party block lists to not "go rogue".
+//
+//   6) if the blocker blocks too much, it could break something that
+//      the prison legitimately wants, and then it takes us longer to
+//      debug that.  e.g. telemetry blockers can block "checking
+//      you're not a robot" captchas.
+//
+//   7) if prison staff choose to do personal browsing (e.g. house
+//      shopping) from their PrisonPC staff account, instead of their
+//      government-provided windows account, we kinda DON'T CARE.
+//
+// HOWEVER, this did start annoying twb personally here:
+// https://kb.cyber.com.au/PrisonPC%20Activity%20Report
+//
+// An educator's LMS was so badly outsourced that it was impossible to
+// grant limited access to it, so as a workaround, a detainee was
+// temporarily given direct access to a PrisonPC **staff** account to
+// do their uni exams.
+//
+// Then that detainee was insufficiently supervised, so Cyber was
+// asked to check the logs for any evidence of improper behaviour.
+//
+// It turns out that over ~1h there is 90,000 HTTP requests, and
+// almost all of them are spyware/telemetry/advertising.
+// So twb went "hrm, maybe we should add some very easy, basic
+// blocking, so that the next analysis is a bit faster.  Also it
+// incidentally improves PrisonPC staff experience slightly."
+
+
+// NOTE: this file assumes PolicyListMultipleSourceMergeList includes
+//       URLBlocklist, so
+//       entries here add to (not replace) the inmate defaults.
+//
+//
+// NOTE: this allows https://example.com and
+//       blocks https://wikipedia.org:
+//
+//           {"URLAllowlist": [
+//               "http://*",
+//               "https://*"],
+//            "URLBlocklist": [
+//                "*",
+//                "wikipedia.org"]}
+//
+//       so it is NOT simply doing
+//
+//           if url matches any URLAllowlist
+//           then ALLOW
+//           else if url matches any URLBlocklist
+//           then BLOCK
+//           else ALLOW
+//
+//       but rather it is doing some kind of multi-stage match.
+
+// This is just the top ~10 sites that have triggered at least 1000
+// POST or image/gif requests onsite from staff, AND are known to be
+// privacy-attacking based on the uBlock Origin datasets (including
+// EasyPrivacy).  See also https://github.com/uBlockOrigin/uAssets
+
+{"URLBlocklist": [
+    "google-analytics.com",
+    "nr-data.net",
+    "measure.office.com",
+    "clarity.ms",
+    "doubleverify.com",
+    "fullstory.com",
+    "browser.events.data.microsoft.com",
+    // Should I completely block chatgpt.com / openai.com?
+    // "chatgpt.com"
+    // Should I completely block snapchat?
+    "tr.snapchat.com",
+    "casalemedia.com",
+    "pubmatic.com",
+    "adnxs.com",
+    "3lift.com",
+    "ade.googlesyndication.com",
+    "criteo.com",
+    // Should I completely block tiktok?
+    "analytics.tiktok.com",
+    "dc.services.visualstudio.com/v2/track",
+    "browser-intake-datadoghq.com"
+]}

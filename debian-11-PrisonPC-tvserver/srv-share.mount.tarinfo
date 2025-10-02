@@ -1,1 +1,2 @@
-../debian-11-PrisonPC/srv-share.mount.tarinfo
+{"name": "etc/systemd/system/srv-share.mount",
+ "mode": 292}

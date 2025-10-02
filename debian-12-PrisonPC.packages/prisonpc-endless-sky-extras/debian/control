@@ -1,0 +1,21 @@
+Source: prisonpc-endless-sky-extras
+Section: games
+Priority: optional
+Standards-Version: 4.3.0
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Rules-Requires-Root: no
+Build-Depends:
+ ca-certificates,
+ debhelper-compat (= 13),
+ wget2,
+ unzip,
+
+Package: prisonpc-endless-sky-extras
+Depends: ${misc:Depends},
+ endless-sky,
+Enhances: endless-sky
+Architecture: all
+Description: Endless Sky plugins
+ There are a bunch of third-party plugins at https://endless-sky.github.io/plugins.html.
+ This package provides (some of) them pre-downloaded.

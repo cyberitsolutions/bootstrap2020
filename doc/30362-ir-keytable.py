@@ -22,7 +22,9 @@ with open('/usr/include/linux/input-event-codes.h') as fh:
             code = (int(match.group(3), 16)
                     if '0x' == match.group(2) else
                     int(match.group(3)))
-            if 0 < code < 256:  # Skip codes X11 cannot represent.
+            # FIXME: it seems some kernel keycodes >>256 have X keysyms... HOW?
+            # if 0 < code < 256:  # Skip codes X11 cannot represent.
+            if True:
                 linux_code2name[code] = name
         elif debug_match_failures:
             sys.stderr.write('SKIPPED input.h: {}'.format(line))
@@ -52,8 +54,8 @@ if debug_parse_results:
     pprint.pprint(xorg_key2sym)
 
 
-print('kName kCode xCode xKey xSym')
-print('===== ===== ===== ==== ====')
+print('kName\tkCode\txCode\txKey\txSym')
+print('=====\t=====\t=====\t====\t====')
 for code, name in linux_code2name.items():
     words = [name, code]
     code += 8                   # xorg code = 8 + linux code
@@ -61,6 +63,10 @@ for code, name in linux_code2name.items():
         key = xorg_code2key[code]
         words += [code, key]
         if key in xorg_key2sym:
-            words += [xorg_key2sym[key]]
+            words += [' '.join(xorg_key2sym[key].strip().split())]
+        else:
+            words += ['']       # appease github TSV parser
+    else:
+        words += ['', '', '']   # appease github TSV parser
 
     print(*words, sep='\t')

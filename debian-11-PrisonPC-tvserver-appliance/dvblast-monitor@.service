@@ -1,0 +1,18 @@
+[Unit]
+Wants=systemd-networkd-wait-online.target
+After=systemd-networkd-wait-online.target
+RequiresMountsFor=/srv/tv/legacy-tvserver
+
+[Service]
+DynamicUser=yes
+User=tvserver
+WorkingDirectory=/run/dvblast@%i
+ExecStart=dvblast-monitor --adapter=%i
+
+[Unit]
+JoinsNamespaceOf=dvblast@%i.service
+Requires=dvblast@%i.service
+After=dvblast@%i.service
+
+[Install]
+WantedBy=dvblast@%i.service

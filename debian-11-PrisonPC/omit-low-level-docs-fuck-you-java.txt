@@ -1,9 +1,0 @@
-(bootstrap:179c739-dirty)root@hera:/# apt install openjdk-11-jre-headless
-[...]
-Setting up openjdk-11-jre-headless:amd64 (11.0.14+9-1~deb11u1) ...
-update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
-update-alternatives: error: error creating symbolic link '/usr/share/man/man1/java.1.gz.dpkg-tmp': No such file or directory
-
-(bootstrap:179c739-dirty)root@hera:/# mkdir /usr/share/man/man1
-(bootstrap:179c739-dirty)root@hera:/# apt install openjdk-11-jre-headless
-[no error]

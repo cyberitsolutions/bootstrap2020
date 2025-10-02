@@ -1,6 +1,207 @@
 This is a summary of user-visible changes over time.
 
 
+
+======================================================================
+ Changes in SOEs September 2025 (since August 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.43 (was 6.12.38).
+• computer:// is now disabled (it was merely hidden).
+
+
+
+======================================================================
+ Changes in SOEs August 2025 (since July 2025)
+======================================================================
+• Improvements to mitigate quarantine backlog:
+
+  • Enable RAM compression, typically giving ~40% more effective RAM.
+
+  • When a web page demands more RAM than you have,
+    crash only that page (not the whole desktop).
+
+  • Automatically trim quoted text in email replies.
+    This helps keywords quarantine only the relevant email, not entire threads.
+    (This feature is coded but *not* enabled yet.)
+
+• Inmate kernel bumped to 6.12.38 (was 6.12.33).
+• Browser CA certificate now installs simpler & faster.
+• Several minor improvements for development & testing.
+
+
+
+======================================================================
+ Changes in SOEs July 2025 (since June 2025)
+======================================================================
+• Inmate-initiated Factory Reset was redesigned.
+  This *may* mitigate as-yet-undiagnosed read-only issues:
+
+  | https://alloc.cyber.com.au/task/task.php?taskID=35434
+  | https://alloc.cyber.com.au/task/task.php?taskID=35429
+  | https://alloc.cyber.com.au/task/task.php?taskID=35480
+
+• Inmate vlc (TV/DVD player) is now built without logging.
+  This should mitigate a rare bug where
+  an application log ends up in the system log.
+
+• All SOEs now refuse to install insecure browser engines.
+  Previously this only applied to PrisonPC desktop SOEs.
+
+• Endless Sky bumped to 0.10.14 (new game content).
+• Dungeon Crawl bumped to 0.33.1 (new game content).
+• Inmate kernel bumped to 6.12.33 (was 6.12.30).
+
+
+
+======================================================================
+ Changes in SOEs June 2025 (since May 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.30 (was 6.12.22).
+• New SOE "tvserver-appliance", which
+  makes legacy TV servers act like appliance tuners.
+
+
+======================================================================
+ Changes in SOEs May 2025 (since April 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.22 (was 6.12.12).
+• Staff browser now blocks the "top ten" telemetry/ad networks.
+  This saves 5-8% of the work when auditing staff activity.
+  (Full-feature blockers are themselves blocked by PrisonPC hardening.)
+  (Detainee browser needs no blocker, because it's default-deny.)
+
+
+======================================================================
+ Changes in SOEs April 2025 (since March 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.12 (was 6.12.9).
+• TBS (TV tuner) driver appeared to run on Debian 12 at last.
+  But actually, a random process segfaults about once per hour.
+  Therefore, immediately rolled back to Debian 11 again.
+
+
+======================================================================
+ Changes in SOEs March 2025 (since February 2025)
+======================================================================
+• Idle logout is disabled again.
+• The TV server SOE now runs Debian 12.
+• Endless Sky bumped to 0.10.12 (new game content).
+• Bugfixes:
+
+  • TV configurator was killing TV EPG scanner.
+  • TV time-shifting had a type error.
+  • Factory Reset was generating needless logspam.
+
+
+======================================================================
+ Changes in SOEs February 2025 (since January 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.9 (was 6.11.10).
+• Idle (no input and no TV) desktops log out after 15 minutes.
+• The browser no longer downgrades persistent cookies to session cookies.
+
+
+======================================================================
+ Changes in SOEs January 2025 (since November 2024)
+======================================================================
+• Inmate kernel bumped to 6.11.10 (was 6.11.5).
+
+• Support standard methods of setting host name, mail domain, and time zone.
+  This allows PrisonPC 25 to drop legacy PrisonPC-specific methods.
+
+• Return standard HTTP 401 on login failure in PrisonPC-patched prayer.
+  This will allow HTTP-layer blocks on brute-force password guessing.
+  (LDAP-layer blocks on brute-force password guessing already exist.)
+
+
+======================================================================
+ Changes in SOEs November 2024 (since September 2024)
+======================================================================
+• Mail now shows timestamps in local time.
+• Chromium no longer complains that Mail (webmail) is insecure.
+• Endless Sky bumped to 0.10.10 (new game content), DLCs added.
+• Inmate kernel bumped to 6.11 (was 6.10).
+• Better support for recent Intel graphics.
+• Better recovery when CMOS clock battery is dead.
+• Fix popup when detainee isn't allowed to use a computer due to group restrictions.
+• Fix a bug where TV could remain accessible during TV curfew.
+  There is no evidence this ever occured in production.
+
+
+======================================================================
+ Changes in SOEs September 2024 (since August 2024)
+======================================================================
+• Inmate kernel bumped to 6.10.6 (was 6.9.7).
+
+• Inmate kernel now includes an EFI stub.
+  This lets it boot on new desktops (with EFI and without CSM).
+
+• Hardware watchdogs are now enabled.
+  If the kernel (linux) or first process (systemd) hangs for 30s,
+  either due to a bug or sophisticated detainee attack,
+  the system will now reboot.
+
+  Software watchdogs were already in place for critical processes
+  (e.g. account sharing, contraband smartphone).
+  These continue to work as before.
+
+
+======================================================================
+ Changes in SOEs August 2024 (since June 2024)
+======================================================================
+• Inmate kernel bumped to 6.9.7 (was 6.7.12).
+• GNUCash (finance management) bumped to 5.6 (was 4.13).
+• SMART monitoring bumped to 7.4 (was 7.3) for understudy.
+• Fix wireplumber (GUI middleware) starting for system accounts.
+• Fix disc-snitch logging as "-".
+
+
+======================================================================
+ Changes in SOEs June 2024 (since May 2024)
+======================================================================
+• VNC client ("Control desktop" in ppcadm) now defaults to view-only mode.
+  To enable remote control, press F8 and change the connection setting.
+
+• IPTV local channel media import:
+
+  • A movie file can now be imported directly by right-clicking on it and
+    choosing `Send To > Rip a Movie File`.
+
+  • Fixed a bug since 2023-11-09 that incorrectly reported for all DVDs
+    "Permission denied when attempting to write to the IPTV queue"
+
+• Wesnoth game bumped to 1.18 (was 1.16); DLCs updated to match.
+
+
+======================================================================
+ Changes in SOEs May 2024 (since March 2024)
+======================================================================
+• Previously the browser told Google to block not-safe-for-work (NSFW) content.
+  It turns out Google considers academic lectures on criminology to be NSFW.
+  https://www.youtube.com/watch?v=wCTG_q1hziw
+  Therefore this layer of defence-in-depth is now disabled.
+  Detainee web access remains restricted by other layers.
+
+• Inmate kernel bumped to 6.7.12 (was 6.6.13, was 6.5.10, was 6.5.3).
+• "Vulnerability changes in PrisonPC SOEs" report is now HTML.
+• Miscellaneous minor bugfixes to ZFS-based understudy SOE.
+
+
+======================================================================
+ Changes in SOEs March 2024 (since January 2024)
+======================================================================
+• Sometimes SBS forget to name a programme in their programme guide.
+  When this happens, limit breakage to that show (not that station).
+  https://alloc.cyber.com.au/task/task.php?taskID=35088
+
+• Hardcode (not DNS-SD auto-configure) logging.
+  Hopefully this will fix a recurring issue where early boot messages don't make it to the central log server.
+  https://alloc.cyber.com.au/task/task.php?taskID=34836
+
+• Update Chromium enterprise policy to 123 (was 115).
+• Inmate kernel bumped to 6.5.3 (was 6.4.4).
+
+
 ======================================================================
  Changes in SOEs January 2024 (since December 2023)
 ======================================================================

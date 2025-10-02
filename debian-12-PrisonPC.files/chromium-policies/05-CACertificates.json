@@ -1,0 +1,71 @@
+// Short version:
+//
+//   * This is debian-12-PrisonPC.files/com.prisonpc.crt.
+//   * It is duplicated here because nss3 is awful.
+//   * It requires chromium (>= 132), which Debian 12+ has.
+//
+//
+// Detailed discussion follows.
+//
+// Running our own CA is useful for two things:
+//
+//   * SSL inspection (MITM attack, SSL bump) of inmate browsing.
+//     This allows the prison to log exactly which URLs an inmate browsed.
+//     This allows the prison to allow/deny individual URLs (not just domains).
+//
+//   * Ordinary HTTPS for airgapped prisons.
+//     ACMEv2 / Let's Encrypt doesn't work very well for airgapped sites.
+//     At a minimum, it would require mandatory site visit 4 times per year.
+//
+// Most code in Debian uses OpenSSL or GnuTLS for TLS.
+// To make these trust our CA, we just ensure it ends up in /etc/ssl/certs.
+//
+// Unfortunately all GUI browsers use nss3, which is fucked up:
+//
+//     https://code.google.com/p/chromium/issues/detail?id=16387
+//
+// TL;DR: nss3 CANNOT read from two keyrings.
+// Chrome must choose between /etc/pki and ~/.pki.
+// They choose the latter.
+// So we must do SOMETHING to populate ~/.pki for each inmate.
+//
+// Also nss3 (in chromium) cannot read ordinary PEM text files.
+// Instead we have to compile two sqlite3 databases, which
+// include both the CA certificates, and also a "role",
+// e.g. "CA", "server", "client".
+//
+// Until August 2025, we various variations of this.
+// We saw LOTS of race conditions, and it was a huge nuisance.
+//
+//     When the user logs in,
+//     as that user,
+//     put com.prisonpc.crt in ~/.pki/.
+//
+// After August 2025, we can just throw all of that away, and
+// rely on Chromium's group policy object (this file).
+// The certificate still gets copied into ~/.pki/, but
+// now Chromium does that for us.
+// So no race conditions... I hope.
+//
+// See also the final version of that old code:
+// https://alloc.cyber.com.au/task/task.php?taskID=30365
+// https://github.com/cyberitsolutions/bootstrap2020/blob/b3c3beaaa4704af1a7df2c990fd121387409f32f/debian-12-PrisonPC.files/pki-nssdb/nssdb-create.py#L4
+//
+// The format of this is everything between "-----BEGIN CERTIFICATE-----" and "-----END CERTIFICATE-----" (exclusive) in a PEM certificate, sans newlines.
+// To turn it back into a PEM, just add those header and footer strings back in.  You don't need to bother putting the newlines back.
+//
+// $ printf '\n-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----' "MIIC⋯ue4X" | certtool -i
+// X.509 Certificate Information:
+//      Version: 3
+//      Serial Number (hex): 0203e5b882eb20f825276d3d66
+//      Issuer: CN=GTS Root R3,O=Google Trust Services LLC,C=US
+//      Validity:
+//              Not Before: Wed Jun 22 00:00:00 UTC 2016
+//              Not After: Sun Jun 22 00:00:00 UTC 2036
+//      Subject: CN=GTS Root R3,O=Google Trust Services LLC,C=US
+//      Subject Public Key Algorithm: EC/ECDSA
+{
+  "CACertificates": [
+    "MIIEXDCCAxSgAwIBAgIEUy/IjzANBgkqhkiG9w0BAQsFADCBgjEnMCUGA1UEAxMeUHJpc29uUEMgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MSMwIQYDVQQKExpDeWJlciBJdCBTb2x1dGlvbnMgUHR5IEx0ZDESMBAGA1UEBxMJTWVsYm91cm5lMREwDwYDVQQIEwhWaWN0b3JpYTELMAkGA1UEBhMCQVUwIhgPMjAxNDAzMjQwNTU0MjNaGA85OTk5MTIzMTIzNTk1OVowgYIxJzAlBgNVBAMTHlByaXNvblBDIENlcnRpZmljYXRlIEF1dGhvcml0eTEjMCEGA1UEChMaQ3liZXIgSXQgU29sdXRpb25zIFB0eSBMdGQxEjAQBgNVBAcTCU1lbGJvdXJuZTERMA8GA1UECBMIVmljdG9yaWExCzAJBgNVBAYTAkFVMIIBUjANBgkqhkiG9w0BAQEFAAOCAT8AMIIBOgKCATEAnGPlb8flD4JXh1P3f0t2/zAAjS8MpBPpeJcZSatc6zm8zR51mc/4jwE0+HqKphOWOOoNKrH1tsAWowP3lHr0C/xTYa0IC0HL3WHVym+6R/lUvIpzrNeo8+khHN15vWAD9PyDg32BmlTCGFjYxDUazu3Gun4yPf5EA7YIEH11WBhlyq9uAwHyoTm732s1qqor/Pn269W7HW9uwRJeuVD/2dztKApgtj36ZMu8OcMsVsGSEFWHFq17cU8SehXXExFKWJM8KqpwjbS80N/tTaBqw5pz77K34oNwrqTHMapp3xdi0RPSsdMU2PwiFAnWJcxLVlheGSGQR6jiyPHmdiBlLkU1DbXKli16TU8x7NIYscTo+K1h94bZ8pg36mk9Qt3KzroJr7EpK7NcIUZQNrdYYQIDAQABo3QwcjAPBgNVHRMBAf8EBTADAQH/MC8GA1UdEQQoMCaBJHN1cHBvcnQtcHJpc29ucGMtY2FjZXJ0QGN5YmVyLmNvbS5hdTAPBgNVHQ8BAf8EBQMDBwQAMB0GA1UdDgQWBBSu51ddABlTD3Xg5iL/38fXqP5R8DANBgkqhkiG9w0BAQsFAAOCATEAJ7odxH6n8zTd4QFYUTxnweWH+N2dYrxPafsoV3LtVKhSzc2j5NzttHLOvHUwxjAa7xDwbTgQ9axOSD3jSyes+7yGW5iX9G3wuOuC5nPUj89TgDLd43KN20DCUMNei/SqCPxl+35vo/h3L89IhDYLnyA1wDZ9jtfwer51CFJaX2c3Hw9zbpaCHLarLVjvokSO9neTPfCiPAH1rmA24nz9XGENn1Pl7P4+OrixLRRs46xBpx5RRRjPcJJctDds2k4tjqtrM2czjPBMIJgfSyFijU5zB8AUgHtQ52HM4aNXJqycYlNTcF5GYZbTLBIWm1SmlCLqEzNueCIGEuJ3B15RG6KElnGtHyh03XJ13PM2J9+Yq2t8OOpL8ItdYOLlTYNl67OCKIbUXhfYCQk2ByRaKQ=="
+  ]
+}

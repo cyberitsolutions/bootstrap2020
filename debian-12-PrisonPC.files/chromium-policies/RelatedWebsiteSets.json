@@ -1,0 +1,16 @@
+// https://github.com/WICG/first-party-sets#introduction
+// https://developers.google.com/privacy-sandbox/blog/first-party-sets-evolution
+// This lets you say
+//
+//   Hey browser, I fucked up my DNS.
+//   I should have made {cdn,cn,ua}.example.com (and my other domains just redirect).
+//   Instead I made example-cdn.com and example.co.{cn,ua}.
+//   I need you to "leak" cookies from example.co.{cn,ua} to example-cdn.com, like in the bad old days.
+//
+// We do not have this problem, therefore disable this feature.
+{
+    // supported_on: chrome.*:113- (but probably deprecated around 123)
+    "FirstPartySetsEnabled": false,
+    // supported_on: chrome.*:120-
+    "RelatedWebsiteSetsEnabled": false
+}

@@ -12,7 +12,9 @@
     ],
     "CookiesAllowedForUrls": [
         "https://www.example.com",
-        "[*.]example.edu"
+        "[*.]example.edu",
+        "https://www.example.com/,https://www.toplevel.com/",
+        "*,https://www.toplevel.com/"
     ],
     "CookiesBlockedForUrls": [
         "https://www.example.com",

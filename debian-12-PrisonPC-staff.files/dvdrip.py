@@ -18,8 +18,9 @@ GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 
 
 class DVDBackup:
-    def __init__(self, host_application=None):
+    def __init__(self, host_application=None, src_path: pathlib.Path = None) -> None:
         self.host_application = host_application
+        self.src_path = src_path
         self.device = "/dev/dvd"
         self.dvd_present = False
         self.dvd_title = None
@@ -61,14 +62,16 @@ class DVDBackup:
         dest_dir = pathlib.Path('/srv/tv/iptv-queue/.ripped')
         dest_path = dest_dir / f'{self.dvd_title}.ts'
         final_path = pathlib.Path('/srv/tv/recorded/local') / dest_path.name
-        with tempfile.TemporaryDirectory(dir=dest_dir.parent, prefix='dvdrip') as td:
+        with tempfile.TemporaryDirectory(dir=dest_dir, prefix='dvdrip') as td:
             temp_path = pathlib.Path(td) / 'tmp.ts'
             if dest_path.exists():  # TOCTTOU here, but we mostly don't care
                 return GUI_message(f'"{dest_path}" already exists.  Rip aborted.')
             if final_path.exists():  # TOCTTOU here, but we mostly don't care
                 return GUI_message(f'"{final_path}" already exists.  Rip aborted.')
 
-            vlc_media = self.vlc_instance.media_new(f"dvdsimple://{self.device}")
+            vlc_media = self.vlc_instance.media_new(
+                self.src_path if self.src_path else  # rip file
+                f"dvdsimple://{self.device}")        # rip disc
             # FIXME: Why is this not including the subtitles track?
             vlc_media.add_options(
                 'force-dolby-surround=off',
@@ -116,16 +119,29 @@ class DVDBackup:
 
 
 class DVDRipApp:
-    def __init__(self):
+    def __init__(self, src_path: pathlib.Path = None) -> None:
         self.builder = Gtk.Builder()
         self.builder.add_from_file(os.fspath(GLADE_FILE))
         self.builder.connect_signals(self)
         self.dvd_scanning = False
         self.dvd_ripping = False
         self.get_object("root_window").show_all()
-        self.dvdbackup = DVDBackup(host_application=self)
+        self.dvdbackup = DVDBackup(host_application=self, src_path=src_path)
+        if src_path:
+            self.doStartRescan = self.we_are_ripping_a_file
         # and start a rescan on launch
         self.doStartRescan()
+
+    def we_are_ripping_a_file(self):
+        """Bypass the blkid scan stuff."""
+        self.get_object("button_rescan").set_visible(False)  # no blkid
+        self.get_object("title_bar").set_subtitle(str(self.dvdbackup.src_path))
+        self.get_object("title_bar").set_title("File Ripper")  # not "DVD"
+        self.get_object("progressbar").set_text("Ready to rip file")  # not "DVD"
+        self.get_object("progressbar").set_fraction(0)
+        self.get_object("entry_dvd_name").set_text(self.dvdbackup.src_path.stem)
+        self.get_object("entry_dvd_name").set_can_focus(True)
+        self.get_object("button_rip").set_sensitive(True)
 
     def get_object(self, object_name):
         return self.builder.get_object(object_name)
@@ -216,10 +232,17 @@ class DVDRipApp:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test', action='store_true')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--test', action='store_true')
+    group.add_argument(
+        'src_path',
+        type=pathlib.Path,
+        nargs='?',
+        help='Path to a video file to rip.'
+        ' When supplied, script will ignore DVD drive.')
     args = parser.parse_args()
     if not args.test:
-        dvdrip = DVDRipApp()
+        dvdrip = DVDRipApp(src_path=args.src_path)
         Gtk.main()
     else:
         # Don't bring up a GUI (or rip), just run the backend ripper's report.

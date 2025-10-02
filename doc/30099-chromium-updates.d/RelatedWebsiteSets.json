@@ -1,0 +1,37 @@
+{
+    "RelatedWebsiteSetsEnabled": false,
+    "RelatedWebsiteSetsOverrides": {
+        "additions": [
+            {
+                "associatedSites": [
+                    "https://associate2.test"
+                ],
+                "ccTLDs": {
+                    "https://associate2.test": [
+                        "https://associate2.com"
+                    ]
+                },
+                "primary": "https://primary2.test",
+                "serviceSites": [
+                    "https://associate2-content.test"
+                ]
+            }
+        ],
+        "replacements": [
+            {
+                "associatedSites": [
+                    "https://associate1.test"
+                ],
+                "ccTLDs": {
+                    "https://associate1.test": [
+                        "https://associate1.co.uk"
+                    ]
+                },
+                "primary": "https://primary1.test",
+                "serviceSites": [
+                    "https://associate1-content.test"
+                ]
+            }
+        ]
+    }
+}

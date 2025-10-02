@@ -1,7 +1,14 @@
+# This introductory text was seen before January 2025.
 Limited security support for one or more packages
 
 Unfortunately, it has been necessary to limit security support for some
 packages.
+
+# This introductory text was seen after January 2025.
+Ended security support for one or more packages
+
+Unfortunately, it has been necessary to end security support for some
+packages before the end of the regular security maintenance life cycle.
 
 The following packages found on this system are affected by this:
 
@@ -40,3 +47,59 @@ The following packages found on this system are affected by this:
   Details: See https://www.debian.org/releases/bookworm/amd64/release-notes/ch-information.en.html#golang-static-linking
   Affected binary package:
   - librav1e0:amd64 (installed version: 0.5.1-6)
+
+
+# Ignorelist rust-zram-generator (systemd-zram-generator), because
+#  * we could probably implement it ourselves, but ICBF right now
+#  * the detainee doesn't interact with it directly
+# This is not ideal but I think it's relatively OK as rust goes???
+* Source:rust-zram-generator
+  - systemd-zram-generator (installed version: 1.1.2-2+b2)
+
+
+# This is an A/V library to use hardware acceleration in Intel GPUs.
+# It first entered Debian in 2019 and was EOL'd upstream before 2025.
+# So I think it is probably used for hardware AMC actually have.
+# (Rather than super-duper old hardware.)
+#
+# It is a compile-time dependency of libav (ffmpeg).
+# This means it is required by AT LEAST vlc, mpv, and gstreamer1.0-plugins-bad.
+# i.e. we can't avoid this issue by switching from vlc to mpv.
+#
+# If you remove the library from a built system with
+#   rm -fv /usr/lib/x86_64-linux-gnu/libmfx-tracer.so.1.35 \
+#          /usr/lib/x86_64-linux-gnu/libmfx.so.1.35 \
+#          /usr/lib/x86_64-linux-gnu/libmfxhw64.so.1.35 \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_h264la_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevc_fei_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevcd_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevce_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_vp8d_hw64.so
+# ...then "vlc --help" still works, but trying to play a normal H.264 video fails.
+# Specifically, the audio still plays, but the video does not render, and
+# an error popup says «VLC could not decode the format "h264"», which
+# I think means dlopen of libav failed, and
+# (by design) no other alternative library is installed.
+#
+# I think this is because vlc is dynamically linking libav, but
+# libav is statically linking libmfx1.
+#
+# So we definitely cannot just drop libmfx1 into prisonpc-ersatz or purge-bad-packages.
+# We would have to start building ffmpeg inhouse, like we do for already vlc.
+# That is possible, but a lot of work now and
+# ongoing work every time Debian security team bumps ffmpeg, which is often:
+# https://tracker.debian.org/pkg/ffmpeg/news/
+#
+# I don't have a good feel for how much risk there is of attackers hitting libmfx1.
+# I think it would be "victim loads attackre-crafted video file" that then leads to ACE/RCE.
+# Detainees have limited access to video that isn't DVDs or FTA DVB-T TV.
+# Staff can browse youtube &c but PrisonPC is more awkward than their Windows desktops, so
+# I don't think they actually *do* that much...
+#
+# Overall I lean towards "accept (i.e. ignore) this security risk".
+# Mike agreed here: /var/log/cyber-irc-bot/ChannelLogger/#cyber/#cyber.2025-01-02.log#line=45
+# --twb, January 2025
+
+* Source:intel-mediasdk, ended on 2024-11-21 at version 22.5.4-1
+  Details: abandoned upstream, upstream does not publish enough information to fix issues.
+  - libmfx1:amd64 (installed version: 22.5.4-1)

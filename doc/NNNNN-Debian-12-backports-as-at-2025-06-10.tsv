@@ -1,0 +1,94 @@
+SOEs	Source Package	Binary Package	Origin	New Version	Arch	Old Version	Comment
+12	wireplumber	wireplumber	stable-backports	0.5.8-1~bpo12+1	amd64	0.4.13-1	FIXME
+13	elfutils	libdw1	stable-backports	0.192-4~bpo12+1	amd64	0.188-2.1	FIXME
+13	elfutils	libelf1	stable-backports	0.192-4~bpo12+1	amd64	0.188-2.1	FIXME
+12	pipewire	libpipewire-0.3-0	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	REJECT. I looked at https://gitlab.freedesktop.org/pipewire/pipewire/-/releases since 1.2.1-1~bpo12+1 -- nothing jumped out at me as something we care about.
+12	pipewire	libpipewire-0.3-modules	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	libspa-0.2-bluetooth	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	libspa-0.2-modules	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-alsa	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-audio	stable-backports	1.4.2-1~bpo12+1	all	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-bin	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-pulse	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire	stable-backports	1.4.2-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	libwebp	libwebp7	stable-backports	1.5.0-0.1~bpo12+1	amd64	1.2.4-0.2+deb12u1	REJECT.  Nothing looks interesting to us.  Release notes seem to be in git commit messages for merge commits, e.g. https://chromium.googlesource.com/webm/libwebp/+/refs/tags/v1.5.0 -- 'tig --merges --grep=tag' seemed to help.
+12	libwebp	libwebpdemux2	stable-backports	1.5.0-0.1~bpo12+1	amd64	1.2.4-0.2+deb12u1	''
+12	libwebpmux3	libwebpmux3	stable-backports	1.5.0-0.1~bpo12+1	amd64	1.2.4-0.2+deb12u1	''
+1	mmdebstrap	mmdebstrap	stable-backports	1.5.6-4~bpo12+1	all	1.3.5-7	REJECT. Only used on understudy SOE for new ZFS installs.  Reject at least until we adopt this version of mmdebstrap elsewhere.
+9	libheif	libheif1	stable-backports	1.19.7-1~bpo12+1	amd64	1.15.1-1+deb12u1	REJECT. https://github.com/strukturag/libheif/releases Can now view images created by iOS 18, and very very large images, but I don't think we care.
+12	wayland	libwayland-client0	stable-backports	1.23.0-1~bpo12+1	amd64	1.21.0-1	REJECT. Pulled in by GTK3, but not actually used on XFCE4 desktop environment AFAIK.
+12	wayland	libwayland-cursor0	stable-backports	1.23.0-1~bpo12+1	amd64	1.21.0-1	''
+12	wayland	libwayland-egl1	stable-backports	1.23.0-1~bpo12+1	amd64	1.21.0-1	''
+12	wayland	libwayland-server0	stable-backports	1.23.0-1~bpo12+1	amd64	1.21.0-1	''
+3	e2fsprogs	e2fsprogs	stable-backports	1.47.2~rc1-2~bpo12+2	amd64	1.47.0-2+b2	REJECT.  Not updated since last review. We only use ext4 for edge case stuff like /boot, not worth caring about.  https://github.com/tytso/e2fsprogs/tree/master/doc/RelNotes
+3	e2fsprogs	libext2fs2	stable-backports	1.47.2~rc1-2~bpo12+2	amd64	1.47.0-2+b2	''
+3	e2fsprogs	libss2	stable-backports	1.47.2~rc1-2~bpo12+2	amd64	1.47.0-2+b2	''
+16	e2fsprogs	libcom-err2	stable-backports	1.47.2~rc1-2~bpo12+2	amd64	1.47.0-2+b2	''
+16	e2fsprogs	logsave	stable-backports	1.47.2~rc1-2~bpo12+2	amd64	1.47.0-2+b2	''
+12	libbpf	libbpf1	stable-backports	1:1.4.6-1~bpo12+1	amd64	1:1.1.2-0+deb12u1	REJECT. Pulled in by ir-keytable, but we don't care.
+16	openssh	openssh-client	stable-backports	1:10.0p1-5~bpo12+2	amd64	1:9.2p1-2+deb12u6	REJECT. Improves security by disabling bad ciphers, BUT I am very wary about backporting a core security package, and our ssh_config/sshd_config largely already mitigate the issues.
+16	openssh	openssh-server	stable-backports	1:10.0p1-5~bpo12+2	amd64	1:9.2p1-2+deb12u6	''
+16	openssh	openssh-sftp-server	stable-backports	1:10.0p1-5~bpo12+2	amd64	1:9.2p1-2+deb12u6	''
+8	qemu	qemu-guest-agent	stable-backports	1:10.0.0+ds-2~bpo12+2	amd64	1:7.2+dfsg-7+deb12u13+b1	REJECT. Only used by staff 'webVMs' and by --boot-test debugging.
+12	libdrm	libdrm-amdgpu1	stable-backports	2.4.123-1~bpo12+1	amd64	2.4.114-1+b1	FIXME
+12	libdrm	libdrm-common	stable-backports	2.4.123-1~bpo12+1	all	2.4.114-1	FIXME
+12	libdrm	libdrm-intel1	stable-backports	2.4.123-1~bpo12+1	amd64	2.4.114-1+b1	FIXME
+12	libdrm	libdrm-nouveau2	stable-backports	2.4.123-1~bpo12+1	amd64	2.4.114-1+b1	FIXME
+12	libdrm	libdrm-radeon1	stable-backports	2.4.123-1~bpo12+1	amd64	2.4.114-1+b1	FIXME
+12	libdrm	libdrm2	stable-backports	2.4.123-1~bpo12+1	amd64	2.4.114-1+b1	FIXME
+12	at-spi2-core	at-spi2-common	stable-backports	2.56.2-1~bpo12+1	all	2.46.0-5	FIXME
+12	at-spi2-core	at-spi2-core	stable-backports	2.56.2-1~bpo12+1	amd64	2.46.0-5	FIXME
+12	at-spi2-core	gir1.2-atk-1.0	stable-backports	2.56.2-1~bpo12+1	amd64	2.46.0-5	FIXME
+12	at-spi2-core	libatk-bridge2.0-0	stable-backports	2.56.2-1~bpo12+1	amd64	2.46.0-5	FIXME
+12	at-spi2-core	libatk1.0-0	stable-backports	2.56.2-1~bpo12+1	amd64	2.46.0-5	FIXME
+12	at-spi2-core	libatspi2.0-0	stable-backports	2.56.2-1~bpo12+1	amd64	2.46.0-5	FIXME
+3	tevent	libtevent0	stable-backports	2:0.16.2+samba4.22.1+dfsg-1~bpo12+1	amd64	0.14.1-1	FIXME
+12	tdb	libtdb1	stable-backports	2:1.4.13+samba4.22.1+dfsg-1~bpo12+1	amd64	1.4.8-2	FIXME
+16	talloc	libtalloc2	stable-backports	2:2.4.3+samba4.22.1+dfsg-1~bpo12+1	amd64	2.4.0-f2	FIXME
+3	samba	libldb2	stable-backports	2:2.11.0+samba4.22.1+dfsg-1~bpo12+1	amd64	2:2.6.2+samba4.17.12+dfsg-0+deb12u1	FIXME
+3	samba	libsmbclient	stable-backports	2:4.22.1+dfsg-1~bpo12+1	amd64	2:4.17.12+dfsg-0+deb12u1	FIXME
+3	samba	samba-libs	stable-backports	2:4.22.1+dfsg-1~bpo12+1	amd64	2:4.17.12+dfsg-0+deb12u1	FIXME
+16	samba	libwbclient0	stable-backports	2:4.22.1+dfsg-1~bpo12+1	amd64	2:4.17.12+dfsg-0+deb12u1	FIXME
+3	vlc	libvlc-bin	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	REJECT. False positive.  Staff get unrestricted stock vlc nowdays, for DVD ripping.
+3	vlc	libvlc5	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	libvlccore9	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-bin	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-data	bookworm	3.0.21-0+deb12u1PrisonPC4	all	3.0.21-0+deb12u1	''
+3	vlc	vlc-plugin-base	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-plugin-qt	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-plugin-video-output	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+2	needrestart	needrestart	stable-backports	3.8-2~bpo12+1	all	3.6-4+deb12u3	REJECT. Nothing here looks interesting to us.
+16	sysvinit	sysvinit-utils	stable-backports	3.08-3~bpo12+2	amd64	3.06-4	REJECT. Nothing here looks interesting to us.
+16	linux-base	linux-base	stable-backports	4.12~bpo12+1	all	4.9	FIXME
+7	libgwenhywfar	libgwengui-gtk3-79	stable-backports	5.12.0-1~bpo12+1	amd64	5.10.1-2	FIXME
+7	libgwenhywfar	libgwenhywfar-data	stable-backports	5.12.0-1~bpo12+1	all	5.10.1-2	FIXME
+7	libgwenhywfar	libgwenhywfar79	stable-backports	5.12.0-1~bpo12+1	amd64	5.10.1-2	FIXME
+7	libaqbanking	libaqbanking-data	stable-backports	6.6.0-1~bpo12+1	all	6.5.3-1	FIXME
+7	libaqbanking	libaqbanking44	stable-backports	6.6.0-1~bpo12+1	amd64	6.5.3-1	FIXME
+3	curl	curl	stable-backports	8.13.0-5~bpo12+1	amd64	7.88.1-10+deb12u12	FIXME
+10	curl	libcurl4	stable-backports	8.13.0-5~bpo12+1	amd64	7.88.1-10+deb12u12	FIXME
+12	curl	libcurl3-gnutls	stable-backports	8.13.0-5~bpo12+1	amd64	7.88.1-10+deb12u12	FIXME
+1	debhelper	debhelper	stable-backports	13.23~bpo12+1	all	13.11.4	FIXME
+1	debhelper	libdebhelper-perl	stable-backports	13.23~bpo12+1	all	13.11.4	FIXME
+12	mesa	libglapi-mesa	stable-backports	24.2.8-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	libegl-mesa0	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	libgbm1	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	libgl1-mesa-dri	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	libglx-mesa0	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	mesa-va-drivers	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	mesa-vdpau-drivers	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+12	mesa	mesa-vulkan-drivers	stable-backports	25.0.4-1~bpo12+1	amd64	22.3.6-1+deb12u1	FIXME
+16	dbus-broker	dbus-broker	stable-backports	36-2~bpo12+1	amd64	33-1	FIXME
+16	systemd	libnss-myhostname	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	REJECT. Current policy is bpo systemd is too far-reaching and risky.
+16	systemd	libnss-resolve	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	libpam-systemd	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	libsystemd-shared	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	libsystemd0	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	libudev1	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	systemd-boot-efi	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	systemd-resolved	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	systemd-sysv	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	systemd-timesyncd	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	systemd	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''
+16	systemd	udev	stable-backports	254.26-1~bpo12+1	amd64	252.38-1~deb12u1	''

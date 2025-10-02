@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 import argparse
+import logging
+import os
 import pathlib
 import subprocess
-import logging
 
 
 __doc__ = """ if Debian vlc is newer than PrisonPC vlc, halt and catch fire
@@ -101,11 +102,12 @@ __doc__ = """ if Debian vlc is newer than PrisonPC vlc, halt and catch fire
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
+os.environ['APT_CONFIG'] = os.environ['MMDEBSTRAP_APT_CONFIG']  # replaces "chroot $1" for apt
+os.environ['DPKG_ROOT'] = str(args.chroot_path)  # replaces "chroot $1" for dpkg
 
 
 policy_stdout = subprocess.check_output(
-    ['chroot', args.chroot_path,
-     'apt-cache', 'policy', 'vlc'],
+    ['apt-cache', 'policy', 'vlc'],
     text=True)
 candidate_line, = [
     line
@@ -114,6 +116,6 @@ candidate_line, = [
 if 'PrisonPC' in candidate_line:
     logging.info("apt believes PrisonPC's vlc is the newest vlc")
 else:
-    logging.error("apt believes Debian's vlc is newer than PrisonPC's vlc -- REBUILD NEEDED!")
+    logging.error("apt believes Debian's vlc is newer than PrisonPC's vlc -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-vlc.py")
     print(policy_stdout, end='', flush=True)
     exit(1)

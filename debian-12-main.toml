@@ -17,5 +17,29 @@ include = [
     # NOTE: in Debian 12, "policykit-1" was split into two packages
     #       "pkexec" (not used except by attackers) and
     #       "polkitd" (used by systemd-hostnamed, udisks2, upower, &c).
-    'polkitd'         # https://github.com/openbmc/openbmc/issues/3543
+    'polkitd',        # https://github.com/openbmc/openbmc/issues/3543
+
+    # zram is not strictly necessary, but as at 2025, the general
+    # consensus is that "a little swap always helps, even if it's just
+    # compressed RAM".
+    # https://alloc.cyber.com.au/task/task.php?taskID=35532
+    # https://web.archive.org/web/20241124120147/https://social.treehouse.systems/@marcan/113528611033546817
+    # https://discussion.fedoraproject.org/t/psa-transitioning-from-zram-swap-to-zswap/138256
+    # (Note Asahi had BOTH zram AND swap concurrently; now they have
+    # zswap alone.  Do not misread that page as "zram is bad", rather
+    # "zswap is better than zram IFF you have a local disk".)
+    #
+    # We use a helper package to do this for us.
+    # The setup process is really simple (~5 commands).
+    # But we might as well leverage someone else's answer.
+    # As at D12, Debian Security Team cannot provide security updates for rustlang,
+    # so we also have to accept-the-risk in customize90-check-support-status.grepF.
+    # --twb, August 2025
+    #
+    # https://github.com/systemd/zram-generator
+    # https://docs.kernel.org/admin-guide/blockdev/zram.html#activate
+    # systemd-zram-generator defaults to min(<half total RAM>, 4GB) as
+    # LZ4-compressed swap.  This typically means 2GB RAM actual acts
+    # like 2.4GB RAM effective.
+    "systemd-zram-generator",
 ]

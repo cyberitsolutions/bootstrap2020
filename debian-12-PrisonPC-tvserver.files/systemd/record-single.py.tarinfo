@@ -1,7 +1,0 @@
-name = "usr/sbin/tvserver-record-single"
-include = [
-    "multicat",
-    # DVB-T → .ts
-    # NOTE: DVD → .ts uses vlc on staff desktop (not ffmpeg on tvserver).
-    "ffmpeg",
-]

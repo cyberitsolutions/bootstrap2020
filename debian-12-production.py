@@ -38,4 +38,4 @@ subprocess.check_call([
     '--ssh=openssh-server',  # PrisonPC needs this
     f'--reproducible={datetime.date.today()}',
     '--upload-to', 'root@tweak.prisonpc.com', 'root@amc.prisonpc.com',
-    '--template', 'tvserver'])
+    '--template', 'tvserver-appliance'])

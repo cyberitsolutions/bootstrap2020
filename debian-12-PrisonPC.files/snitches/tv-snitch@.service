@@ -50,4 +50,4 @@ WatchdogSec=10m
 # Dec 12 12:10:50 desktop-inmate.lan systemd[1]: Starting bootstrap2020-tv-snitch@p.service...
 # Dec 12 12:10:50 desktop-inmate.lan systemd[1]: Started bootstrap2020-tv-snitch@p.service.
 # Dec 12 12:10:51 desktop-inmate.lan bootstrap2020-tv-snitch[2320]: Granting TV access (None)
-Restart=on-watchdog
+Restart=on-failure

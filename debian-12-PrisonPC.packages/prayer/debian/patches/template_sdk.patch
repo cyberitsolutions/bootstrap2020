@@ -1,0 +1,195 @@
+--- a/templates/src/Makefile
++++ b/templates/src/Makefile
+@@ -11,7 +11,7 @@ LDFLAGS = $(BASELDFLAGS)
+ 
+ LIB= ../../lib/lib_nossl.a
+ 
+-all: template_expand template_compile
++all: template_expand template_compile template-set.make
+ 
+ template_expand: template_expand_main.o log.o empty.o $(LIB)
+ 	$(CC) $(LDFLAGS) -o template_expand log.o empty.o template_expand_main.o $(LIB) $(BASE_LIBS)
+@@ -19,10 +19,28 @@ template_expand: template_expand_main.o
+ template_compile: template_compile_main.o log.o empty.o $(LIB)
+ 	$(CC) $(LDFLAGS) -o template_compile log.o empty.o template_compile_main.o $(LIB)  $(BASE_LIBS)
+ 
++template-set.make: template-set.make.in
++	find_templates () { sed -rn 's/.*template_expand\("([^"]*)".*/\1/p' "$$@" | sort -u; };\
++	format_variable () { (echo $$1 '='; shift; echo -n '  '$$@) | fmt -c | sed '$$!s/$$/ \\/'; };\
++	(echo include $(PREFIX)/config.make; echo;\
++	 format_variable TEMPLATES `find_templates ../../cmd/cmd_*`; echo;\
++	 format_variable TEMPLATES_FRONTEND login `find_templates ../../servers/prayer*`; echo;\
++	 cat template-set.make.in) > template-set.make
++
+ %.o: %.c Makefile
+ 	$(CC) $(CFLAGS) -I../../lib -c $<
+ 
+ install:
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_DIR) \
++	  -d $(BROOT)$(LIB_PREFIX) $(BROOT)$(PREFIX) $(BROOT)/usr/include/prayer
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_EXEC) \
++	  template_compile template_expand build_index.pl makedeps.pl ${BROOT}${LIB_PREFIX}
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_FILE) \
++	  ../../lib/*.h ${BROOT}/usr/include/prayer
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_FILE) \
++	  template-set.make ${BROOT}$(PREFIX)
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_FILE) \
++	  ../../Config ${BROOT}$(PREFIX)/config.make
+ 
+ clean:
+ 	rm -f template_expand template_compile *.o *~ \#*\#
+--- a/templates/src/makedeps.pl
++++ b/templates/src/makedeps.pl
+@@ -4,51 +4,44 @@
+ #
+ # Generate proper list of dependancies between templates
+ 
+-%uses = ();
++my %index = ();
++my %uses = ();
+ 
+-while ($file=shift(@ARGV)) {
+-  $file = $1 if ($file =~ /([\w-_]+)\.t/);
++sub scan {
++  my ($file) = @_;
+ 
+-  open(FILE, "<${file}.t") or die "failed to open ${file}: $!\n";
+-
+-  while (<FILE>) {
+-    next unless /^%\s+CALL ([\w-_]+)/;
++  if (!exists $uses{$file}) {
++    grep {
++	$_ ne '' and open(FILE, '<', "$_/${file}.t")
++    } '.', split(/ :/, $ENV{'VPATH'} || '')
++    or die "failed to open ${file}: $!\n";
++    while (<FILE>) {
++      $uses{$file}{$1} = 1 if /^%\s+CALL ([\w-_]+)/;
++    }
++    close(FILE);
+ 
+-    $uses{$file} = [] if (not $uses{$file});
+-    push(@{$uses{$file}}, $1);
++    foreach (keys %{$uses{$file}}) {
++      $uses{$file}{$_} = 1 foreach keys %{scan($_)};
++    }
++    $uses{$file}{$file} = 1;
++    $index{$file} = 1;
+   }
+-
+-  close(FILE);
++  return $uses{$file}
+ }
+ 
+-foreach $i (sort keys %uses) {
+-  # Sort and uniq
+-  @{$uses{$i}} = keys %{{ map { $_ => 1 } sort(@{$uses{$i}}) }};
++my $suffix = '';
++if ($ARGV[0] eq '--frontend') {
++  shift;
++  $suffix = '_frontend';
+ }
++my $name = shift;
+ 
+-foreach $i (sort keys %uses) {
+-  printf("%s.html: %s.t", $i, $i);
+-  foreach $j (@{$uses{$i}}) {
+-    @list = ();
+-    recurse($j, {}, \@list);
+-    foreach $k (@list) {
+-      printf(" %s.t", $k);
+-    }
+-  }
+-  printf("\n");
++$, = ' '; $\ = "\n";
++foreach my $i (@ARGV) {
++  $i =~ s/([\w-_]+)\.t/$1/;
++  print "$i.html:", map {"$_.t"} sort keys %{scan($i)};
+ }
+ 
+-exit(0);
+-
+-sub recurse {
+-  my ($i, $usedref, $listref) = @_;
+-
+-  # Remove repeated references to any given template/
+-  return if defined($$usedref{$i});
+-  $$usedref{$i} = 1;
+-
+-  push (@{$listref}, $i);
+-  foreach $j (@{$uses{$i}}) {
+-    recurse($j, $usedref, $listref);
+-  }
+-}
++my @all = sort keys %index;
++print "_template_index$suffix.c:", map {"$_.t"} @all;
++print "$name$suffix.so:", "_template_index$suffix.o", map {"$_.o"} @all;
+--- /dev/null
++++ b/templates/src/template-set.make.in
+@@ -0,0 +1,67 @@
++ifndef NAME
++NAME := $(notdir $(CURDIR))
++endif
++
++CPPFLAGS = -I/usr/include/prayer
++CFLAGS += -fPIC
++LDFLAGS_TEMPLATELIB = -shared -fPIC \
++	-Wl,--defsym=template_map=template_map_$(NAME) \
++	-Wl,--defsym=template_map_count=template_map_$(NAME)_count
++
++EXPAND  = $(LIB_PREFIX)/template_expand
++COMPILE = $(LIB_PREFIX)/template_compile
++MKINDEX = $(LIB_PREFIX)/build_index.pl
++MKDEPS  = $(LIB_PREFIX)/makedeps.pl
++
++SESSION_LIB    = $(NAME)$(SHLIBEXT)
++FRONTEND_LIB   = $(NAME)_frontend$(SHLIBEXT)
++TEMPLATE_LIBS ?= $(SESSION_LIB) $(FRONTEND_LIB)
++TARGETS       ?= $(TEMPLATE_LIBS)
++
++VARS=$(filter-out common.vars,$(wildcard *.vars))
++HTML=$(VARS:.vars=.html)
++
++all: $(TARGETS)
++
++$(TEMPLATE_LIBS):
++	$(CC) $(LDFLAGS) $(LDFLAGS_TEMPLATELIB) -o $@ $^
++
++_template_index.c _template_index_frontend.c:
++	$(MKINDEX) $(NAME) $(^F) > $@
++
++%.c: %.t
++	$(COMPILE) $(NAME) $@ $(basename $<)
++
++install-sources:
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_DIR) \
++	  -d $(DESTDIR)$(PREFIX)/templates/$(NAME)
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_FILE) \
++	  *.t *.vars $(DESTDIR)$(PREFIX)/templates/$(NAME)
++
++install-libs: $(TEMPLATE_LIBS)
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_DIR) \
++	  -d $(DESTDIR)$(LIB_PREFIX)/templates
++	$(INSTALL) -o $(RO_USER) -g $(RO_GROUP) -m $(PUBLIC_FILE) \
++	  $(TEMPLATE_LIBS) $(DESTDIR)$(LIB_PREFIX)/templates/
++
++clean:
++	rm -f $(TARGETS) *.html *.o *.c
++distclean: clean
++	rm -f *.d
++
++test: $(HTML)
++
++%.html: %.t %.vars common.vars
++	$(EXPAND) $@ $* common.vars $*.vars
++
++%_frontend.d: FRONTEND_FLAG = --frontend
++%_frontend.d: TEMPLATES = $(TEMPLATES_FRONTEND)
++export VPATH
++$(TEMPLATE_LIBS:$(SHLIBEXT)=.d):
++	$(MKDEPS) $(FRONTEND_FLAG) $(NAME) $(TEMPLATES) > $@
++	sed -ri 's/^(_template_index[^:]*)/\1 $@/' $@
++
++include $(TEMPLATE_LIBS:$(SHLIBEXT)=.d)
++
++.PHONY: all install-sources install-libs clean distclean test
++.DELETE_ON_ERROR:

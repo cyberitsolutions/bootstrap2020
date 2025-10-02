@@ -22,45 +22,54 @@ root = resp.json()
 json_path.write_text(json.dumps(root, indent=4))
 
 # Remove policies that are not available on Chromium Linux.
-shit_prefixes = frozenset({'chrome_os', 'android', 'ios', 'webview_android', 'chrome.win', 'chrome.mac'})
+shit_prefixes = frozenset({
+    'chrome_os', 'android', 'ios', 'webview_android', 'chrome.win',
+    'chrome.mac', 'chrome_frame', 'fuchsia'})
+shit_policy_names = set()
 for policy in root['policy_definitions']:
-    if 'supported_on' not in policy:
-        continue
-    policy['supported_on'] = [
-        s
-        for s in policy['supported_on']
-        if not any(s.startswith(p) for p in shit_prefixes)]
+    before = [*policy.get('supported_on', []), *policy.get('future_on', [])]
+    if 'supported_on' in policy:
+        policy['supported_on'] = [
+            s
+            for s in policy['supported_on']
+            if not any(s.startswith(p) for p in shit_prefixes)]
+        if not policy['supported_on']:
+            del policy['supported_on']
+    if 'future_on' in policy:
+        policy['future_on'] = [
+            s
+            for s in policy['future_on']
+            if not any(s.startswith(p) for p in shit_prefixes)]
+        if not policy['future_on']:
+            del policy['future_on']
+    after = [*policy.get('supported_on', []), *policy.get('future_on', [])]
+    # Suppress policies that are
+    #
+    #   * only for boring platforms {"supported_on": ["chrome_os:*"]}
+    #   * WILL only be for boring platforms {"supported_on": [], "future_on": ["chrome_os"]}
+    #
+    # Do NOT suppress policies that just forget to set supported_on and future_on at all.
+    # This is why we check "before and not after" instead of just "not after".
+    if before and not after:
+        shit_policy_names.add(policy['name'])
+
 # Python seems to have a problem removing elements from a list while
 # iterating over that list (some elements are not iterated over).
 # So instead, build a fresh list as a separate iteration.
-shit_policy_names = frozenset({
-    policy['name'] for policy in root['policy_definitions']
-    if policy.get('supported_on', True) == []})
+# Delete shit policies.
 root['policy_definitions'] = [
     policy for policy in root['policy_definitions']
-    if policy.get('supported_on', True)]
+    if policy['name'] not in shit_policy_names]
 # Delete cross-references to about-to-be-removed policies.
 for group in root['policy_definitions']:
-    if 'policies' not in group:
-        continue
-    group['policies'] = [
-        policy_name for policy_name in group['policies']
-        if policy_name not in shit_policy_names]
+    if group['type'] == 'group':
+        group['policies'] = [
+            policy_name for policy_name in group['policies']
+            if policy_name not in shit_policy_names]
 # Now, delete any groups that have no policies at all (e.g. forget the "Borealis" group).
 root['policy_definitions'] = [
     group for group in root['policy_definitions']
     if group.get('policies', True)]
-
-# Because we can, likewise remove from "future_on" field.
-for policy in root['policy_definitions']:
-    if 'future_on' not in policy:
-        continue
-    policy['future_on'] = [
-        s
-        for s in policy['future_on']
-        if not any(s.startswith(p) for p in shit_prefixes)]
-    if not policy['future_on']:
-        del policy['future_on']
 
 
 # Restructure the json into "groups" and "everything else".
@@ -83,7 +92,7 @@ for policy_name in policies.keys():
     if len(matching_group_names) == 1:
         pass                    # all is well
     elif len(matching_group_names) == 0:
-        logging.debug('policy in no groups: %s', policy_name)
+        logging.warning('policy in no groups: %s', policy_name)
         groupless_policy_names.append(policy_name)
     else:
         raise RuntimeError('policy in multiple groups', policy_name, matching_group_names)

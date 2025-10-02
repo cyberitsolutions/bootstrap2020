@@ -60,7 +60,7 @@ with tempfile.TemporaryDirectory() as td:
          *(['--include=devscripts,ca-certificates',  # install uscan
             '--include= ' + ('subversion' if 'mode=svn' in watch_path.read_text() else ' '),
             '--customize-hook=chroot $1 env --chdir=/X/Y uscan --download-current-version',
-            '--customize-hook=chroot $1 env --chdir=/X/Y sh -c "tar --strip-components=1 -xf ../*orig.tar.*"',
+            '--customize-hook=chroot $1 env --chdir=/X/Y sh -c "tar --transform=s%^./%% --strip-components=1 -xf ../*orig.tar.*"',
             ]
            if watch_path.exists() else []),
          '--include=devscripts,lintian',

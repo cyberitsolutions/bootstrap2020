@@ -102,6 +102,8 @@ port: int = config_one_tuner['port']
 #       so relative paths are sufficient.
 #
 # Tell dvblast to send the entire station as-is to the main server.
+# NOTE: we MUST also pass --budget-mode (-u) on the CLI, else
+#       "*" means "no streams" (not "all streams")
 # https://sources.debian.org/src/dvblast/3.4-1/README/#L214-L225
 pathlib.Path('dvblast.conf').write_text(f'10.0.0.1:{port}/tos=104 1 *\n')
 
@@ -116,6 +118,7 @@ os.execvp(
      '--adapter', str(args.adapter),
      '--frequency', str(frequency),
      '--bandwidth', '7',  # DVB-T in Australia uses 7MHz-wide channels
+     '--budget-mode',     # make "*" actually work in dvblast.conf!
      '--dvb-compliance',
      '--epg-passthrough',
      '--config-file', 'dvblast.conf',

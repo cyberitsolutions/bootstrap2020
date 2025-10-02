@@ -1,4 +1,8 @@
 {
     "AccessControlAllowMethodsInCORSPreflightSpecConformant": true,
-    "OutOfProcessSystemDnsResolutionEnabled": false
+    "BlockTruncatedCookies": false,
+    "CompressionDictionaryTransportEnabled": true,
+    "IPv6ReachabilityOverrideEnabled": true,
+    "OutOfProcessSystemDnsResolutionEnabled": false,
+    "ZstdContentEncodingEnabled": true
 }

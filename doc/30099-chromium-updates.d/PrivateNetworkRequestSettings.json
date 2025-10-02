@@ -1,0 +1,8 @@
+{
+    "InsecurePrivateNetworkRequestsAllowed": false,
+    "InsecurePrivateNetworkRequestsAllowedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu"
+    ],
+    "PrivateNetworkAccessRestrictionsEnabled": true
+}

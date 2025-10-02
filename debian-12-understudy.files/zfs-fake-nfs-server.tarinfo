@@ -1,0 +1,22 @@
+# Oops!
+# "./zfs-best-practice.py --shit-encryption neo mirror /dev/disk/by-id/virtio-ACME-big-slow-{1,2}"
+# failed with
+# "cannot share 'amc/amc/srv/netboot: system error': NFS share creation failed"
+# because you cannot create (or mount) a dataset with
+# "sharenfs=" enabled, without having the nfs-kernel-server installed.
+#
+# Once both hosts are ZFS, ZFS-to-ZFS backups don't need to mount the sare, so it's a non-issue.
+# Until then, we either have to set "sharenfs=off" on all datasets (and remember to turn them back on on "switch to ZFS day"), *or* we have to install nfs-kernel-server in the understudy SOE.
+#
+# The latter is simpler/safer, *but* I'm pretty nervous about having a second NFS server, serving all the same content, with "sec=sys".
+# Therefore we should also install nftables and set /etc/nftables.conf to something like "if port nfs, drop" or "if port ssh allow, else drop".
+#
+# See also: https://github.com/cyberitsolutions/bootstrap2020/commit/1730daf7c3156d66d45edfc378eeb0c7e0b4b685/
+#
+# UPDATE: what "sharenfs=X" actually *does* on Linux is just to overwrite "/etc/exports.d/zfs.exports" then run "exportfs -ra".
+# So "allow this but don't use it yet" doesn't require installing nfs-kernel-server! We just need a symlink "/usr/sbin/exportfs" → "/bin/true".
+#
+# NOTE: "/usr/local/sbin/exportfs" will NOT WORK; zfs is explicitly calling "/usr/sbin/exportfs".
+
+name = "usr/sbin/exportfs"
+linkpath = "../bin/true"

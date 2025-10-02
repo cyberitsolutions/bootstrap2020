@@ -14,6 +14,7 @@ add rule inet PrisonPC television accept
 # In ppcadm, "Browse p123's home directory" just links to sftp://p123@inmates/p123.
 # The port and hostname are added in via client-side ssh_config.
 add rule inet PrisonPC OUTPUT  ip daddr $PrisonPC  tcp dport 2222  accept  comment "sftp://p123@inmates/p123"
+add rule inet PrisonPC OUTPUT  ip daddr $PrisonPC  tcp dport 2223  accept  comment "sftp://p123@inmates-read-only/p123"
 
 # Staff machines allow initiation of connections from and to the
 # server (both addresses), to the prisoner network (for clandestine

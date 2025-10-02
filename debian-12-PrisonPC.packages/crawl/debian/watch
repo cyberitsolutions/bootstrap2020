@@ -1,0 +1,24 @@
+# FIXME: I can see these:
+#          https://crawl.develz.org/release/current/
+#          https://crawl.develz.org/release/current/stone_soup-0.33.1-nodeps.tar.xz
+#
+#        But is there ANY reason I shouldn't use the github auto-generated tarballs?
+#        cf. https://en.wikipedia.org/wiki/XZ_Utils_backdoor
+#
+# 16:44 <twb> I'm trying to do a quick-and-dirty bump of crawl (a game).  Upstream has two kinds of tarballs, normal github ones, and legacy ones
+# 16:45 <twb> The github ones put everything into a subdir so e.g. source/main.c becomes crawl-ref/source/main.c
+# 16:45 <twb> Can I tell uscan to Just Deal With This, or do I have to do it in the rules file?
+
+# version=3
+# opts="uversionmangle=s/\-nodeps// dversionmangle=s/\+dfsg\d*$//" \
+# http://crawl.develz.org/release/current/stone_soup-(.+)\.t(?:ar.)?(?:gz|bz2|xz)
+
+version=4
+opts="uversionmangle=s/\-nodeps//" \
+    https://crawl.develz.org/release/current/ \
+    (?:.*?/)?stone_soup-@ANY_VERSION@@ARCHIVE_EXT@
+
+# version=4
+# opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@(@ARCHIVE_EXT@)%@PACKAGE@-$1$2%" \
+#     https://github.com/crawl/crawl/tags \
+#     (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@

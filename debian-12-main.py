@@ -16,7 +16,6 @@ import types
 
 import hyperlink                # URL validation
 import requests                 # FIXME: h2 support!
-import pypass                   # for tvserver PSKs
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2021 Trent W. Buck"
@@ -137,6 +136,13 @@ def do_stuff(keyword: str, when: bool = True) -> list:
     acc: list[str | pathlib.Path]
     acc = [f'--essential-hook=tar-in {tarball_path} /']
     if hooks_dir.exists():
+        # Due to how --hook-dir works,
+        # the hook dir and ALL its parent dirs MUST be world-executable (e.g. 755 or 711).
+        # Otherwise you get a confusing error.
+        # Note /home/alice is 700 (not 711) on a fresh Debian 13 install!
+        for path in list((hooks_dir.resolve()/'fuck off python').parents):
+            if path.stat().st_mode & 0o0001 != 0o0001:
+                logging.warning('%s is not world-executable, so --hook-dir=%s is probably going to crash', path, hooks_dir)
         acc += [f'--hook-dir={hooks_dir}']
     # If debian-12-main.files/foo.py needs python3-foo,
     # you can just add ‘include = ["python3-foo"]’ to the .tarinfo.
@@ -282,7 +288,7 @@ def do_boot_test():
     # Therefore, qemu needs to use compatible IP addresses.
     staff_network = not template.startswith('desktop-inmate')
     disk_bullshit = template in {'dban', 'understudy', 'datasafe3'}
-    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate') or template == 'tvserver'
+    port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate')
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
         if staff_network else
@@ -358,28 +364,56 @@ def do_boot_test():
                         input='\n'.join([
                             str(path.relative_to(testdir / 'alice.dir'))
                             for path in (testdir / 'alice.dir').glob('**/*')]))
-        if args.netboot_only:
-            ipxe_boot_args = ' '.join(
-                ['boot=live',
-                 'netboot=cifs', 'nfsopts=ro,guest,vers=3.1.1',
-                 f'nfsroot=//{smb_address}/qemu live-media-path=',
-                 # Tell initrd and rootfs "use this NIC, don't retry *all* NICs".
-                 # https://wiki.syslinux.org/wiki/index.php?title=SYSLINUX#SYSAPPEND_bitmask
-                 # https://git.kernel.org/pub/scm/libs/klibc/klibc.git/tree/usr/kinit/ipconfig
-                 # https://salsa.debian.org/live-team/live-boot/-/blob/debian/1%2520230131/components/9990-networking.sh?ref_type=tags#L5-53
-                 # https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-main.files/bootstrap2020-systemd-networkd
-                 # https://git.cyber.com.au/prisonpc/blob/4e5fd5ef09cd49e9bcb74de50afb65d61079d75e/prisonpc/tcb.py
-                 # https://github.com/systemd/systemd/blob/v254/src/network/generator/network-generator.c#L18-L44
-                 # https://ipxe.org/cfg/mac
-                 # https://ipxe.org/cmd/ifconf
-                 # NOTE: ${mac} is expanded by ipxe.efi, not us.
-                 'BOOTIF=01-${mac}']
-                if have_smbd else
-                ['boot=live',
-                 f'fetch=tftp://{tftp_address}/filesystem.squashfs'])
-            (testdir / 'netboot.ipxe').write_text(
-                '#!ipxe\n'
-                f'boot --replace linuxx64.efi {ipxe_boot_args} {common_boot_args}\n')
+        # if args.netboot_only:
+        #     ipxe_boot_args = ' '.join(
+        #         ['boot=live',
+        #          'netboot=cifs', 'nfsopts=ro,guest,vers=3.1.1',
+        #          f'nfsroot=//{smb_address}/qemu live-media-path=',
+        #          # Tell initrd and rootfs "use this NIC, don't retry *all* NICs".
+        #          # https://wiki.syslinux.org/wiki/index.php?title=SYSLINUX#SYSAPPEND_bitmask
+        #          # https://git.kernel.org/pub/scm/libs/klibc/klibc.git/tree/usr/kinit/ipconfig
+        #          # https://salsa.debian.org/live-team/live-boot/-/blob/debian/1%2520230131/components/9990-networking.sh?ref_type=tags#L5-53
+        #          # https://github.com/cyberitsolutions/bootstrap2020/blob/twb/debian-12-main.files/bootstrap2020-systemd-networkd
+        #          # https://git.cyber.com.au/prisonpc/blob/4e5fd5ef09cd49e9bcb74de50afb65d61079d75e/prisonpc/tcb.py
+        #          # https://github.com/systemd/systemd/blob/v254/src/network/generator/network-generator.c#L18-L44
+        #          # https://ipxe.org/cfg/mac
+        #          # https://ipxe.org/cmd/ifconf
+        #          # NOTE: ${mac} is expanded by ipxe.efi, not us.
+        #          'BOOTIF=01-${mac}']
+        #         if have_smbd else
+        #         ['boot=live',
+        #          f'fetch=tftp://{tftp_address}/filesystem.squashfs'])
+        #     (testdir / 'netboot.ipxe').write_text(
+        #         '#!ipxe\n'
+        #         f'boot --replace linuxx64.efi {ipxe_boot_args} {common_boot_args}\n')
+        #     UPDATE: after upgrading the build host from Debian 12 to Debian 13, ipxe does not "magically" load automatically anymore:
+        #             WORKS: cp /usr/lib/shim/mmx64.efi . &&
+        #                    qemu-system-x86_64 -nographic -bios /usr/share/ovmf/OVMF.fd \
+        #                        -device virtio-net-pci,netdev=alice \
+        #                        -netdev id=alice,type=user,tftp=.,bootfile=mmx64.efi \
+        #                        -device virtio-rng-pci -m 1G
+        #             FAILS: cp /usr/lib/shim/mmx64.efi . &&
+        #                    printf '#!ipxe\nboot --replace mmx64.efi\n' >script.ipxe &&
+        #                    qemu-system-x86_64 -nographic -bios /usr/share/ovmf/OVMF.fd \
+        #                        -device virtio-net-pci,netdev=alice \
+        #                        -netdev id=alice,type=user,tftp=.,bootfile=script.ipxe \
+        #                        -device virtio-rng-pci -m 1G
+        #                    --error-->
+        #                    >>Start PXE over IPv4.
+        #                      Station IP address is 10.0.2.15
+        #
+        #                      Server IP address is 10.0.2.2
+        #                      NBP filename is script.ipxe
+        #                      NBP filesize is 64 Bytes
+        #                     Downloading NBP file...
+        #
+        #                      NBP file downloaded successfully.
+        #                    BdsDxe: failed to load Boot0001 "UEFI PXEv4 (MAC:525400123456)" from PciRoot(0x0)/Pci(0x3,0x0)/MAC(525400123456,0x1)/IPv4(0.0.0.0,0x0,DHCP,0.0.0.0,0.0.0.0,0.0.0.0): Not Found
+        #
+        #             The only reason we even do ipxe in --boot-test is to try to make it closer to what is used in production.
+        #             But the production code is already using a custom version of ipxe anyway, and
+        #             I have failed miserably to understand why this *was* working, let alone *stopped* working.
+        #             And we do not really need it anyway, because -bios OVMF.fd -kernel BOOTX64.EFI works.
         domain = subprocess.check_output(['hostname', '--domain'], text=True).strip()
         # We use guestfwd= to forward ldaps://10.0.2.100 to the real LDAP server.
         # We need a simple A record in the guest.
@@ -390,9 +424,8 @@ def do_boot_test():
             (testdir / 'site.dir/etc').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/hosts').write_text(
                 '127.0.2.1 webmail\n'
-                f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm')
-            (testdir / 'site.dir/prayer.errata').write_text(
-                'ERRATA=--config-option default_domain=tweak.prisonpc.com')
+                f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm logserv mail')
+            (testdir / 'site.dir/etc/mailname').write_text('tweak.prisonpc.com')
             if 'inmate' in template:
                 # Simulate a site-specific desktop image (typically not done for staff).
                 (testdir / 'site.dir/wallpaper.jpg').write_bytes(pathlib.Path('wallpaper.svg').read_bytes())
@@ -410,6 +443,7 @@ def do_boot_test():
             'qemu-system-x86_64',
             '--enable-kvm',
             '--bios', '/usr/share/ovmf/OVMF.fd',  # EFI (not legacy BIOS)
+            '--device', 'virtio-rng-pci',         # https://bugs.debian.org/1101493
             '--machine', 'q35',
             '--cpu', 'host',
             '-m', '2G' if template.startswith('desktop') else '512M',
@@ -425,28 +459,31 @@ def do_boot_test():
                 'id=OutclassMountingBoggle',
                 'type=user',
                 f'net={network}',  # 10.0.2.0/24 or 10.128.2.0/24
-                f'hostname={template}.{domain}',
-                f'dnssearch={domain}',
+                (f'hostname={template}.{domain},dnssearch={domain}'
+                  if domain else  # build host has NO domain at all
+                  f'hostname={template}'),
                 f'hostfwd=tcp::{args.host_port_for_boot_test_ssh}-:22',
                 *([f'hostfwd=tcp::{args.host_port_for_boot_test_vnc}-:5900']
                   if template.startswith('desktop') else []),
                 *([f'smb={testdir}'] if have_smbd else []),
-                *([f'tftp={testdir}', 'bootfile=netboot.ipxe']
-                  if args.netboot_only else []),
+                *([f'tftp={testdir}'] if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 5432}
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 2223, 5432, 2514, 587, 465}
                    for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
                   if port_forward_bullshit else [])]),
-            *(['--kernel', testdir / 'linuxx64.efi',  # was vmlinuz + initrd.img
-               '--append', ' '.join([
-                   'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs',
-                   common_boot_args]),
-               '--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
+            '--kernel', testdir / 'linuxx64.efi',  # was vmlinuz + initrd.img
+            '--append', ' '.join([
+                'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs'
+                if not args.netboot_only else
+                f'boot=live netboot=cifs nfsopts=ro,guest,vers=3.1.1 nfsroot=//{smb_address}/qemu live-media-path='
+                if have_smbd else
+                f'boot=live fetch=tftp://{tftp_address}/filesystem.squashfs',
+                common_boot_args]),
+            *(['--drive', f'if=none,id=fs_sq,file={testdir}/filesystem.squashfs,format=raw,readonly=on',
                '--device', 'virtio-blk-pci,drive=fs_sq,serial=filesystem.squashfs']
               if not args.netboot_only else []),
             *qemu_dummy_DVD(testdir, when=template.startswith('desktop')),
-            *qemu_tvserver_ext2(testdir, when=template == 'tvserver'),
             *(['--drive', f'if=none,id=satadom,file={dummy_path},format=raw',
                '--drive', f'if=none,id=big-slow-1,file={testdir}/big-slow-1.qcow2,format=qcow2',
                '--drive', f'if=none,id=big-slow-2,file={testdir}/big-slow-2.qcow2,format=qcow2',
@@ -472,9 +509,11 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         ['wget2',
          '--quiet',
          '--http-proxy', apt_proxy,
-         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/mini.iso',
-         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/hd-media/boot.img.gz',
-         'http://deb.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/boot-screens/splash.png'],
+         # I picked these because they're the smallest test images (ISO, disk image, raster).
+         'http://archive.debian.org/debian/dists/sarge/main/installer-i386/current/images/hd-media/boot.img.gz',
+         'http://archive.debian.org/debian/dists/etch/main/installer-i386/current/images/netboot/mini.iso',
+         'http://archive.debian.org/debian/dists/squeeze/main/installer-i386/current/images/netboot/debian-installer/i386/boot-screens/splash.png'],
+        env=os.environ | {'http_proxy': apt_proxy},  # workaround https://bugs.debian.org/1113762
         cwd=testdir)
     subprocess.check_call(['gunzip', 'boot.img.gz'], cwd=testdir)
     dummy_MS_path.write_bytes(dummy_UAS_path.read_bytes())  # UGH
@@ -503,42 +542,6 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         '-device', f'usb-mtp,bus=LanguageNeurosisTurkey.0,readonly=off,rootdir={dummy_MTP_path}',
         # don't try to boot off the dummy disk
         '--boot', 'order=n'])
-
-
-def qemu_tvserver_ext2(testdir: pathlib.Path, when: bool = True) -> list:
-    if not when:
-        return []
-    # Sigh, tvserver needs an ext2fs labelled "prisonpc-persist" and
-    # containing a specific password file.
-    tvserver_ext2_path = testdir / 'prisonpc-persist.ext2'
-    tvserver_tar_path = testdir / 'prisonpc-persist.tar'
-    with tarfile.open(tvserver_tar_path, 'w') as t:
-        for name in {'pgpass', 'msmtp-psk'}:
-            with io.BytesIO() as f:  # addfile() can't autoconvert StringIO.
-                f.write(
-                    pypass.PasswordStore().get_decrypted_password(
-                        f'PrisonPC/tvserver/{name}').encode())
-                f.flush()
-                member = tarfile.TarInfo()
-                member.name = name
-                member.mode = (
-                    0o0444 if name == 'msmtp-psk' else  # FIXME: yuk
-                    0o0400)
-                member.size = f.tell()
-                f.seek(0)
-                t.addfile(member, f)
-    subprocess.check_call(
-        ['genext2fs',
-         '--volume-label=prisonpc-persist'
-         '--block-size=1024',
-         '--size-in-blocks=1024',  # 1MiB
-         '--number-of-inodes=128',
-         '--tarball', tvserver_tar_path,
-         tvserver_ext2_path])
-    tvserver_tar_path.unlink()
-    return (                    # add these args to qemu cmdline
-        ['--drive', f'file={tvserver_ext2_path},format=raw,media=disk,if=virtio',
-         '--boot', 'order=n'])  # don't try to boot off the dummy disk
 
 
 def do_upload_to(host):
@@ -603,7 +606,6 @@ group.add_argument('--measure-install-footprints', action='store_true')
 parser.add_argument('--templates',
                     choices=('main',
                              'dban',
-                             'tvserver',
                              'understudy',
                              'datasafe3',
                              'desktop',
@@ -623,7 +625,6 @@ parser.add_argument('--templates',
                         'main: small CLI image; '
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
-                        'tvserver: turn free-to-air DVB-T into rtp:// IPTV;'
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4 (or ZFS); '
                         'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
@@ -654,7 +655,10 @@ group = parser.add_argument_group('customization')
 group.add_argument('--LANG', default=os.environ['LANG'], metavar='xx_XX.UTF-8',
                    help='locale used inside the image',
                    type=lambda s: types.SimpleNamespace(full=s, encoding=s.partition('.')[-1]))
-group.add_argument('--TZ', default=pathlib.Path('/etc/timezone').read_text().strip(),
+# Debian 13 has no /etc/timezone
+group.add_argument('--TZ', default=str(pathlib.Path('/etc/localtime')
+                                       .resolve()
+                                       .relative_to('/usr/share/zoneinfo/')),
                    help="SOE's timezone (for UTC, use Etc/UTC)", metavar='REGION/CITY',
                    type=lambda s: types.SimpleNamespace(full=s,
                                                         area=s.partition('/')[0],
@@ -697,13 +701,16 @@ if args.boot_test and args.netboot_only and not have_smbd:
     logging.warning('No /usr/sbin/smbd; will test with TFTP (fetch=).'
                     '  This is OK for small images; bad for big ones!')
 
-if subprocess.check_output(
+if subprocess.run(
         ['systemctl', 'is-enabled', 'systemd-resolved'],
-        text=True).strip() != 'enabled':
+        text=True, check=False, stdout=subprocess.PIPE).stdout.strip() != 'enabled':
+    # Originally systemd-resolved was always installed with systemd.
+    # By Debian 13, it is a separate opt-in binary package.
+    # If systemd-resolved isn't installed, run() will exit non-zero.
+    # If systemd-resolved is installed but disabled, run() will print disabled.
     logging.warning(
         'If you see odd DNS errors during the build,'
-        ' either run "systemctl enable --now systemd-resolved" on your host, or'
-        ' make the /run/systemd/resolve/stub-resolv.conf line run much later.')
+        ' you may need to install & enable systemd-resolved.')
 
 if args.production:
     proc = subprocess.run(['git', 'diff', '--quiet', 'HEAD'])
@@ -734,10 +741,6 @@ if args.boot_test and not (args.netboot_only and have_smbd) and any(
         'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
         ' Without these, site.dir cannot patch /etc/hosts, so'
         ' boot-test ldap/nfs/squid/pete redirect will not work!')
-if args.virtual_only and 'tvserver' in args.templates:
-    # The error message is quite obscure:
-    #     v4l/max9271.c:31:8: error: implicit declaration of function 'i2c_smbus_read_byte_data'
-    raise NotImplementedError("cloud kernel will FTBFS out-of-tree TBS driver")
 if args.ssh_server != 'openssh-server' and 'datasafe3' in args.templates:
     raise NotImplementedError('datasafe3 only supports OpenSSH')
 if args.ssh_server != 'openssh-server' and any(
@@ -763,6 +766,10 @@ for template in args.templates:
         validate_unescaped_path_is_safe(destdir)
         destdir.mkdir()
 
+        # FIXME: remove this once build host has this upstream fix:
+        #        https://gitlab.mister-muffin.de/josch/mmdebstrap/commit/c66b41eb7e8a7417e5ccca6b7f7a579f85e6e238
+        os.environ['DPKG_PAGER'] = 'cat'
+
         mmdebstrap_but_zstd(
             ['mmdebstrap',
              '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
@@ -770,6 +777,8 @@ for template in args.templates:
              *['--variant=apt',             # save 12s 30MB
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
                '--aptopt=Acquire::https::Proxy "DIRECT"',
+               '--hook-dir=/usr/share/mmdebstrap/hooks/merged-usr',
+               '--hook-dir=/usr/share/mmdebstrap/hooks/eatmydata',
                ],
              *['--include=tzdata locales',
                ('--essential-hook={'
@@ -777,7 +786,7 @@ for template in args.templates:
                 f' echo tzdata tzdata/Zones/{args.TZ.area} select {args.TZ.zone};'
                 f' echo locales locales/default_environment_locale select {args.LANG.full};'
                 f' echo locales locales/locales_to_be_generated multiselect {args.LANG.full} {args.LANG.encoding};'
-                '} | chroot $1 debconf-set-selections')],
+                '} | DPKG_ROOT=$1 debconf-set-selections')],
              *do_ssh_access(),
              *do_stuff('main'),
              *maybe_debug_shell(),  # before 'PrisonPC' breaks apt!
@@ -786,7 +795,6 @@ for template in args.templates:
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
              *do_stuff('main-unattended-upgrades', when=template in {'understudy', 'datasafe3'}),
-             *do_stuff('PrisonPC-tvserver', when=template == 'tvserver'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('datasafe3', when=template == 'datasafe3'),
              *do_stuff('smartd', when=template in {'dban', 'understudy', 'datasafe3'} and not args.virtual_only),
@@ -802,8 +810,8 @@ for template in args.templates:
                       'linux-image-cloud-amd64' if args.virtual_only else
                       'linux-image-amd64' if not (template.startswith('desktop-inmate') and args.physical_only) else
                       'linux-image-inmate'),
-                     # For zfs-dkms (understudy) & customize50-build-tbs-driver.py (tvserver)
-                     (template in {'understudy', 'tvserver'},
+                     # For zfs-dkms (understudy)
+                     (template == 'understudy',
                       'linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64'),
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template.startswith('desktop') and not template.startswith('desktop-inmate'),
@@ -820,8 +828,8 @@ for template in args.templates:
                       'qemu-guest-agent'),
                  }
                  if when)],
-             '--customize-hook=chronic chroot $1 systemctl preset-all',  # enable ALL units!
-             '--customize-hook=chronic chroot $1 systemctl preset-all --user --global',
+             '--customize-hook=chronic systemctl preset-all --root=$1',  # enable ALL units!
+             '--customize-hook=chronic systemctl preset-all --root=$1 --user --global',
              # Make a simple copy for https://kb.cyber.com.au/32894-debsecan-SOEs.sh
              # FIXME: remove once that can/does use rdsquashfs --cat (master server is Debian 11)
              # NOTE: symlinks need "download" (not "copy-out").
@@ -836,9 +844,9 @@ for template in args.templates:
              'debian-12.sources',
              *(['debian-12-PrisonPC-desktop.sources']
                if template.startswith('desktop-staff') or template.startswith('desktop-inmate') else []),
-             # For cyber-zfs-backup (understudy) and tv-grab-dvb (tvserver)
+             # For cyber-zfs-backup (understudy)
              *(['debian-12-PrisonPC-server.sources']
-               if template in {'understudy', 'tvserver'} else []),
+               if template == 'understudy' else []),
              ])
 
         subprocess.check_call(

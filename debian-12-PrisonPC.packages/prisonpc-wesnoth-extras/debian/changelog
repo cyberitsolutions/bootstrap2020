@@ -1,3 +1,13 @@
+prisonpc-wesnoth-addons (12.5) bookworm; urgency=medium
+
+  * Someone made Wesnoth 1.18 available as a Debian 12 Backport.
+    Therefore update the PrisonPC extra DLCs package to match.
+    https://alloc.cyber.com.au/task/task.php?taskID=35142
+
+  * Drop 2 obsolete symlinks; Wesnoth 1.18 has the fix upstream of me.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 27 May 2024 14:50:00 +1000
+
 prisonpc-wesnoth-addons (12.3) bookworm; urgency=medium
 
   * Bump to bookworm; no real changes?

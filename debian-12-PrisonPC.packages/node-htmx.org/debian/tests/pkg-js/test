@@ -1,0 +1,4 @@
+#!/bin/sh -e
+# This won't actually work, because
+# mocha-chrome isn't in Debian at this time.
+exec mocha-chrome test/index.html

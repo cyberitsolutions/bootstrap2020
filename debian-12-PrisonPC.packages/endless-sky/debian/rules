@@ -1,9 +1,14 @@
 #!/usr/bin/make -f
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-export DH_VERBOSE=1		# DEBUGGING
+# export DH_VERBOSE=1		# DEBUGGING
 # https://bugs.debian.org/895044 (re cmake+ninja)
 %:
 	dh $@ --buildsystem=cmake+ninja
+
+# How the fuck do I convince cmake to not require unit test libraries?
+ifneq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+    O += -D BUILD_TESTING=0
+endif
 
 # Tell the build script we're NOT building for Visual Studio and
 # therefore we DO NOT WANT it do use git to download libraries.

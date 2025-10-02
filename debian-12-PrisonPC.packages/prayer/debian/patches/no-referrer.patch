@@ -1,0 +1,28 @@
+Bug-Debian: https://bugs.debian.org/911842
+Description: Add no-referrer meta header to templates.
+ * CVE-2018-18655
+
+Index: prayer-1.3.5-dfsg1/templates/cam/header.t
+===================================================================
+--- prayer-1.3.5-dfsg1.orig/templates/cam/header.t
++++ prayer-1.3.5-dfsg1/templates/cam/header.t
+@@ -11,6 +11,7 @@
+ % ENDIF
+ <meta name="robots" content="none" />
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
++<meta name="referrer" content="no-referrer" />
+ <link rel="stylesheet" href="/static/layout.css"
+       type="text/css" media="all" />
+ <link rel="stylesheet" href="/static/print.css"
+Index: prayer-1.3.5-dfsg1/templates/old/header.t
+===================================================================
+--- prayer-1.3.5-dfsg1.orig/templates/old/header.t
++++ prayer-1.3.5-dfsg1/templates/old/header.t
+@@ -11,6 +11,7 @@
+ % ENDIF
+ <meta name="robots" content="none" />
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
++<meta name="referrer" content="no-referrer" />
+ <link rel="stylesheet" href="/static/common.css" type="text/css" />
+ <link rel="stylesheet"
+       href="/static/<% $g_theme->name |n %>.css"

@@ -1,6 +1,5 @@
 {
     "BlockExternalExtensions": true,
-    "ChromeAppsWebViewPermissiveBehaviorAllowed": false,
     "ExtensionAllowedTypes": [
         "hosted_app"
     ],
@@ -22,6 +21,9 @@
     ],
     "ExtensionInstallSources": [
         "https://corp.mycompany.com/*"
+    ],
+    "ExtensionInstallTypeBlocklist": [
+        "command_line"
     ],
     "ExtensionManifestV2Availability": 2,
     "ExtensionSettings": {
@@ -51,7 +53,8 @@
             ],
             "installation_mode": "allowed",
             "minimum_version_required": "1.0.1",
-            "toolbar_pin": "force_pinned"
+            "toolbar_pin": "force_pinned",
+            "file_url_navigation_allowed": true
         },
         "bcdefghijklmnopabcdefghijklmnopa": {
             "allowed_permissions": [

@@ -1,0 +1,10 @@
+{
+
+    // We do not care about these ones:
+    // CADistrustedCertificates
+    // CAHintCertificates
+    // CAPlatformIntegrationEnabled
+    //
+    // This one is critical for basic functionality, so is done in 05-CACertificates.json:
+    // CACertificates
+}

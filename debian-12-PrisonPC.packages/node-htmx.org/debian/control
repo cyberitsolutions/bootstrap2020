@@ -1,0 +1,39 @@
+Source: node-htmx.org
+Maintainer: FIXME <abuse@ai>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Section: javascript
+Testsuite: autopkgtest-pkg-nodejs
+Priority: optional
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-sequence-nodejs,
+ pkg-js-tools,
+# From https://github.com/bigskysoftware/htmx/blob/v1.9.10/package.json#L40-L51
+ chai <!nocheck>,
+ mocha <!nocheck>,
+ node-fs-extra <!nocheck>,
+ node-sinon <!nocheck>,
+ node-typescript <!nocheck>,
+ node-uglify-js <!nocheck>,
+ node-ws <!nocheck>,
+# Not in Debian yet:
+# "chai-dom": "^1.11.0",
+# "mocha-chrome": "^2.2.0",
+# "mocha-webdriver-runner": "^0.6.4",
+# "mock-socket": "^9.2.1",
+Standards-Version: 4.6.0
+Homepage: https://htmx.org/
+Rules-Requires-Root: no
+Vcs-Browser: https://salsa.debian.org/js-team/node-htmx.org
+Vcs-Git: https://salsa.debian.org/js-team/node-htmx.org.git
+
+Package: node-htmx.org
+Architecture: all
+Depends: ${misc:Depends}
+Description: high power tools for HTML
+ htmx gives you access to AJAX, CSS Transitions, WebSockets and Server Sent
+ Events directly in HTML, using attributes, so you can build modern user
+ interfaces with the simplicity and power of hypertext
+ .
+ htmx is small (~14k min.gz’d), dependency-free, extendable, IE11 compatible &
+ has reduced code base sizes by 67% when compared with react

@@ -1,0 +1,81 @@
+SOEs	Source Package	Binary Package	Origin	New Version	Arch	Old Version	Comment
+12	wireplumber	libwireplumber-0.4-0	stable-backports	0.4.17-1~bpo12+1	amd64	0.4.13-1	REJECT.  Nothing interesting in https://github.com/PipeWire/wireplumber/blob/0.4.17/NEWS.rst nor https://metadata.ftp-master.debian.org/changelogs/main/w/wireplumber/stable-backports_changelog.  Currently causing some logspam in production, but 0% confidence backport will be overall improvement, and can't reproduce/test in lab.
+12	wireplumber	wireplumber	stable-backports	0.4.17-1~bpo12+1	amd64	0.4.13-1	''
+3	tevent	libtevent0	stable-backports	0.16.1-2~bpo12+1	amd64	0.14.1-1	REJECT. Only if needed for src:samba.
+12	elfutils	libdw1	stable-backports	0.191-1~bpo12+1	amd64	0.188-2.1	REJECT.  Low-level library used by stuff like libglib2.0-bin and iproute2 and mesa-*-drivers Nothing interesting in https://metadata.ftp-master.debian.org/changelogs/main/e/elfutils/stable-backports_changelog
+14	elfutils	libelf1	stable-backports	0.191-1~bpo12+1	amd64	0.188-2.1	''
+12	pipewire	libpipewire-0.3-0	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	REJECT.  FUCK ME there is a lot of changes.  Looking just at #Highlights sections, nothing jumped out at me.  Needed for wireplumber/stable-backports. Currently causing some logspam in production, but 0% confidence backport will be overall improvement, and can't reproduce/test in lab.
+12	pipewire	libpipewire-0.3-modules	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	libspa-0.2-bluetooth	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	libspa-0.2-modules	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-alsa	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-audio	stable-backports	1.2.1-1~bpo12+1	all	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-bin	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire-pulse	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	pipewire	pipewire	stable-backports	1.2.1-1~bpo12+1	amd64	0.3.65-3+deb12u1	''
+12	tdb	libtdb1	stable-backports	1.4.10-1~bpo12+1	amd64	1.4.8-2	REJECT. Only if needed for src:samba.
+3	e2fsprogs	e2fsprogs	stable-backports	1.47.1~rc2-1~bpo12+1	amd64	1.47.0-2	REJECT.  Lots of little things, mostly only for mke2fs and tune2fs.  We only use ext4 for edge case stuff like /boot, not worth caring about.
+3	e2fsprogs	libext2fs2	stable-backports	1.47.1~rc2-1~bpo12+1	amd64	1.47.0-2	''
+3	e2fsprogs	libss2	stable-backports	1.47.1~rc2-1~bpo12+1	amd64	1.47.0-2	''
+17	e2fsprogs	libcom-err2	stable-backports	1.47.1~rc2-1~bpo12+1	amd64	1.47.0-2	''
+17	e2fsprogs	logsave	stable-backports	1.47.1~rc2-1~bpo12+1	amd64	1.47.0-2	''
+7	gnucash	gnucash-common	stable-backports	1:5.6-1~bpo12+1	all	1:4.13-1	APPROVE? New major version, LOTS of changes https://github.com/Gnucash/gnucash/releases
+7	gnucash	gnucash	stable-backports	1:5.6-1~bpo12+1	amd64	1:4.13-1	''
+9	qemu	qemu-guest-agent	stable-backports	1:9.0.2+ds-1~bpo12+1	amd64	1:7.2+dfsg-7+deb12u6	REJECT. Nothing interesting in «tig v9.0.2 ^v7.2.0 -- '**agent**'» nor «tig --grep=agent v9.0.2 ^v7.2.0» from https://gitlab.com/qemu-project/qemu.  Also, randy (web VM server) still runs Debian 11 / qemu 5!  UPDATE: also nothing interesting at https://wiki.qemu.org/ChangeLog/9.0#Guest_agent https://wiki.qemu.org/ChangeLog/8.2#Guest_agent https://wiki.qemu.org/ChangeLog/8.1#Guest_agent https://wiki.qemu.org/ChangeLog/8.0#Guest_agent
+17	talloc	libtalloc2	stable-backports	2.4.2-1~bpo12+1	amd64	2.4.0-f2	REJECT. Only if needed for src:samba.
+12	at-spi2-core	at-spi2-common	stable-backports	2.52.0-1~bpo12+1	all	2.46.0-5	REJECT. Nothing interesting in https://metadata.ftp-master.debian.org/changelogs/main/a/at-spi2-core/stable-backports_changelog Currently causing some logspam in production, but 0% confidence backport will be overall improvement, and can't reproduce/test in lab.  This DOES NOT look like our bug: https://bugs.debian.org/890833
+12	at-spi2-core	at-spi2-core	stable-backports	2.52.0-1~bpo12+1	amd64	2.46.0-5	''
+12	at-spi2-core	gir1.2-atk-1.0	stable-backports	2.52.0-1~bpo12+1	amd64	2.46.0-5	''
+12	at-spi2-core	libatk-bridge2.0-0	stable-backports	2.52.0-1~bpo12+1	amd64	2.46.0-5	''
+12	at-spi2-core	libatk1.0-0	stable-backports	2.52.0-1~bpo12+1	amd64	2.46.0-5	''
+12	at-spi2-core	libatspi2.0-0	stable-backports	2.52.0-1~bpo12+1	amd64	2.46.0-5	''
+3	samba	libldb2	stable-backports	2:2.9.1+samba4.20.2+dfsg-6~bpo12+1	amd64	2:2.6.2+samba4.17.12+dfsg-0+deb12u1	REJECT.  I **think** the only reason any samba components are installed is they're compile-time dependencies, and we do not actually use them at runtime.  (Except for --boot-test netbooted VMs.)
+3	samba	libsmbclient	stable-backports	2:4.20.2+dfsg-6~bpo12+1	amd64	2:4.17.12+dfsg-0+deb12u1	''
+3	samba	samba-libs	stable-backports	2:4.20.2+dfsg-6~bpo12+1	amd64	2:4.17.12+dfsg-0+deb12u1	''
+17	samba	libwbclient0	stable-backports	2:4.20.2+dfsg-6~bpo12+1	amd64	2:4.17.12+dfsg-0+deb12u1	''
+3	vlc	libvlc-bin	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	REJECT. False positive.  Staff get unrestricted stock vlc nowdays, for DVD ripping.
+3	vlc	libvlc5	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	libvlccore9	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-bin	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-data	bookworm	3.0.21-0+deb12u1PrisonPC4	all	3.0.21-0+deb12u1	''
+3	vlc	vlc-plugin-base	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-plugin-qt	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc-plugin-video-output	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+3	vlc	vlc	bookworm	3.0.21-0+deb12u1PrisonPC4	amd64	3.0.21-0+deb12u1	''
+17	sysvinit	sysvinit-utils	stable-backports	3.08-3~bpo12+2	amd64	3.06-4	REJECT. Only if needed for src:systemd/stable-backports see https://bugs.debian.org/1056363
+7	libgwenhywfar	libgwengui-gtk3-79	stable-backports	5.11.2beta-1~bpo12+1	amd64	5.10.1-2	REJECT. Cross-platform GUI widget middleware.  Do not care.  Nothing in changelog looks interesting.
+7	libgwenhywfar	libgwenhywfar-data	stable-backports	5.11.2beta-1~bpo12+1	all	5.10.1-2	''
+7	libgwenhywfar	libgwenhywfar79	stable-backports	5.11.2beta-1~bpo12+1	amd64	5.10.1-2	''
+7	libaqbanking	libaqbanking-data	stable-backports	6.5.11beta-1~bpo12+1	all	6.5.3-1	REJECT. Only used by gnucash.  Don't care.
+7	libaqbanking	libaqbanking44	stable-backports	6.5.11beta-1~bpo12+1	amd64	6.5.3-1	''
+3	smartmontools	smartmontools	stable-backports	7.4-2~bpo12+1	amd64	7.3-1+b1	APPROVE? Minor improvements to no-disk hosts.  Probably newer drivedb.h w/o network access.  https://github.com/smartmontools/smartmontools/releases/tag/RELEASE_7_4
+3	curl	curl	stable-backports	8.8.0-1~bpo12+1	amd64	7.88.1-10+deb12u6	REJECT.  /bin/curl is only pulled in by smartmontools. libcurl4 and libcurl3-gnutls are pulled in by things like libreoffice.  Adds HTTP/3 support, but I don't think we CARE.  https://curl.se/docs/releases.html
+10	curl	libcurl4	stable-backports	8.8.0-1~bpo12+1	amd64	7.88.1-10+deb12u6	''
+13	curl	libcurl3-gnutls	stable-backports	8.8.0-1~bpo12+1	amd64	7.88.1-10+deb12u6	''
+1	debhelper	debhelper	stable-backports	13.11.8~bpo12+1	all	13.11.4	REJECT.  Why is debhelper installed on ANYTHING?  It's probably --template=datasafe3 or --template=understudy...
+1	debhelper	libdebhelper-perl	stable-backports	13.11.8~bpo12+1	all	13.11.4	''
+17	dbus-broker	dbus-broker	stable-backports	36-1~bpo12+1	amd64	33-1	REJECT.  Nothing interesting in https://github.com/bus1/dbus-broker/releases nor https://metadata.ftp-master.debian.org/changelogs/main/d/dbus-broker/stable-backports_changelog
+6	systemd	libnss-myhostname	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	REJECT. Current policy is bpo systemd is too far-reaching and risky.
+6	systemd	libnss-resolve	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	libpam-systemd	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	libsystemd-shared	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	libsystemd0	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	libudev1	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	systemd-boot-efi	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	systemd-resolved	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	systemd-sysv	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	systemd-timesyncd	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	systemd	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+6	systemd	udev	stable-backports	254.15-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	libnss-myhostname	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	REJECT. New backport landed DURING batch build, so 17 systemd entries are broken into 11 and 6.
+11	systemd	libnss-resolve	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	libpam-systemd	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	libsystemd-shared	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	libsystemd0	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	libudev1	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	systemd-boot-efi	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	systemd-resolved	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	systemd-sysv	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	systemd-timesyncd	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	systemd	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''
+11	systemd	udev	stable-backports	254.16-1~bpo12+1	amd64	252.26-1~deb12u2	''

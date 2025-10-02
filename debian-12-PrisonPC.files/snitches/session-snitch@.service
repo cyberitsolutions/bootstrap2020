@@ -15,3 +15,57 @@ WatchdogSec=60
 # systemd cannot (always) do a regular clean reboot.
 FailureAction=reboot-immediate
 
+
+# Hardening
+[Service]
+RemoveIPC=yes
+DynamicUser=yes
+CapabilityBoundingSet=
+NoNewPrivileges=yes
+AmbientCapabilities=
+PrivateDevices=yes
+ProtectClock=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+PrivateMounts=yes
+SystemCallArchitectures=native
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+ProtectHostname=yes
+LockPersonality=yes
+ProtectKernelTunables=yes
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+RestrictRealtime=yes
+DevicePolicy=closed
+ProtectSystem=strict
+ProtectProc=noaccess
+ProcSubset=pid
+ProtectHome=yes
+PrivateNetwork=yes
+PrivateUsers=yes
+PrivateTmp=yes
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged
+SystemCallFilter=~@resources
+IPAddressDeny=any
+UMask=0077
+
+# Softening
+[Service]
+# *-snitch.py needs HTTP access to the PrisonPC main server
+# (10.X.2.100 are used in test VMs, but not production)
+RestrictAddressFamilies=AF_INET AF_INET6
+PrivateNetwork=no
+IPAddressAllow=10.0.0.1 10.128.0.1
+IPAddressAllow=10.0.2.100 10.128.2.100
+# root-notify-send needs to look in /run/user/*/bus
+# (CAP_DAC_OVERRIDE, ProtectHome=no) and to change user.
+# UPDATE: This needs sched_setattr (syscall 314) for some fucking reason.
+#         Rather than allowlist just that, I'm allowlisting all of @resources.
+CapabilityBoundingSet=CAP_SETUID CAP_DAC_OVERRIDE
+DynamicUser=no
+SystemCallFilter=@setuid @resources
+PrivateUsers=no
+ProtectHome=no

@@ -1,27 +1,27 @@
 Rank,Application,"Duration (6 months, all detainees)"
-3005,Multimedia > Media player,7 years 8 mons 17 days 03:48:50
-2846,Multimedia > Watch TV,7 years 3 mons 20 days 13:52:00
-2159,NO APPLICATION,5 years 6 mons 15 days 15:27:40
-674,Internet > Web Browser,1 year 8 mons 23 days 09:25:20
+3016,Multimedia > Media player,7 years 8 mons 17 days 03:45:40
+2857,Multimedia > Watch TV,7 years 3 mons 20 days 13:15:50
+2167,NO APPLICATION,5 years 6 mons 15 days 11:55:20
+640,Internet > Web Browser,1 year 7 mons 19 days 11:35:50
 214,Games > Solitaire,6 mons 17 days 10:09:40
-178,Office > Word Processor (libreoffice),5 mons 14 days 18:15:40
-101,Games > Elastomania clone,3 mons 3 days 15:10:10
+179,Office > Word Processor (libreoffice),5 mons 14 days 14:28:30
+102,Games > Elastomania clone,3 mons 3 days 15:10:10
 88,Games > Mahjong Solitaire,2 mons 21 days 02:58:20
 84,Games > The Battle for Wesnoth,2 mons 17 days 09:15:20
-78,Graphics > Image Viewer,2 mons 11 days 21:51:40
-69,System > File Manager,2 mons 3 days 19:16:30
+78,Graphics > Image Viewer,2 mons 11 days 21:35:00
+69,System > File Manager,2 mons 3 days 15:47:40
 65,Games > Warzone 2100,1 mon 29 days 22:38:30
-62,Games > Mario Kart clone,1 mon 27 days 15:33:20
+63,Games > Mario Kart clone,1 mon 27 days 15:33:20
 40,Games > 2048,1 mon 6 days 12:15:40
 38,Games > Transport Tycoon Deluxe clone,1 mon 4 days 17:12:40
-36,Office > Spreadsheet (libreoffice),1 mon 3 days 14:17:00
+36,Office > Spreadsheet (libreoffice),1 mon 3 days 14:06:00
 34,Games > Arkanoid (Breakout) clone,1 mon 1 day 10:25:10
-22,Taskbar,20 days 12:28:20
+22,Taskbar,20 days 12:27:30
 21,Accessories > Calculator,19 days 14:27:10
 21,Office > Dictionary,19 days 10:29:10
 19,Games > Chess,17 days 15:33:40
 19,Games > Sudoku,17 days 13:26:00
-15,Graphics > Photo Editor,13 days 21:40:40
+15,Graphics > Photo Editor,13 days 21:38:00
 15,DOOM clone (all campaigns),13 days 10:01:40
 10,Games > Civilization clone,9 days 00:24:20
 9,Games > Frogatto,8 days 14:25:50
@@ -29,13 +29,13 @@ Rank,Application,"Duration (6 months, all detainees)"
 8,Games > Tetris clone,7 days 16:50:00
 8,UNKNOWN APPLICATION,6 days 23:49:00
 5,Games > Blob Wars : Metal Blob Solid,4 days 10:48:30
-4,LibreOffice,3 days 17:22:10
+4,LibreOffice,3 days 17:02:30
 4,Office > Presentation (libreoffice),3 days 06:02:40
 3,Point-and-Click Adventure Games,3 days 02:07:30
 3,Education > Terrestrial Globe,2 days 22:55:30
 3,perl,2 days 21:28:40
 3,Games > Bosconian clone,2 days 18:26:50
-3,Office > Drawing Program (libreoffice),2 days 08:40:40
+3,Office > Drawing Program (libreoffice),2 days 08:35:00
 2,Games > Oxyd clone,2 days 01:16:40
 2,Interactive Fiction Games (Inform),2 days 00:56:50
 2,Games > Lemmings clone,1 day 17:00:00
@@ -52,7 +52,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 1,kig,16:33:40
 1,Games > Edutainment Suite — GCompris,15:15:50
 1,Education > Japanese/English Dictionary,12:34:10
-0,Settings > Appearance,10:03:50
 0,Games > Asteroids clone,09:32:40
 0,Graphics > Vector Graphics Editor,09:31:00
 0,Education > Typing Tutor,09:29:00
@@ -62,8 +61,8 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Games > Torus Trooper,06:30:10
 0,kgeography,06:10:40
 0,knavalbattle,05:52:50
+0,Settings > Appearance,05:35:40
 0,Accessories > Find Files,05:08:10
-0,libreoffice-startcenter (libreoffice),05:04:40
 0,Settings > Display,04:37:40
 0,Games > Jezzball clone,04:17:40
 0,Settings > Accessibility,04:14:20
@@ -73,6 +72,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,step,02:49:50
 0,Wrapper-1.0,02:49:00
 0,Games > Raiden clone,02:25:10
+0,libreoffice-startcenter (libreoffice),02:16:10
 0,Exo-helper-1,02:10:50
 0,Games > Qonk,02:01:20
 0,Education > KStars,02:00:20
@@ -87,7 +87,7 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,Settings > Password Reset,01:07:10
 0,Settings > Factory Reset,01:03:20
 0,khangman,01:00:20
-0,Helper-dialog,00:54:30
+0,Helper-dialog,00:54:20
 0,Accessories > Help,00:51:30
 0,Games > Zarathrusta clone,00:50:10
 0,Volume (systray applet),00:44:10
@@ -97,7 +97,6 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,kbruch,00:32:30
 0,Settings > Notifications,00:25:40
 0,Education > SPSS Statistics clone,00:20:10
-0,Accessories > Screenshot,00:19:40
 0,Settings > Keyboard,00:10:10
 0,Log Out,00:05:10
 0,Education > Graphics Calculator,00:04:00
@@ -107,5 +106,3 @@ Rank,Application,"Duration (6 months, all detainees)"
 0,libreoffice-math (libreoffice),00:01:20
 0,Thunar-volman,00:01:00
 0,Tadsr,00:00:10
-0,Accessories > Archive Manager,00:00:10
-0,System > Terminal Emulator,00:00:10

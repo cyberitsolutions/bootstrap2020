@@ -23,6 +23,22 @@ polkit.addRule(function(action, subject) {
         (action.id === "org.freedesktop.udisks2.filesystem-mount"))
         return polkit.Result.YES;
 
+    // Allow DHCP-supplied timezone to override SOE-supplied timezone.
+    // Note that "timedatectl set-timezone CET" sends the same dbus request.
+    // I guess when you do that as root, it just COMPLETELY BYPASSES polkit policy???
+    // This is based on /usr/share/polkit-1/rules.d/systemd-networkd.rules.
+    // https://github.com/systemd/systemd/blob/v252/src/network/systemd-networkd.rules
+    // That file is effectively ignored because our file returns a
+    // unilateral "otherwise NO" at the end, specifically to stop new
+    // files in /usr/share/polkit-1/rules.d granting permissions
+    // before we (Cyber IT) have accepted the risks.
+    if ((action.id == "org.freedesktop.hostname1.set-hostname" ||
+         action.id == "org.freedesktop.hostname1.get-product-uuid" ||
+         action.id == "org.freedesktop.timedate1.set-timezone") &&
+        subject.user == "systemd-network") {
+        return polkit.Result.YES;
+    }
+
     // Since we've already let polkit in the door,
     // we might as well also allow Applications > Log Out to halt & reboot.
     // --twb, Mar 2014
@@ -49,6 +65,7 @@ polkit.addRule(function(action, subject) {
         (action.id === "org.freedesktop.login1.reboot-multiple-sessions") ||
         (action.id === "org.freedesktop.login1.reboot-ignore-inhibit"))
         return polkit.Result.YES;
+
     // [default deny]
     return polkit.Result.NO;
 });
