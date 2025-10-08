@@ -7,6 +7,9 @@ import tempfile
 import uuid
 
 want_netboot: bool = False
+want_ms_keyring: bool = True
+want_ms_media: bool = True
+
 with tempfile.TemporaryDirectory() as td_str:
     td = pathlib.Path(td_str)
     # Create keypair, sign a kernel with it, and tell OVMF to trust it.
@@ -31,16 +34,20 @@ with tempfile.TemporaryDirectory() as td_str:
              '--output=snponly_x64.efi',
              '/snponly_x64.unsigned.efi'],
         cwd=td)
-    uuid_str = uuid.uuid4().hex
-    subprocess.check_call(
-        ['virt-fw-vars',
-         '--input', '/usr/share/OVMF/OVMF_VARS_4M.fd',
-         '--secure-boot',
-         '--set-pk', uuid_str, 'cert',
-         '--add-kek', uuid_str, 'cert',  # because PK can't sign EFIs
-         '--add-db', uuid_str, 'cert',  # because KEK is ALSO not working??!!?
-         '--output', 'OVMF_VARS_4M.fd'],
-        cwd=td)
+    if want_ms_keyring:
+        (td / 'OVMF_VARS_4M.fd').write_bytes(
+            pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.fd').read_bytes())
+    else:
+        uuid_str = uuid.uuid4().hex
+        subprocess.check_call(
+            ['virt-fw-vars',
+             '--input', '/usr/share/OVMF/OVMF_VARS_4M.fd',
+             '--secure-boot',
+             '--set-pk', uuid_str, 'cert',
+             '--add-kek', uuid_str, 'cert',  # because PK can't sign EFIs
+             '--add-db', uuid_str, 'cert',  # because KEK is ALSO not working??!!?
+             '--output', 'OVMF_VARS_4M.fd'],
+            cwd=td)
     if not want_netboot:
         # Create a fucking ESP because we can't just pass the UKI directly via qemu -kernel?
         subprocess.check_call(['truncate', 'vda', '--size', '256M'], cwd=td)
@@ -69,22 +76,52 @@ with tempfile.TemporaryDirectory() as td_str:
             '#!ipxe\nboot --replace vmlinuz.efi earlyprintk=ttyS0 console=ttyS0 loglevel=2 break\n'
             if True else
             '#!ipxe\nboot --replace snponly_x64.efi\n')
+    if want_ms_media:
+        subprocess.check_call(['wget2', 'http://localhost:3142/deb.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/mini.iso'], cwd=td)
+
+    # Trying to get shim debugging in mini.iso to show up on the qemu serial (Ctrl+Alt+3) or qemu debug monitor (Ctrl+Alt+4)...
+    # https://www.qemu.org/docs/master/devel/uefi-vars.html
+    # This doesn't work:
+    #     qemu-system-x86_64: -device uefi-vars-x64,force-secure-boot=on,disable-custom-mode=on,jsonfile=./uefi-vars.json: Parameter 'version' is missing
+    import json
+    (td / 'uefi-vars.json').write_text(json.dumps({"version": 2, "variables": [{"SHIM_VERBOSE": 0xFFFF}]}))
+    # subprocess.check_call(
+    #     ['virt-fw-vars',
+    #      '--inplace', 'OVMF_VARS_4M.fd',
+    #      '--output-json', '/dev/stdout'],
+    #     cwd=td)
+    # subprocess.check_call(
+    #     ['virt-fw-vars',
+    #      '--inplace', 'OVMF_VARS_4M.fd',
+    #      '--set-json', (td / 'uefi-vars.json')],
+    #     cwd=td)
+
     # Actually boot it.
     subprocess.check_call(
-        ['kvm',
+        ['qemu-system-x86_64',
+         '-accel', 'kvm',
          '-serial', 'mon:stdio', '-vga', 'none', '-display', 'none',  # -nographic
-         # '-debugcon', 'mon:stdio', '-global', 'isa-debugcon.iobase=0x402',  # https://github.com/tianocore/edk2/blob/master/OvmfPkg/README#L88
+         # '-debugcon', 'mon:stdio',
+         '-global', 'isa-debugcon.iobase=0x402',  # https://github.com/tianocore/edk2/blob/master/OvmfPkg/README#L88
          '-nic', 'none',  # make OVMF not try to fall back to onboard iPXE, for now
          *(['-device', 'virtio-net-pci,netdev=OutclassMountingBoggle',
             '-netdev', 'id=OutclassMountingBoggle,type=user,tftp=.,bootfile=netboot.ipxe,dnssearch=lan']
            if want_netboot else
            ['-drive', 'if=none,id=CapillaryStuckObserving,file=./vda,format=raw,readonly=on',
             '-device', 'virtio-blk-pci,drive=CapillaryStuckObserving,serial=UntaxedAgencyPettiness']),
+         *(['-drive', 'if=none,id=WidowExcretionRelish,file=./mini.iso,format=raw,readonly=on',
+            '-device', 'virtio-blk-pci,drive=WidowExcretionRelish,serial=LadleRamrodFamine']
+           if want_ms_media else []),
          '-machine', 'q35,smm=on',
+         '-cpu', 'host',
          '-m', '1G',   # SIGH: "BdsDxe: failed to load ⋯: Out of Resources"
          '-device', 'virtio-rng-pci',  # https://bugs.debian.org/1101493
          '-global', 'driver=cfi.pflash01,property=secure,value=on',
          '-drive', 'if=pflash,format=raw,unit=0,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd,readonly=on',
          '-drive', 'if=pflash,format=raw,unit=1,file=./OVMF_VARS_4M.fd,readonly=off',
+
+         # Trying to get shim debugging in mini.iso to show up on the qemu serial (Ctrl+Alt+3) or qemu debug monitor (Ctrl+Alt+4)...
+         # https://www.qemu.org/docs/master/devel/uefi-vars.html
+         '-device', 'uefi-vars-x64,force-secure-boot=on,disable-custom-mode=on,jsonfile=./uefi-vars.json',
          ],
         cwd=td)
