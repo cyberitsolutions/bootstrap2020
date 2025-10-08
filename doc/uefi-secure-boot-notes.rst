@@ -80,3 +80,21 @@ In #debian-boot and #debian-efi:
 | 17:52 <twb> oh I guess I should have asked here instead of -boot?
 | 17:53 <twb> Sorry -- end of work day for me and I'll already feeling a bit flaky today
 | 17:59 <twb> if I want mini.iso to be signed by a MS key most devices trust by default, what pseudo-package do I reportbug against?
+
+::
+
+    18:32 <f_g> https://paste.debian.net/1400012/
+    18:33 <f_g> it then proceeds with https://paste.debian.net/1400014/ so maybe there is something else in there that is signed by some weird key?
+    18:34 <twb> How do you get it to emit that debugging log?  My notes from 2024 suggested -debugcon mon:stdio -global isa-debugcon.iobase=0x402 but I couldn't get that to work today. (https://github.com/tianocore/edk2/blob/master/OvmfPkg/README#L88)
+    18:40 <f_g> serial console
+    18:53 <twb> Hrm, on serial console all I see is BdsDxe: loading Boot0001 "UEFI Misc Device" from PciRoot(0x0)/Pci(0x1,0x0) BdsDxe: starting Boot0001 "UEFI Misc Device" from PciRoot(0x0)/Pci(0x1,0x0)
+    18:54 <twb> With both legacy /usr/share/ovmf/OVMF.fd and also with /usr/share/OVMF/OVMF_CODE_4M.secboot.fd + writable copy of OVMF_VARS_4M.fd and also driver=cfi.pflash01,property=secure,value=on
+    18:58 <f_g> you need to set an efi var as well (SHIM_VERBOSE)
+    18:58 <twb> Ah per my link, writing to the serial console was the old default
+    19:13 <twb> f_g: how do you set an EFI variable from outside the VM?  I tried -device uefi-vars-x64,force-secure-boot=on,disable-custom-mode=on,jsonfile=./uefi-vars.json with {"SHIM_VERBOSE": "65535"}, but that failed with "Parameter 'version' is missing"
+    19:13 <f_g> I set it from inside :-P
+    19:14 <twb> And I can't understand what foramt virt-fw-vars wants for --set-json, it seems to want {"SHIM_VERBOSE:" {"attr": <something>}}
+    19:14 <twb> hmph OK
+    19:17 <twb> OK FTR I think qemu's uefi-vars-x64 driver wants the same format as virt-fw-json --json-output emits, which is somethign like {"version": 2, "variables": [{<some attr and GUID nonsense>}]}
+    19:17 <twb> I haven't got an example variable yet so I dunno what e.g. mokutil would write in there.  Presumably there are "well known" GUIDs rather than named variables
+    19:22 <f_g> SHIM_VERBOSE-605dab50-e046-4300-abb6-3dd810dd8b23 . you can set it using mokutil
