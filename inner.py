@@ -67,6 +67,7 @@ subprocess.check_call([
     '-netdev', 'id=OutclassMountingBoggle,type=user,tftp=/,bootfile=netboot.ipxe,dnssearch=lan',
     '-machine', 'q35,smm=on',
     '-m', '1G',   # SIGH: "BdsDxe: failed to load ⋯: Out of Resources"
+    '-device', 'virtio-rng-pci',  # https://bugs.debian.org/1101493
     '-global', 'driver=cfi.pflash01,property=secure,value=on',
     '-drive', 'if=pflash,format=raw,unit=0,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd,readonly=on',
     '-drive', 'if=pflash,format=raw,unit=1,file=/tmp/OVMF_VARS_4M.fd,readonly=off',
