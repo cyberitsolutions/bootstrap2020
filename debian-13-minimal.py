@@ -109,7 +109,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     #        Or is it somehow inferred/computed from something else?
     # Sanity-check the template does NOT contain any trusted keys.
     ovmf_template_path = pathlib.Path('/usr/share/OVMF/OVMF_VARS_4M.fd')
-    fd_path = args.output_file.with_suffix(f'.{ovmf_template_path.name}')
+    fd_path = args.output_file.with_suffix(f'.{ovmf_template_path.name}').resolve()
     _ = subprocess.check_output(['virt-fw-dump', '--input', ovmf_template_path], text=True)
     assert 'end of variable list at offset 0x0' in _
     assert 'KEK' not in _.lower()
