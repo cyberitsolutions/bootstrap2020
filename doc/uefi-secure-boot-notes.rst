@@ -59,3 +59,24 @@ In #debian-rant:
 | 06:19 <twb> I asked in #edk2 and I was in #qemu last week
 | 06:19 <REDACTED> #debian-efi ...
 | 06:19 <twb> Oh, OK.  It didn't seem like it was really a Debian thing
+
+
+
+In #debian-boot and #debian-efi:
+
+| 17:26 <twb> Does https://deb.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/mini.iso have the relevant signatures so it'll boot on a system with Secure Boot enabled and https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt in the trusted keyring?
+| 17:26 <twb> And if not, what's the smallest image that does have that set up
+| 17:34 <REDACTED> it should. why?
+| 17:35 <twb> I'm messing with secure boot in qemu and I saw failures that *maybe* were that problem, but I guess were actually me screwing up somewhere else
+| 17:41 <REDACTED> hmm, you are correct, this thing does not secure boot. hmpf
+| 17:41 <twb> oh phew I feel better now, knowing it's not my fault
+| 17:42 <twb> I definitely don't trust my understanding enough of secure boot to storm in here and go "it's broken, fix it!"
+| 17:45 <REDACTED> so the smallest secure boot capable boot thing is https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.1.0-amd64-netinst.iso
+| 17:45 <twb> Thanks for confirming, I was afraid of that
+| 17:45 <REDACTED> and yes, this boot chain is still signed with the 2011 uefi root
+| 17:50 <twb> BTW it would be nice if there was a signed UKI next to mini.iso (ukify build --output=minix64.efi  --secureboot-private-key=key.pem --secureboot-certificate=cert.pem --linux=debian-installer/amd64/linux --initrd=debian-installer/amd64/initrd.gz)
+| 17:50 <twb> cos then I could just drop that into any old ESP:\
+| 17:48 <REDACTED> wow. "signed by DO NOT TRUST - AMI Test PK"
+| 17:52 <twb> oh I guess I should have asked here instead of -boot?
+| 17:53 <twb> Sorry -- end of work day for me and I'll already feeling a bit flaky today
+| 17:59 <twb> if I want mini.iso to be signed by a MS key most devices trust by default, what pseudo-package do I reportbug against?

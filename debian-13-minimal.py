@@ -195,9 +195,11 @@ if args.boot_test:
         # https://github.com/tianocore/edk2/blob/master/OvmfPkg/README#L88
         # '-debugcon', 'mon:stdio', '-global', 'isa-debugcon.iobase=0x402',
 
-        # SIGNED BY MICROSOFT VIA SHIM?
+        # SIGNED BY MICROSOFT VIA SHIM
+        # NOTE: netboot mini.iso IS NOT signed by Microsoft;
+        #       netinst.iso IS signed by Microsoft (as at Debian 13 / October 2025).
         # '--drive', f'if=none,id=OutpourDemystifyPatchy,file={td / "mini.iso"},format=raw,readonly=on',
-        '--drive', f'if=none,id=OutpourDemystifyPatchy,file=https://deb.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/mini.iso,format=raw,readonly=on',
+        '--drive', f'if=none,id=OutpourDemystifyPatchy,file=https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.1.0-amd64-netinst.iso,format=raw,readonly=on',
         '--device', 'virtio-blk-pci,drive=OutpourDemystifyPatchy,serial=HackerTibiaRetype',
 
         # UKI SIGNED BY SNAKEOIL, FILESYSTEM.SQUASHFS NOT SIGNED AT ALL!
