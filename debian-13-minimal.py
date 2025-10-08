@@ -188,6 +188,7 @@ if args.boot_test:
         '--drive', f'if=pflash,format=raw,unit=1,file={fd_path},readonly=off',
 
         '-m', '1G',
+        '-device', 'virtio-rng-pci',  # https://bugs.debian.org/1101493
 
         '--boot', 'menu=on',
 
