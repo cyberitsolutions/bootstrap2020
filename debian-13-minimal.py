@@ -55,6 +55,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          # UPDATE: this is still not working, and I don't know why.  I give up and let's just do SSH instead...
          '--customize-hook=echo root:root | chroot $1 chpasswd',
          '--include=man-db mokutil efibootmgr python3-virt-firmware dialog',    # DEBUGGING
+         '--include=systemd-boot',  # for debugging
 
          '--include=linux-image-cloud-amd64 init initramfs-tools live-boot netbase',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
@@ -123,6 +124,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
        '--secure-boot',
        '--set-pk', uuid_str, './cert',
        '--add-kek', uuid_str, './cert',
+       '--add-db', uuid_str, './cert',  # because KEK is ALSO not working??!!?
        # FIXME: there is no --add-dbx, only --set-dbx...
        # '--add-dbx', '77fa9abd-0359-4d32-bd60-28f4e78f784b', 'db-77fa9abd-0359-4d32-bd60-28f4e78f784b-MicrosoftWindowsProductionPCA2011.pem',
        '--output', fd_path],
