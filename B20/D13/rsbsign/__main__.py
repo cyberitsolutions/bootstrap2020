@@ -43,8 +43,8 @@ def main():
         # NOTE: sbverify --list does NOT verify it only lists.
         #       This will normally print just the signature we added.
         #       If it is already signed by other key(s), it'll also print those.
-        subprocess.check_call(['sbverify', '--list', 'unsigned.efi'], cwd=td)
-        # FIXME: Before upoading, we should update a CSV table somewhere predictable, with
+        subprocess.check_call(['sbverify', '--list', 'signed.efi'], cwd=td)
+        # FIXME: Before uploading, we should update a CSV table somewhere predictable, with
         #            what, who, when, unsigned cksum, signed cksum
         #        This way if we need to denylist old UKIs, we at least have a record of them all!
         #        It has to be the kind of checksum that SB DBx keyring expects!
