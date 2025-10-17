@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 __doc__ = "download, sign, and reupload a remote UKI"
 import argparse
+import logging
 import pathlib
 import subprocess
 import tempfile
@@ -18,6 +19,8 @@ def main():
     if not any(safe_word in args.host_and_path.partition(':')[-1]
                for safe_word in {'inmate', 'detainee', 'snponly'}):
         raise RuntimeError('You dickhead, do not sign general-purpose UKIs!', args.host_and_path)
+    if 'snponly' in args.host_and_path.partition(':')[-1]:
+        logging.warning('You MUST do "dpkg-reconfigure ipxe-prisonpc" to fix permissions afterwards!')
     now = int(time.time())
     password_store_path = pathlib.Path('~/.cyber-password-store').expanduser().resolve()
     password_store = pypass.PasswordStore(path=password_store_path)
