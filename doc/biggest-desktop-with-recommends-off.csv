@@ -1,7 +1,8 @@
-buster,bullseye,bookworm,trixie,sid,task
-129MiB,149MiB,151MiB,152MiB,152MiB,task-xfce-desktop
-137MiB,155MiB,183MiB,181MiB,181MiB,task-lxde-desktop
-164MiB,190MiB,202MiB,202MiB,202MiB,task-lxqt-desktop
-235MiB,244MiB,250MiB,222MiB,222MiB,task-mate-desktop
-415MiB,453MiB,327MiB,284MiB,284MiB,task-cinnamon-desktop
-437MiB,399MiB,345MiB,379MiB,380MiB,task-gnome-flashback-desktop
+stretch,buster,bullseye,bookworm,trixie,forky,sid,task
+131MiB,129MiB,149MiB,152MiB,154MiB,218MiB,217MiB,task-xfce-desktop
+129MiB,137MiB,155MiB,184MiB,185MiB,249MiB,248MiB,task-lxde-desktop
+227MiB,233MiB,245MiB,264MiB,235MiB,302MiB,301MiB,task-mate-desktop
+129MiB,165MiB,190MiB,202MiB,258MiB,323MiB,320MiB,task-lxqt-desktop
+399MiB,431MiB,400MiB,359MiB,321MiB,386MiB,385MiB,task-gnome-flashback-desktop
+391MiB,402MiB,454MiB,341MiB,339MiB,399MiB,398MiB,task-cinnamon-desktop
+,,,391MiB,522MiB,576MiB,575MiB,task-gnome-desktop

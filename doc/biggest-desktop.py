@@ -4,11 +4,16 @@ import pathlib
 import subprocess
 import tempfile
 
+# FIXME: with stretch/buster/bullseye uncommented,
+#        task-gnome-desktop doesn't show up.
+#        One of those is breaking I guess?
 distros = [
+    'stretch',
     'buster',
     'bullseye',
     'bookworm',
     'trixie',
+    'forky',
     'sid']
 tasks = [
     'task-xfce-desktop',
@@ -21,8 +26,8 @@ tasks = [
 
 inner_script = f'''
 for task in {' '.join(tasks)}
-do chroot $1 apt-get install --print-uris --quiet=2 $task |
-   awk '{{x+=$3}}END{{print x}}'
+do APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-get install --print-uris --quiet=2 $task |
+   awk '{{x+=$3}}END{{print x}}';
 done
 '''
 
@@ -30,7 +35,10 @@ for recommends in {True, False}:
     columns = [
         [int(line)
                   for line in subprocess.check_output(
-                          ['mmdebstrap', '--quiet', distro, '/dev/null',
+                          ['mmdebstrap', distro, '/dev/null', '--quiet',
+                           (f'deb http://archive.debian.org/debian {distro} main'  # EOL
+                            if distro in {'stretch', 'buster', 'bullseye'} else
+                            f'deb http://deb.debian.org/debian {distro} main'),  # not EOL
                            '--variant=apt', '--dpkgopt=force-unsafe-io',
                            '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
                            f'--aptopt=Apt::Install-Recommends "{1 if recommends else 0}"',
