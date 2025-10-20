@@ -66,11 +66,25 @@
 #   * /proc -o subset=pid broke tinysshd.socket.
 #   * /proc -o hidepid=invisible or =noaccess broke GUI login.
 #   * FIXME: systemd-remount-fs(8) ignores mode=XXX.
+#
+# UPDATE: For stupid reasons each separate user gets
+#         /run/systemd/generator/home-prisoners-p123.mount and
+#         /run/systemd/generator/user@1024.service.d/bootstrap2020-home-mount.conf
+#         For ~2200 users, this is about 17MiB.
+#         There is about 3MB total of everything else.
+#         But "systemctl daemon-reload" will do this as at Debian 12:
+#             Reload daemon failed: Refusing to reload,
+#             not enough space available on /run/systemd.
+#             Currently, 12.1M are free, but
+#             a safety buffer of 16.0M is enforced.
+#         With size=64M, we have (64-16-3)MB/(17MB/2200users) = ~5800 user limit
+#         With size=32M, we have (32-16-3)MB/(17MB/2200users) = ~1600 user limit
+#         https://alloc.cyber.com.au/task/task.php?taskID=35602
 tmpfs   /tmp            tmpfs   nosuid,noexec,nodev,size=10%
 tmpfs   /dev/shm        tmpfs   nosuid,noexec,nodev,size=10%
 tmpfs   /var/tmp        tmpfs   nosuid,noexec,nodev,size=32M,mode=0
 tmpfs   /run/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
 tmpfs   /lib/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
-tmpfs   /run            tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
+tmpfs   /run            tmpfs   nosuid,noexec,nodev,size=64M,mode=0755
 tmpfs   /run/lock       tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
 devtmpfs /dev           devtmpfs nosuid,noexec,mode=0755
