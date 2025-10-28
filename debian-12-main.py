@@ -244,13 +244,19 @@ def do_ukify(td: pathlib.Path, destdir: pathlib.Path) -> None:
     # FIXME: As at 2023, /proc/cmdline must be specified at boot time (not ukify time).
     #        At a minimum this is needed for understudy's personality=alice hack.
     #        For secure boot, that MUST become a static /proc/cmdline, done here.
-    (td / 'cmdline.txt').write_text('boot=live')
+    #        UPDATE: for secure boot, this SHOULD be set statically here.
+    #        But as PrisonPC does not currently support that, if
+    #        we *don't* set it here,
+    #        systemd-shim will accept dynamic (including attacker-supplied) cmdline.
+    #        Therefore, don't set it here.
+    # (td / 'cmdline.txt').write_text('boot=live')
     # FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will do all of this with a single command
     new_sections = {
         '.linux': destdir / 'vmlinuz',
         '.initrd': destdir / 'initrd.img',
         '.osrel': td / 'os-release',  # FIXME: Is os-release even useful?
-        '.cmdline': td / 'cmdline.txt'}
+        # '.cmdline': td / 'cmdline.txt',
+    }
 
     # We want to add new sections to the PE object.
     # Start by finding where the last existing section stops.
