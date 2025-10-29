@@ -1,5 +1,15 @@
 This is a summary of user-visible changes over time.
 
+======================================================================
+ Changes in SOEs October 2025 (since September 2025)
+======================================================================
+• Fix bugs in detainee SOEs:
+
+  • Enable RAM compression driver to fix slow boot since August.
+  • Increase RAM limit to fix "daemon-reload" with >>1000 users.
+  • Unlock dynamic boot arguments to fix secure boot.
+  • Re-enable workaround for upstream heisenbug in trigger order.
+
 
 
 ======================================================================
