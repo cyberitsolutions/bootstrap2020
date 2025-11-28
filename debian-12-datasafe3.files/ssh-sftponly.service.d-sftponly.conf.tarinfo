@@ -1,1 +1,1 @@
-name = "etc-systemd-system-ssh-sftponly.service.d-sftponly.conf"
+name = "etc/systemd/system/ssh-sftponly.service.d/sftponly.conf"
