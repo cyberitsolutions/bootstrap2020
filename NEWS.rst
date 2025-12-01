@@ -1,6 +1,13 @@
 This is a summary of user-visible changes over time.
 
 ======================================================================
+ Changes in SOEs November 2025 (since October 2025)
+======================================================================
+• Inmate kernel bumped to 6.12.57 (was 6.12.43).
+
+
+
+======================================================================
  Changes in SOEs October 2025 (since September 2025)
 ======================================================================
 • Fix bugs in detainee SOEs:
