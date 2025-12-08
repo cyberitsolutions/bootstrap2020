@@ -189,7 +189,7 @@ Install OS
 #. OK now we need to make the thing bootable.
    For example zfs-initramfs is not installed yet,
    hostname and fstab are not set, and
-   the zfs unlock key file does not exist in the rootfs or the ramdisk.
+   the zfs unlock key file does not exist in the rootfs or the ramdisk. ::
 
        root@localhost:~# printf '%s\\n' >/mnt/umount-me/etc/fstab 'LABEL=BOOT /boot ext4 defaults 0 0' 'LABEL=ESP /boot/efi vfat defaults 0 0'
        root@localhost:~# printf '%s\\n' >/mnt/umount-me/boot/refind_linux.conf '"Boot with standard options" "root=ZFS=elegy/elegy loglevel=2"'
