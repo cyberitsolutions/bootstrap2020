@@ -1,6 +1,6 @@
 include = [
     # For doing an initial install of Debian 12 onto ZFS (not actually understudy).
-    'mmdebstrap', 'auto-apt-proxy',
+    'mmdebstrap', 'auto-apt-proxy', "gnupg",
 
     # EXT4 -> EXT4
     # -----------
