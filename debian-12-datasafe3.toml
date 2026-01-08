@@ -2,4 +2,5 @@ include = [
     'mdadm',
     'e2fsprogs',        # to get e2scrub (needs to be in fstab tho?)
     'extlinux', 'parted',       # debugging/rescue
+    'sshguard', 'nftables',  # NOTE: assumes openssh-server (not tinysshd/dropbear)
 ]
