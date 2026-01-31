@@ -103,3 +103,56 @@ The following packages found on this system are affected by this:
 * Source:intel-mediasdk, ended on 2024-11-21 at version 22.5.4-1
   Details: abandoned upstream, upstream does not publish enough information to fix issues.
   - libmfx1:amd64 (installed version: 22.5.4-1)
+
+
+# FIXME: I have not yet confirmed this is safe!! --twb, January 2026
+#
+# Recently (January 2026) the Debian Security Team started warning about libsoup.
+# https://salsa.debian.org/debian/debian-security-support/-/commit/8ed15071d7716260b1c0666c59bab1dd8166c3c6
+# https://bugs.debian.org/1109118
+# https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
+#
+# I confirm that libsoup is already in desktop-inmate-amc-latest at AMC.
+# i.e. this is not a newly-INTRODUCED risk, this is a newly-DISCLAIMED risk.
+#
+#     root@amc:~# grep -l ^Package:.libsoup  /srv/netboot/images/*latest/dpkg.status
+#     /srv/netboot/images/desktop-inmate-amc-latest/dpkg.status
+#     /srv/netboot/images/desktop-inmate-amc-library-latest/dpkg.status
+#     /srv/netboot/images/desktop-staff-amc-latest/dpkg.status
+#
+# What we SHOULD do is:
+# * look at what packages we use pull in libsoup
+# * replace them if reasonable to do so
+# * then denylist libsoup in prisonpc-ersatz (and build a new version of that)
+# * OTHERWISE, accept the risk in grepF because what else can we do?
+#
+# In --template=desktop,
+#
+#     xfce4-screenshooter : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#
+# In --template=desktop-staff,
+#
+#     gvfs-backends : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#     xfce4-screenshooter : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#
+# In --template=desktop-inmate there is no problem.
+#
+#     2. gnucash:amd64=1:5.6-1~bpo12+1 Depends libwebkit2gtk-4.1-0 (>= 2.34.6~)
+#     libwebkit2gtk-4.1-0 : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#
+# Replacing the screenshot app seemed easy.
+# Rebuilding the gvfs backends for staff so it includes only the SFTP driver (and not e.g. the GDrive driver) at COMPILE TIME is a bit harder.
+# We can tell AMC 'sorry gnucash is not in the app list anymore due to minor security risks'.
+#
+# AFAICT AMC have never actually run gnucash at all, so they should not miss it.
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/doc/popcon/popcon_2025-01-01_to_2025-06-30.csv
+# [and other 6monthly reports]
+#
+# The *actual* risk here is if you use libsoup as a server, and
+# PROBABLY none of the packages we currently/will use,
+# will use libsoup as a SERVER.
+# But we cannot tell at package build time whether a package is using the server parts of libsoup!
+* Source:libsoup3
+  Details: Only supported as a client, not as a server: see https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
+  - libsoup-3.0-0:amd64 (installed version: 3.2.3-0+deb12u2)
+  - libsoup-3.0-common (installed version: 3.2.3-0+deb12u2)
