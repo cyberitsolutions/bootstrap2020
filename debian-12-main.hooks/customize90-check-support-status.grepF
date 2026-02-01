@@ -156,3 +156,6 @@ The following packages found on this system are affected by this:
   Details: Only supported as a client, not as a server: see https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
   - libsoup-3.0-0:amd64 (installed version: 3.2.3-0+deb12u2)
   - libsoup-3.0-common (installed version: 3.2.3-0+deb12u2)
+* Source:libsoup2.4
+  - libsoup2.4-1:amd64 (installed version: 2.74.3-1+deb12u1)
+  - libsoup2.4-common (installed version: 2.74.3-1+deb12u1)
