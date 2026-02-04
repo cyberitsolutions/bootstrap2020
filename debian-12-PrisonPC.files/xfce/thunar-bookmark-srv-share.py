@@ -9,6 +9,8 @@ The inmate can easily find stuff in $HOME, but not /srv/share/.
 
 Force the inmate to always have a /srv/share in their sidebar.
 
+UPDATE: also ~/Reference if it exists (which it always will for detainees).
+
 See also /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 
 See also https://sources.debian.org/src/xdg-user-dirs-gtk/0.10-3/
@@ -42,9 +44,6 @@ Therefore, resort to editing the file by hand, like a FUCKING SAVAGE.
 
 """
 
-my_bookmark_str = 'file:///srv/share Shared Files'
-bookmark_path = pathlib.Path('~/.config/gtk-3.0/bookmarks').expanduser()
-
 # I observed a race condition for new users where this script raced
 # with xdg-user-dirs-gtk-update, resulting in
 # xdg-user-dirs-gtk-update's changes not appearing.
@@ -58,8 +57,15 @@ subprocess.check_call(['xdg-user-dirs-update'])
 subprocess.check_call(['xdg-user-dirs-gtk-update'])
 
 # We can now simply assume the bookmarks dir exists.
-bookmarks = frozenset(bookmark_path.read_text().splitlines())
-need_to_add_my_bookmark = my_bookmark_str not in bookmarks
-if need_to_add_my_bookmark:
-    with bookmark_path.open('a') as f:
-        print(my_bookmark_str, file=f)
+bookmarks_path = pathlib.Path('~/.config/gtk-3.0/bookmarks').expanduser()
+bookmarks = frozenset(bookmarks_path.read_text().splitlines())
+
+share_bookmark_str = 'file:///srv/share Shared Files'
+reference_bookmark_path = pathlib.Path('~/Reference').expanduser()
+reference_bookmark_str = f'file://{reference_bookmark_path} Reference'
+with bookmarks_path.open('a') as f:
+    if share_bookmark_str not in bookmarks:
+        print(share_bookmark_str, file=f)
+    if reference_bookmark_str not in bookmarks:
+        if reference_bookmark_path.exists():
+            print(reference_bookmark_str, file=f)
