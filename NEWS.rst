@@ -1,6 +1,15 @@
 This is a summary of user-visible changes over time.
 
 ======================================================================
+ Changes in SOEs February 2026 (since November 2025)
+======================================================================
+• ~/Reference is added to Places menu and file manager sidebar,
+  if it exists.  This directory is read-only to the detainee,
+  read-write to site staff, and doesn't count towards detainee storage quota.
+
+
+
+======================================================================
  Changes in SOEs November 2025 (since October 2025)
 ======================================================================
 • Inmate kernel bumped to 6.12.57 (was 6.12.43).
