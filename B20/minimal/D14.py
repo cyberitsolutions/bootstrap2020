@@ -43,12 +43,20 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     (td / 'live').mkdir()
     (td / 'EFI/BOOT').mkdir(parents=True)
     subprocess.check_call(
-        ['mmdebstrap', 'trixie', 'live/filesystem.squashfs',
+        ['mmdebstrap', 'forky', 'live/filesystem.squashfs',
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
+         # FIXME: Debian 14+ defaults to dracut (not initramfs-tools).
+         #        But live-boot-dracut does not exist as at February 2026!
+         #        https://salsa.debian.org/live-team/live-boot/-/commit/9645a6ea31c644b0978a07ca866d46def32a2cce
+         #        https://salsa.debian.org/live-team/live-boot/-/blob/master/backend/dracut/live.script
+         #        Should we drop live-boot-[dracut|initramfs-tools] and instead use dracut-live?
+         #        https://packages.debian.org/forky/dracut-live
+         #        https://salsa.debian.org/live-team/live-build/-/commit/567e03034b3f4d9b03233562d6b7d05990f1c038
+         #        https://salsa.debian.org/live-team/live-build/-/commit/567e03034b3f4d9b03233562d6b7d05990f1c038
          '--include=linux-image-amd64 init initramfs-tools live-boot netbase',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
          '--include=login',        # https://bugs.debian.org/960638
