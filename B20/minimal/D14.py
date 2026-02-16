@@ -38,31 +38,51 @@ esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 
 
+# ==============
+# DRACUT RANTING
+# ==============
+# NOTE: live-initramfs checks live/filesystem.squashfs by default.
+#       dracut 70dmsquash-live checks LiveOS/squashfs.img by default.
+# NOTE: live-initramfs can just check all discoverable devices for a squashfs file.
+#       dracut requires an EXPLICIT root=live:<normal root arg>.
+# NOTE: Yes, the literal quote marks and whitespace are necessary in dracut.conf.d.
+#       dracut does not support IFS=: or IFS=, separators.
+#       dracut does not support k+=(v1 v2 v3) bash arrays.
+#       WHY IS DRACUT WRITTEN IN BASH?!
+# NOTE: On some failures dracut drops to a rescue shell;
+#       this NEVER has a valid root password, even on Fedora!
+#       But if you add "SYSTEMD_SULOGIN_FORCE=yes" to ukify --cmdline,
+#       after the wrong password fails, login(8) will crash to a root shell ANYWAY.
+#       If dracut works and live-config fails, try
+#       '--customize-hook=echo root:root | chroot $1 chpasswd',
+#
+# FIXME: Consider a two-partition disk with root=PARTLABEL=rootfs and systemd.volatile=overlay.
+#        This makes systemd (not dracut) set up the tmpfs overlay in the rd, before switch_root.
+
+
 with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td_str:
     td = pathlib.Path(td_str)
-    (td / 'live').mkdir()
+    (td / 'LiveOS').mkdir()
     (td / 'EFI/BOOT').mkdir(parents=True)
     subprocess.check_call(
-        ['mmdebstrap', 'forky', 'live/filesystem.squashfs',
+        ['mmdebstrap', 'forky', 'LiveOS/squashfs.img',
+         '--format=squashfs',  # mmdebstrap can't infer ".img" means squashfs, FUCK YOU RED HAT
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
-         # FIXME: Debian 14+ defaults to dracut (not initramfs-tools).
-         #        But live-boot-dracut does not exist as at February 2026!
-         #        https://salsa.debian.org/live-team/live-boot/-/commit/9645a6ea31c644b0978a07ca866d46def32a2cce
-         #        https://salsa.debian.org/live-team/live-boot/-/blob/master/backend/dracut/live.script
-         #        Should we drop live-boot-[dracut|initramfs-tools] and instead use dracut-live?
-         #        https://packages.debian.org/forky/dracut-live
-         #        https://salsa.debian.org/live-team/live-build/-/commit/567e03034b3f4d9b03233562d6b7d05990f1c038
-         #        https://salsa.debian.org/live-team/live-build/-/commit/567e03034b3f4d9b03233562d6b7d05990f1c038
-         '--include=linux-image-amd64 init initramfs-tools live-boot netbase',
+         '--include=linux-image-generic dracut',
+         # Enable root=live:<path> support in dracut.
+         '--include=dmsetup',  # https://github.com/dracut-ng/dracut-ng/blob/110/modules.d/70dm/module-setup.sh#L5
+         '--essential-hook=mkdir -p $1/etc/dracut.conf.d/',
+         '''--essential-hook=echo 'add_dracutmodules+=" dmsquash-live "' >$1/etc/dracut.conf.d/50-fuck.conf''',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
          '--include=login',        # https://bugs.debian.org/960638
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
-         '--customize-hook=env --chdir "$1" ukify build --linux=vmlinuz --initrd=initrd.img --cmdline=boot=live',
+         # NOTE: boot=live is for live-config (not dracut) <https://bugs.debian.org/1128194>
+         f'--customize-hook=env --chdir "$1" ukify build --linux=vmlinuz --initrd=initrd.img --cmdline="root=live:PARTLABEL={esp_label} boot=live"',
          '--customize-hook=download /vmlinuz.unsigned.efi EFI/BOOT/BOOTX64.EFI'],
         cwd=td)
 
@@ -85,7 +105,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     subprocess.check_call(      # ≈ mount, cp, umount
         ['mcopy', '-i', f'{args.output_file.resolve()}@@{esp_offset}',
          '-vspm',
-         'EFI', 'live',         # source dirs
+         'EFI', 'LiveOS',       # source dirs
          '::'],                 # destdir is root of fs
         cwd=td)
 
