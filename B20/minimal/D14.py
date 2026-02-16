@@ -3,6 +3,7 @@ import argparse
 import pathlib
 import subprocess
 import tempfile
+import textwrap
 
 __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2020 Trent W. Buck"
@@ -13,7 +14,8 @@ __doc__ = """ build the simplest Debian Live image that can boot
 This uses mmdebstrap to do the heavy lifting;
 it can run entirely without root privileges.
 It emits a USB key disk image that contains a bootable EFI ESP,
-which in turn includes a UKI (kernel/ramdisk/cmdline) and filesystem.squashfs.
+which in turn includes a UKI (kernel/ramdisk/cmdline).
+The rootfs is a separate partition.
 
 NOTE: this is the simplest config possible.
       It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
@@ -25,17 +27,17 @@ NOTE: This makes a "unified kernel image" (there is NO bootloader).
 
 At time of writing, the host system needs:
 
-    apt install mmdebstrap squashfs-tools-ng apt-cacher-ng parted mtools qemu-kvm systemd-ukify systemd-boot-efi
+    apt install mmdebstrap apt-cacher-ng qemu-kvm
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.img'), type=pathlib.Path)
+parser.add_argument('output_file', nargs='?', default=pathlib.Path('live.img'), type=pathlib.Path)
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 
-filesystem_img_size = '512M'    # big enough to include filesystem.squashfs + about 64M of bootloader, kernel, and ramdisk.
-esp_offset = 1024 * 1024        # 1MiB
-esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
+# The ONLY benefit of using systemd-repart middleware is that it
+# will follow https://uapi-group.org/specifications/specs/discoverable_partitions_specification/
+# so hopefully then systemd in the rd will autodetect the rootfs.
 
 
 # ==============
@@ -55,58 +57,123 @@ esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 #       after the wrong password fails, login(8) will crash to a root shell ANYWAY.
 #       If dracut works and live-config fails, try
 #       '--customize-hook=echo root:root | chroot $1 chpasswd',
+
+# 23:49 <twb> It turns out that it's actually still running the legacy tools (mkfs.vfat, mtools, &c) rather than re-implementing them inside systemd.git, so I still have to install them, and I'm not actually saving that much hassle compared to doing it by hand.  The main benefit is I get https://uapi-group.org/specifications/specs/discoverable_partitions_specification/ for free.
+# 23:50 <twb> It's actually using mkfs.vfat *and* mcopy, instead of mformat and mcopy from the same codebase.  So I have to install *more* legacy packages
+
+# ======================
+# SYSTEMD-REPART RANTING
+# ======================
+# NOTE: systemd-repart apparently has no --quiet option, and
+#       mkfs.erofs prints EVERY path it adds, which adds 20s
+#       to the build time due to my slow terminal!
+#       As a workaround, I've prefixed chronic (moreutils).
+#       This hides output unless there is an error.
 #
-# FIXME: Consider a two-partition disk with root=PARTLABEL=rootfs and systemd.volatile=overlay.
-#        This makes systemd (not dracut) set up the tmpfs overlay in the rd, before switch_root.
+# NOTE: the repart.d(5) manpage doesn't say so, but
+#       these paths are always implicitly skipped
+#       due to APIVFS_TMP_DIRS_NULSTR:
+#       /proc /sys /dev /tmp /run /var/tmp
+#
+# FIXME: I want separate /boot/efi and /boot on Debian, but
+#        CopyFiles=/ seems to implicitly skip /boot – why?!
+#        This means if I do CopyFiles=/ and CopyFiles=/boot/efi:/efi,
+#        then /boot/vmlinuz-6.12 &c just vanish!
+#        It's not due to APIVFS_TMP_DIRS_NULSTR so why?
+#
+#        For normal Debian, /boot cannot be FAT32 because
+#        kernel .debs place kernels directly in /boot, and
+#        dpkg assumes hard link support to provide atomicity.
+#        So (some) kernel upgrades just fail.
+#        For a read-only rootfs, it doesn't matter, so
+#        just give up and let the ESP be all of /boot for now.
+#
+# FIXME: https://github.com/systemd/systemd/issues/36370
+#        means the ESP is actually 260MiB minimum.
+#        SizeMinBytes=/SizeMaxBytes=/Minimize= do not help.
+#        Adding --sector-size=512 make things WORSE:
+#        Required size for 35MiB file went from 260MiB to 435.5MiB
+#
+# FIXME: But mmdebstrap's download/*-out are cat/tar without --sparse!
+#        That means that 260MB of NULs will waste real disk space.
+#        Change mmdebstrap to always use --sparse?
+#        Or at least punch a hole in the file later?
+#
+# NOTE: Here are some benchmarks for the systemd-repart step.
+#       This is measuring the final live.img size (inc. ESP, but exc. sparse).
+#       This is measuring only the systemd-repart time/mem, though.
+#
+#       ========  ============  ====  ======  ======  =======  ====  ===========  ===========  =======
+#       Format=   Compression=  Size    user  system  elapsed  CPU   maxresident   pagefaults  OVERALL
+#       ========  ============  ====  ======  ======  =======  ====  ===========  ===========  =======
+#       squashfs  lz4           573M    5.02    4.96  04s      237%      765988k  235487minor     2292  142s
+#       erofs     -             811M    0.78    3.68  04s      105%       54972k   14998minor     3244  134s
+#       erofs     zstd          575M   45.51    4.14  11s      471%      357600k   57237minor     6325  139s
+#       erofs     zstd                                                                                  144s CompressionLevel=3
+#       erofs     lz4           612M   39.61    6.04  11s      427%      313052k   61469minor     6732
+#       squashfs  -             505M  198.38    7.60  30s      685%      995404k  294080minor    15150
+#       squashfs  zstd          488M  390.77    6.55  55s      725%     1021320k  305769minor    26840  185s
+#       squashfs  zstd                                                                                  131s CompressionLevel=3
+#       ========  ============  ====  ======  ======  =======  ====  ===========  ===========  =======
+#
+#       Here's the one-liner I used to measure.
+#
+#       root@hera:/# for i in Format={erofs,squashfs}$'\n'{,Compression={zstd,lz4}};
+#                    do
+#                        printf >/tmp/repart.d/root.conf '[Partition]\nType=root\nCopyFiles=/\nReadOnly=yes\nMinimize=yes\n%s\n' "$i";
+#                        echo "== $i ==";
+#                        rm -f /tmp/live.img;
+#                        /bin/time chronic systemd-repart --definitions=/tmp/repart.d --offline=yes --empty=create --size=auto /tmp/live.img;
+#                        du -h /tmp/live.img;
+#                    done
 
-
-with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') as td_str:
+with tempfile.TemporaryDirectory(prefix='debian-live-minimal.') as td_str:
     td = pathlib.Path(td_str)
-    (td / 'LiveOS').mkdir()
-    (td / 'EFI/BOOT').mkdir(parents=True)
+    (td / 'repart.d').mkdir()
+    (td / 'repart.d/esp.conf').write_text(textwrap.dedent(
+        """
+        [Partition]
+        Type=esp
+        CopyFiles=/boot:/
+        # SizeMinBytes=16M
+        # SizeMaxBytes=64M
+        # Minimize=guess
+        """))
+    (td / 'repart.d/root.conf').write_text(textwrap.dedent(
+        """
+        [Partition]
+        Type=root
+        Format=squashfs
+        Compression=zstd
+        CompressionLevel=3
+        CopyFiles=/
+        ReadOnly=yes
+        Minimize=yes
+        """))
+    # Make the rootfs
     subprocess.check_call(
-        ['mmdebstrap', 'forky', 'LiveOS/squashfs.img',
-         '--format=squashfs',  # mmdebstrap can't infer ".img" means squashfs, FUCK YOU RED HAT
+        # NOTE: this uses in-container systemd-repart and mksquashfs,
+        #       rather than mmdebstrap's (better!) tar and tar2sqfs.
+        ['mmdebstrap', 'forky', '/dev/null',
          '--mode=unshare',
          '--variant=apt',
          '--aptopt=Acquire::http::Proxy "http://localhost:3142"',
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
          '--include=linux-image-generic dracut',
-         # Enable root=live:<path> support in dracut.
-         '--include=dmsetup',  # https://github.com/dracut-ng/dracut-ng/blob/110/modules.d/70dm/module-setup.sh#L5
-         '--essential-hook=mkdir -p $1/etc/dracut.conf.d/',
-         '''--essential-hook=echo 'add_dracutmodules+=" dmsquash-live "' >$1/etc/dracut.conf.d/50-fuck.conf''',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
          '--include=login',        # https://bugs.debian.org/960638
          '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
          '--include=ifupdown dhcpcd-base',  # live-config doesn't support systemd-networkd yet.
+         '--include=systemd-ukify systemd-boot-efi',    # make UKI
          # NOTE: boot=live is for live-config (not dracut) <https://bugs.debian.org/1128194>
-         f'--customize-hook=env --chdir "$1" ukify build --linux=vmlinuz --initrd=initrd.img --cmdline="root=live:PARTLABEL={esp_label} boot=live"',
-         '--customize-hook=download /vmlinuz.unsigned.efi EFI/BOOT/BOOTX64.EFI'],
-        cwd=td)
-
-    # Create a raw disk image with GPT and one FAT32 EFI ESP partition.
-    # Copy EFI/BOOT/BOOTX64.EFI and live/filesystem.squashfs into the ESP.
-    # NOTE: We use gross legacy tools "mtools" because
-    #       it doesn't need root (unlike kpartx/losetup/mount) and
-    #       it is lightweight (unlike guestfish).
-    subprocess.check_call(
-        ['truncate', args.output_file,
-         '--size', filesystem_img_size])
-    subprocess.check_call(
-        ['/usr/sbin/parted', '--script', '--align=optimal', args.output_file,
-         'mklabel gpt',
-         f'mkpart {esp_label} {esp_offset}b 100%',
-         'set 1 esp on'])
-    subprocess.check_call(      # ≈ mkfs.vfat
-        ['mformat', '-i', f'{args.output_file}@@{esp_offset}',
-         '-F', '-v', esp_label])
-    subprocess.check_call(      # ≈ mount, cp, umount
-        ['mcopy', '-i', f'{args.output_file.resolve()}@@{esp_offset}',
-         '-vspm',
-         'EFI', 'LiveOS',       # source dirs
-         '::'],                 # destdir is root of fs
+         '--customize-hook=mkdir -p $1/boot/efi/boot',
+         '--customize-hook=chroot $1 chronic ukify build --output=boot/efi/boot/bootx64.efi --linux=vmlinuz --initrd=initrd.img --cmdline="systemd.volatile=overlay boot=live"',
+         '--include=systemd-repart dosfstools mtools squashfs-tools moreutils',  # make live.img
+         '--customize-hook=copy-in repart.d /tmp/',
+         '--customize-hook=chroot $1 chronic systemd-repart --definitions=/tmp/repart.d --offline=yes --empty=create --size=auto /tmp/live.img',
+         f'--customize-hook=download /tmp/live.img {args.output_file.resolve()}',
+         ],
         cwd=td)
 
 # NOTE: this invocation is concise, NOT efficient!
