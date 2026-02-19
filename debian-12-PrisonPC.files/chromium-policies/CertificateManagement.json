@@ -7,4 +7,7 @@
     //
     // This one is critical for basic functionality, so is done in 05-CACertificates.json:
     // CACertificates
+
+    // Disallow users from managing certificates
+    "CACertificateManagementAllowed": 2
 }

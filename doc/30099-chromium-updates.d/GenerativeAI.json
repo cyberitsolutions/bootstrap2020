@@ -1,5 +1,28 @@
 {
-    "CreateThemesSettings": 1,
-    "HelpMeWriteSettings": 1,
-    "TabOrganizerSettings": 1
+    "AIModeSettings": 1,
+    "AutofillPredictionSettings": 2,
+    "CreateThemesSettings": 2,
+    "DevToolsGenAiSettings": 2,
+    "GeminiActOnWebAllowedForURLs": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/good_path",
+        "https://server:8080/path",
+        ".exact.hostname.com"
+    ],
+    "GeminiActOnWebBlockedForURLs": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/bad_path",
+        "https://server:8080/path",
+        ".exact.hostname.com"
+    ],
+    "GeminiActOnWebSettings": 0,
+    "GeminiSettings": 1,
+    "GenAILocalFoundationalModelSettings": 1,
+    "GenAiDefaultSettings": 2,
+    "HelpMeWriteSettings": 2,
+    "HistorySearchSettings": 2,
+    "SearchContentSharingSettings": 1,
+    "TabCompareSettings": 2
 }

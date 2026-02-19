@@ -2,6 +2,15 @@
     "AutoSelectCertificateForUrls": [
         "{\"pattern\":\"https://www.example.com\",\"filter\":{\"ISSUER\":{\"CN\":\"certificate issuer name\", \"L\": \"certificate issuer location\", \"O\": \"certificate issuer org\", \"OU\": \"certificate issuer org unit\"}, \"SUBJECT\":{\"CN\":\"certificate subject name\", \"L\": \"certificate subject location\", \"O\": \"certificate subject org\", \"OU\": \"certificate subject org unit\"}}}"
     ],
+    "AutomaticFullscreenAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "AutomaticFullscreenBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "ClearWindowNameForNewBrowsingContextGroup": false,
     "ClipboardAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -9,6 +18,12 @@
     "ClipboardBlockedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
+    ],
+    "ControlledFrameAllowedForUrls": [
+        "isolated-app://aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
+    ],
+    "ControlledFrameBlockedForUrls": [
+        "isolated-app://aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
     ],
     "CookiesAllowedForUrls": [
         "https://www.example.com",
@@ -26,24 +41,40 @@
     ],
     "DataUrlInSvgUseEnabled": false,
     "DefaultClipboardSetting": 2,
+    "DefaultControlledFrameSetting": 1,
     "DefaultCookiesSetting": 1,
+    "DefaultDirectSocketsPrivateNetworkAccessSetting": 1,
+    "DefaultDirectSocketsSetting": 1,
     "DefaultFileSystemReadGuardSetting": 2,
     "DefaultFileSystemWriteGuardSetting": 2,
     "DefaultGeolocationSetting": 1,
+    "DefaultIdleDetectionSetting": 1,
     "DefaultImagesSetting": 1,
     "DefaultInsecureContentSetting": 2,
     "DefaultJavaScriptJitSetting": 1,
+    "DefaultJavaScriptOptimizerSetting": 1,
     "DefaultJavaScriptSetting": 1,
     "DefaultLocalFontsSetting": 2,
     "DefaultNotificationsSetting": 2,
     "DefaultPopupsSetting": 1,
     "DefaultSensorsSetting": 2,
     "DefaultSerialGuardSetting": 2,
-    "DefaultThirdPartyStoragePartitioningSetting": 1,
     "DefaultWebBluetoothGuardSetting": 2,
     "DefaultWebHidGuardSetting": 2,
     "DefaultWebUsbGuardSetting": 2,
     "DefaultWindowManagementSetting": 2,
+    "DirectSocketsAllowedForUrls": [
+        "isolated-app://aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
+    ],
+    "DirectSocketsBlockedForUrls": [
+        "isolated-app://aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
+    ],
+    "DirectSocketsPrivateNetworkAccessAllowedForUrls": [
+        "isolated-app://aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
+    ],
+    "DirectSocketsPrivateNetworkAccessBlockedForUrls": [
+        "isolated-app://aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic"
+    ],
     "FileSystemReadAskForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
@@ -60,7 +91,15 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
-    "GetDisplayMediaSetSelectAllScreensAllowedForUrls": [
+    "GeolocationBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "IdleDetectionAllowedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "IdleDetectionBlockedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
@@ -94,7 +133,14 @@
     "JavaScriptJitBlockedForSites": [
         "[*.]example.edu"
     ],
-    "LegacySameSiteCookieBehaviorEnabledForDomainList": [
+    "JavaScriptOptimizerAllowedForSites": [
+        "[*.]example.edu"
+    ],
+    "JavaScriptOptimizerBlockedForSites": [
+        "[*.]example.edu"
+    ],
+    "LegacyCookieScopeEnabled": 1,
+    "LegacyCookieScopeEnabledForDomainList": [
         "www.example.com",
         "[*.]example.edu"
     ],
@@ -114,6 +160,7 @@
         "https://www.example.com",
         "[*.]example.edu"
     ],
+    "PartitionedBlobUrlUsage": false,
     "PdfLocalFileAccessAllowedForDomains": [
         "example.com",
         "google.com"
@@ -123,6 +170,10 @@
         "[*.]example.edu"
     ],
     "PopupsBlockedForUrls": [
+        "https://www.example.com",
+        "[*.]example.edu"
+    ],
+    "PreciseGeolocationAllowedForUrls": [
         "https://www.example.com",
         "[*.]example.edu"
     ],
@@ -173,10 +224,6 @@
     ],
     "SerialBlockedForUrls": [
         "https://www.example.com",
-        "[*.]example.edu"
-    ],
-    "ThirdPartyStoragePartitioningBlockedForOrigins": [
-        "www.example.com",
         "[*.]example.edu"
     ],
     "WebHidAllowAllDevicesForUrls": [

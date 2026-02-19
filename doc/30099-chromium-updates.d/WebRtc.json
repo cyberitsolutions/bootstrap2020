@@ -1,0 +1,25 @@
+{
+    "WebRtcDiagnosticLogCollectionAllowedForOrigins": [
+        "https://www.example.com",
+        "example.com",
+        "[*.]example.com",
+        "*://example.edu:*/",
+        "https://example.com:8080"
+    ],
+    "WebRtcIPHandling": "default",
+    "WebRtcIPHandlingUrl": [
+        {
+            "url": "https://www.example.com",
+            "handling": "default_public_and_private_interfaces"
+        },
+        {
+            "url": "https://[*.]example.edu",
+            "handling": "default_public_interface_only"
+        },
+        {
+            "url": "*",
+            "handling": "disable_non_proxied_udp"
+        }
+    ],
+    "WebRtcPostQuantumKeyAgreement": true
+}

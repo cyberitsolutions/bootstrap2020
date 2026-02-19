@@ -3,7 +3,21 @@
 // Which sounds like a deeply ungood kind of telemetry.
 // As at March 2024, all of these are "supported_on: chrome.*:121-" and "value: 2 name: Disabled".
 {
+
+    // This one is from Miscellaneous but it requires generative AI.
+    "AutomatedPasswordChangeSettings": 2,
+
+    "GenAiDefaultSettings": 2,
+    "AIModeSettings": 1,
+    "AutofillPredictionSettings": 2,
     "CreateThemesSettings": 2,
+    "DevToolsGenAiSettings": 2,
+    "GeminiActOnWebSettings": 1,
+    "GeminiSettings": 1,
+    "GenAILocalFoundationalModelSettings": 1,
     "HelpMeWriteSettings": 2,
+    "HistorySearchSettings": 2,
+    "SearchContentSharingSettings": 1,
+    "TabCompareSettings": 2,
     "TabOrganizerSettings": 2
 }

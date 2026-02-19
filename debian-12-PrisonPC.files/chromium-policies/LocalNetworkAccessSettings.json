@@ -1,0 +1,22 @@
+// https://developer.chrome.com/blog/local-network-access
+// Basically this is an opt-in feature that prevents javascript from
+// https://shady.example.com/ doing
+// fetch("https://router.intranet/login") because the latter is on
+// 127/8, 10/8, or similar, and the former is on the public internet.
+// --twb, February 2026
+//
+// I don't *think* this will break these:
+//   https://PrisonPC/TV/ABC -> rtp://⋯
+//   https://PPCAdm → vnc://desktop
+//   https://PPCAdm → sftp://p123@inmates/p123
+//   https://PPCAdm → http://s123%p123@webmail
+// We might need to treat 127.0.1.1 as "local" instead of "loopback" for that last one.
+// (LocalNetworkAccessIpAddressSpaceOverrides)
+// --twb, February 2026
+{
+    "LocalNetworkAccessRestrictionsEnabled": true,
+    "LocalNetworkAccessRestrictionsTemporaryOptOut": false,
+    "LocalNetworkBlockedForUrls": ["*"],
+    "LoopbackNetworkAccessBlockedForUrls": ["*"],
+    "LocalNetworkAccessBlockedForUrls": ["*"]
+}

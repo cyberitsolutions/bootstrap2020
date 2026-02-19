@@ -66,7 +66,6 @@
     ],
     "BackgroundModeEnabled": true,
     "BatterySaverModeAvailability": 1,
-    "BeforeunloadEventCancelByPreventDefaultEnabled": true,
     "BlockThirdPartyCookies": false,
     "BookmarkBarEnabled": true,
     "BrowserAddPersonEnabled": true,
@@ -96,13 +95,11 @@
             "time_to_live_in_hours": 12
         }
     ],
+    "BuiltInAIAPIsEnabled": true,
     "BuiltInDnsClientEnabled": true,
     "CORSNonWildcardRequestHeadersSupport": true,
+    "CacheEncryptionEnabled": true,
     "CertificateTransparencyEnforcementDisabledForCas": [
-        "sha256/AAAAAAAAAAAAAAAAAAAAAA==",
-        "sha256//////////////////////w=="
-    ],
-    "CertificateTransparencyEnforcementDisabledForLegacyCas": [
         "sha256/AAAAAAAAAAAAAAAAAAAAAA==",
         "sha256//////////////////////w=="
     ],
@@ -110,6 +107,7 @@
         "example.com",
         ".example.com"
     ],
+    "ChromeDataRegionSetting": 0,
     "ChromeForTestingAllowed": true,
     "ChromeVariations": 1,
     "ClearBrowsingDataOnExitList": [
@@ -135,40 +133,6 @@
     "ComponentUpdatesEnabled": true,
     "DNSInterceptionChecksEnabled": true,
     "DataControlsRules": [
-        {
-            "description": "Block executables of a few select types",
-            "name": "Block .exe files",
-            "rule_id": "rule1",
-            "restrictions": [
-                {
-                    "class": "FILE_DOWNLOAD",
-                    "level": "BLOCK"
-                }
-            ],
-            "sources": {
-                "urls": [
-                    "salesforce.com",
-                    "gmail.com",
-                    "docs.google.com",
-                    "drive.google.com",
-                    "company.com"
-                ],
-                "byte_size_higher_than": 100,
-                "byte_size_lower_than": 5000000,
-                "file_type": [
-                    "exe",
-                    "bat",
-                    "msi",
-                    "dmg"
-                ],
-                "mime_type": [
-                    "application/vnd.microsoft.portable-executable",
-                    "video/avi"
-                ],
-                "file_number_higher_than": 0,
-                "file_number_lower_than": 2
-            }
-        },
         {
             "description": "Block copying from internal sites to the OS clipboard",
             "name": "Block copying from corp sites to OS",
@@ -243,32 +207,6 @@
             ]
         },
         {
-            "description": "Block pasting in several cases using an if condition",
-            "or": [
-                {
-                    "destinations": {
-                        "incognito": true
-                    }
-                },
-                {
-                    "destinations": {
-                        "os_clipboard": true
-                    }
-                },
-                {
-                    "destinations": {
-                        "other_profile": true
-                    }
-                }
-            ],
-            "restrictions": [
-                {
-                    "class": "CLIPBOARD",
-                    "level": "BLOCK"
-                }
-            ]
-        },
-        {
             "description": "Block pasting to incognito with an exception of corp sites",
             "and": [
                 {
@@ -310,32 +248,6 @@
             ]
         },
         {
-            "description": "Block copying in several cases using an if condition",
-            "or": [
-                {
-                    "sources": {
-                        "incognito": true
-                    }
-                },
-                {
-                    "sources": {
-                        "os_clipboard": true
-                    }
-                },
-                {
-                    "sources": {
-                        "other_profile": true
-                    }
-                }
-            ],
-            "restrictions": [
-                {
-                    "class": "CLIPBOARD",
-                    "level": "BLOCK"
-                }
-            ]
-        },
-        {
             "description": "Block copying from incognito with an exception of corp sites",
             "and": [
                 {
@@ -361,109 +273,41 @@
             ]
         },
         {
-            "description": "Block clipboard interactions with several nested conditions",
+            "description": "Prevent clipboard data from leaving a specified set of corp sites",
             "and": [
                 {
-                    "and": [
-                        {
-                            "destinations": {
-                                "incognito": true
-                            },
-                            "sources": {
-                                "incognito": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "not": {
-                        "destinations": {
-                            "incognito": true
-                        },
-                        "sources": {
-                            "incognito": true
-                        }
-                    }
-                },
-                {
-                    "or": [
-                        {
-                            "destinations": {
-                                "incognito": true
-                            },
-                            "sources": {
-                                "incognito": true
-                            }
-                        }
-                    ]
-                }
-            ],
-            "or": [
-                {
-                    "and": [
-                        {
-                            "destinations": {
-                                "incognito": true
-                            },
-                            "sources": {
-                                "incognito": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "not": {
-                        "destinations": {
-                            "incognito": true
-                        },
-                        "sources": {
-                            "incognito": true
-                        }
-                    }
-                },
-                {
-                    "or": [
-                        {
-                            "destinations": {
-                                "incognito": true
-                            },
-                            "sources": {
-                                "incognito": true
-                            }
-                        }
-                    ]
-                }
-            ],
-            "not": {
-                "and": [
-                    {
-                        "destinations": {
-                            "incognito": true
-                        },
-                        "sources": {
-                            "incognito": true
-                        }
-                    }
-                ],
-                "not": {
-                    "destinations": {
-                        "incognito": true
-                    },
                     "sources": {
-                        "incognito": true
+                        "urls": [
+                            "corp1.com",
+                            "corp2.com"
+                        ]
                     }
                 },
-                "or": [
-                    {
-                        "destinations": {
-                            "incognito": true
+                {
+                    "or": [
+                        {
+                            "not": {
+                                "destinations": {
+                                    "urls": [
+                                        "corp1.com",
+                                        "corp2.com"
+                                    ]
+                                }
+                            }
                         },
-                        "sources": {
-                            "incognito": true
+                        {
+                            "destinations": {
+                                "os_clipboard": true
+                            }
+                        },
+                        {
+                            "destinations": {
+                                "other_profile": true
+                            }
                         }
-                    }
-                ]
-            },
+                    ]
+                }
+            ],
             "restrictions": [
                 {
                     "class": "CLIPBOARD",
@@ -476,7 +320,26 @@
     "DefaultDownloadDirectory": "/home/${user_name}/Downloads",
     "DefaultSearchProviderContextMenuAccessAllowed": true,
     "DesktopSharingHubEnabled": true,
+    "DevToolsGoogleDeveloperProgramProfileAvailability": 2,
     "DeveloperToolsAvailability": 2,
+    "DeveloperToolsAvailabilityAllowlist": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/bad_path",
+        "https://server:8080/path",
+        ".exact.hostname.com",
+        "file://*"
+    ],
+    "DeveloperToolsAvailabilityBlocklist": [
+        "https://example.com",
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/bad_path",
+        "https://server:8080/path",
+        ".exact.hostname.com",
+        "*",
+        "file://*"
+    ],
     "Disable3DAPIs": false,
     "DisableScreenshots": true,
     "DiskCacheDir": "${user_home}/Chrome_cache",
@@ -492,11 +355,24 @@
         "ExtensionInstallBlocklist"
     ],
     "EnableOnlineRevocationChecks": false,
+    "EnableUnsafeSwiftShader": false,
     "EncryptedClientHelloEnabled": true,
-    "EnforceLocalAnchorConstraintsEnabled": false,
+    "EnterpriseCustomLabel": "Chromium",
+    "EnterpriseCustomLabelForBrowser": "Chromium",
     "EnterpriseHardwarePlatformAPIEnabled": true,
+    "EnterpriseLogoUrl": "https://example.com/image.png",
+    "EnterpriseLogoUrlForBrowser": "https://example.com/image.png",
+    "EnterpriseProfileBadgeToolbarSettings": 1,
     "EnterpriseProfileCreationKeepBrowsingData": true,
     "EnterpriseRealTimeUrlCheckMode": 1,
+    "EnterpriseSearchAggregatorSettings": {
+        "name": "My Search Aggregator",
+        "shortcut": "work",
+        "search_url": "https://www.aggregator.com/search?q={searchTerms}",
+        "suggest_url": "https://www.aggregator.com/suggest",
+        "icon_url": "https://www.google.com/favicon.ico",
+        "require_shortcut": true
+    },
     "ExemptDomainFileTypePairsFromFileTypeDownloadWarnings": [
         {
             "domains": [
@@ -523,6 +399,7 @@
         "[*.]example.edu"
     ],
     "ForceEphemeralProfiles": true,
+    "ForceForegroundPriorityForAllTabs": true,
     "ForceGoogleSafeSearch": false,
     "ForcePermissionPolicyUnloadDefaultEnabled": true,
     "ForceYouTubeRestrict": 0,
@@ -553,20 +430,45 @@
     "ImportSavedPasswords": false,
     "ImportSearchEngine": true,
     "IncognitoModeAvailability": 1,
-    "InsecureFormsWarningsEnabled": true,
-    "InsecureHashesInTLSHandshakesEnabled": false,
+    "IncognitoModeUrlAllowlist": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/bad_path",
+        "https://server:8080/path",
+        ".exact.hostname.com",
+        "file://*",
+        "custom_scheme:*",
+        "*"
+    ],
+    "IncognitoModeUrlBlocklist": [
+        "example.com",
+        "https://ssl.server.com",
+        "hosting.com/bad_path",
+        "https://server:8080/path",
+        ".exact.hostname.com",
+        "file://*",
+        "custom_scheme:*",
+        "*"
+    ],
     "IntensiveWakeUpThrottlingEnabled": true,
     "IntranetRedirectBehavior": 1,
     "IsolateOrigins": "https://a.example.com/,https://othersite.org/,https://[*.]corp.example.com",
-    "IsolatedAppsDeveloperModeAllowed": false,
-    "LacrosSecondaryProfilesAllowed": true,
+    "IsolatedWebAppInstallForceList": [
+        {
+            "update_manifest_url": "https://example.com/isolated_web_app/update_manifest.json",
+            "web_bundle_id": "aerugqztij5biqquuk3mfwpsaibuegaqcitgfchwuosuofdjabzqaaic",
+            "update_channel": "beta",
+            "allow_downgrades": true,
+            "pinned_version": "1.2.3"
+        }
+    ],
     "LensDesktopNTPSearchEnabled": true,
+    "LensOverlaySettings": 1,
     "LensRegionSearchEnabled": true,
     "LookalikeWarningAllowlistDomains": [
         "foo.example.com",
         "example.org"
     ],
-    "ManagedAccountsSigninRestriction": "primary_account",
     "ManagedBookmarks": [
         {
             "toplevel_name": "My managed bookmarks folder"
@@ -608,14 +510,33 @@
     "MaxConnectionsPerProxy": 32,
     "MaxInvalidationFetchDelay": 10000,
     "MediaRecommendationsEnabled": true,
+    "MemorySaverModeSavings": 0,
     "MetricsReportingEnabled": true,
     "NTPCardsVisible": true,
     "NTPCustomBackgroundEnabled": true,
+    "NTPFooterExtensionAttributionEnabled": true,
+    "NTPFooterManagementNoticeEnabled": true,
     "NTPMiddleSlotAnnouncementVisible": true,
-    "NativeClientForceAllowed": true,
+    "NTPOutlookCardVisible": false,
+    "NTPSharepointCardVisible": false,
+    "NTPShortcuts": [
+        {
+            "name": "Google",
+            "url": "https://www.google.com"
+        },
+        {
+            "name": "YouTube",
+            "url": "https://www.youtube.com"
+        },
+        {
+            "name": "Google Drive",
+            "url": "https://www.drive.google.com",
+            "allow_user_edit": true,
+            "allow_user_delete": true
+        }
+    ],
     "NetworkPredictionOptions": 1,
     "NetworkServiceSandboxEnabled": true,
-    "NewBaseUrlInheritanceBehaviorAllowed": true,
     "OnBulkDataEntryEnterpriseConnector": [
         {
             "block_until_verdict": 0,
@@ -916,12 +837,15 @@
         }
     ],
     "OriginAgentClusterDefaultEnabled": false,
+    "OriginKeyedProcessesEnabled": true,
     "OverrideSecurityRestrictionsOnInsecureOrigin": [
         "http://testserver.example.com/",
         "*.example.org"
     ],
     "PaymentMethodQueryEnabled": true,
+    "PdfAnnotationsEnabled": false,
     "PdfUseSkiaRendererEnabled": true,
+    "PdfViewerOutOfProcessIframeEnabled": true,
     "PolicyAtomicGroupsEnabled": true,
     "PolicyDictionaryMultipleSourceMergeList": [
         "ExtensionSettings"
@@ -933,18 +857,23 @@
     "PolicyRefreshRate": 3600000,
     "PolicyTestPageEnabled": true,
     "PostQuantumKeyAgreementEnabled": true,
+    "PrefetchWithServiceWorkerEnabled": true,
     "ProfilePickerOnStartupAvailability": 0,
     "ProfileReauthPrompt": 1,
-    "PromotionalTabsEnabled": false,
+    "PromotionsEnabled": false,
     "PromptForDownloadLocation": false,
     "PromptOnMultipleMatchingCertificates": true,
+    "ProvisionManagedClientCertificateForBrowser": 0,
+    "ProvisionManagedClientCertificateForUser": 0,
     "ProxySettings": {
         "ProxyBypassList": "https://www.example1.com,https://www.example2.com,https://internalsite/",
         "ProxyMode": "fixed_servers",
         "ProxyServer": "123.123.123.123:8080"
     },
+    "QRCodeGeneratorEnabled": false,
     "QuicAllowed": true,
-    "RSAKeyUsageForLocalAnchorsEnabled": true,
+    "ReduceAcceptLanguageEnabled": true,
+    "RelaunchFastIfOutdated": 7,
     "RelaunchNotification": 1,
     "RelaunchNotificationPeriod": 604800000,
     "RelaunchWindow": {
@@ -960,6 +889,7 @@
     },
     "RemoteDebuggingAllowed": true,
     "RequireOnlineRevocationChecksForLocalAnchors": false,
+    "RestrictPdfSaveToGoogleDriveAccountsToPattern": ".*@example\\.com",
     "RestrictSigninToPattern": ".*@example\\.com",
     "RoamingProfileLocation": "${roaming_app_data}\\chrome-profile",
     "RoamingProfileSupportEnabled": true,
@@ -980,14 +910,18 @@
     "SecurityKeyPermitAttestation": [
         "example.com"
     ],
+    "ServiceWorkerAutoPreloadEnabled": true,
+    "ServiceWorkerToControlSrcdocIframeEnabled": true,
     "SharedArrayBufferUnrestrictedAccessAllowed": false,
     "SharedClipboardEnabled": true,
+    "SharedWorkerBlobURLFixEnabled": true,
     "ShoppingListEnabled": true,
     "ShowAppsShortcutInBookmarkBar": false,
     "ShowFullUrlsInAddressBar": false,
     "SideSearchEnabled": false,
     "SignedHTTPExchangeEnabled": true,
     "SigninInterceptionEnabled": true,
+    "SilentPrintingEnabled": false,
     "SitePerProcess": true,
     "SiteSearchSettings": [
         {
@@ -1000,6 +934,12 @@
             "name": "YouTube",
             "shortcut": "youtube",
             "url": "https://www.youtube.com/results?search_query=%s"
+        },
+        {
+            "name": "Google Drive",
+            "shortcut": "drive",
+            "url": "https://drive.google.com/?q=%s",
+            "allow_user_override": true
         }
     ],
     "SpellCheckServiceEnabled": false,
@@ -1012,6 +952,8 @@
         "fr",
         "es"
     ],
+    "StandardizedBrowserZoomEnabled": true,
+    "StaticStorageQuotaEnabled": true,
     "StrictMimetypeCheckForWorkerScriptsEnabled": false,
     "SuppressDifferentOriginSubframeDialogs": true,
     "SuppressUnsupportedOSWarning": true,
@@ -1019,15 +961,15 @@
     "SyncTypesListDisabled": [
         "bookmarks"
     ],
+    "TLS13EarlyDataEnabled": true,
     "TabDiscardingExceptions": [
         "example.com",
         "https://*",
         "*"
     ],
     "TaskManagerEndProcessEnabled": true,
-    "ThrottleNonVisibleCrossOriginIframesAllowed": true,
-    "ToolbarAvatarLabelSettings": 1,
     "TranslateEnabled": true,
+    "TranslatorAPIAllowed": true,
     "URLAllowlist": [
         "example.com",
         "https://ssl.server.com",
@@ -1048,8 +990,6 @@
     "UnmanagedDeviceSignalsConsentFlowEnabled": true,
     "UrlKeyedAnonymizedDataCollectionEnabled": true,
     "UrlKeyedMetricsAllowed": true,
-    "UserAgentClientHintsGREASEUpdateEnabled": true,
-    "UserAgentReduction": 0,
     "UserContextAwareAccessSignalsAllowlist": [
         "https://example1.com",
         "example2.com",
@@ -1064,6 +1004,12 @@
         "https://[*.]example.edu/"
     ],
     "WPADQuickCheckEnabled": true,
+    "WatermarkStyle": {
+        "fill_opacity": 4,
+        "outline_opacity": 6,
+        "font_size": 24
+    },
+    "WebAppInstallByUserEnabled": false,
     "WebAppInstallForceList": [
         {
             "create_desktop_shortcut": true,
@@ -1116,14 +1062,19 @@
             "force_unregister_os_integration": true
         }
     ],
+    "WebAudioOutputBufferingEnabled": true,
+    "WebAuthenticationRemoteDesktopAllowedOrigins": [
+        "https://remotedesktop.google.com",
+        "https://vdi.corp.example",
+        "https://server:8080/"
+    ],
     "WebAuthenticationRemoteProxiedRequestsAllowed": true,
     "WebRtcEventLogCollectionAllowed": true,
-    "WebRtcIPHandling": "default",
     "WebRtcLocalIpsAllowedUrls": [
         "https://www.example.com",
         "*example.com*"
     ],
     "WebRtcTextLogCollectionAllowed": true,
     "WebRtcUdpPortRange": "10000-11999",
-    "WebSQLAccess": true
+    "XSLTEnabled": true
 }

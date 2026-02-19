@@ -11,5 +11,15 @@
     "ReportMachineIDData": false,
     "ReportPolicyData": false,
     "ReportUserIDData": false,
-    "ReportVersionData": false
+    "ReportVersionData": false,
+    "SaasUsageReportingDomainUrlsForBrowsers": [
+        "google.com",
+        "example.com/path"
+    ],
+    "SaasUsageReportingDomainUrlsForProfiles": [
+        "google.com",
+        "example.com/path"
+    ],
+    "UserSecurityAuthenticatedReporting": true,
+    "UserSecuritySignalsReporting": true
 }

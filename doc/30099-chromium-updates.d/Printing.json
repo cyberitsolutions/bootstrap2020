@@ -1,5 +1,4 @@
 {
-    "CloudPrintProxyEnabled": true,
     "DefaultPrinterSelection": "{ \"kind\": \"local\", \"idPattern\": \".*public\", \"namePattern\": \".*Color\" }",
     "DisablePrintPreview": false,
     "OopPrintDriversAllowed": true,

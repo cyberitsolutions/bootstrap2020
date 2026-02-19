@@ -1,6 +1,3 @@
 {
-    "PrivacySandboxAdMeasurementEnabled": false,
-    "PrivacySandboxAdTopicsEnabled": false,
-    "PrivacySandboxPromptEnabled": false,
-    "PrivacySandboxSiteEnabledAdsEnabled": false
+    "PrivacySandboxPromptEnabled": false
 }

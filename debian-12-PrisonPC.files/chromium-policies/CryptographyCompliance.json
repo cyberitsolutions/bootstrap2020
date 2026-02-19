@@ -1,0 +1,3 @@
+// This is used to enable regulatory downgrade attacks (CNSAS / FIPS compliance).
+// We do not want or need this, because we do not want NSA backdoored algorithms.
+{}

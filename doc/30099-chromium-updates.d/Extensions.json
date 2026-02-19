@@ -3,6 +3,7 @@
     "ExtensionAllowedTypes": [
         "hosted_app"
     ],
+    "ExtensionDeveloperModeSettings": 1,
     "ExtensionExtendedBackgroundLifetimeForPortConnectionsToUrls": [
         "chrome-extension://abcdefghijklmnopabcdefghijklmnop/",
         "chrome-extension://bcdefghijklmnopabcdefghijklmnopa/"
@@ -15,6 +16,7 @@
         "extension_id1",
         "extension_id2"
     ],
+    "ExtensionInstallCloudPolicyChecksEnabled": true,
     "ExtensionInstallForcelist": [
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;https://clients2.google.com/service/update2/crx",
         "abcdefghijklmnopabcdefghijklmnop"
@@ -25,7 +27,6 @@
     "ExtensionInstallTypeBlocklist": [
         "command_line"
     ],
-    "ExtensionManifestV2Availability": 2,
     "ExtensionSettings": {
         "*": {
             "allowed_types": [
@@ -96,5 +97,8 @@
             "installation_mode": "allowed"
         }
     },
-    "ExtensionUnpublishedAvailability": 1
+    "ExtensionUnpublishedAvailability": 1,
+    "MandatoryExtensionsForIncognitoNavigation": [
+        "abcdefghijklmnopabcdefghijklmnop"
+    ]
 }

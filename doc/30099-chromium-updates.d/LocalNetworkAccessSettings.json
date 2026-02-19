@@ -1,0 +1,40 @@
+{
+    "LocalNetworkAccessAllowedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu",
+        "*"
+    ],
+    "LocalNetworkAccessBlockedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu",
+        "*"
+    ],
+    "LocalNetworkAccessIpAddressSpaceOverrides": [
+        "100.64.0.0/10=public",
+        "[2001:db8::]/32=local",
+        "192.168.0.1:8000=public",
+        "[2001:DB8::8:800:200C:417A]:8080=local"
+    ],
+    "LocalNetworkAccessPermissionsPolicyDefaultEnabled": true,
+    "LocalNetworkAccessRestrictionsTemporaryOptOut": true,
+    "LocalNetworkAllowedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu",
+        "*"
+    ],
+    "LocalNetworkBlockedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu",
+        "*"
+    ],
+    "LoopbackNetworkAllowedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu",
+        "*"
+    ],
+    "LoopbackNetworkBlockedForUrls": [
+        "http://www.example.com:8080",
+        "[*.]example.edu",
+        "*"
+    ]
+}

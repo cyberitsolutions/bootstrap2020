@@ -1,0 +1,4 @@
+{
+    "PreferSlowCiphers": "cnsa",
+    "PreferSlowKexAlgorithms": "cnsa2"
+}

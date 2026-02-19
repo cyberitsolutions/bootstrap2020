@@ -5,6 +5,8 @@
 // https://github.com/cyberitsolutions/bootstrap2020/blob/main/doc/30099-chromium-updates-keys-only.rst
 // https://github.com/cyberitsolutions/bootstrap2020/blob/main/doc/30099-chromium-updates.org
 // https://github.com/cyberitsolutions/bootstrap2020/tree/main/doc/30099-chromium-updates.d
+//
+// FIXME: use ProxyOverrideRules instead of ProxyBypassList ?
 {
     "ProxySettings": {
         "ProxyMode": "fixed_servers",

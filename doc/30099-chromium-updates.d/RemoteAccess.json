@@ -21,8 +21,5 @@
     "RemoteAccessHostMatchUsername": false,
     "RemoteAccessHostMaximumSessionDurationMinutes": 1200,
     "RemoteAccessHostRequireCurtain": false,
-    "RemoteAccessHostTokenUrl": "https://example.com/issue",
-    "RemoteAccessHostTokenValidationCertificateIssuer": "Example Certificate Authority",
-    "RemoteAccessHostTokenValidationUrl": "https://example.com/validate",
     "RemoteAccessHostUdpPortRange": "12400-12409"
 }

@@ -11,6 +11,10 @@
     // As at March 2024, we do not install any webexts via apt.
     "ExtensionInstallTypeBlocklist": ["command-line"],
 
+    // Disable "dev mode" on this page.
+    // (also disabled by DeveloperToolsAvailability in Miscellaneous).
+    "ExtensionDeveloperModeSettings": 1,
+
     "ExtensionUnpublishedAvailability": 1,
     "ExtensionInstallAllowlist": [],
     "ExtensionInstallBlocklist": ["*"],

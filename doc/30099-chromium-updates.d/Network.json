@@ -1,7 +1,8 @@
 {
     "AccessControlAllowMethodsInCORSPreflightSpecConformant": true,
-    "BlockTruncatedCookies": false,
     "CompressionDictionaryTransportEnabled": true,
+    "DataURLWhitespacePreservationEnabled": false,
+    "HappyEyeballsV3Enabled": true,
     "IPv6ReachabilityOverrideEnabled": true,
     "OutOfProcessSystemDnsResolutionEnabled": false,
     "ZstdContentEncodingEnabled": true

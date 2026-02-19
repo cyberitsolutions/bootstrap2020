@@ -229,6 +229,7 @@
 
     // Inmates DEFINITELY should not have developer tools!
     "DeveloperToolsAvailability": 2,
+    "DevToolsGoogleDeveloperProgramProfileAvailability": 2,
 
     // This is basically a remote control for selenium-type things.
     "RemoteDebuggingAllowed": false,
@@ -259,6 +260,9 @@
 
     // Blocked by squid anyway.
     "TranslateEnabled": false,
+    "TranslatorAPIAllowed": false,
+
+    "WebAppInstallByUserEnabled": false,
 
     // In Debian 9 we blocked this.
     // In Debian 11 we seed ManagedBookmarks, do leave up to user???
@@ -357,6 +361,22 @@
     // squid probably blocks anyway.
     // Local spell checking (using .bdic files) is governed by SpellcheckEnabled.
     "SpellCheckServiceEnabled": false,
+    // AMC upgraded from
+    // desktop-inmate-amc-2025-02-04-1738630046 to
+    // desktop-inmate-amc-2026-02-10-1770692386
+    // i.e. a whole year of updates in one go.
+    // After this they reported that spell checking is not working reliably.
+    // In my testing, I found that spell checking works after a factory reset, the FIRST time you run chromium.
+    // Thereafter, it does not work again, unless you right click > spell check, and change any setting.
+    // That seems to fix it for the rest of that run of chromium.
+    // If you restart chromium, it goes back to not working again.
+    // I have NO FUCKING IDEA why this is happening or what I can do about it.
+    // As a random guess, let's try blocking those settings -- forcing them to be on.
+    // --twb, February 2026
+    // https://alloc.cyber.com.au/task/task.php?taskID=35688
+    // "SpellcheckEnabled": true,
+    // "SpellcheckLanguage": ["en-AU", "en-CA", "en-GB", "en-US"],
+    // "SpellcheckLanguageBlocklist": ["af", "bg", "ca", "cs", "da", "de", "el", "es", "es-419", "es-AR", "es-ES", "es-MX", "es-US", "et", "fa", "fo", "fr", "he", "hi", "hr", "hu", "id", "it", "ko", "lt", "lv", "nb", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sh", "sk", "sl", "sq", "sr", "sv", "ta", "tg", "tr", "uk", "vi"],
 
     // No video conferencing.
     "AudioCaptureAllowed": false,
@@ -384,6 +404,14 @@
 
     // Don't offer a "web store" which I guess is basically play.google.com?
     "HideWebStoreIcon": true,
+
+    // Should we enable these?
+    // I feel like it will piss people off a lot more than the browser just crashing.
+    // We have an OOM killer now, so usually the browser *tab* will crash, rather than
+    // the whole browser or the whole desktop.
+    // --twb, February 2026
+    // "HighEfficiencyModeEnabled": true,
+    // "MemorySaverModeSavings": 1,
 
     // This is for A/B testing of changes to this file.
     // It is not interesting to us.
@@ -420,6 +448,11 @@
     // "CertificateTransparencyEnforcementDisabledForCas": ["sha256/AAAAAAAAAAAAAAAAAAAAAA==", "sha256//////////////////////w=="],
     // "CertificateTransparencyEnforcementDisabledForLegacyCas": ["sha256/AAAAAAAAAAAAAAAAAAAAAA==", "sha256//////////////////////w=="],
 
+    // FIXME: do we want this on, or off?
+    //        Default is off (and end user cannot opt in)?
+    //        --twb, February 2026
+    // CacheEncryptionEnabled
+
     // Not spoken by squid anyway.
     "QuicAllowed": false,
 
@@ -448,6 +481,9 @@
     // Blocking it pro-actively out of paranoia.
     "NTPMiddleSlotAnnouncementVisible": false,
 
+    "NTPOutlookCardVisible": false,
+    "NTPSharepointCardVisible": false,
+
     // This is about the SOURCE port on the local computer.
     // We use stateful firewalls, so this is not interesting.
     // "WebRtcUdpPortRange": "10000-11999",
@@ -463,11 +499,23 @@
     //   * heuristics to guess which text fields are for credit card numbers
     // AFAICT Chromium DOES NOT SUPPORT getting this content preloaded by the sysadmin!
     // AFAICT Debian DOES NOT PROVIDE this content, i.e. it is not vetted by Debian QA or Debian Security.
-    // In Debian 9, we rolled a hack for spelling, and just let the fail.
+    // In Debian 9, we rolled a hack for spelling, and just let the rest fail.
     // We ought to see if we can generalize that hack for ALL chrome://components...
     //
     // https://www.researchgate.net/publication/349979628_Web_Browser_Privacy_What_Do_Browsers_Say_When_They_Phone_Home
     // https://www.researchgate.net/publication/349979628_Web_Browser_Privacy_What_Do_Browsers_Say_When_They_Phone_Home/fulltext/604a2ba992851c1bd4df939f/Web-Browser-Privacy-What-Do-Browsers-Say-When-They-Phone-Home.pdf
+    //
+    // UPDATE: as at February 2026, the upstream documentation explicitly says:
+    //            some components are exempt from this policy:
+    //            updates to any component that
+    //              does not contain executable code and
+    //              is critical for the security of the browser
+    //            will not be disabled.
+    //            Examples include CRLs and subresource filters.
+    //         It is not immediately clear to me if e.g. zxcvb
+    //         component is considered "security critical".
+    //         --twb, February 2026
+    //
     // FIXME FIXME FIXME // "ComponentUpdatesEnabled": true,
 
     // By default Chromium does something like htpdate, to Google servers.
@@ -510,6 +558,7 @@
     "NativeClientForceAllowed": false,
     "NetworkServiceSandboxEnabled": true,
     "WebSQLAccess": false,
+    "XSLTEnabled": false,
 
     // Problem recipe:
     //   1. Applications > Mail Reader
@@ -577,6 +626,7 @@
     //     https://developers.google.com/gmail/promotab/
     // In any case, I'm pretty sure it means "google ads".
     "PromotionalTabsEnabled": false,
+    "PromotionsEnabled": false,
 
     // I don't know what this is, but
     // I *think* it's only for logging into *google* at the browser level.
@@ -642,6 +692,9 @@
 
     // Not interesting as users aren't logged into google (and are not supposed to have smartphones).
     "ClickToCallEnabled": false,
+
+    // Detainees are not supposed to have smartphones.
+    "QRCodeGeneratorEnabled": false,
 
     // Chromium can read a ~/.config/chromium written by an older chromium.
     // But it will FLAT OUT REFUSE to read a config written by a newer chromium.

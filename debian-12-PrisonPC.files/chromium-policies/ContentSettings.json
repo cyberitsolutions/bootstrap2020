@@ -1,4 +1,25 @@
 {
+
+    // Historically, any attempt to make something full screen was banned.
+    // The theory is that a detainee could have a shady app open, and
+    // a separate full-screen app open, and when they see a guard coming,
+    // alt-tab to the fullscreen app as a "boss key".
+    // If they can only maximize and not fullscreen, then anyone
+    // looking at their screen can still see the shady window in the
+    // taskbar.
+    //
+    // In recent years we have not cared so much about this, but
+    // since this chromium hardening setting was added,
+    // I'm going to turn it on and see if anyone complains.
+    // --twb, February 2026
+    "AutomaticFullscreenBlockedForUrls": ["*"],
+
+    // <twb> I don't understand what this is or if we want it.
+    // <mike> twb: Looks to me like there was a bug (or at least "stupid behaviour") where the window title was at least sometimes preserved when changing URL, leaking tracking data about the previous page to the new URL. This "bug" has been squashed, but they've also added a policy option to revert back to that behaviour
+    // <mike> I think we leave that option alone, the default is what we want
+    // https://chromeenterprise.google/policies/#ClearWindowNameForNewBrowsingContextGroup
+
+
     // Allow cookies, but downgrade persistent cookies to session cookies.
     // https://en.wikipedia.org/wiki/HTTP_cookie#Session_cookie
     // UPDATE: AMC *want* tracking cookies to work, because
@@ -43,7 +64,10 @@
     "DefaultSensorsSetting": 2,
     "DefaultWebBluetoothGuardSetting": 2,
     "DefaultWebUsbGuardSetting": 2,
-    "DefaultSerialGuardSetting": 2
+    "DefaultSerialGuardSetting": 2,
+    "DefaultControlledFrameSetting": 2,
+    "DefaultDirectSocketsSetting": 2,
+    "DefaultIdleDetectionSetting": 2
 
     // This is for CLIENT certificates; we do not use those.
     // "AutoSelectCertificateForUrls": [

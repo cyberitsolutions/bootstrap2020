@@ -1,0 +1,35 @@
+{
+    "EnableProxyOverrideRulesForAllUsers": 1,
+    "ProxyOverrideRules": [
+        {
+            "DestinationMatchers": [
+                "https://some.app.com",
+                "https://other.app.org"
+            ],
+            "ProxyList": [
+                "HTTPS proxy.app:443",
+                "DIRECT"
+            ],
+            "Conditions": [
+                {
+                    "DnsProbe": {
+                        "Host": "corp.ads",
+                        "Result": "resolved"
+                    }
+                }
+            ]
+        },
+        {
+            "DestinationMatchers": [
+                "https://google.com"
+            ],
+            "ExcludeDestinationMatchers": [
+                "https://mail.google.com"
+            ],
+            "ProxyList": [
+                "HTTPS proxy.app:443",
+                "DIRECT"
+            ]
+        }
+    ]
+}
