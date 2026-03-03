@@ -31,7 +31,7 @@ At time of writing, the host system needs:
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('output_file', nargs='?', default=pathlib.Path('live.img'), type=pathlib.Path)
+parser.add_argument('dest_dir', nargs='?', default=pathlib.Path.cwd(), type=pathlib.Path)
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 
@@ -87,6 +87,8 @@ args = parser.parse_args()
 #        So (some) kernel upgrades just fail.
 #        For a read-only rootfs, it doesn't matter, so
 #        just give up and let the ESP be all of /boot for now.
+#
+#        See also https://bugs.debian.org/1098933
 #
 # FIXME: https://github.com/systemd/systemd/issues/36370
 #        means the ESP is actually 260MiB minimum.
@@ -172,11 +174,17 @@ with tempfile.TemporaryDirectory(prefix='debian-live-minimal.') as td_str:
          '--include=systemd-repart dosfstools mtools squashfs-tools moreutils',  # make live.img
          '--customize-hook=copy-in repart.d /tmp/',
          '--customize-hook=chroot $1 chronic systemd-repart --definitions=/tmp/repart.d --offline=yes --empty=create --size=auto /tmp/live.img',
-         f'--customize-hook=download /tmp/live.img {args.output_file.resolve()}',
+         f'--customize-hook=copy-out /tmp/live.img {args.dest_dir.resolve()}',
          ],
         cwd=td)
 
+# Workaround https://bugs.debian.org/1129567
+subprocess.check_call(
+    ['fallocate', '--dig-holes', 'live.img'],
+    cwd=args.dest_dir)
+
 # NOTE: this invocation is concise, NOT efficient!
 if args.boot_test:
-    subprocess.check_call([
-        'kvm', '-m', '1G', '-bios', 'OVMF.fd', '-hda', args.output_file])
+    subprocess.check_call(
+        ['kvm', '-m', '1G', '-bios', 'OVMF.fd', '-hda', 'live.img'],
+        cwd=args.dest_dir)
