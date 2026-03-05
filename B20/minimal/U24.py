@@ -105,7 +105,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--dpkgopt=force-unsafe-io',
          '--include=linux-image-generic init initramfs-tools live-boot netbase',
          '--include=dbus-broker',  # https://bugs.debian.org/814758
-         '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
+         '--include=live-config keyboard-configuration locales sudo user-setup',
          '--include=systemd-resolved',  # fix /etc/resolv.conf at boot time *iff* your build host is using resolved!
          f'--customize-hook=copy-in "{network_config_path.name}" /etc/systemd/network/',
          '--customize-hook=systemctl --root="$1" enable systemd-networkd systemd-resolved',

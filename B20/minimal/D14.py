@@ -138,7 +138,7 @@ subprocess.check_call([
     '--include=linux-image-generic dracut',
     '--include=dbus-broker',  # https://bugs.debian.org/814758
     '--include=login',        # https://bugs.debian.org/960638
-    '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
+    '--include=live-config keyboard-configuration locales sudo user-setup',
     # == NETWORKING ==
     # In live-boot+live-config, "do DHCP on any ethernet" is actually in live-boot.
     # In dracut+live-config, neither is enabled by default.

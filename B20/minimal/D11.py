@@ -42,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--dpkgopt=force-unsafe-io',
          '--include=linux-image-amd64 init initramfs-tools live-boot netbase',
          '--include=dbus',          # https://bugs.debian.org/814758
-         '--include=live-config iproute2 keyboard-configuration locales sudo user-setup',
+         '--include=live-config keyboard-configuration locales sudo user-setup',
          '--include=ifupdown isc-dhcp-client',  # live-config doesn't support systemd-networkd yet.
 
          # Do the **BARE MINIMUM** to make a USB key that can boot on X86_64 UEFI.
