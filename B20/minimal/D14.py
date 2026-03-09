@@ -6,28 +6,7 @@ __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2020 Trent W. Buck"
 __license__ = "expat"
 
-__doc__ = """ build the simplest Debian Live image that can boot
-
-This uses mmdebstrap to do the heavy lifting;
-it can run entirely without root privileges.
-It emits a USB key disk image that contains a bootable EFI ESP,
-which in turn includes a UKI (kernel/ramdisk/cmdline).
-The rootfs is a separate partition.
-
-NOTE: this is the simplest config possible.
-      It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
-      Also no secure boot signing.
-
-NOTE: This makes a "unified kernel image" (there is NO bootloader).
-      The kernel command line is hard-coded into EFI/BOOT/BOOTX64.EFI.
-      You cannot change it at boot time (e.g. to add "console=ttyS0").
-
-At time of writing, the host system needs:
-
-    apt install mmdebstrap apt-cacher-ng qemu-kvm
-"""
-
-parser = argparse.ArgumentParser(description=__doc__)
+parser = argparse.ArgumentParser(epilog='See also ./README.rst.')
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
 

@@ -8,18 +8,7 @@ __author__ = "Trent W. Buck"
 __copyright__ = "Copyright © 2020 Trent W. Buck"
 __license__ = "expat"
 
-__doc__ = """ build the simplest Debian Live image that can boot
-
-This uses mmdebstrap to do the heavy lifting;
-it can run entirely without root privileges.
-It emits a USB key disk image that contains a bootable EFI ESP,
-which in turn includes a bootloader (refind), kernel, ramdisk, and filesystem.squashfs.
-
-NOTE: this is the simplest config possible.
-      It lacks CRITICAL SECURITY AND DATA LOSS packages, such as amd64-microcode and smartd.
-"""
-
-parser = argparse.ArgumentParser(description=__doc__)
+parser = argparse.ArgumentParser(epilog='See also ./README.rst.')
 parser.add_argument('output_file', nargs='?', default=pathlib.Path('filesystem.img'), type=pathlib.Path)
 parser.add_argument('--boot-test', action='store_true')
 args = parser.parse_args()
