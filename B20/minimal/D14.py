@@ -115,7 +115,6 @@ subprocess.check_call([
     '--dpkgopt=force-unsafe-io',
     # == KERNEL, RAMDISK, GUEST USER ==
     '--include=linux-image-generic dracut',
-    '--include=dbus-broker',  # https://bugs.debian.org/814758
     '--include=login',        # https://bugs.debian.org/960638
     '--include=live-config keyboard-configuration locales sudo user-setup',
     # == NETWORKING ==

@@ -17,49 +17,10 @@ filesystem_img_size = '2G'      # big enough to include filesystem.squashfs + ab
 esp_offset = 1024 * 1024        # 1MiB
 esp_label = 'UEFI-ESP'          # max 8 bytes for FAT32
 
-sources_str = """
-Types: deb
-URIs: http://archive.ubuntu.com/ubuntu
-Suites: noble noble-backports noble-security noble-updates
-Components: main restricted universe multiverse
-Signed-By:
- -----BEGIN PGP PUBLIC KEY BLOCK-----
- .
- mQINBFufwdoBEADv/Gxytx/LcSXYuM0MwKojbBye81s0G1nEx+lz6VAUpIUZnbkq
- dXBHC+dwrGS/CeeLuAjPRLU8AoxE/jjvZVp8xFGEWHYdklqXGZ/gJfP5d3fIUBtZ
- HZEJl8B8m9pMHf/AQQdsC+YzizSG5t5Mhnotw044LXtdEEkx2t6Jz0OGrh+5Ioxq
- X7pZiq6Cv19BohaUioKMdp7ES6RYfN7ol6HSLFlrMXtVfh/ijpN9j3ZhVGVeRC8k
- KHQsJ5PkIbmvxBiUh7SJmfZUx0IQhNMaDHXfdZAGNtnhzzNReb1FqNLSVkrS/Pns
- AQzMhG1BDm2VOSF64jebKXffFqM5LXRQTeqTLsjUbbrqR6s/GCO8UF7jfUj6I7ta
- LygmsHO/JD4jpKRC0gbpUBfaiJyLvuepx3kWoqL3sN0LhlMI80+fA7GTvoOx4tpq
- VlzlE6TajYu+jfW3QpOFS5ewEMdL26hzxsZg/geZvTbArcP+OsJKRmhv4kNo6Ayd
- yHQ/3ZV/f3X9mT3/SPLbJaumkgp3Yzd6t5PeBu+ZQk/mN5WNNuaihNEV7llb1Zhv
- Y0Fxu9BVd/BNl0rzuxp3rIinB2TX2SCg7wE5xXkwXuQ/2eTDE0v0HlGntkuZjGow
- DZkxHZQSxZVOzdZCRVaX/WEFLpKa2AQpw5RJrQ4oZ/OfifXyJzP27o03wQARAQAB
- tEJVYnVudHUgQXJjaGl2ZSBBdXRvbWF0aWMgU2lnbmluZyBLZXkgKDIwMTgpIDxm
- dHBtYXN0ZXJAdWJ1bnR1LmNvbT6JAjgEEwEKACIFAlufwdoCGwMGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAAAoJEIcZINGZG8k8LHMQAKS2cnxz/5WaoCOWArf5g6UH
- beOCgc5DBm0hCuFDZWWv427aGei3CPuLw0DGLCXZdyc5dqE8mvjMlOmmAKKlj1uG
- g3TYCbQWjWPeMnBPZbkFgkZoXJ7/6CB7bWRht1sHzpt1LTZ+SYDwOwJ68QRp7DRa
- Zl9Y6QiUbeuhq2DUcTofVbBxbhrckN4ZteLvm+/nG9m/ciopc66LwRdkxqfJ32Cy
- q+1TS5VaIJDG7DWziG+Kbu6qCDM4QNlg3LH7p14CrRxAbc4lvohRgsV4eQqsIcdF
- kuVY5HPPj2K8TqpY6STe8Gh0aprG1RV8ZKay3KSMpnyV1fAKn4fM9byiLzQAovC0
- LZ9MMMsrAS/45AvC3IEKSShjLFn1X1dRCiO6/7jmZEoZtAp53hkf8SMBsi78hVNr
- BumZwfIdBA1v22+LY4xQK8q4XCoRcA9G+pvzU9YVW7cRnDZZGl0uwOw7z9PkQBF5
- KFKjWDz4fCk+K6+YtGpovGKekGBb8I7EA6UpvPgqA/QdI0t1IBP0N06RQcs1fUaA
- QEtz6DGy5zkRhR4pGSZn+dFET7PdAjEK84y7BdY4t+U1jcSIvBj0F2B7LwRL7xGp
- SpIKi/ekAXLs117bvFHaCvmUYN7JVp1GMmVFxhIdx6CFm3fxG8QjNb5tere/YqK+
- uOgcXny1UlwtCUzlrSaP
- =9AdM
- -----END PGP PUBLIC KEY BLOCK-----
-"""
-
 network_config_str = """
 # live-config doesn't support systemd-networkd yet (only ifupdown), AND
 # Ubuntu 20.04 doesn't support ifupdown anymore.
 # As a minimal workaround, hard-code a minimal .network.
-#
-# FIXME: this isn't enough to fix /etc/resolv.conf at boot time.
 [Match]
 Type=ether
 Name=en*
@@ -71,13 +32,11 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
     td = pathlib.Path(td_str)
     (td / 'live').mkdir()
     (td / 'EFI/BOOT').mkdir(parents=True)
-    sources_path = td / 'ubuntu.sources'
-    sources_path.write_text(sources_str)
     network_config_path = td / '50-FIXME.network'
     network_config_path.write_text(network_config_str)
     subprocess.check_call(
         ['mmdebstrap', 'noble', 'live/filesystem.squashfs',
-         sources_path,  # mmdebstrap default sources were being weird (FIXME: remove)
+         '--components=main,universe',  # need universe for live-* & systemd-*
          '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
          '--mode=unshare',
          '--variant=apt',
@@ -85,7 +44,6 @@ with tempfile.TemporaryDirectory(prefix='debian-live-bullseye-amd64-minimal.') a
          '--aptopt=Acquire::https::Proxy "DIRECT"',
          '--dpkgopt=force-unsafe-io',
          '--include=linux-image-generic init initramfs-tools live-boot netbase',
-         '--include=dbus-broker',  # https://bugs.debian.org/814758
          '--include=live-config keyboard-configuration locales sudo user-setup',
          '--include=systemd-resolved',  # fix /etc/resolv.conf at boot time *iff* your build host is using resolved!
          f'--customize-hook=copy-in "{network_config_path.name}" /etc/systemd/network/',
