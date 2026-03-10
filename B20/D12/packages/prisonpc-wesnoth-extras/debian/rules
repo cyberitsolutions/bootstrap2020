@@ -5,7 +5,7 @@ e := debian/prisonpc-wesnoth-addons/usr/share/games/wesnoth/1.18/images/misc/
 %:
 	dh $@
 override_dh_auto_install:
-	debian/rules.py
+	debian/rules_wesnoth.py
 	# Save about 0.5% space by losslessly re-encoding the images.
 	# du -sch $d | grep total$
 	# find $d -iname '*.png'  -execdir pngcrush -q {} _ \; -execdir mv _ {} \; -printf .
