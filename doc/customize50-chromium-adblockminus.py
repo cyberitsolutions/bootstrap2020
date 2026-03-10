@@ -89,14 +89,14 @@ def requests_get(url: str) -> str:
     """requests.get(), but raise exceptions on 4xx/5xx"""
     resp = requests.get(url)
     resp.raise_for_status()
-    return resp
+    return resp.text
 
 domains = sorted(
     {rule
      for list_url in list_urls
      for rule in re.findall(
              r'(?m)^\|\|([a-z0-9.-]+)\^$',  # just FQDNs (FIXME: still has IPs)
-             requests_get(list_url).text)},
+             requests_get(list_url))},
     key=(lambda url: list(reversed(url.split('.')))))
 
 with hosts_path.open('a') as f:
