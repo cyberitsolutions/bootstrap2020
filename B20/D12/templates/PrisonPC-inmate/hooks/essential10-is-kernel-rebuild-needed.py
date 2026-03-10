@@ -49,7 +49,7 @@ if 0 == subprocess.call([
         inmate_version)
 else:
     logging.error(
-        "stock kernel (%s) is newer than inmate kernel (%s) -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC.packages/build-inmate-kernel.py",
+        "stock kernel (%s) is newer than inmate kernel (%s) -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D12/packages/build-inmate-kernel.py",
         stock_version,
         inmate_version)
     exit(1)

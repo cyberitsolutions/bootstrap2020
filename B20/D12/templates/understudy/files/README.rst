@@ -10,7 +10,7 @@ Create VM
 
 This should get you a VM running understudy.
 
-#. Somewhere run ``./debian-12-main.py --template=understudy --virtual --local --save-to /tmp/ --backdoor-enable``
+#. Somewhere run ``python3 -m B20.D12 --template=understudy --virtual --local --save-to /tmp/ --backdoor-enable``
 #. Copy the result to delta e.g. ``rsync -a /tmp/understudy-2025-12-04-1764821326/ root@delta:/srv/kvm/understudy-2025-12-04-1764821326/``
 #. Open virt-manager and connect to qemu+ssh://root@delta.cyber.com.au/system
 #. Right-click on `QEMU/KVM: delta.cyber.com.au` and click `New` (New VM)

@@ -9,7 +9,7 @@ We want app names like "Word Processor" (not "LibreOffice Writer").
 
 Note that this list also informs the "popularity contest".
 FIXME: should we use "import xdg.DesktopEntry" here, too?
-https://github.com/cyberitsolutions/bootstrap2020/blob/main/debian-12-PrisonPC/xfce/popcon.py
+../files/xfce/popcon.py
 
 Problem #1:
 xfce4-panel's built-in show-generic-names=true does not affect sort order.
@@ -25,9 +25,9 @@ Use our own handwritten list of overrides.
 parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(override_path=pathlib.Path(
-    'debian-12-PrisonPC.hooks/customize50-generic-app-names.conf'))
+    'B20/D12/templates/PrisonPC/hooks/customize50-generic-app-names.conf'))
 parser.set_defaults(exec_override_path=pathlib.Path(
-    'debian-12-PrisonPC.hooks/customize50-generic-app-names.exec-fixes.conf'))
+    'B20/D12/templates/PrisonPC/hooks/customize50-generic-app-names.exec-fixes.conf'))
 args = parser.parse_args()
 
 overrides = dict(

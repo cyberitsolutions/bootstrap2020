@@ -200,7 +200,7 @@ with tempfile.TemporaryDirectory() as td_str:
            # NORMAL USAGE: just delegate to apt.
            ['--include=linux-image-amd64 tiny-initramfs']),
          '--essential-hook=mkdir -p $1/etc/apt/preferences.d/',
-         '--essential-hook=upload ../debian-12-main.files/apt-preferences-bookworm-backports.conf /etc/apt/preferences.d/fuck',
+         '--essential-hook=upload ../templates/main/files/apt-preferences-bookworm-backports.conf /etc/apt/preferences.d/fuck',
          '--customize-hook=cp -T $1/boot/config-* $1/boot/build-inmate-kernel.config-current',
          '--customize-hook=copy-out boot/build-inmate-kernel.config-current ./',
          '--customize-hook=copy-in build-inmate-kernel.config-old /boot/',
@@ -228,7 +228,7 @@ with tempfile.TemporaryDirectory() as td_str:
 
          'bookworm',
          '/dev/null',
-         '../debian-12.sources'
+         '../templates/main/apt.sources',
          ])
     if args.upload:
         # debsign here?

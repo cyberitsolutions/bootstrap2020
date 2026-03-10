@@ -70,8 +70,8 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=sync-out /X {td}',
          'bookworm',
          '/dev/null',
-         # '../../debian-12.sources',
-         # '../../debian-12-PrisonPC-desktop.sources',
+         # '../templates/main/apt.sources',
+         # '../templates/PrisonPC/apt.sources',
          ])
     # debsign here?
     subprocess.check_call([

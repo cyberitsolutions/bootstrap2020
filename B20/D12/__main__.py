@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import datetime
+import importlib.resources
 import io
 import logging
 import os
@@ -13,6 +14,7 @@ import tarfile
 import tempfile
 import tomllib
 import types
+import uuid
 
 import hyperlink                # URL validation
 import requests                 # FIXME: h2 support!
@@ -46,7 +48,7 @@ def get_site_apps(template: str) -> list:
     "Get long, boring app lists from an .ini (instead of inline in main.py)"
     if not args.apps:
         return []
-    parser = tomllib.loads(pathlib.Path('debian-12-PrisonPC.site-apps.toml').read_text())
+    parser = tomllib.loads((templates_path / 'site-apps.toml').read_text())
     if any('applications' != key
            for section_dict in parser.values()
            for key in section_dict):
@@ -95,9 +97,8 @@ def create_tarball(td: pathlib.Path, src_path: pathlib.Path) -> pathlib.Path:
     src_path = pathlib.Path(src_path)
     if not src_path.is_dir():
         raise NotADirectoryError(src_path)
-    # FIXME: this can still collide
     # FIXME: can't do symlinks, directories, &c.
-    dst_path = td / f'{src_path.name}.tar'
+    dst_path = td / f'{src_path.parent.name}.{uuid.uuid4()}.tar'
     with tarfile.open(dst_path, 'w') as t:
         for tarinfo_path in src_path.glob('**/*.tarinfo'):
             content_path = tarinfo_path.with_suffix('')
@@ -128,13 +129,16 @@ def do_stuff(keyword: str, when: bool = True) -> list:
     "Add a tar-in tarball and hooks as needed"
     if not when:
         return []
-    files_dir = pathlib.Path(f'debian-12-{keyword}.files')
-    hooks_dir = pathlib.Path(f'debian-12-{keyword}.hooks')
-    toml_path = pathlib.Path(f'debian-12-{keyword}.toml')
-    dpkg_path = pathlib.Path(f'debian-12-{keyword}.dpkg.cfg')
+    files_dir = templates_path / keyword / 'files'
+    hooks_dir = templates_path / keyword / 'hooks'
+    toml_path = templates_path / keyword / 'config.toml'
+    dpkg_path = templates_path / keyword / 'dpkg.cfg'
+    sources_path = templates_path / keyword / 'apt.sources'
     tarball_path = create_tarball(td, files_dir)
     acc: list[str | pathlib.Path]
     acc = [f'--essential-hook=tar-in {tarball_path} /']
+    if sources_path.exists():
+        acc += [sources_path]
     if hooks_dir.exists():
         # Due to how --hook-dir works,
         # the hook dir and ALL its parent dirs MUST be world-executable (e.g. 755 or 711).
@@ -144,7 +148,7 @@ def do_stuff(keyword: str, when: bool = True) -> list:
             if path.stat().st_mode & 0o0001 != 0o0001:
                 logging.warning('%s is not world-executable, so --hook-dir=%s is probably going to crash', path, hooks_dir)
         acc += [f'--hook-dir={hooks_dir}']
-    # If debian-12-main.files/foo.py needs python3-foo,
+    # If templates/main/files/foo.py needs python3-foo,
     # you can just add ‘include = ["python3-foo"]’ to the .tarinfo.
     # This makes it very clear WHICH scripts need WHICH packages!
     packages = {
@@ -187,6 +191,7 @@ def maybe_enable_backdoor_access():
 def maybe_measure_install_footprints():
     if not args.measure_install_footprints:
         return []
+    raise NotImplementedError('need to deal with importlib.resources stuff here!')
     return [
         '--customize-hook=upload doc/debian-12-app-reviews.csv /tmp/app-reviews.csv',
         '--customize-hook=chroot $1 python3 < debian-12-install-footprint.py',
@@ -434,12 +439,13 @@ def do_boot_test():
             (testdir / 'site.dir/etc/mailname').write_text('tweak.prisonpc.com')
             if 'inmate' in template:
                 # Simulate a site-specific desktop image (typically not done for staff).
-                (testdir / 'site.dir/wallpaper.jpg').write_bytes(pathlib.Path('wallpaper.svg').read_bytes())
+                (testdir / 'site.dir/wallpaper.jpg').write_bytes(
+                    (importlib.resources.files() / 'wallpaper.svg').read_bytes())
             (testdir / 'site.dir/etc/nftables.conf.d').mkdir(exist_ok=True)
             (testdir / 'site.dir/etc/nftables.conf.d/11-PrisonPC-master-server-address.conf').write_text(
                 f'define PrisonPC = {master_address};')
             (testdir / 'site.dir/etc/nftables.conf.d/90-boot-test.conf').write_text(
-                pathlib.Path('debian-12-PrisonPC.files/firewall-boot-test.nft').read_text())
+                (templates_path / 'PrisonPC/files/firewall-boot-test.nft').read_text())
             if template.startswith('desktop-inmate'):
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d').mkdir(parents=True)
                 (testdir / 'site.dir/etc/systemd/system/x11vnc.service.d/zz-boot-test.conf').write_text(
@@ -536,7 +542,7 @@ def qemu_dummy_DVD(testdir: pathlib.Path, when: bool = True) -> list:
         # reuses qemu-xhci from previous block
         '-device', 'usb-uas,id=PostalMobilitySufferer,bus=LanguageNeurosisTurkey.0',  # UAS bullshit
         # FIXME: work out how to have both SCSI (above) and UAS (below) DVD drives.
-        #        Only the former works due to debian-12-PrisonPC-inmate.dpkg.cfg.
+        #        Only the former works due to templates/PrisonPC-inmate/dpkg.cfg.
         # '-device', 'scsi-cd,bus=PostalMobilitySufferer.0,scsi-id=0,lun=0,drive=BrethrenSlopedSubmarine',
         # '-drive', f'if=none,id=BrethrenSlopedSubmarine,format=raw,file={dummy_DVD_path}',
         # USB key attached via UAS
@@ -765,7 +771,9 @@ if not apt_proxy:
 
 for template in args.templates:
 
-    with tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td_str:
+    with (tempfile.TemporaryDirectory(prefix='bootstrap2020-') as td_str,
+          importlib.resources.as_file(
+              importlib.resources.files() / 'templates') as templates_path):
         td = pathlib.Path(td_str)
         validate_unescaped_path_is_safe(td)
         destdir = td / f'{template}-{args.now}'
@@ -778,6 +786,8 @@ for template in args.templates:
 
         mmdebstrap_but_zstd(
             ['mmdebstrap',
+             'bookworm',
+             destdir / 'filesystem.squashfs',
              '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
              # Build faster
              *['--variant=apt',             # save 12s 30MB
@@ -822,7 +832,7 @@ for template in args.templates:
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template.startswith('desktop') and not template.startswith('desktop-inmate'),
                       'xfce4-terminal mousepad xfce4-screenshooter'),
-                     # For debian-12-desktop.files/xfce-spice-output-resizer.py
+                     # For desktop/files/xfce-spice-output-resizer.py
                      # Mike wants qemu-guest-agent for prisonpc-desktop-staff-amc in spice-html5.
                      # FIXME: WHY?  Nothing in the package description sounds useful.
                      # FIXME: --boot-test's kvm doesn't know to create the device!!!
@@ -845,14 +855,6 @@ for template in args.templates:
              f'--customize-hook=copy-out /usr/lib/systemd/boot/efi/linuxx64.efi.stub /etc/os-release {td}',
              *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
                if args.production else []),
-             'bookworm',
-             destdir / 'filesystem.squashfs',
-             'debian-12.sources',
-             *(['debian-12-PrisonPC-desktop.sources']
-               if template.startswith('desktop-staff') or template.startswith('desktop-inmate') else []),
-             # For cyber-zfs-backup (understudy)
-             *(['debian-12-PrisonPC-server.sources']
-               if template == 'understudy' else []),
              ])
 
         subprocess.check_call(

@@ -106,7 +106,7 @@ Debian 12
 ======================================================================
 Doing the same test on a Debian 12 chroot::
 
-    bash5$ mmdebstrap bookworm /dev/null debian-12.sources --customize-hook='chroot $1 bash; false' --include=pixz,pigz,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic
+    bash5$ mmdebstrap bookworm /dev/null B20/D12/templates/main/apt.sources --customize-hook='chroot $1 bash; false' --include=pixz,pigz,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic
 
     root@hera:/# for i in lz4 gzip xz zstd;
                  do

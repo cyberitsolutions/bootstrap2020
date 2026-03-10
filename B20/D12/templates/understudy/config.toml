@@ -23,7 +23,7 @@ include = [
     # ----------
     # NOTE: zfs-dkms will build zfs.ko for each installed linux-headers-X.
     #       If none are installed, zfs-dkms will no-op *WITHOUT ERROR*.
-    #       Correct kernel header is in the debian-12-main.py script.
+    #       Correct kernel header is in the B20/D12/__main__.py script.
     'zfs-dkms',
     'zfs-zed',
     'zfsutils-linux',

@@ -76,8 +76,8 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=sync-out /X .',
          'bookworm',
          '/dev/null',
-         # '../../debian-12.sources',
-         # '../../debian-12-PrisonPC-desktop.sources',
+         # '../templates/main/apt.sources',
+         # '../templates/PrisonPC/apt.sources',
          '-',                   # read sources.list from stdin (python input=X)
          ],
         cwd=td,

@@ -14,7 +14,7 @@ for args in [
         ['--templates',
          'desktop-staff-amc']]:
     subprocess.check_call([
-        './debian-12-main.py',
+        'python3', '-m', 'B20.D12',
         # Hard-code $LANG and $TZ instead of inheriting from build host.
         '--LANG', 'en_AU.UTF-8', '--TZ', 'Australia/Canberra',
         '--netboot-only',       # no ISO/USB

@@ -13,9 +13,9 @@ apt_proxy = subprocess.check_output(['auto-apt-proxy'], text=True).strip()
 
 with tempfile.TemporaryDirectory() as td_str:
     td = pathlib.Path(td_str)
-    apt_sources_including_sources = td / 'debian-12-inc-src.sources'
+    apt_sources_including_sources = td / 'debian-including-deb-src.sources'
     apt_sources_including_sources.write_text(
-        pathlib.Path('../debian-12.sources').read_text().replace(
+        pathlib.Path('../templates/main/apt.sources').read_text().replace(
             'Types: deb',
             'Types: deb deb-src'))
     subprocess.check_call(

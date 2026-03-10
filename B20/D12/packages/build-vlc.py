@@ -41,7 +41,8 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=sync-out /X {td}',
          'bookworm',
          '/dev/null',
-         '../debian-12.sources'])
+         '../templates/main/apt.sources',
+         ])
     # FIXME: currently rsync exits non-zero.
     #        This is minor enough I'm ignoring it for now.
     #          rsync: [generator] failed to set times on "/srv/apt/PrisonPC/pool/bookworm/desktop/.": Operation not permitted (1)
