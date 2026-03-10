@@ -806,7 +806,6 @@ for template in args.templates:
              *maybe_measure_install_footprints(),  # after 'main' fixes DNS, before 'PrisonPC' breaks apt!
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
-             *do_stuff('main-unattended-upgrades', when=template == 'understudy'),
              *do_stuff('understudy', when=template == 'understudy'),
              *do_stuff('smartd', when=template in {'dban', 'understudy'} and not args.virtual_only),
              *do_stuff('desktop', when=template.startswith('desktop')),
