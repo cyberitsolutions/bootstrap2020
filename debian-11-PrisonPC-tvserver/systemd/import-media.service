@@ -1,4 +1,0 @@
-[Service]
-Type=oneshot
-# This was "iptv import-media"
-ExecStart=tvserver-import-media

@@ -1,4 +1,0 @@
-# This only adds "rw", but we have to give all options, because
-# Options= is treated by systemd as a single value, not an appendable list.
-[Mount]
-Options=nodev,noexec,nosuid,rw,sec=sys,nfsvers=4.2,tcp,proto=tcp,port=2049

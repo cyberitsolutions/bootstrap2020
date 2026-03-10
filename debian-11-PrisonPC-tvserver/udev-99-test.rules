@@ -1,6 +1,0 @@
-# -*- conf -*-
-
-# DEBUGGING: try to trigger the race condition by making the device not exist initially.
-# Probably will not work.
-# UPDATE: this DOES NOT WORK because (it seems) the kernel creates /dev/foo and udev merely *edits* it afterward.
-SUBSYSTEM=="dvb", ENV{DVB_DEVICE_TYPE}=="dvr", RUN+="/bin/sleep 600"

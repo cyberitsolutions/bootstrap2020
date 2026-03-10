@@ -1,7 +1,0 @@
-# This is created by build-inmate-kernel.py.
-# The idea is, once you're happy, you do
-#   mv build-inmate-kernel.config-current \
-#      build-inmate-kernel.config-old
-# The -current should never actually be committed.
-# The mv isn't automatic, because you (the human) might not be happy yet.
-build-inmate-kernel.config-current
