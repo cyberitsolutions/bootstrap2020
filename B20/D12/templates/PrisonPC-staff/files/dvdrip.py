@@ -18,7 +18,7 @@ GLADE_FILE = pathlib.Path("/usr/share/PrisonPC/dvdrip.glade")
 
 
 class DVDBackup:
-    def __init__(self, host_application=None, src_path: pathlib.Path = None) -> None:
+    def __init__(self, host_application=None, src_path: pathlib.Path | None = None) -> None:
         self.host_application = host_application
         self.src_path = src_path
         self.device = "/dev/dvd"
@@ -119,7 +119,7 @@ class DVDBackup:
 
 
 class DVDRipApp:
-    def __init__(self, src_path: pathlib.Path = None) -> None:
+    def __init__(self, src_path: pathlib.Path | None = None) -> None:
         self.builder = Gtk.Builder()
         self.builder.add_from_file(os.fspath(GLADE_FILE))
         self.builder.connect_signals(self)
