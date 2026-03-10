@@ -1,6 +1,0 @@
-[Service]
-Type=oneshot
-ExecStart=journalcheck --save --to logcheck --summarize
-Nice=10
-IOSchedulingClass=idle
-CPUSchedulingPolicy=idle

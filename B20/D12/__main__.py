@@ -298,7 +298,7 @@ def do_boot_test():
     # This is not boot-time configurable for paranoia reasons.
     # Therefore, qemu needs to use compatible IP addresses.
     staff_network = not template.startswith('desktop-inmate')
-    disk_bullshit = template in {'dban', 'understudy', 'datasafe3'}
+    disk_bullshit = template in {'dban', 'understudy'}
     port_forward_bullshit = template.startswith('desktop-staff') or template.startswith('desktop-inmate')
     network, tftp_address, dns_address, smb_address, master_address = (
         ('10.0.2.0/24', '10.0.2.2', '10.0.2.3', '10.0.2.4', '10.0.2.100')
@@ -619,7 +619,6 @@ parser.add_argument('--templates',
                     choices=('main',
                              'dban',
                              'understudy',
-                             'datasafe3',
                              'desktop',
                              'desktop-inmate',
                              'desktop-inmate-blackgate',
@@ -638,7 +637,6 @@ parser.add_argument('--templates',
                         'dban: erase recycled HDDs; '
                         'zfs: install/rescue Debian root-on-ZFS; '
                         'understudy: receive rsync-over-ssh push backup to local md/lvm/ext4 (or ZFS); '
-                        'datasafe3: rsnapshot rsync-over-ssh pull backup to local md/lvm/ext4; '
                         'desktop: tweaked XFCE; '
                         'desktop-inmate: desktop w/ PrisonPC inmate/detainee stuff;'
                         'desktop-staff:  desktop w/ PrisonPC operational staff stuff;'
@@ -753,8 +751,6 @@ if args.boot_test and not (args.netboot_only and have_smbd) and any(
         'PrisonPC --boot-test needs --netboot-only and /usr/sbin/smbd.'
         ' Without these, site.dir cannot patch /etc/hosts, so'
         ' boot-test ldap/nfs/squid/pete redirect will not work!')
-if args.ssh_server != 'openssh-server' and 'datasafe3' in args.templates:
-    raise NotImplementedError('datasafe3 only supports OpenSSH')
 if args.ssh_server != 'openssh-server' and any(
         template.startswith(prefix)
         for template in args.templates
@@ -810,10 +806,9 @@ for template in args.templates:
              *maybe_measure_install_footprints(),  # after 'main' fixes DNS, before 'PrisonPC' breaks apt!
              *do_stuff('main-netboot', when=not args.local_boot_only),  # support SMB3 & NFSv4 (not just NFSv3)
              *do_stuff('main-netboot-only', when=args.netboot_only),  # 9% faster 19% smaller
-             *do_stuff('main-unattended-upgrades', when=template in {'understudy', 'datasafe3'}),
+             *do_stuff('main-unattended-upgrades', when=template == 'understudy'),
              *do_stuff('understudy', when=template == 'understudy'),
-             *do_stuff('datasafe3', when=template == 'datasafe3'),
-             *do_stuff('smartd', when=template in {'dban', 'understudy', 'datasafe3'} and not args.virtual_only),
+             *do_stuff('smartd', when=template in {'dban', 'understudy'} and not args.virtual_only),
              *do_stuff('desktop', when=template.startswith('desktop')),
              *do_stuff('PrisonPC', when=template.startswith('desktop-inmate') or template.startswith('desktop-staff')),
              *do_stuff('PrisonPC-inmate', when=template.startswith('desktop-inmate')),

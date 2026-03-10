@@ -1,6 +1,0 @@
-[Service]
-Type=oneshot
-EnvironmentFile=/etc/dyndns.conf
-ExecStart=/bin/busybox wget -qO- "$URL"
-# Without this, systemd logs the message as coming from "busybox", which is confusing.
-SyslogIdentifier=dyndns

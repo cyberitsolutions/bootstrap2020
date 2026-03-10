@@ -40,9 +40,3 @@ disable ssh.socket
 #    /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service → /lib/systemd/system/systemd-networkd-wait-online.service.
 #    /etc/systemd/system/multi-user.target.wants/remote-cryptsetup.target                 → /lib/systemd/system/remote-cryptsetup.target.
 #    /etc/systemd/system/ctrl-alt-del.target                                              → /lib/systemd/system/reboot.target.
-#
-# In datasafe3 template:
-#
-#    /etc/systemd/system/mdmonitor.service.wants/mdmonitor-oneshot.timer                  → /lib/systemd/system/mdmonitor-oneshot.timer.
-#    /etc/systemd/system/mdmonitor.service.wants/mdcheck_start.timer                      → /lib/systemd/system/mdcheck_start.timer.
-#    /etc/systemd/system/sysinit.target.wants/mdadm-shutdown.service                      → /lib/systemd/system/mdadm-shutdown.service.

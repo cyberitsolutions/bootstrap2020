@@ -22,7 +22,7 @@
 #
 #       Therefore we're going back to "just hard-code msmtprc to ALWAYS mail WITHOUT TLS to mail:25".
 #       Except that brings back issues of how do deal with servers that we want to use TLS and username+password.
-#       Also also for e.g. understudy/datasafe3 running outside PrisonPC (NOT A THING ANYMORE),
+#       Also also for e.g. understudy running outside PrisonPC (NOT A THING ANYMORE),
 #       we'd want to use the FQDN so that the TLS cert is actually valid.
 #
 #       So... this all gets a bit hard, doesn't it?

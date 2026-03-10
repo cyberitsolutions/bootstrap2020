@@ -1,3 +1,0 @@
-# This should be a RAID1 array auto-assembled as /dev/md127.
-LABEL=datasafe-backup /srv/ ext4 nosuid,nodev,noexec 0 1
-/srv/log /var/log bind bind 0 0
