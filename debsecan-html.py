@@ -13,7 +13,7 @@ import apt_pkg
 import requests
 import lxml.etree
 from lxml.html.builder import (
-    HTML, HEAD, TITLE, BODY, TABLE, CAPTION, THEAD, TBODY, TR, TD, TH, A, P, LINK, E, H1, H2, STYLE
+    HTML, HEAD, TITLE, BODY, TABLE, THEAD, TBODY, TR, TD, TH, A, P, E, H1, H2, STYLE
 )
 
 __doc__ = """ report what vulns are patched since last time
@@ -229,9 +229,6 @@ print(lxml.etree.tostring(
     encoding=str,
     element_or_tree=HTML(
         HEAD(TITLE('Vulnerability changes in PrisonPC SOEs'),
-             # LINK(type="text/css", rel="stylesheet",
-             #      href='https://security-tracker.debian.org/tracker/style.css')),
-
              STYLE(requests.get('https://security-tracker.debian.org/tracker/style.css').text,
                    type="text/css", rel="stylesheet")),
 

@@ -3,9 +3,7 @@ import argparse
 import configparser
 import logging
 import os
-import pathlib
 import subprocess
-import time
 
 
 parser = argparse.ArgumentParser()
