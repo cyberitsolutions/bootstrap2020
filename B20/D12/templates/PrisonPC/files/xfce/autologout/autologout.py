@@ -7,6 +7,7 @@ import typing
 
 import psutil
 import Xlib.display
+import Xlib.xobject.drawable
 import Xlib.ext.screensaver
 import dbus
 import dbus.service
@@ -240,9 +241,12 @@ class xss_handler(object):
 
         # setup for X11 MIT-SCREEN-SAVER (input)
         self.display: Xlib.display.Display = Xlib.display.Display()
-        root_window: Xlib.display.Window = self.display.screen().root
+        root_window: Xlib.xobject.drawable.Window = self.display.screen().root
         # FIXME: is there a better way to get this magic number?
-        self._notify_event_type: int = self.display.query_extension(Xlib.ext.screensaver.extname).first_event
+        extension = self.display.query_extension(Xlib.ext.screensaver.extname)
+        if extension is None:
+            raise RuntimeError('Notify extension not supported - is this XWayland?')
+        self._notify_event_type: int = extension.first_event
         Xlib.ext.screensaver.select_input(root_window, Xlib.ext.screensaver.NotifyMask)
         # NOTE: this overrides "xset -dpms s off" in xdm/xdm-pre-prompt.py!
         self.display.set_screen_saver(
