@@ -137,3 +137,142 @@ gzip        35M         0m6.512s        0m9.843s        0m2.118s
 xz          24M         0m22.807s       1m16.917s       0m2.900s
 zstd        30M         0m7.803s        0m8.296s        0m2.884s
 ==========  ==========  ==========      ==========      ==========
+
+
+Debian 14
+======================================================================
+Doing the same test on a Debian 14 chroot with dracut::
+
+    bash5$ mmdebstrap forky /dev/null --quiet --components=main,non-free-firmware --include=pixz,pigz,gzip,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic,dracut,libgcrypt20 --customize-hook='for i in "" --no-compress --gzip --xz "--xz --compress-level=6" --lz4 --zstd ⋯; do echo == $i ==; time chroot $1 dracut --force --no-hostonly $i && chroot $1 du --apparent-size -Hh /initrd.img; done'
+
+
+Results for Debian 14 as at 2026-03-12:
+
+.. csv-table:: measurements (smaller is better)
+   :header: score,time,size,vendor,arguments
+
+   0666,18s,37M,dracut,``--compress="zstd -qT0 -9"`` (initramfs-tools default)
+   0684,18s,38M,dracut,``--compress="zstd -qT0 -3"``
+   0760,20s,38M,dracut,``--compress="zstd -qT0"``
+   0820,20s,41M,dracut,``--lz4``
+   0936,24s,39M,dracut,``--gzip``
+   0943,24s,41M,dracut,``--compress=lz4``
+   0962,26s,37M,dracut,(dracut default)
+   0972,27s,36M,initramfs-tools,``COMPRESS=gzip``
+   0975,25s,39M,dracut,``--compress=pigz``
+   1023,33s,31M,initramfs-tools,``COMPRESS=zstd``
+   1120,32s,35M,dracut,``--xz --compress-level=6`` (xz default)
+   1147,31s,37M,dracut,``--zstd``
+   1155,33s,35M,dracut,``--xz``
+   1330,19s,70M,dracut,``--no-compress``
+   1525,61s,25M,initramfs-tools,``COMPRESS=xz``
+   1892,43s,44M,initramfs-tools,``COMPRESS=lz4``
+
+
+.. COMMENT: raw output follows.
+
+    bash5$ mmdebstrap bookworm /dev/null --quiet --components=main,non-free-firmware --include=pixz,pigz,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic --customize-hook='for i in lz4 gzip xz zstd; do echo === $i === && echo COMPRESS=$i >$1/etc/initramfs-tools/conf.d/test && time chroot $1 update-initramfs -u -k all && du --apparent-size -hH $1/initrd.img; done'
+    === lz4 ===
+    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
+    29.27user 15.18system 0:43.83elapsed 101%CPU (0avgtext+0avgdata 25776maxresident)k
+    0inputs+0outputs (0major+1757987minor)pagefaults 0swaps
+    44M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    === gzip ===
+    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
+    29.77user 9.88system 0:27.46elapsed 144%CPU (0avgtext+0avgdata 25820maxresident)k
+    0inputs+0outputs (0major+1723980minor)pagefaults 0swaps
+    36M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    === xz ===
+    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
+    175.98user 10.30system 1:01.08elapsed 304%CPU (0avgtext+0avgdata 721328maxresident)k
+    0inputs+0outputs (0major+1780454minor)pagefaults 0swaps
+    25M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    === zstd ===
+    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
+    28.27user 13.16system 0:33.23elapsed 124%CPU (0avgtext+0avgdata 189880maxresident)k
+    0inputs+0outputs (0major+1740346minor)pagefaults 0swaps
+    31M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    I: cleaning package lists and apt cache...
+    done
+    done
+    I: removing tempdir /tmp/mmdebstrap.Jn9vViqimP...
+    I: success in 287.5440 seconds
+
+    [dracut stuff, ended up being several runs]
+    == ==
+    37.42user 4.17system 0:26.07elapsed 159%CPU (0avgtext+0avgdata 384320maxresident)k
+    0inputs+0outputs (0major+491354minor)pagefaults 0swaps
+    37M	/initrd.img
+    == ==
+    41.21user 5.57system 0:28.64elapsed 163%CPU (0avgtext+0avgdata 383624maxresident)k
+    0inputs+0outputs (0major+490179minor)pagefaults 0swaps
+    37M	/initrd.img
+    == --no-compress ==
+    15.83user 3.98system 0:19.30elapsed 102%CPU (0avgtext+0avgdata 67064maxresident)k
+    0inputs+0outputs (0major+488605minor)pagefaults 0swaps
+    70M	/initrd.img
+    == --gzip ==
+    46.76user 4.28system 0:24.08elapsed 211%CPU (0avgtext+0avgdata 66944maxresident)k
+    0inputs+0outputs (0major+487761minor)pagefaults 0swaps
+    39M	/initrd.img
+    == --xz ==
+    106.95user 5.03system 0:32.78elapsed 341%CPU (0avgtext+0avgdata 163128maxresident)k
+    0inputs+0outputs (0major+513357minor)pagefaults 0swaps
+    35M	/initrd.img
+    == --xz --compress-level=6 ==
+    107.98user 4.07system 0:31.59elapsed 354%CPU (0avgtext+0avgdata 162200maxresident)k
+    0inputs+0outputs (0major+516170minor)pagefaults 0swaps
+    35M	/initrd.img
+    == --lz4 ==
+    22.77user 4.06system 0:19.66elapsed 136%CPU (0avgtext+0avgdata 90840maxresident)k
+    0inputs+0outputs (0major+487284minor)pagefaults 0swaps
+    41M	/initrd.img
+    == --zstd ==
+    43.37user 5.95system 0:30.60elapsed 161%CPU (0avgtext+0avgdata 384136maxresident)k
+    0inputs+0outputs (0major+487891minor)pagefaults 0swaps
+    37M	/initrd.img
+    == --compress=lz4 ==
+    24.23user 4.25system 0:23.21elapsed 122%CPU (0avgtext+0avgdata 86776maxresident)k
+    0inputs+0outputs (0major+491880minor)pagefaults 0swaps
+    41M	/initrd.img
+    == --compress=pigz ==
+    48.01user 4.86system 0:24.85elapsed 212%CPU (0avgtext+0avgdata 67176maxresident)k
+    0inputs+0outputs (0major+487239minor)pagefaults 0swaps
+    39M	/initrd.img
+    == --compress="zstd -qT0" ==
+    16.94user 4.57system 0:19.71elapsed 109%CPU (0avgtext+0avgdata 88572maxresident)k
+    0inputs+0outputs (0major+490651minor)pagefaults 0swaps
+    38M	/initrd.img
+    == --compress="zstd -qT0 -3" ==
+    16.56user 3.50system 0:18.14elapsed 110%CPU (0avgtext+0avgdata 91748maxresident)k
+    0inputs+0outputs (0major+489119minor)pagefaults 0swaps
+    38M	/initrd.img
+    == --compress="zstd -qT0 -9" ==
+    17.59user 3.35system 0:18.33elapsed 114%CPU (0avgtext+0avgdata 162172maxresident)k
+    0inputs+0outputs (0major+490560minor)pagefaults 0swaps
+    37M	/initrd.img
+
+
+Discussion
+----------
+
+So remember how in Debian 11 where initramfs-tools set every
+compressor except gzip to the maximum compression level,
+even though that's not the compressor's default,
+and it's a **stupid** tradeoff?
+
+And that was mitigated in Debian 12 by this commit (zstd -19 → -9):
+
+    https://salsa.debian.org/kernel-team/initramfs-tools/-/merge_requests/37
+
+Well dracut has dragged Debian back into that stupid fucking reality.
+Hooray.
+
+Also...
+
+The rd size spread was 24M (xz) to 43M (lz4), but now it's 36M (xz) to 41M (lz4).
+How do they fuck it up enough to make it closer in *both* directions?
+Dracut must be including about the same amount of content overall, but
+more of it is pre-compressed (e.g. jpegs instead of ELF binaries)?
+Oh -- maybe I'm measuring before vs. after kernels switched from .ko to .ko.xz.
+Nope, it's not that.  It was .ko.xz for both measurements.
