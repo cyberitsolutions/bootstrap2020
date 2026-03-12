@@ -30,7 +30,7 @@ with open('24180-app-names-audit.csv', 'w') as f:
 
     for package_name in subprocess.check_output(
             ['apt-file', 'search', '--package-only', '/usr/share/applications/'],
-            text=True).strip().splitlines():
+            text=True).strip().splitlines()[:10]:
         with tempfile.TemporaryDirectory() as td_str:
             td = pathlib.Path(td_str)
             subprocess.check_call(['apt', 'download', package_name], cwd=td)
