@@ -151,6 +151,9 @@ Results for Debian 14 as at 2026-03-12:
 .. csv-table:: measurements (smaller is better)
    :header: score,time,size,vendor,arguments
 
+   0407,11s,37M,initramfs-tools,``COMPRESS=zstd`` (initramfs-tools default)
+   0418,11s,38M,initramfs-tools,``COMPRESS=gzip``
+   0440,11s,40M,initramfs-tools,``COMPRESS=lz4``
    0666,18s,37M,dracut,``--compress="zstd -qT0 -9"`` (initramfs-tools default)
    0684,18s,38M,dracut,``--compress="zstd -qT0 -3"``
    0760,20s,38M,dracut,``--compress="zstd -qT0"``
@@ -158,45 +161,38 @@ Results for Debian 14 as at 2026-03-12:
    0936,24s,39M,dracut,``--gzip``
    0943,24s,41M,dracut,``--compress=lz4``
    0962,26s,37M,dracut,(dracut default)
-   0972,27s,36M,initramfs-tools,``COMPRESS=gzip``
    0975,25s,39M,dracut,``--compress=pigz``
-   1023,33s,31M,initramfs-tools,``COMPRESS=zstd``
+   1085,31s,35M,initramfs-tools,``COMPRESS=xz``
    1120,32s,35M,dracut,``--xz --compress-level=6`` (xz default)
    1147,31s,37M,dracut,``--zstd``
    1155,33s,35M,dracut,``--xz``
    1330,19s,70M,dracut,``--no-compress``
-   1525,61s,25M,initramfs-tools,``COMPRESS=xz``
-   1892,43s,44M,initramfs-tools,``COMPRESS=lz4``
 
 
 .. COMMENT: raw output follows.
 
-    bash5$ mmdebstrap bookworm /dev/null --quiet --components=main,non-free-firmware --include=pixz,pigz,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic --customize-hook='for i in lz4 gzip xz zstd; do echo === $i === && echo COMPRESS=$i >$1/etc/initramfs-tools/conf.d/test && time chroot $1 update-initramfs -u -k all && du --apparent-size -hH $1/initrd.img; done'
+    bash5$ mmdebstrap forky /dev/null --quiet --components=main,non-free-firmware --include=pixz,pigz,zstd,lz4,xz-utils,firmware-misc-nonfree,linux-image-generic,initramfs-tools --customize-hook='for i in lz4 gzip xz zstd; do echo === $i === && echo COMPRESS=$i >$1/etc/initramfs-tools/conf.d/test && time chroot $1 update-initramfs -u -k all && du --apparent-size -hH $1/initrd.img; done'
     === lz4 ===
-    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
-    29.27user 15.18system 0:43.83elapsed 101%CPU (0avgtext+0avgdata 25776maxresident)k
-    0inputs+0outputs (0major+1757987minor)pagefaults 0swaps
-    44M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    update-initramfs: Generating /boot/initrd.img-6.18.15+deb14-amd64
+    10.90user 2.20system 0:10.90elapsed 120%CPU (0avgtext+0avgdata 51520maxresident)k
+    0inputs+0outputs (0major+330739minor)pagefaults 0swaps
+    40M	/tmp/mmdebstrap.TS4k7Tfbh4/initrd.img
     === gzip ===
-    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
-    29.77user 9.88system 0:27.46elapsed 144%CPU (0avgtext+0avgdata 25820maxresident)k
-    0inputs+0outputs (0major+1723980minor)pagefaults 0swaps
-    36M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    update-initramfs: Generating /boot/initrd.img-6.18.15+deb14-amd64
+    12.20user 2.34system 0:10.66elapsed 136%CPU (0avgtext+0avgdata 28232maxresident)k
+    0inputs+0outputs (0major+332099minor)pagefaults 0swaps
+    38M	/tmp/mmdebstrap.TS4k7Tfbh4/initrd.img
     === xz ===
-    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
-    175.98user 10.30system 1:01.08elapsed 304%CPU (0avgtext+0avgdata 721328maxresident)k
-    0inputs+0outputs (0major+1780454minor)pagefaults 0swaps
-    25M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
+    update-initramfs: Generating /boot/initrd.img-6.18.15+deb14-amd64
+    37.89user 2.26system 0:31.34elapsed 128%CPU (0avgtext+0avgdata 236448maxresident)k
+    0inputs+0outputs (0major+342722minor)pagefaults 0swaps
+    35M	/tmp/mmdebstrap.TS4k7Tfbh4/initrd.img
     === zstd ===
-    update-initramfs: Generating /boot/initrd.img-6.1.0-43-amd64
-    28.27user 13.16system 0:33.23elapsed 124%CPU (0avgtext+0avgdata 189880maxresident)k
-    0inputs+0outputs (0major+1740346minor)pagefaults 0swaps
-    31M	/tmp/mmdebstrap.Jn9vViqimP/initrd.img
-    I: cleaning package lists and apt cache...
-    done
-    done
-    I: removing tempdir /tmp/mmdebstrap.Jn9vViqimP...
-    I: success in 287.5440 seconds
+    update-initramfs: Generating /boot/initrd.img-6.18.15+deb14-amd64
+    9.98user 2.33system 0:11.11elapsed 110%CPU (0avgtext+0avgdata 87304maxresident)k
+    0inputs+0outputs (0major+337061minor)pagefaults 0swaps
+    37M	/tmp/mmdebstrap.TS4k7Tfbh4/initrd.img
+
 
     [dracut stuff, ended up being several runs]
     == ==
