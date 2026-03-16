@@ -1,34 +1,45 @@
 #!/usr/bin/python3
 import csv
+import decimal
 import functools
 import gzip
 import logging
 import math
 import pathlib
+import sqlite3
 import subprocess
 import sys
 import tempfile
 import urllib.request
+import argparse
 
 # NOTE: APT_CONFIG=$MMDEBSTRAP_APT_CONFIG must happen "import apt",
 #       if you're using the host's apt (which we are).
 import apt
 import psycopg
 
+parser = argparse.ArgumentParser()
+parser.add_argument('chroot_path', type=pathlib.Path)
+args = parser.parse_args()
+
 cache = apt.Cache()
 
-def measure_costs():
+def measure_costs() -> None:
+    output.execute('CREATE TABLE install_footprint (dsc_name TEXT NOT NULL, deb_name TEXT PRIMARY KEY, compressed_cost_MiB INTEGER, uncompressed_cost_MiB INTEGER)')
     g = csv.DictWriter(sys.stdout, fieldnames=('deb_name', 'dsc_name', 'compressed_cost_MiB', 'uncompressed_cost_MiB'))
     g.writeheader()
     for package in cache:
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
         download, space = measure_cost(package)
-        g.writerow({
+        row = {
             'deb_name': package.name,
             'dsc_name': package.candidate.source_name,
             'compressed_cost_MiB': download,
-            'uncompressed_cost_MiB': space})
+            'uncompressed_cost_MiB': space}
+        g.writerow(row)
+        output.execute('INSERT INTO install_footprint (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB) VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB)', row)
+    output.commit()
 
 
 def measure_cost(package) -> tuple[int, int] | tuple[None, None]:
@@ -54,8 +65,15 @@ def measure_cost(package) -> tuple[int, int] | tuple[None, None]:
         cache.clear()           # cancel mark_install()
 
 
-def popularity():
-    with psycopg.connect('postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd') as conn, conn.cursor() as cur, cur:
+def popularity() -> None:
+    output.execute('CREATE TABLE popularity (deb_name TEXT PRIMARY KEY, active_users_per_mille)')
+    deb_names: list[str] = sorted(set(
+        p.name
+        for p in cache
+        if p.candidate is not None))
+    with (psycopg.connect('postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd') as conn,
+          conn.cursor() as cur,
+          cur):
         # I am intentionally discarding precision, only getting 0‰ to 1000‰.
         # This keeps it as an integer, discarding boring amounts of precision.
         cur.execute(
@@ -63,40 +81,46 @@ def popularity():
             SELECT package,
                    1000 * vote / max(vote) over() AS active_users_per_mille
             FROM popcon
-            WHERE package = any(%(packages)s)
+            WHERE package = any(%(deb_names)s)
             ORDER BY package;''',
             # Only ask about packages we might actually install
-            {'packages': sorted(set(
-                p.name
-                for p in cache
-                if p.candidate is not None))})
-        for row in cur:
-            print(*row)
+            {'deb_names': deb_names})
+        output.executemany('INSERT INTO popularity VALUES (?, ?)', cur)
+        output.commit()
 
 
-def unpopularity():
+def unpopularity() -> None:
     """a.k.a. detect abandoned packages"""
-    with psycopg.connect('postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd') as conn, conn.cursor() as cur, cur:
+    output.execute('CREATE TABLE unpopularity (dsc_name TEXT PRIMARY KEY, years_since_last_upload)')
+    dsc_names: list[str] = sorted(set(
+        p.candidate.source_name
+        for p in cache
+        if p.candidate is not None))
+    with (psycopg.connect('postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd') as conn,
+          conn.cursor() as cur,
+          cur):
         cur.execute(
             '''
             SELECT source,
-                   extract(year FROM age(max(date))) age_of_last_upload_in_years
+                   extract(year FROM age(max(date))) years_since_last_upload
             FROM upload_history
-            WHERE source = any(%(sources)s)
+            WHERE source = any(%(dsc_names)s)
             GROUP BY source
             ORDER BY source;
             ''',
             # Only ask about packages we might actually install
-            {'sources': sorted(set(
-                p.candidate.source_name
-                for p in cache
-                if p.candidate is not None))})
-        for row in cur:
-            print(*row)
+            {'dsc_names': dsc_names})
+        output.executemany('INSERT INTO unpopularity VALUES (?, ?)', cur)
+        output.commit()
 
 
 if __name__ == '__main__':
-    measure_costs()
+    # Teach sqlite3 to ingest psycopg3's Decimal values
+    sqlite3.register_adapter(decimal.Decimal, str)
+    with sqlite3.connect(args.chroot_path / 'measurements.db') as output:
+        popularity()
+        unpopularity()
+        measure_costs()
 
 
 

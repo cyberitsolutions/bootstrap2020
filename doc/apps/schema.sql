@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS install_footprint (
     deb_name TEXT PRIMARY KEY,
     -- required_space is the extracted size
     -- required_download is the .debs -- it will roughly match what filesystem.squashfs needs
+    -- these numbers are in bytes - 
     required_space INTEGER CHECK (required_space >= 0),  -- NULL if not installable (conflicts)
     required_download INTEGER CHECK (required_download >= 0),  -- NULL if not installable (conflicts)
     deb_summary TEXT NOT NULL);  -- the short en Description
