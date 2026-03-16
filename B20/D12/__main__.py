@@ -193,7 +193,7 @@ def maybe_measure_install_footprints():
         return []
     return [
         *do_stuff('measure-install-footprints'),
-        '--customize-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG python3 $1/measure-install-footprints.py',
+        '--customize-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG python3 $1/measure-install-footprints.py $1',
         # '--customize-hook=download /var/log/install-footprint.csv'
         # f'    doc/debian-12-install-footprint.{template}.csv',
         '--customize-hook=false "Do not continue building after measuring install footprints."']
