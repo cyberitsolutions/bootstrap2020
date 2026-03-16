@@ -1,22 +1,19 @@
 #!/usr/bin/python3
+import argparse
+import contextlib
 import csv
-import decimal
-import functools
-import gzip
 import logging
-import math
+import os
 import pathlib
 import sqlite3
 import subprocess
-import sys
 import tempfile
-import urllib.request
-import argparse
 
 # NOTE: APT_CONFIG=$MMDEBSTRAP_APT_CONFIG must happen "import apt",
 #       if you're using the host's apt (which we are).
 import apt
 import psycopg
+import xdg.DesktopEntry
 
 parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
@@ -25,9 +22,7 @@ args = parser.parse_args()
 cache = apt.Cache()
 
 def measure_costs() -> None:
-    output.execute('CREATE TABLE install_footprint (dsc_name TEXT NOT NULL, deb_name TEXT PRIMARY KEY, compressed_cost_MiB INTEGER, uncompressed_cost_MiB INTEGER)')
-    g = csv.DictWriter(sys.stdout, fieldnames=('deb_name', 'dsc_name', 'compressed_cost_MiB', 'uncompressed_cost_MiB'))
-    g.writeheader()
+    output.execute('CREATE TABLE install_footprint (dsc_name TEXT NOT NULL, deb_name TEXT PRIMARY KEY, compressed_cost_MiB INTEGER, uncompressed_cost_MiB INTEGER, summary TEXT NOT NULL)')
     for package in cache:
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
@@ -36,8 +31,9 @@ def measure_costs() -> None:
             'deb_name': package.name,
             'dsc_name': package.candidate.source_name,
             'compressed_cost_MiB': download,
-            'uncompressed_cost_MiB': space}
-        g.writerow(row)
+            'uncompressed_cost_MiB': space,
+            'summary': package.candidate.summary}
+        print(*row, sep='\t')   # PROGRESS
         output.execute('INSERT INTO install_footprint (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB) VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB)', row)
     output.commit()
 
@@ -71,9 +67,7 @@ def popularity() -> None:
         p.name
         for p in cache
         if p.candidate is not None))
-    with (psycopg.connect('postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd') as conn,
-          conn.cursor() as cur,
-          cur):
+    with udd() as cur:
         # I am intentionally discarding precision, only getting 0‰ to 1000‰.
         # This keeps it as an integer, discarding boring amounts of precision.
         cur.execute(
@@ -96,13 +90,11 @@ def unpopularity() -> None:
         p.candidate.source_name
         for p in cache
         if p.candidate is not None))
-    with (psycopg.connect('postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd') as conn,
-          conn.cursor() as cur,
-          cur):
+    with udd() as cur:
         cur.execute(
             '''
             SELECT source,
-                   extract(year FROM age(max(date))) years_since_last_upload
+                   extract(year FROM age(max(date)))::integer AS years_since_last_upload
             FROM upload_history
             WHERE source = any(%(dsc_names)s)
             GROUP BY source
@@ -114,13 +106,55 @@ def unpopularity() -> None:
         output.commit()
 
 
+@contextlib.contextmanager
+def udd():
+    with psycopg.connect(
+            'postgresql://udd-mirror:udd-mirror@udd-mirror.debian.net/udd',
+            # workaround dumb server config
+            # Otherwise PG text becomes py b'' not u''!
+            client_encoding='UTF8') as conn:
+        # https://www.psycopg.org/psycopg3/docs/advanced/adapt.html#example-postgresql-numeric-to-python-float
+        # Downgrade PG numeric to py float(), since we'll feed it into sqlite3 IEEE 754 ANYWAY.
+        # conn.adapters.register_loader('numeric', psycopg.types.numeric.FloatLoader)
+        with conn.cursor() as cur:
+            with cur:
+                yield cur
+
+
+def dotdesktop() -> None:
+    output.execute('CREATE TABLE dotdesktop (deb_name TEXT, file_name TEXT, application_name TEXT, generic_name TEXT, PRIMARY KEY (deb_name, file_name))')
+    for deb_name in subprocess.check_output(
+            ['apt-file', 'search', '--package-only', '/usr/share/applications/'],
+            text=True).strip().splitlines():
+        # If the package has no candidate, it's probably banned, so skip it entirely.
+        if cache[deb_name].candidate is None:
+            continue
+        with tempfile.TemporaryDirectory(dir=args.chroot_path) as td_str:
+            td = pathlib.Path(td_str)
+            subprocess.check_call(['apt', '-qq', 'download', deb_name], cwd=td)
+            # FIXME: this unpacks EVERY file, which is slow.  Use --path-exclude?
+            subprocess.check_call(['dpkg', '-x', *list(td.glob('*.deb')), '.'], cwd=td)
+            for path in sorted(list(td.glob('usr/share/applications/**/*.desktop'))):
+                app = xdg.DesktopEntry.DesktopEntry(filename=path)
+                row = {
+                    'deb_name': deb_name,
+                    'file_name': path.name,
+                    'application_name': app.getName(),
+                    'generic_name': app.getGenericName()}
+                print(*row.values(), sep='\t')  # PROGRESS
+                output.execute('INSERT INTO dotdesktop (deb_name, file_name, application_name, generic_name) VALUES (:deb_name, :file_name, :application_name, :generic_name)', row)
+    output.commit()
+
+
+
 if __name__ == '__main__':
-    # Teach sqlite3 to ingest psycopg3's Decimal values
-    sqlite3.register_adapter(decimal.Decimal, str)
+    if os.environ.get('LC_ALL') or os.environ.get('LANG') != 'en_AU.UTF-8':
+        logging.warning('Fucky locale - localized names/descriptions will be wrong!')
     with sqlite3.connect(args.chroot_path / 'measurements.db') as output:
-        popularity()
-        unpopularity()
-        measure_costs()
+        popularity()            # fast
+        unpopularity()          # fast
+        dotdesktop()            # slow
+        measure_costs()         # slow
 
 
 

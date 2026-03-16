@@ -192,6 +192,10 @@ def maybe_measure_install_footprints():
     if not args.measure_install_footprints:
         return []
     return [
+        # This tells host's apt to download /Contents files in the guest.
+        # The host's apt-file can then search them.
+        # This is much tidier than --include=apt-file!
+        '--aptopt=/etc/apt/apt.conf.d/50apt-file.conf',
         *do_stuff('measure-install-footprints'),
         '--customize-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG python3 $1/measure-install-footprints.py $1',
         # '--customize-hook=download /var/log/install-footprint.csv'
