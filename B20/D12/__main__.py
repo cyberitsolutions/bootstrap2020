@@ -191,12 +191,11 @@ def maybe_enable_backdoor_access():
 def maybe_measure_install_footprints():
     if not args.measure_install_footprints:
         return []
-    raise NotImplementedError('need to deal with importlib.resources stuff here!')
     return [
-        '--customize-hook=upload doc/debian-12-app-reviews.csv /tmp/app-reviews.csv',
-        '--customize-hook=chroot $1 python3 < debian-12-install-footprint.py',
-        '--customize-hook=download /var/log/install-footprint.csv'
-        f'    doc/debian-12-install-footprint.{template}.csv',
+        *do_stuff('measure-install-footprints'),
+        '--customize-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG python3 $1/measure-install-footprints.py',
+        # '--customize-hook=download /var/log/install-footprint.csv'
+        # f'    doc/debian-12-install-footprint.{template}.csv',
         '--customize-hook=false "Do not continue building after measuring install footprints."']
 
 

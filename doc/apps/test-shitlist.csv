@@ -1,0 +1,4 @@
+reason,deb_names,dsc_names
+useless helper package,"[""education-tasks"", ""science-tasks"", ""science-config""]",
+"Inmates aren't allowed general-purpose programming tools.
+(The MIGHT be allowed some games-programming, which is about programming WITHIN the game.)","[""education-development""]","[""games-c++-dev""]"
