@@ -196,10 +196,16 @@ def maybe_measure_install_footprints():
         # The host's apt-file can then search them.
         # This is much tidier than --include=apt-file!
         '--aptopt=/etc/apt/apt.conf.d/50apt-file.conf',
-        *do_stuff('measure-install-footprints'),
-        '--customize-hook=APT_CONFIG=$MMDEBSTRAP_APT_CONFIG python3 $1/measure-install-footprints.py $1',
-        # '--customize-hook=download /var/log/install-footprint.csv'
-        # f'    doc/debian-12-install-footprint.{template}.csv',
+        # Tell host's apt to download /Translation-en files in the guest.
+        # This is only needed for is_boring().
+        # https://bugs.debian.org/1131026
+        '--aptopt=Acquire::Languages "en"',
+        # Copy the script in (files/) and run it (hooks/).
+        *do_stuff('measure-install-footprints'),  # copy the script in and run it
+        # f'--customize-hook=env -u LANGUAGE -u LC_ALL LANG=en_AU.UTF-8 APT_CONFIG=$MMDEBSTRAP_APT_CONFIG python3 {templates_path}/measure-install-footprints.py $1',
+        # Hook scripts can't write directly outside the build root, so
+        # we need a separate manual customize-hook here to copy the file back out.
+        f'--customize-hook=download /measurements.db ./measurements-{template}.db',
         '--customize-hook=false "Do not continue building after measuring install footprints."']
 
 

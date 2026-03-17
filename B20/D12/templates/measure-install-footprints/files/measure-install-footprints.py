@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import contextlib
-import csv
+import json
 import logging
 import os
 import pathlib
@@ -21,20 +21,41 @@ args = parser.parse_args()
 
 cache = apt.Cache()
 
+
 def measure_costs() -> None:
-    output.execute('CREATE TABLE install_footprint (dsc_name TEXT NOT NULL, deb_name TEXT PRIMARY KEY, compressed_cost_MiB INTEGER, uncompressed_cost_MiB INTEGER, summary TEXT NOT NULL)')
-    for package in cache:
+    output.execute(
+        """
+        CREATE TABLE install_footprint (
+        compressed_cost_MiB INTEGER,
+        uncompressed_cost_MiB INTEGER,
+        section TEXT,
+        dsc_name TEXT NOT NULL,
+        deb_name TEXT PRIMARY KEY,
+        summary TEXT NOT NULL)""")
+    for i, package in enumerate(cache):
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
+        # FIXME: don't mention boring packages?
+        # if is_boring(package):
+        #     continue
         download, space = measure_cost(package)
+        # FIXME: don't mention non-installable packages?
+        # if download is None or space is None:
+        #     continue
         row = {
-            'deb_name': package.name,
-            'dsc_name': package.candidate.source_name,
             'compressed_cost_MiB': download,
             'uncompressed_cost_MiB': space,
+            'deb_name': package.name,
+            'dsc_name': package.candidate.source_name,
+            'section': package.candidate.section,
             'summary': package.candidate.summary}
-        print(*row, sep='\t')   # PROGRESS
-        output.execute('INSERT INTO install_footprint (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB) VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB)', row)
+        print(*row.values(), sep='\t')  # PROGRESS
+        output.execute("""
+        INSERT INTO install_footprint (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB, section, summary)
+        VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB, :section, :summary)
+        """,
+        row)
+        if i > 100: break      # DEBUGGING
     output.commit()
 
 
@@ -61,8 +82,51 @@ def measure_cost(package) -> tuple[int, int] | tuple[None, None]:
         cache.clear()           # cancel mark_install()
 
 
+def is_boring(package) -> bool | None:
+    # FIXME: Should we skip a shitlist of "definitely no apps here" sections?
+    #        skipping them saves significant time.
+    #        Note that -dev -dbg -dbgsym
+    #        are already skipped by apt pinning.
+    #        If you exclude those, the count drops from 20% to 12%.
+    #        Still worth doing!
+    section_shitlist = {
+        # About 20% of all packages are in "libs" or "libdevel",
+        # apt-preferences-PrisonPC means *-(dev|dbg|dbgsym) packages have no candidate.
+        # That still leaves 12% of all packages in Section: *libs*.
+        'libs',                 # libfoo1
+        'libdevel',             # -dev
+        'oldlibs',              # libfoo1 (obsolete)
+        'debug',                # -dbg -dbgsym
+        # About 1% of packages are Section: gnu-r or Package: r-*.
+        # All GNU R packages need zip via r-base-core, and
+        # we block zip in prisonpc-bad-package-conflicts-everyone.
+        'gnu-r',
+    }
+    if pathlib.Path(package.candidate.section).name in section_shitlist:
+        return True
+    # About 2% of packages are *-data or *-common -- not themselves interesting.
+    # About 6% of packages are *-doc -- not themselves interesting, but
+    # we generally want to know the measurements for foo app's foo-doc HTML user guide.
+    if any(package.name.endswith(s) for s in {'-data', '-common'}):
+        return True
+    # About 0.3% of packages are "transitional dummy packages".
+    # They help upgrade to new a Debian release.
+    # We always fresh install (never upgrade), so don't care.
+    # The exact wording is not consistent between packages.
+    # The phrase "safely removed" appears to be the most consistent.
+    # NOTE: This WILL NOT WORK without /var/lib/apt/lists/*_Translation*.
+    #       See also https://bugs.debian.org/1131026
+    if 'safely removed' in package.candidate.description:
+        return True
+    return None                 # don't know if package is boring
+
+
 def popularity() -> None:
-    output.execute('CREATE TABLE popularity (deb_name TEXT PRIMARY KEY, active_users_per_mille)')
+    output.execute(
+        """
+        CREATE TABLE popularity (
+        active_users_per_mille INTEGER NOT NULL,
+        deb_name TEXT PRIMARY KEY)""")
     deb_names: list[str] = sorted(set(
         p.name
         for p in cache
@@ -72,8 +136,8 @@ def popularity() -> None:
         # This keeps it as an integer, discarding boring amounts of precision.
         cur.execute(
             '''
-            SELECT package,
-                   1000 * vote / max(vote) over() AS active_users_per_mille
+            SELECT 1000 * vote / max(vote) over() AS active_users_per_mille,
+                   package
             FROM popcon
             WHERE package = any(%(deb_names)s)
             ORDER BY package;''',
@@ -85,7 +149,11 @@ def popularity() -> None:
 
 def unpopularity() -> None:
     """a.k.a. detect abandoned packages"""
-    output.execute('CREATE TABLE unpopularity (dsc_name TEXT PRIMARY KEY, years_since_last_upload)')
+    output.execute(
+        """
+        CREATE TABLE unpopularity (
+        years_since_last_upload INTEGER NOT NULL,
+        dsc_name TEXT PRIMARY KEY)""")
     dsc_names: list[str] = sorted(set(
         p.candidate.source_name
         for p in cache
@@ -93,8 +161,8 @@ def unpopularity() -> None:
     with udd() as cur:
         cur.execute(
             '''
-            SELECT source,
-                   extract(year FROM age(max(date)))::integer AS years_since_last_upload
+            SELECT extract(year FROM age(max(date)))::integer AS years_since_last_upload,
+                   source
             FROM upload_history
             WHERE source = any(%(dsc_names)s)
             GROUP BY source
@@ -122,10 +190,18 @@ def udd():
 
 
 def dotdesktop() -> None:
-    output.execute('CREATE TABLE dotdesktop (deb_name TEXT, file_name TEXT, application_name TEXT, generic_name TEXT, PRIMARY KEY (deb_name, file_name))')
-    for deb_name in subprocess.check_output(
+    output.execute(
+        """
+        CREATE TABLE dotdesktop (
+        deb_name TEXT,
+        file_name TEXT,
+        application_name TEXT,
+        generic_name TEXT,
+        categories JSON,
+        PRIMARY KEY (deb_name, file_name))""")
+    for i, deb_name in enumerate(subprocess.check_output(
             ['apt-file', 'search', '--package-only', '/usr/share/applications/'],
-            text=True).strip().splitlines():
+            text=True).strip().splitlines()):
         # If the package has no candidate, it's probably banned, so skip it entirely.
         if cache[deb_name].candidate is None:
             continue
@@ -140,356 +216,70 @@ def dotdesktop() -> None:
                     'deb_name': deb_name,
                     'file_name': path.name,
                     'application_name': app.getName(),
-                    'generic_name': app.getGenericName()}
+                    'generic_name': app.getGenericName(),
+                    'categories': json.dumps(app.getCategories())}
                 print(*row.values(), sep='\t')  # PROGRESS
-                output.execute('INSERT INTO dotdesktop (deb_name, file_name, application_name, generic_name) VALUES (:deb_name, :file_name, :application_name, :generic_name)', row)
+                output.execute("""
+                INSERT INTO dotdesktop (deb_name, file_name, application_name, generic_name, categories)
+                VALUES (:deb_name, :file_name, :application_name, :generic_name, json(:categories))
+                """,
+                row)
+        if i > 100: break       # DEBUGGING
     output.commit()
 
+
+def metapackages():
+    output.execute(
+        """
+        CREATE TABLE metapackages (
+        metapackage_deb_name TEXT,
+        metapackage_dsc_name TEXT NOT NULL,
+        deb_name TEXT,
+        strength INTEGER NOT NULL,
+        PRIMARY KEY (metapackage_deb_name, deb_name))""")
+    for metapackage in cache:
+        # FIXME: if cool-games Depends: game1, game2, game3, and
+        #        game3 can't be installed, then
+        #        cool-games can't be installed,
+        #        and we will skip the entire metapackage.
+        #        Is this OK, or do we want to be clever about it?
+        if metapackage.candidate is None:
+            continue            # not installable
+        if pathlib.Path(metapackage.candidate.section).name not in {'tasks', 'metapackages'}:
+            continue            # not a task/metapackage
+        # NOTE: task-foo might have Depends: a|b and Suggests: a.
+        #       Insert strongest dependency first, then
+        #       ON CONFLICT IGNORE to implicitly skip overlapping weaker dependencies.
+        for strength, clauses in [
+                (3, metapackage.candidate.dependencies),
+                (2, metapackage.candidate.recommends),
+                (1, metapackage.candidate.suggests)]:
+            for clause in clauses:
+                for candidate in clause:
+                    row = {
+                        'metapackage_deb_name': metapackage.name,
+                        'metapackage_dsc_name': metapackage.candidate.source_name,
+                        'deb_name': candidate.name,
+                        'strength': strength}
+                    output.execute(
+                        """
+                        INSERT INTO metapackages (metapackage_deb_name, metapackage_dsc_name, deb_name, strength)
+                        VALUES (:metapackage_deb_name, :metapackage_dsc_name, :deb_name, :strength) ON CONFLICT DO NOTHING
+                        """,
+                        row)
+    output.commit()
 
 
 if __name__ == '__main__':
     if os.environ.get('LC_ALL') or os.environ.get('LANG') != 'en_AU.UTF-8':
-        logging.warning('Fucky locale - localized names/descriptions will be wrong!')
+        logging.warning(
+            'Fucky locale - localized names/descriptions will be wrong! %s',
+            {k: v for k, v in os.environ.items()
+             if k.startswith('LANG')
+             or k.startswith('LC_')})
     with sqlite3.connect(args.chroot_path / 'measurements.db') as output:
+        metapackages()          # fast
         popularity()            # fast
         unpopularity()          # fast
-        dotdesktop()            # slow
         measure_costs()         # slow
-
-
-
-if False:
-
-    package_shitlist = {
-        'education-tasks',          # useless helper package
-        'science-tasks',            # useless helper package
-        'science-config',           # useless helper package
-        'games-all',                # already handled by the main loop
-        'games-console',            # no tty, therefore tty games banned
-        'games-mud',                # MUD = "multiplayer online", therefore banned
-        'games-tasks',              # useless helper package
-
-        # Inmates aren't allowed general-purpose programming tools.
-        # (The MIGHT be allowed some games-programming, which is about programming WITHIN the game.)
-        'education-development',
-        'games-c++-dev',
-        'games-content-dev',
-        'games-java-dev',
-        'games-perl-dev',
-        'games-python3-dev',
-        'science-dataacquisition-dev',
-        'science-distributedcomputing',
-        'science-engineering-dev',
-        'science-highenergy-physics-dev',
-        'science-machine-learning',
-        'science-mathematics-dev',
-        'science-meteorology-dev',
-        'science-nanoscale-physics-dev',
-        'science-numericalcomputation',
-        'science-physics-dev',
-        'science-robotics-dev',
-        'science-viewing-dev',
-
-        # This is a *desktop*, not a server.
-        'education-ltsp-server',
-        'education-main-server',
-        # This is an *XFCE* desktop.  (FIXME: is this sensible?)
-        'education-desktop-cinnamon',
-        'education-desktop-gnome',
-        'education-desktop-kde',
-        'education-desktop-lxde',
-        'education-desktop-lxqt',
-        'education-desktop-mate',
-        'education-desktop-other',  # FIXME: openclipart-libreoffice &c are ONLY in this one...
-
-        # We do our own network-y stuff; we don't care about Debian Edu's version.
-        'education-common',
-        'education-laptop',
-        'education-menus',
-        'education-networked',
-        'education-networked-common',
-        'education-roaming-workstation',
-        'education-standalone',
-        'education-thin-client',
-        'education-workstation',
-
-        # wrongly selected by education-desktop-xfce
-        'blueman', 'task-xfce-desktop', 'ssh-askpass',
-
-        # CLI-only apps
-        '2048', '4ti2', 'an', 'animals', 'ann-tools', 'apbs',
-        'apophenia-bin', 'aptitude', 'arduino-mk', 'armagetron-dedicated',
-        'armagetronad-dedicated', 'armagetronad-dedicated', 'asciijump',
-        'ase', 'astromenace-data-src', 'astronomical-almanac', 'auto-07p',
-        'avce00', 'bastet', 'bb', 'bibutils', 'binoculars', 'bliss',
-        'bodr', 'bombardier', 'boohu', 'boolector', 'braillefont',
-        'brazilian-conjugate', 'bsdgames', 'bsdgames-nonfree',
-        'calculix-ccx', 'calculix-ccx-doc', 'calculix-ccx-test',
-        'calculix-cgx', 'calculix-cgx-examples', 'cataclysm-dda-curses',
-        'cavezofphear', 'cavezofphear', 'cbflib-bin', 'cdftools', 'cdo',
-        'ceres-solver-doc', 'cg3', 'chemeq', 'chemical-mime-data',
-        'cimg-dev', 'cimg-dev', 'circos-tools', 'cl-reversi', 'clasp',
-        'clasp', 'clickhouse-tools', 'cliquer', 'cmatrix', 'cmor-tables',
-        'coda', 'code-saturne', 'cohomcalg', 'coinor-cbc', 'coinor-csdp',
-        'coinor-libcoinmp-dev', 'coinor-symphony',
-        'colossal-cave-adventure', 'cookietool', 'coop-computing-tools',
-        'coq', 'cowsay', 'cowsay-off', 'cp2k', 'crawl', 'cryptominisat',
-        'cryptominisat', 'csv2latex', 'csv2latex', 'csvkit', 'ctioga2',
-        'curseofwar', 'cwlformat', 'cwltool', 'dadadodo', 'datamash',
-        'deal', 'dealer', 'dicom3tools', 'dicomnifti', 'dict', 'dimbl',
-        'dime', 'diploma', 'dmagnetic', 'dvorak7min', 'dx-doc',
-        'dxsamples', 'e00compr', 'ecaccess', 'eclib-tools', 'empire',
-        'empire', 'empire-hub', 'empire-lafe', 'esys-particle', 'etsf-io',
-        'evolver-nox', 'evolver-ogl', 'fathom', 'fcm', 'fenics',
-        'festival', 'feynmf', 'ffmpeg', 'filters', 'fizmo-console',
-        'fizmo-ncursesw', 'flexpart', 'flextra', 'flintqs', 'fluidsynth',
-        'fonts-linex', 'fonts-sil-doulos', 'fonts-sil-doulos-compact',
-        'fortune-anarchism', 'fortune-mod', 'fortunes',
-        'fortunes-debian-hints', 'freecell-solver-bin', 'freefem',
-        'freesweep', 'frobby', 'frog', 'frogdata', 'frotz',
-        'game-data-packager', 'game-data-packager-runtime', 'gausssum',
-        'gdal-bin', 'gearhead', 'gearhead2', 'gearman', 'gearman-tools',
-        'geekcode', 'geoip-bin', 'getdp', 'giza-dev', 'gle-graphics',
-        'gmp-ecm', 'gmt', 'gmt', 'gnucap', 'gnudatalanguage', 'gnugo',
-        'gnuplot', 'gnushogi', 'gpaw', 'gpsbabel', 'gpscorrelate', 'gpsd',
-        'gpsd-clients', 'gpsim', 'grace', 'grads', 'graphviz',
-        'grass-doc', 'greed', 'grhino', 'gri', 'gromacs',
-        'gromacs-openmpi', 'gsl-bin', 'gstreamer1.0-plugins-ugly', 'harp',
-        'hdf5-helpers', 'hdf5-tools', 'hearse', 'hfst', 'hfst-ospell',
-        'hol-light', 'hol88', 'hollywood', 'hydroffice.bag-tools',
-        'impose+', 'ipe5toxml', 'irstlm', 'jeuclid-mathviewer',
-        'joint-state-publisher', 'joint-state-publisher-gui',
-        'kdegames-card-data-kf5', 'kdegames-mahjongg-data-kf5',
-        'kicad-doc-de', 'kicad-doc-es', 'kicad-doc-fr', 'klustakwik',
-        'lammps', 'latexdiff', 'lbt', 'lcalc', 'leela-zero', 'lib3ds-dev',
-        'libadios-bin', 'libapophenia2-dev', 'libatlas-cpp-0.6-tools',
-        'libbenchmark-tools', 'libbiosig-dev', 'libblas3', 'libcdk-java',
-        'libceres-dev', 'libcg3-dev', 'libcgal-dev', 'libcld2-dev',
-        'libcoin-dev', 'libcoin-runtime', 'libdap-bin', 'libdap-doc',
-        'libdap-doc', 'libdds0', 'libeccodes-tools', 'libeegdev-dev',
-        'libemos-bin', 'libfolia-dev', 'libfreeimage-dev',
-        'libfreenect-dev', 'libgdf-dev', 'libgnuplot-iostream-dev',
-        'libgraphviz-perl', 'libgts-bin', 'libimglib2-java',
-        'libjlatexmath-java', 'liblapack3', 'liblizzie-java',
-        'libmath-geometry-voronoi-perl', 'libmatheval1', 'libmseed-dev',
-        'libopensurgsim-dev', 'libpuzzle-bin', 'librtfilter-dev',
-        'libsimage-dev', 'libsoqt520-dev', 'libssm-bin',
-        'libtamuanova-dev', 'liburdfdom-tools', 'libvigraimpex-dev',
-        'libvlfeat-dev', 'libvtk7-dev', 'libvtk7-java', 'libvtk7-qt-dev',
-        'libxdffileio-dev', 'liggghts', 'link-grammar', 'lolcat', 'love',
-        'lp-solve', 'lrcalc', 'lrslib', 'lxi-tools', 'macaulay2',
-        'magics++', 'make', 'makedepf90', 'mapserver-bin', 'maria',
-        'matanza', 'matanza', 'mathicgb', 'mathomatic', 'maude', 'maxima',
-        'mbt', 'mbtserver', 'mcl', 'medcon', 'melting', 'mgt',
-        'minc-tools', 'minisat', 'minisat+', 'mlpost', 'mona', 'monopd',
-        'moon-buggy', 'mopac7-bin', 'moria', 'mpich', 'mpich-doc', 'mpqc',
-        'mriconvert', 'msxpertsuite', 'mumps-test', 'music-bin', 'nauty',
-        'ncl-ncarg', 'nco', 'netcdf-bin', 'netcdf-doc', 'netgen-doc',
-        'nethack-console', 'netris', 'nettoe', 'neuron', 'nifti-bin',
-        'nifti-bin', 'nifti2dicom', 'ninvaders',
-        'node-shiny-server-client', 'normaliz', 'nsnake', 'nsnake',
-        'nudoku', 'occt-draw', 'occt-misc', 'oce-draw', 'octomap-tools',
-        'ogamesim', 'ogamesim-www', 'ogdi-bin', 'omega-rpg',
-        'open-adventure', 'openbabel', 'openctm-tools', 'openfoam',
-        'openmpi-bin', 'openmpi-doc', 'openscenegraph', 'osmpbf-bin',
-        'osmpbf-bin', 'pacman', 'pacman4console', 'pacvim', 'palp',
-        'pandoc', 'pandoc-citeproc', 'pari-gp', 'pdf-presenter-console',
-        'pdl', 'petris', 'pgn-extract', 'pgn2web', 'pgplot5',
-        'phppgadmin', 'picosat', 'pioneers-console', 'piu-piu',
-        'planarity', 'play.it', 'polygen', 'polylib-utils', 'postgis',
-        'primesieve', 'proj-bin', 'psi3', 'psignifit', 'purity',
-        'purity-off', 'pybtex', 'pyfai', 'pyfr', 'python-pymzml-doc',
-        'python3-admesh', 'python3-bayespy', 'python3-brian',
-        'python3-cartopy', 'python3-cdo', 'python3-cmor', 'python3-deap',
-        'python3-dolfin', 'python3-dolfinx', 'python3-drslib',
-        'python3-eccodes', 'python3-escript', 'python3-escript-mpi',
-        'python3-ferret', 'python3-ffc', 'python3-fiat', 'python3-gmor',
-        'python3-gnuplot', 'python3-grib', 'python3-gsw',
-        'python3-guiqwt', 'python3-iapws', 'python3-imageio',
-        'python3-jupyter-sphinx-theme', 'python3-lmfit', 'python3-mapnik',
-        'python3-mapscript', 'python3-mapscript', 'python3-matplotlib',
-        'python3-meshio', 'python3-metaconfig', 'python3-minecraftpi',
-        'python3-minieigen', 'python3-neo', 'python3-netcdf4',
-        'python3-nibabel', 'python3-nipype', 'python3-nltk',
-        'python3-pandas', 'python3-periodictable', 'python3-pivy',
-        'python3-pybtex-docutils', 'python3-pydicom', 'python3-pydicom',
-        'python3-pyepsg', 'python3-pygraphviz', 'python3-pymzml',
-        'python3-pynlpl', 'python3-pyode', 'python3-pyqtgraph',
-        'python3-pysph', 'python3-pyvisa', 'python3-sagenb-export',
-        'python3-scipy', 'python3-seaborn', 'python3-sfepy',
-        'python3-silo', 'python3-snowballstemmer', 'python3-sphere',
-        'python3-sphinxcontrib.bibtex', 'python3-statsmodels',
-        'python3-streamz', 'python3-sympy', 'python3-taurus',
-        'python3-ufl', 'python3-vtk7', 'python3-wdlparse', 'pyxplot',
-        'qhull-bin', 'qnifti2dicom', 'qsopt-ex', 'qstat', 'quake-server',
-        'quake2-server', 'quake3-server', 'quantum-espresso',
-        'quantum-espresso', 'randtype', 'rheolef', 'robotfindskitten',
-        'rolldice', 'rosdiagnostic', 'rotix', 'rotix', 'rtcw-server',
-        'rubiks', 'sac2mseed', 'salliere', 'sasview', 'sat4j', 'scotch',
-        'scottfree', 'scram', 'scummvm-tools', 'sgf2dg', 'sketch', 'sl',
-        'slashem', 'sludge-devkit', 'spass', 'sudoku', 'svgtoipe',
-        'tachyon', 'tango-accesscontrol', 'tango-db', 'tango-starter',
-        'tcl-vtk7', 'teem-apps', 'tetgen', 'tetrinet-client', 'tetrinetx',
-        'texlive', 'texlive-bibtex-extra', 'texlive-games',
-        'texlive-latex-extra', 'texlive-pictures', 'texlive-publishers',
-        'texlive-science', 'tf', 'tfortune', 'tfortunes', 'tilp2',
-        'timbl', 'timblserver', 'tint', 'tintin++', 'tinymux', 'toil',
-        'toulbar2', 'tourney-manager', 'trader', 'trans-de-en',
-        'typespeed', 'ubi2wb', 'uci2wb', 'ucto', 'uctodata',
-        'vim-latexsuite', 'vitetris', 'vtk7-examples', 'warmux-servers',
-        'wfut', 'wordplay', 'xlsx2csv', 'xmds2', 'xracer-tools',
-        'yamagi-quake2-core', 'yorick', 'z3', 'z88',
-
-        # Despite debtags to the contrary, lilypond itself is a CLI tool, like texlive.
-        # https://lilypond.org/easier-editing.html
-        'lilypond',
-
-        # AFAICT gap is a CLI-y thing.  It has a bunch of libraries.
-        'gap-io', 'gap-online-help', 'gap-openmath', 'gap-scscp',
-        'gap-character-tables', 'gap-design', 'gap-factint', 'gap-float',
-        'gap-grape', 'gap-guava', 'gap-laguna', 'gap-sonata',
-        'gap-table-of-marks', 'gap-toric',
-
-        # Sagemath is a "all the math apps" wrapper that's web-based, a bit like Jupyter Notebooks, but older.
-        # It's not useful ON THE DESKTOP.
-        # 22:36 <twb> (AFAICT sagemath is basically the 200x's equivalent of 201x's .ipynb Jupyter Notebooks)
-        # https://www.sagemath.org/help-video.html
-        'sagemath',
-        'sagemath-database-conway-polynomials',
-        'sagemath-database-elliptic-curves',
-        'sagemath-database-graphs',
-        'sagemath-database-mutually-combinatorial-designs',
-        'sagemath-database-polytopes',
-        'sagetex',
-
-
-        # Emulators aren't in themselves interesting.
-        'dosbox',
-
-        # Chess *engines* are not apps.  (Some of) these should be installed, but only as part of gnome-chess.
-        'crafty', 'fairymax', 'fruit', 'glaurung', 'gnuchess',
-        'gnuchess-book', 'hoichess', 'phalanx', 'sjeng', 'stockfish',
-        'toga2', 'polyglot',
-
-        # Documentation for CLI-only apps
-        'gap-gapdoc',
-
-        # Apertium is like Google Translate,
-        # it tries to automatically (machine) translate between human languages.
-        # It is browser-based.  There is no usable desktop GUI version.
-        # It might be useful in a server VM, but not a desktop.
-        'apertium', 'apertium-af-nl', 'apertium-apy', 'apertium-arg',
-        'apertium-arg-cat', 'apertium-bel', 'apertium-bel-rus',
-        'apertium-br-fr', 'apertium-cat', 'apertium-cat-srd',
-        'apertium-ca-it', 'apertium-crh', 'apertium-crh-tur',
-        'apertium-cy-en', 'apertium-dan', 'apertium-dan-nor',
-        'apertium-en-ca', 'apertium-en-es', 'apertium-en-gl',
-        'apertium-eo-ca', 'apertium-eo-en', 'apertium-eo-es',
-        'apertium-eo-fr', 'apertium-es-ast', 'apertium-es-ca',
-        'apertium-es-gl', 'apertium-es-it', 'apertium-es-pt',
-        'apertium-es-ro', 'apertium-eu-en', 'apertium-eu-es',
-        'apertium-fra', 'apertium-fra-cat', 'apertium-fr-ca',
-        'apertium-fr-es', 'apertium-hbs', 'apertium-hbs-eng',
-        'apertium-hbs-mkd', 'apertium-hbs-slv', 'apertium-hin',
-        'apertium-id-ms', 'apertium-isl', 'apertium-isl-eng',
-        'apertium-is-sv', 'apertium-ita', 'apertium-kaz',
-        'apertium-kaz-tat', 'apertium-lex-tools', 'apertium-mk-bg',
-        'apertium-mk-en', 'apertium-mlt-ara', 'apertium-nno',
-        'apertium-nno-nob', 'apertium-nob', 'apertium-oci',
-        'apertium-oc-ca', 'apertium-oc-es', 'apertium-pol',
-        'apertium-pt-ca', 'apertium-pt-gl', 'apertium-rus',
-        'apertium-separable', 'apertium-sme-nob', 'apertium-spa',
-        'apertium-spa-arg', 'apertium-srd', 'apertium-srd-ita',
-        'apertium-swe', 'apertium-swe-dan', 'apertium-swe-nor',
-        'apertium-szl', 'apertium-tat', 'apertium-tur', 'apertium-ukr',
-        'apertium-urd', 'apertium-urd-hin', 'lttoolbox',
-        'python3-streamparser',
-
-        # Transition packages are just wrappers like "Package: oldname; Depends: newname".
-        # Note: science-electronics (-> electronics-all) deliberately not listed here.
-        'gcompris', 'gazebo9',
-
-        # Hardware we do not ship.
-        'steam-devices', 'gpstrans', 'minigalaxy',
-
-        # Already installed.
-        'libdvdcss2',
-    }
-    metapackages = sorted(set(
-        package_version
-        for package in cache
-        for package_version in package.versions
-        if (package_version.source_name in ('debian-edu', 'debian-games', 'debian-science') or
-            package_version.package.name in ('kdeedu', 'kdegames', 'gnome-games'))
-        if package.name not in package_shitlist))
-    with open('/tmp/app-reviews.csv') as p:
-        q = csv.DictReader(p)
-        verdicts = {
-            row['Package']: row['Verdict'] or 'TODO'
-            for row in q
-            if row['Package']}
-    with open('/var/log/install-footprint.csv', 'w') as f:
-        g = csv.writer(f)
-        g.writerow(['Section', 'Subsection', 'Name', 'Verdict', 'Score', 'Cost (MiB)', 'Rank', 'Description'])
-        for metapackage in metapackages:
-            if metapackage.package.name == 'kdeedu':
-                section, subsection = 'education', 'KDE'
-            elif metapackage.package.name == 'kdegames':
-                section, subsection = 'games', 'KDE'
-            elif metapackage.package.name == 'gnome-games':
-                section, subsection = 'games', 'GNOME'
-            else:
-                section, subsection = metapackage.package.name.split('-', 1)
-            for name in sorted(set(
-                    package.name
-                    for clause in (metapackage.dependencies +
-                                   metapackage.recommends +
-                                   metapackage.suggests)
-                    for package in clause
-                    if package.name not in package_shitlist)):
-                verdict = verdicts.get(name, 'TODO')
-                try:
-                    description = cache[name].versions[0].raw_description.splitlines()[0]
-                    if all(v.section == 'gnu-r' for v in cache[name].versions):
-                        logging.debug('GNU R (statistics) needs zip (banned crypto) due to r-base-core. Therefore skipping.')
-                        continue
-                except KeyError:  # "The cache has no package named 'cups-pdf'"
-                    g.writerow([section, subsection, name, verdict, 'N/A', 'N/A', 'N/A', 'N/A'])
-                else:
-                    cost = measure_cost(name)
-                    rank = popcon_ranks.get(name)
-                    score = cost * rank if isinstance(cost, int) and isinstance(rank, int) else None
-                    g.writerow([section, subsection, name, verdict, score, cost, rank, description])
-
-        all_games = {
-            line.split('/')[0]
-            for line in subprocess.check_output(
-                ['apt', 'list', '?section(games)'],
-                text=True).strip().splitlines()
-            if '/' in line}
-        done_above = {              # NOTE: does not exclude shitlist
-            package.name
-            for metapackage in metapackages
-            for clause in (metapackage.dependencies +
-                           metapackage.recommends +
-                           metapackage.suggests)
-            for package in clause}
-        for name in sorted(all_games - done_above - package_shitlist):
-            if (name.endswith('-data') or
-                name.endswith('-common') or
-                name.endswith('-dev') or
-                name.endswith('-server') or
-                name.startswith('fortunes-')):
-                continue            # boring
-            section, subsection = 'games', 'PrisonPC'
-            # FIXME: this block is copy-pasted from the earlier...
-            verdict = verdicts.get(name, 'TODO')
-            try:
-                description = cache[name].versions[0].raw_description.splitlines()[0]
-            except KeyError:  # "The cache has no package named 'cups-pdf'"
-                g.writerow([section, subsection, name, verdict, 'N/A', 'N/A', 'N/A', 'N/A'])
-            else:
-                cost = measure_cost(name)
-                rank = popcon_ranks.get(name)
-                score = cost * rank if isinstance(cost, int) and isinstance(rank, int) else None
-                g.writerow([section, subsection, name, verdict, score, cost, rank, description])
+        dotdesktop()            # slow
