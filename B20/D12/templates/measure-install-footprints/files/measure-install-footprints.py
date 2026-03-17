@@ -32,7 +32,7 @@ def measure_costs() -> None:
         dsc_name TEXT NOT NULL,
         deb_name TEXT PRIMARY KEY,
         summary TEXT NOT NULL)""")
-    for i, package in enumerate(cache):
+    for package in cache:
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
         # FIXME: don't mention boring packages?
@@ -55,7 +55,6 @@ def measure_costs() -> None:
         VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB, :section, :summary)
         """,
         row)
-        if i > 100: break      # DEBUGGING
     output.commit()
 
 
@@ -199,9 +198,9 @@ def dotdesktop() -> None:
         generic_name TEXT,
         categories JSON,
         PRIMARY KEY (deb_name, file_name))""")
-    for i, deb_name in enumerate(subprocess.check_output(
+    for deb_name in subprocess.check_output(
             ['apt-file', 'search', '--package-only', '/usr/share/applications/'],
-            text=True).strip().splitlines()):
+            text=True).strip().splitlines():
         # If the package has no candidate, it's probably banned, so skip it entirely.
         if cache[deb_name].candidate is None:
             continue
@@ -224,7 +223,6 @@ def dotdesktop() -> None:
                 VALUES (:deb_name, :file_name, :application_name, :generic_name, json(:categories))
                 """,
                 row)
-        if i > 100: break       # DEBUGGING
     output.commit()
 
 

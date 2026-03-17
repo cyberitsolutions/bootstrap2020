@@ -199,6 +199,7 @@ def maybe_measure_install_footprints():
         # Tell host's apt to download /Translation-en files in the guest.
         # This is only needed for is_boring().
         # https://bugs.debian.org/1131026
+        # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.5.7/mmdebstrap#L3147
         '--aptopt=Acquire::Languages "en"',
         # Copy the script in (files/) and run it (hooks/).
         *do_stuff('measure-install-footprints'),  # copy the script in and run it
