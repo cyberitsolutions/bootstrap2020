@@ -19,4 +19,4 @@ for k in os.environ:
 os.environ['LANG'] = 'en_AU.UTF-8'
 
 subprocess.check_call(
-    ['measure-install-footprints.py', args.chroot_path])
+    ['python3', 'measure-install-footprints.py', args.chroot_path])
