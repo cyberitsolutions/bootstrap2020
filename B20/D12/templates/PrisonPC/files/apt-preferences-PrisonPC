@@ -1304,6 +1304,7 @@ Explanation:
  NOTE: systemd needs libcryptsetup (src:cryptsetup)
  NOTE: bash and util-linux need src:ncurses (can block ncurses6 but not ncursesw6)
  NOTE: openssh-client (staff-only) needs src:libfido2
+ NOTE: libgl1-mesa needs libllvmNN (src:llvm-toolchain-NN)
 Pin-Priority: -17751
 Pin: version *
 Package:
@@ -1311,6 +1312,7 @@ Package:
  *-dbg
  *-dbgsym
  lib32*
+ libx32*
  src:debian-installer-netboot-images
  src:7zip
  src:p7zip
@@ -1331,7 +1333,7 @@ Package:
  src:intel-mkl
  src:puppetserver
  src:gcc-*-cross*
- src:cross-toolchain-base
+ src:cross-toolchain-*
  libc6-i386
  libc6-x32
  gcc-multilib
@@ -1372,6 +1374,7 @@ Package:
  src:oz
  src:vagrant
  python3-zope*
+ src:zope.*
  src:mailman3
  src:gdb
  scc:kwrited
@@ -1383,6 +1386,9 @@ Package:
  src:python-certbot
  mariadb-client*
  mariadb-server*
+ mariadb-plugin*
+ mariadb-test-data
+ src:mariadb-mysql-kbs
  src:mariadb-connector*
  src:phpmyadmin
  src:ppp
@@ -1429,6 +1435,7 @@ Package:
  src:invaders
  linux-source-*
  linux-config-*
+ linux-headers-*
  src:module-assistant
  src:dkms
  src:bilibop
@@ -1451,3 +1458,176 @@ Package:
  src:blueman
  src:bmap-tools
  src:vuos
+ src:xscreensaver
+ javahelper
+ java-propose-classpath
+ firmware-iwlwifi
+ src:wifite
+ src:dsmidiwifi
+ src:wifi-qr
+ src:cairo-dock-wifi-plug-in
+ src:docker-clean
+ src:docker-compose
+ src:libnss-docker
+ src:libpod
+ src:containerd
+ src:conmon
+ src:crun
+ src:runc
+ src:golang-github-docker-docker-credential-helpers
+ src:node-is-docker
+ elpa-*
+ src:xemacs21
+ src:emacs
+ src:abcl
+ src:vim
+ src:neovim
+ src:vim-*
+ src:arduino-ctags
+ src:exuberant-ctags
+ src:universal-ctags
+ src:vim-addon-manager
+ src:alpine
+ src:aoeui
+ src:apel
+ src:bbe
+ src:beav
+ src:ng
+ src:vile
+ src:compiz
+ src:compton
+ src:mokutil
+ src:acpid
+ src:efibootmgr
+ src:etckeeper
+ src:corosync
+ src:criu
+ src:ncdu
+ auditd
+ src:logwatch
+ src:dbconfig-common
+ src:debugedit
+ src:rpm
+ src:icinga2
+ src:adcli
+ src:kbd
+ src:console-date
+ src:console-setup
+ src:mailcap
+ src:mutt
+ src:neomutt
+ src:topal
+ maxima-emacs
+ src:tnef
+ src:ripmime
+ src:mc
+ xserver-xorg-legacy
+ bluez-cups
+ bluez-hcidump
+ bluez-meshd
+ bluez-obexd
+ bluez-test-scripts
+ bluez-test-tools
+ libgnome-bluetooth-doc
+ libkf5bluezqt-doc
+ src:gnome-bluetooth
+ src:gnome-bluetooth3
+ src:gnome-shell-extension-bluetooth-quick-connect
+ src:golang-github-muka-go-bluetooth
+ src:bluez-alsa
+ src:qtconnectivity-opensource-src
+ src:qt6-connectivity
+ src:cracklib2
+ src:debhelper
+ dh-*
+ src:dwz
+ autopoint
+ gettext-doc
+ wine64-tools
+ src:poxml
+ gettext-el
+ src:openvpn
+ src:network-manager-openvpn
+ src:wireguard
+ src:wireguard-go
+ src:rake
+ src:gem2deb
+ src:rake-compiler
+ src:ruby-build
+ src:ruby-did-you-mean
+ src:plocate
+ src:dlocate
+ locate
+ sysv-rc
+ src:cockpit
+ nvidia-modprobe
+ src:redis
+ src:golang-github-containernetworking-plugins
+ src:open-infrastructure-compute-tools
+ systemd-container
+ src:open-vm-tools
+ src:golang-github-containers-storage
+ src:po-debconf
+ src:lintian
+ src:intltool-debian
+ src:amdgcn-tools
+ src:rustc
+ src:cargo
+ llvm-[0-9][0-9]*
+ src:ghdl
+ llvm-spirv-[0-9][0-9]
+ epix
+ icecc
+ laby
+ python3-pythran
+ taopm
+ src:funtools
+ src:libinline-c-perl
+ src:libtool
+ src:bmagic
+ src:deheader
+ src:faust
+ src:faustworks
+ src:mm-common
+ src:cfortran
+ src:cwebx
+ src:bison++
+ src:flex
+ src:flex-old
+ src:fweb
+ src:ruby-inline
+ src:bochs
+ src:cpanminus
+ src:minilla
+ src:mandos
+ src:golang-github-containers-image
+ src:m4
+ src:bison
+ src:autoconf*
+ src:bsdowl
+ src:ircd*
+ src:opam
+ src:gnulib
+ src:when
+ src:uucp
+ src:bsd-mailx
+ src:mailutils
+ src:bogofilter
+ src:dovecot
+ src:openrc
+ src:runit
+ src:startpar
+ src:insserv
+ src:installation-report
+ src:reportbug
+ src:openpace
+ src:haveged
+ src:swtpm
+ src:zabbix
+ src:net-snmp
+ src:aardvark-dns
+ src:netavark
+ src:ipset
+ src:tcp-wrappers
+ src:tor
+ 
