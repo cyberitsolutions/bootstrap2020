@@ -1511,8 +1511,8 @@ Package:
  src:icinga2
  src:adcli
  src:kbd
- src:console-date
- src:console-setup
+ console-data
+ console-setup
  src:mailcap
  src:mutt
  src:neomutt
@@ -1583,7 +1583,7 @@ Package:
  taopm
  src:funtools
  src:libinline-c-perl
- src:libtool
+ libtool
  src:bmagic
  src:deheader
  src:faust
@@ -1628,6 +1628,5 @@ Package:
  src:aardvark-dns
  src:netavark
  src:ipset
- src:tcp-wrappers
  src:tor
- 
+ src:edk2
