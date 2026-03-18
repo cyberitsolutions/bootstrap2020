@@ -43,7 +43,9 @@ def measure_costs() -> None:
         (compressed_cost = 0 and uncompressed_cost = 0) AS is_installed,
         compressed_cost / 1024 / 1024 AS compressed_cost_MiB,
         uncompressed_cost / 1024 / 1024 AS uncompressed_cost_MiB,
-        section
+        active_users_per_mille,
+        years_since_last_upload,
+        summary
         FROM install_footprint_raw
         LEFT NATURAL JOIN popularity
         LEFT NATURAL JOIN unpopularity
@@ -180,8 +182,8 @@ def unpopularity() -> None:
         string_agg(deb_name, ' ' ORDER BY active_users_per_mille desc) AS deb_names,
         cast(100*avg(is_installed) as integer) AS percent_installed
         FROM popularity
-        NATURAL JOIN install_footprint
-        NATURAL JOIN unpopularity
+        LEFT NATURAL JOIN install_footprint
+        LEFT NATURAL JOIN unpopularity
         GROUP BY dsc_name
         ORDER BY
         max_active_users_per_mille DESC,
