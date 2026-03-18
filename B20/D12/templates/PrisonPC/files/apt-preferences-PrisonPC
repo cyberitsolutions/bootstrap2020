@@ -18,7 +18,55 @@ Package:
 Pin: release o=Cyber
 Pin-Priority: 500
 
-Explanation: denylist package (supplements prisonpc-bad-package-conflicts-everyone, can glob, cannot virtual packages)
-Package: *-dev *-dbg *-dbgsym
+Explanation:
+ We mostly ban packages in prisonpc-bad-package-conflicts-everyone.
+ This works well, and we get clear error messages.
+ But it cannot block virtual packages, and it cannot block a glob of package names.
+ In here, block things that prisonpc-bad-package-conflicts-everyone can't.
+ .
+ If you try to install a package blocked here,
+ the error message will be something like this:
+     E: Package 'libc6-dev' has no installation candidate
+ .
+ One benefit of blocking things explicitly here is that measure-install-footprints.py
+ will skip them before measuring them, i.e. runs faster.
+ .
+ Use an arbitrary negative number instead of -1, so
+ it is easier to git grep for that number across the codebase,
+ when you see it in apt policy output.
+Pin-Priority: -17751
 Pin: version *
-Pin-Priority: -1
+Package:
+ *-dev
+ *-dbg
+ *-dbgsym
+ src:debian-installer-netboot-images
+ src:7zip
+ src:p7zip
+ src:7zip-rar
+ src:r-*
+ r-*
+ qgis-api-doc
+ src:sylph-searcher
+ src:doc-rfc
+ src:starpu-contrib
+ src:e17
+ src:nvidia-cuda-toolkit
+ *-cuda
+ src:pycuda
+ src:gcc-defaults-*
+ linux-source*
+ src:picolibc
+ src:intel-mkl
+ src:puppetserver
+ src:gcc-*-cross*
+ src:nvidia-graphics-drivers*
+ src:nvidia-cg-toolkit
+ src:nvidia-vaapi-driver
+ src:nvidia-xconfig
+ src:nvidia-support
+ src:clang-defaults
+ src:llvm-defaults
+ src:boost-defaults
+ *-test
+ *-tests

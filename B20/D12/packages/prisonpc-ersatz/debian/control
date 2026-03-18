@@ -248,8 +248,14 @@ Conflicts:
 # UPDATE 2021: .rar and .7z also support AES.
 # libarchive (bsdtar) can DEFINITELY created strongly encrypted zip files.
 # We can't remove libarchive itself without upsetting vlc (everyone) and gvfs-backends (staff).
+# UPDATE: p7zip* became 7zip* in Debian 13.
+ 7zip,
+ 7zip-full,
+ 7zip-rar,
+ 7zip-standalone,
  p7zip,
  p7zip-full,
+ p7zip-rar,
  unrar,
  unrar-nonfree,
  zip,
