@@ -43,7 +43,7 @@ def measure_costs() -> None:
         (compressed_cost = 0 and uncompressed_cost = 0) AS is_installed,
         compressed_cost / 1024 / 1024 AS compressed_cost_MiB,
         uncompressed_cost / 1024 / 1024 AS uncompressed_cost_MiB,
-        section,
+        section
         FROM install_footprint_raw
         WHERE NOT is_boring
         """)
