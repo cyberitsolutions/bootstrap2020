@@ -28,7 +28,7 @@ def measure_costs() -> None:
         CREATE TABLE install_footprint_raw (
         compressed_cost INTEGER, -- in bytes
         uncompressed_cost INTEGER, -- in bytes
-        is_boring INTEGER,
+        is_boring BOOLEAN,
         section TEXT,
         dsc_name TEXT NOT NULL,
         deb_name TEXT PRIMARY KEY,
@@ -45,9 +45,12 @@ def measure_costs() -> None:
         uncompressed_cost / 1024 / 1024 AS uncompressed_cost_MiB,
         section
         FROM install_footprint_raw
+        LEFT NATURAL JOIN popularity
+        LEFT NATURAL JOIN unpopularity
         WHERE NOT is_boring
         """)
-    for package in cache:
+    for i, package in enumerate(cache):
+        # if i > 100: break       # DEBUGGING
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
         download, space = measure_cost(package)
@@ -116,8 +119,11 @@ def is_boring(package) -> bool | None:
         return True
     # About 2% of packages are *-data or *-common -- not themselves interesting.
     # About 6% of packages are *-doc -- not themselves interesting, but
+    # About 0.3% of packages are *-cil (C# bindings, not in Section: libs).
     # we generally want to know the measurements for foo app's foo-doc HTML user guide.
-    if any(package.name.endswith(s) for s in {'-data', '-common', '-doc'}):
+    if any(package.name.endswith(s) for s in {
+            '-data', '-common', '-doc',
+            '-samples', '-example', '-examples', '-test', '-tests'}):
         return True
     # About 0.3% of packages are "transitional dummy packages".
     # They help upgrade to new a Debian release.
@@ -164,6 +170,23 @@ def unpopularity() -> None:
         CREATE TABLE unpopularity (
         years_since_last_upload INTEGER NOT NULL,
         dsc_name TEXT PRIMARY KEY)""")
+    output.execute(
+        """
+        CREATE VIEW popularity_with_deb_names AS
+        SELECT
+        max(active_users_per_mille) as max_active_users_per_mille,
+        max(years_since_last_upload) as max_years_since_last_upload,
+        dsc_name,
+        string_agg(deb_name, ' ' ORDER BY active_users_per_mille desc) AS deb_names,
+        cast(100*avg(is_installed) as integer) AS percent_installed
+        FROM popularity
+        NATURAL JOIN install_footprint
+        NATURAL JOIN unpopularity
+        GROUP BY dsc_name
+        ORDER BY
+        max_active_users_per_mille DESC,
+        max_years_since_last_upload,
+        dsc_name""")
     dsc_names: list[str] = sorted(set(
         p.candidate.source_name
         for p in cache
@@ -209,14 +232,17 @@ def dotdesktop() -> None:
         generic_name TEXT,
         categories JSON,
         PRIMARY KEY (deb_name, file_name))""")
-    for deb_name in subprocess.check_output(
+    for i, deb_name in enumerate(subprocess.check_output(
             ['apt-file', 'search', '--package-only', '/usr/share/applications/'],
-            text=True).strip().splitlines():
+            text=True).strip().splitlines()):
+        # if i > 100: break       # DEBUGGING
         # If the package has no candidate, it's probably banned, so skip it entirely.
         if cache[deb_name].candidate is None:
             continue
         with tempfile.TemporaryDirectory(dir=args.chroot_path) as td_str:
             td = pathlib.Path(td_str)
+            # Suppress a boring warning from apt download.
+            subprocess.run(['chown', '--quiet', '--no-dereference', '_apt', '.'], cwd=td)
             subprocess.check_call(['apt', '-qq', 'download', deb_name], cwd=td)
             # FIXME: This unpacks EVERY file, which is slow.  Use --path-exclude?
             #        UPDATE: dpkg -x ignores --path-exclude.
@@ -242,12 +268,17 @@ def dotdesktop() -> None:
     output.commit()
 
 
+# FIXME: these indexes are not very useful, except maybe games-finest.
+#        Do we get better results if we look at the appstream data?
+#        e.g. "appstreamcli dump jstar.desktop"
+#        e.g. "appstreamcli search game"
+#        Or is that actually telling me the same information as /usr/share/applications/*.desktop, without having to download it?
 def metapackages():
     output.execute(
         """
         CREATE TABLE metapackages (
-        metapackage_deb_name TEXT,
         metapackage_dsc_name TEXT NOT NULL,
+        metapackage_deb_name TEXT NOT NULL,
         deb_name TEXT,
         strength INTEGER NOT NULL,
         PRIMARY KEY (metapackage_deb_name, deb_name))""")
