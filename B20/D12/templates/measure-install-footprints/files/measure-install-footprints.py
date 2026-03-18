@@ -25,34 +25,44 @@ cache = apt.Cache()
 def measure_costs() -> None:
     output.execute(
         """
-        CREATE TABLE install_footprint (
-        compressed_cost_MiB INTEGER,
-        uncompressed_cost_MiB INTEGER,
+        CREATE TABLE install_footprint_raw (
+        compressed_cost INTEGER,
+        uncompressed_cost INTEGER,
+        is_boring INTEGER,
         section TEXT,
         dsc_name TEXT NOT NULL,
         deb_name TEXT PRIMARY KEY,
         summary TEXT NOT NULL)""")
+    output.execute(
+        """
+        CREATE VIEW install_footprint AS
+        SELECT
+        dsc_name,
+        deb_name,
+        section,
+        (compressed_cost = 0 and uncompressed_cost = 0) AS is_installed,
+        compressed_cost / 1024 / 1024 AS compressed_cost_MiB,
+        uncompressed_cost / 1024 / 1024 AS uncompressed_cost_MiB,
+        section,
+        FROM install_footprint_raw
+        WHERE NOT is_boring
+        """)
     for package in cache:
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
-        # FIXME: don't mention boring packages?
-        # if is_boring(package):
-        #     continue
         download, space = measure_cost(package)
-        # FIXME: don't mention non-installable packages?
-        # if download is None or space is None:
-        #     continue
         row = {
-            'compressed_cost_MiB': download,
-            'uncompressed_cost_MiB': space,
+            'compressed_cost': download,
+            'uncompressed_cost': space,
+            'is_boring': is_boring(package) or download is None or space is None,
             'deb_name': package.name,
             'dsc_name': package.candidate.source_name,
             'section': package.candidate.section,
             'summary': package.candidate.summary}
         print(*row.values(), sep='\t')  # PROGRESS
         output.execute("""
-        INSERT INTO install_footprint (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB, section, summary)
-        VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB, :section, :summary)
+        INSERT INTO install_footprint_raw (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB, section, summary, is_boring)
+        VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB, :section, :summary, :is_boring)
         """,
         row)
     output.commit()
@@ -72,9 +82,7 @@ def measure_cost(package) -> tuple[int, int] | tuple[None, None]:
             return None, None
         if cache.broken_count:  # can't happen?
             return None, None
-        return (
-            cache.required_download // 1024 // 1024,
-            cache.required_space // 1024 // 1024)
+        return cache.required_download, cache.required_space
     except apt.apt_pkg.Error:   # failed WITH raise
         return None, None
     finally:
@@ -92,21 +100,24 @@ def is_boring(package) -> bool | None:
         # About 20% of all packages are in "libs" or "libdevel",
         # apt-preferences-PrisonPC means *-(dev|dbg|dbgsym) packages have no candidate.
         # That still leaves 12% of all packages in Section: *libs*.
+        # UPDATE: calligra.desktop is in calligra-data which is Section: libs!
         'libs',                 # libfoo1
         'libdevel',             # -dev
         'oldlibs',              # libfoo1 (obsolete)
         'debug',                # -dbg -dbgsym
+        'introspection',        # gir1.2-foo-1
         # About 1% of packages are Section: gnu-r or Package: r-*.
         # All GNU R packages need zip via r-base-core, and
         # we block zip in prisonpc-bad-package-conflicts-everyone.
         'gnu-r',
+        'doc',
     }
     if pathlib.Path(package.candidate.section).name in section_shitlist:
         return True
     # About 2% of packages are *-data or *-common -- not themselves interesting.
     # About 6% of packages are *-doc -- not themselves interesting, but
     # we generally want to know the measurements for foo app's foo-doc HTML user guide.
-    if any(package.name.endswith(s) for s in {'-data', '-common'}):
+    if any(package.name.endswith(s) for s in {'-data', '-common', '-doc'}):
         return True
     # About 0.3% of packages are "transitional dummy packages".
     # They help upgrade to new a Debian release.
@@ -207,10 +218,15 @@ def dotdesktop() -> None:
         with tempfile.TemporaryDirectory(dir=args.chroot_path) as td_str:
             td = pathlib.Path(td_str)
             subprocess.check_call(['apt', '-qq', 'download', deb_name], cwd=td)
-            # FIXME: this unpacks EVERY file, which is slow.  Use --path-exclude?
+            # FIXME: This unpacks EVERY file, which is slow.  Use --path-exclude?
+            #        UPDATE: dpkg -x ignores --path-exclude.
+            #        Have to do something like this, and HOPE the package has leading "./".
+            #        dpkg --fsys-tarfile deb_path | tar -t ./usr/share/applications
             subprocess.check_call(['dpkg', '-x', *list(td.glob('*.deb')), '.'], cwd=td)
             for path in sorted(list(td.glob('usr/share/applications/**/*.desktop'))):
                 app = xdg.DesktopEntry.DesktopEntry(filename=path)
+                if app.getTerminal():
+                    continue    # app runs in xterm or equivalent
                 row = {
                     'deb_name': deb_name,
                     'file_name': path.name,
