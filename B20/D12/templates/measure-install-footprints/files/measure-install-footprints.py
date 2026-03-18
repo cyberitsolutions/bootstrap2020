@@ -26,8 +26,8 @@ def measure_costs() -> None:
     output.execute(
         """
         CREATE TABLE install_footprint_raw (
-        compressed_cost INTEGER,
-        uncompressed_cost INTEGER,
+        compressed_cost INTEGER, -- in bytes
+        uncompressed_cost INTEGER, -- in bytes
         is_boring INTEGER,
         section TEXT,
         dsc_name TEXT NOT NULL,
@@ -61,8 +61,8 @@ def measure_costs() -> None:
             'summary': package.candidate.summary}
         print(*row.values(), sep='\t')  # PROGRESS
         output.execute("""
-        INSERT INTO install_footprint_raw (dsc_name, deb_name, compressed_cost_MiB, uncompressed_cost_MiB, section, summary, is_boring)
-        VALUES (:dsc_name, :deb_name, :compressed_cost_MiB, :uncompressed_cost_MiB, :section, :summary, :is_boring)
+        INSERT INTO install_footprint_raw (dsc_name, deb_name, compressed_cost, uncompressed_cost, section, summary, is_boring)
+        VALUES (:dsc_name, :deb_name, :compressed_cost, :uncompressed_cost, :section, :summary, :is_boring)
         """,
         row)
     output.commit()
