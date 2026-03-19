@@ -328,10 +328,10 @@ def metapackages():
         metapackage_deb_name,
         string_agg(deb_name, ' ' ORDER BY deb_name) AS deb_names
         FROM metapackages
-	GROUP BY
+        GROUP BY
         metapackage_dsc_name,
         metapackage_deb_name
-	ORDER BY
+        ORDER BY
         metapackage_dsc_name,
         metapackage_deb_name""")
     shit_dsc_names = """ libgdal-grass steam-installer
