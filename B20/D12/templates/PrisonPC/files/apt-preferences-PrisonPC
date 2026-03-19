@@ -1278,7 +1278,7 @@ Package:
 Explanation:
  We mostly ban packages in prisonpc-bad-package-conflicts-everyone.
  This works well, and we get clear error messages.
- But it cannot block virtual packages, and it cannot block a glob of package names.
+ But it cannot block by source package, and cannot glob of package names.
  In here, block things that prisonpc-bad-package-conflicts-everyone can't.
  .
  If you try to install a package blocked here,
@@ -1368,6 +1368,7 @@ Package:
  src:gnome-disk-utility
  src:cups-filters
  cups-ppdc
+ cups-daemon
  src:libvirt
  src:libvirt-glib
  src:fdroidserver
@@ -1413,6 +1414,7 @@ Package:
  src:bruteforce-luks
  src:clevis
  cryptsetup
+ cryptsetup-bin
  cryptsetup-initramfs
  tar-scripts
  src:popularity-contest
@@ -1471,6 +1473,7 @@ Package:
  src:libnss-docker
  src:libpod
  src:containerd
+ src:catatonit
  src:conmon
  src:crun
  src:runc
@@ -1630,3 +1633,60 @@ Package:
  src:ipset
  src:tor
  src:edk2
+ src:gnome-user-share
+ src:mate-user-share
+ src:gridsite
+ src:apache2
+ update-inetd
+ thin-provisioning-tools
+ src:apt-show-versions
+ src:libnss-nis
+ src:menu
+ src:borgbackup
+ src:monit
+ src:facter
+ src:cron-apt
+ src:ansible-core
+ src:apcupsd
+ src:lxc
+ src:lxd
+ src:incus
+ acpi-fakekey
+ supervisor
+ zerofree
+ src:bacula
+ src:ansible
+ src:schroot
+ src:debootstrap
+ src:fxload
+ src:incron
+ src:caja-eiciel
+ src:minicom
+ src:asterisk-*
+ src:baresip
+ src:binkd
+ src:cutecom
+ src:cyclades-serial-client
+ src:dxtool
+ src:efax*
+ src:gammu
+ src:gkermit
+ src:gnokii
+ src:gsmlib
+ src:hylafax
+ src:iaxmodem
+ src:ifmail
+ src:janus
+ src:jpnevulator
+ src:mgetty
+ src:microcom
+ src:minimodem
+ src:modem-cmd
+ src:nyx
+ src:picocom
+ src:sympathy
+ src:xtel
+ src:thunar-dropbox-plugin
+ src:dnsmasq
+ bind9-dnsutils
+ src:iodine

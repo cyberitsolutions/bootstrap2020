@@ -17,6 +17,8 @@ import xdg.DesktopEntry
 
 parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
+parser.add_argument('--fast-debug', action='store_true',
+                    help='Only measure the first 100 packages')
 args = parser.parse_args()
 
 cache = apt.Cache()
@@ -51,8 +53,39 @@ def measure_costs() -> None:
         LEFT NATURAL JOIN unpopularity
         WHERE NOT is_boring
         """)
+    output.execute(
+        """
+        CREATE VIEW app_shortlist_unfiltered AS
+        SELECT
+        install_footprint.*,
+        (categories like '%game%' or metapackage_deb_name like '%game%' or section like '%game%') AS is_game,
+        -- FIXME: this doesn't consider "sci", "chem", "astro", &c -- do we care?
+        (categories like '%edu%' or metapackage_deb_name like '%edu%' or section like '%edu%') AS is_edu,
+        max(metapackage_dsc_name IS NOT NULL) AS in_metapackages,
+        max(categories IS NOT NULL) AS in_dotdesktop
+        FROM install_footprint
+        LEFT NATURAL JOIN metapackages
+        LEFT NATURAL JOIN dotdesktop
+        GROUP BY deb_name
+        ORDER BY
+        max(active_users_per_mille) DESC,
+        max(compressed_cost_MiB),
+        max(years_since_last_upload);
+        """)
+    output.execute(
+        """
+        CREATE VIEW app_shortlist_games AS
+        SELECT * FROM app_shortlist_unfiltered WHERE is_game;
+        """)
+    output.execute(
+        """
+        CREATE VIEW app_shortlist_edu AS
+        SELECT * FROM app_shortlist_unfiltered WHERE is_edu;
+        """)
+
     for i, package in enumerate(cache):
-        # if i > 100: break       # DEBUGGING
+        if args.fast_debug and i > 100:
+            break
         if package.candidate is None:  # virtual, pinned, or backport-only
             continue
         download, space = measure_cost(package)
@@ -125,6 +158,7 @@ def is_boring(package) -> bool | None:
     # we generally want to know the measurements for foo app's foo-doc HTML user guide.
     if any(package.name.endswith(s) for s in {
             '-data', '-common', '-doc',
+            '-cil',
             '-samples', '-example', '-examples', '-test', '-tests'}):
         return True
     # About 0.3% of packages are "transitional dummy packages".
@@ -178,9 +212,9 @@ def unpopularity() -> None:
         SELECT
         max(active_users_per_mille) as max_active_users_per_mille,
         max(years_since_last_upload) as max_years_since_last_upload,
+        cast(100*avg(is_installed) as integer) AS percent_installed,
         dsc_name,
-        string_agg(deb_name, ' ' ORDER BY active_users_per_mille desc) AS deb_names,
-        cast(100*avg(is_installed) as integer) AS percent_installed
+        string_agg(deb_name, ' ' ORDER BY active_users_per_mille desc) AS deb_names
         FROM popularity
         LEFT NATURAL JOIN install_footprint
         LEFT NATURAL JOIN unpopularity
@@ -224,6 +258,11 @@ def udd():
                 yield cur
 
 
+# FIXME: This information is probably pre-cached in appstream.
+#        Look there instead of manual "apt download" ?
+#        e.g. "appstreamcli dump jstar.desktop"
+#        e.g. "appstreamcli search game"
+#        Or is that actually telling me the same information as /usr/share/applications/*.desktop, without having to download it?
 def dotdesktop() -> None:
     output.execute(
         """
@@ -237,7 +276,8 @@ def dotdesktop() -> None:
     for i, deb_name in enumerate(subprocess.check_output(
             ['apt-file', 'search', '--package-only', '/usr/share/applications/'],
             text=True).strip().splitlines()):
-        # if i > 100: break       # DEBUGGING
+        if args.fast_debug and i > 100:
+            break
         # If the package has no candidate, it's probably banned, so skip it entirely.
         if cache[deb_name].candidate is None:
             continue
@@ -271,10 +311,6 @@ def dotdesktop() -> None:
 
 
 # FIXME: these indexes are not very useful, except maybe games-finest.
-#        Do we get better results if we look at the appstream data?
-#        e.g. "appstreamcli dump jstar.desktop"
-#        e.g. "appstreamcli search game"
-#        Or is that actually telling me the same information as /usr/share/applications/*.desktop, without having to download it?
 def metapackages():
     output.execute(
         """
@@ -284,6 +320,39 @@ def metapackages():
         deb_name TEXT,
         strength INTEGER NOT NULL,
         PRIMARY KEY (metapackage_deb_name, deb_name))""")
+    output.execute(
+        """
+        CREATE VIEW metapackages_grouped AS
+        SELECT
+        metapackage_dsc_name,
+        metapackage_deb_name,
+        string_agg(deb_name, ' ' ORDER BY deb_name) AS deb_names
+        FROM metapackages
+	GROUP BY
+        metapackage_dsc_name,
+        metapackage_deb_name
+	ORDER BY
+        metapackage_dsc_name,
+        metapackage_deb_name""")
+    shit_dsc_names = """ libgdal-grass steam-installer
+    init-system-helpers bfh-metapackages live-tasks libreoffice
+    linux-image-inmate forensics-extra prisonpc-fonts
+    live-tasks-non-free-firmware firmware-nonfree openblas
+    fcitx5-chinese-addons thunderbird jupyter-core fcitx5 lsp-plugins
+    ffmpeg blis fcitx5-table-extra fcitx5-table-other live-manual
+    mupen64plus pbseqlib swe-data hashcat-meta pgrouting postgis
+    ros-metapackages ros2-rosidl supercollider-sc3-plugins kicad
+    pbsuite casacore-data fonts-indic cinnamon-desktop-environment
+    lxde-metapackages lxqt-metapackages tasksel """.split()
+    shit_deb_names = """ games-console task-ssh-server task-hebrew
+    education-networked-common education-ltsp-server
+    education-roaming-workstation education-desktop-lxqt
+    education-desktop-cinnamon education-desktop-mate electronics-doc
+    astro-all games-tasks games-mud games-all gis-all gis-devel
+    med-all multimedia-devel multimedia-firewire multimedia-all
+    gnome-core gnome kde-full kde-telepathy-minimal kde-telepathy
+    kdewebdev kdesdk kdepim kde-baseapps kde-plasma-desktop
+    kde-standard kdemultimedia kdeutils """.split()
     for metapackage in cache:
         # FIXME: if cool-games Depends: game1, game2, game3, and
         #        game3 can't be installed, then
@@ -294,6 +363,10 @@ def metapackages():
             continue            # not installable
         if pathlib.Path(metapackage.candidate.section).name not in {'tasks', 'metapackages'}:
             continue            # not a task/metapackage
+        if metapackage.candidate.source_name in shit_dsc_names:
+            continue
+        if metapackage.name in shit_deb_names:
+            continue
         # NOTE: task-foo might have Depends: a|b and Suggests: a.
         #       Insert strongest dependency first, then
         #       ON CONFLICT IGNORE to implicitly skip overlapping weaker dependencies.
