@@ -63,9 +63,11 @@ if not hostname.startswith('understudy-'):
     raise RuntimeError('Fucky host', hostname)
 data_bytes = subprocess.check_output([
     'zfs', 'get',
-    '-t', 'filesystem',
     '--json',
     '--json-int',
+    # ONLY look at filesystems (not volumes or snapshots).
+    # Probably doesn't matter.
+    '-t', 'filesystem',
     # ONLY look at properties set locally
     # We cannot tell if there is a received property underneath it.
     # We cannot say "clear the local property iff there's already a received property".
