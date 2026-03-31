@@ -1,4 +1,6 @@
-# Stolen from https://sources.debian.org/src/gucharmap/1:14.0.3-1/debian/watch/
-version=4
-https://gitlab.gnome.org/jrb/@PACKAGE@/tags \
-  .*/@PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@
+# https://manpages.debian.org/testing/devscripts/debian-watch.5.en.html#GitLab
+# Requires uscan 2.26 (devscripts/trixie-backports) or later.
+# uscan 2.25 (devscripts/trixie) will mis-diagnose this as a "version 1" file format.
+Version: 5
+Template: GitLab
+Dist: https://gitlab.gnome.org/jrb/crosswords

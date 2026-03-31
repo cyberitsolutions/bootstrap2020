@@ -1,3 +1,9 @@
+crosswords (0.3.17-4) forky; urgency=medium
+
+  * New upstream.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 01 Apr 2026 08:41:37 +1100
+
 crosswords (0.3.8-2) bookworm; urgency=medium
 
   * Build with "development mode" off!

@@ -1,3 +1,9 @@
+libipuz (0.5.4-2) forky; urgency=medium
+
+  * New upstream.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 01 Apr 2026 08:54:02 +1100
+
 libipuz (0.4.2-1) bookworm; urgency=medium
 
   * Initial Debianization.

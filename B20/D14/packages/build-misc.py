@@ -59,7 +59,10 @@ with tempfile.TemporaryDirectory() as td:
          '--customize-hook=mkdir -p $1/X/Y',
          f'--customize-hook=sync-in {args.package_path} /X/Y',
          *(['--include=devscripts,ca-certificates',  # install uscan
-            '--include= ' + ('subversion' if 'mode=svn' in watch_path.read_text() else ' '),
+            '--include= ' + (
+                # You must install libjson-perl to use Gitlab mode at /usr/share/perl5/Devscripts/Uscan/Modes/Gitlab.pm line 15.
+                'libjson-perl' if 'gitlab' in watch_path.read_text().lower() else
+                'subversion' if 'mode=svn' in watch_path.read_text() else ' '),
             '--customize-hook=chroot $1 env --chdir=/X/Y uscan --download-current-version',
             '--customize-hook=chroot $1 env --chdir=/X/Y sh -c "tar --transform=s%^./%% --strip-components=1 -xf ../*orig.tar.*"',
             ]
