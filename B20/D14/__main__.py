@@ -799,7 +799,6 @@ for template in args.templates:
              *['--variant=apt',             # save 12s 30MB
                f'--aptopt=Acquire::http::Proxy "{apt_proxy}"',
                '--aptopt=Acquire::https::Proxy "DIRECT"',
-               '--hook-dir=/usr/share/mmdebstrap/hooks/eatmydata',
                ],
              *['--include=tzdata locales',
                ('--essential-hook={'
