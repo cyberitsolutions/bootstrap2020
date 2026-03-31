@@ -250,59 +250,6 @@ def mmdebstrap_but_zstd(args):
             exit(1)
 
 
-def do_ukify(td: pathlib.Path, destdir: pathlib.Path) -> None:
-    """ukify (vmlinuz + initrd.img + cmdline.txt → linuxx64.efi)
-    FIXME: once guest has systemd 254+, use ukify in a --customize-hook!
-    FIXME: have ukify use sbsign to sign the linuxx64.efi.
-           Also sign filesystem.squashfs somehow?
-    """
-    # FIXME: As at 2023, /proc/cmdline must be specified at boot time (not ukify time).
-    #        At a minimum this is needed for understudy's personality=alice hack.
-    #        For secure boot, that MUST become a static /proc/cmdline, done here.
-    #        UPDATE: for secure boot, this SHOULD be set statically here.
-    #        But as PrisonPC does not currently support that, if
-    #        we *don't* set it here,
-    #        systemd-shim will accept dynamic (including attacker-supplied) cmdline.
-    #        Therefore, don't set it here.
-    # (td / 'cmdline.txt').write_text('boot=live')
-    # FIXME: Use 'ukify' when it's available (probably not until bookworm-backports) it will do all of this with a single command
-    new_sections = {
-        '.linux': destdir / 'vmlinuz',
-        '.initrd': destdir / 'initrd.img',
-        '.osrel': td / 'os-release',  # FIXME: Is os-release even useful?
-        # '.cmdline': td / 'cmdline.txt',
-    }
-
-    # We want to add new sections to the PE object.
-    # Start by finding where the last existing section stops.
-    # https://wiki.archlinux.org/title/Unified_kernel_image#Manually
-    objdump_stdout = subprocess.check_output(
-        ['objdump', '--section-headers', td / 'linuxx64.efi.stub'],
-        text=True)
-    for line in objdump_stdout.splitlines():
-        try:
-            # e.g. "7 .sdmagic 0034 019100 019100 011200 2**2"
-            _, _, size_str, vma_str, _, _, _ = line.split()
-        except ValueError:
-            logging.debug('Not a section line: %s', line.strip())
-            continue
-        size = int(size_str, 16)  # hexadecimal
-        vma = int(vma_str, 16)    # hexadecimal
-        section_offset = size + vma
-    # section_offset is now where the last stub section ends.
-    objcopy_cmd: list[str | pathlib.Path]  # appease mypy
-    objcopy_cmd = [
-        'objcopy',
-        td / 'linuxx64.efi.stub',
-        destdir / 'linuxx64.efi']
-    for section_name, section_path in new_sections.items():
-        objcopy_cmd += [
-            '--add-section', f'{section_name}={section_path}',
-            '--change-section-vma', f'{section_name}={section_offset}']
-        section_offset += section_path.stat().st_size
-    subprocess.check_call(objcopy_cmd)
-
-
 def do_boot_test():
     # PrisonPC SOEs are hard-coded to check their IP address.
     # This is not boot-time configurable for paranoia reasons.
@@ -856,7 +803,10 @@ for template in args.templates:
              f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status',
              f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
              f'--customize-hook=download initrd.img {destdir}/initrd.img',
-             f'--customize-hook=copy-out /usr/lib/systemd/boot/efi/linuxx64.efi.stub /etc/os-release {td}',
+             f'--customize-hook=download initrd.img {destdir}/initrd.img',
+             # FIXME: fix https://bugs.debian.org/1116593 then let dracut run ukify
+             '--customize-hook=chronic chroot $1 ukify build --output=boot/linuxx64.efi',
+             f'--customize-hook=copy-out /boot/linuxx64.efi {destdir}',
              *(['--verbose', '--logfile', destdir / 'mmdebstrap.log']
                if args.production else []),
              ])
@@ -865,8 +815,6 @@ for template in args.templates:
             ['du', '--human-readable', '--all', '--one-file-system',
              destdir.name],
             cwd=destdir.parent)
-
-        do_ukify(td=td, destdir=destdir)
 
         (destdir / 'args.txt').write_text(pprint.pformat(args))
         (destdir / 'git-description.txt').write_text(git_description)

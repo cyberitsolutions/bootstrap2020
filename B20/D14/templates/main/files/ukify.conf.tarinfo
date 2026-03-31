@@ -1,0 +1,5 @@
+name = "etc/systemd/ukify.conf"
+include = [
+    "systemd-ukify",
+    "systemd-boot-efi",             # for linuxx64.efi.stub
+    ]
