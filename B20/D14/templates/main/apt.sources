@@ -36,10 +36,14 @@
 #       https://blog.trailofbits.com/2019/07/08/fuck-rsa/
 Types: deb
 URIs: http://deb.debian.org/debian-security
-Suites: bookworm-security
-Components: main contrib non-free non-free-firmware
+Suites: forky-security
+Components:
+  main
+  contrib
+  non-free
+  non-free-firmware
 # file:///etc/apt/trusted.gpg.d/debian-archive-bookworm-security-automatic.asc
-# https://sources.debian.org/src/debian-archive-keyring/2023.3/active-keys/add-bookworm-security-automatic/
+# https://sources.debian.org/src/debian-archive-keyring/2023.4/active-keys/add-bookworm-security-automatic/
 Signed-By:
   -----BEGIN PGP PUBLIC KEY BLOCK-----
   .
@@ -232,13 +236,17 @@ Signed-By:
 Types: deb
 URIs: http://deb.debian.org/debian
 Suites:
-  bookworm
-  bookworm-updates
-  bookworm-proposed-updates
-  bookworm-backports
-Components: main contrib non-free non-free-firmware
+  forky
+  forky-updates
+  forky-proposed-updates
+  forky-backports
+Components:
+  main
+  contrib
+  non-free
+  non-free-firmware
 # file:///etc/apt/trusted.gpg.d/debian-archive-bookworm-automatic.asc
-# https://sources.debian.org/src/debian-archive-keyring/2023.3/active-keys/add-bookworm-automatic/
+# https://sources.debian.org/src/debian-archive-keyring/2023.4/active-keys/add-bookworm-automatic/
 Signed-By:
   -----BEGIN PGP PUBLIC KEY BLOCK-----
   .
@@ -425,44 +433,4 @@ Signed-By:
   kE8TE9mZVGXyjW3m/MGDGEOBsT64HZLsduljYFW5tVTbaVKSKMqSLrhCZxSenzgQ
   NlB2T6bKGcYGqL7L
   =UUyy
-  -----END PGP PUBLIC KEY BLOCK-----
-
-
-# NOTE: if you are using freexian in prod (instead of retrocomputing toys),
-#       fucking pay them some money and use the paywalled URI.
-# https://www.freexian.com/lts/extended/docs/how-to-use-extended-lts-repositories/
-# https://deb.freexian.com/extended-lts/pool/main/f/freexian-archive-keyring/
-Types: deb
-URIs: http://deb.freexian.com/extended-lts
-Suites: bookworm-lts
-Components: main contrib non-free
-Signed-By:
-  -----BEGIN PGP PUBLIC KEY BLOCK-----
-  .
-  mQINBFsMGYcBEACqipOWP/tYbM/NRMNBhznOQ/hQwqA6F/jitzwpGidb51pSLw3H
-  zWrbk0Xam0KDQt7QOvIo16MsA0smJafSg9uPVf0CzF4wwz7Me+DHufwvk9Oc3IT4
-  CmZN/IYM3i06vsqKOj5hdO6LhQTWrSuHmGX5YUJmX4KgGgvGXUTEJ4tCmXGoK78V
-  XvPGXci29/ebPSEWASj+RcBej93pAeWJx7MUox1LoDJPkjTn9qmq+nlikItwUxAF
-  Gyg35uVXlXeF25UyBy3NwynTRSXTljdSvq10eQ/34y5X21K80fPewD5f6WhrGwzi
-  Ltg0JRoAqX/Hyqbp44l0dBxzG6qMtcfFkzE0AAyGqCEtFsC3Q3Z8LgrwJPD6peuS
-  EXwphfsynQz1E2zsB3V1CORNgqnc8UzWqB/LtqUSNfT+kkIh11vPAHupMpA4fvi6
-  qI+dINeUJMu3fZY8CgSgbKvp8P86jLBfTaiS7eU0XihMZQqUkG2Bt8z4srwug9jS
-  6fd1+DF36Y6dGCwdQmVuyiI42qZyZp8rd72R2aN0/EdpKhSNZEd+L4/BU/gFnDOh
-  MZkjPrhwYhDcQaTrmnnxBW/f3h20D9cFE2umD9kO59KjHMnV7IUEXZfY1cy1GqPB
-  MG9TiZRh6jS6FAkICC+oTsZMlB1YSbP1unyC0bJ8jkzwI13aHfk7gmHeBQARAQAB
-  tC9FeHRlbmRlZCBMVFMgUmVwb3NpdG9yeSA8c3lzYWRtaW5AZnJlZXhpYW4uY29t
-  PokCVAQTAQgAPgIbAwULCQgHAgYVCAkKCwIEFgIDAQIeAQIXgBYhBKtZfE9vM4C9
-  SyvrwqBzENNpBV1aBQJimzI9BQkR6P+2AAoJEKBzENNpBV1a/roQAKajuwvW/uFR
-  dKB6ksLRFEUoOt0PvrgBqtimch4t9WCk+lT4AD8/SrweQZLM2Vaj+qp8CiIYmrqL
-  2pg6RqtCdQVrs3NBlDxMNZO+53LxKE8MqV09WLOCDoh8Xg/uXbzMtUUYW/T/qR7O
-  D7ve+vWHpAfODG5jlpR1EtKKSE+YyJBnjpZB4p8G8zJCUDVv9AZqm+RddMx1vvG4
-  UjsQ7PMjbEAa7hjGDXFmFtygNK/+e7gZlgfC41IhsdYGo1PNxxnngwBFXIW8xHMU
-  QxqdoGF1rHjX4+wJ7aB7zJ8k9C2DtDElBTeAKRLOI68pwl4rPbejvwoqhAOKvv86
-  6A1GuyVtHLpyRzlfwGyPTmbX++kmTNjjsA00xLZ16PoZeaS8liDDS4Of6RsPUXrA
-  Mv4gCCxtsO4Gna/UnxOEXJ9cT4fxITCA1dqtavMh8Mxq44VNohWqJDWq4O/y5MYc
-  uObZ2AomIlilMI63E2pLkeZSFMiRHu+9uV+JJkuZ+dBPTqdkjb+JDnQoKVmAndyU
-  2xOPboXlTgO+cIe8Opo/XTfzjm+TziecW9+JwamtQcANj0RsXQrwR+2/Qs8YNFlJ
-  7KP3CRt3L2SGr4JLkGQSyBxzxFiIsurF0q4U4nJy/4/M8QMjOxyA4i4xj+brTZr0
-  TT84PoL+JAE9rjb/TCsvTtSOACGFryf5
-  =2eUJ
   -----END PGP PUBLIC KEY BLOCK-----
