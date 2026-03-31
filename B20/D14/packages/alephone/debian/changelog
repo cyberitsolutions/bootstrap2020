@@ -1,3 +1,10 @@
+alephone (20250829-0~prisonpc9) forky; urgency=medium
+
+  * New upstream version.
+  * Forky (Debian 14) not Bookworm (Debian 12).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 01 Apr 2026 05:21:52 +1100
+
 alephone (20240822-0~prisonpc8) bookworm; urgency=medium
 
   * New upstream version.

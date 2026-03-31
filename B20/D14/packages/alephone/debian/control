@@ -22,7 +22,7 @@ Build-Depends: debhelper-compat (= 13),
  libsndfile1-dev,
  libvorbis-dev,
  libsdl2-image-dev,
- libsdl2-net-dev,
+ libasio-dev,
  libsdl2-ttf-dev,
  libzzip-dev,
  zlib1g-dev
