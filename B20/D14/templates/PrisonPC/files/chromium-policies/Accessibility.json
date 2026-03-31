@@ -1,0 +1,5 @@
+// These are not actually a11y features IMO --twb, February 2026
+{
+    "LiveCaptionEnabled": false,
+    "LiveTranslateEnabled": false
+}

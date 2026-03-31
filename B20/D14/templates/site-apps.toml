@@ -1,0 +1,454 @@
+# NOTE: due to how this file is processed,
+#       section [foo-bar] IMPLICITLY includes
+#       section [foo].
+
+# FIXME: https://bugs.debian.org/1004062 (inkscape offline help)
+
+# The dban template is really just this one CLI "app".
+[dban]
+applications = ["nwipe"]
+
+# Apps that all sites get (not really per-site at all)
+[desktop]
+applications = [
+    # Browser
+    "chromium", "chromium-l10n",
+    # Core office suite (word processor, spreadsheet, slideshow)
+    "libreoffice-calc", "libreoffice-impress", "libreoffice-writer", "libreoffice-math",
+    # Stuff to make office work better
+    "libreoffice-gtk3",
+    "libreoffice-gnome",     # fix double-click in sftp:// (for staff)
+    "libreoffice-help-en-gb", "libreoffice-l10n-en-gb",
+    "libreoffice-lightproof-en",
+    "hunspell-en-au", "hunspell-en-gb", "hunspell-en-us",
+    "hyphen-en-gb", "hyphen-en-us",
+    "mythes-en-us",  # https://bugs.debian.org/929923 (Debian mythes-en-au is from openoffice 2.1!)
+    "vlc",
+
+    # To watch store-bought DVDs we need deCSS.
+    #
+    # If ./PrisonPC/apt.sources is in the sources list,
+    # this will select the pre-compiled library created by
+    # ../packages/build-libdvdcss2.py.
+    #
+    # If not (--template=desktop, which does not require any Cyber IT stuff),
+    # it will automatically instead choose libdvd-pkg (via Provides).
+    # This pulls in wget and gcc and builds the library at package install time.
+    "libdvdcss2",
+]
+
+[desktop-staff]
+applications = [
+    # Let staff 'look inside' an iso like
+    # /srv/share/custodial/user-backup/p_1970-01-01.iso
+    # without first burning it to a DVD.
+    # https://alloc.cyber.com.au/task/task.php?taskID=35304
+    # NOTE: "thunar-archive-plugin" can only EXTRACT an iso -- we do not want this.
+    # NOTE: xarchiver uses 7z to for ISO files:
+    #       https://github.com/ib/xarchiver/blob/0.5.4.20/src/main.c#L468-L481
+    #
+    #           type = XARCHIVETYPE_ISO;
+    #           path = (is7z ? g_strconcat(sevenz, " -tiso", NULL) : NULL);
+    # UPDATE: when I tested this,
+    #         I also had to move p7zip-full from
+    #         prisonpc-bad-package-conflicts-everyone to
+    #         prisonpc-bad-package-conflicts-inmates.
+    #         MUCH WORSE, in an initial test, xarchiver showed "TRANS.TBL" elements in the .iso, and gibberish filenames.
+    #         That strongly implies that /bin/7z -tiso does not understand Joliet / Rock Ridge extensions, OR
+    #         xarchiver does not correctly parse the output from 7z.
+    #         Trying to use this is a complete waste of time.
+    #         Therefore (and since nobody at AMC is asking for this), I am giving up on it for now.
+    #         --twb, November 2024
+    # "xarchiver", "p7zip-full",
+]
+
+
+# Site apps for "demo" prison:
+# all "easy" prisonpc-app-catalogue entries. —twb, Jan 2016
+[desktop-inmate-blackgate]
+applications = [
+    # Huge bloated time-wasting motherfuckers
+    "prisonpc-wesnoth-addons", "prisonpc-warzone2100-addons", "prisonpc-openttd-extras", "marathon-trilogy",
+    # Education stuff
+    "gelemental", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "inkscape", "inkscape-tutorials", "klavaro", "kwordquiz", "gtick", "pysiogame", "lybniz",
+    # Games GNOME
+    "four-in-a-row", "gnome-sudoku", "gnome-tetravex", "iagno", "gnome-2048", "gnome-klotski", "gnome-nibbles", "swell-foop",
+    # Games KDE
+    "knetwalk", "kolf", "palapeli", "kbounce", "kgoldrunner", "kdiamond", "kigo",
+    # Games "PrisonPC" (uncategorized)
+    "gnome-mastermind", "opentyrian", "tyrian-data", "crawl-tiles",
+    # Games Arcade
+    "cutemaze", "garden-of-coloured-lights", "kobodeluxe", "ceferino", "lierolibre", "burgerspace", "epiphany",
+    "lbreakout2", "abe", "armagetronad", "bloboats", "supertransball2", "parsec47", "torus-trooper", "powermanga",
+    "warmux", "dangen", "excellent-bifurcation", "maelstrom", "overgod", "rrootage", "freedroid", "gunroar", "starfighter",
+    # Games Card
+    "aisleriot",
+    # Games Chess
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    # Games Platform
+    "alex4", "caveexpress", "xmoto", "ballz", "nikwi",
+    # Games Puzzle
+    "atomix", "gtans", "puzzle-jigsaw",
+    "pybik",
+    "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gbrainy", "gnome-mines",
+    # Games Tetris
+    "blockattack", "stax", "cuyo", "quadrapassel",
+    # Games Strategy
+    "singularity", "qonk", "prisonpc-endless-sky-extras", "pingus", "frozen-bubble",
+    # Games FPS
+    "freedoom", "billard-gl",
+]
+
+# https://alloc.cyber.com.au/task/task.php?taskID=24430
+# https://alloc.cyber.com.au/task/task.php?taskID=30027
+# https://alloc.cyber.com.au/task/task.php?taskID=31454
+# https://alloc.cyber.com.au/task/task.php?taskID=31748
+# https://alloc.cyber.com.au/task/task.php?taskID=31735
+# https://alloc.cyber.com.au/task/task.php?taskID=31736
+# https://alloc.cyber.com.au/task/task.php?taskID=30786
+# Debian 12 AMC apps (NOT counting base desktop, chromium, libreoffice, vlc): 3552 MB download; 6209 MB disk space.
+# Debian 11 AMC apps (NOT counting base desktop, chromium, libreoffice, vlc): 2869 MB download; 5522 MB disk space.
+[desktop-inmate-amc]
+applications = [
+#   UNKNOWN POPULARITY (new or not detected properly)
+    "gimp", "gimp-help-en",
+    "gnome-crosswords", "gnome-crosswords-addons-theguardian",  # Games > Logic > Crosswords
+#   EXTREMELY POPULAR (MONTHS PER SITE-YEAR)
+    "aisleriot",                # Games > Card > Solitaire
+    "prisonpc-endless-sky-extras",              # Games > Other > Endless Sky
+    "xmoto",                    # Games > Sports > Elastomania clone
+    "prisonpc-wesnoth-addons",  # Games > Strategy > The Battle for Wesnoth
+    "prisonpc-warzone2100-addons",  # Games > Strategy > Warzone 2100
+    "gnome-mahjongg",           # Games > Board > Mahjong Solitaire
+    "crawl-tiles",              # Games > Adventure > Dungeon Crawl
+    "supertuxkart",             # Games > Arcade > Mario Kart clone
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",  # Games > Board > Chess
+    "gnome-sudoku",             # Games > Logic > Sudoku
+    "quadrapassel",             # Games > Falling Blocks > Tetris clone
+    "lbreakout2",               # Games > Other > Arkanoid (Breakout) clone
+#   VERY POPULAR (WEEKS PER SITE-YEAR)
+    "prisonpc-openttd-extras",  # Games > Strategy > Transport Tycoon Deluxe clone
+    "freedoom",                 # DOOM clone (all campaigns)
+    "gnome-tetravex",           # Games > Logic > Tetravex
+    "opentyrian", "tyrian-data",  # Games > Arcade > OpenTyrian
+    "cataclysm-dda-sdl",        # Games > Other > Cataclysm: Dark Days Ahead
+    "supertux",                 # Games > Arcade > Super Mario clone
+    "gnome-mines",              # Games > Logic > Minesweeper
+    "four-in-a-row",            # Games > Logic > Connect4 clone
+    "gnome-2048",               # Games > Other > 2048
+    "librecad",                 # Graphics > Computer Aided Design (CAD)
+    # Allegro-based games are popcon'd together. :-(
+    # Between them, they are worth ~7 days per site-year as at 2023Q3.
+    "alex4", "ballz", "excellent-bifurcation",  "garden-of-coloured-lights", "overgod", "stax",
+#   POPULAR (DAYS PER SITE-YEAR)
+    "pingus",                   # Games > Strategy > Lemmings clone
+    "blobwars",                 # Games > Action > Blob Wars : Metal Blob Solid
+    "gtick",                    # Multimedia > Metronome
+    "singularity",              # Games > Strategy > Singularity
+    "starfighter",              # Games > Arcade > Starfighter
+    "gtans",                    # Games > Logic > Tangrams
+    "marathon-trilogy",         # alephone
+    "marble-qt", "marble-plugins",  # Education > Terrestrial Globe (Marble Virtual Globe)
+    "powermanga",               # Games > Arcade > Power Manga
+    "pegsolitaire",             # Games > Logic > Peg Solitaire
+    "iagno",                    # Games > Board > Reversi
+    "maelstrom",                # Games > Arcade > Asteroids clone
+    "lincity-ng",               # Games > Other > SimCity clone
+    "kgeography",               # Education > Geography Trainer
+    "warmux",                   # Games > Arcade > Worms clone
+    "gnome-nibbles",            # Games > Arcade > Nibbles (Gnome-nibbles)
+    "kolf",                     # Games > Arcade > MiniGolf
+    "blockattack",              # Games > Arcade > Block Attack
+    "freeciv", "freeciv-server",  # Games > Strategy > Civilization clone
+    "gnome-mastermind",         # Games > Board > Mastermind clone
+    "nikwi",                    # Games > Arcade > Nikwi Deluxe
+    "bomberclone",              # Games > Arcade > Bomberman clone
+    "gjiten",                   # Accessories > Japanese/English Dictionary
+    "gbrainy",                  # Games > Logic > Brain Teasers
+    "tetzle",                   # Games > Logic > Jigsaw Puzzle Game
+    "frozen-bubble",            # perl
+#   UNPOPULAR (HOURS PER SITE-YEAR)
+    "bloboats",                 # Games > Arcade > Boatmania
+    "gelemental",               # Education > Periodic Table
+    "burgerspace",              # Games > Arcade > BurgerTime clone
+    "gnome-klotski",            # Games > Logic > Klotski
+    "lierolibre",               # Games > Action > Liero
+    "swell-foop",               # Games > Logic > Swell Foop
+    "kbounce",                  # Games > Arcade > JezzBall clone
+    "inkscape", "inkscape-tutorials",  # Graphics > Vector Graphics Editor (Inkscape)
+    "gplanarity",               # Games > Other > Planarity
+    "armagetronad",             # Games > Action > Armagetron Advanced
+    "knavalbattle",             # Games > Strategy > Battleship clone
+    "qonk",                     # Games > Arcade > Qonk
+    "pysiogame",                # eduactiv8.py
+    "enigma",                   # Games > Logic > Oxyd clone
+    "klavaro",                  # Education > Typing Tutor
+    "torus-trooper",            # Games > Arcade > Torus Trooper
+    "hitori",                   # Games > Logic > Hitori
+    "allure",                   # Games > Other > Allure of the Stars
+    "dangen",                   # Games > Arcade > Dangen
+    "numptyphysics",            # Games > Logic > Crayon Physics clone
+    "gnucash", "gnucash-docs",  # Office > Finance Management
+    "pybik",                    # Games > Other > Rubik’s Cube
+    "lightsoff",                # Games > Logic > Lights Off
+    "kobodeluxe",               # Games > Arcade > Bosconian clone
+    "freedroid",                # Games > Other > Paradroid clone
+    "planner", "planner-doc",   # Office > Project Planner
+    "dia", "dia-shapes",        # Graphics > Diagram Editor
+    "atomix",                   # Games > Logic > Atomix
+    "supertransball2",          # Games > Arcade > Zarathrusta clone
+    "lybniz",                   # Education > Graphics Calculator
+
+]
+
+
+[desktop-inmate-amc-library]
+applications = [
+    "audacity",
+]
+
+
+[desktop-staff-amc]
+applications = [
+    # Rationale (gimp): inmates can hide information in an .xcd;
+    # Only gimp (not ristretto/eog) can view these;
+    # It is not feasible to disable XCD support in GIMP.
+    # --twb, Apr 2016
+    # https://alloc.cyber.com.au/task/task.php?taskID=30908
+    "gimp", "gimp-help-en",
+    # Rationale (xarchiver): educational content arrives as .zip, we cannot stop this.
+    # Inmates have no zip support for security reasons
+    # https://alloc.cyber.com.au/task/task.php?taskID=30738
+    # Therefore staff must be able to unzip on their behalf.
+    # --twb, Apr 2016
+    # https://alloc.cyber.com.au/task/task.php?taskID=30989
+    "xarchiver", "unzip",
+]
+
+
+# https://alloc.cyber.com.au/task/task.php?taskID=31606
+# https://kb.cyber.com.au/Hopkins+SOE+Requirements#APP_OVERVIEW
+[desktop-inmate-hcc-library]
+applications = [
+    "dia", "dia-shapes",
+    "gimp", "gimp-help-en",
+    "klavaro",
+    "inkscape", "inkscape-tutorials",
+    "marble-qt", "marble-plugins",
+    "kgeography",
+    "gnucash", "gnucash-docs",
+    "gelemental",
+    "pysiogame",
+    "gbrainy",
+    # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
+    #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
+    "gjiten",
+    "lybniz",
+]
+
+
+# https://alloc.cyber.com.au/task/task.php?taskID=31606
+# https://kb.cyber.com.au/Hopkins+SOE+Requirements#APP_OVERVIEW
+[desktop-inmate-hcc-profile-b]
+applications = [
+    "aisleriot",
+    "gnome-sudoku",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-mines",
+    "klavaro",
+    "kgeography",
+    "gnucash", "gnucash-docs",
+    "pysiogame",
+    "gbrainy",
+]
+
+
+# https://alloc.cyber.com.au/task/task.php?taskID=31606
+# https://kb.cyber.com.au/Hopkins+SOE+Requirements#APP_OVERVIEW
+[desktop-inmate-hcc-profile-a]
+applications = [
+    "gnome-mahjongg",
+    "aisleriot",
+    "gnome-sudoku",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-mines",
+    "quadrapassel",
+    "blockattack",
+    "stax",
+    "dia", "dia-shapes",
+    "four-in-a-row",
+    "frozen-bubble",
+    "gimp", "gimp-help-en",
+    "klavaro",
+    "inkscape", "inkscape-tutorials",
+    "kbounce",
+    "marble-qt", "marble-plugins",
+    "kgeography",
+    "kolf",
+    # FIXME: not available in Debian 11 (depends on Python 2)
+    # https://tracker.debian.org/pkg/childsplay
+    # https://tracker.debian.org/news/1120915/childsplay-removed-from-testing/
+    # https://bugs.debian.org/912485
+    # https://bugs.debian.org/936298
+    # childsplay
+    "knavalbattle",
+    "gnucash", "gnucash-docs",
+    "gelemental",
+    "pysiogame",
+    "gbrainy",
+    # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
+    #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
+    "gjiten",
+    "lybniz",
+    # FIXME: roll a fresh addons package.
+    # gargoyle-free prisonpc-text-adventures
+]
+
+
+# https://alloc.cyber.com.au/task/task.php?taskID=31606
+# https://kb.cyber.com.au/Hopkins+SOE+Requirements#APP_OVERVIEW
+[desktop-inmate-hcc-games]
+applications = [
+    # The "games" target is identical to "profile-a"...
+    "gnome-mahjongg",
+    "aisleriot",
+    "gnome-sudoku",
+    "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",
+    "gnome-mines",
+    "quadrapassel",
+    "blockattack",
+    "stax",
+    "dia", "dia-shapes",
+    "four-in-a-row",
+    "frozen-bubble",
+    "gimp", "gimp-help-en",
+    "klavaro",
+    "inkscape", "inkscape-tutorials",
+    "kbounce",
+    "marble-qt", "marble-plugins",
+    "kgeography",
+    "kolf",
+    # FIXME: not available in Debian 11 (depends on Python 2)
+    # https://tracker.debian.org/pkg/childsplay
+    # https://tracker.debian.org/news/1120915/childsplay-removed-from-testing/
+    # https://bugs.debian.org/912485
+    # https://bugs.debian.org/936298
+    # childsplay
+    "knavalbattle",
+    "gnucash", "gnucash-docs",
+    "gelemental",
+    "pysiogame",
+    "gbrainy",
+    # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
+    #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
+    "gjiten",
+    "lybniz",
+    # FIXME: roll a fresh addons package.
+    # gargoyle-free prisonpc-text-adventures
+    # ...except for some extra games.
+    "gnome-sudoku",
+    "njam",
+    "powermanga",
+    "burgerspace",
+    "cuyo",
+    "supertux",
+    "lincity-ng",
+    "nikwi",
+    "solarwolf",
+    "freeciv", "freeciv-server",
+    "prisonpc-wesnoth-addons",
+    "epiphany",
+    "ceferino",
+    "pingus",
+    "xmoto",
+    "garden-of-coloured-lights",
+    "tomatoes",
+    "gnome-mastermind",
+    "torus-trooper",
+    "armagetronad",
+    "tworld",
+    "lbreakout2",
+    "titanion",
+    "warmux",
+    # FIXME: ghextris not available in Debian 11 (depends on Python 2)
+    #        https://tracker.debian.org/news/943128/removed-090-3-from-unstable/
+    #        This is already fixed in bookworm, so we could roll a bookworm->bullseye backport.
+    #        https://metadata.ftp-master.debian.org/changelogs//main/g/ghextris/ghextris_0.9.0-5_changelog
+    # ghextris
+    "four-in-a-row",
+    "kobodeluxe",
+    "maelstrom",
+    "supertransball2",
+    "lierolibre",
+    "starfighter",
+    ## New June 2019
+    # Too slow on their hardware?
+    # supertuxkart
+    # Broken as at 2019-06-06
+    # marathon-trilogy
+    # warzone2100 prisonpc-warzone2100-addons
+    # blobwars
+    "opentyrian", "tyrian-data",
+    # pybik
+    # FIXME: pynagram not available in Debian 11 (depends on Qt4)
+    #        https://tracker.debian.org/news/1049129/removed-101-1-from-unstable/
+    # pynagram
+    # tuxmath
+    # bomberclone
+    "freedroid",
+    "numptyphysics",
+    ## New Oct 2022
+    "prisonpc-endless-sky-extras",
+    "gnome-2048",
+    "freedoom",
+    "swell-foop",
+    "gnome-klotski",
+    "iagno",
+    "marathon-trilogy",
+    "prisonpc-warzone2100-addons",
+    "supertuxkart",
+    "prisonpc-openttd-extras",
+    "blobwars",
+    "bomberclone",
+]
+
+
+# On 20 Apr 2015, conz wrote:
+# > Miles asked that staff at HCC should have access to the
+# > document viewing/creation applications that the inmates have.
+#
+# For 14.05 / Wheezy SOEs, this request was met by installing the
+# specific applications Hopkins nominated.
+# The packages are simply an updated version of that list. —twb, Jan 2017
+#
+# FIXME: we SHOULD start again from the FR above,
+# installing all (and only) the apps necessary to meet that FR. —twb, Jan 2017
+#
+# Order is per the KB article, i.e. descending ‘goodness’ (popularity divided by size).
+# FIXME: for now, some apps need GNOME/KDE help viewers.
+#
+# https://alloc.cyber.com.au/task/task.php?taskID=25169
+# https://alloc.cyber.com.au/task/task.php?taskID=31606
+# https://alloc.cyber.com.au/task/task.php?taskID=24888
+# https://alloc.cyber.com.au/task/task.php?taskID=30502
+# https://alloc.cyber.com.au/task/task.php?taskID=31512
+[desktop-staff-hcc]
+applications = [
+    "dia", "dia-shapes",
+    "gimp", "gimp-help-en",
+    "klavaro",
+    "inkscape", "inkscape-tutorials",
+    "marble-qt", "marble-plugins",
+    "kgeography",
+    "gnucash", "gnucash-docs",
+    "pysiogame",
+    "gbrainy",
+    # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
+    #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
+    # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
+    "gjiten",
+    "lybniz",
+]

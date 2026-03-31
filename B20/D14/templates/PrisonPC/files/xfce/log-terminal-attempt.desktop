@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=X-XFCE-Helper
+Name=Not allowed
+X-XFCE-Category=TerminalEmulator
+X-XFCE-Binaries=com.PrisonPC.log-terminal-attempt.py;
+X-XFCE-Commands=%B
+X-XFCE-CommandsWithParameter=%B %s

@@ -1,0 +1,9 @@
+[Unit]
+Description=Log negotiated ethernet speed
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/ethernet-speed-check
+
+[Install]
+WantedBy=multi-user.target

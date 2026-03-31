@@ -1,0 +1,11 @@
+crosswords (0.3.8-2) bookworm; urgency=medium
+
+  * Build with "development mode" off!
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Fri, 04 Aug 2023 05:02:54 +1000
+
+crosswords (0.3.8-1) bullseye; urgency=medium
+
+  * Initial Debianization.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 25 Aug 2022 20:19:14 +1000

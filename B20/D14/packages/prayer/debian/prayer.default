@@ -1,0 +1,14 @@
+# Defaults for prayer initscript
+# sourced by /etc/init.d/prayer
+# installed at /etc/default/prayer by the maintainer scripts
+
+# This is a POSIX shell fragment
+
+# Default values for var_prefix (also used for pid_dir) and
+# prayer_user. These are set from the command line to make sure that
+# prayer uses the expected values.
+#VAR_PREFIX="/var/run/prayer"
+#PRAYER_USER="prayer"
+
+# Additional ptions. You probably won't need any.
+DAEMON_OPTS=""

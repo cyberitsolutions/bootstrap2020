@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=1.0
+Name=PrisonPC Automatic Logout
+# Exec=xss notify-send -t 60000 -i gtk-dialog-warning "Auto Logout in One Minute" "Are you still there? Please jiggle the mouse to confirm your presence."
+Exec=PrisonPC-autologout
+Type=application

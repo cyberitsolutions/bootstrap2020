@@ -1,0 +1,39 @@
+# I **think** our rules have to sort (in LC_COLLATE=C?) *before*(?)
+# all of the rules that an attacker-controllled .deb provides.
+# Currently in Debian those rules are:
+#     gnome-initial-setup:        /usr/share/polkit-1/rules.d/20-gnome-initial-setup.rules
+#     polkitd-pkla:               /usr/share/polkit-1/rules.d/49-polkit-pkla-compat.rules
+#     polkitd:                    /usr/share/polkit-1/rules.d/50-default.rules
+#     freedombox:                 /usr/share/polkit-1/rules.d/50-freedombox-firewalld.rules
+#     freedombox:                 /usr/share/polkit-1/rules.d/50-freedombox-network-manager.rules
+#     freedombox:                 /usr/share/polkit-1/rules.d/50-freedombox-udisks2.rules
+#     libvirt-daemon-system:      /usr/share/polkit-1/rules.d/60-libvirt.rules
+#     blueman:                    /usr/share/polkit-1/rules.d/blueman.rules
+#     budgie-control-center-data: /usr/share/polkit-1/rules.d/budgie-control-center.rules
+#     malcontent:                 /usr/share/polkit-1/rules.d/com.endlessm.ParentalControls.rules
+#     zoneminder:                 /usr/share/polkit-1/rules.d/com.zoneminder.systemctl.rules
+#     portfolio-filemanager:      /usr/share/polkit-1/rules.d/dev.tchx84.Portfolio.rules
+#     gnome-control-center-data:  /usr/share/polkit-1/rules.d/gnome-control-center.rules
+#     libvirt-dbus:               /usr/share/polkit-1/rules.d/libvirt-dbus.rules
+#     brltty:                     /usr/share/polkit-1/rules.d/org.a11y.brlapi.rules
+#     flatpak:                    /usr/share/polkit-1/rules.d/org.freedesktop.Flatpak.rules
+#     geoclue-2.0:                /usr/share/polkit-1/rules.d/org.freedesktop.GeoClue2.rules
+#     network-manager:            /usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules
+#     bolt:                       /usr/share/polkit-1/rules.d/org.freedesktop.bolt.rules
+#     fwupd:                      /usr/share/polkit-1/rules.d/org.freedesktop.fwupd.rules
+#     packagekit:                 /usr/share/polkit-1/rules.d/org.freedesktop.packagekit.rules
+#     gvfs-backends:              /usr/share/polkit-1/rules.d/org.gtk.vfs.file-operations.rules
+#     usbguard:                   /usr/share/polkit-1/rules.d/org.usbguard1.rules
+#     sms4you:                    /usr/share/polkit-1/rules.d/sms4you.rules
+#     sssd-common:                /usr/share/polkit-1/rules.d/sssd-pcsc.rules
+#     systemd:                    /usr/share/polkit-1/rules.d/systemd-networkd.rules
+
+
+name = "etc/polkit-1/rules.d/05-deny-almost-all.rules"
+
+
+# 04:54 <twb> Oh I bet the file has to be readable by polkitd not only root now
+# 04:54 <twb> is the polkitd user a static uid?
+# 04:55 <twb> >100 so no
+# 04:55 <twb> So due to limitations of my build system I have to make it world-readable
+mode = 292

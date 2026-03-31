@@ -1,0 +1,122 @@
+# Based on https://github.com/endless-sky/endless-sky-plugins
+# NOTE: To get *ALL* plugins is 1.3GiB (as at November 2024), which is definitely WAY too much.
+#       As a baseline, the main game itself is 0.25GiB.
+
+# APPROVE ########################################
+# <1MB plugins that don't fail for other reasons.
+https://github.com/fracturedprism/Old-Bounty-Hunting-Missions/archive/refs/tags/v0.1.0.zip
+https://github.com/kestrel1110/ES-Advanced-Starts/archive/1.3.zip
+https://github.com/mathwhiz1212/ES-conscience-plugin/archive/refs/tags/v0.2.0.zip
+# UPDATE: Only works if you make a NEW character while this plugin is loaded.
+#         To actually find it, you have to know to do "I" key, then click "Logbook".
+#         If you know enough to find that, you probably don't need help...
+#         It's the same set of tutorial popups that appear in-game contextually as needed.
+#         e.g. "what do do when you run out of fuel" appears when you first run out of fuel.
+# https://github.com/MidnightPlugins/Logbook-Help/releases/download/0.10.6.0/Logbook.Help-0.10.6.0.zip
+https://github.com/mathwhiz1212/A-Coalition-At-War/archive/refs/tags/v0.10.4.2.0.zip
+https://github.com/Startingfresher/Prism-Plug-in/archive/refs/tags/v1.3.zip
+https://github.com/Zitchas/ES_Lampyrid_Start/releases/download/v1.6/Z_Lampyrid_Start.release.v1.6.zip
+https://github.com/kestrel1110/Easier-Korath-Automatons/archive/1.0.0.zip
+# UPDATE: BetterVanillaHai 0.9.2 w/ ES 0.10.10 triggers a single impossibly-specced ship warning.
+# https://github.com/ZBok/BetterVanillaHai/archive/0.9.2.zip
+https://github.com/demolish238/Korath-Retribution/archive/refs/tags/v1.0.zip
+https://github.com/ZBok/BetterVanillaPirates/archive/v2.1.2.zip
+# UPDATE: has 1 each of "Error: Duplicate definition of mission:" and "Skipping unrecognized attribute: onland"
+#         I *think* the latter is gonna be a show-stopper, so disable this plugin for now...
+#https://github.com/adegans/SpaceCrate/archive/refs/tags/v0.4.1.zip
+https://github.com/endless-sky/all-content-plugin/archive/refs/tags/v0.10.9.zip
+# UPDATE: generates a bunch of 'Defaulting missing "drag" attribute to 100.0' and 'Error: Conversation text should be a single token'
+# https://github.com/ziproot/endless-sky-main-plot-plus/archive/refs/tags/1.1.1.1.zip
+# UPDATE: arc-over generates a bunch of "Warning: Minimum arc is higher than maximum arc. Might not work as expected." and duplicate missions.
+#         it looks to me like this is gonna be pretty bugged...
+# https://github.com/Saugia/arc-over/archive/refs/tags/v0.4.zip
+# UPDATE: has two impossibly-specced ships, also the starting ship seems to have parts missing (might be intentional part of the custom plot tho?) Disable for now.
+# https://github.com/leklachu/endless-sky-syndicate/releases/download/v0.9.2/crisis-in-management_v0.9.2.zip
+# UPDATE: Core-Mining-Inc triggers three "Ignoring unrecognized dialog token" mission-related warnings
+# https://github.com/DJF113/Core-Mining-Inc/archive/refs/tags/v0.1.8.zip
+# UPDATE: Outfit-Highlighter looks super weird because it isn't just adding a yellow target around the selected icon,
+#         it's also changing the wireframe-style backdrop to an older variant.
+# https://github.com/MidnightPlugins/Outfit-Highlighter/releases/download/0.9.16.3.0/Outfit.Highlighter-0.9.16.3.0.zip
+# UPDATE: generates 19 "libpng warning: iCCP: known incorrect sRGB profile" (presumably derpy .png files).
+https://github.com/Autohummer/Endless-Sky-Starbridge-Pack/archive/refs/tags/1.0.zip
+# UPDATE: generates 3 warnings about blurry images.  Concept is kinda dumb, like Arion-Air_Superiority.
+# https://github.com/kestrel1110/KineticWeaponry/archive/1.2.zip
+# UPDATE: generates *a lot* of warnings, even for stuff like missing quote marks.
+#         Also the artwork looks pretty fugly.
+# https://github.com/Cromha-Plugins/Fire-Corporation/archive/refs/tags/v0.2.zip
+
+# Smallish (<20MB), but also mostly meh (typically these add 3 ships with new artwork).
+# https://github.com/Petersupes/sheragi-rebirth/archive/0.10.1.zip
+https://github.com/Daeridanii1/DAIS/archive/refs/tags/0.3.0.zip
+# https://github.com/demolish238/Capitalis-Major/archive/refs/tags/v1.1.zip
+https://github.com/demolish238/QOL-Outfits/archive/refs/tags/v1.0.zip
+# Omnis is a cheating plugin, with more features than first-party all-content-plugin (which is more of a debug module).
+# UPDATE: generates ~5 warnings about incomplete planets/systems.
+https://github.com/EndlessSkyCommunity/-Omnis/archive/35b172d29d688d5f2e452c14f4c4a20c638df04d.zip
+# https://github.com/MIMSBZ3/Gaguka/archive/refs/tags/v0.1.zip
+# https://github.com/orbitalsupershell/sensor/archive/refs/tags/v0.10.9.3.0.1.zip
+# https://github.com/Spectre907YT/Arion-Air_Superiority/archive/refs/tags/3.5.0.zip
+https://github.com/samrocketman/Spacefarer/archive/55318e263bfd27e9304754c4509c48d44b8e9195.zip
+# https://github.com/AvianGeneticist/QuaernanHardpointsCarries/archive/ea402025badbe3ac489c235452bf5e7ac64b086c.zip
+# UPDATE: Beccas-Endless-Expansion has a couple of deprecation warnings and a couple of impossibly-specced ships warnings.
+# https://github.com/beccabunny/Beccas-Endless-Expansion/archive/refs/tags/1.2.0.zip
+# UPDATE: blended-ships generates 5 "Unable to create mask" warnings.
+https://github.com/mOctave/blended-ships/archive/refs/tags/v1.1.0.zip
+# UPDATE: The-Enclave has a shitload of warnings/errors on load, including incomplete object definitions and impossibly-specced ships.
+# https://github.com/1010todd/The-Enclave/archive/94da5f43fb99f83ca7848ea4e32f6aacacff0e07.zip
+
+# Biggish (20MB-100MB) that sound like they're worth the cost?
+# 12MB
+# UPDATE: also generates a bunch of warnings/errors when you load it.
+# https://github.com/MidnightPlugins/Midnight-Scrapyard/releases/download/0.10.10.0.0/Midnight.Scrapyard-0.10.10.0.0.zip
+# 16MB
+# https://github.com/MidnightPlugins/Midnight-Expansion/releases/download/0.10.10.0.0/Midnight.Expansion-0.10.10.0.0.zip
+# "I am hoping to end up getting them into vanilla." -- therefore consider this plugin alpha and do not "spoil" the version that may end up in mainline
+# https://github.com/TheGiraffe3/Jibauni/archive/660c938337de89d0a4e2b9b636fdd48d60726ac9.zip
+# 17MB, looks kinda meh
+# https://github.com/comnom/Eternals/archive/5598f8a855a1a364d75311029dc2d936faea76db.zip
+# 18MB, looks pretty good... (UPDATE: causes deprecation warnings)
+# https://github.com/kestrel1110/Adamas-Project/archive/v0.1.4.zip
+# 22MB, looks pretty good...
+# UPDATE: plugin describes itself as alpha quality, therefore disable for now.
+# https://github.com/Saugia/celestial-strands/archive/refs/tags/v0.0.2-alpha.zip
+# 43MB, looks kinda meh
+# https://github.com/demolish238/Mil-taj-Protectorate/archive/refs/tags/v1.0.zip
+# 56MB, ambivalent about this one
+# https://github.com/kestrel1110/Exporianes/archive/2.2.zip
+# Too big (73MB)?  OTOH But LOTS OF MISSIONS, so probably good value?
+# UPDATE: also generates a shitload (100+) of warnings/errors when you load it.
+# https://github.com/MidnightPlugins/Lost-in-Midnight/releases/download/0.10.10.0.0/Lost.in.Midnight-0.10.10.0.0.zip
+
+# REJECT - SIZE ##################################
+# Too big (119MB), expects CI build (not stable)
+# UPDATE: has 2800 lines of warnings/errors, FUCK ME SIDEWAYS, no.
+# https://github.com/OcelotWalrus/Cromha-Expansion-plugin/archive/4def4d7e932292017be52a2c69e1ea33efc8cf26.zip
+# Too big (145MB)
+# https://github.com/1010todd/Mega-Freight/archive/486f09479c941c51957ef40ed0f0c181500a640a.zip
+# Too big (162MB), "still in development"
+# https://github.com/1010todd/Galactic-War/archive/da78a1b783535f5752471095b315f707246fe925.zip
+# Too big (205MB) and not useful on 1080p monitors.
+# https://github.com/endless-sky/endless-sky-high-dpi/archive/refs/tags/v0.10.10.zip
+# Definitely don't want this one; it's for CI builds (i.e. not stable releaes) of the main game.
+# https://github.com/endless-sky/endless-sky-high-dpi/archive/b8d0ffa5e5b56412647e29db94c0809474169d31.zip
+
+# REJECT - ERRORS / WARNINGS / BUGS ##############
+# Fancy third-party cheat plugin, minimal size cost (4MB).
+# UPDATE: generates a lot of warnings/bugs on stderr.
+# https://github.com/pshy0/es-ruin-the-fun/archive/refs/tags/v0.0.36.zip
+# Replaced by -Omnis?
+# https://github.com/RestingImmortal/Ciu-Kreo/archive/fe137a8624b8e875782ca9b5e3efeeae58d6f365.zip
+# https://github.com/EndlessSkyCommunity/world-forge/archive/0135465767c1438e5a32238814cdd95e666fea44.zip
+# Fuuuuuck this guy, it's someone who disagrees with https://en.wikipedia.org/wiki/Criticism_of_the_Space_Shuttle_program
+# https://github.com/MidnightPlugins/Space-Shuttle-Start/releases/download/0.10.8.0/Space.Shuttle.Start-0.10.8.0.zip
+# COMPLETELY breaks your ability to actually turn plugins on/off!
+# https://github.com/Cromha-Plugins/es-ui-upgrades/archive/a7b565de29e4b509429ede9abfb8895345a1b27f.zip
+# Other stuff (generally small but also meh).
+# https://github.com/Tugderic/Tugderics-Addons/archive/refs/tags/v4.zip
+# https://github.com/Anarchist2/ES-news-portraits/archive/v1.1.zip
+# https://codeberg.org/jmelesky/endless-sky-early-starts/archive/v0.999.zip
+# https://bitbucket.org/YellowApple/endless-cargo/get/v0.2.0.zip
+# https://github.com/1010todd/Fighter-Factory/archive/9db8b336882c4b613316c6a4260f56af7ec885cc.zip
+# https://github.com/TheGiraffe3/rumskib/archive/ad43f7331458b6e8e85e9af9f427eeda27d1598b.zip
+# https://github.com/a-random-lemurian/Lemurias-Extra-ES-Stuff/archive/refs/tags/v0.10.16.zip

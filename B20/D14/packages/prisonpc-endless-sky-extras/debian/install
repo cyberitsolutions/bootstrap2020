@@ -1,0 +1,8 @@
+# This is used to turn off plugins by default.
+# Otherwise, new users get all installed plugins enabled by default.
+# https://github.com/endless-sky/endless-sky/issues/7171#issuecomment-1293584505
+# NOTE: debian/plugins.txt refers to plugins by the value in <plugin>/plugin.txt:name, e.g.
+#       https://github.com/endless-sky/all-content-plugin/blob/master/plugin.txt#L1
+#       is "All-Content Plugin" *NOT* all-content-plugin.
+#       UPDATE: some plugins have no plugins.txt, in which case the dir name IS used.
+debian/plugins.txt usr/share/games/endless-sky/

@@ -1,0 +1,7 @@
+usr/sbin/prayer
+usr/sbin/prayer-session
+usr/sbin/prayer-ssl-prune
+usr/share/prayer/icons
+usr/share/prayer/static
+usr/lib/prayer/templates/
+etc/prayer/prayer.cf

@@ -1,0 +1,6 @@
+include = [
+    "libnss-ldapd", "libpam-ldapd", "unscd",
+    "nftables",
+    "fonts-prisonpc",
+    "prisonpc-chromium-hunspell-dictionaries",
+]

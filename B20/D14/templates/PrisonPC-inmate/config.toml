@@ -1,0 +1,3 @@
+include = [
+    "prisonpc-bad-package-conflicts-inmates",
+]

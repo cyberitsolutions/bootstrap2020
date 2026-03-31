@@ -1,0 +1,104 @@
+prayer for Debian
+-----------------
+
+The Debian version of Prayer is built with SSL support with session
+cache using the latest libdb, gzip Content-Transfer-Encoding, LDAP,
+and System V mutex support. The initial Debian release, which was only
+uloaded to the experimental distribution, was heavily patched to add
+UTF-8 and IPv6 support among other things. All that has been
+incorporated and improved by upstream in 1.1.0. The remaining patches
+concern changes to the default configuration as detailed below, or fix
+bugs. You can always find information about patches in
+changelog.Debian.gz.
+
+To enable Prayer, run update-rd.c prayer enable. But before you do
+that you should go through /etc/prayer/prayer.cf and adapt it to your
+needs. In particular, if you already run a web server on this machine
+you need to change use_http_port (and use_https_port) to something
+else.
+
+Debian-specific configuration defaults:
+
+ * Static files (templates, icons, CSS files) are installed in
+   /usr/share/prayer in accordance with policy. The prefix option
+   points there, while var_prefix, the location of pid files
+   (pid_dir), sockets (socket_dir), the SSL session cache
+   (ssl_session_dir), and temporary storage of uploaded attachments
+   (tmp_dir), is /var/run/prayer and subdirectories.  Log files are
+   written to /var/log/prayer (log_dir).
+
+ * Prayer by default runs as user prayer (created on install) and
+   group nogroup. The prayer user is added to the ssl-cert group on
+   installation, so that it can access keys in /etc/ssl/private.
+
+ * ssl_cert_file and ssl_privatekey_file point to the "snake oil"
+   certificate and key created by the ssl-cert package, so that you
+   only have to uncomment use_https_port to enable encryption. For a
+   production server you should of course install a real certificate.
+
+ * Support for SSL session caching is compiled in, but caching is
+   disabled by default, as it probably doesn't make that much a
+   difference on modern hardware. To enable it, uncomment the
+   ssl_session_timeout setting in prayer.cf. You should also arrange
+   for prayer-ssl-prune to be run periodically, for example by placing
+   a symlink to it in /etc/cron.hourly or /etc/cron.daily.
+
+ * The default IMAP folders for sent mail (sent_mail_folder) and
+   drafts (postponed_folder) are "Sent" and "Drafts", respectively,
+   the default for Mozilla Thunderbird and others (although many IMAP
+   clients unfortunately use localized folder names).
+
+ * socket_split_dir is off by default to reduce complexity when
+   testing. You will probably only need it if you have lots of
+   simultaneous users and a file system without directory indexes.
+
+Customizing templates:
+
+To use customized templates you must set template_use_compiled to
+FALSE in prayer.cf. Then copy the template (.t file) you wish to
+customize from /usr/share/prayer/templates to the corresponding
+location under /etc/prayer/templates and edit it there. Prayer will
+still use the compiled-in versions of the remaining templates, thanks
+to a small patch.
+
+Quirks:
+
+ * If your IMAP server supports STARTTLS, then Prayer (actually the
+   libc-client IMAP client library) will use it automatically. To
+   disable, append "/notls" to the IMAP server name(s) specified with
+   imapd_server. To force TLS, append "/tls". Make sure that the
+   server name you specify for imapd_server in prayer.cf matches the
+   Common Name in the SSL certificate; otherwise libc-client will
+   refuse to accept it. To disable that check, use "/novalidate-cert".
+   Other switches you can append are listed in the file naming.txt.gz
+   in the documentation directory of the C-client library.
+
+ * If your IMAP server is Dovecot (or any of a number of others,
+   probably), then you must change prefs_folder_name to something not
+   containing a dot. Unfortunately this means that the preference
+   folder will be fully visible.
+
+ * Prayer doesn't handle signals gracefully yet, which means that it
+   will leave SysV semaphores lying around when it is stopped or
+   restarted.  You can use ipcs to find them and ipcrm to delete them.
+
+ * While Prayer does its best to remove potentially harmful tags from
+   HTML email, it doesn't try to convert it to XHTML. This means that
+   Prayer's output is conformant XHTML only when not viewing HTML
+   mail.
+
+ * Prayer deletes mail the IMAP way, which is by marking messages as
+   deleted and leaving them in their folders. Prayer always lists
+   deleted messages (with a special icon) and expunges (deletes
+   permanently) deleted messages only when explicitly requested.
+   Before that they can be undeleted at any time by "unmarking" them.
+
+   Most mail client software deletes mail by moving it to a "trash"
+   folder, which in reality means creating a copy in the trash folder
+   and marking the original deleted. Messages that are marked as
+   deleted are usually never listed, cannot be unmarked, and are often
+   automatically expunged. These two approaches are rather
+   incompatible, but some software can take either.
+
+ -- Magnus Holmgren <holmgren@debian.org>, Sat, 27 Oct 2018 21:26:25 +0200
+

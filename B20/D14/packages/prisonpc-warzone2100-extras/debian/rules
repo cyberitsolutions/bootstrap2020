@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+D := debian/prisonpc-warzone2100-addons/usr/share/games/warzone2100
+%:
+	dh $@
+override_dh_auto_install:
+	# Workaround https://bugs.debian.org/1005865
+	# (--content-disposition breaks -P in wget2 <2.0.1; Debian 12 still has wget2 1.99.1-2.2)
+	install -d $D/maps
+	env --chdir=$D/maps wget2 -i $(CURDIR)/debian/maps.urls --content-disposition

@@ -1,0 +1,64 @@
+#!/usr/bin/python3
+import pathlib
+import logging
+
+__doc__ = """ work around warzone2100 bug
+
+We can place warzone2100 addons in
+/usr/share/games/warzone2100/maps/X.wz and
+/usr/share/games/warzone2100/mods/Y.wz.
+
+Warzone2100 FINDS these files, but it READS from
+~/.local/share/warzone2100-$VERSION/maps/X.wz and
+~/.local/share/warzone2100-$VERSION/mods/Y.wz.
+This is a bug in warzone2100.
+
+As a workaround, symlink the latter to the former.
+
+NOTE: this breaks map auto-download for online play.
+PrisonPC does not allow online play, so we don't care.
+—twb, Sep 2017
+https://alloc.cyber.com.au/task/task.php?taskID=31556
+
+UPDATE 2022: in Debian 11 / warzone2100 3.3, symlinking the whole directory no longer works.
+I think the warzone2100 code is doing stat() instead of lstat(), so treating a symlink as "not a directory".
+Let's try symlinking individual files.
+
+UPDATE: all this bullshit IS still needed in Debian 12.
+        The paths have changed slightly:
+
+        WAS ~p123/.local/share/warzone2100-$VERSION/mods/global/ARmod_$VERSION.wz
+        NOW ~p123/.local/share/warzone2100/mods/$VERSION/global/ARmod_$VERSION.wz
+
+UPDATE: in warzone2100 3.x, we could create symlinks to files in /usr/.
+        in warzone2100 4.x, they EXPLICITLY DISABLE following symlinks.
+        I don't know why, but this means that for the high-res texture mode (ARmod_4.1.0.wz),
+        we would have to copy the entire texture blob into each user's $HOME (instead of just symlinking it).
+        This is clearly bonkers, so I give up - I am just going to drop the text mod entirely.
+        --twb, Aug 2023
+
+        This is what strace said (note "SYMLINK_NOFOLLOW"):
+
+             newfstatat(AT_FDCWD,
+                        "/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz",
+                        {st_mode=S_IFLNK|0777, st_size=55, ...},
+                        AT_SYMLINK_NOFOLLOW) = 0
+
+             access("/home/prisoners/p123/.local/share/warzone2100//mods/4.3.3/global/ARmod_4.0.1.wz",
+                    W_OK) = -1 EACCES (Permission denied)
+
+        This is the code cjb found:
+
+            https://github.com/Warzone2100/warzone2100/blob/master/src/version.cpp#L139
+            https://github.com/Warzone2100/warzone2100/commit/11b4c086263b451d4f38b6869fa6da42f565a903
+
+
+"""
+
+dst = pathlib.Path.home() / '.local/share/warzone2100/maps'
+dst.mkdir(exist_ok=True, parents=True)
+for src in pathlib.Path('/usr/share/games/warzone2100/maps').glob('*.wz'):
+    try:
+        (dst / src.name).symlink_to(src)
+    except FileExistsError:
+        logging.debug('already exists -- assuming already correct', src)

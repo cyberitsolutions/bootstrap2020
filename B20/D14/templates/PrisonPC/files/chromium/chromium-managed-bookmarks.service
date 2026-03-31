@@ -1,0 +1,17 @@
+# NOTE: this unit is started by /etc/X11/xdm/Xstartup,
+#       which is why it has no Install.WantedBy.
+[Service]
+Type=oneshot
+ExecStart=bootstrap2020-chromium-managed-bookmarks
+
+# FIXME: should have a Wants= and After=bootstrap2020-session-snitch@p123.service here, but
+#        I can't easily express that since I don't know "p123" here.
+#
+#        Probably I should set bootstrap2020-session-snitch@p123.service to
+#        have something like PartOf=bootstrap2020-session-snitch.target or something.
+#
+#        In any case, the actual issue SHOULD be moot, because
+#        session-snitch does READY=1 and Type=notify, and
+#        the xdm post-login script can just do
+#        "systemctl start X" (without --noblock) then
+#        "systemctl start Y", and Y definitely won't start until X hits READY=1.

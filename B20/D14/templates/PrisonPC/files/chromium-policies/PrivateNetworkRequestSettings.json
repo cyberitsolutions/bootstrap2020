@@ -1,0 +1,7 @@
+// See https://wicg.github.io/private-network-access/.
+{
+    // These are "re-enable insecure old behaviour?" options.  Force the secure defaults.
+    "InsecurePrivateNetworkRequestsAllowed": false,
+    "InsecurePrivateNetworkRequestsAllowedForUrls": [],
+    "PrivateNetworkAccessRestrictionsEnabled": true
+}

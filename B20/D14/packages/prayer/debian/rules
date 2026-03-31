@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+%:
+	dh $@ -Smakefile
+
+override_dh_auto_clean:
+	$(MAKE) clean MAKE=$(MAKE)
+	cp defaults/Config .
+
+override_dh_auto_configure:
+	cp debian/Config .
+
+override_dh_auto_install:
+	dh_auto_install -- BROOT=$(CURDIR)/debian/tmp
+
+override_dh_installchangelogs:
+	dh_installchangelogs docs/DONE
+
+override_dh_installinit:
+	dh_installinit --no-enable
+
+override_dh_installman:
+	dh_installman --language=C

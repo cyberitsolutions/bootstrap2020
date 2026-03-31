@@ -1,0 +1,7 @@
+! Hey, Emacs!  This is a -*- conf-xdefaults -*- file.
+
+! We set a significantly different background for staff.
+! This makes it obvious at a glance if the wrong SOE is booted.
+! (Staff SOEs should not run in inmate-accessible areas.)
+xlogin.Login.Foreground: black
+xlogin.Login.Background: #AD7FA8

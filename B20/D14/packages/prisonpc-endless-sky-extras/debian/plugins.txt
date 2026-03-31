@@ -1,0 +1,36 @@
+state
+	Adamas-Project-0.1.4 0
+	A-Coalition-At-War-0.10.4.2.0 0
+	Beccas-Endless-Expansion-1.2.0 0
+	BetterVanillaHai-0.9.2 0
+	BetterVanillaPirates-2.1.2 0
+	Core-Mining-Inc-0.1.8 0
+	DAIS 0
+	ES-Advanced-Starts-1.3 0
+	ES-conscience-plugin-0.2.0 0
+	Easier-Korath-Automatons-1.0.0 0
+	Endless-Sky-Starbridge-Pack-1.0 0
+	Fire-Corporation-0.2 0
+	KineticWeaponry-1.2 0
+	Korath-Retribution-1.0 0
+	Omnis 0
+	Prism-Plug-in-1.3 0
+	QOL-Outfits-1.0 0
+	SpaceCrate-0.4.1 0
+	Spacefarer-55318e263bfd27e9304754c4509c48d44b8e9195 0
+	The-Enclave-94da5f43fb99f83ca7848ea4e32f6aacacff0e07 0
+	arc-over-0.4 0
+	celestial-strands-0.0.2-alpha 0
+	crisis-in-management 0
+	es-ui-upgrades-a7b565de29e4b509429ede9abfb8895345a1b27f 0
+	"All-Content Plugin" 0
+	"Blended Ships" 0
+	"Cromha Expansion" 0
+	"Logbook Help" 0
+	"Lost in Midnight" 0
+	"Main Plot Plus" 0
+	"Midnight Scrapyard" 0
+	"Old Bounty Hunting Missions" 0
+	"Outfit Highlighter" 0
+	"Space Shuttle Start" 0
+	"-Ruin The Fun" 0

@@ -1,0 +1,43 @@
+prisonpc-warzone2100-addons (12.3) bookworm; urgency=medium
+
+  * Due to https://github.com/Warzone2100/warzone2100/commit/11b4c086263b451d4f38b6869fa6da42f565a903
+    we cannot serve the high-res texture mode out of /usr anymore, so
+    remove it completely.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 07 Aug 2023 15:31:40 +1000
+
+prisonpc-warzone2100-addons (12.2) bookworm; urgency=medium
+
+  * Expect warzone2100 4.x not 3.3.x.
+  * postinst: the .desktop file was renamed upstream
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 02 Aug 2023 01:46:27 +1000
+
+prisonpc-warzone2100-addons (11.7) bullseye; urgency=medium
+
+  * Workaround https://bugs.debian.org/1005865
+  * Fix regexp for new `warzone --version`.
+  * Bump artrev2100 (HD textures) for compatibility with Warzone2100 3.3.
+  * Upgrade packaging to make use of Debian 11 features.
+  * Symlink individual .wz files.  Symlink parent dir is now broken upstream.
+  * addons.wz2100.net has "maps", "mods", and "mod-maps".
+    As at wz2100 3.1, there was no GUI to toggle mods on and off, so
+    ignore all "mods" and "mod-maps".
+    Only two addons were created since Oct 2017, and one is a mod.
+    So don't even bother to check any of these maps again.
+    Just keep the old list we had before.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 21 Feb 2022 11:04:37 +1100
+
+prisonpc-warzone2100-addons (0~prisonpc2) stable; urgency=medium
+
+  * Install and enable hi-res graphics.
+
+ -- Trent W. Buck <twb@cyber.com.au>  Mon, 02 Oct 2017 13:01:17 +1100
+
+prisonpc-warzone2100-addons (0~prisonpc1) stable; urgency=medium
+
+  * Package up maps for warzone2100 (≤3.1.1).
+
+ -- Trent W. Buck <twb@cyber.com.au>  Thu, 28 Sep 2017 18:44:12 +1000
+

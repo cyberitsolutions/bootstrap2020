@@ -1,0 +1,3 @@
+// These policies are ignored unless the Chrome Remote Desktop host is installed.
+// https://en.wikipedia.org/wiki/Chrome_Remote_Desktop
+{}

@@ -1,0 +1,7 @@
+[Socket]
+# The funny IP matches the "webmail" A record in PrisonPC dnsmasq.
+# VMs booted with --boot-test get it via site.dir/hosts.
+# AFAICT it is not possible to do "ListenStream=webmail:80" here.
+ListenStream=127.0.2.1:80
+[Install]
+WantedBy=sockets.target

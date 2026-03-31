@@ -1,0 +1,10 @@
+// This is meant for kiosks in public spaces, so
+// you can have e.g. airline checkin kiosk unattended, and
+// if the end user finishes the interaction and walks off (without logging out),
+// the kiosk will automatically refresh/logout after a minute.
+//
+// We do not need this functionality for PrisonPC, as
+// we have an entire desktop running outside chromium, and
+// that is also logged in.
+// (And when I tried adding idle-auto-log-out to that, EVERYONE HATED it.)
+{}

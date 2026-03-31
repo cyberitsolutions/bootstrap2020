@@ -1,0 +1,90 @@
+# Hey, Emacs!   This is a -*-conf-*- file.
+#
+# Set merciless defaults for "API" filesystems.
+# https://alloc.cyber.com.au/task/task.php?taskID=30092
+# In particular: DEFAULT DENY.
+# If you want to be mounted without -o nosuid,noexec,nodev,ro,
+# you need to PROVE WHY you need looser permissions.
+# FIXME: this could probably be locked down even more.
+# (e.g. -o ro /sys/kernel/security.)
+#
+# Q. How does systemd apply these?
+#    https://alloc.cyber.com.au/task/task.php?taskID=30141
+#
+# A. If the mountpoint is in listed in this hard-coded table:
+#      https://github.com/systemd/systemd/blob/main/src/shared/mount-setup.c#L64-L113
+#    then systemd has *ALREADY MOUNTED IT*,
+#    and systemd-remount-fs(8) simply runs "mount -o remount /foo".
+#
+#    Otherwise, systemd-fstab-generator(8) creates a .mount unit,
+#    which is handled like any other systemd unit.
+#
+# Additional remarks:
+#
+#   * /run/live is to hide overlayfs's underlying components from inmates.
+#     /lib/live/mount is the old path; as at Debian 11 both are still active.
+#
+#     NOTE: live-boot-hide-rootfs-components.sh now nerfs this better, but
+#           nerf here as well in case of regressions.
+#
+#     UPDATE 2023:
+#
+#       After usrmerge, this messed me up (/usr/lib/live/mount was inmate-readable).
+#       The actual problem was in live-boot-hide-rootfs-components.sh, but
+#       I messed around with this as well, and I kept it.
+#
+#       Also, without these fstab entries (but with hide-rootfs-components.sh), I see this:
+#
+#       root@desktop-inmate:~# find /run/live /usr/lib/live /lib/live -ls
+#             148      0 drwxr-xr-x   5 root     root          100 Aug 23 22:51 /run/live
+#             440      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /run/live/overlay
+#             382      0 drwxr-xr-x   3 root     root           60 Aug 23 22:51 /run/live/rootfs
+#             438      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /run/live/rootfs/filesystem.squashfs
+#             149      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /run/live/medium
+#             114      0 drwxr-xr-x   1 root     root           60 Aug 23 22:51 /usr/lib/live
+#             446      0 drwxr-xr-x   3 root     root           51 Aug 23 22:47 /usr/lib/live/boot
+#            2518      2 -r--------   1 root     root         2035 Jan  1  1970 /usr/lib/live/boot/9991-fstab-is-my-backdoor.sh
+#             154      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /usr/lib/live/mount
+#             114      0 drwxr-xr-x   1 root     root           60 Aug 23 22:51 /lib/live
+#             446      0 drwxr-xr-x   3 root     root           51 Aug 23 22:47 /lib/live/boot
+#            2518      2 -r--------   1 root     root         2035 Jan  1  1970 /lib/live/boot/9991-fstab-is-my-backdoor.sh
+#             154      0 drwxr-xr-x   2 root     root           40 Aug 23 22:51 /lib/live/mount
+#
+#       The reason only my 9991 script is there (and not the rest of the live-boot scripts)
+#       is because customize80-purge-bad-packages.py has removed the upstream scripts (but not my script).
+#
+#   * /var/tmp needs -orw for systemd-timesyncd (NTP client).
+#   * /dev/shm needs -orw for chromium.
+#   * /dev/shm needs >32M for libreoffice.
+#   * /sys/fs/pstore is listed to add -oro (defense in depth).
+#     UPDATE: pstore.ko is gone in inmate desktops.
+#             Removed to appease systemd-remount-fs.service.
+#             Adding "nofail" was not sufficient.
+#             Is 0750 rwxr-x--- root:root on staff desktops;
+#             this is sufficient; we needn't obsess over -o ro here.
+#   * /dev is listed to add -onoexec.
+#   * /proc -o subset=pid broke tinysshd.socket.
+#   * /proc -o hidepid=invisible or =noaccess broke GUI login.
+#   * FIXME: systemd-remount-fs(8) ignores mode=XXX.
+#
+# UPDATE: For stupid reasons each separate user gets
+#         /run/systemd/generator/home-prisoners-p123.mount and
+#         /run/systemd/generator/user@1024.service.d/bootstrap2020-home-mount.conf
+#         For ~2200 users, this is about 17MiB.
+#         There is about 3MB total of everything else.
+#         But "systemctl daemon-reload" will do this as at Debian 12:
+#             Reload daemon failed: Refusing to reload,
+#             not enough space available on /run/systemd.
+#             Currently, 12.1M are free, but
+#             a safety buffer of 16.0M is enforced.
+#         With size=64M, we have (64-16-3)MB/(17MB/2200users) = ~5800 user limit
+#         With size=32M, we have (32-16-3)MB/(17MB/2200users) = ~1600 user limit
+#         https://alloc.cyber.com.au/task/task.php?taskID=35602
+tmpfs   /tmp            tmpfs   nosuid,noexec,nodev,size=10%
+tmpfs   /dev/shm        tmpfs   nosuid,noexec,nodev,size=10%
+tmpfs   /var/tmp        tmpfs   nosuid,noexec,nodev,size=32M,mode=0
+tmpfs   /run/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
+tmpfs   /lib/live       tmpfs   nosuid,noexec,nodev,size=32M,mode=0,ro
+tmpfs   /run            tmpfs   nosuid,noexec,nodev,size=64M,mode=0755
+tmpfs   /run/lock       tmpfs   nosuid,noexec,nodev,size=32M,mode=0755
+devtmpfs /dev           devtmpfs nosuid,noexec,mode=0755

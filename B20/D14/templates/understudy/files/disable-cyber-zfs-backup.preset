@@ -1,0 +1,11 @@
+# -*- conf -*-
+# While the PrisonPC main server is ext4 and the understudy is ZFS,
+# we need cyber-zfs-backup on the UNDERSTUDY, so
+# that the main server can do "rsync to understudy, then on understudy make understudy-local ZFS snapshots".
+#
+# FIXME: Once the PrisonPC main server is also ZFS, remove cyber-zfs-backup from understudy.
+# In that case the main server just does "cyber-zfs-backup" which is main-server-local ZFS snapshots and a replication send-receive.
+#
+# This preset is here because we only need /usr/sbin/cyber-zfs-backup, not
+# the default daily cron job.
+disable cyber-zfs-backup.timer

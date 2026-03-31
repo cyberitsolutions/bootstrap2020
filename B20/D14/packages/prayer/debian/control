@@ -1,0 +1,97 @@
+Source: prayer
+Section: mail
+Priority: optional
+Maintainer: Magnus Holmgren <holmgren@debian.org>
+Build-Depends: debhelper (>= 9), libc-client2007e-dev | libc-client-dev,
+ libldap2-dev, zlib1g-dev, libssl-dev (>= 0.9.6), libdb-dev,
+ libtidy-dev
+Standards-Version: 4.2.1
+Vcs-Svn: svn://svn.kibibyte.se/prayer/trunk
+Vcs-Browser: http://svn.kibibyte.se/prayer
+Homepage: http://www-uxsup.csx.cam.ac.uk/~dpc22/prayer/
+
+Package: prayer
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, ssl-cert (>= 1.0.11),
+         lsb-base (>= 3.0-6), logrotate, default-mta | mail-transport-agent
+Suggests: prayer-accountd, prayer-templates-src, imap-server, aspell | ispell
+Description: standalone IMAP-based webmail server
+ Prayer is yet another Webmail interface.
+ .
+ It is unusual in that it is a complete, standalone, HTTP server and proxy
+ rather a Apache/mod_php plugin. Prayer maintains persistent connections to
+ the IMAP server and is written entirely in C. Consequently it is much
+ faster than most open source Webmail interfaces and puts very little load
+ on either the machines running the Web server or the backend IMAP servers
+ (even if traditional Unix format mailfolders are in use).
+ .
+ Prayer has very few external dependencies as user preferences are stored on
+ the IMAP server rather than in a SQL database. It does however implement a
+ full range of features and user preference settings.
+
+Package: prayer-templates-src
+Architecture: all
+Depends: ${misc:Depends}
+Recommends: prayer (>= 1.3.0)
+Replaces: prayer-templates (<< 1.3.2-dfsg1-2)
+Breaks: prayer-templates (<< 1.3.2-dfsg1-2)
+Suggests: prayer-templates-dev
+Description: templates for customizing Prayer Webmail
+ Prayer is yet another Webmail interface.
+ .
+ It is unusual in that it is a complete, standalone, HTTP server and proxy
+ rather a Apache/mod_php plugin. Prayer maintains persistent connections to
+ the IMAP server and is written entirely in C. Consequently it is much
+ faster than most open source Webmail interfaces and puts very little load
+ on either the machines running the Web server or the backend IMAP servers
+ (even if traditional Unix format mailfolders are in use).
+ .
+ This package contains, in source form, the templates for the HTML
+ that Prayer outputs.
+ .
+ As all the templates are included with the main prayer package in
+ compiled form, you only need to install this package if you need to
+ customize one or more pages and you want something to start from.
+
+Package: prayer-templates-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, make, gcc
+Suggests: prayer-templates-src, prayer
+Description: tools for compiling Prayer templates
+ Prayer is yet another Webmail interface.
+ .
+ It is unusual in that it is a complete, standalone, HTTP server and proxy
+ rather a Apache/mod_php plugin. Prayer maintains persistent connections to
+ the IMAP server and is written entirely in C. Consequently it is much
+ faster than most open source Webmail interfaces and puts very little load
+ on either the machines running the Web server or the backend IMAP servers
+ (even if traditional Unix format mailfolders are in use).
+ .
+ Prayer uses its own macro expansion language for the HTML it
+ outputs. This package contains the programs and scripts needed to
+ build template libraries, as well as a makefile to facilitate the
+ process.
+
+Package: prayer-accountd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base (>= 3.0-6)
+Suggests: prayer
+Recommends: exim4
+Description: account management daemon for Prayer
+ Prayer is yet another Webmail interface.
+ .
+ It is unusual in that it is a complete, standalone, HTTP server and proxy
+ rather a Apache/mod_php plugin. Prayer maintains persistent connections to
+ the IMAP server and is written entirely in C. Consequently it is much
+ faster than most open source Webmail interfaces and puts very little load
+ on either the machines running the Web server or the backend IMAP servers
+ (even if traditional Unix format mailfolders are in use).
+ .
+ This package contains a daemon that can do the following for users:
+ .
+  * Change passwords
+  * Change their full name
+  * Manage mail filtering (requires Exim) and forwarding
+  * Manage vacation messages and logs
+ .
+ NOTE: This package is currently not very useful.

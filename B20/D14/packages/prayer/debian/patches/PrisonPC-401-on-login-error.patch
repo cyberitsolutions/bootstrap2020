@@ -1,0 +1,53 @@
+Description: Respond with a 401 HTTP code when IMAP login fails.
+ By responding with a 401 HTTP code this allows sshguard/fail2ban/etc to
+ monitor the logs and block remote address accordingly.
+ .
+ This will still respond with the same login error template,
+ so the user experience should be no different.
+ .
+ Also note that invalid session ID will return '404 Not Found'.
+ So, in theory if someone were attacking Prayer specifically,
+ they could do so by brute-forcing various session IDs until they find a
+ currently active one active one.
+ I believe this behaviour would be patched in or around the
+ 'generate_connect_error_page' function in the same file.
+Author: Mike Abrahall <mike@cyber.com.au>
+Origin: <upstream|backport|vendor|other>, <URL, required except if Author is present>
+Bug: <URL to the upstream bug report if any, implies patch has been forwarded, optional>
+Bug-<Vendor>: <URL to the vendor bug report if any, optional>
+Forwarded: <URL|no|not-needed, useless if you have a Bug field, optional>
+Applied-Upstream: <version|URL|commit, identifies patches merged upstream, optional>
+Reviewed-by: <name and email of a reviewer, optional>
+Last-Update: 2024-11-25
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: prayer/servers/prayer_login.c
+===================================================================
+--- prayer.orig/servers/prayer_login.c
++++ prayer/servers/prayer_login.c
+@@ -205,7 +205,7 @@ prayer_login_connect_error(struct prayer
+     tvals = prayer->template_vals;
+     template_vals_string(tvals, "$user", username);
+     template_expand("frontend_session", tvals, b);
+-    response_html(request, 200);
++    response_html(request, 502);
+ }
+ 
+ static void
+@@ -222,7 +222,7 @@ prayer_login_error(struct prayer *prayer
+     template_vals_string(tvals, "$value", value);
+ 
+     template_expand("frontend_login_error", tvals, b);
+-    response_html(request, 200);
++    response_html(request, 401);
+ }
+ 
+ /* ====================================================================== */
+@@ -378,6 +378,7 @@ prayer_login_process(struct prayer *pray
+         if (config->referer_block_invalid) {
+             prayer_template_setup(prayer);  /* Adds $url_prefix automatically */
+             template_expand("frontend_security", prayer->template_vals, b);
++            // FIXME: I don't think this should be 200 OK
+             response_html(request, 200);
+             return;
+         }

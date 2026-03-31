@@ -1,0 +1,2 @@
+name = "etc/systemd/user/bootstrap2020-popularity-contest.timer"
+mode = 292

@@ -1,0 +1,27 @@
+--- a/lib/setproctitle.h
++++ b/lib/setproctitle.h
+@@ -8,7 +8,9 @@
+ 
+ #include <sys/param.h>
+ 
+-#ifdef __linux__
++#if defined(__GNU__)
++# define SPT_TYPE       SPT_CHANGEARGV
++#elif defined(__linux__)
+ # define SPT_TYPE	SPT_REUSEARGV
+ # define SPT_PADCHAR	'\0'    /* pad process title with nulls */
+ #elif (defined(BSD) && BSD >= 199306)
+--- a/accountd/authenticate.c
++++ b/accountd/authenticate.c
+@@ -8,11 +8,7 @@
+ 
+ #include "accountd.h"
+ 
+-#ifdef BSD4_4
+-#define HAVE_SHADOW 0
+-#else
+ #define HAVE_SHADOW 1
+-#endif
+ 
+ #include <pwd.h>
+ #if HAVE_SHADOW

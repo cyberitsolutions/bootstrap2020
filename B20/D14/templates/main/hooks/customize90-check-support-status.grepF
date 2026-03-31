@@ -1,0 +1,161 @@
+# This introductory text was seen before January 2025.
+Limited security support for one or more packages
+
+Unfortunately, it has been necessary to limit security support for some
+packages.
+
+# This introductory text was seen after January 2025.
+Ended security support for one or more packages
+
+Unfortunately, it has been necessary to end security support for some
+packages before the end of the regular security maintenance life cycle.
+
+The following packages found on this system are affected by this:
+
+# Ignorelist binutils because
+#   1. it's very hard to stop people calling "strings" (e.g. needrestart did it until I got upstream to fix it),
+#         https://bugs.debian.org/986507
+#         https://bugs.debian.org/1038621
+#   2. it's not vulnerable unless you pass a -be-shit option, and
+#   3. the completely-non-vulnerable version (llvm-strings) adds about 80MB of unwanted compiler shit.
+# Also, --template=zfs needs binutils because gcc-10 depends on it.
+# To avoid that, we'd have to move zfs-dkms (and probably linux itself) from gcc to clang/llvm.
+# That would be extremely not fun.
+
+* Source:binutils
+  Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
+  Affected binary packages:
+  - binutils (installed version: 2.40-2)
+  - binutils-common:amd64 (installed version: 2.40-2)
+  - binutils-x86-64-linux-gnu (installed version: 2.40-2)
+  - libbinutils:amd64 (installed version: 2.40-2)
+  - libctf-nobfd0:amd64 (installed version: 2.40-2)
+  - libctf0:amd64 (installed version: 2.40-2)
+  - libgprofng0:amd64 (installed version: 2.40-2)
+
+
+# Ignorelist rust-rav1e because
+#
+#   1. it's a hard dependency of ffmpeg (used by e.g. tvserver).
+#      I cannot be arsed recompiling ffmpeg from source to remove it.
+#
+#   2. it's only the encoder, so
+#      PROBABLY that code won't run unless/until something explicitly tries to encode as AV1.
+#      i.e. PROBABLY you can't just trigger an RCE by giving the tvserver a specially crafted attack.av1.mkv.
+
+* Source:rust-rav1e
+  Details: See https://www.debian.org/releases/bookworm/amd64/release-notes/ch-information.en.html#golang-static-linking
+  Affected binary package:
+  - librav1e0:amd64 (installed version: 0.5.1-6)
+
+
+# Ignorelist rust-zram-generator (systemd-zram-generator), because
+#  * we could probably implement it ourselves, but ICBF right now
+#  * the detainee doesn't interact with it directly
+# This is not ideal but I think it's relatively OK as rust goes???
+* Source:rust-zram-generator
+  - systemd-zram-generator (installed version: 1.1.2-2+b2)
+
+
+# This is an A/V library to use hardware acceleration in Intel GPUs.
+# It first entered Debian in 2019 and was EOL'd upstream before 2025.
+# So I think it is probably used for hardware AMC actually have.
+# (Rather than super-duper old hardware.)
+#
+# It is a compile-time dependency of libav (ffmpeg).
+# This means it is required by AT LEAST vlc, mpv, and gstreamer1.0-plugins-bad.
+# i.e. we can't avoid this issue by switching from vlc to mpv.
+#
+# If you remove the library from a built system with
+#   rm -fv /usr/lib/x86_64-linux-gnu/libmfx-tracer.so.1.35 \
+#          /usr/lib/x86_64-linux-gnu/libmfx.so.1.35 \
+#          /usr/lib/x86_64-linux-gnu/libmfxhw64.so.1.35 \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_h264la_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevc_fei_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevcd_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevce_hw64.so \
+#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_vp8d_hw64.so
+# ...then "vlc --help" still works, but trying to play a normal H.264 video fails.
+# Specifically, the audio still plays, but the video does not render, and
+# an error popup says «VLC could not decode the format "h264"», which
+# I think means dlopen of libav failed, and
+# (by design) no other alternative library is installed.
+#
+# I think this is because vlc is dynamically linking libav, but
+# libav is statically linking libmfx1.
+#
+# So we definitely cannot just drop libmfx1 into prisonpc-ersatz or purge-bad-packages.
+# We would have to start building ffmpeg inhouse, like we do for already vlc.
+# That is possible, but a lot of work now and
+# ongoing work every time Debian security team bumps ffmpeg, which is often:
+# https://tracker.debian.org/pkg/ffmpeg/news/
+#
+# I don't have a good feel for how much risk there is of attackers hitting libmfx1.
+# I think it would be "victim loads attackre-crafted video file" that then leads to ACE/RCE.
+# Detainees have limited access to video that isn't DVDs or FTA DVB-T TV.
+# Staff can browse youtube &c but PrisonPC is more awkward than their Windows desktops, so
+# I don't think they actually *do* that much...
+#
+# Overall I lean towards "accept (i.e. ignore) this security risk".
+# Mike agreed here: /var/log/cyber-irc-bot/ChannelLogger/#cyber/#cyber.2025-01-02.log#line=45
+# --twb, January 2025
+
+* Source:intel-mediasdk, ended on 2024-11-21 at version 22.5.4-1
+  Details: abandoned upstream, upstream does not publish enough information to fix issues.
+  - libmfx1:amd64 (installed version: 22.5.4-1)
+
+
+# FIXME: I have not yet confirmed this is safe!! --twb, January 2026
+#
+# Recently (January 2026) the Debian Security Team started warning about libsoup.
+# https://salsa.debian.org/debian/debian-security-support/-/commit/8ed15071d7716260b1c0666c59bab1dd8166c3c6
+# https://bugs.debian.org/1109118
+# https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
+#
+# I confirm that libsoup is already in desktop-inmate-amc-latest at AMC.
+# i.e. this is not a newly-INTRODUCED risk, this is a newly-DISCLAIMED risk.
+#
+#     root@amc:~# grep -l ^Package:.libsoup  /srv/netboot/images/*latest/dpkg.status
+#     /srv/netboot/images/desktop-inmate-amc-latest/dpkg.status
+#     /srv/netboot/images/desktop-inmate-amc-library-latest/dpkg.status
+#     /srv/netboot/images/desktop-staff-amc-latest/dpkg.status
+#
+# What we SHOULD do is:
+# * look at what packages we use pull in libsoup
+# * replace them if reasonable to do so
+# * then denylist libsoup in prisonpc-ersatz (and build a new version of that)
+# * OTHERWISE, accept the risk in grepF because what else can we do?
+#
+# In --template=desktop,
+#
+#     xfce4-screenshooter : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#
+# In --template=desktop-staff,
+#
+#     gvfs-backends : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#     xfce4-screenshooter : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#
+# In --template=desktop-inmate there is no problem.
+#
+#     2. gnucash:amd64=1:5.6-1~bpo12+1 Depends libwebkit2gtk-4.1-0 (>= 2.34.6~)
+#     libwebkit2gtk-4.1-0 : Depends: libsoup-3.0-0 (>= 3.0.3) but it is not going to be installed
+#
+# Replacing the screenshot app seemed easy.
+# Rebuilding the gvfs backends for staff so it includes only the SFTP driver (and not e.g. the GDrive driver) at COMPILE TIME is a bit harder.
+# We can tell AMC 'sorry gnucash is not in the app list anymore due to minor security risks'.
+#
+# AFAICT AMC have never actually run gnucash at all, so they should not miss it.
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/doc/popcon/popcon_2025-01-01_to_2025-06-30.csv
+# [and other 6monthly reports]
+#
+# The *actual* risk here is if you use libsoup as a server, and
+# PROBABLY none of the packages we currently/will use,
+# will use libsoup as a SERVER.
+# But we cannot tell at package build time whether a package is using the server parts of libsoup!
+* Source:libsoup3
+  Details: Only supported as a client, not as a server: see https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
+  - libsoup-3.0-0:amd64 (installed version: 3.2.3-0+deb12u2)
+  - libsoup-3.0-common (installed version: 3.2.3-0+deb12u2)
+* Source:libsoup2.4
+  - libsoup2.4-1:amd64 (installed version: 2.74.3-1+deb12u1)
+  - libsoup2.4-common (installed version: 2.74.3-1+deb12u1)

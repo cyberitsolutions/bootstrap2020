@@ -1,0 +1,12 @@
+# Everything EXCEPT /usr/share/games/.
+usr/games/
+usr/share/applications/
+usr/share/icons/
+usr/share/man/
+usr/share/metainfo/
+
+# FIXME: This is dumb but ICBF fixing it...
+# dh_missing: warning: usr/share/doc/endless-sky/changelog exists in debian/tmp but is not installed to anywhere
+# dh_missing: warning: usr/share/doc/endless-sky/copyright exists in debian/tmp but is not installed to anywhere
+# dh_missing: warning: usr/share/doc/endless-sky/license.txt exists in debian/tmp but is not installed to anywhere
+usr/share/doc/endless-sky/

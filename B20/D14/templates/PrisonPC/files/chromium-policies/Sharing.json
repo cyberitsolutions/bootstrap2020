@@ -1,0 +1,5 @@
+{
+    // Tab group sharing feature allows user to share and collaborate in tab groups.
+    // Do not want. --twb, February 2026
+    "TabGroupSharingSettings": 1
+}

@@ -1,0 +1,4 @@
+Script started on 2024-07-23 05:43:30+10:00 [COMMAND="python3 build-inmate-kernel-detect-obsolete.py" TERM="screen-256color" TTY="/dev/pts/14" COLUMNS="213" LINES="53"]
+WARNING:root:NO MATCHES for MUST SECURITY_PERF_EVENTS_RESTRICT
+
+Script done on 2024-07-23 05:48:43+10:00 [COMMAND_EXIT_CODE="0"]

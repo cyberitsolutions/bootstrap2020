@@ -1,0 +1,26 @@
+# In theory we could just use DNS name resolution inside the firewall.
+# After all, we are netbooting -- the network is up!
+# In practice, nftables.service Before=network-pre.target means that
+# systemd-resolved is not accepting DNS queries, and
+# we can't simply add {After,Wants}=network-online.target to work around it.
+#
+# Since firewall-needs-DNS is a bit shit anyway,
+# bake the addresses in, here.
+#
+# We use a separate file so that staff and boot-test can patch this with a dropin.
+
+# This is a separate file so that the staff image can replace it with different addresses.
+define PrisonPC_inmate = 10.128.0.1;
+define PrisonPC_staff = 10.0.0.1;
+define PrisonPC_staff_network = $PrisonPC_staff / 16;
+define PrisonPC_inmate_network = $PrisonPC_inmate / 16;
+
+
+# This is "the nearest interface of the PrisonPC master server".
+# The staff template will redefine this to $PrisonPC_staff.
+#
+# UPDATE: nft does not allow "define A = 1; define A = 2;".
+#         So we need ANOTHER separate file for this one definition,
+#         in between these $defines (above), and
+#         the main ruleset (below).
+#define PrisonPC = $PrisonPC_inmate;

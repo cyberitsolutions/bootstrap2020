@@ -1,0 +1,109 @@
+# NOTE: this is actually just adding "systemd-analyze security" hardening.
+# The main part of the unit is created in xdm-pre-prompt.py, so
+# it can inherit xdm's environment (yuk!)
+
+# Needs read access to /sbin/acceptable-use-policy (root-only)
+# Needs read access to
+#   https://ppc-services/motd
+# Needs read access to
+#   /var/lib/xdm/authdir/authfiles/A:⋯  ($XAUTHORITY)
+# Needs write access to (I think)
+#   /tmp/.X11-unix/X0  ($DISPLAY)
+# WANTS write access to this?
+#   ~/.cache/mesa_shader_cache
+
+# FIXME: acceptable-use-[620]: could not allocate closure
+# https://sources.debian.org/src/gobject-introspection/1.72.0-1/girepository/girffi.c/?hl=386#L386
+
+
+[Service]
+# This program needs to talk to https://prisonpc/.
+PrivateNetwork=no
+# Needs read access to root-only /var/lib/xdm/authdir/authfiles
+# User=
+# DynamicUser=yes
+CapabilityBoundingSet=
+# Needs AF_INET to talk to https://prisonpc/
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+DevicePolicy=closed
+# This program needs to talk to https://prisonpc/.
+# IPAddressDeny=any
+# IPAddressAllow=10.0.0.1/32 10.128.0.1/32
+KeyringMode=private
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateMounts=yes
+# Needs write access to /tmp/.X11-unix/?
+# Oddly it seems to work even with this...
+PrivateTmp=yes
+PrivateUsers=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+# Avoid logspam about access to /root/.cache/mesa_shader_cache.
+ProtectHome=tmpfs
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+AmbientCapabilities=
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged
+# FIXME: why does it fail when I block @resources?
+# SystemCallFilter=~@resources
+RestrictRealtime=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+UMask=0077
+ProtectHostname=yes
+ProcSubset=pid
+#FIXME: ReadWritePaths=/var/log
+TasksMax=16
+MemoryHigh=128M
+
+
+# UPDATE: we must allow access to /dev/dri/card0 otherwise we get this
+# (harmless but annoying) noise in syslog.
+# Note that this DOES NOT happen in test VMs, because
+# by default --boot-test (qemu) doesn't expose GL to the guest OS.
+#
+#     acceptable-use-policy[776]: libGL error: MESA-LOADER: failed to retrieve device information
+#     acceptable-use-policy[776]: libGL error: Version 4 or later of flush extension not found
+#     acceptable-use-policy[776]: libGL error: failed to load driver: i915
+#     acceptable-use-policy[776]: libGL error: failed to open /dev/dri/card0: No such file or directory
+#     acceptable-use-policy[776]: libGL error: failed to load driver: i965
+#
+# The way we know what to DeviceAllow= is like this:
+#
+#     $ ls -l /dev/dri/
+#     total 0
+#     drwxr-xr-x  2 root root         80 2022-11-29 16:02 by-path
+#     crw-rw----+ 1 root video  226,   0 2022-11-29 16:02 card0
+#     crw-rw----+ 1 root render 226, 128 2022-11-18 10:51 renderD128
+#
+#     $ grep -Fw -e devices -e 226 /proc/devices
+#     Character devices:
+#     226 drm
+#     Block devices:
+#
+# Holy fuck it took me a long time to finally work this out!
+[Service]
+PrivateDevices=no
+DeviceAllow=char-drm
+
+
+# UPDATE: GTK also needs von Neumann memory architecture.
+# If you try to enforce Harvard memory architecture,
+# you get this warning:
+#
+#     systemd[1]: Started /sbin/acceptable-use-policy.
+#     acceptable-use-[810]: could not allocate closure
+#
+# Which comes from here:
+#
+#     https://sources.debian.org/src/gobject-introspection/1.74.0-2/girepository/girffi.c/?hl=386#L386
+[Service]
+MemoryDenyWriteExecute=no

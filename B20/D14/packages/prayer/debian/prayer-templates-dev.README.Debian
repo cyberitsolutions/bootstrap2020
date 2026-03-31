@@ -1,0 +1,73 @@
+How to build new template packages for Prayer Webmail
+=================================================
+
+Prayer uses its own macro expansion language, which is documented in
+TEMPLATES. The templates (filename extension .t) are first translated
+into C code (actually no executable code, merely data structures),
+which is then compiled to object form. Originally, the object files
+had to be linked with the prayer executables, but as a Debian
+extension they can be assembled in shared libraries and loaded
+dynamically.
+
+This package contains the programs and scripts needed to build
+template libraries, as well as a makefile to facilitate the process.
+
+
+template-set.make
+-----------------
+
+/usr/share/prayer/template-set.make can be used directly (via make -f)
+or included from an ordinary Makefile.
+
+The variable NAME defines the name of the template set. By default
+it's set to the name of the current directory. NAME must be set on the
+command line or *before* including template-set.make. An alternative
+is to follow chapter 3.8 in the GNU Make documentation and _delegate_
+certain or all targets to template-set.make:
+
+  %: force
+   	@$(MAKE) -f /usr/share/prayer/template-set.make NAME=foobar
+  force: ;
+
+The variables TEMPLATES and TEMPLATES_FRONTEND list the top-level
+templates that Prayer is known to use, and which should be defined
+lest the user be met with a page saying nothing but "Template not
+found". Unless all those templates are defined, or you redefine the
+variables, the build will fail, but you can set VPATH to a directory
+containing an existing template set to take the missing templates from
+there. Just be sure that there are no intermediate files lying around!
+
+Templates can call other templates by means of the CALL macro. They
+are scanned recursively to make sure that all referenced templates are
+included in the respective library.
+
+A complete template package should consist of two libraries: one for
+the session daemon and one for the front-end. The latter contains the
+templates for the login screen and certain messages when no session
+exists or none can be found, and since the users can't choose the
+front-end template set it can be considered pretty much optional. To
+skip building the front-end library, set TEMPLATE_LIBS = $(SESSION_LIB)
+(also on the command line or before including template-set.make).
+
+
+Installing
+----------
+
+To help build separate architecture-independent and architecture-
+specific packages (as well as to avoid conflicts with the "install"
+target you may want to use yourself), template-set.make provides two
+install targets, "install-sources" and "install-libs", which do the
+right thing. The standard DESTDIR variable is supported (instead of
+BROOT, which is used in Prayer's own makefiles).
+
+
+Images and CSS files
+--------------------
+
+This package contains no tools to organise static files. Those should
+simply be installed in /usr/share/prayer/icons and
+/usr/share/prayer/static. Note that Prayer doesn't support sub-
+directories, so files should be named in a way that avoids conflicts.
+
+
+ -- Magnus Holmgren <holmgren@debian.org>, Sun, 25 Oct 2009 18:36:44 +0100

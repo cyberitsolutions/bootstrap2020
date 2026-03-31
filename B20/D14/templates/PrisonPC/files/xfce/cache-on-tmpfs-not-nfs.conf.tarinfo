@@ -1,0 +1,2 @@
+name = "etc/environment.d/50cache-on-tmpfs-not-nfs.conf"
+mode = 292

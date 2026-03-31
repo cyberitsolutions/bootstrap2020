@@ -1,0 +1,2 @@
+debian/wesnoth-addon-fix          usr/share/games/wesnoth/
+debian/wesnoth-addon-fix.desktop  etc/xdg/autostart/

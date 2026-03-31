@@ -1,0 +1,50 @@
+include = [
+    # For doing an initial install of Debian 12 onto ZFS (not actually understudy).
+    'mmdebstrap', 'auto-apt-proxy', "gnupg",
+
+    # EXT4 -> EXT4
+    # -----------
+    # FIXME: remove this block once all understudies are ZFS-based.
+    'mdadm', 'lvm2', 'rsync',
+    'e2fsprogs',        # no slow fsck on failover (e2scrub_all.timer)
+    'quota',            # no slow quotacheck on failover
+
+    # EXT4 -> ZFS
+    # -----------
+    # While the PrisonPC main server is ext4 and the understudy is ZFS,
+    # we need cyber-zfs-backup on the UNDERSTUDY, so
+    # that the main server can do "rsync to understudy, then on understudy make understudy-local ZFS snapshots".
+    #
+    # FIXME: Once the PrisonPC main server is also ZFS, remove cyber-zfs-backup from understudy.
+    # In that case the main server just does "cyber-zfs-backup" which is main-server-local ZFS snapshots and a replication send-receive.
+    'cyber-zfs-backup',
+
+    # ZFS -> ZFS
+    # ----------
+    # NOTE: zfs-dkms will build zfs.ko for each installed linux-headers-X.
+    #       If none are installed, zfs-dkms will no-op *WITHOUT ERROR*.
+    #       Correct kernel header is in the B20/D12/__main__.py script.
+    'zfs-dkms',
+    'zfs-zed',
+    'zfsutils-linux',
+
+    # Unattended upgrades
+    # -------------------
+    "unattended-upgrades",
+    "needrestart",
+    # needrestart dependencies.
+    "python3-gi",
+    "powermgmt-base",
+    # Because we pass --aptopt=Acquire::http::Proxy to mmdebstrap,
+    # apt will expect the BUILD TIME proxy at BOOT TIME!
+    # As a quick and "mostly good enough" workaround,
+    # auto-detect proxy at boot time (install auto-apt-proxy).
+    #
+    # FIXME: If no proxy is detected at boot time,
+    #        it'll probably fall back to the build time proxy,
+    #        when it SHOULD fall back on no proxy at all...
+    #
+    #        Delete /etc/apt/conf.d/99mmdebstrap, so that
+    #        there is no apt proxy by default?
+    "auto-apt-proxy",
+]

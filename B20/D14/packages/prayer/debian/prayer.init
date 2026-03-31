@@ -1,0 +1,91 @@
+#!/bin/sh
+#
+### BEGIN INIT INFO
+# Provides:          prayer
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Should-Start:      
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Prayer init script
+# Description:       Init script for prayer services
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+FRONTEND_DAEMON=/usr/sbin/prayer
+SESSION_DAEMON=/usr/sbin/prayer-session
+VAR_PREFIX=/run/prayer
+PRAYER_USER=prayer
+DESC="webmail server"
+
+test -x $FRONTEND_DAEMON -a -x $SESSION_DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+# Include prayer defaults if available
+if [ -f /etc/default/prayer ] ; then
+	. /etc/default/prayer
+fi
+
+FRONTEND_PIDFILE="$VAR_PREFIX/prayer.pid"
+SESSION_PIDFILE="$VAR_PREFIX/prayer-session.pid"
+
+set +e
+
+start() {
+    log_daemon_msg "Starting $DESC" "prayer"
+    start-stop-daemon --start --pidfile "$FRONTEND_PIDFILE" \
+                      --exec "$FRONTEND_DAEMON" \
+                      -- $DAEMON_OPTS --config-option "prayer_user=$PRAYER_USER" \
+                                      --config-option "var_prefix=$VAR_PREFIX" \
+                                      --config-option "pid_dir=$VAR_PREFIX"
+    log_end_msg $?
+}
+
+stop() {
+    log_daemon_msg "Stopping $DESC" 
+    if [ -f "$SESSION_PIDFILE" ]; then
+	start-stop-daemon --stop --quiet --oknodo --pidfile "$SESSION_PIDFILE"
+	log_progress_msg "prayer-session"
+    fi
+    if [ -f "$FRONTEND_PIDFILE" ]; then
+	start-stop-daemon --stop --quiet --oknodo --pidfile "$FRONTEND_PIDFILE"
+	start-stop-daemon --stop --quiet --oknodo --exec "$FRONTEND_DAEMON"
+	log_progress_msg "prayer"
+    fi
+    rm -f "$FRONTEND_PIDFILE" "$SESSION_PIDFILE"
+    log_end_msg 0
+}
+
+case "$1" in
+  start)
+	# Create /var/run/prayer with prayer as owner in case /var/run is a tmpfs.
+	# If local admin 
+	install -d -m 2750 -o "$PRAYER_USER" "$VAR_PREFIX"
+	start
+	;;
+
+  stop)
+	stop
+	;;
+
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	stop
+	sleep 1
+	start
+	;;
+  *)
+	N=/etc/init.d/prayer
+	# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+	log_failure_msg "Usage: $N {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

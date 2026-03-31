@@ -1,0 +1,148 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ prayer (1.3.5-dfsg1-8) unstable; urgency=low
+ .
+   * Breaking Build-Depends into Build-Depends and Build-Depends-Arch is
+     not something that works when the Makefile isn't designed to build
+     arch-independent parts separately.
+Author: Magnus Holmgren <holmgren@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout https://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: (upstream|backport|vendor|other), (<patch-url>|commit:<commit-id>)
+Bug: <upstream-bugtracker-url>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: (no|not-needed|<patch-forwarded-url>)
+Applied-Upstream: <version>, (<commit-url>|commit:<commid-id>)
+Reviewed-By: <name and email of someone who approved/reviewed the patch>
+Last-Update: 2024-10-03
+
+--- prayer-1.3.5-dfsg1.orig/cmd/cmd_list.c
++++ prayer-1.3.5-dfsg1/cmd/cmd_list.c
+@@ -189,10 +189,7 @@ cmd_list_msg(struct session *session,
+ 
+     /* Message Date */
+     if (env->date) {
+-        MESSAGECACHE tmp;
+-        mail_parse_date(&tmp, env->date);
+-
+-        string = mc_date_to_string_full(&tmp);
++        string = mc_date_to_string_full_PrisonPC(env->date);
+     } else
+         string = "(No date)";
+ 
+--- prayer-1.3.5-dfsg1.orig/session/display.c
++++ prayer-1.3.5-dfsg1/session/display.c
+@@ -112,7 +112,7 @@ display_addhdrs(struct session *session,
+         display_addr(tvals, "@cc", env->cc, abook);
+ 
+     if (env->date)
+-        template_vals_string(tvals, "$date", (char *)env->date);
++        template_vals_string(tvals, "$date", (char *)mc_date_to_string_full_PrisonPC(env->date));
+     else
+         template_vals_string(tvals, "$date", "(Unknown date)");
+ 
+--- prayer-1.3.5-dfsg1.orig/session/mc.c
++++ prayer-1.3.5-dfsg1/session/mc.c
+@@ -1,3 +1,7 @@
++#define _XOPEN_SOURCE
++#define _GNU_SOURCE
++#include <time.h>
++
+ /* $Cambridge: hermes/src/prayer/session/mc.c,v 1.2 2008/09/16 09:59:58 dpc22 Exp $ */
+ 
+ #include "prayer_session.h"
+@@ -58,3 +62,77 @@ char *mc_date_to_string_full(MESSAGECACH
+ 
+     return (result);
+ }
++
++/* GOAL: do this kind of timezone conversion, but in C:
++
++   input=$(TZ=Europe/Berlin date -R)
++   output=$(TZ=America/New_York date -Rd"$input")
++   echo "$input"
++   echo "$output"
++
++   Thu, 03 Oct 2024 07:42:11 +0200  <-- arbitrary input UTC offset
++   Thu, 03 Oct 2024 01:42:11 -0400  <-- ALWAYS my local timezone
++
++   The basic process is:
++
++   1. strptime to get a timestamp object in the sender's timezone.
++   2. convert that to seconds since the epoch in the sender's timezone.
++   3. convert that to seconds since the epoch in UTC, by subtracting the sender's UTC offset.
++   4. convert that to a timestamp object in the reader's timezone.
++   5. strftime that into the final string.
++
++   UPDATE:
++   17:14 <twb> So guess what
++   17:15 <twb> Google emails do not use the RFC date format
++   17:15 <twb> So as soon as I added error checking, it broke for google emails
++   17:17 <twb> Date: Wed, 02 Oct 2024 01:02:48 GMT          From: Google <no-reply@accounts.google.com>
++   17:17 <twb> Date: Thu, 15 Aug 2024 23:37:04 -0700        From: REDACTED <notifications@github.com>
++   17:17 <twb> Date: Thu,  3 Oct 2024 05:03:55 +1000 (AEST) From: "REDACTED" <REDACTED@cyber.com.au>
++   17:17 <twb> Date: Thu, 03 Oct 2024 10:26:41 +1000        From: REDACTED via allocPSA <alloc@cyber.com.au>
++   17:17 <twb> Date: Thu, 03 Oct 2024 16:43:01 +1000        From: REDACTED@cyber.com.au
++   17:17 <twb> Date: Wed, 2 Oct 2024 01:13:07 +0000         From: "REDACTED" <REDACTED@act.gov.au>
++   17:18 <twb> Actually you know what I should do
++   17:18 <twb> If I can't parse it, just return the original string as-is
++   17:18 <mike> Browser's Javascript handles it ok though: "new Date("Wed, 02 Oct 2024 01:02:48 GMT")" -> "Wed Oct 02 2024 11:02:48 GMT+1000 (Australian Eastern Standard Time)"
++   17:19 <twb> "GMT+1000" looks wrong
++
++
++
++ */
++char *mc_date_to_string_full_PrisonPC(char *input)
++{
++  /* FIXME: static output is weird; probably fix that when you switch to localtime_r.
++     But if you fix that, then the receiving function has to deal with free().
++     So that's all kinda a huge fucking hassle. */
++    static char output[64];
++    static char const rfc_email_format[] = "%a, %d %b %Y %H:%M:%S %z";
++    struct tm tm = {0};
++    time_t timep;
++    time_t gmtoff;
++    size_t bytes_written;
++    char *bytes_read_ptr;
++    bytes_read_ptr = strptime(input, rfc_email_format, &tm);
++    if (bytes_read_ptr == NULL) {
++      return (input);
++    }
++    /* At this point, tm is in an arbitrary UTC offset. */
++    /* Get seconds since epoch, falsely claiming tm is always UTC.
++       Then manually apply the UTC offset to make it *actually* UTC.
++       AFAICT there is no function for "seconds since epoch in UTC, but actually fucking look at the tm_gmtoff"?
++       It looks like in musl, mktime() *is* handling the offset, but testing with glibc certainly doesn't support that guess.
++    */
++    /* NOTE: we MUST read tm_gmtoff BEFORE running timegm() sets it to zero. */
++    gmtoff = tm.tm_gmtoff;
++    timep = timegm(&tm);
++    if (timep == (time_t) -1) {
++      return (input);
++    }
++    timep -= gmtoff;
++    /* Convert from seconds since epoch (in actual UTC) to local time (as a pointer to a tm struct). */
++    /* FIXME: use localtime_r (thread-safe) version. */
++    bytes_written = strftime(output, 64, rfc_email_format, localtime(&timep));
++    if (bytes_written == 0) {
++      return (input);
++    }
++    return (output);
++}
+--- prayer-1.3.5-dfsg1.orig/session/mc.h
++++ prayer-1.3.5-dfsg1/session/mc.h
+@@ -2,3 +2,4 @@
+ 
+ char *mc_date_to_string(MESSAGECACHE *mc);
+ char *mc_date_to_string_full(MESSAGECACHE *mc);
++char *mc_date_to_string_full_PrisonPC(char *input);
