@@ -27,10 +27,10 @@ with tempfile.TemporaryDirectory() as td:
          *(f'--customize-hook=chroot $1 /usr/games/game-data-packager --destination=/X {package}'
            for package in packages),
          f'--customize-hook=sync-out /X {td}',
-         'bookworm',
+         'forky',
          '/dev/null'])
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/game-data/'])
+        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/forky/desktop/game-data/'])
