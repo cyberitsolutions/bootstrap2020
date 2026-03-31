@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import platform
 import subprocess
 import tempfile
 
@@ -29,8 +30,9 @@ with tempfile.TemporaryDirectory() as td:
          f'--customize-hook=sync-out /X {td}',
          'forky',
          '/dev/null'])
+    maybe_host = '' if platform.node() == 'heavy' else 'apt.cyber.com.au:'
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/forky/desktop/game-data/'])
+        f'{maybe_host}/srv/apt/PrisonPC/pool/forky/desktop/game-data/'])
