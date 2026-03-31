@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import pathlib
+import platform
 import subprocess
 import tempfile
 
@@ -29,11 +30,12 @@ with tempfile.TemporaryDirectory() as td_str:
          '--include=build-essential,python3,devscripts',
          '--customize-hook=chroot $1 python3 - < build-marble-inner.py',
          f'--customize-hook=sync-out /X {td}',
-         'bookworm',
+         'forky',
          '/dev/null',
          apt_sources_including_sources])
+    maybe_host = '' if platform.node() == 'heavy' else 'apt.cyber.com.au:'
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/'])
+        f'{maybe_host}/srv/apt/PrisonPC/pool/forky/desktop/'])

@@ -21,9 +21,9 @@ source_dir, = {
 # sed -rsi "s/amd64 arm64 armhf i386 mips64el/armhf i386/g" debian/control debian/libmarblewidget-qt5-28.symbols
 for path in {
         source_dir / 'debian/control',
-        source_dir / 'debian/libmarblewidget-qt5-28.symbols'}:
+        source_dir / 'debian/libmarblewidget-qt6-28.symbols'}:
     path.write_text(path.read_text().replace(
-        'amd64 arm64 armhf i386 mips64el',
+        'amd64 arm64 armhf i386',
         'armhf i386'))
 
 # Bump the debian version.
@@ -32,17 +32,15 @@ os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
 subprocess.check_call(
     ['debchange',
      '--local=PrisonPC',
-     '--distribution=bookworm',
+     '--distribution=forky',
      'Disable webengine as it is not supported by Debian Security Team.'
-     ' https://salsa.debian.org/debian/debian-security-support/-/blob/7d5ca736/security-support-limited#L25-27'
-     ' https://salsa.debian.org/debian/debian-security-support/-/blob/7d5ca736/security-support-ended.deb12#L13'],
+     ' https://salsa.debian.org/debian/debian-security-support/-/blob/4fb5b9878cd8627a7e6d3bb68219aa2cbefe0c2d/security-support.deb14#L36'],
     cwd=source_dir)
 
 # Build the patched source package.
-processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
-os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck noddebs'
+os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck noddebs parallel=auto'
 subprocess.check_call(['apt', 'build-dep', '--assume-yes', '--quiet=2', './'], cwd=source_dir)
-subprocess.check_call(['debuild', '-uc', '-us', '-tc', f'-j{processors_online}'], cwd=source_dir)
+subprocess.check_call(['debuild', '-uc', '-us', '-tc'], cwd=source_dir)
 
 # Put the built package under /X, where the outer script will look.
 destdir = pathlib.Path(f'/X/{source_dir.name}')
