@@ -10,9 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--menuconfig', action='store_true')
 args = parser.parse_args()
 
-processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
-os.environ['MAKEFLAGS'] = f'j{processors_online}'
-os.environ['DEB_BUILD_OPTIONS'] = f'terse nodoc noautodbgsym parallel=j{processors_online}'
+os.environ['DEB_BUILD_OPTIONS'] = 'terse nodoc noautodbgsym parallel=auto'
 
 
 config_parser = configparser.ConfigParser()
