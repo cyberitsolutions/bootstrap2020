@@ -830,10 +830,11 @@ for template in args.templates:
                       'linux-image-cloud-amd64' if args.virtual_only else
                       'linux-image-amd64' if not (template.startswith('desktop-inmate') and args.physical_only) else
                       'linux-image-inmate'),
-                     (not template.startswith('desktop-'), 'login'),  # https://bugs.debian.org/960638
                      # For zfs-dkms (understudy)
                      (template == 'understudy',
                       'linux-headers-cloud-amd64' if args.virtual_only else 'linux-headers-amd64'),
+                     # Base images (but not GUIs!)
+                     (not template.startswith('desktop-'), 'login'),  # https://bugs.debian.org/960638
                      # Staff and non-PrisonPC desktops (but not inmates!)
                      (template.startswith('desktop') and not template.startswith('desktop-inmate'),
                       'xfce4-terminal mousepad xfce4-screenshooter'),
