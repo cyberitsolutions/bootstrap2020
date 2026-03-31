@@ -3,7 +3,6 @@ import os
 import pathlib
 import subprocess
 import tempfile
-import itertools
 
 __doc__ = """ look for unexpected new .ko files between builds
 
@@ -27,11 +26,8 @@ deb_paths = [
                                stdout=subprocess.PIPE,
                                input='\n'.join(map(
                                    str,
-                                   itertools.chain(
-                                       pathlib.Path('/srv/apt/PrisonPC/pool/bullseye/desktop'
-                                                    ).glob('*/linux-image-*inmate*_amd64.deb'),
-                                       pathlib.Path('/srv/apt/PrisonPC/pool/bookworm/desktop'
-                                                    ).glob('*/linux-image-*inmate*_amd64.deb'))))
+                                   pathlib.Path('/srv/apt/PrisonPC/pool/')
+                                   .glob('*/desktop/*/linux-image-*inmate*_amd64.deb')))
                                ).stdout.splitlines()]
 
 with tempfile.TemporaryDirectory() as td_str:

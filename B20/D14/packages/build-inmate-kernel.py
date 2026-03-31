@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import pathlib
+import platform
 import subprocess
 import tempfile
 
@@ -127,28 +128,30 @@ with tempfile.TemporaryDirectory() as td_str:
 
          '--include=devscripts',        # for "dcmd cp" in inner.py
          '--include=libdistro-info-perl',  # for "dch --create" in inner.py
-         '--include=gcc-12-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
+         '--include=gcc-15-plugin-dev',  # for CONFIG_GCC_PLUGIN_* (FIXME: confused about which one we need)
+         '--include=gcc-16-plugin-dev',  # for CONFIG_GCC_PLUGIN_*
          '--include=zstd',               # for CONFIG_KERNEL_XZ
+         # https://github.com/torvalds/linux/blob/v6.19/scripts/package/mkdebian#L178-L188
+         '--include=lsb-release',
 
          # We call "apt build-dep", so this line is not strictly needed.
          # I put it here only because mmdebstrap installs much more quietly than apt --quiet.
          # The only downside is if upstream's build-deps change, then
          # we'll waste a little time and space.
-         # https://sources.debian.org/src/linux/5.14.9-2%7Ebpo11+1/debian/control/#L7-L9
-         # https://sources.debian.org/src/linux/6.1.38-1/debian/control/#L7-L9
-         '--include', ' '.join([
+         # https://sources.debian.org/src/linux/6.19.10-1/debian/control#L7-L9
+         '--include', ','.join([
              'asciidoctor',
              'autoconf',
              'automake',
              'bc',
+             'bindgen:native',
              'bison',
              'cpio',
              'debhelper',
-             'dh-exec',
              'dh-python',
              'dvipng',
              'flex',
-             'gcc-12',
+             'gcc-15-for-host',
              'gcc-multilib',
              'graphviz',
              'kernel-wedge',
@@ -156,17 +159,23 @@ with tempfile.TemporaryDirectory() as td_str:
              'libaudit-dev',
              'libbabeltrace-dev',
              'libcap-dev',
+             'libconfig-dev',
+             'libdebuginfod-dev',
              'libdw-dev',
              'libelf-dev',
+             'libelf-dev:native',
              'libglib2.0-dev',
-             'libiberty-dev',
+             'libncurses-dev',
              'libnewt-dev',
+             'libnl-3-dev',
+             'libnl-genl-3-dev',
              'libnuma-dev',
              'libopencsd-dev',
              'libpci-dev',
              'libperl-dev',
              'libpython3-dev',
              'libssl-dev',
+             'libssl-dev:native',
              'libtool',
              'libtraceevent-dev',
              'libtracefs-dev',
@@ -178,19 +187,25 @@ with tempfile.TemporaryDirectory() as td_str:
              'openssl',
              'pahole',
              'patchutils',
-             'python3',
-             'python3-dev',
+             'python3-dacite:native',
+             'python3-dev:any',
              'python3-docutils',
-             'python3-jinja2',
+             'python3-jinja2:native',
              'python3-setuptools',
              'python3-sphinx',
              'python3-sphinx-rtd-theme',
+             'python3-yaml',
+             'python3:native',
              'quilt',
              'rsync',
+             'rust-src',
+             'rustc:native',
+             'sphinx-common',
              'texlive-latex-base',
              'texlive-latex-extra',
              'xz-utils',
              'zlib1g-dev',
+             'zstd',
          ]),
          # Get the /boot/config-* to be copied out as "config-current".
          *(['--include=curl ca-certificates tiny-initramfs',
@@ -226,7 +241,7 @@ with tempfile.TemporaryDirectory() as td_str:
          # Copy the built kernel back out.
          f'--customize-hook=sync-out /X {td}',
 
-         'bookworm',
+         'forky',
          '/dev/null',
          '../templates/main/apt.sources',
          ])
@@ -235,8 +250,9 @@ with tempfile.TemporaryDirectory() as td_str:
         package_version, = [
             path.name.split('_')[1]
             for path in td.glob('linux-upstream*.changes')]
+        maybe_host = '' if platform.node() == 'heavy' else 'apt.cyber.com.au:'
         subprocess.check_call([
             'rsync', '-ai', '--info=progress2', '--protect-args',
             '--no-group',       # allow remote sgid dirs to do their thing
             f'{td}/',     # trailing suffix forces correct rsync semantics
-            f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/linux-{package_version}/'])
+            f'{maybe_host}/srv/apt/PrisonPC/pool/forky/desktop/linux-{package_version}/'])

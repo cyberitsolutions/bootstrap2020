@@ -112,7 +112,8 @@ subprocess.check_call([
     '--set-str', 'build_salt', '',  # SHUT THE FUCK UP ABOUT THIS!
     '--set-str', 'localversion', 'inmate',
     # Set some hardening values to their defaults, to avoid the prompt.
-    '--set-val', 'stackleak_track_min_size', '100',
+    # https://github.com/torvalds/linux/commit/57fbad15c2eee77276a541c616589b32976d2b8e
+    '--set-val', 'kstack_erase_track_min_size', '100',
     '--set-val', 'kfence_sample_interval', '100',
     '--set-val', 'kfence_num_objects', '255',
     '--set-val', 'kfence_stress_test_faults', '0',
@@ -188,9 +189,22 @@ if enabled_naughty_words := {
 #       We never use that source package, but it was sort of a sanity check / safety net.
 #       I had to turn it off in 4.17.17 because it had a quilt problem (debian/patches/series).
 #
-# NOTE: KDEB_SOURCE_COMPRESS=zstd is not supported as at Linux 6.4.4.
-#       https://github.com/torvalds/linux/blob/v6.4/scripts/Makefile.package#L97-L99
-subprocess.check_call(['nice', 'make', 'bindeb-pkg', 'KDEB_SOURCE_COMPRESS=xz'])
+# NOTE: KDEB_SOURCE_COMPRESS=zstd is not supported as at Linux 6.19.8.
+#       https://github.com/torvalds/linux/blob/v6.19/scripts/Makefile.package#L88
+#
+# As at 6.19.8, this is broken:
+#     $ make bindeb-pkg KDEB_SOURCE_COMPRESS=xz DEB_BUILD_OPTIONS=terse
+#     make -f debian/rules binary
+#     make[3]: *** No rule to make target '--no-print-directory'.  Stop.
+# Removing either option fixes it.
+# Since we "make BINdeb-pkg" now (skip dsc step),
+# is kdeb_SOURCE_compress even relevant anymore?
+# AFAICT it is not, therefore I remove it.
+subprocess.check_call([
+    'nice', 'make', 'bindeb-pkg'
+    # Sigh, as at 6.19.8, "make bindeb-pkg" still ignores DEB_BUILD_OPTIONS?!
+    f'-j{int(subprocess.check_output("nproc"))}',
+])
 
 # ls -hlS ../*deb
 # dcmd cp -rLv ../*.changes /usr/src/PrisonPC-built/

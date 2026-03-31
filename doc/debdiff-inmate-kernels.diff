@@ -1,3 +1,165 @@
+633eb8d 6.19.8-1774984993 (was 6.12.74-1774499086)
+diff --git a/manifest.txt b/manifest.txt
+index 2b5bf7b..ccb1c53 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -2,8 +2,6 @@
+ kernel/
+ kernel/arch/
+ kernel/arch/x86/
+-kernel/arch/x86/crypto/
+-kernel/arch/x86/crypto/crc32c-intel.ko.zst
+ kernel/arch/x86/events/
+ kernel/arch/x86/events/intel/
+ kernel/arch/x86/events/intel/intel-cstate.ko.zst
+@@ -15,6 +13,7 @@ kernel/drivers/acpi/ac.ko.zst
+ kernel/drivers/acpi/acpi_pad.ko.zst
+ kernel/drivers/acpi/button.ko.zst
+ kernel/drivers/acpi/fan.ko.zst
++kernel/drivers/acpi/platform_profile.ko.zst
+ kernel/drivers/acpi/video.ko.zst
+ kernel/drivers/ata/
+ kernel/drivers/ata/ahci.ko.zst
+@@ -65,11 +64,14 @@ kernel/drivers/firmware/efi/capsule-loader.ko.zst
+ kernel/drivers/firmware/efi/efibc.ko.zst
+ kernel/drivers/gpu/
+ kernel/drivers/gpu/drm/
++kernel/drivers/gpu/drm/clients/
++kernel/drivers/gpu/drm/clients/drm_client_lib.ko.zst
+ kernel/drivers/gpu/drm/display/
+ kernel/drivers/gpu/drm/display/drm_display_helper.ko.zst
+ kernel/drivers/gpu/drm/drm.ko.zst
+ kernel/drivers/gpu/drm/drm_buddy.ko.zst
+ kernel/drivers/gpu/drm/drm_exec.ko.zst
++kernel/drivers/gpu/drm/drm_gpusvm_helper.ko.zst
+ kernel/drivers/gpu/drm/drm_gpuvm.ko.zst
+ kernel/drivers/gpu/drm/drm_kms_helper.ko.zst
+ kernel/drivers/gpu/drm/drm_suballoc_helper.ko.zst
+@@ -85,6 +87,10 @@ kernel/drivers/gpu/drm/xe/xe.ko.zst
+ kernel/drivers/hid/
+ kernel/drivers/hid/hid-generic.ko.zst
+ kernel/drivers/hid/hid.ko.zst
++kernel/drivers/hid/intel-thc-hid/
++kernel/drivers/hid/intel-thc-hid/intel-quicki2c.ko.zst
++kernel/drivers/hid/intel-thc-hid/intel-quickspi.ko.zst
++kernel/drivers/hid/intel-thc-hid/intel-thc.ko.zst
+ kernel/drivers/hid/usbhid/
+ kernel/drivers/hid/usbhid/usbhid.ko.zst
+ kernel/drivers/leds/
+@@ -114,10 +120,11 @@ kernel/drivers/pinctrl/intel/pinctrl-intel-platform.ko.zst
+ kernel/drivers/pinctrl/intel/pinctrl-meteorlake.ko.zst
+ kernel/drivers/pinctrl/intel/pinctrl-meteorpoint.ko.zst
+ kernel/drivers/platform/
++kernel/drivers/platform/wmi/
++kernel/drivers/platform/wmi/wmi.ko.zst
+ kernel/drivers/platform/x86/
+ kernel/drivers/platform/x86/intel/
+-kernel/drivers/platform/x86/intel/intel_vsec.ko.zst
+-kernel/drivers/platform/x86/wmi.ko.zst
++kernel/drivers/platform/x86/intel/intel-vsec.ko.zst
+ kernel/drivers/powercap/
+ kernel/drivers/powercap/intel_rapl_common.ko.zst
+ kernel/drivers/powercap/intel_rapl_msr.ko.zst
+@@ -127,6 +134,24 @@ kernel/drivers/scsi/scsi_mod.ko.zst
+ kernel/drivers/scsi/sr_mod.ko.zst
+ kernel/drivers/thermal/
+ kernel/drivers/thermal/intel/
++kernel/drivers/thermal/intel/int340x_thermal/
++kernel/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/int3400_thermal.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/int3401_thermal.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/int3402_thermal.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/int3403_thermal.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/platform_temperature_control.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_device.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci_legacy.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_mbox.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_power_floor.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_wt_hint.ko.zst
++kernel/drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.ko.zst
+ kernel/drivers/thermal/intel/intel_pch_thermal.ko.zst
+ kernel/drivers/thermal/intel/intel_powerclamp.ko.zst
+ kernel/drivers/thermal/intel/intel_soc_dts_iosf.ko.zst
+@@ -158,20 +183,37 @@ kernel/sound/core/snd-pcm.ko.zst
+ kernel/sound/core/snd-timer.ko.zst
+ kernel/sound/core/snd.ko.zst
+ kernel/sound/hda/
+-kernel/sound/hda/ext/
+-kernel/sound/hda/ext/snd-hda-ext-core.ko.zst
+-kernel/sound/hda/snd-hda-core.ko.zst
+-kernel/sound/hda/snd-intel-dspcfg.ko.zst
+-kernel/sound/hda/snd-intel-sdw-acpi.ko.zst
+-kernel/sound/pci/
+-kernel/sound/pci/hda/
+-kernel/sound/pci/hda/snd-hda-codec-analog.ko.zst
+-kernel/sound/pci/hda/snd-hda-codec-generic.ko.zst
+-kernel/sound/pci/hda/snd-hda-codec-hdmi.ko.zst
+-kernel/sound/pci/hda/snd-hda-codec-realtek.ko.zst
+-kernel/sound/pci/hda/snd-hda-codec.ko.zst
+-kernel/sound/pci/hda/snd-hda-intel.ko.zst
+-kernel/sound/pci/hda/snd-hda-scodec-component.ko.zst
++kernel/sound/hda/codecs/
++kernel/sound/hda/codecs/hdmi/
++kernel/sound/hda/codecs/hdmi/snd-hda-codec-hdmi.ko.zst
++kernel/sound/hda/codecs/hdmi/snd-hda-codec-intelhdmi.ko.zst
++kernel/sound/hda/codecs/hdmi/snd-hda-codec-simplehdmi.ko.zst
++kernel/sound/hda/codecs/realtek/
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc260.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc262.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc268.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc269.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc662.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc680.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc861.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc861vd.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc880.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-alc882.ko.zst
++kernel/sound/hda/codecs/realtek/snd-hda-codec-realtek-lib.ko.zst
++kernel/sound/hda/codecs/side-codecs/
++kernel/sound/hda/codecs/side-codecs/snd-hda-scodec-component.ko.zst
++kernel/sound/hda/codecs/snd-hda-codec-analog.ko.zst
++kernel/sound/hda/codecs/snd-hda-codec-generic.ko.zst
++kernel/sound/hda/common/
++kernel/sound/hda/common/snd-hda-codec.ko.zst
++kernel/sound/hda/controllers/
++kernel/sound/hda/controllers/snd-hda-intel.ko.zst
++kernel/sound/hda/core/
++kernel/sound/hda/core/ext/
++kernel/sound/hda/core/ext/snd-hda-ext-core.ko.zst
++kernel/sound/hda/core/snd-hda-core.ko.zst
++kernel/sound/hda/core/snd-intel-dspcfg.ko.zst
++kernel/sound/hda/core/snd-intel-sdw-acpi.ko.zst
+ kernel/sound/soc/
+ kernel/sound/soc/codecs/
+ kernel/sound/soc/codecs/snd-soc-cs35l41-i2c.ko.zst
+@@ -259,6 +301,9 @@ kernel/sound/soc/intel/catpt/
+ kernel/sound/soc/intel/catpt/snd-soc-catpt.ko.zst
+ kernel/sound/soc/intel/common/
+ kernel/sound/soc/intel/common/snd-soc-acpi-intel-match.ko.zst
++kernel/sound/soc/intel/common/snd-soc-acpi-intel-sdca-quirks.ko.zst
++kernel/sound/soc/sdca/
++kernel/sound/soc/sdca/snd-soc-sdca.ko.zst
+ kernel/sound/soc/snd-soc-acpi.ko.zst
+ kernel/sound/soc/snd-soc-core.ko.zst
+ kernel/sound/soc/sof/
+@@ -273,6 +318,7 @@ kernel/sound/soc/sof/intel/snd-sof-pci-intel-cnl.ko.zst
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-icl.ko.zst
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-lnl.ko.zst
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-mtl.ko.zst
++kernel/sound/soc/sof/intel/snd-sof-pci-intel-nvl.ko.zst
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-ptl.ko.zst
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-skl.ko.zst
+ kernel/sound/soc/sof/intel/snd-sof-pci-intel-tgl.ko.zst
+@@ -297,3 +343,4 @@ modules.order
+ modules.softdep
+ modules.symbols
+ modules.symbols.bin
++modules.weakdep
 cb2a375 6.12.74-1774499086 (was 6.12.73-1773118166)
 eefe760 6.12.73-1773118166 (was 6.12.69-1771321208)
 6fe2356 6.12.69-1771321208 (was 6.12.57-1764296234)
