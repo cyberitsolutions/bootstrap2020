@@ -12,7 +12,7 @@
 # but using https, we force our in-house packages to bypass the mirror.
 Types: deb
 URIs: https://apt.cyber.com.au/PrisonPC
-Suites: bookworm
+Suites: forky
 Components: server
 # Using a literal public key here requires apt 2.3.10+.
 # This is only available in Debian 12.

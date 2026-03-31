@@ -2,6 +2,7 @@
 import argparse
 import os
 import pathlib
+import platform
 import subprocess
 import tempfile
 
@@ -68,14 +69,15 @@ with tempfile.TemporaryDirectory() as td:
          '--customize-hook=chroot $1 env --chdir=/X/Y HOME=/root debuild -uc -us',
          '--customize-hook=rm -rf $1/X/Y',
          f'--customize-hook=sync-out /X {td}',
-         'bookworm',
+         'forky',
          '/dev/null',
          # '../templates/main/apt.sources',
          # '../templates/PrisonPC/apt.sources',
          ])
     # debsign here?
+    maybe_host = '' if platform.node() == 'heavy' else 'apt.cyber.com.au:'
     subprocess.check_call([
         'rsync', '-ai', '--info=progress2', '--protect-args',
         '--no-group',       # allow remote sgid dirs to do their thing
         f'{td}/',     # trailing suffix forces correct rsync semantics
-        f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/{package_name}-{package_version}/'])
+        f'{maybe_host}/srv/apt/PrisonPC/pool/forky/desktop/{package_name}-{package_version}/'])
