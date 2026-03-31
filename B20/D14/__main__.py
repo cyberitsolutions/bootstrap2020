@@ -739,7 +739,7 @@ for template in args.templates:
 
         mmdebstrap_but_zstd(
             ['mmdebstrap',
-             'bookworm',
+             'forky',
              destdir / 'filesystem.squashfs',
              '--aptopt=DPkg::Inhibit-Shutdown 0;',  # https://bugs.debian.org/1061094
              # Build faster
