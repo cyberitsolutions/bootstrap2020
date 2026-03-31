@@ -5,7 +5,25 @@ import pathlib
 import subprocess
 import urllib.parse
 
-__doc__ = """ build vlc without screenshot support (--disable-sout) """
+__doc__ = """ build vlc without screenshot support (--disable-sout)
+
+FIXME: after the Debian 12 to Debian 14 upgrade, I observed this suspicious-looking difference:
+
+twb@heavy:~/D14-measurements/B20/D14/packages$ debdiff /srv/apt/PrisonPC/pool/bookworm/desktop/vlc-3.0.23*/*changes  /srv/apt/PrisonPC/pool/forky/desktop/vlc-3.0.23-1/*changes
+[...]
+Files in first .changes but not in second
+-----------------------------------------
+-rw-r--r--  root/root   /usr/lib/x86_64-linux-gnu/vlc/plugins/audio_filter/libmad_plugin.so
+-rw-r--r--  root/root   /usr/lib/x86_64-linux-gnu/vlc/plugins/codec/liba52_plugin.so
+-rw-r--r--  root/root   /usr/lib/x86_64-linux-gnu/vlc/plugins/codec/libdca_plugin.so
+-rw-r--r--  root/root   /usr/lib/x86_64-linux-gnu/vlc/plugins/codec/liblibmpeg2_plugin.so
+-rw-r--r--  root/root   /usr/lib/x86_64-linux-gnu/vlc/plugins/video_filter/libpostproc_plugin.so
+[...]
+
+The other differences looked innocuous, but those look like for DVD-playing plugins.
+I should check that vlc actually works for IPTV and DVDs on real hardware.
+--twb, April 2026
+"""
 
 parser = argparse.ArgumentParser(description=__doc__)
 args = parser.parse_args()
@@ -33,9 +51,8 @@ subprocess.check_call(['apt', 'build-dep', '--assume-yes', './'], cwd=source_dir
 
 
 def build():
-    processors_online = int(subprocess.check_output(['getconf', '_NPROCESSORS_ONLN']).strip())
-    os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck noddebs'
-    subprocess.check_call(['debuild', '-uc', '-us', '-tc', f'-j{processors_online}'], cwd=source_dir)
+    os.environ['DEB_BUILD_OPTIONS'] = 'terse nocheck noddebs parallel=auto'
+    subprocess.check_call(['debuild', '-uc', '-us', '-tc'], cwd=source_dir)
 
 
 # Do a stock build, to debdiff against.
@@ -266,15 +283,30 @@ usr/lib/*/vlc/plugins/video_output/libyuv_plugin.so
 # Patch the source package.
 with (source_dir / 'debian/rules').open('a') as f:
     print('confflags += ', *{f'--disable-{module}' for module in shit_modules.split()}, file=f)
-    print('execute_before_dh_install::',
-          *{f'rm -f debian/tmp/{glob}' for glob in built_shit_globs.split()},
-          sep='\n\t',
-          file=f)
-    # We --disable-skins2, but debian/rules gets confused if this dir does not exist.
-    print('execute_before_dh_install::',
-          'mkdir -p debian/tmp/usr/share/vlc/skins2/fonts',
-          sep='\n\t',
-          file=f)
+    # https://sources.debian.org/src/vlc/3.0.23-0%2Bdeb12u1/debian/rules used "override_dh_X:"
+    # https://sources.debian.org/src/vlc/3.0.23-2/debian/rules uses "execute_before_dh_install:".
+    # Because they use *ONE COLON*, we can only replace their body, instead of append to it.
+    # This is a huge nuisance:
+    #
+    #    debian/rules:342: *** target file 'execute_before_dh_install' has both : and :: entries.  Stop.
+    #
+    # As a shitty workaround, move our code in the opposite direction -- make ours go back to using override_dh_X, and
+    # then have the "dh_X" at the bottom.
+    # This will work OK for now as they are using simple "%:\n\tdh $@\n";
+    # they have no --buildsystem= or --with=.
+    # NO DICE -- we need to run out "mkdir -p" workaround BEFORE their dumb "ln -s" that now runs in execute_before_dh_install.
+    # What about if we put that into a rule that runs before dh_install during debhelper's main sequence?
+    # That main sequence is described here:
+    # https://sources.debian.org/src/debhelper/13.31/lib/Debian/Debhelper/Sequence/root_sequence.pm#L34
+    print(
+        # We --disable-skins2, but debian/rules gets confused if this dir does not exist.
+        'execute_before_dh_installdirs::',
+        '\tmkdir -p debian/tmp/usr/share/vlc/skins2/fonts',
+        'override_dh_install::',
+        *{f'\trm -f debian/tmp/{glob}' for glob in built_shit_globs.split()},
+        '\tdh_install',       # as we override_X (not execute_after_X)
+        sep='\n',
+        file=f)
 # Upstream's removeplugins (filter-plugin.py) trick won't work for us.
 # As at 3.0.2, it can only handle keywords that upstream is set up to filter.
 for install_path in source_dir.glob('debian/*.install'):
@@ -329,7 +361,7 @@ subprocess.check_call(
 subprocess.check_call(
     ['debchange',
      '--local=PrisonPC',
-     '--distribution=bookworm',
+     '--distribution=forky',
      'Disable the logging plugins entirely.'],
     cwd=source_dir)
 
