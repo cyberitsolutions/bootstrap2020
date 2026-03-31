@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import os
 import pathlib
 import subprocess
 
@@ -60,19 +61,23 @@ Issue 2:
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
+os.environ['APT_CONFIG'] = os.environ['MMDEBSTRAP_APT_CONFIG']  # replaces "chroot $1" for apt
+os.environ['DPKG_ROOT'] = str(args.chroot_path)  # replaces "chroot $1" for dpkg
+# apt/forky runs $PAGER which mmdebstrap does not clear, but
+# mmdebstrap's unshare does block execution of sometimes.
+# https://sources.debian.org/src/apt/3.1.16/apt-private/private-output.cc?hl=114#L114
+os.environ['APT_PAGER'] = 'cat'
 
 # List ANY available upgrades -- even NotAutomatic ones.
 print('Check for expected upgrades...', flush=True)
 subprocess.check_call(
-    ['chroot', args.chroot_path,
-     'apt', 'list', '--upgradable', '--quiet=2',
+    ['apt', 'list', '--upgradable', '--quiet=2',
      '-oAPT::Default-Release=/.*/'])
 
 # Crash (thus aborting the build) on non-NotAutomatic updates.
 print('Check for unexpected upgrades...', flush=True)
 stdout = subprocess.check_output(
-    ['chroot', args.chroot_path,
-     'apt', 'list', '--upgradable', '--quiet=2'],
+    ['apt', 'list', '--upgradable', '--quiet=2'],
     text=True)
 if stdout.strip():              # there is non-empty output
     raise RuntimeError(
