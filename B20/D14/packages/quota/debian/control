@@ -8,13 +8,13 @@ Build-Depends:
  libtirpc-dev,
  pkg-config,
 Build-Conflicts:
- e2fslibs-dev,
+ libext2fs-dev,
  libdbus-1-dev,
  libldap2-dev,
  libnl-3-dev,
  libnl-genl-3-dev,
  libwrap0-dev,
-Standards-Version: 4.5.1
+Standards-Version: 4.7.0
 Homepage: http://sourceforge.net/projects/linuxquota
 
 Package: quota
