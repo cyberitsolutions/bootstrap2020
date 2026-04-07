@@ -60,7 +60,26 @@ applications = [
     #         Therefore (and since nobody at AMC is asking for this), I am giving up on it for now.
     #         --twb, November 2024
     # "xarchiver", "p7zip-full",
+
+    # This is Apps>Settings>Change Password.
+    # This is the only GTK2 app we have, even on D12.
+    # In D14, gtk2 apps are removed, but gtk2 library itself is still present.
+    # So we can just copy upstream usermode_N_amd64.deb and put it in our repo.
+    # I asked if there was an obvious alternative (GUI password reset using PAM, so works on with remote LDAP EXOP).
+    # Most institutions roll a custom horrible thing (historically) or "just use AD and windows lol".
+    # I have not done a detailed investigation for replacements.
+    # https://snapshot.debian.org/package/usermode/
+    # --twb, April 2026
+    # UPDATE: because only desktop-staff and desktop-inmate can see our in-house apt repo (https://apt.cyber.com.au/PrisonPC),
+    # I am at least temporarily moving this from --template=desktop to template=desktop-[staff|inmate]*.
+    "usermode",                         # password reset tool
 ]
+
+[desktop-inmate]
+applications = [
+    "usermode",                 # see desktop-staff above for discussion
+]
+
 
 
 # Site apps for "demo" prison:

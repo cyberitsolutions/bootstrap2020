@@ -11,7 +11,6 @@ include = [
     "xfce4-notifyd",            # xfce4-panel notification popups
     "xfce4-places-plugin",
     "eog",            # chromium cant flip between 1000 photos quickly
-    "usermode",                         # password reset tool
     "librsvg2-common",                  # SVG icons in GTK3 apps
     "gnome-themes-extra", "adwaita-qt",  # theming
     # FIXME: Right now, vlc is always installed and is Qt5. --twb, July 2024
