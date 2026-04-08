@@ -586,7 +586,6 @@ Package:
  libcomedi0
  libcryptui0a
  libdbi-perl
- libffado2
  libfishcamp1
  libfli2
  libfprint-2-2
@@ -1269,7 +1268,7 @@ Explanation:
  We mostly ban packages in prisonpc-bad-package-conflicts-everyone.
  This works well, and we get clear error messages.
  But it cannot block by source package, and cannot glob of package names.
- In here, block things that prisonpc-bad-package-conflicts-everyone can't.
+ In here, block things that prisonpc-bad-package-conflicts-everyone cannot.
  .
  If you try to install a package blocked here,
  the error message will be something like this:
@@ -1284,7 +1283,7 @@ Explanation:
  .
  FIXME: some of this could be folded back into prisonpc-bad-package-conflicts.
  NOTE: nfs-client needs src:lvm2.
- NOTE: dbus-x11 (banned) is for syvinit; dbus-users-ssesion is for systemd.
+ NOTE: dbus-x11 (banned) is for syvinit; dbus-user-session is for systemd.
  NOTE: mbim and qmi are for 3G/LTE modems, and not linked by anything we want.
  NOTE: apt needs sqv|gpg, so block sq and other sq components EXCEPT sqv, for now.
  NOTE: xdm/xfce4-session need cpp
@@ -1680,3 +1679,134 @@ Package:
  src:dnsmasq
  bind9-dnsutils
  src:iodine
+
+
+Explanation: Inmates MUST NOT have unnecessary crypto
+ Notes:
+  • apt → sqv (not gpgv) nowadays
+  • sqv → src:nettle
+  • libreoffice-core → libgpgme → gpg (or gpg-from-sq).
+    Worked around by our prisonpc-ersatz-gpg.
+  • Provides: pinentry always comes from src:pinentry, but
+    Provides: ssh-askpass is spread over multiple src: packages.
+    Therefore prisonpc-ersatz can block the latter better than we can.
+    Neither actually provide crypto, just GUI helpers.
+    ssh-askpass-gnome is src:openssh; staff need parts of src:openssh.
+  • src:gcr4 et al are Gnome password manager.
+    FIXME: gvfs → gvfs-libs → libgcr4 (src:gcr4)
+    FIXME: chromium → libcups → libgnutls → libp11-kit0 (src:p11-kit)
+    FIXME gvfs, msmtp → libsecret (src:libsecret)
+  • src:kf6-kwallet et al are KDE password manager.
+  • zip/7zip/rar formats support AES (strong crypto).
+    https://en.wikipedia.org/wiki/ZIP_(file_format)#Encryption
+    Deny the ones we can.
+    As at Debian 11, src:zip DOES NOT support AES.
+    libarchive (bsdtar) DOES support AES.
+    FIXME: vlc-plugin-base & gvfs-backends → libarchive
+  • libreoffice CANNOT do zip-level AES on .docx/.odt/&c, but
+    libreoffice CAN do docx/odt level encryption inside the zip.
+    We nerf that elsewhere, in libreoffice XML config.
+Pin-Priority: -23974
+Pin: version *
+Package:
+ src:gnupg1
+ src:gnupg2
+ NECESSARY-src:rust-sequoia-sqv
+ src:rust-sequoia-sq
+ src:rust-sequoia-chameleon-gnupg
+ src:rust-sequoia-git
+ src:rust-sequoia-keystore-server
+ src:rust-sequoia-sop
+ src:rust-rpm-sequoia
+ NECESSARY-src:nettle           nettle-bin
+ src:pinentry
+ src:ssh-askpass
+ src:ksshaskpass
+ src:lxqt-openssh-askpass
+ src:kwalletcli
+ ssh-askpass-gnome
+ NECESSARY-src:gcr4             gcr4 gir1.2-gck-*
+ src:gcr
+ src:seahorse
+ src:gnome-keyring
+ src:pam-p11
+ src:libp11
+ NECESSARY-src:p11-kit          p11-kit p11-kit-modules
+ src:gnome-keysign
+ src:kf6-kwallet
+ src:kwallet-kf5
+ src:kwallet-pam
+ src:kwalletcli
+ src:kwalletmanager
+ src:signon-kwallet-extension
+ NECESSARY-src:libsecret        libsecret-tools gir1.2-secret-*
+ src:7zip
+ src:7zip-rar
+ src:unrar-free
+ src:unrar-nonfree
+ src:zip
+ NECESSARY-src:unzip
+ NECESSARY-src:libarchive       libarchive-tools
+
+
+Explanation: Inmates MUST NOT have clandestine comms
+ Notes:
+  • chromium → libcups → libavahi-client & -common (src:avahi)
+  • pipewire-audio → libspa-0.2-bluetooth → libbluetooth (src:bluez)
+  • It is THEORETICALLY possible to use wesnoth<->wesnoth-server and then do in-game chat,
+    which would give the inmate a clandestine comms channel.
+  • We use systemd-networkd.
+    Other network clients should be absent.
+    Inmate might use them to set up custom networking.
+  • nftables → libxtables (src:iptables)
+Pin-Priority: -23974
+Pin: version *
+Package:
+ NECESSARY-src:bluez    bluetooth bluez bluez-cup bluez-hcidump bluez-meshd bluez-obexd bluez-source bluez-test-scripts bluez-test-tools
+ NECESSARY-src:avahi    avahi-daemon gir1.2-avahi-* libavahi-compat-libdnssd1 libavahi-core* libavahi-glib* libavahi-gobject* libavahi-ui-gtk* avahi-autoipd avahi-daemon avahi-discover avahi-dnsconfd avahi-utils python3-avahi avahi-ui-utils
+ wesnoth-*-server
+ src:network-manager
+ src:libnma
+ src:ifupdown*
+ src:netplan.io
+ src:resolvconf
+ src:mobile-broadband-provider-info
+ src:*modem*
+ src:usb-modeswitch*
+ src:wvdial
+ src:iw
+ src:iwd
+ src:*wireless*
+ src:wpa
+ src:urfkill
+ src:rfkill
+ NECESSARY-src:iptables         iptables libip4tc* libip6tc*
+ src:iptables-persistent
+ src:*netfilter*
+ src:*ppp*
+ src:*pptp*
+ src:wpan-tools
+ src:linux-atm
+ src:bootpc
+ src:bootp
+ src:bridge-utils
+ src:comitup
+ src:conman
+ src:faifa
+ src:inetutils
+ src:macchanger
+ src:net-tools
+ src:*iscsi*
+ src:rancid
+ src:rarpd
+ src:tcputils
+ src:*wakeonlan*
+ src:wavemon
+ src:whereami
+ src:wide-dhcpv6
+ src:dhcpy6d
+ src:wmifinfo
+ src:wmifs
+ src:*wavelan*
+ NECESSARY:src-busybox          udhcpc udhcpd
+ src:xl2tpd

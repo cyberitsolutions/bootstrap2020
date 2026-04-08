@@ -57,6 +57,10 @@ Description: work around https://bugs.debian.org/1000353
  In Debian 11, logsave is a separate .deb.
  As logsave is harmless, we do not nerf it.
 
+# FIXME: logrotate/forky can use systemd-sysv instead of cron, but...
+#        $ apt install init logrotate # installs BOTH systemd-sysv AND cron
+#        $ apt install init logrotate cron- anacron- systemd-cron- bcron- cronie- # works, yuk
+#        $ apt install init logrotate systemd-sysv # works, yuk
 Package: prisonpc-ersatz-logrotate
 Depends: ${misc:Depends},
 Provides:  logrotate
@@ -194,149 +198,19 @@ Depends:
  prisonpc-ersatz-parted (= ${binary:Version}),
  prisonpc-ersatz-dictionaries-common (= ${binary:Version}),
 Conflicts:
+# NOTE: apt_preferences(5) can block src:X; deb Conflicts cannot.
+#       deb Conflicts can block all provides of a virtual package; apt_preferences(5) cannot.
+#       Therefore we block e.g. src:gnupg2 in apt preferences, and
+#       we block e.g. cron-daemon (provided by cron|bcron|cronie|systemd-cron) here.
+#
 ## Inmates MUST NOT have unnecessary crypto
 ## ========================================
-# ?source-package(^gnupg2$), except for
-#   gpgv (apt needs it), &
-#   gpg  (handled by prisonpc-ersatz-gpg).
-# $ aptitude search -F ' %p,' '?source-package(^gnupg2$) ?not(?name(^gpgv?$))'
- dirmngr,
- gnupg,
- gnupg-agent,
- gnupg-l10n,
- gnupg-utils,
- gnupg2,
- gpg-agent,
- gpg-wks-client,
- gpg-wks-server,
- gpgconf,
- gpgsm,
- gpgv-static,
- gpgv-win32,
- gpgv2,
- scdaemon,
-# $ aptitude search -F ' %p,' '?source-package(^gnupg1$)'
- gnupg1,
- gnupg1-l10n,
- gpgv1,
-# pinentry-gnome3 &c provide GUI password prompts, mostly for gpg
- pinentry,
-# askpass-gnome &c provide GUI password prompts, mostly for ssh
+# Multiple source packages Provides: ssh-askpass.
  ssh-askpass,
-# GNOME password manager is not needed.
-# FIXME: gvfs-libs needs libgcr-base-3-1 and libgck-1-0 so we can't Conflicts (only Provides).
-# FIXME: libgnutls30 needs libp11-kit0 so we can't Conflicts (only Provides).
- gcr, gir1.2-gck-1, gir1.2-gcr-3, libgcr-ui-3-1,
- gnome-keyring, libpam-gnome-keyring, gnome-keyring-pkcs11,
- seahorse, caja-seahorse, seahorse-nautilus,
- libcryptui0a, gir1.2-cryptui-0.0, seahorse-daemon,
- libp11-3, p11-kit, p11-kit-modules, libpam-p11,
- gnome-keysign,
- libpam-gnome-keyring,
- pidgin-gnome-keyring,
-# KDE password manager is not needed.
- libkf5wallet-bin, libkf5wallet5,
- kwalletcli,
- libkf5wallet-data, libkwalletbackend5-5,
- libpam-kwallet-common, libpam-kwallet5,
- signon-kwallet-extension,
- kwalletmanager, remmina-plugin-kwallet,
-# zip/bullseye only supports weak encryption, but
-# later versions might adopt strong encryption.
-# https://en.wikipedia.org/wiki/ZIP_(file_format)#Encryption
-# NOTE: libreoffice also supports ODF/OOXML encryption.
-# UPDATE 2021: .rar and .7z also support AES.
-# libarchive (bsdtar) can DEFINITELY created strongly encrypted zip files.
-# We can't remove libarchive itself without upsetting vlc (everyone) and gvfs-backends (staff).
-# UPDATE: p7zip* became 7zip* in Debian 13.
- 7zip,
- 7zip-full,
- 7zip-rar,
- 7zip-standalone,
- p7zip,
- p7zip-full,
- p7zip-rar,
- unrar,
- unrar-nonfree,
- zip,
- libarchive-tools,
 ## Inmates MUST NOT have clandestine comms
 ## =======================================
- bluez,
- avahi-daemon,
-# It's THEORETICALLY possible to use wesnoth<->wesnoth-server and then do in-game chat,
-# which would give the inmate a clandestine comms channel.
- wesnoth-1.14-server,
- wesnoth-1.16-server,
-# We use systemd-networkd.
-# Other network clients shouldn't be there.
-# Inmate might use them to set up custom networking.
- network-manager,
- libnm0,
- libnma0,
- ifupdown,
-## UPDATE: as at Debian 12, systemd-resolvd Provides resolvconf.
-##         It is a stub resolvconf that only understands resolved.
-#          It is harmless, so we must remove resolvconf from here.
-#          Actually, if I say << 252 it'll block resolvconf and openresolv, but
-#          still allow systemd-resolved...
- resolvconf (<< 252.6-1),
- ifupdown2,
- ifupdown-multi,
- mobile-broadband-provider-info,
- modemmanager, usb-modeswitch, comgt, wvdial,
- modem-manager-gui,
- isc-dhcp-client,
- isc-dhcp-server,
- iw,
- iwd,
- wireless-regdb,
- wireless-tools,
- wpasupplicant,
- rfkill,
- iptables-persistent,
- netfilter-persistent,
- pppconfig,
- ppp,
- pppd,
- wpan-tools,
- ahcpd,
- airport-utils,
- atm-tools,
- bootpc,
- bootp,
- bridge-utils,
- comitup,
- connman,
- crda,
- dhcpd5,
- ez-ipupdate,
- faifa,
- hostapd,
- ifrename,
- inetutils-tools,
- macchanger,
- net-tools,
- netplug,
- open-iscsi,
- pppoeconf,
- pptp-linux,
- pptpd,
- rancid,
- rarpd,
- tcputils,
- wakeonlan,
- wavemon,
- whereami,
- wide-dhcpv6-client,
- wide-dhcpv6-server,
- wide-dhcpv6-relay,
- wpagui,
- dhcpy6d,
- wmifinfo,
- xfce4-wavelan-plugin,
+# Multiple source packages Provides: dhcpd
  dhcpd,
- xl2tpd,
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
 # e2fsprogs is shitlisted because in Debian 9 it was hard to avoid.
