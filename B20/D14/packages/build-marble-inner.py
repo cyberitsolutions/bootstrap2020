@@ -29,12 +29,29 @@ for path in {
 # Bump the debian version.
 os.environ['DEBFULLNAME'] = 'Trent W. Buck'  # for debchange
 os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
+for _ in range(2):
+    subprocess.check_call(
+        ['debchange',
+         '--bin-nmu',
+         'Upstream has a binNMU (+bN); synthesize one here to avoid it beating our --local=PrisonPC'],
+        cwd=source_dir)
+subprocess.check_call(
+    ['debchange',
+     '--release',
+     '--distribution=forky',
+     ''],
+    cwd=source_dir)
 subprocess.check_call(
     ['debchange',
      '--local=PrisonPC',
-     '--distribution=forky',
      'Disable webengine as it is not supported by Debian Security Team.'
      ' https://salsa.debian.org/debian/debian-security-support/-/blob/4fb5b9878cd8627a7e6d3bb68219aa2cbefe0c2d/security-support.deb14#L36'],
+    cwd=source_dir)
+subprocess.check_call(
+    ['debchange',
+     '--release',
+     '--distribution=forky',
+     ''],
     cwd=source_dir)
 
 # Build the patched source package.
