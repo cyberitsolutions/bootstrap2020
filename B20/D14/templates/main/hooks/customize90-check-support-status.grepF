@@ -19,13 +19,16 @@ The following packages found on this system are affected by this:
 
 # Ignorelist rust-rav1e because
 #
-#   1. it's a hard dependency of ffmpeg (used by e.g. tvserver).
-#      I cannot be arsed recompiling ffmpeg from source to remove it.
+#   1. it's a hard dependency of libavcodec (used by e.g. vlc).
+#      ICBF building a customized src:ffmpeg to avoid it.
 #
 #   2. it's only the encoder, so
 #      PROBABLY that code won't run unless/until something explicitly tries to encode as AV1.
 #      i.e. PROBABLY you can't just trigger an RCE by giving the tvserver a specially crafted attack.av1.mkv.
--
+* Source:rust-rav1e
+  Details: See https://www.debian.org/releases/trixie/release-notes/issues.en.html#go-and-rust-based-packages
+  Affected binary package:
+  - librav1e0.8:amd64 (installed version: 0.8.1-7)
 
 # Ignorelist rust-zram-generator (systemd-zram-generator), because
 #  * we could probably implement it ourselves, but ICBF right now
@@ -127,4 +130,8 @@ The following packages found on this system are affected by this:
 # PROBABLY none of the packages we currently/will use,
 # will use libsoup as a SERVER.
 # But we cannot tell at package build time whether a package is using the server parts of libsoup!
--
+* Source:libsoup3
+  Details: Only supported as a client, not as a server: see https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
+  Affected binary packages:
+  - libsoup-3.0-0:amd64 (installed version: 3.6.6-1)
+  - libsoup-3.0-common (installed version: 3.6.6-1)
