@@ -201,7 +201,7 @@ if enabled_naughty_words := {
 # is kdeb_SOURCE_compress even relevant anymore?
 # AFAICT it is not, therefore I remove it.
 subprocess.check_call([
-    'nice', 'make', 'bindeb-pkg'
+    'nice', 'make', 'bindeb-pkg',
     # Sigh, as at 6.19.8, "make bindeb-pkg" still ignores DEB_BUILD_OPTIONS?!
     f'-j{int(subprocess.check_output("nproc"))}',
 ])
