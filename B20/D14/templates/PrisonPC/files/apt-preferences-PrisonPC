@@ -1,3 +1,4 @@
+
 Explanation: use quota with server-side code disabled (FIXME: remove when PrisonPC main server is ZFS)
 Package: src:quota
 Pin: release o=Cyber
@@ -7,1262 +8,6 @@ Explanation: use marble with webengine support disabled
 Package: src:marble
 Pin: release o=Cyber
 Pin-Priority: 500
-
-Explanation:
- Temporary copy of prisonpc-bad-package-conflicts-everyone to speed up measure-install-footprints.py
-Pin-Priority: -28983
-Pin: version *
-Package:
- 0xffff
- 2to3
- acl
- acpi-call-dkms
- acr
- adv-17v35x-dkms
- afflib-tools
- afuse
- ahcpd
- air-quality-sensor
- airport-utils
- alacritty
- alsa-firmware-loaders
- alsa-utils
- amazon-ec2-net-utils
- amazon-ec2-utils
- anacron
- android-file-transfer
- android-sdk
- android-sdk-platform-tools-common
- anjuta
- anjuta-common
- antpm
- aoetools
- apache2-dev
- apfs-dkms
- apt-cacher-ng
- archivemount
- argyll
- arm-trusted-firmware-tools
- ash
- at
- atm-tools
- atmel-firmware
- autoconf
- autojump
- automake
- autorandr
- autotools-dev
- avahi-daemon
- avarice
- avfs
- avrdude
- awesfx
- baloo-kf5
- bash-completion
- bash-static
- bats
- battery-stats
- bazel-bootstrap-source
- bbswitch-dkms
- bbswitch-source
- bcache-tools
- bcachefs-tools
- beep
- bf-utf-source
- bilibop-rules
- bilibop-udev
- bindfs
- binutils-source
- bladerf-firmware-fx3
- bluedevil
- blueprint-compiler
- bluez
- bluez-firmware
- bluez-source
- bogl-bterm
- boinc-client
- bolt
- bootp
- bootpc
- bottlerocket
- bpython
- bridge-utils
- brig-compiler
- brightness-udev
- broadcom-sta-dkms
- broadcom-sta-source
- brz
- bsh-src
- btfs
- btrfs-progs
- bumblebee
- busybox-static
- bzr
- c++-compiler
- c-compiler
- c-sharp-2.0-compiler
- c-sharp-3.0-compiler
- c-sharp-4.0-compiler
- c-sharp-4.5-compiler
- c-sharp-compiler
- caja-seahorse
- calamares-settings-mobian
- castle-game-engine-src
- casync
- cdrdao
- ceph-common
- ceph-fuse
- ceph-osd
- charliecloud-runtime
- choqok
- chromium-sandbox
- cinnamon-screensaver
- cjs
- ckb-next
- clamfs
- clang
- cleo
- cli-common-dev
- click-dev
- cloop-src
- closure-compiler
- cloud-init
- cmake
- cme
- codeblocks-dev
- codelite
- colord
- comgt
- comitup
- compiz-plugins
- concordance-common
- config-package-dev
- connman
- console-setup-linux
- cool-retro-term
- coop-computing-tools
- cpmtools
- crda
- cream
- cron
- crust-firmware
- cryfs
- csh
- cups-client
- d-compiler
- d-v2-compiler
- dahdi
- dahdi-dkms
- dahdi-firmware-nonfree
- dahdi-linux
- dahdi-source
- dav-text
- daxctl
- ddcci-dkms
- ddcutil
- debhelper
- deepin-screenshot
- deepin-terminal
- default-d-compiler
- devhelp
- device-tree-compiler
- dfu-util
- dh-acc
- dh-ada-library
- dh-apparmor
- dh-autoreconf
- dh-buildinfo
- dh-cmake
- dh-consoledata
- dh-coq
- dh-cruft
- dh-di
- dh-dist-zilla
- dh-dkms
- dh-elpa
- dh-fortran-mod
- dh-golang
- dh-linktree
- dh-lisp
- dh-lua
- dh-make
- dh-make-perl
- dh-nodejs
- dh-nss
- dh-ocaml
- dh-octave
- dh-octave-autopkgtest
- dh-perl6
- dh-php
- dh-puredata
- dh-python
- dh-r
- dh-raku
- dh-rebar
- dh-runit
- dh-strip-nondeterminism
- dh-sysuser
- dh-vim-addon
- dh-virtualenv
- dh-xsp
- dhcpd
- dhcpd5
- dhcpy6d
- dictionaries-common-dev
- diffstat
- digimend-dkms
- dillo
- direwolf
- dirmngr
- dislocker
- disorderfs
- dlm-controld
- dm-writeboost-dkms
- dmraid
- dmrconfig
- dns323-firmware-tools
- docker.io
- dolphin
- dolphin-emu
- dosfstools
- doxygen
- dpdk-kmods-dkms
- dpkg-dev
- drbd-utils
- driverctl
- drkonqi
- dynare-matlab
- e3
- edbrowse
- editor
- eegdev-plugins-free
- efte
- eg25-manager
- ekeyd
- elinks
- elisa
- elm-compiler
- elogind
- elvis-tiny
- elvish
- encfs
- epiphany-browser
- eric
- erofs-utils
- eterm
- evdi-dkms
- ewf-tools
- exfat-fuse
- exfatprogs
- ez-ipupdate
- f2fs-tools
- faifa
- falcosecurity-scap-dkms
- falkon
- faustworks
- fbcat
- fbterm
- fdclone
- featherpad
- feedbackd
- ffmpegfs
- firefox-esr
- firmware-ast
- firmware-ath9k-htc
- firmware-atheros
- firmware-b43-installer
- firmware-b43legacy-installer
- firmware-bnx2
- firmware-bnx2x
- firmware-brcm80211
- firmware-cavium
- firmware-ipw2x00
- firmware-ivtv
- firmware-libertas
- firmware-microbit-micropython
- firmware-microbit-micropython-doc
- firmware-myricom
- firmware-netronome
- firmware-netxen
- firmware-nvidia-gsp
- firmware-nvidia-tesla-gsp
- firmware-qcom-media
- firmware-qcom-soc
- firmware-qlogic
- firmware-realtek-rtl8723cs-bt
- firmware-samsung
- firmware-siano
- firmware-ti-connectivity
- firmware-tomu
- firmware-zd1211
- fish
- fish-common
- fizsh
- flameshot
- flashrom
- flatbuffers-compiler
- flatpak
- flatpak-tests
- foot
- fortran-compiler
- fortran77-compiler
- fortran95-compiler
- fosfat
- fossil
- fp-compiler
- fp-ide
- fpga-icestorm
- fqterm
- freedombox
- fritzing
- fte
- ftp-server
- fuse-convmvfs
- fuse-overlayfs
- fuse-posixovl
- fuse-zip
- fuse2fs
- fuseext2
- fusefat
- fuseiso
- fuseiso9660
- fwupd
- g15daemon
- g810-led
- galileo
- galileo-daemon
- gambas3
- garmin-forerunner-tools
- gcc-11-source
- gcc-12-source
- gcc-arm-none-eabi-source
- gcpegg
- gcr
- gdb-source
- gdm3
- geany
- gedit
- gem2deb
- generate-ninja
- genisoimage
- germinate
- gfarm2fs
- gfs2-utils
- gir1.2-cryptui-0.0
- gir1.2-gck-1
- gir1.2-gcr-3
- gir1.2-gtksource-4
- git
- gjs
- gkrellshoot
- glade
- glibc-source
- gnome-api-docs
- gnome-boxes
- gnome-builder
- gnome-console
- gnome-devel
- gnome-firmware
- gnome-keyring
- gnome-keyring-pkcs11
- gnome-keysign
- gnome-pkg-tools
- gnome-remote-desktop
- gnome-screensaver
- gnome-screenshot
- gnome-settings-daemon-common
- gnome-terminal
- gnunet-fuse
- gnupg
- gnupg-agent
- gnupg-l10n
- gnupg-utils
- gnupg1
- gnupg1-l10n
- gnupg2
- gnuserv
- gnustep-make
- gnutls-bin
- go-compiler
- gobi-loader
- gobject-introspection
- gocryptfs
- god
- golang-1.20-go
- golang-1.21-go
- goldencheetah
- google-android-platform-tools-installer
- google-mock
- googletest
- gost-crypto-dkms
- gpg-agent
- gpg-wks-client
- gpg-wks-server
- gpgconf
- gpgsm
- gpgv-static
- gpgv-win32
- gpgv1
- gpgv2
- gphotofs
- gpsd
- gr-funcube
- grim
- grimshot
- groovy
- growisofs
- grub-common
- grub-firmware-qemu
- gtk-vector-screenshot
- guake
- guestfsd
- guestmount
- hackrf-firmware
- haskell-compiler
- haskell-devscripts-minimal
- hdmi2usb-fx2-firmware
- hdmi2usb-udev
- hdparm
- heimdall-flash
- hfsprogs
- hostapd
- httpd
- httpd-cgi
- httpd-wsgi
- httpdirfs
- httpfs2
- hv3
- hylafax-server
- hyperv-daemons
- i2c-tools
- idle
- idle3
- ifplugd
- ifrename
- ifupdown
- ifupdown-multi
- ifupdown2
- ifuse
- iio-sensor-proxy
- imap-server
- indi-armadillo-platypus
- indi-dsi
- indi-ffmv
- indi-gphoto
- indi-nightscape
- indi-orion-ssg3
- indi-sx
- inetutils-tools
- infnoise
- inform6-compiler
- input-remapper-daemon
- inputattach
- ipheth-utils
- ipp-usb
- iproute2
- iptables-netflow-dkms
- iptables-persistent
- ipxe-qemu
- irc
- ircd
- isc-dhcp-client
- isc-dhcp-server
- isight-firmware-tools
- iw
- java-compiler
- java-wrappers
- jfsutils
- jmtpfs
- joe
- jool-dkms
- jove
- joystick
- juffed
- jupp
- jupyter-core
- jypyter-server
- k3b
- kactivitymanagerd
- kalarm
- kalendarac
- kamera
- kate
- kazam
- kde-cli-tools
- kde-config-cddb
- kde-config-cron
- kde-config-fcitx
- kde-config-fcitx5
- kde-config-gtk-style
- kde-config-gtk-style-preview
- kde-config-mailtransport
- kde-config-mobile-networking
- kde-config-plymouth
- kde-config-screenlocker
- kde-config-sddm
- kde-config-systemd
- kde-config-tablet
- kde-config-telepathy-accounts
- kde-spectacle
- kde-telepathy-contact-list
- kde-zeroconf
- kdeconnect
- kdenetwork-filesharing
- kdepim-runtime
- kdesvn-kio-plugins
- kdevelop
- kdevelop-python-data
- kdump-tools
- keurocalc-data
- kget
- khelpcenter
- kile
- kinect-audio-setup
- kinfocenter
- kinit
- kio-admin
- kio-audiocd
- kio-extras
- kio-extras-data
- kio-fuse
- kio-gdrive
- kio-gopher
- kio-ldap
- kio-perldoc
- kitty
- kmail
- knxd
- kodi-addons-dev
- kodi-peripheral-xarcade
- kongress
- konqueror
- konsole
- konsole-kpart
- kontact
- konversation
- korganizer
- kpartx
- kross
- kross-dev
- krusader
- kscreen
- kscreensaver
- ksh
- ksh93u+m
- ksnip
- ksysguard
- ksystemstats
- ktechlab
- ktexteditor-data
- kwalletcli
- kwalletmanager
- kwrite
- langford-dkms
- laptop-mode-tools
- lazarus
- lazarus-ide
- lazarus-ide-gtk2
- lcdproc
- ldap-server
- le
- ledger-wallets-udev
- leds-alix-source
- libacsccid1
- libairspy0
- libairspyhf1
- libam7xxx0.1
- libapogee3
- libarchive-tools
- libasedrive-usb
- libasi
- libbde-utils
- libbladerf2
- libbmusb6
- libc-dev
- libc6-dev
- libccid
- libcjs-dev
- libcjs0g
- libcomedi0
- libcryptui0a
- libdbi-perl
- libfishcamp1
- libfli2
- libfprint-2-2
- libfreenect0.5
- libfsapfs-utils
- libfuse-dev
- libfuse-perl
- libfuse3-dev
- libfvde-utils
- libgcr-ui-3-1
- libgjs-dev
- libgjs0g
- libgpod-common
- libgstreamer1.0-dev
- libgtest-dev
- libgtksourceview-3.0-1
- libgtksourceview-5-0
- libguestfs0
- libgxccd
- libhackrf0
- libhalide14-0-dev
- libhamlib4
- libifd-cyberjack6
- libiio0
- libimager-perl
- libinovasdk1
- libirecovery-common
- libjs-xterm
- libk3b-extracodecs
- libkf5bluezqt-data
- libkf5jsembed-data
- libkf5jsembed-dev
- libkf5jsembed5
- libkf5kcmutils5
- libkf5kdelibs4support5-bin
- libkf5khtml-bin
- libkf5khtml-data
- libkf5khtml-dev
- libkf5khtml5
- libkf5krosscore5
- libkf5krossui5
- libkf5libkdepim-dev
- libkf5screen-bin
- libkf5su-bin
- libkf5su-data
- libkf5su5
- libkf5sysguard-data
- libkf5texteditor5
- libkf5wallet-bin
- libkf5wallet-data
- libkf5wallet5
- libkf5webkit-dev
- libkf5webkit5
- libkf5xmlgui-bin
- libkpmcore10
- libkpmcore12
- libkwalletbackend5-5
- liblzf-dev
- libmirisdr0
- libmono-fuse-cil
- libmozjs-78-0
- libmozjs-78-dev
- libnbd-bin
- libnfc6
- libnitrokey-common
- libnjb5
- libnm0
- libnma0
- libnss-mymachines
- libnss3-tool
- libnvidia-compiler
- libnvidia-tesla-470-compiler
- libnvidia-tesla-compiler
- libnxt
- libolecf-utils
- libopenni-sensor-pointclouds0
- libopenni-sensor-primesense0
- libopenni2-0
- libopenobex2
- libosmosdr0
- libp11-3
- libpam-gnome-keyring
- libpam-kwallet-common
- libpam-kwallet5
- libpam-p11
- libpam-python
- libpktriggercord0
- libplayeronecamera2
- libpsm2-2-compat
- libpython2.7
- libpython3.11-dev
- libqcow-utils
- libqt5pdf5
- libqt5pdfwidgets5
- libqt5webengine-data
- libqt5webengine5
- libqt5webenginecore5
- libqt5webenginewidgets5
- libqt5webkit5
- libqt5webkit5-dev
- libqt6webchannel6
- libqt6webengine6-data
- libqt6webenginecore6
- libqt6webenginecore6-bin
- libqt6webenginequick6
- libqt6webenginequickdelegatesqml6
- libqt6webenginewidgets6
- libqt6websockets6
- libqt6webview6
- libqt6webviewquick6
- libqtermwidget5-1
- libregf-utils
- librem-ec-acpi-dkms
- librem5-flash-image
- librem5-tweaks
- libricohcamerasdk
- librtlsdr0
- libsane-hpaio
- libsane1
- libsbig4
- libsigrok4
- libsmraw-utils
- libsquashfuse0
- libticables2-8
- libva-dev
- libvhdi-utils
- libvirt-clients
- libvirt-daemon
- libvirt-daemon-driver-lxc
- libvirt0
- libvmdk-utils
- libvpb1
- libvshadow-utils
- libvslvm-utils
- libvte-2.91-gtk4-0
- libvte-common
- libvte9
- libvterm0
- libwim15
- libx52pro0
- libxcrypt-source
- libxine2-dev
- libxtrxll0
- libyubikey-udev
- light
- lime-forensics-dkms
- limesuite-udev
- links
- links2
- linux-config-6.1
- linux-config-6.4
- linux-headers-6.1.0-10-amd64
- linux-headers-6.1.0-10-cloud-amd64
- linux-headers-6.1.0-10-common
- linux-headers-6.1.0-10-common-rt
- linux-headers-6.1.0-10-rt-amd64
- linux-headers-6.1.0-11-amd64
- linux-headers-6.1.0-11-cloud-amd64
- linux-headers-6.1.0-11-common
- linux-headers-6.1.0-11-common-rt
- linux-headers-6.1.0-11-rt-amd64
- linux-headers-6.1.0-9-amd64
- linux-headers-6.1.0-9-cloud-amd64
- linux-headers-6.1.0-9-common
- linux-headers-6.1.0-9-common-rt
- linux-headers-6.1.0-9-rt-amd64
- linux-headers-6.4.0-0.deb12.2-amd64
- linux-headers-6.4.0-0.deb12.2-cloud-amd64
- linux-headers-6.4.0-0.deb12.2-common
- linux-headers-6.4.0-0.deb12.2-common-rt
- linux-headers-6.4.0-0.deb12.2-rt-amd64
- linux-kbuild-6.1
- linux-kbuild-6.4.0-0.deb12.2
- linux-source-6.1
- linux-source-6.4
- linux-support-6.1.0-10
- linux-support-6.1.0-11
- linux-support-6.1.0-9
- linux-support-6.4.0-0.deb12.2
- linuxcnc-uspace
- liquidctl
- lisp-compiler
- llvm
- llvm-14
- loggedfs
- lomiri-common
- lomoco
- lpe
- lttng-modules-dkms
- ltunify
- luakit
- lvm2
- lxcfs
- lxterminal
- lynx
- lyx
- m2-compiler
- macchanger
- madfuload
- madwimax
- maim
- make
- manpages-dev
- mate-screensaver
- mate-settings-daemon-common
- mate-submodules-source
- mate-terminal
- mate-utils
- matlab-gdf
- matlab-zmat
- mc
- mdadm
- mdevctl
- media-player-info
- mercurial
- mergerfs
- meson
- mg
- mhddfs
- micro
- midisport-firmware
- mini-soong
- minidisc-utils
- mirage
- mkdocs
- mksh
- mlterm
- mlterm-common
- mlterm-im-m17nlib
- mlterm-im-scim
- mlterm-im-uim
- mlterm-tiny
- mlterm-tools
- mobile-broadband-provider-info
- mobile-tweaks-common
- modem-manager-gui
- modemmanager
- mono-csharp-shell
- mono-source
- moosefs-chunkserver
- moosefs-client
- morph-browser
- mozilla-devscripts
- mp3fs
- msi-keyboard
- mspdebug
- mssh
- mt-st
- mtd-utils
- mtkbabel
- mu-editor
- multipath-tools
- mustang-plug
- mutter-common
- nano
- nat-rtsp-dkms
- nbc
- ne
- nedit
- neovim
- net-tools
- netfilter-persistent
- netplug
- netrik
- netscript-2.4
- netsurf-fb
- netsurf-gtk
- network-manager
- newlib-source
- nfs-kernel-server
- ng
- nginx-dev
- nilfs-tools
- ninja-build
- node-vue-template-compiler
- node-webassemblyjs-helper-compiler
- node-weex-template-compiler
- node-xterm
- nqc
- nut-ipmi
- nut-server
- nvi
- nvidia-fs-dkms
- nvidia-kernel-common
- nvidia-kernel-dkms
- nvidia-kernel-source
- nvidia-open-kernel-dkms
- nvidia-open-kernel-source
- nvidia-tesla-470-kernel-dkms
- nvidia-tesla-470-kernel-source
- nvidia-tesla-kernel-dkms
- nvidia-tesla-kernel-source
- nvme-cli
- nxt-firmware
- obexfs
- obexftp
- objc++-compiler
- objc-compiler
- ocaml-source
- ocfs2-tools
- ofono
- okular-extra-backends
- ola
- open-iscsi
- open-vm-tools
- open-vm-tools-desktop
- openafs-fuse
- openafs-modules-dkms
- openafs-modules-source
- openfpgaloader
- openocd
- openrazer-driver-dkms
- openvpn-dco-dkms
- openvswitch-source
- osspd
- ostree
- ostree-tests
- owfs-fuse
- p11-kit
- p11-kit-modules
- p7zip
- p7zip-full
- packagekit
- packagekit-tools
- paho.mqtt.c-examples
- pcmciautils
- pdl
- pidgin-dev
- pidgin-gnome-keyring
- pike8.0-fuse
- pinentry
- pipx
- pkexec
- pkg-config
- pkg-kde-tools
- pkg-php-tools
- pkgconf
- plasma-desktop
- plasma-desktop-data
- plasma-dialer
- plasma-discover-backend-snap
- plasma-disks
- plasma-firewall
- plasma-framework
- plasma-mobile-tweaks
- plasma-workspace
- plasma-workspace-data
- plptools
- pluma
- pocl-source
- polkit-kde-agent-1
- polkitd-pkla
- ponyprog
- posh
- postgresql-server-dev-all
- powerdevil
- ppp-dev
- pppconfig
- pppd
- pppoeconf
- pptp-linux
- pptpd
- printer-driver-foo2zjs
- projecteur
- propellor
- protobuf-c-compiler
- protobuf-compiler
- prusa-slicer
- pterm
- pulseaudio
- putty
- pypi2deb
- pyppd
- pyqt6-webengine-dev
- python-dev-is-python2
- python-dev-is-python3
- python-is-python2
- python2
- python2-minimal
- python2.7-minimal
- python3-apt
- python3-btchip
- python3-cxx-dev
- python3-dev
- python3-devpi-common
- python3-elgato-streamdeck
- python3-fuse
- python3-fusepy
- python3-llfuse
- python3-pandas
- python3-pip
- python3-ply
- python3-pyfuse3
- python3-pyqt5.qtwebengine
- python3-pyqt5.qtwebengine-dbg
- python3-pyqt6.qtwebchannel
- python3-pyqt6.qtwebengine
- python3-pyqt6.qtwebsockets
- python3-pyte
- python3-sip-dev
- python3-terminado
- python3-venv
- pyzo
- qcom-phone-utils
- qdmr
- qemu-system-arm
- qemu-system-common
- qemu-system-data
- qemu-system-mips
- qemu-system-misc
- qemu-system-ppc
- qemu-system-sparc
- qemu-system-x86
- qemu-user
- qemu-utils
- qflipper
- qlcplus
- qml-module-qtquick-pdf
- qml-module-qtwebengine
- qml-module-qtwebkit
- qt5-image-formats-plugin-pdf
- qt6-webchannel-dev
- qt6-webengine-dev
- qt6-webengine-dev-tools
- qt6-webengine-private-dev
- qt6-websockets-dev
- qt6-websockets-private-dev
- qt6-webview-dev
- qt6-webview-plugins
- qtcreator
- qtcreator-doc
- qterminal
- qthid-fcd-controller
- qtpdf5-dev
- qtpdf5-doc
- qtpdf5-doc-html
- qtpdf5-examples
- qtwebengine5-dev
- qtwebengine5-dev-tools
- qtwebengine5-doc
- qtwebengine5-doc-html
- qtwebengine5-examples
- qtwebengine5-private-dev
- quilt
- qutebrowser
- r8125-dkms
- r8168-dkms
- rake-compiler
- rancid
- rapiddisk-dkms
- rarpd
- raspi-firmware
- razercfg
- rbd-fuse
- rc
- rcs
- rdiff-backup-fs
- rdma-core
- rear
- reiser4progs
- reiserfsprogs
- remmina-plugin-kwallet
- retext
- rfkill
- rkdeveloptool
- robocode
- rtpengine-kernel-dkms
- ruby-ffi-compiler
- ruby-fusefs
- rush
- rust-src
- rustc
- rxvt-unicode
- s3backer
- s3dvt
- s3fs
- sakura
- sash
- sbcl
- scanbd
- scdaemon
- scons
- scour
- screenfetch
- screengrab
- screenie
- scrot
- seahorse
- seahorse-daemon
- seahorse-nautilus
- securefs
- selinux-policy-src
- seyon
- sg3-utils-udev
- signon-kwallet-extension
- sigrok-firmware-fx2lafw
- sleepd
- sludge-compiler
- smb4k
- smbnetfs
- solaar
- soong
- spectools
- sphinx-common
- spice-webdavd
- spyder
- squashfuse
- srptools
- ssh-askpass
- sshfs
- steam-devices
- stlink-tools
- stterm
- sudo
- sudo-ldap
- sugar-browse-activity
- sunxi-tools
- surf
- svn
- sxmo-utils
- system-config-printer-udev
- systemd-container
- systemd-cron
- t2n
- tcputils
- tcsh
- teensy-loader-cli
- terminal.app
- terminator
- terminology
- termit
- tex-common
- texmaker
- texstudio
- textedit.app
- thermald
- thonny
- thrift-compiler
- thunderbolt-tools
- tilda
- tilde
- tilix
- tk-html1
- tkcon
- tlp
- tlp-rdw
- tmfs
- tp-smapi-dkms
- tpb
- tpm-udev
- trezor
- triggerhappy
- tucnak
- tup
- ubertooth
- ubertooth-firmware
- ubertooth-firmware-source
- uclibc-source
- udftools
- udisks2-zram
- uhd-host
- ukui-power-manager
- ukui-screensaver
- ukui-settings-daemon
- uml-utilities
- umview-mod-umfuseiso9660
- unionfs-fuse
- unrar
- unrar-nonfree
- upower
- usb-modeswitch
- usb-modeswitch-data
- usbauth
- usbmuxd
- usbrelay
- usbsdmux
- uvcdynctrl
- uwsgi-dev
- uwsgi-src
- v4l2loopback-dkms
- v4l2loopback-source
- vagrant
- valinor
- vdr-dev
- vigor
- vile
- vkd3d-compiler
- vmfs-tools
- vmfs6-tools
- voctomix-outcasts
- vpb-driver-source
- vpoll-dkms
- w1retap
- w3m
- waagent
- wabt
- wakeonlan
- wavemon
- wesnoth-1.14-server
- wesnoth-1.16-server
- west-chamber-dkms
- west-chamber-source
- whereami
- wide-dhcpv6-client
- wide-dhcpv6-relay
- wide-dhcpv6-server
- winregfs
- wireless-tools
- wit
- wkhtmltopdf
- wmifinfo
- wodim
- wpagui
- wpan-tools
- wpasupplicant
- wvdial
- wx-common
- x11-apps
- x2gothinclient-smartcardrules
- x2gothinclient-usbmount
- xdg-desktop-portal
- xdg-desktop-portal-tests
- xemacs21
- xemacs21-mule
- xemacs21-mule-canna-wnn
- xemacs21-nomule
- xfce4-appfinder
- xfce4-power-manager
- xfce4-wavelan-plugin
- xfce4-whiskermenu-plugin
- xfsprogs
- xgterm
- xiterm+thai
- xl2tpd
- xmount
- xonsh
- xorg-server-source
- xperia-flashtool
- xpra
- xr-hardware
- xrdp
- xrootd-fuse
- xscreensaver
- xserver-xorg-dev
- xserver-xorg-input-wacom
- xtables-addons-dkms
- xtables-addons-source
- xterm
- xtermcontrol
- xtermset
- xtrx-dkms
- xttitle
- xwpe
- yakuake
- yash
- yeahconsole
- yforth
- yi
- yorick
- yorick-dev
- yotta
- yudit
- zathura-dev
- zfs-dkms
- zfs-fuse
- zfsutils-linux
- zgen
- zile
- zip
- zplug
- zsh
- zsh-antigen
- zsh-autosuggestions
- zsh-common
- zsh-static
- zsh-syntax-highlighting
- zutty
 
 Explanation:
  We mostly ban packages in prisonpc-bad-package-conflicts-everyone.
@@ -1301,6 +46,11 @@ Package:
  *-dev
  *-dbg
  *-dbgsym
+ *-prof
+ *-compiler
+ *-src
+ *-source
+ *-dkms
  lib32*
  libx32*
  src:debian-installer-netboot-images
@@ -1421,7 +171,6 @@ Package:
  src:forensics-all
  src:lava
  src:ubuntu-packaging-guide
- *-dkms
  src:gnumach
  src:invaders
  linux-source-*
@@ -1469,6 +218,7 @@ Package:
  src:golang-github-docker-docker-credential-helpers
  src:node-is-docker
  elpa-*
+ src:*-el
  src:xemacs21
  src:emacs
  src:abcl
@@ -1693,16 +443,16 @@ Explanation: Inmates MUST NOT have unnecessary crypto
     Neither actually provide crypto, just GUI helpers.
     ssh-askpass-gnome is src:openssh; staff need parts of src:openssh.
   • src:gcr4 et al are Gnome password manager.
-    FIXME: gvfs → gvfs-libs → libgcr4 (src:gcr4)
-    FIXME: chromium → libcups → libgnutls → libp11-kit0 (src:p11-kit)
-    FIXME gvfs, msmtp → libsecret (src:libsecret)
+    gvfs → gvfs-libs → libgcr4 (src:gcr4)
+    chromium → libcups → libgnutls → libp11-kit0 (src:p11-kit)
+    gvfs, msmtp → libsecret (src:libsecret)
   • src:kf6-kwallet et al are KDE password manager.
   • zip/7zip/rar formats support AES (strong crypto).
     https://en.wikipedia.org/wiki/ZIP_(file_format)#Encryption
     Deny the ones we can.
     As at Debian 11, src:zip DOES NOT support AES.
     libarchive (bsdtar) DOES support AES.
-    FIXME: vlc-plugin-base & gvfs-backends → libarchive
+    vlc-plugin-base & gvfs-backends → libarchive
   • libreoffice CANNOT do zip-level AES on .docx/.odt/&c, but
     libreoffice CAN do docx/odt level encryption inside the zip.
     We nerf that elsewhere, in libreoffice XML config.
@@ -1759,7 +509,7 @@ Explanation: Inmates MUST NOT have clandestine comms
     Other network clients should be absent.
     Inmate might use them to set up custom networking.
   • nftables → libxtables (src:iptables)
-Pin-Priority: -23974
+Pin-Priority: -11498
 Pin: version *
 Package:
  NECESSARY-src:bluez    bluetooth bluez bluez-cup bluez-hcidump bluez-meshd bluez-obexd bluez-source bluez-test-scripts bluez-test-tools
@@ -1810,3 +560,1015 @@ Package:
  src:*wavelan*
  NECESSARY:src-busybox          udhcpc udhcpd
  src:xl2tpd
+
+
+Explanation: Inmates MUST NOT have writable local media (DVD, USB)
+ Notes:
+  • disc-snitch.py does not need genisoimage since 2023
+    Block other ISO mastering things (except libburn4, used by staff).
+Pin-Priority: -29966
+Pin: version *
+Package:
+ src:cdrkit
+ src:dvd*-tools
+ src:cdrdao
+ src:bcachefs-tools
+
+
+Explanation: Inmates MUST NOT have writable local media (DVD, USB) - mkfs shitlist
+ Notes:
+  • shitlist all mkfs.* packages
+        $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search bin/mkfs.'
+    except for
+        util-linux --- needed for /bin/mount
+        e2fsprogs  --- handled in prisonpc-ersatz-e2fsprogs
+        ntfs-3g    --- needed by staff for fuse mount.ntfs-3g
+                       https://alloc.cyber.com.au/task/task.php?taskID=24592
+        src:e2fsprogs — initramfs-tools-core → logsave; nfs-client → libcom-err2
+    Note staff exfat uses in-kernel driver - no fuse userspace packages.
+Pin-Priority: -28843
+Pin: version *
+Package:
+ src:btrfs-progs
+ src:cpmtools
+ src:dosfstools
+ NECESSARY-src:e2fsprogs e2fsprogs* fuse2fs useext2 e2fs-static
+ src:erofs-utils
+ src:exfatprogs
+ src:f2fs-tools
+ src:gfs2-utils
+ src:hfsprogs
+ src:jfsutils
+ src:mtd-utils
+ src:nilfs-tools
+ NECESSARY-src:ntfs-3g
+ src:ocfs2-tools
+ src:s3ql
+ src:udftools
+ src:xfsprogs
+ NECESSARY-src:util-linux util-linux-extra
+ src:zonefs-tools
+
+
+Explanation: Inmates MUST NOT have writable local media (DVD, USB) - fuse shitlist
+ Notes:
+  • In theory an inmate could write a userland filesystem with fuse.
+        $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG '"aptitude search --disable-columns -F ' %e %p' '?depends(^libfuse.*$~|^fuse3?$) ?not(?name(^~(gvfs-fuse~|ntfs-3g~|fuse~|fuse3~)$))'"
+    Therefore shitlist anything that depends on libfuse2 or libfuse3.
+    Except for:
+      gvfs-fuse / ntfs3g / fuse / fuse3 (needed for staff)
+      qemu-guest-agent (needed for staff)
+  • pipewire complains about missing xdg-desktop-port -- do we care? --twb, September 2023
+Pin-Priority: -1397
+Pin: version *
+Package:
+ src:afflib
+ src:afuse
+ src:android-file-transfer
+ src:apt-cacher-ng
+ src:archivemount
+ src:avfs
+ src:bindfs
+ src:btfs
+ src:buildbox
+ src:cctools
+ src:ceph
+ src:charliecloud
+ src:clamfs
+ src:cryfs
+ src:deja-dup
+ src:dislocker
+ src:disorderfs
+ NECESSARY-src:e2fsprogs e2fsprogs* fuse2fs useext2 e2fs-static
+ src:erofs-utils
+ src:ffmpegfs
+ src:flatpak
+ src:flatpak-builder
+ src:fosfat
+ src:freedombox
+ src:freerdp3
+ NECESSARY-src:fuse3
+ src:fuse-convmvfs
+ src:fuse-exfat
+ src:fuse-overlayfs
+ src:fuse-umfuse-fat
+ src:fusefile
+ src:fuseiso
+ src:gnome-connections
+ src:gnome-remote-desktop
+ src:gocryptfs
+ src:gphotofs
+ src:grub2
+ src:httpdirfs-fuse
+ src:ifuse
+ src:kio-fuse
+ src:libbde
+ src:libewf
+ src:libguestf
+ src:libguestfs
+ src:libmodi
+ src:libnbd
+ src:libqcow
+ src:libvhdi
+ src:libvirt
+ src:lxcfs
+ src:megacmd
+ src:mergerfs
+ src:mhddfs
+ src:moosefs
+ src:onedriver
+ src:open-vm-tools
+ src:osmocom-analog
+ src:osspd
+ src:ostree
+ src:plptools
+ src:pyfuse3
+ NECESSARY-src:qemu	qemu-user* qemu-system* qemu-utils qemu-block*
+ src:rdiff-backup-fs
+ src:rshim-user-space
+ src:s3ql
+ src:saunafs
+ src:seadrive-fuse
+ src:squashfuse
+ src:sshfs-fuse
+ src:tmfs
+ src:tup
+ src:ucx
+ src:vuos
+ src:wimlib
+ src:winregfs
+ src:xdg-desktop-portal
+ src:xmount
+ src:xrdp
+ src:zfs-fuse
+
+Explanation: Inmates MUST NOT have writable local media (DVD, USB) - udev shitlist
+ Notes:
+  Block EVERYTHING doc/NNNNN-udev-audit.py finds creating custom udev rules,
+  except for a small set of things we actually want (e.g. udev & udisks2).
+  See also doc/NNNNN-udev-audit.py
+  See also https://git.cyber.com.au/measurements-for-PrisonPC/blob/main/D14/NNNNN-udev-audit.tar
+  Except for:
+    systemd             — for everything
+    udev                — for everything
+    udisks2             — for DVD drive
+    upower              — for case power button (eventually)
+    xserver-xorg-core   — for video
+    pipewire-bin        — for audio (Debian 12+)
+    nfs-common          — for mounting /home in Debian 12+; see https://bugs.debian.org/1024082
+    libinput-bin        — for keyboard and mouse
+    ir-keytable         — for infrared TV remote control
+    qemu-guest-agent    — needed for staff VM-ized desktops, blocked in prisonpc-bad-package-conflicts-inmates
+    spice-vdagent       — needed for staff VM-ized desktops, blocked in prisonpc-bad-package-conflicts-inmates
+    src:console-setup   — xserver-xorg-core → keyboard-configuration
+    src:gpsd            — marble → libgps32
+    src:pulseaudio      — EVERYTHING → libsdl2-0 → libpulse* (even though we use pipewire-pulse now)
+  Resolved since Debian 12:
+    util-linux-extra    — for everything (we do not need the udev hwclock part though)
+    libmtp-common	— DO NOT WANT, but needs to be nerfed as vlc & gvfs Depends on it via libmtp9
+    libwacom-common     — DO NOT WANT, but xserver-xorg-input-libinput Depends on it (harmless, though)
+    dmsetup             — DO NOT WANT, but NFSv4 client Depends on it
+    libgphoto2-6        — DO NOT WANT, but gvfs-backends Depends on it (staff-only, for sftp:// in thunar)
+    e2fsprogs           — DO NOT WANT, but already handled as prisonpc-ersatz-e2fsprogs
+Pin-Priority: -6759
+Pin: version *
+Package:
+ src:0xffff
+ src:air-quality-sensor
+ src:alsa-tools alsa-firmware-loaders
+ src:alsa-utils
+ src:amazon-ec2-net-utils
+ src:amazon-ec2-utils
+ src:android-udev-rules
+ src:antimicro
+ src:antpm
+ src:aoetools
+ NECESSARY-src:apt
+ src:argyll
+ src:rust-asahi-btsync
+ src:asahi-scripts
+ src:autorandr
+ src:avarice
+ src:avrdude
+ src:awesfx
+ src:azure-vm-utils
+ src:battery-stats
+ src:bcache-tools
+ src:beep
+ src:bilibop
+ NECESSARY-src:bluez
+ src:boinc
+ src:bolt
+ src:bottlerocket
+ src:bridge-utils
+ src:brightnessctl
+ src:btrfs-progs
+ src:bumblebee
+ src:ceph
+ src:ckb-next
+ src:cloud-init
+ NECESSARY-src:colord	colord
+ src:concordance
+ src:consolekit2
+ NECESSARY-src:console-setup	console-setup
+ src:ndctl
+ src:ddcutil
+ src:dfu-util
+ src:direwolf
+ src:displaylink-driver
+ src:dlm
+ src:dmrconfig
+ NECESSARY-src:lvm2	lvm2* dmeventd
+ src:docker.io
+ src:dolphin-emu
+ src:drbd-utils
+ src:driverctl
+ src:dualsensectl
+ NECESSARY-src:e2fsprogs e2fsprogs* fuse2fs useext2 e2fs-static
+ src:eegdev
+ src:eg25-manager
+ src:elogind
+ src:esptool
+ src:feedbackd
+ src:flashprog
+ src:flashrom
+ src:fpga-icestorm
+ src:g15daemon
+ src:g810-led
+ src:galileo
+ src:garmin-forerunner-tools
+ src:gcpegg
+ src:gfs2-utils
+ src:gnome-settings-daemon
+ src:gobi-loader
+ src:goldencheetah
+ NECESSARY-src:gpsd	gpsd*
+ src:gr-funcube
+ src:libguestfs
+ src:hdparm
+ src:heimdall-flash
+ src:hexagonrpcd
+ src:hylafax
+ NECESSARY-src:linux	hyperv-daemons
+ src:i2c-tools
+ src:ifupdown*
+ src:iio-sensor-proxy
+ src:imsprog
+ src:incus
+ src:indi
+ src:indi-*
+ src:infnoise
+ NECESSARY-src:sysvinit	initscripts orphan-sysvinit-scripts sysvinit-core
+ src:inputattach
+ src:ipheth-utils
+ src:ipp-usb
+ src:iprutils
+ NECESSARY-src:v4l-utils	NECESSARY-ir-keytable
+ src:isight-firmware-tools
+ src:joystick
+ src:rust-kanata
+ src:kdump-tools
+ src:kinect-audio-setup
+ src:knxd
+ src:multipath-tools	kpartx
+ src:laptop-mode-tools
+ src:lcdproc
+ src:ledger-wallets-udev
+ src:acsccid
+ src:libahp-gt
+ src:airspyone-host
+ src:airspyhf
+ src:libam7xxx
+ src:libapogee3
+ src:libasi
+ src:bladerf2
+ src:bmusb
+ src:ccid
+ src:comedilib
+ src:libdjconsole
+ NECESSARY-src:libffado
+ src:libfishcamp
+ src:libfli
+ src:libfprint
+ src:libfreenect
+ src:gmobile
+ src:libgphoto2
+ src:linux-gpib-user
+ src:libgpod
+ src:libmicam
+ src:hackrf
+ src:hamlib
+ src:rfone-host
+ src:hydrasdr-host
+ src:pcsc-cyberjack
+ src:libiio
+ src:libinovasdk
+ NECESSARY-src:libinput
+ src:libirecovery
+ src:bluez-qt
+ src:libm2k
+ src:libmirisdr
+ src:libmtp
+ src:libnfc
+ src:*nitrokey*
+ src:libnjb
+ src:libnxt
+ src:libopenni2
+ src:openni-sensor-pointclouds
+ src:openni-sensor-primesense
+ src:libopenobex
+ src:libosmosdr
+ src:libpktriggercord
+ src:libplayerone
+ src:libpsm2
+ src:librem5-flash-image
+ src:mobile-tweaks
+ src:libricohcamerasdk
+ src:rtl-sdr
+ src:sane-backends
+ src:libsbig
+ src:libsigrok
+ src:libticables
+ NECESSARY-src:libwacom		xserver-xorg-input-wacom libwacom-bin
+ src:52pro
+ src:libxtrxll
+ src:*yubikey*
+ src:light
+ src:limesuite
+ src:liquidctl
+ src:lomiri
+ src:ltunify
+ src:madfuload
+ src:madwimax
+ src:mate-settings-daemon
+ src:mdadm
+ src:mdevctl
+ src:media-player-info
+ src:midisport-firmware
+ src:*minidisc*
+ src:mkosi
+ src:modemmanager
+ src:moosefs
+ src:msi-keyboard
+ src:mspdebug
+ src:mtkbabel
+ src:mt-st
+ src:multipath-tools
+ src:mustang-plug
+ src:mutter
+ src:nbc
+ src:network-manager
+ NECESSARY-src:nfs-utils	nfs-kernel-server
+ src:nqc
+ src:nut
+ src:*nvidia*
+ src:nvme-cli
+ src:ocfs2-tools
+ src:*ofono*
+ src:*fpga*
+ src:openocd
+ src:openrazer
+ src:pyatem
+ src:open-iscsi
+ src:open-vm-tools
+ src:osspd
+ src:pcmciautils
+ src:picotool
+ NECESSARY-src:pipewire
+ src:plasma-mobile
+ src:ponyprog
+ src:foo2zjs
+ src:projecteur
+ src:slic3r-prusa
+ NECESSARY-src:pulseaudio pulseaudio*
+ src:btchip-python
+ src:debusine
+ src:*steamdeck*
+ src:nxt-python
+ src:usbmuxctl
+ src:qatlib
+ src:*phone-utils
+ src:qdmr
+ NECESSARY-src:qemu NECESSARY-qemu-guest-agent
+ src:qflipper
+ src:qlcplus
+ src:qthid-fcd-controller
+ src:qtile
+ src:razercfg
+ src:rdma-core
+ src:rear
+ src:reform-tools
+ src:rkdeveloptool
+ src:saunafs
+ src:scanbd
+ src:gnupg2 scdaemon
+ src:sd-mux-ctrl
+ src:sfp-master
+ src:sg3-utils
+ src:sispmctl
+ src:solaar
+ src:rust-speakersafetyd
+ src:spectools
+ NECESSARY-src:spice-vdagent
+ src:phodav spice-webdavd
+ src:srcpd
+ src:steam-installer
+ src:stlink
+ src:*sunxi*
+ src:swayosd
+ src:switcheroo-control
+ src:sxmo-utils
+ NECESSARY-src:systemd
+ src:system-config-printer
+ src:t2n
+ src:teensy-loader-cli
+ src:thunderbolt-tools
+ src:tkey-ssh-agent
+ src:rust-tiny-dfr
+ src:tlp
+ src:tpm2-tss
+ src:triggerhappy
+ src:tucnak
+ src:ubertooth
+ src:udev-hid-bpf
+ src:udftools
+ NECESSARY-src:udisks2
+ src:uhd
+ NECESSARY-src:upower
+ src:usbauth
+ src:usbmuxd
+ src:usbrelay
+ src:usbsdmux
+ src:usb-modeswitch-data
+ src:mfgtools
+ src:*webcam*
+ src:v4l2loopback
+ src:vhba-module
+ src:voctomix-outcasts
+ src:w1retap
+ src:waagent
+ src:wireless-regdb
+ src:xfsprogs
+ src:xpadneo-dkms
+ src:xrt
+ src:xr-hardware
+ NECESSARY-src:xorg-server
+ NECESSARY-src:*wacom* src:wacomtablet
+ src:xtrx-dkms
+ src:ydotool
+ src:*yubihsm*
+ src:zfs-linux
+
+
+Explanation: Inmates MUST NOT have containers (VMs)
+Pin-Priority: -31466
+Pin: version *
+Package:
+ src:libvirt
+ src:*virt*
+ src:gnome-boxes
+ NECESSARY-src:qemu	qemu-user* qemu-system* qemu-utils qemu-block*
+ src:ipxe
+ src:grub2
+ systemd-container
+ libnss-mymachines
+
+
+Explanation: Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL) - terminal emulators
+ $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG '"aptitude search --disable-columns -F ' %e %p' '(?provides(x-terminal-emulator) | ?tag(terminal) ) ?not(?name(^xfce4-terminal$))'"
+ NOTE: staff need x-terminal-emulator (xfce4-terminal).
+ NOTE: added by hand (do not match search pattern above):
+  • fbterm
+  • qterm
+  • node-xterm
+  • vterm
+  • et cetera!
+  • vte (old version, not needed by staff)
+  • vte2* (but needed for staff)
+ NOTE: FUCKING SIGH, xfonts-terminus provides the GOOD OpenType format of Terminus, but
+       catalycm-dda-data → fonts-terminus (src:cool-retro-term) which is the LEGACY TrueType format of Terminus.
+       Why is some random terminal emulator providing an independent version of Terminus font family?!!
+Pin-Priority: -32702
+Pin: version *
+Package:
+ src:*qterm*
+ src:*vterm*
+ src:*xterm*
+ src:terminus
+ src:termrec
+ src:termqt
+ src:bootterm
+ src:gtkterm
+ src:termshark
+ src:qrterminal
+ src:x11iraf
+ src:s3d
+ src:pyte
+ src:terminado
+ src:vte
+ NECESSARY-src:vte2* libvte-2.91-gtk4-0
+ src:blackbox-terminal
+ src:bogl
+ NECESSARY-src:cool-retro-term	cool-retro-term
+ src:deepin-terminal
+ src:eterm
+ src:foot
+ src:fqterm
+ src:gnome-console
+ src:gnome-terminal
+ src:guake
+ src:kitty
+ src:konsole
+ src:lxterminal
+ src:mate-terminal
+ src:mlterm
+ src:mssh
+ src:ptyxis
+ src:putty
+ src:qmlkonsole
+ src:qterminal
+ src:rust-alacritty
+ src:rxvt-unicode
+ src:sakura
+ src:seyon
+ src:stterm
+ src:terminal.app
+ src:terminator
+ src:terminology
+ src:termit
+ src:tilda
+ src:tilix
+ src:xiterm+thai
+ src:xterm
+ src:xtermcontrol
+ src:xtermset
+ src:xttitle
+ src:yakuake
+ src:yeahconsole
+ src:zutty
+
+
+Explanation: Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL) - privesc
+ We need at most one privesc framework.  Block the rest.
+ We need thunar->udisks2->polkit for mounting/ejecting DVDs.
+ We need do not need pkexec part of polkit
+ As at Debian 14, sudo-ldap is gone.
+ As at Debian 14, polkitd-pkla is gone.
+Pin-Priority: -21087
+Pin: version *
+Package:
+ src:sudo
+ src:rust-sudo-rs
+ src:lxqt-sudo
+ NECESSARY-src:polkit pkexec
+ src:kde-cli-tools
+ src:*kdesu*
+
+
+Explanation: Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL) - misc other
+  chromium-sandbox REDUCES security.
+  It should be banned, not installed.
+  It is only existing as a workaround for kernels without user_ns.
+  https://bugs.debian.org/839277
+  https://bugs.debian.org/913116
+  These are alternatives to the XFCE4 applications/start menu.
+  They provide easy ways to run an arbitrary shell command (i.e. Win+R).
+  There is no easy way to remove that feature while keeping the "nice menu" feature.
+Pin-Priority: -7340
+Pin: version *
+Package:
+  chromium-sandbox
+  xfce4-appfinder
+  xfce4-whiskermenu-plugin
+
+
+Explanation: Inmates SHOULD NOT have a text editor - ?section(editors)
+ This list is mostly manual, but is partly informed by this URL:
+ https://codesearch.debian.net/search?q=update-alternatives+--install+%2Fusr%2Fbin%2Feditor+editor&literal=1
+Pin-Priority: -5516
+Pin: version *
+Package:
+ src:cream
+ src:dav-text
+ src:diffstat
+ src:e3
+ src:efte
+ src:elvis-tiny
+ src:fte
+ src:gnuserv
+ src:joe
+ src:jove
+ src:jupp
+ src:le
+ src:mc
+ src:mg
+ src:micro
+ src:nano
+ src:ne
+ src:nedit
+ src:*neovim*
+ src:nvi
+ src:tilde
+ src:vile
+ src:yi
+ src:zile
+ src:bvi
+ src:chr
+ src:*emacs*
+ src:dhex
+ src:dte
+ src:e-wrapper
+ src:ed
+ src:edlin
+ src:vis
+ src:poke
+ src:skim
+ vim-*
+ src:tree-sitter*
+ src:jed
+ src:yudit
+ src:wxhexeditor
+ src:wily
+
+Explanation: Inmates SHOULD NOT have a text editor - GUI editors
+ This list is NOT comprehensive.
+ This list includes de facto GUI text editors
+ (meant for something else, but you can easily create attack.sh files).
+ In lyx, use File>Import>Plain text and File>Export>Plain text.
+ Except mousepad (used by staff)
+ Except inkscape → libgtksourceview-4-0 (all users)
+ Except mousepad → libgtksourceview-4-0 (staff)
+Pin-Priority: -5516
+Pin: version *
+Package:
+ src:pluma
+ src:juffed
+ src:gedit*
+ *-gedit
+ src:kate
+ src:*ktexteditor*
+ src:gtksourceview3
+ NECESSARY-src:gtksourceview4	gir1.2-gtksource-4
+ src:gtksourceview5
+ src:kwrited
+ src:retext
+ src:featherpad
+ src:focuswriter
+ src:kakoune
+ src:kilo
+ src:ledit
+ src:levee
+ src:liquidsoap
+ src:lyx
+ src:mle
+ src:mmm-mode
+ src:ncurses-hexedit
+ src:noblenote
+ src:manuskript
+ src:notepadqq
+ src:poke-elf
+ src:sml-mode
+ src:tea
+ src:texmacs
+ src:tweak
+ src:vigor
+ src:textedit.app
+ src:texstudio
+ src:texmaker
+ src:kile
+ src:fritzing
+ src:robocode
+ src:jedit
+
+
+Explanation: Inmates SHOULD NOT have access to cron-style scheduling
+ https://alloc.cyber.com.au/task/task.php?taskID=30091
+ NOTE: systemd timer units can still be used, but
+ there is a checker on the server side that nerfs attempts to use systemd timers.
+Pin-Priority: -16104
+Pin: version *
+Package:
+ src:anacron
+ src:at
+ src:bcron
+ src:cronie
+ src:systemd-cron
+ src:cron
+
+
+Explanation:
+ In principle IPP2 supports authentication, though
+ it happens inside the IPP2 payload, not inside HTTP.
+ When we experimentally enabled it,
+ we found that it asked for passwords WAY too often.
+ We have not gone back and tuned it yet.
+ In the meantime, inmates can spoof their identity to the print server with "lp -U alice test.pdf"
+ This does not directly affect security, but
+ it could affect billing of print resources (paper and ink).
+ The quick fix is simply to make sure lp(1) cannot be installed.
+ Applications almost always use cups as a library (not CLI fork+exec binaries).
+ When used as a library, this spoofing is much harder (maybe impossible).
+Pin-Priority: -6672
+Pin: version *
+Package:
+ cups-client
+
+
+Explanation:
+ X11 does not REALLY support screen locking:
+   https://www.jwz.org/blog/2021/01/i-told-you-so-2021-edition/
+ Rather than pretend, we simply do not let inmate lock the screen.
+ This also prevents inmate in a shared area from locking the screen and walking away, which is a sort of DOS.
+ Also do not let detainees suspend.
+ Can probably still suspend via systemd...
+Pin-Priority: -13686
+Pin: version *
+Package:
+ src:*screen*saver*
+ *screen*saver*
+ src:*power*manager*
+ *power*manager*
+ src:upower
+ src:thermald
+ src:sleepd
+
+
+Explanation: Inmates SHOULD NOT have packaging tools
+Pin-Priority: -20517
+Pin: version *
+Package:
+ src:*packagekit*
+ src:python-apt
+ dpkg-dev
+
+
+Explanation: Inmates SHOULD NOT have development tools
+ • Includes IDEs (not comprehensive)
+ • groovy provides groovyConsole, a basic REPL and text editor
+Pin-Priority: -20517
+Pin: version *
+Package:
+ pkgconf
+ src:codelite
+ wx-common
+ golang-*-go
+ src:geany*
+ src:manuals
+ gnome-devel,
+ src:d-spy
+ src:dconf-editor
+ src:gnome-builder,
+ src:sysprof
+ src:gtk-doc
+ src:meson
+ wxglade
+ gnome-api-docs
+ src:lazarus
+ src:kdevelop*
+ src:gambas3
+ src:eric
+ src:jupyter*
+ src:pandas
+ src:valinor
+ idle
+ idle-python*
+ src:pyzo
+ src:faustworks
+ src:groovy
+ src:bpython
+ src:codelite
+ src:eric
+ src:fpc
+ src:ktechlab
+ src:qtcreator,
+ src:sbcl
+ src:tkcon
+ src:pforth
+ src:gforth
+ src:yorick*
+ *-venv
+ src:python-pip
+ src:python-pipx
+
+
+Explanation: Inmates SHOULD NOT have development tools - VCS
+ Not comprehensive
+Pin-Priority: -20517
+Pin: version *
+Package:
+ src:git*
+ src:mercurial*
+ src:rcs*
+ src:svn*
+ src:subversion*
+ src:fossil*
+ src:breezy*
+ src:bazaar*
+ src:darcs*
+
+
+Explanation: Inmates SHOULD NOT have diagnostic tools
+ • certutil (libnss3-tools) - manipulate who Chromium trusts.
+ • drkonqi - report crash to KDE over http
+ • xmlgui - includes ksendbugemail, which sounds undesirable
+ • iproute2 - includes super useful "ip" and "ss" debugging tools
+ • acl - rarely-used debugging "getfacl" and "setfacl"
+   In Debian 9 systemd postinst used these.
+   In Debian 11+, systemd-tmpfiles does this via C code (libacl1?).
+   So we can shitlist acl.
+ UPDATE: kbounce kgeography &c → libkf6xmlgui6 (but do not need the app)
+Pin-Priority: -12335
+Pin: version *
+Package:
+ libnss3-tools
+ gnutls-bin
+ src:drkonqi
+ src:kxmlgui
+ NECESSARY-src:kf6-kxmlgui
+ src:iproute2
+ acl
+ src:gdb
+ src:gdb-*
+
+
+Explanation:
+ Leftovers from delete-bad-files KDE4 lockdown.
+ In KDE5, we can block the packages outright.
+Pin-Priority: -31831
+Pin: version *
+Package:
+ kde-config-*
+ src:plasma-*
+ src:*kcmutils
+ src:khelpcenter
+ src:kwallet*
+
+
+Explanation:
+ Shitlist everything that provides dbus-1/services/org.kde.*
+ $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search dbus-1/services/org.kde.'
+Pin-Priority: -12541
+Pin: version *
+Package:
+ src:amarok
+ src:calindori
+ src:dolphin
+ src:dolphin-plugins
+ src:elisa-player
+ src:kactivitymanagerd
+ src:akonadi*
+ src:kclock
+ src:kde-spectacle
+ src:kdeconnect
+ src:kded
+ src:kf6-kded
+ src:kdesvn
+ src:kget
+ src:khelpcenter
+ src:kio
+ src:kio-extras
+ src:kio-fuse
+ FIXME-src:kf6-kio
+ src:kmail
+ src:kmailtransport
+ src:knighttime
+ src:kongress
+ src:kontact
+ src:kontactinterface
+ src:konversation
+ src:korganizer
+ src:kscreen
+ src:libkscreen
+ src:ksystemstats
+ src:kf6-kwallet
+ src:kwalletmanager
+ src:kweather
+ src:libkscreen
+ src:neochat
+ src:plasma-dialer
+ src:plasma-workspace*
+ src:tokodon
+ src:yakuake
+
+
+Explanation:
+ Shitlist everything that provides /usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/
+ $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --regex /usr/lib/.*/plugins/kf[56]/kio/'
+Pin-Priority: -23957
+Pin: version *
+Package:
+ baloo6
+ bluedevil
+ kamera
+ kate
+ kdeconnect
+ kdepim-runtime
+ kde-zeroconf
+ kio
+ FIXME-kio6
+ kio-admin
+ kio-audiocd
+ kio-extras
+ kio-gdrive
+ kio-gopher
+ kio-ldap
+ kio-perldoc
+ konq-plugins
+ krusader
+ kup-backup
+ libk3b-extracodecs
+ plasma-workspace
+
+
+Explanation:
+ Shitlist everything that provides polkit*kde.
+ $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --regex polkit.*kde'
+Pin-Priority: -1707
+Pin: version *
+Package:
+ drkonqi
+ k3b
+ kalarm
+ kdenetwork-filesharing
+ kde-config-plymouth
+ kde-config-sddm
+ kde-inotify-survey
+ kinfocenter
+ kio-admin
+ ktexteditor-data
+ kwalletmanager
+ libkf6texteditor-data
+ libkpmcore13
+ libksysguard-data
+ plasma-desktop-data
+ plasma-discover-backend-snap
+ plasma-disks
+ plasma-firewall
+ plasma-mobile
+ plasma-widgets-addons
+ plasma-workspace-data
+ polkit-kde-agent-1
+ powerdevil
+ smb4k
+
+
+Explanation:
+ Shitlist everything that provides bin/dh_*
+ ...except xml-core (for polkit et al)
+ ...except perl-openssl-defaults (for gnucash)
+ AFAICT perl-openssl-defaults does two jobs:
+ 1. at install time, it just aliases libssl1.1 (as here); and
+ 2. at build time, it provides dh_perl_openssl.
+ We do not care about (2), but it is not spooky enough to bother spoofing.
+Pin-Priority: -26169
+Pin: version *
+Package:
+ apache2-dev
+ autotools-dev
+ bash-completion
+ click-dev
+ cli-common-dev
+ cme
+ config-package-dev
+ debhelper
+ dh-*
+ dictionaries-common-dev
+ doxygen
+ gem2deb
+ germinate
+ gnome-pkg-tools
+ gnulib
+ gnustep-make
+ gobject-introspection-bin
+ haskell-devscripts-minimal
+ libdbi-perl
+ libgrantlee5-dev
+ libgstreamer1.0-dev
+ libimager-perl
+ libvarnishapi-dev
+ libva-dev
+ libxine2-dev
+ mkdocs
+ mono-devel
+ nginx-dev
+ pdl
+ NECESSARY-perl-openssl-defaults
+ pidgin-dev
+ pkg-kde-tools
+ pkg-php-tools
+ postgresql-common-dev
+ ppp-dev
+ pyppd
+ NECESSARY-python3-numpy-dev
+ python3-ply
+ quilt
+ scour
+ sphinx-common
+ tex-common
+ uwsgi-dev
+ vdr-dev
+ NECESSARY-xml-core
+ xserver-xorg-dev
+ yorick-dev
+ zathura-dev
+

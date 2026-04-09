@@ -1,9 +1,13 @@
+
 Explanation: use VLC with screenshot support disabled (inmate only -- staff need sout for dvd ripping)
 Package: src:vlc
 Pin: release o=Cyber
 Pin-Priority: 500
 
 Explanation: denylist package (supplements prisonpc-bad-package-conflicts-inmates, can glob, cannot virtual packages)
+ FIXME: inkscape → libgtksourceview-4-0 (all users)
 Package: libvte-* libgtksourceview-*
 Pin: version *
-Pin-Priority: -1
+Pin-Priority: -7994
+
+
