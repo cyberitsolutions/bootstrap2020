@@ -108,7 +108,7 @@ applications = [
     "alex4", "caveexpress", "xmoto", "ballz", "nikwi",
     # Games Puzzle
     "atomix", "glpeces", "puzzle-jigsaw",
-    "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gbrainy", "gnome-mines",
+    "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gnome-mines",
     # Games Tetris
     "blockattack", "stax", "cuyo", "quadrapassel",
     # Games Strategy
@@ -182,7 +182,6 @@ applications = [
     "nikwi",                    # Games > Arcade > Nikwi Deluxe
     "bomberclone",              # Games > Arcade > Bomberman clone
     "gjiten",                   # Accessories > Japanese/English Dictionary
-    "gbrainy",                  # Games > Logic > Brain Teasers
     "tetzle",                   # Games > Logic > Jigsaw Puzzle Game
     "frozen-bubble",            # perl
 #   UNPOPULAR (HOURS PER SITE-YEAR)
@@ -256,7 +255,6 @@ applications = [
     "gnucash", "gnucash-docs",
     "nucleus",
     "pysiogame",
-    "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
     # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
@@ -277,7 +275,6 @@ applications = [
     "kgeography",
     "gnucash", "gnucash-docs",
     "pysiogame",
-    "gbrainy",
 ]
 
 
@@ -313,7 +310,6 @@ applications = [
     "gnucash", "gnucash-docs",
     "nucleus",
     "pysiogame",
-    "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
     # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
@@ -357,7 +353,6 @@ applications = [
     "gnucash", "gnucash-docs",
     "nucleus",
     "pysiogame",
-    "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
     # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
@@ -461,7 +456,6 @@ applications = [
     "kgeography",
     "gnucash", "gnucash-docs",
     "pysiogame",
-    "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1060987/removed-102-2-from-unstable/
     # FIXME: gjiten NOT REVIEWED YET, BUT INSTALLING AS TEST
