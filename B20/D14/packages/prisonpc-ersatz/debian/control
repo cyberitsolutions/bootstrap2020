@@ -27,36 +27,6 @@ Description: appease libreoffice
  So we trick apt into shipping libgpgme but not gpg,
  all of libreoffice will work except for password-protected documents.
 
-Package: prisonpc-ersatz-e2fsprogs
-Depends: ${misc:Depends}
-Provides:  e2fsprogs (= 1.47.0-2)
-Conflicts: e2fsprogs
-Replaces:  e2fsprogs
-Essential: yes
-Architecture: all
-Description: work around https://bugs.debian.org/1000353
- Inmates must not have access to local persistent storage.
- We remove mke2fs (& debugfs &c) as part of that requirement.
- .
- We install gvfs to provide trash:// in thunar file manager.
- This depends on e2fsprogs via
- gvfs → gvfs-daemons → udisks2 → libblockdev-fs2 → e2fsprogs.
- This is a Depends due to https://bugs.debian.org/887270
- It should probably be a Recommends due to runtime checks:
- https://codesearch.debian.net/search?q=bd_fs_ext_is_tech_avail
- Therefore we need a fake e2fsprogs.
- .
- We install quota package for its /usr/bin/quota.
- In Debian 9 its unused /sbin/quotacheck needed libext2fs2 (as "e2fslibs").
- In Debian 11 this issue is gone.
- .
- We install initramfs-tools to build a live-boot ramdisk.
- initramfs-tools needs logsave (from e2fsprogs) to fsck ANY rootfs.
- PrisonPC systems are diskless, so we do not use fsck.
- In Debian 9, logsave was in the e2fsprogs .deb.
- In Debian 11, logsave is a separate .deb.
- As logsave is harmless, we do not nerf it.
-
 # FIXME: logrotate/forky can use systemd-sysv instead of cron, but...
 #        $ apt install init logrotate # installs BOTH systemd-sysv AND cron
 #        $ apt install init logrotate cron- anacron- systemd-cron- bcron- cronie- # works, yuk
@@ -192,7 +162,6 @@ Package: prisonpc-bad-package-conflicts-everyone
 Depends:
  ${misc:Depends},
  prisonpc-ersatz-gpg (= ${binary:Version}),
- prisonpc-ersatz-e2fsprogs (= ${binary:Version}),
  prisonpc-ersatz-logrotate (= ${binary:Version}),
  prisonpc-ersatz-kio (= ${binary:Version}),
  prisonpc-ersatz-parted (= ${binary:Version}),
