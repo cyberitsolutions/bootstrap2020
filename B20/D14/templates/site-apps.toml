@@ -107,7 +107,7 @@ applications = [
     # Games Platform
     "alex4", "caveexpress", "xmoto", "ballz", "nikwi",
     # Games Puzzle
-    "atomix", "gtans", "puzzle-jigsaw",
+    "atomix", "glpeces", "puzzle-jigsaw",
     "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gbrainy", "gnome-mines",
     # Games Tetris
     "blockattack", "stax", "cuyo", "quadrapassel",
@@ -164,7 +164,7 @@ applications = [
     "gnome-metronome",                    # Multimedia > Metronome
     "singularity",              # Games > Strategy > Singularity
     "starfighter",              # Games > Arcade > Starfighter
-    "gtans",                    # Games > Logic > Tangrams
+    "glpeces",                    # Games > Logic > Tangrams
     "marathon-trilogy",         # alephone
     "marble-qt", "marble-plugins",  # Education > Terrestrial Globe (Marble Virtual Globe)
     "powermanga",               # Games > Arcade > Power Manga
