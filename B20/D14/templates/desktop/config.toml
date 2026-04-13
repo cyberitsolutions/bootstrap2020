@@ -20,7 +20,6 @@ include = [
     "plymouth-themes",
 
     # Accelerated graphics drivers for several libraries & GPU families
-    "vdpau-driver-all",  # VA/AMD, free
     "mesa-vulkan-drivers",     # Intel/AMD/Nvidia, free
     "va-driver-all",           # Intel/AMD/Nvidia, free
     "i965-va-driver-shaders",  # Intel, non-free, 2013-2017
