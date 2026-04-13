@@ -108,7 +108,6 @@ applications = [
     "alex4", "caveexpress", "xmoto", "ballz", "nikwi",
     # Games Puzzle
     "atomix", "gtans", "puzzle-jigsaw",
-    "pybik",
     "hitori", "lightsoff", "gnome-mahjongg", "gplanarity", "tetzle", "gbrainy", "gnome-mines",
     # Games Tetris
     "blockattack", "stax", "cuyo", "quadrapassel",
@@ -208,7 +207,6 @@ applications = [
     "dangen",                   # Games > Arcade > Dangen
     "numptyphysics",            # Games > Logic > Crayon Physics clone
     "gnucash", "gnucash-docs",  # Office > Finance Management
-    "pybik",                    # Games > Other > Rubik’s Cube
     "lightsoff",                # Games > Logic > Lights Off
     "kobodeluxe",               # Games > Arcade > Bosconian clone
     "freedroid",                # Games > Other > Paradroid clone
@@ -411,7 +409,6 @@ applications = [
     # warzone2100 prisonpc-warzone2100-addons
     # blobwars
     "opentyrian", "tyrian-data",
-    # pybik
     # FIXME: pynagram not available in Debian 11 (depends on Qt4)
     #        https://tracker.debian.org/news/1049129/removed-101-1-from-unstable/
     # pynagram
