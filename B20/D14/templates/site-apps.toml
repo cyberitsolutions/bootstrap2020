@@ -89,7 +89,8 @@ applications = [
     # Huge bloated time-wasting motherfuckers
     "prisonpc-wesnoth-addons", "prisonpc-warzone2100-addons", "prisonpc-openttd-extras", "marathon-trilogy",
     # Education stuff
-    "nucleus", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "inkscape", "inkscape-tutorials", "klavaro", "kwordquiz", "gnome-metronome", "pysiogame", "lybniz",
+    "nucleus", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "klavaro", "kwordquiz", "gnome-metronome", "pysiogame", "lybniz",
+    # FIXME: "inkscape", "inkscape-tutorials",
     # Games GNOME
     "four-in-a-row", "gnome-sudoku", "gnome-tetravex", "iagno", "gnome-2048", "gnome-klotski", "gnome-nibbles", "swell-foop",
     # Games KDE
@@ -192,7 +193,7 @@ applications = [
     "lierolibre",               # Games > Action > Liero
     "swell-foop",               # Games > Logic > Swell Foop
     "kbounce",                  # Games > Arcade > JezzBall clone
-    "inkscape", "inkscape-tutorials",  # Graphics > Vector Graphics Editor (Inkscape)
+    # FIXME: "inkscape", "inkscape-tutorials",  # Graphics > Vector Graphics Editor (Inkscape)
     "gplanarity",               # Games > Other > Planarity
     "armagetronad",             # Games > Action > Armagetron Advanced
     "knavalbattle",             # Games > Strategy > Battleship clone
@@ -249,7 +250,7 @@ applications = [
     "dia", "dia-shapes",
     "gimp", "gimp-help-en",
     "klavaro",
-    "inkscape", "inkscape-tutorials",
+    # FIXME: "inkscape", "inkscape-tutorials",
     "marble-qt", "marble-plugins",
     "kgeography",
     "gnucash", "gnucash-docs",
@@ -295,7 +296,7 @@ applications = [
     "frozen-bubble",
     "gimp", "gimp-help-en",
     "klavaro",
-    "inkscape", "inkscape-tutorials",
+    # FIXME: "inkscape", "inkscape-tutorials",
     "kbounce",
     "marble-qt", "marble-plugins",
     "kgeography",
@@ -338,7 +339,7 @@ applications = [
     "frozen-bubble",
     "gimp", "gimp-help-en",
     "klavaro",
-    "inkscape", "inkscape-tutorials",
+    # FIXME: "inkscape", "inkscape-tutorials",
     "kbounce",
     "marble-qt", "marble-plugins",
     "kgeography",
@@ -451,7 +452,7 @@ applications = [
     "dia", "dia-shapes",
     "gimp", "gimp-help-en",
     "klavaro",
-    "inkscape", "inkscape-tutorials",
+    # FIXME: "inkscape", "inkscape-tutorials",
     "marble-qt", "marble-plugins",
     "kgeography",
     "gnucash", "gnucash-docs",
