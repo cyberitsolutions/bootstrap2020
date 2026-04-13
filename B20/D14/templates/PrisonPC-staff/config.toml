@@ -1,7 +1,7 @@
 include = [
     "prisonpc-bad-package-conflicts-everyone",
     "gvfs-backends", "gvfs-fuse", "openssh-client",  # Browse p123's home (sftp://)
-    "asunder",      # Rip music CD
+    "sound-juicer", # Rip music CD
     "xfburn",       # Burn data DVD
     # NOTE: exfat-fuse removed as exfat is now in-kernel.
     # https://kernelnewbies.org/Linux_5.7#New_exFAT_file_system
