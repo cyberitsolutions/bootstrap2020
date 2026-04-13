@@ -23,3 +23,5 @@ Package:
  src:qemu
  src:spice-vdagent
  src:*gphoto*
+ src:libmtp
+ libavahi-glib*

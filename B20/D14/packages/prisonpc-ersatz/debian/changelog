@@ -3,6 +3,7 @@ prisonpc-ersatz (14.16) forky; urgency=medium
   * Bump for Debian 14.
   * Many things are now denylisted via apt_preferences(5)
     instead of in this dummy package.
+  * Drop ersatz e2fsprogs (now needless).
 
  -- Trent W. Buck <trentbuck@gmail.com>  Mon, 13 Apr 2026 12:25:14 +1000
 

@@ -532,7 +532,7 @@ Pin-Priority: -11498
 Pin: version *
 Package:
  NECESSARY-src:bluez    bluetooth bluez bluez-cup bluez-hcidump bluez-meshd bluez-obexd bluez-source bluez-test-scripts bluez-test-tools
- NECESSARY-src:avahi    avahi-daemon gir1.2-avahi-* libavahi-compat-libdnssd1 libavahi-core* libavahi-glib* libavahi-gobject* libavahi-ui-gtk* avahi-autoipd avahi-daemon avahi-discover avahi-dnsconfd avahi-utils python3-avahi avahi-ui-utils
+ NECESSARY-src:avahi    avahi-daemon gir1.2-avahi-* libavahi-compat-libdnssd1 libavahi-core* libavahi-gobject* libavahi-ui-gtk* avahi-autoipd avahi-daemon avahi-discover avahi-dnsconfd avahi-utils python3-avahi avahi-ui-utils
  wesnoth-*-server
  src:network-manager
  src:libnma
@@ -872,7 +872,7 @@ Package:
  src:libfprint
  src:libfreenect
  src:gmobile
- src:libgphoto2
+ NECESSARY-src:libgphoto2
  src:linux-gpib-user
  src:libgpod
  src:libmicam
@@ -888,7 +888,7 @@ Package:
  src:bluez-qt
  src:libm2k
  src:libmirisdr
- src:libmtp
+ NECESSARY-src:libmtp
  src:libnfc
  src:*nitrokey*
  src:libnjb
@@ -1853,16 +1853,6 @@ Package:
  src:ha-silabs-firmware-client
 
 
-Explanation: All but the latest gcc
-Pin-Priority: -29588
-Pin: version *
-Package:
- src:gcc-12
- src:gcc-13
- src:gcc-14
- src:gcc-15
-
-
 Explanation: Inmates SHOULD NOT be able to make screenshots
  https://alloc.cyber.com.au/task/task.php?taskID=30713
  Notes:
@@ -1900,3 +1890,5 @@ Package:
  src:recordmydesktop
  src:xawtv
  src:cutycapt
+
+
