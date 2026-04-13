@@ -89,7 +89,7 @@ applications = [
     # Huge bloated time-wasting motherfuckers
     "prisonpc-wesnoth-addons", "prisonpc-warzone2100-addons", "prisonpc-openttd-extras", "marathon-trilogy",
     # Education stuff
-    "nucleus", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "inkscape", "inkscape-tutorials", "klavaro", "kwordquiz", "gtick", "pysiogame", "lybniz",
+    "nucleus", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "inkscape", "inkscape-tutorials", "klavaro", "kwordquiz", "gnome-metronome", "pysiogame", "lybniz",
     # Games GNOME
     "four-in-a-row", "gnome-sudoku", "gnome-tetravex", "iagno", "gnome-2048", "gnome-klotski", "gnome-nibbles", "swell-foop",
     # Games KDE
@@ -161,7 +161,7 @@ applications = [
 #   POPULAR (DAYS PER SITE-YEAR)
     "pingus",                   # Games > Strategy > Lemmings clone
     "blobwars",                 # Games > Action > Blob Wars : Metal Blob Solid
-    "gtick",                    # Multimedia > Metronome
+    "gnome-metronome",                    # Multimedia > Metronome
     "singularity",              # Games > Strategy > Singularity
     "starfighter",              # Games > Arcade > Starfighter
     "gtans",                    # Games > Logic > Tangrams
