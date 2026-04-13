@@ -51,6 +51,7 @@ Package:
  *-src
  *-source
  *-dkms
+ *-debug
  lib32*
  libx32*
  src:debian-installer-netboot-images
@@ -69,6 +70,7 @@ Package:
  src:pycuda
  src:gcc-defaults-*
  linux-source*
+ src:gnumach
  src:picolibc
  src:intel-mkl
  src:puppetserver
@@ -176,6 +178,8 @@ Package:
  linux-source-*
  linux-config-*
  linux-headers-*
+ linux-kbuild-*
+ src:linux-board-support-package-*
  src:module-assistant
  src:dkms
  src:bilibop
@@ -190,6 +194,7 @@ Package:
  src:gnome-calls
  src:mmsd-tng
  src:meta-phosh
+ src:*lomiri*
  src:mobile-tweaks
  src:meta-plasma-mobile
  postgresql-common
@@ -250,6 +255,7 @@ Package:
  src:dbconfig-common
  src:debugedit
  src:rpm
+ src:dnf5
  src:icinga2
  src:adcli
  src:kbd
@@ -314,7 +320,7 @@ Package:
  src:intltool-debian
  src:amdgcn-tools
  src:rustc
- src:cargo
+ src:rust-cargo-*
  llvm-[0-9][0-9]*
  src:ghdl
  llvm-spirv-[0-9][0-9]
@@ -429,6 +435,18 @@ Package:
  src:dnsmasq
  bind9-dnsutils
  src:iodine
+ libghc-*-doc
+ src:fence-agents
+ src:a56
+ src:ros2-*
+ src:antlr
+ src:antlr3
+ src:apktool
+ src:binutils-*
+ src:build-essential
+ src:pkgconf
+ src:clojure
+ src:fido2luks
 
 
 Explanation: Inmates MUST NOT have unnecessary crypto
@@ -497,6 +515,7 @@ Package:
  src:zip
  NECESSARY-src:unzip
  NECESSARY-src:libarchive       libarchive-tools
+ src:qca2
 
 
 Explanation: Inmates MUST NOT have clandestine comms
@@ -788,6 +807,7 @@ Package:
  src:eegdev
  src:eg25-manager
  src:elogind
+ src:turnstile
  src:esptool
  src:feedbackd
  src:flashprog
@@ -1314,10 +1334,10 @@ Package:
  golang-*-go
  src:geany*
  src:manuals
- gnome-devel,
+ gnome-devel
  src:d-spy
  src:dconf-editor
- src:gnome-builder,
+ src:gnome-builder
  src:sysprof
  src:gtk-doc
  src:meson
@@ -1340,7 +1360,7 @@ Package:
  src:eric
  src:fpc
  src:ktechlab
- src:qtcreator,
+ src:qtcreator
  src:sbcl
  src:tkcon
  src:pforth
@@ -1572,3 +1592,311 @@ Package:
  yorick-dev
  zathura-dev
 
+
+Explanation:
+ Shitlist everything that provides usr/src
+ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only usr/src'
+Pin-Priority: -26185
+Pin: version *
+Package:
+ acpi-call-dkms
+ apfs-dkms
+ bazel-bootstrap-source
+ bbswitch-dkms
+ bbswitch-source
+ bf-utf-source
+ binutils-source
+ bluez-source
+ broadcom-sta-dkms
+ broadcom-sta-source
+ bsh-src
+ ddcci-dkms
+ digimend-dkms
+ dkms-noautoinstall-test-dkms
+ dkms-replace-test-dkms
+ dkms-test-dkms
+ dm-writeboost-dkms
+ dpdk-kmods-dkms
+ dynare-matlab
+ evdi-dkms
+ ezurio-qcacld-2.0-dkms
+ falcosecurity-scap-dkms
+ freespace2
+ gcc-12-source
+ gcc-13-source
+ gcc-14-source
+ gcc-15-source
+ gcc-16-source
+ gcc-arm-none-eabi-source
+ gdb-source
+ glibc-source
+ google-mock
+ googletest
+ hinic-dkms
+ jool-dkms
+ langford-dkms
+ leds-alix-dkms
+ leds-alix-source
+ lenovolegionlinux-dkms
+ libcgns-dev
+ libgtest-dev
+ libhalide21-dev
+ libllhttp-source
+ liblzf-dev
+ libpython3.13-dev
+ libpython3.14-dev
+ librem-ec-acpi-dkms
+ libxcrypt-source
+ libxml2-source
+ lime-forensics-dkms
+ linux-config-6.19
+ linux-headers-6.19.11+deb14-amd64
+ linux-headers-6.19.11+deb14-cloud-amd64
+ linux-headers-6.19.11+deb14-common
+ linux-headers-6.19.11+deb14-rt-amd64
+ linux-kbuild-6.19.11+deb14
+ linux-source-6.19
+ lttng-modules-dkms
+ mate-submodules-source
+ matlab-gdf
+ matlab-zmat
+ mimic-dkms
+ mstflint-dkms
+ newlib-source
+ nvidia-fs-dkms
+ nvidia-kernel-dkms
+ nvidia-kernel-source
+ nvidia-open-kernel-dkms
+ nvidia-open-kernel-source
+ nvidia-tesla-535-kernel-dkms
+ nvidia-tesla-535-kernel-source
+ ocaml-dune-source
+ ocaml-source
+ openrazer-driver-dkms
+ openvpn-dco-dkms
+ openvswitch-source
+ osmocom-dahdi-dkms
+ paho.mqtt.c-examples
+ pico-sdk-source
+ propellor
+ python3-cxx-dev
+ r8125-dkms
+ r8168-dkms
+ rapiddisk-dkms
+ reform2-lpc-dkms
+ rtpengine-kernel-dkms
+ rust-src
+ selinux-policy-src
+ sl-modem-dkms
+ tinyusb-source
+ tp-smapi-dkms
+ tree-sitter-asm-src
+ tree-sitter-bash-src
+ tree-sitter-c-src
+ tree-sitter-cpp-src
+ tree-sitter-go-src
+ tree-sitter-ini-src
+ tree-sitter-json-src
+ tree-sitter-lua-src
+ tree-sitter-markdown-inline-src
+ tree-sitter-markdown-src
+ tree-sitter-php-src
+ tree-sitter-powershell-src
+ tree-sitter-query-src
+ tree-sitter-ruby-src
+ tree-sitter-rust-orchard-src
+ tree-sitter-verilog-src
+ tree-sitter-vim-src
+ tree-sitter-vimdoc-src
+ tree-sitter-yaml-src
+ ubertooth-firmware-source
+ uclibc-source
+ uwsgi-src
+ v4l2loopback-dkms
+ v4l2loopback-source
+ vhba-dkms
+ vpoll-dkms
+ wabt
+ west-chamber-dkms
+ west-chamber-source
+ xone-dkms
+ xorg-server-source
+ xpadneo-dkms
+ xrt-xocl-dkms
+ xtables-addons-dkms
+ xtables-addons-source
+ xtrx-dkms
+ yt6801-dkms
+ zfs-dkms
+
+
+Explanation: Shitlist make and similar replacements
+Pin-Priority: -9931
+Pin: version *
+Package:
+ make
+ automake
+ autoconf
+ autotools-dev
+ meson
+ ninja-build
+ generate-ninja
+ cmake
+ scons
+ acr
+ soong mini-soong
+ yotta
+ pypi2deb
+ dh-make-perl
+ src:cmake*
+
+
+Explanation: Shitlist other shells
+ Other than bash and ash, ?section(shells) are not inherently bad, but
+ anything explicitly depending on them is almost certainly a Bad Thing that we Do Not Want.
+ $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG '"aptitude search --disable-columns -F ' src:%e %p' '?section(shells) ?not(?name(^[bd]ash$))'"
+Pin-Priority: -10943
+Pin: version *
+Package:
+ src:gash
+ NECESSARY-src:bash bash-static
+ NECESSARY-src:busybox busybox-static
+ src:autojump
+ src:bash-completion
+ src:bashacks
+ src:cleo
+ src:csh
+ src:elvish
+ src:esh
+ src:fdclone
+ src:fish
+ src:fizsh
+ src:ksh93u+m
+ src:mksh
+ src:posh
+ src:rc
+ src:rush
+ src:sash
+ src:screenie
+ src:tcsh
+ src:xonsh
+ src:yash
+ src:zgen
+ src:zplug
+ src:zsh
+ src:zsh-antidote
+ src:zsh-antigen
+ src:zsh-autosuggestions
+ src:zsh-syntax-highlighting
+
+
+Explanation:
+ Block ?name(firmware) and ?section(firmware) for things that we definite DO NOT want.
+ e.g. broadcom bluetooth drivers.
+ This stanza is generated by hand.
+Pin-Priority: -25361
+Pin: version *
+Package:
+ arm-trusted-firmware-tools
+ crust-firmware
+ grub-firmware-qemu
+ bladerf-firmware-fx3
+ src:dahdi-firmware
+ gnome-firmware
+ firmware-microbit-micropython-doc
+ nxt-firmware
+ sigrok-firmware-fx2lafw
+ isight-firmware-tools
+ firmware-b43-installer
+ firmware-b43legacy-installer
+ src:atmel-firmware
+ src:bluez-firmware
+ firmware-ast
+ firmware-atheros
+ firmware-bnx2
+ firmware-bnx2x
+ firmware-brcm80211
+ firmware-cavium
+ NECESSARY-firmware-intel-sound
+ firmware-ipw2x00
+ firmware-ivtv
+ firmware-libertas
+ firmware-myricom
+ firmware-netronome
+ firmware-netxen
+ firmware-nvidia-gsp
+ firmware-nvidia-tesla-gsp
+ firmware-qcom-soc
+ firmware-qlogic
+ firmware-realtek-rtl8723cs-bt
+ firmware-samsung
+ firmware-siano
+ NECESSARY-firmware-sof-signed
+ firmware-ti-connectivity
+ firmware-zd1211
+ hackrf-firmware
+ firmware-ath9k-htc
+ firmware-tomu
+ raspi-firmware
+ firmware-qcom-media
+ dns323-firmware-tools
+ firmware-microbit-micropython
+ ubertooth-firmware
+ ubertooth-firmware-source
+ alsa-firmware-loaders
+ midisport-firmware
+ hdmi2usb-fx2-firmware
+ src:hexagon-dsp-binaries
+ src:ezurio-qca-firmware
+ firmware-marvell-prestera
+ src:carl9170fw
+ src:ha-silabs-firmware-client
+
+
+Explanation: All but the latest gcc
+Pin-Priority: -29588
+Pin: version *
+Package:
+ src:gcc-12
+ src:gcc-13
+ src:gcc-14
+ src:gcc-15
+
+
+Explanation: Inmates SHOULD NOT be able to make screenshots
+ https://alloc.cyber.com.au/task/task.php?taskID=30713
+ Notes:
+  • staff need xfce4-screenshoter
+  • x11-apps provides "xwd" screenshot tool
+Pin-Priority: -8268
+Pin: version *
+Package:
+ deepin-screenshot
+ fbcat
+ flameshot
+ gkrellshoot
+ gnome-screenshot
+ grim
+ grimshot
+ gtk-vector-screenshot
+ kazam
+ kde-spectacle
+ ksnip
+ maim
+ mate-utils
+ mirage
+ screenfetch
+ screengrab
+ scrot
+ x11-apps
+ gnome-shell-extension-screenshot-window-sizer
+ src:shutter
+ src:pyscreeze
+ src:ale
+ qvidcap
+ src:entangle
+ src:mjpegtools
+ src:motion
+ src:recordmydesktop
+ src:xawtv
+ src:cutycapt
