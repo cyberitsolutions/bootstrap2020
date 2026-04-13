@@ -89,7 +89,7 @@ applications = [
     # Huge bloated time-wasting motherfuckers
     "prisonpc-wesnoth-addons", "prisonpc-warzone2100-addons", "prisonpc-openttd-extras", "marathon-trilogy",
     # Education stuff
-    "gelemental", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "inkscape", "inkscape-tutorials", "klavaro", "kwordquiz", "gtick", "pysiogame", "lybniz",
+    "nucleus", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "inkscape", "inkscape-tutorials", "klavaro", "kwordquiz", "gtick", "pysiogame", "lybniz",
     # Games GNOME
     "four-in-a-row", "gnome-sudoku", "gnome-tetravex", "iagno", "gnome-2048", "gnome-klotski", "gnome-nibbles", "swell-foop",
     # Games KDE
@@ -187,7 +187,7 @@ applications = [
     "frozen-bubble",            # perl
 #   UNPOPULAR (HOURS PER SITE-YEAR)
     "bloboats",                 # Games > Arcade > Boatmania
-    "gelemental",               # Education > Periodic Table
+    "nucleus",                  # Education > Periodic Table
     "burgerspace",              # Games > Arcade > BurgerTime clone
     "gnome-klotski",            # Games > Logic > Klotski
     "lierolibre",               # Games > Action > Liero
@@ -254,7 +254,7 @@ applications = [
     "marble-qt", "marble-plugins",
     "kgeography",
     "gnucash", "gnucash-docs",
-    "gelemental",
+    "nucleus",
     "pysiogame",
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
@@ -311,7 +311,7 @@ applications = [
     # childsplay
     "knavalbattle",
     "gnucash", "gnucash-docs",
-    "gelemental",
+    "nucleus",
     "pysiogame",
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
@@ -355,7 +355,7 @@ applications = [
     # childsplay
     "knavalbattle",
     "gnucash", "gnucash-docs",
-    "gelemental",
+    "nucleus",
     "pysiogame",
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
