@@ -91,7 +91,7 @@ Description: appease udisks2
 
 Package: prisonpc-ersatz-dictionaries-common
 Depends: ${misc:Depends}
-Provides:  dictionaries-common (= 1.29.5),
+Provides:  dictionaries-common (= 1.31.4),
 Replaces:  dictionaries-common,
 Conflicts: dictionaries-common,
 # These things really DO need dictionaries-common, so
