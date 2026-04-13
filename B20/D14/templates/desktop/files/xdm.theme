@@ -6,6 +6,7 @@ xlogin.Login.greeting:          CLIENTHOST
 ! Background should match xsetroot in ./Xsetup.
 xlogin.Login.Foreground:        white
 xlogin.Login.Background:        black
+xlogin.Login.inpColor:          black
 xlogin.Login.sepWidth:          0
 xlogin.Login.frameWidth:        0
 xlogin.Login.innerFramesWidth:  0

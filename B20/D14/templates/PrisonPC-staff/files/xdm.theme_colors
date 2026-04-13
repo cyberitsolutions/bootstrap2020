@@ -5,3 +5,4 @@
 ! (Staff SOEs should not run in inmate-accessible areas.)
 xlogin.Login.Foreground: black
 xlogin.Login.Background: #AD7FA8
+xlogin.Login.inpColor:   #AD7FA8

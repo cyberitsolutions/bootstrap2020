@@ -3,3 +3,4 @@
 ! In Debian 11, we use pure white-on-black to make the transition from POST->splash->login feel smoother.
 xlogin.Login.Foreground: white
 xlogin.Login.Background: black
+xlogin.Login.inpColor:   black
