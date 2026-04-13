@@ -29,12 +29,13 @@ for path in {
 # Bump the debian version.
 os.environ['DEBFULLNAME'] = 'Trent W. Buck'  # for debchange
 os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
-for _ in range(2):
-    subprocess.check_call(
-        ['debchange',
-         '--bin-nmu',
-         'Upstream has a binNMU (+bN); synthesize one here to avoid it beating our --local=PrisonPC'],
-        cwd=source_dir)
+# Upstream has -3 now (replacing -2+b2), so this block can be removed again.
+# for _ in range(2):
+#     subprocess.check_call(
+#         ['debchange',
+#          '--bin-nmu',
+#          'Upstream has a binNMU (+bN); synthesize one here to avoid it beating our --local=PrisonPC'],
+#         cwd=source_dir)
 subprocess.check_call(
     ['debchange',
      '--release',
