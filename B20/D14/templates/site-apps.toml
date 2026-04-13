@@ -16,7 +16,7 @@ applications = [
     # Core office suite (word processor, spreadsheet, slideshow)
     "libreoffice-calc", "libreoffice-impress", "libreoffice-writer", "libreoffice-math",
     # Stuff to make office work better
-    "libreoffice-gtk3",
+    "libreoffice-gtk4",
     "libreoffice-gnome",     # fix double-click in sftp:// (for staff)
     "libreoffice-help-en-gb", "libreoffice-l10n-en-gb",
     "libreoffice-lightproof-en",
