@@ -30,13 +30,13 @@ Depends:
  fonts-adf-universalis,
 # Color Emoji family — Noto Color Emoji
  fonts-noto-color-emoji,
-# Print font family — Liberation 2
+# Print font family — Liberation (2.x)
 # Replaces Adobe family (Helvetica/Times/Courier)
 # Replaces MS XP family (Arial/TimesNewRoman/CourierNew)
 # Replaces GNU Freefont family
 # Replaces Liberation 1 family
 # Replaces CrOS Core family
- fonts-liberation2,
+ fonts-liberation,
 # Print font family extras
 # Replaces MS Vista family (Cambria/Calibri/Consolas)
 # https://en.wikipedia.org/wiki/Category:Windows_Vista_typefaces
@@ -57,7 +57,7 @@ Provides:
  fonts-freefont-otf,
  fonts-freefont-ttf,
  fonts-lato,
- fonts-liberation,
+ fonts-liberation2,
  fonts-linuxlibertine,
  ttf-bitstream-vera,
 Conflicts:
@@ -66,7 +66,7 @@ Conflicts:
  fonts-freefont-otf,
  fonts-freefont-ttf,
  fonts-lato,
- fonts-liberation,
+ fonts-liberation2,
  fonts-linuxlibertine,
  ttf-bitstream-vera,
 Replaces:
@@ -75,7 +75,7 @@ Replaces:
  fonts-freefont-otf,
  fonts-freefont-ttf,
  fonts-lato,
- fonts-liberation,
+ fonts-liberation2,
  fonts-linuxlibertine,
  ttf-bitstream-vera,
 

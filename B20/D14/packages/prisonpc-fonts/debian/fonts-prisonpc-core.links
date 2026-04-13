@@ -63,32 +63,37 @@
 # NOTE: one benefit that CrOScore had, which Liberation2 lacks — "Arimo" was the first font, alphabetically.
 #       This was handy when apps didn't have a default font, and chose the first font from the list, e.g. scribus.
 #       Also the names were easier to remember.
-/usr/share/fonts/truetype/liberation2                                     /usr/share/fonts/truetype/liberation
-/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf             /usr/share/fonts/truetype/croscore/Arimo-Bold.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSans-BoldItalic.ttf       /usr/share/fonts/truetype/croscore/Arimo-BoldItalic.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf           /usr/share/fonts/truetype/croscore/Arimo-Italic.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf          /usr/share/fonts/truetype/croscore/Arimo-Regular.ttf
-/usr/share/fonts/truetype/liberation2/LiberationMono-Bold.ttf             /usr/share/fonts/truetype/croscore/Cousine-Bold.ttf
-/usr/share/fonts/truetype/liberation2/LiberationMono-BoldItalic.ttf       /usr/share/fonts/truetype/croscore/Cousine-BoldItalic.ttf
-/usr/share/fonts/truetype/liberation2/LiberationMono-Italic.ttf           /usr/share/fonts/truetype/croscore/Cousine-Italic.ttf
-/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf          /usr/share/fonts/truetype/croscore/Cousine-Regular.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Bold.ttf            /usr/share/fonts/truetype/croscore/Tinos-Bold.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-BoldItalic.ttf      /usr/share/fonts/truetype/croscore/Tinos-BoldItalic.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Italic.ttf          /usr/share/fonts/truetype/croscore/Tinos-Italic.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf         /usr/share/fonts/truetype/croscore/Tinos-Regular.ttf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf         /usr/share/fonts/opentype/linux-libertine/LinBiolinum_K.otf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Regular.ttf         /usr/share/fonts/opentype/linux-libertine/LinBiolinum_R.otf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Bold.ttf            /usr/share/fonts/opentype/linux-libertine/LinBiolinum_RB.otf
-/usr/share/fonts/truetype/liberation2/LiberationSerif-Italic.ttf          /usr/share/fonts/opentype/linux-libertine/LinBiolinum_RI.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf          /usr/share/fonts/opentype/linux-libertine/LinLibertine_DR.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf           /usr/share/fonts/opentype/linux-libertine/LinLibertine_I.otf
-/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf          /usr/share/fonts/opentype/linux-libertine/LinLibertine_M.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf          /usr/share/fonts/opentype/linux-libertine/LinLibertine_R.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf             /usr/share/fonts/opentype/linux-libertine/LinLibertine_RB.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-BoldItalic.ttf       /usr/share/fonts/opentype/linux-libertine/LinLibertine_RBI.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf           /usr/share/fonts/opentype/linux-libertine/LinLibertine_RI.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf             /usr/share/fonts/opentype/linux-libertine/LinLibertine_RZ.otf
-/usr/share/fonts/truetype/liberation2/LiberationSans-BoldItalic.ttf       /usr/share/fonts/opentype/linux-libertine/LinLibertine_RZI.otf
+#
+# UPDATE: as at Debian 14,
+#         "liberation" is now the liberation 2.x package, and
+#         "liberation2" is a backcompat dummy package.
+#         i.e. reversed from before. --twb, April 2026
+/usr/share/fonts/truetype/liberation                                     /usr/share/fonts/truetype/liberation2
+/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf             /usr/share/fonts/truetype/croscore/Arimo-Bold.ttf
+/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf       /usr/share/fonts/truetype/croscore/Arimo-BoldItalic.ttf
+/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf           /usr/share/fonts/truetype/croscore/Arimo-Italic.ttf
+/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf          /usr/share/fonts/truetype/croscore/Arimo-Regular.ttf
+/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf             /usr/share/fonts/truetype/croscore/Cousine-Bold.ttf
+/usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf       /usr/share/fonts/truetype/croscore/Cousine-BoldItalic.ttf
+/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf           /usr/share/fonts/truetype/croscore/Cousine-Italic.ttf
+/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf          /usr/share/fonts/truetype/croscore/Cousine-Regular.ttf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf            /usr/share/fonts/truetype/croscore/Tinos-Bold.ttf
+/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf      /usr/share/fonts/truetype/croscore/Tinos-BoldItalic.ttf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf          /usr/share/fonts/truetype/croscore/Tinos-Italic.ttf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf         /usr/share/fonts/truetype/croscore/Tinos-Regular.ttf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf         /usr/share/fonts/opentype/linux-libertine/LinBiolinum_K.otf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf         /usr/share/fonts/opentype/linux-libertine/LinBiolinum_R.otf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf            /usr/share/fonts/opentype/linux-libertine/LinBiolinum_RB.otf
+/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf          /usr/share/fonts/opentype/linux-libertine/LinBiolinum_RI.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf          /usr/share/fonts/opentype/linux-libertine/LinLibertine_DR.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf           /usr/share/fonts/opentype/linux-libertine/LinLibertine_I.otf
+/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf          /usr/share/fonts/opentype/linux-libertine/LinLibertine_M.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf          /usr/share/fonts/opentype/linux-libertine/LinLibertine_R.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf             /usr/share/fonts/opentype/linux-libertine/LinLibertine_RB.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf       /usr/share/fonts/opentype/linux-libertine/LinLibertine_RBI.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf           /usr/share/fonts/opentype/linux-libertine/LinLibertine_RI.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf             /usr/share/fonts/opentype/linux-libertine/LinLibertine_RZ.otf
+/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf       /usr/share/fonts/opentype/linux-libertine/LinLibertine_RZI.otf
 
 /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf                       /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf
 /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf                       /usr/share/fonts-droid-fallback/truetype/DroidSansFallback.ttf

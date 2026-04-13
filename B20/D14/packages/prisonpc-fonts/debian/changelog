@@ -1,3 +1,10 @@
+prisonpc-fonts (14.2) forky; urgency=medium
+
+  * Bump for Debian 14.
+  * Swap liberation and liberation2.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Mon, 13 Apr 2026 12:27:22 +1000
+
 prisonpc-fonts (12.1) bookworm; urgency=medium
 
   * Bump for Debian 12 bookworm.
