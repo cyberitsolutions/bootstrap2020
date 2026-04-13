@@ -8,6 +8,8 @@ include = [
     'dbus-broker',              # https://bugs.debian.org/814758
     'ca-certificates',
     'publicsuffix',
+    'linux-sysctl-defaults',    # https://alloc.cyber.com.au/task/task.php?taskID=35711
+    'libnss-systemd',
     'debian-security-support',  # for customize90-check-support-status.py
 
     # Make things work better with systemd-networkd
