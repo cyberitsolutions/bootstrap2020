@@ -49,9 +49,9 @@ Description: appease prayer
 
 Package: prisonpc-ersatz-kio
 Depends: ${misc:Depends}
-Provides:  kio (= 5.103.0-1),
-Conflicts: kio,
-Replaces:  kio,
+Provides:  kio (= 5.116.0-2), kio6 (= 6.23.0-2+b1)
+Conflicts: kio, kio6
+Replaces:  kio, kio6
 Architecture: all
 Description: appease KDE games and KDE educational apps
  In KDE4, every KDE app depended on "kdelibs", which was *every* KDE library.
