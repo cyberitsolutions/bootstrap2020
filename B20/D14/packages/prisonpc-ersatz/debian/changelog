@@ -1,11 +1,20 @@
-prisonpc-ersatz (14.16) forky; urgency=medium
+prisonpc-ersatz (14.17.1776244622) forky; urgency=medium
 
   * Bump for Debian 14.
+  * Drop ersatz e2fsprogs (now needless).
   * Many things are now denylisted via apt_preferences(5)
     instead of in this dummy package.
-  * Drop ersatz e2fsprogs (now needless).
+  * Roll back most of previous change.
+    With ~2000 patterns pinned in apt_preferences(5),
+    EVERY apt invocation (even "apt show mg") takes ~10 seconds.
+    There are enough apt queries that this delays the whole build significantly.
+    Also I think apt_preferences(5) alone is insufficient, as
+    aptitude just shows "broken" but not "pinned away" when
+    you try to install a package with neatively-pinned dependencies.
+    NOTE: putting Conflicts: <every *-dev> into this package makes this package take 10 MINUTES to build.
+    But once built (once) it can be installed (all the time) fast.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Mon, 13 Apr 2026 12:25:14 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 15 Apr 2026 19:34:37 +1000
 
 prisonpc-ersatz (12.15) bookworm; urgency=medium
 

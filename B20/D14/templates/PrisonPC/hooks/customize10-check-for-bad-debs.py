@@ -50,7 +50,12 @@ r"""
 .+	.*	.+-(dev|devel)
 .+	.*	.+-server
 .+	.*	libghc-.+-doc
-.+	.*	.+-(dbg|dbgsym|prof|src|source|dkms|debug|compiler)
+.+	.*	.+-(dbg|dbgsym|prof|src|source|dkms|debug|compiler|tests?)
+.*firmware.*
+.*tree-sitter.*
+.*vim.*
+.*emacs.*
+.+	.*	dh-.+
 # We ban zip because zip files support AES strong crypto.
 # Therefore we must ban all R packages as well, due to
 # r-* → r-base-core → zip
@@ -67,6 +72,16 @@ shells		dash
 editors	libreoffice	.+
 net	openssh	openssh-server
 net	openssh	openssh-sftp-server
+# Expected firmwares, see doc/firmware-policy.csv and prisonpc-ersatz for discussion
+non-free-firmware/admin	amd64-microcode
+non-free-firmware/admin	intel-microcode
+non-free-firmware/kernel	firmware-nonfree	firmware-intel-graphics
+non-free-firmware/kernel	firmware-nonfree	firmware-intel-misc
+non-free-firmware/kernel	firmware-nonfree	firmware-intel-sound
+non-free-firmware/kernel	firmware-nonfree	firmware-misc-nonfree
+non-free-firmware/kernel	firmware-nonfree	firmware-realtek
+non-free-firmware/kernel	firmware-sof	firmware-sof-signed
+kernel	firmware-free	firmware-linux-free
 # singularity → python3-numpy → python3-numpy-dev
 python	numpy	python3-numpy-dev
 """.strip().splitlines())
