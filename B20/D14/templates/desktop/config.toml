@@ -4,6 +4,9 @@ include = [
     "xdm",
     # https://wiki.debian.org/PipeWire#Debian_12
     # FIXME: do we need/want vlc-plugin-pipewire?
+    # FIXME: do we NEED pipewire-audio, or only pipewire-pulse? --twb, April 2026
+    #        I only ask because pipewire-audio keeps libbluetooth3 installed.
+    #        I _think_ we can have change "pipewire-audio" to only pipewire-pulse (for modern apps) + pipewire-alsa (for older apps/games), and that will let us skip the bluetooth dependency.  Needs testing.
     "pipewire-audio", "xfce4-pulseaudio-plugin", "pavucontrol",
     "xfce4-xkb-plugin",  # basic foreign language input (e.g. Russian, but not Japanese)
     "xdg-user-dirs-gtk",  # Thunar sidebar gets Documents, Music &c
