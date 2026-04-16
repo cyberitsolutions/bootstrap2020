@@ -1,0 +1,20 @@
+[globs]
+deb_shit_globs = [
+    "*-dev",
+    "*-devel",
+    "*-dbg",
+    # lomiri = smartphone stuff
+    "*lomiri*",
+]
+deb_good_globs = [
+    # singularity → python3-numpy → python3-numpy-dev
+    "python3-numpy-dev",
+]
+dsc_shit_globs = [
+    "*crypt*",
+]
+dsc_good_globs = [
+    "libcrypt1",      # init → systemd → libsystemd-shared → libcrypt1
+    "libsecret-1-0",  # msmtp-mta → libsecret-1-0 → libgcrypt20
+    "libgcrypt20",    # msmtp-mta → libsecret-1-0 → libgcrypt20
+]
