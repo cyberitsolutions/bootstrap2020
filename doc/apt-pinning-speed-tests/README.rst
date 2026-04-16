@@ -29,3 +29,39 @@ As at apt 3.0.3 (using Debian 13's package lists)...
 As at apt 3.2.0 (using Debian 13's package lists)...
 
 The timings roughly match, i.e. not magically better.
+
+------------------------------------------------------------
+
+PS: I acknowledge the patterns in my tests indicate I'm doing weird/dumb things.
+But I think there are probably legitimate reasons to have 10 globs?
+Or... thinking about it more, I guess most use cases are either
+"Package: *" (testing/unstable hybrids) or
+"Package: foo" (apt-listbugs pinning a specific known-buggy package).
+And neither of those are globs...  OK, yes,
+pinning "Package: *" takes ~0.5s and
+pinning "Package: * * *" takes ~2s and
+pinning 62 specific packages (src:libreoffice, src:linux, clang-17, clang-18, &c) takes 0.4s.
+pinning 13000 specific packages (each foo-dev by name) takes 0.4s.
+So this slowdown hits ONLY when you have globs rather than exact package names.
+Which is a MUCH less common thing to do.
+
+Here's an simpler comparison showing the symptoms are definitely only
+with glob/regex patterns, not literals.
+
+| root@hera:/# printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' '*-dev *-devel *-dbg *-dbgsym *-prof *-src *-source *-dkms *-debug *-compiler *-server *-test *-tests'; time apt-cache policy | wc -l
+| 14747
+| real    **0m2.039s**
+| user    0m1.962s
+| sys     0m0.087s
+|
+| root@hera:/# printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' '/-(dev|devel|dbg|dbgsym|prof|src|source|dkms|debug|compiler|server|test|tests)$/'; time apt-cache policy | wc -l
+| 14747
+| real    **0m6.787s**
+| user    0m6.764s
+| sys     0m0.026s
+|
+| root@hera:/# printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' "$(apt-cache pkgnames | grep -E -e "-(dev|devel|dbg|dbgsym|prof|src|source|dkms|debug|compiler|server|test|tests)$" | tr '\n' ' ')"; time apt-cache policy | wc -l
+| 14747
+| real    **0m0.176s**
+| user    0m0.140s
+| sys     0m0.043s
