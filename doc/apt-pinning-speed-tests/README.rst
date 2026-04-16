@@ -48,19 +48,19 @@ Which is a MUCH less common thing to do.
 Here's an simpler comparison showing the symptoms are definitely only
 with glob/regex patterns, not literals.
 
-| root@hera:/# printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' '*-dev *-devel *-dbg *-dbgsym *-prof *-src *-source *-dkms *-debug *-compiler *-server *-test *-tests'; time apt-cache policy | wc -l
+| root@hera:/# ``printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' '*-dev *-devel *-dbg *-dbgsym *-prof *-src *-source *-dkms *-debug *-compiler *-server *-test *-tests'; time apt-cache policy | wc -l``
 | 14747
 | real    **0m2.039s**
 | user    0m1.962s
 | sys     0m0.087s
 |
-| root@hera:/# printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' '/-(dev|devel|dbg|dbgsym|prof|src|source|dkms|debug|compiler|server|test|tests)$/'; time apt-cache policy | wc -l
+| root@hera:/# ``printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' '/-(dev|devel|dbg|dbgsym|prof|src|source|dkms|debug|compiler|server|test|tests)$/'; time apt-cache policy | wc -l``
 | 14747
 | real    **0m6.787s**
 | user    0m6.764s
 | sys     0m0.026s
 |
-| root@hera:/# printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' "$(apt-cache pkgnames | grep -E -e "-(dev|devel|dbg|dbgsym|prof|src|source|dkms|debug|compiler|server|test|tests)$" | tr '\n' ' ')"; time apt-cache policy | wc -l
+| root@hera:/# ``printf >/etc/apt/preferences  'Pin-Priority: -1\nPin: version *\nPackage: %s\n' "$(apt-cache pkgnames | grep -E -e "-(dev|devel|dbg|dbgsym|prof|src|source|dkms|debug|compiler|server|test|tests)$" | tr '\n' ' ')"; time apt-cache policy | wc -l``
 | 14747
 | real    **0m0.176s**
 | user    0m0.140s
