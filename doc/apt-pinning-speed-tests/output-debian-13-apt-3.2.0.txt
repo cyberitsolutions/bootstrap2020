@@ -1,0 +1,451 @@
+bash5$ D14_shell --'customize-hook=copy-in test.sh test-04a.conf test-04b.conf test-00.conf test-01.conf test-02.conf test-03.conf test-04.conf test-05.conf test-06.conf test-07.conf test-08.conf test-09.conf test-10.conf /tmp' --include=mount,mmdebstrap,time
+I: running --customize-hook in shell: sh -c 'env -i TERM=screen PATH=/bin:/sbin chroot $1 bash; false' exec /tmp/mmdebstrap.lrnBbDuab3
+root@hera:/# apt --version
+
+apt 3.2.0 (amd64)
+root@hera:/tmp# ./test.sh
+
+== test-00.conf ==
+Explanation: one pattern with one match
+Pin-Priority: -1
+Pin: version *
+Package: marble
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 8
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.46user 0.03system 0:00.49elapsed 99%CPU (0avgtext+0avgdata 63912maxresident)k
+0inputs+0outputs (0major+2422minor)pagefaults 0swaps
+0.02user 0.01system 0:00.04elapsed 100%CPU (0avgtext+0avgdata 53476maxresident)k
+0inputs+0outputs (0major+1349minor)pagefaults 0swaps
+
+
+== test-01.conf ==
+Explanation: one source pattern with few matches
+Pin-Priority: -1
+Pin: version *
+Package: src:marble
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 21
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.54user 0.02system 0:00.57elapsed 99%CPU (0avgtext+0avgdata 63864maxresident)k
+0inputs+0outputs (0major+2421minor)pagefaults 0swaps
+0.02user 0.03system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 53652maxresident)k
+0inputs+0outputs (0major+1355minor)pagefaults 0swaps
+
+
+== test-02.conf ==
+Explanation: one pattern with many matches
+Pin-Priority: -1
+Pin: version *
+Package: *-dev
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 12608
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+1.05user 0.05system 0:01.10elapsed 99%CPU (0avgtext+0avgdata 70476maxresident)k
+0inputs+0outputs (0major+4266minor)pagefaults 0swaps
+0.01user 0.03system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 53428maxresident)k
+0inputs+0outputs (0major+1350minor)pagefaults 0swaps
+
+
+== test-03.conf ==
+Explanation: one source pattern with many matches
+Pin-Priority: -1
+Pin: version *
+Package: src:*github*
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 2144
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.71user 0.03system 0:00.74elapsed 99%CPU (0avgtext+0avgdata 64108maxresident)k
+0inputs+0outputs (0major+2463minor)pagefaults 0swaps
+0.02user 0.03system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 53352maxresident)k
+0inputs+0outputs (0major+1350minor)pagefaults 0swaps
+
+
+== test-04.conf ==
+Explanation: many pattern with many matches
+Pin-Priority: -1
+Pin: version *
+Package: *-dev *-devel *-dbg *-dbgsym *-prof *-src *-source *-dkms *-debug *-compiler *-test *-tests libghc-*-doc
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+2.93user 0.03system 0:02.97elapsed 99%CPU (0avgtext+0avgdata 71332maxresident)k
+0inputs+0outputs (0major+4934minor)pagefaults 0swaps
+0.02user 0.02system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 53468maxresident)k
+0inputs+0outputs (0major+1346minor)pagefaults 0swaps
+
+
+== test-04a.conf ==
+Explanation: many pattern with few matches
+Pin-Priority: -1
+Pin: version *
+Package:
+ lib*troutoverpassnaturehandrailslicedunwrapped*
+ lib*silicacollectedrewinddespiteskincarequarterly*
+ lib*headfirststimuluscascadeunchainastoundclapping*
+ lib*snooperreversalbonnetoutrightpaternalsqueezing*
+ lib*skeletalvivaciouscommenceaffordsubleasemuppet*
+ lib*attendeeacrobatabacusunnervealtitudeheadphone*
+ lib*exclusiontarmacbasketmanagingoversightsplashed*
+ lib*rentableaerosoldaylonggranolaemblazehuddling*
+ lib*dastardlygropemangoepidermisimplicateconcierge*
+ lib*gravesundercoatantitoxicobservantenlargedstiffly*
+ lib*hastilyhatlessstashprocurerurgingchastity*
+ lib*shindigchlorideoverpricegrandpacollidepapyrus*
+ lib*carvingcattyunlovingprunereformedunsolved*
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 7
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+2.43user 0.02system 0:02.45elapsed 99%CPU (0avgtext+0avgdata 63832maxresident)k
+0inputs+0outputs (0major+2423minor)pagefaults 0swaps
+0.02user 0.01system 0:00.03elapsed 97%CPU (0avgtext+0avgdata 53536maxresident)k
+0inputs+0outputs (0major+1349minor)pagefaults 0swaps
+
+
+== test-04b.conf ==
+Explanation: many source patterns with few matches
+Pin-Priority: -1
+Pin: version *
+Package:
+ src:lib*troutoverpassnaturehandrailslicedunwrapped*
+ src:lib*silicacollectedrewinddespiteskincarequarterly*
+ src:lib*headfirststimuluscascadeunchainastoundclapping*
+ src:lib*snooperreversalbonnetoutrightpaternalsqueezing*
+ src:lib*skeletalvivaciouscommenceaffordsubleasemuppet*
+ src:lib*attendeeacrobatabacusunnervealtitudeheadphone*
+ src:lib*exclusiontarmacbasketmanagingoversightsplashed*
+ src:lib*rentableaerosoldaylonggranolaemblazehuddling*
+ src:lib*dastardlygropemangoepidermisimplicateconcierge*
+ src:lib*gravesundercoatantitoxicobservantenlargedstiffly*
+ src:lib*hastilyhatlessstashprocurerurgingchastity*
+ src:lib*shindigchlorideoverpricegrandpacollidepapyrus*
+ src:lib*carvingcattyunlovingprunereformedunsolved*
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 7
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+2.78user 0.03system 0:02.82elapsed 99%CPU (0avgtext+0avgdata 63772maxresident)k
+0inputs+0outputs (0major+2425minor)pagefaults 0swaps
+0.01user 0.01system 0:00.03elapsed 97%CPU (0avgtext+0avgdata 53348maxresident)k
+0inputs+0outputs (0major+1352minor)pagefaults 0swaps
+
+
+== test-05.conf ==
+Explanation: many pattern with many matches, spread over many rules, with the same priority
+Pin-Priority: -1
+Pin: version *
+Package: *-dev
+
+Pin-Priority: -1
+Pin: version *
+Package: *-devel
+
+Pin-Priority: -1
+Pin: version *
+Package: *-dbg
+
+Pin-Priority: -1
+Pin: version *
+Package: *-dbgsym
+
+Pin-Priority: -1
+Pin: version *
+Package: *-prof
+
+Pin-Priority: -1
+Pin: version *
+Package: *-src
+
+Pin-Priority: -1
+Pin: version *
+Package: *-source
+
+Pin-Priority: -1
+Pin: version *
+Package: *-dkms
+
+Pin-Priority: -1
+Pin: version *
+Package: *-debug
+
+Pin-Priority: -1
+Pin: version *
+Package: *-compiler
+
+Pin-Priority: -1
+Pin: version *
+Package: *-test
+
+Pin-Priority: -1
+Pin: version *
+Package: *-tests
+
+Pin-Priority: -1
+Pin: version *
+Package: libghc-*-doc
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+2.97user 0.03system 0:03.00elapsed 99%CPU (0avgtext+0avgdata 70724maxresident)k
+0inputs+0outputs (0major+4272minor)pagefaults 0swaps
+0.02user 0.02system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 53476maxresident)k
+0inputs+0outputs (0major+1350minor)pagefaults 0swaps
+
+
+== test-06.conf ==
+Explanation: many pattern with many matches, spread over many rules, with the different priorities
+Pin-Priority: -1
+Pin: version *
+Package: *-dev
+
+Pin-Priority: -2
+Pin: version *
+Package: *-devel
+
+Pin-Priority: -5
+Pin: version *
+Package: *-dbg
+
+Pin-Priority: -10
+Pin: version *
+Package: *-dbgsym
+
+Pin-Priority: -20
+Pin: version *
+Package: *-prof
+
+Pin-Priority: -50
+Pin: version *
+Package: *-src
+
+Pin-Priority: -100
+Pin: version *
+Package: *-source
+
+Pin-Priority: -200
+Pin: version *
+Package: *-dkms
+
+Pin-Priority: -500
+Pin: version *
+Package: *-debug
+
+Pin-Priority: -1000
+Pin: version *
+Package: *-compiler
+
+Pin-Priority: -2000
+Pin: version *
+Package: *-test
+
+Pin-Priority: -5000
+Pin: version *
+Package: *-tests
+
+Pin-Priority: -10000
+Pin: version *
+Package: libghc-*-doc
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+3.05user 0.03system 0:03.09elapsed 99%CPU (0avgtext+0avgdata 71024maxresident)k
+0inputs+0outputs (0major+4389minor)pagefaults 0swaps
+0.02user 0.02system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 53528maxresident)k
+0inputs+0outputs (0major+1346minor)pagefaults 0swaps
+
+
+== test-07.conf ==
+Explanation: one pattern but a very negative priority
+ The idea being that if you have a complicated set of negative pins,
+ you can tell which pattern matched by looking at the number it was pinned to.
+Pin-Priority: -32000
+Pin: version *
+Package: marble
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 8
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.38user 0.02system 0:00.41elapsed 99%CPU (0avgtext+0avgdata 64128maxresident)k
+0inputs+0outputs (0major+2423minor)pagefaults 0swaps
+0.03user 0.01system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 53648maxresident)k
+0inputs+0outputs (0major+1349minor)pagefaults 0swaps
+
+
+== test-08.conf ==
+Explanation: many pattern with many matches, spread over many rules, with very negative priorities
+Pin-Priority: -32000
+Pin: version *
+Package: *-dev
+
+Pin-Priority: -31000
+Pin: version *
+Package: *-devel
+
+Pin-Priority: -30000
+Pin: version *
+Package: *-dbg
+
+Pin-Priority: -29000
+Pin: version *
+Package: *-dbgsym
+
+Pin-Priority: -28000
+Pin: version *
+Package: *-prof
+
+Pin-Priority: -27000
+Pin: version *
+Package: *-src
+
+Pin-Priority: -26000
+Pin: version *
+Package: *-source
+
+Pin-Priority: -25000
+Pin: version *
+Package: *-dkms
+
+Pin-Priority: -24000
+Pin: version *
+Package: *-debug
+
+Pin-Priority: -23000
+Pin: version *
+Package: *-compiler
+
+Pin-Priority: -22000
+Pin: version *
+Package: *-test
+
+Pin-Priority: -21000
+Pin: version *
+Package: *-tests
+
+Pin-Priority: -20000
+Pin: version *
+Package: libghc-*-doc
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+4.00user 0.03system 0:04.04elapsed 99%CPU (0avgtext+0avgdata 70532maxresident)k
+0inputs+0outputs (0major+4783minor)pagefaults 0swaps
+0.03user 0.01system 0:00.05elapsed 100%CPU (0avgtext+0avgdata 53568maxresident)k
+0inputs+0outputs (0major+1348minor)pagefaults 0swaps
+
+
+== test-09.conf ==
+Explanation: trying to get it all the way up to 10 seconds elapsed like I saw in the field
+Pin-Priority: -1
+Pin: version *
+Package:
+ *-dev devel server libghc-*-doc dbg dbgsym prof src source dkms debug
+ *-compiler test tests *firmware* src:*firmware* libx32* lib32*
+ *tree-sitter* src:*tree-sitter* *vim* src:*vim* *emacs* src:*emacs*
+ dh-*
+ zip src:zip src:*7zip* src:rar* src:*unrar* src:libarchive*
+ src:*secret* src:qca2
+ r-*
+ src:*sourceview* src:gnupg* src:*sequoia* src:*nettle* *askpass*
+ src:*askpass* src:pinentry src:*p11*
+ src:*kwallet* src:gcr* src:seahorse src:gnome-keyring
+ src:gnome-keysign
+ src:*bluez* src:*bluetooth* src:*avahi* src:*mdns* src:*dnssd*
+ src:*network-manager* src:*libnma* src:*ifupdown* src:*netplan*
+ src:*resolvconf*
+ src:*modem* src:*wireless* src:*wifi* src:*wi-fi*
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 15974
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+7.04user 0.03system 0:07.08elapsed 99%CPU (0avgtext+0avgdata 70808maxresident)k
+0inputs+0outputs (0major+4438minor)pagefaults 0swaps
+0.02user 0.01system 0:00.03elapsed 94%CPU (0avgtext+0avgdata 53448maxresident)k
+0inputs+0outputs (0major+1348minor)pagefaults 0swaps
+
+
+== test-10.conf ==
+Explanation: OK, does merging those fnmatch patterns into a regex pattern run faster?
+    ELISP> (rx bol
+               (or (and (or "dh-" "lib32" "libx32" "r-") (zero-or-more any))
+                   (and "libghc-" (zero-or-more any) "-doc")
+                   (and (zero-or-more any) (or "askpass" "emacs" "firmware" "vim" "tree-sitter") (zero-or-more any))
+                   (and (zero-or-more any) (or "-dev" "-devel" "-server" "-dbg" "-dbgsym" "-prof" "-src" "-source" "-dkms" "-debug" "-compiler" "-test" "-tests"))
+                   "zip")
+               eol)
+    ELISP> (rx bol 
+               (or (and (or "gcr" "gnupg" "libarchive") (zero-or-more any))
+                   (and "libghc-" (zero-or-more any) "-doc")
+                   (and (zero-or-more any) (or "7zip" "askpass" "avahi" "bluetooth" "bluez" "dnssd" "emacs" "firmware" "iupdown" "kwallet" "libnma" "mdns" "modem" "netplan" "nettle" "network-manager" "p11" "resolvconf" "secret" "sequoia" "sourceview" "wifi" "wi-i" "wireless") (zero-or-more any))
+                   "gnome-keyring"
+                   "gnome-keysign"
+                   "pinentry"
+                   "qca2"
+                   "seahorse"
+                   "zip")
+               eol)
+Pin-Priority: -1
+Pin: version *
+Package:
+ /^((dh-|lib(x?32)|r-).*|libghc-.*-doc|.*(askpass|emacs|firmware|tree-sitter|vim).*|.*(-(compiler|d(bg(sym)?|e(bug|v(el)?)|kms)|prof|s(erver|ource|rc)|tests?))|zip)$/
+ src:/^((g(cr|nupg)|libarchive).*|libghc-.*-doc|.*(7zip|a(skpass|vahi)|blue(tooth|z)|dnssd|emacs|firmware|iupdown|kwallet|libnma|m(dns|odem)|net(plan|tle|work-manager)|p11|resolvconf|s(e(cret|quoia)|ourceview)|wi(-i|fi|reless)).*|gnome-keyring|gnome-keysign|pinentry|qca2|seahorse|zip)$/
+
+mount: /: not mount point or bad option.
+       dmesg(1) may have more information after failed mount system call.
+Roughly this many pins: 17609
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+93.15user 0.02system 1:33.26elapsed 99%CPU (0avgtext+0avgdata 70852maxresident)k
+0inputs+0outputs (0major+4945minor)pagefaults 0swaps
+0.02user 0.01system 0:00.03elapsed 100%CPU (0avgtext+0avgdata 53600maxresident)k
+0inputs+0outputs (0major+1354minor)pagefaults 0swaps
+
+
+root@hera:/tmp# 
+exit
+E: setup failed: E: command failed: env -i TERM=screen PATH=/bin:/sbin chroot $1 bash; false

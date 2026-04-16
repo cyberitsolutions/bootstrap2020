@@ -1,0 +1,421 @@
+-*- mode: compilation; default-directory: "~/Desktop/bootstrap2020/doc/apt-pinning-speed-tests/" -*-
+Compilation started at Thu Apr 16 14:02:39
+
+./test.sh
+== test-00.conf ==
+Explanation: one pattern with one match
+Pin-Priority: -1
+Pin: version *
+Package: marble
+
+Roughly this many pins: 8
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.47user 0.03system 0:00.50elapsed 100%CPU (0avgtext+0avgdata 61552maxresident)k
+0inputs+0outputs (0major+3445minor)pagefaults 0swaps
+0.03user 0.01system 0:00.06elapsed 96%CPU (0avgtext+0avgdata 51120maxresident)k
+0inputs+0outputs (0major+1347minor)pagefaults 0swaps
+
+
+== test-01.conf ==
+Explanation: one source pattern with few matches
+Pin-Priority: -1
+Pin: version *
+Package: src:marble
+
+Roughly this many pins: 21
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.41user 0.02system 0:00.43elapsed 98%CPU (0avgtext+0avgdata 61688maxresident)k
+0inputs+0outputs (0major+3960minor)pagefaults 0swaps
+0.03user 0.01system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 51380maxresident)k
+0inputs+0outputs (0major+1353minor)pagefaults 0swaps
+
+
+== test-02.conf ==
+Explanation: one pattern with many matches
+Pin-Priority: -1
+Pin: version *
+Package: *-dev
+
+Roughly this many pins: 12608
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.81user 0.05system 0:00.86elapsed 99%CPU (0avgtext+0avgdata 68156maxresident)k
+0inputs+0outputs (0major+5803minor)pagefaults 0swaps
+0.03user 0.01system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 51220maxresident)k
+0inputs+0outputs (0major+1352minor)pagefaults 0swaps
+
+
+== test-03.conf ==
+Explanation: one source pattern with many matches
+Pin-Priority: -1
+Pin: version *
+Package: src:*github*
+
+Roughly this many pins: 2144
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.52user 0.02system 0:00.55elapsed 99%CPU (0avgtext+0avgdata 61872maxresident)k
+0inputs+0outputs (0major+3490minor)pagefaults 0swaps
+0.02user 0.01system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 51280maxresident)k
+0inputs+0outputs (0major+1355minor)pagefaults 0swaps
+
+
+== test-04.conf ==
+Explanation: many pattern with many matches
+Pin-Priority: -1
+Pin: version *
+Package: *-dev *-devel *-dbg *-dbgsym *-prof *-src *-source *-dkms *-debug *-compiler *-test *-tests libghc-*-doc
+
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+2.91user 0.03system 0:02.94elapsed 99%CPU (0avgtext+0avgdata 68228maxresident)k
+0inputs+0outputs (0major+5808minor)pagefaults 0swaps
+0.02user 0.03system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 51340maxresident)k
+0inputs+0outputs (0major+1350minor)pagefaults 0swaps
+
+
+== test-04a.conf ==
+Explanation: many pattern with few matches
+Pin-Priority: -1
+Pin: version *
+Package:
+ lib*troutoverpassnaturehandrailslicedunwrapped*
+ lib*silicacollectedrewinddespiteskincarequarterly*
+ lib*headfirststimuluscascadeunchainastoundclapping*
+ lib*snooperreversalbonnetoutrightpaternalsqueezing*
+ lib*skeletalvivaciouscommenceaffordsubleasemuppet*
+ lib*attendeeacrobatabacusunnervealtitudeheadphone*
+ lib*exclusiontarmacbasketmanagingoversightsplashed*
+ lib*rentableaerosoldaylonggranolaemblazehuddling*
+ lib*dastardlygropemangoepidermisimplicateconcierge*
+ lib*gravesundercoatantitoxicobservantenlargedstiffly*
+ lib*hastilyhatlessstashprocurerurgingchastity*
+ lib*shindigchlorideoverpricegrandpacollidepapyrus*
+ lib*carvingcattyunlovingprunereformedunsolved*
+
+Roughly this many pins: 7
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+2.84user 0.01system 0:02.86elapsed 99%CPU (0avgtext+0avgdata 61564maxresident)k
+0inputs+0outputs (0major+3446minor)pagefaults 0swaps
+0.02user 0.01system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 51184maxresident)k
+0inputs+0outputs (0major+1349minor)pagefaults 0swaps
+
+
+== test-04b.conf ==
+Explanation: many source patterns with few matches
+Pin-Priority: -1
+Pin: version *
+Package:
+ src:lib*troutoverpassnaturehandrailslicedunwrapped*
+ src:lib*silicacollectedrewinddespiteskincarequarterly*
+ src:lib*headfirststimuluscascadeunchainastoundclapping*
+ src:lib*snooperreversalbonnetoutrightpaternalsqueezing*
+ src:lib*skeletalvivaciouscommenceaffordsubleasemuppet*
+ src:lib*attendeeacrobatabacusunnervealtitudeheadphone*
+ src:lib*exclusiontarmacbasketmanagingoversightsplashed*
+ src:lib*rentableaerosoldaylonggranolaemblazehuddling*
+ src:lib*dastardlygropemangoepidermisimplicateconcierge*
+ src:lib*gravesundercoatantitoxicobservantenlargedstiffly*
+ src:lib*hastilyhatlessstashprocurerurgingchastity*
+ src:lib*shindigchlorideoverpricegrandpacollidepapyrus*
+ src:lib*carvingcattyunlovingprunereformedunsolved*
+
+Roughly this many pins: 7
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+3.37user 0.07system 0:03.45elapsed 99%CPU (0avgtext+0avgdata 61572maxresident)k
+0inputs+0outputs (0major+3450minor)pagefaults 0swaps
+0.03user 0.02system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 51352maxresident)k
+0inputs+0outputs (0major+1352minor)pagefaults 0swaps
+
+
+== test-05.conf ==
+Explanation: many pattern with many matches, spread over many rules, with the same priority
+Pin-Priority: -1
+Pin: version *
+Package: *-dev
+
+Pin-Priority: -1
+Pin: version *
+Package: *-devel
+
+Pin-Priority: -1
+Pin: version *
+Package: *-dbg
+
+Pin-Priority: -1
+Pin: version *
+Package: *-dbgsym
+
+Pin-Priority: -1
+Pin: version *
+Package: *-prof
+
+Pin-Priority: -1
+Pin: version *
+Package: *-src
+
+Pin-Priority: -1
+Pin: version *
+Package: *-source
+
+Pin-Priority: -1
+Pin: version *
+Package: *-dkms
+
+Pin-Priority: -1
+Pin: version *
+Package: *-debug
+
+Pin-Priority: -1
+Pin: version *
+Package: *-compiler
+
+Pin-Priority: -1
+Pin: version *
+Package: *-test
+
+Pin-Priority: -1
+Pin: version *
+Package: *-tests
+
+Pin-Priority: -1
+Pin: version *
+Package: libghc-*-doc
+
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+4.20user 0.04system 0:04.26elapsed 99%CPU (0avgtext+0avgdata 68032maxresident)k
+0inputs+0outputs (0major+5809minor)pagefaults 0swaps
+0.05user 0.01system 0:00.07elapsed 97%CPU (0avgtext+0avgdata 51212maxresident)k
+0inputs+0outputs (0major+1352minor)pagefaults 0swaps
+
+
+== test-06.conf ==
+Explanation: many pattern with many matches, spread over many rules, with the different priorities
+Pin-Priority: -1
+Pin: version *
+Package: *-dev
+
+Pin-Priority: -2
+Pin: version *
+Package: *-devel
+
+Pin-Priority: -5
+Pin: version *
+Package: *-dbg
+
+Pin-Priority: -10
+Pin: version *
+Package: *-dbgsym
+
+Pin-Priority: -20
+Pin: version *
+Package: *-prof
+
+Pin-Priority: -50
+Pin: version *
+Package: *-src
+
+Pin-Priority: -100
+Pin: version *
+Package: *-source
+
+Pin-Priority: -200
+Pin: version *
+Package: *-dkms
+
+Pin-Priority: -500
+Pin: version *
+Package: *-debug
+
+Pin-Priority: -1000
+Pin: version *
+Package: *-compiler
+
+Pin-Priority: -2000
+Pin: version *
+Package: *-test
+
+Pin-Priority: -5000
+Pin: version *
+Package: *-tests
+
+Pin-Priority: -10000
+Pin: version *
+Package: libghc-*-doc
+
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+3.07user 0.02system 0:03.10elapsed 99%CPU (0avgtext+0avgdata 67992maxresident)k
+0inputs+0outputs (0major+6317minor)pagefaults 0swaps
+0.02user 0.01system 0:00.04elapsed 97%CPU (0avgtext+0avgdata 51364maxresident)k
+0inputs+0outputs (0major+1349minor)pagefaults 0swaps
+
+
+== test-07.conf ==
+Explanation: one pattern but a very negative priority
+ The idea being that if you have a complicated set of negative pins,
+ you can tell which pattern matched by looking at the number it was pinned to.
+Pin-Priority: -32000
+Pin: version *
+Package: marble
+
+Roughly this many pins: 8
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+0.46user 0.03system 0:00.49elapsed 99%CPU (0avgtext+0avgdata 61736maxresident)k
+0inputs+0outputs (0major+3446minor)pagefaults 0swaps
+0.05user 0.01system 0:00.06elapsed 100%CPU (0avgtext+0avgdata 51376maxresident)k
+0inputs+0outputs (0major+1353minor)pagefaults 0swaps
+
+
+== test-08.conf ==
+Explanation: many pattern with many matches, spread over many rules, with very negative priorities
+Pin-Priority: -32000
+Pin: version *
+Package: *-dev
+
+Pin-Priority: -31000
+Pin: version *
+Package: *-devel
+
+Pin-Priority: -30000
+Pin: version *
+Package: *-dbg
+
+Pin-Priority: -29000
+Pin: version *
+Package: *-dbgsym
+
+Pin-Priority: -28000
+Pin: version *
+Package: *-prof
+
+Pin-Priority: -27000
+Pin: version *
+Package: *-src
+
+Pin-Priority: -26000
+Pin: version *
+Package: *-source
+
+Pin-Priority: -25000
+Pin: version *
+Package: *-dkms
+
+Pin-Priority: -24000
+Pin: version *
+Package: *-debug
+
+Pin-Priority: -23000
+Pin: version *
+Package: *-compiler
+
+Pin-Priority: -22000
+Pin: version *
+Package: *-test
+
+Pin-Priority: -21000
+Pin: version *
+Package: *-tests
+
+Pin-Priority: -20000
+Pin: version *
+Package: libghc-*-doc
+
+Roughly this many pins: 15236
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+4.59user 0.05system 0:04.65elapsed 99%CPU (0avgtext+0avgdata 68248maxresident)k
+0inputs+0outputs (0major+6359minor)pagefaults 0swaps
+0.05user 0.03system 0:00.08elapsed 98%CPU (0avgtext+0avgdata 51356maxresident)k
+0inputs+0outputs (0major+1353minor)pagefaults 0swaps
+
+
+== test-09.conf ==
+Explanation: trying to get it all the way up to 10 seconds elapsed like I saw in the field
+Pin-Priority: -1
+Pin: version *
+Package:
+ *-dev devel server libghc-*-doc dbg dbgsym prof src source dkms debug
+ *-compiler test tests *firmware* src:*firmware* libx32* lib32*
+ *tree-sitter* src:*tree-sitter* *vim* src:*vim* *emacs* src:*emacs*
+ dh-*
+ zip src:zip src:*7zip* src:rar* src:*unrar* src:libarchive*
+ src:*secret* src:qca2
+ r-*
+ src:*sourceview* src:gnupg* src:*sequoia* src:*nettle* *askpass*
+ src:*askpass* src:pinentry src:*p11*
+ src:*kwallet* src:gcr* src:seahorse src:gnome-keyring
+ src:gnome-keysign
+ src:*bluez* src:*bluetooth* src:*avahi* src:*mdns* src:*dnssd*
+ src:*network-manager* src:*libnma* src:*ifupdown* src:*netplan*
+ src:*resolvconf*
+ src:*modem* src:*wireless* src:*wifi* src:*wi-fi*
+
+Roughly this many pins: 15974
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+9.20user 0.04system 0:09.25elapsed 99%CPU (0avgtext+0avgdata 68236maxresident)k
+0inputs+0outputs (0major+6363minor)pagefaults 0swaps
+0.04user 0.01system 0:00.05elapsed 98%CPU (0avgtext+0avgdata 51228maxresident)k
+0inputs+0outputs (0major+1352minor)pagefaults 0swaps
+
+
+== test-10.conf ==
+Explanation: OK, does merging those fnmatch patterns into a regex pattern run faster?
+    ELISP> (rx bol
+               (or (and (or "dh-" "lib32" "libx32" "r-") (zero-or-more any))
+                   (and "libghc-" (zero-or-more any) "-doc")
+                   (and (zero-or-more any) (or "askpass" "emacs" "firmware" "vim" "tree-sitter") (zero-or-more any))
+                   (and (zero-or-more any) (or "-dev" "-devel" "-server" "-dbg" "-dbgsym" "-prof" "-src" "-source" "-dkms" "-debug" "-compiler" "-test" "-tests"))
+                   "zip")
+               eol)
+    ELISP> (rx bol 
+               (or (and (or "gcr" "gnupg" "libarchive") (zero-or-more any))
+                   (and "libghc-" (zero-or-more any) "-doc")
+                   (and (zero-or-more any) (or "7zip" "askpass" "avahi" "bluetooth" "bluez" "dnssd" "emacs" "firmware" "iupdown" "kwallet" "libnma" "mdns" "modem" "netplan" "nettle" "network-manager" "p11" "resolvconf" "secret" "sequoia" "sourceview" "wifi" "wi-i" "wireless") (zero-or-more any))
+                   "gnome-keyring"
+                   "gnome-keysign"
+                   "pinentry"
+                   "qca2"
+                   "seahorse"
+                   "zip")
+               eol)
+Pin-Priority: -1
+Pin: version *
+Package:
+ /^((dh-|lib(x?32)|r-).*|libghc-.*-doc|.*(askpass|emacs|firmware|tree-sitter|vim).*|.*(-(compiler|d(bg(sym)?|e(bug|v(el)?)|kms)|prof|s(erver|ource|rc)|tests?))|zip)$/
+ src:/^((g(cr|nupg)|libarchive).*|libghc-.*-doc|.*(7zip|a(skpass|vahi)|blue(tooth|z)|dnssd|emacs|firmware|iupdown|kwallet|libnma|m(dns|odem)|net(plan|tle|work-manager)|p11|resolvconf|s(e(cret|quoia)|ourceview)|wi(-i|fi|reless)).*|gnome-keyring|gnome-keysign|pinentry|qca2|seahorse|zip)$/
+
+Roughly this many pins: 17609
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+91.43user 0.04system 1:31.50elapsed 99%CPU (0avgtext+0avgdata 68624maxresident)k
+0inputs+0outputs (0major+7064minor)pagefaults 0swaps
+0.03user 0.01system 0:00.05elapsed 96%CPU (0avgtext+0avgdata 51356maxresident)k
+0inputs+0outputs (0major+1356minor)pagefaults 0swaps
+
+
+
+Compilation finished at Thu Apr 16 14:07:44, duration 0:05:05
