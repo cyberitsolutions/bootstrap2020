@@ -30,7 +30,7 @@ WatchdogSec=10m
 # 11:10 <twb> If they just put the disc in, none of this happens, it gets blocked by the snitcher
 # 11:15 <twb> Hrm, OK, I stopped the process and then waited 10 minutes and a reboot hasn't been forced
 # 11:17 <twb> OK that at least makes sense to me now, but can be improved...
-# 11:18 <twb> https://github.com/cyberitsolutions/bootstrap2020/blob/twb/B20/D12/templates/PrisonPC/files/snitches/tv-snitch%40.service#L13-L25
+# 11:18 <twb> https://github.com/cyberitsolutions/bootstrap2020/blob/twb/B20/D14/templates/PrisonPC/files/snitches/tv-snitch%40.service#L13-L25
 # 11:18 <twb> What happens currently is:
 # 11:18 <twb> systemd[1]: bootstrap2020-tv-snitch@p.service: Watchdog timeout (limit 10min)!
 # 11:18 [cjb goes afk for about 1 hour]

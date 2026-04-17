@@ -12,7 +12,7 @@ def create_lookup_table():
     # NOTE: python3-xdg ignores $LANG and $LC_ALL and defaults to en_US.
     #       Unless we explicitly set the local here,
     #       xdg will ignore all the Name[en_AU] values set by
-    #       https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D12/templates/PrisonPC/hooks/customize50-generic-app-names.py
+    #       https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D14/templates/PrisonPC/hooks/customize50-generic-app-names.py
     xdg.Locale.update(language='en_AU.UTF-8')
     menu = xdg.Menu.parse('/etc/xdg/menus/xfce-applications.menu')
     walk(acc=lookup_table['wm_class2name'], menu=menu)

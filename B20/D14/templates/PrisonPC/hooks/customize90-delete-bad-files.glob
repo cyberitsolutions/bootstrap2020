@@ -97,7 +97,7 @@
 # The library is unavoidably installed via libkf5kiocore5, which all KDE apps use.
 # Our KDE games and education apps shouldn't EVER need root!
 # polkit itself is handled here:
-#     https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D12/templates/PrisonPC/files/polkit-policy.js
+#     https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D14/templates/PrisonPC/files/polkit-policy.js
 #     https://github.com/cyberitsolutions/bootstrap2020/commit/9bb89da308bd82ad6a393c3e9102b30f97caf4ec
 *kde*auth*
 *kf5auth*
@@ -132,7 +132,7 @@
 ## ==================================================
 # From gimp.  Screenshots lead to ersatz child porn.
 # For more discussion see
-# https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D12/packages/build-vlc.py
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D14/packages/build-vlc.py
 # UPDATE: as at Debian 12, this file still exists & should still be removed.
 */gimp/*/plug-ins/screenshot
 # LibreOffice also has a screenshot feature, but

@@ -8,7 +8,7 @@ __doc__ = """ abort if an unexpected xattr/ACL is lost during build
 
 tar2sqfs doesn't support system xattrs (esp posix ACLs).
 "mmdebstrap bookworm bookworm.squashfs" automatically strips them out.
-In B20/D12/__main__.py:mmdebstrap_but_zstd() does the same thing.
+In B20/D14/__main__.py:mmdebstrap_but_zstd() does the same thing.
 
 BUT neither of those actually log what xattrs were removed.
 I'd like to do that, hence this script.

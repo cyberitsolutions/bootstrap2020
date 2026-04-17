@@ -116,7 +116,7 @@ Description: appease hunspell-en-au
  This avoids a little emacs/debconf/perl crap.
  .
  Note that Chromium already has special handling (which doesn't use dictionaries-common):
- https://github.com/cyberitsolutions/bootstrap2020/tree/main/B20/D12/packages/prisonpc-chromium-hunspell-dictionaries/debian
+ https://github.com/cyberitsolutions/bootstrap2020/tree/main/B20/D14/packages/prisonpc-chromium-hunspell-dictionaries/debian
 
 Package: prisonpc-bad-package-conflicts-inmates
 Depends:

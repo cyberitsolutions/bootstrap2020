@@ -89,7 +89,7 @@ args = parser.parse_args()
 # some drivers may be loaded AFTER pivot_root.
 #
 # We DO NOT have to sit through a SLOW, needless rd rebuild, as
-# B20/D12/__main__.py has already removed /boot/vmlinuz*, so
+# B20/D14/__main__.py has already removed /boot/vmlinuz*, so
 # the update-initramfs trigger does nothing.
 #
 # We use apt first for --autoremove, then
@@ -100,7 +100,7 @@ args = parser.parse_args()
 #         depending on whether debconf was already installed.
 #         To fix this... feature, "apt autoremove -oAPT::AutoRemove::SuggestsImportant=0" (or in apt.conf).
 #
-# PROBLEM!  I reordered stuff in B20/D12/__main__.py, and now PrisonPC hooks (like this one) run
+# PROBLEM!  I reordered stuff in B20/D14/__main__.py, and now PrisonPC hooks (like this one) run
 # BEFORE /boot/vmlinuz and /boot/initrd.img are copied out, to sit next to filesystem.squashfs.
 # This works fine except that we temporarily install tiny-initramfs, and
 # tiny-initramfs has a postinst trigger that replaces /boot/initrd.img.

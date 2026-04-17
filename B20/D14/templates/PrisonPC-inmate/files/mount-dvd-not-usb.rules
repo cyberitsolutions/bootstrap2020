@@ -8,7 +8,7 @@
 # However, as defense-in-depth, it's desirable to limit
 # One easy way to do this is to prevent thunar --dbus--> udisks mount/umount/eject requests.
 # I initially thought to do this by tweaking the polkit policy.js to only approve mounts with specific arguments.
-# https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D12/templates/PrisonPC/files/polkit-policy.js
+# https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D14/templates/PrisonPC/files/polkit-policy.js
 # This may still not be possible even in the js version of polkit - I didn't reach a conclusion.
 # While looking into that, I realized an easier method is to tell udisks2 "don't manage this device".
 # This already happens for devices udisks2 considers "non-removable", so we can easily generalize it.

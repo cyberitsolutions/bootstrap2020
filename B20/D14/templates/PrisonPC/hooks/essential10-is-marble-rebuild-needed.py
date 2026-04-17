@@ -34,6 +34,6 @@ candidate_line, = [
 if 'PrisonPC' in candidate_line:
     logging.info("apt believes PrisonPC's marble is the newest marble")
 else:
-    logging.error("apt believes Debian's marble is newer than PrisonPC's marble -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D12/packages/build-marble.py")
+    logging.error("apt believes Debian's marble is newer than PrisonPC's marble -- REBUILD NEEDED! -- https://github.com/cyberitsolutions/bootstrap2020/blob/main/B20/D14/packages/build-marble.py")
     print(policy_stdout, end='', flush=True)
     exit(1)

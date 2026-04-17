@@ -1,6 +1,6 @@
 // Short version:
 //
-//   * This is B20/D12/templates/PrisonPC/files/com.prisonpc.crt.
+//   * This is B20/D14/templates/PrisonPC/files/com.prisonpc.crt.
 //   * It is duplicated here because nss3 is awful.
 //   * It requires chromium (>= 132), which Debian 12+ has.
 //

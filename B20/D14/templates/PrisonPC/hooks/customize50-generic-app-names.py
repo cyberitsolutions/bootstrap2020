@@ -25,9 +25,9 @@ Use our own handwritten list of overrides.
 parser = argparse.ArgumentParser()
 parser.add_argument('chroot_path', type=pathlib.Path)
 parser.set_defaults(override_path=pathlib.Path(
-    'B20/D12/templates/PrisonPC/hooks/customize50-generic-app-names.conf'))
+    'B20/D14/templates/PrisonPC/hooks/customize50-generic-app-names.conf'))
 parser.set_defaults(exec_override_path=pathlib.Path(
-    'B20/D12/templates/PrisonPC/hooks/customize50-generic-app-names.exec-fixes.conf'))
+    'B20/D14/templates/PrisonPC/hooks/customize50-generic-app-names.exec-fixes.conf'))
 args = parser.parse_args()
 
 overrides = dict(
