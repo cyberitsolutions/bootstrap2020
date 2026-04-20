@@ -28,15 +28,15 @@ dst_path.parent.mkdir(parents=True, exist_ok=True)
 with dst_path.open('w') as f:
     import apt              # must happen after os.environ['APT_CONFIG']
     cache = apt.Cache()
-    print(f'Took {round(time.time() - then, 1)} seconds to load cache.')  # DEBUGGING
     dscnames = sorted(set(p.candidate.source_name for p in apt.Cache() if p.candidate))
     debnames = sorted(subprocess.check_output(['apt-cache', 'pkgnames'], text=True).splitlines())
-    if m := [d for d in debnames if any(fnmatch.fnmatch(d, p) for p in deb_good_globs)]:
+    print(f'Took {round(time.time() - then, 1)} seconds to load cache.')  # DEBUGGING
+    if m := [d for d in debnames if any(d == p or fnmatch.fnmatch(d, p) for p in deb_good_globs)]:
         print('\n\nPin: version *\nPin-Priority: 500\nPackage:', *m, file=f)
-    if m := [f'src:{d}' for d in dscnames if any(fnmatch.fnmatch(d, p) for p in dsc_good_globs)]:
+    if m := [f'src:{d}' for d in dscnames if any(d == p or fnmatch.fnmatch(d, p) for p in dsc_good_globs)]:
         print('\n\nPin: version *\nPin-Priority: 500\nPackage:', *m, file=f)
-    if m := [d for d in debnames if any(fnmatch.fnmatch(d, p) for p in deb_shit_globs)]:
+    if m := [d for d in debnames if any(d == p or fnmatch.fnmatch(d, p) for p in deb_shit_globs)]:
         print('\n\nPin: version *\nPin-Priority: -13646\nPackage:', *m, file=f)
-    if m := [f'src:{d}' for d in dscnames if any(fnmatch.fnmatch(d, p) for p in dsc_shit_globs)]:
+    if m := [f'src:{d}' for d in dscnames if any(d == p or fnmatch.fnmatch(d, p) for p in dsc_shit_globs)]:
         print('\n\nPin: version *\nPin-Priority: -18418\nPackage:', *m, file=f)
 print(f'Took {round(time.time() - then, 1)} seconds to think about it.')  # DEBUGGING

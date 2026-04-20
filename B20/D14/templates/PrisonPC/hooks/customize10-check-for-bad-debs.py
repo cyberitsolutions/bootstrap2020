@@ -30,6 +30,7 @@ stdout = subprocess.check_output(
     ['dpkg-query', '--show', '--showformat=${Section}\t${Source}\t${Package}\n'],
     text=True)
 shit_patterns = set(
+s for s in
 r"""
 (.+/)?shells	.*	.+
 (.+/)?editors	.*	.+
@@ -56,25 +57,42 @@ r"""
 .*vim.*
 .*emacs.*
 .+	.*	dh-.+
+.+	.*	libx?32.+
 # We ban zip because zip files support AES strong crypto.
 # Therefore we must ban all R packages as well, due to
 # r-* → r-base-core → zip
 (.+/)?gnu-r	.*	.+
 .+	.*	r-.+
 .+	r-.*	+
-""".strip().splitlines())
+""".strip().splitlines()
+if s and not s.startswith('#'))
 
 # good patterns trump shit patterns
 good_patterns = set(
+s for s in
 r"""
 shells		bash
 shells		dash
 editors	libreoffice	.+
 net	openssh	openssh-server
 net	openssh	openssh-sftp-server
+# Used by gvfs
+devel		desktop-file-utils
+# Used by vlc (Australian subtitles)
+devel	zvbi	libzvbi-common
+# Used by GTK4 (sigh)
+devel	libsoup3	libsoup-3.0-common
+# Used when booting off SMB3 (instead of NFS4) – mainly VMs as at 2026.
+otherosfs		cifs-utils
+# Used by disc-snitch to scan DVDs
+otherosfs	libcdio \(2.2.0-4\)	libcdio-utils
+# Used by usermode for password reset (FIXME replace usermode)
+oldlibs	gtk\+2.0	libgtk2.0-0t64
+oldlibs	gtk\+2.0	libgtk2.0-common
+oldlibs	gtk\+2.0	gtk2-engines-pixbuf
 # Expected firmwares, see doc/firmware-policy.csv and prisonpc-ersatz for discussion
-non-free-firmware/admin	amd64-microcode
-non-free-firmware/admin	intel-microcode
+non-free-firmware/admin		amd64-microcode
+non-free-firmware/admin		intel-microcode
 non-free-firmware/kernel	firmware-nonfree	firmware-intel-graphics
 non-free-firmware/kernel	firmware-nonfree	firmware-intel-misc
 non-free-firmware/kernel	firmware-nonfree	firmware-intel-sound
@@ -84,13 +102,14 @@ non-free-firmware/kernel	firmware-sof	firmware-sof-signed
 kernel	firmware-free	firmware-linux-free
 # singularity → python3-numpy → python3-numpy-dev
 python	numpy	python3-numpy-dev
-""".strip().splitlines())
+""".strip().splitlines()
+if s and not s.startswith('#'))
 
 shit_matches = [
     line
     for line in stdout.splitlines()
-    if any(re.fullmatch(p, line) for p in shit_patterns if p)
-    if not any(re.fullmatch(p, line) for p in good_patterns if p)]
+    if any(re.fullmatch(p, line) for p in shit_patterns)
+    if not any(re.fullmatch(p, line) for p in good_patterns)]
 if shit_matches:
     print('Suspicious packages installed!')
     print(*shit_matches, sep='\n')
