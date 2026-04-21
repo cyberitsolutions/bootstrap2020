@@ -240,75 +240,55 @@ Conflicts:
 #  • libreoffice CANNOT do zip-level AES on .docx/.odt/&c, but
 #    libreoffice CAN do docx/odt level encryption inside the zip.
 #    We nerf that elsewhere, in libreoffice XML config.
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*gnupg.*$) ?not(?name(^gpg$))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*gnupg.*$) ?not(?name(^gpg$))' | fmt -w132"
  dirmngr, gnupg, gnupg-agent, gnupg-l10n, gnupg-pkcs11-scd, gnupg-pkcs11-scd-proxy, gnupg-utils, gnupg1, gnupg1-l10n, gnupg2,
  gpg-agent, gpg-from-sq, gpg-sq, gpg-wks-client, gpg-wks-server, gpgconf, gpgsm, gpgv, gpgv-from-sq, gpgv-sq, gpgv-static,
- gpgv-win32, gpgv1, libgnupg-interface-perl, libgnupg-perl, libmail-gnupg-perl, php-gnupg, php-gnupg-all-dev, php8.4-gnupg,
- python3-gnupg, scdaemon, sequoia-chameleon-gnupg, tpm2daemon,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*sequoia.*$) ?not(?name(^sqv$))' | fmt -w132"
- gpg-from-sq, gpg-sq, gpgv-from-sq, gpgv-sq, librpm-sequoia-1, librpm-sequoia-dev, librust-sequoia-autocrypt-dev,
- librust-sequoia-cert-store-dev, librust-sequoia-directories-dev, librust-sequoia-git-dev,
- librust-sequoia-gpg-agent-dev, librust-sequoia-ipc-dev, librust-sequoia-keystore-backend-dev, librust-sequoia-keystore-dev,
- librust-sequoia-keystore-gpg-agent-dev, librust-sequoia-keystore-openpgp-card-dev, librust-sequoia-keystore-softkeys-dev,
- librust-sequoia-keystore-tpm-dev, librust-sequoia-man-dev, librust-sequoia-net-dev, librust-sequoia-openpgp-dev,
- librust-sequoia-openpgp-mt-dev, librust-sequoia-policy-config-dev, librust-sequoia-sop-dev, librust-sequoia-tpm-dev,
- librust-sequoia-wot-dev, libsequoia-octopus-librnp, python3-pysequoia, sequoia-chameleon-gnupg, sequoia-git,
- sequoia-keystore-server, sq, sqop, sqopv,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*nettle.*$) ?not(?reverse-depends(^sqv$))' | fmt -w132"
- libghc-nettle-dev, libghc-nettle-doc, libghc-nettle-prof, librust-nettle-dev, librust-nettle-sys-dev, nettle-bin, nettle-dev,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?or(?source-package(^.*askpass.*$), ?source-package(^.*pinentry.*$), ?name(^.*askpass.*$))' | fmt -w132"
- golang-github-gopasspw-pinentry-dev, golang-github-twpayne-go-pinentry-dev, ksshaskpass, lxqt-openssh-askpass,
- lxqt-openssh-askpass-l10n, pinentry-curses, pinentry-doc, pinentry-fltk, pinentry-gnome3, pinentry-qt, pinentry-tty,
- pinentry-x2go, r-cran-askpass, ssh-askpass, ssh-askpass-gnome,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*kwallet.*$)' | fmt -w132"
- kwallet6, kwalletcli, kwalletmanager, libkf5wallet-bin, libkf5wallet-data, libkf5wallet-dev, libkf5wallet-doc, libkf5wallet5,
- libkf6wallet-data, libkf6wallet-dev, libkf6wallet-doc, libkf6wallet6, libkf6walletbackend6, libpam-kwallet-common,
- libpam-kwallet5, signon-kwallet-extension,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^gcr.*$) ?not(?reverse-depends(^gvfs-libs$)) ?not(?reverse-depends(?reverse-depends(^gvfs-libs$)))' | fmt -w132"
- gcr, gcr4, gcr4-tests, gir1.2-gck-1, gir1.2-gck-2, gir1.2-gcr-3, gir1.2-gcr-4, libgck-1-0, libgck-1-dev, libgck-1-doc,
- libgck-2-dev, libgck-2-doc, libgcr-3-dev, libgcr-3-doc, libgcr-4-dev, libgcr-4-doc, libgcr-base-3-1, libgcr-ui-3-1,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*p11.*$) ?not(?reverse-depends(^libgnutls.*$))' | fmt -w132"
- libengine-pkcs11-openssl, libp11-3t64, libp11-dev, libpam-p11, p11-kit, p11-kit-doc, p11-kit-modules, r-cran-cpp11,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?or(?source-package(^seahorse$), ?source-package(^gnome-keyring$), ?source-package(^gnome-keysign$))' | fmt -w132"
+ gpgv-win32, gpgv1, libgnupg-interface-perl, libgnupg-perl, libmail-gnupg-perl, php-gnupg, php8.4-gnupg, python3-gnupg,
+ scdaemon, sequoia-chameleon-gnupg, tpm2daemon,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*sequoia.*$) ?not(?name(^sqv$))' | fmt -w132"
+ gpg-from-sq, gpg-sq, gpgv-from-sq, gpgv-sq, librpm-sequoia-1, libsequoia-octopus-librnp, python3-pysequoia,
+ sequoia-chameleon-gnupg, sequoia-git, sequoia-keystore-server, sq, sqop, sqopv,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*nettle.*$) ?not(?reverse-depends(^sqv$))' | fmt -w132"
+ libghc-nettle-doc, libghc-nettle-prof, nettle-bin,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(^.*askpass.*$), ?source-package(^.*pinentry.*$), ?name(^.*askpass.*$))' | fmt -w132"
+ ksshaskpass, lxqt-openssh-askpass, lxqt-openssh-askpass-l10n, pinentry-curses, pinentry-doc, pinentry-fltk, pinentry-gnome3,
+ pinentry-qt, pinentry-tty, pinentry-x2go, r-cran-askpass, ssh-askpass, ssh-askpass-gnome,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*kwallet.*$)' | fmt -w132"
+ kwallet6, kwalletcli, kwalletmanager, libkf5wallet-bin, libkf5wallet-data, libkf5wallet-doc, libkf5wallet5, libkf6wallet-data,
+ libkf6wallet-doc, libkf6wallet6, libkf6walletbackend6, libpam-kwallet-common, libpam-kwallet5, signon-kwallet-extension,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^gcr.*$) ?not(?reverse-depends(^gvfs-libs$)) ?not(?reverse-depends(?reverse-depends(^gvfs-libs$)))' | fmt -w132"
+ gcr, gcr4, gcr4-tests, gir1.2-gck-1, gir1.2-gck-2, gir1.2-gcr-3, gir1.2-gcr-4, libgck-1-0, libgck-1-doc, libgck-2-doc,
+ libgcr-3-doc, libgcr-4-doc, libgcr-base-3-1, libgcr-ui-3-1,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*p11.*$) ?not(?reverse-depends(^libgnutls.*$))' | fmt -w132"
+ libengine-pkcs11-openssl, libp11-3t64, libpam-p11, p11-kit, p11-kit-doc, p11-kit-modules, r-cran-cpp11,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(^seahorse$), ?source-package(^gnome-keyring$), ?source-package(^gnome-keysign$))' | fmt -w132"
  gnome-keyring, gnome-keyring-pkcs11, gnome-keysign, libpam-gnome-keyring, seahorse,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*zip.*$) ?not(?essential) ?not(?reverse-depends(^dpkg$))' | fmt -w132"
- 7zip, 7zip-rar, 7zip-standalone, bzip2, bzip2-doc, bzip3, cl-zip, clzip, fcrackzip, fpzip-utils,
- golang-github-bodgit-sevenzip-dev, golang-github-buengese-sgzip-dev, golang-github-daaku-go.zipexe-dev,
- golang-github-gin-contrib-gzip-dev, golang-github-klauspost-pgzip-dev, golang-github-nytimes-gziphandler-dev,
- golang-github-openzipkin-zipkin-go-dev, golang-github-saracen-fastzip-dev, golang-github-saracen-zipextra-dev,
- golang-github-shurcool-httpgzip-dev, haskell-zip-stream-utils, haskell-zip-utils, jzip, lbzip2, libandroid-zipflinger-java,
- libarchive-zip-perl, libbz2-dev, libbzip3-1, libbzip3-dev, libcgi-compress-gzip-perl, libcompress-bzip2-perl,
- libcompress-raw-bzip2-perl, libdictzip-java, libfast-zip-clojure, libfast-zip-visit-clojure, libfpzip-dev, libfpzip1,
- libghc-hslua-module-zip-dev, libghc-hslua-module-zip-doc, libghc-hslua-module-zip-prof, libghc-text-zipper-dev,
- libghc-text-zipper-doc, libghc-text-zipper-prof, libghc-zip-archive-dev, libghc-zip-archive-doc, libghc-zip-archive-prof,
- libghc-zip-dev, libghc-zip-doc, libghc-zip-prof, libghc-zip-stream-dev, libghc-zip-stream-doc, libghc-zip-stream-prof,
- libjbzip2-java, liblaszip-api8, liblaszip-dev, liblaszip8, libminizip-ng-dev, libminizip-ng4t64, libperlio-gzip-perl,
- libqatzip-dev, libqatzip3, libquazip-doc, libquazip1-qt5-1t64, libquazip1-qt5-dev, libquazip1-qt5-doc, libquazip1-qt6-1t64,
- libquazip1-qt6-dev, libquazip1-qt6-doc, libquazip5-1t64, libquazip5-dev, librust-astral-async-zip-dev, librust-async-zip-dev,
- librust-bgzip-dev, librust-bzip2-dev, librust-bzip2-sys-dev, librust-gzip-header-dev, librust-zip-dev, libwww-mechanize-gzip-perl,
- libzip-dev, libzip-ocaml, libzip-ocaml-dev, libzip4j-java, libzip5, libzipios++-dev, libzipios++-doc, libzipios++0v5,
- libzzip-0-13t64, libzzip-dev, lrzip, lunzip, lzip, lziprecover, node-express-static-gzip, node-extract-zip, node-gzip-size,
- node-jszip, node-jszip-utils, node-openpgp-seek-bzip, node-unbzip2-stream, pbzip2, pdlzip, plzip, python-pyzipper-doc,
- python3-aiozipkin, python3-biomaj3-zipkin, python3-indexed-gzip, python3-laszip, python3-py-zipkin, python3-pyzipper,
- python3-remotezip, python3-reprounzip, python3-reprozip, python3-zipfile-zstd, python3-zipp, python3-zipstream,
+# Note: perl Provides: libcompress-raw-bzip2-perl so we cannot conflict it here, or we block all of perl (and then indirectly kdoctool5s → sgml-data → perl, which we need for chromium-not-yelp)
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*zip.*$) ?not(?essential) ?not(?reverse-depends(^dpkg$)) ?not(?name(libcompress-raw-bzip2-perl))' | fmt -w132"
+ 7zip, 7zip-rar, 7zip-standalone, bzip2, bzip2-doc, bzip3, cl-zip, clzip, fcrackzip, fpzip-utils, haskell-zip-stream-utils,
+ haskell-zip-utils, jzip, lbzip2, libandroid-zipflinger-java, libarchive-zip-perl, libbzip3-1, libcgi-compress-gzip-perl,
+ libcompress-bzip2-perl, libdictzip-java, libfast-zip-clojure, libfast-zip-visit-clojure, libfpzip1, libghc-hslua-module-zip-doc,
+ libghc-hslua-module-zip-prof, libghc-text-zipper-doc, libghc-text-zipper-prof, libghc-zip-archive-doc, libghc-zip-archive-prof,
+ libghc-zip-doc, libghc-zip-prof, libghc-zip-stream-doc, libghc-zip-stream-prof, libjbzip2-java, liblaszip-api8,
+ liblaszip8, libminizip-ng4t64, libperlio-gzip-perl, libqatzip3, libquazip-doc, libquazip1-qt5-1t64, libquazip1-qt5-doc,
+ libquazip1-qt6-1t64, libquazip1-qt6-doc, libquazip5-1t64, libwww-mechanize-gzip-perl, libzip-ocaml, libzip4j-java,
+ libzip5, libzipios++-doc, libzipios++0v5, libzzip-0-13t64, lrzip, lunzip, lzip, lziprecover, node-express-static-gzip,
+ node-extract-zip, node-gzip-size, node-jszip, node-jszip-utils, node-openpgp-seek-bzip, node-unbzip2-stream, pbzip2, pdlzip,
+ plzip, python-pyzipper-doc, python3-aiozipkin, python3-biomaj3-zipkin, python3-indexed-gzip, python3-laszip, python3-py-zipkin,
+ python3-pyzipper, python3-remotezip, python3-reprounzip, python3-reprozip, python3-zipfile-zstd, python3-zipp, python3-zipstream,
  python3-zipstream-ng, qatzip, r-cran-zip, reprounzip, reprozip, ruby-zip, ruby-zip-zip, rzip, seek-bzip, unzip, wzip, xlunzip,
  xzip, zip, zipcmp, zipmerge, zipper.app, ziproxy, ziptool, zziplib-bin,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*\<rar\>.*$)' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*\<rar\>.*$)' | fmt -w132"
  7zip-rar, rar,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*unrar.*$)' | fmt -w132"
- clamav-testfiles-rar, libclamunrar, libclamunrar12, libunrar-dev, libunrar-headers, libunrar5t64, python3-unrardll, unrar,
- unrar-free,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^libarchive.*$) ?not(?reverse-depends(^vlc-plugin-base$))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*unrar.*$)' | fmt -w132"
+ clamav-testfiles-rar, libclamunrar, libclamunrar12, libunrar-headers, libunrar5t64, python3-unrardll, unrar, unrar-free,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^libarchive.*$) ?not(?reverse-depends(^vlc-plugin-base$))' | fmt -w132"
  libarchive-any-create-perl, libarchive-any-lite-perl, libarchive-any-perl, libarchive-ar-perl, libarchive-cpio-perl,
- libarchive-dev, libarchive-extract-perl, libarchive-peek-perl, libarchive-tar-wrapper-perl, libarchive-tools, libarchive-zip-perl,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*secret.*$) ?not(?reverse-depends(^msmtp$)) ?not(?reverse-depends(?reverse-depends(^msmtp$)))' | fmt -w132"
- gfsecret, gir1.2-secret-1, git-secret, git-secrets, golang-github-defanglabs-secret-detector-dev,
- golang-github-jedisct1-xsecretbox-dev, librust-cargo-credential-libsecret-dev, librust-crypto-secretbox-dev,
- librust-dbus-secret-service-dev, librust-secret-service-dev, libsecret-1-dev, libsecret-tools, python-secretstorage-doc,
- python3-secretstorage, secrets,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^qca2$)' | fmt -w132"
- libqca-qt5-2, libqca-qt5-2-dev, libqca-qt5-2-plugins, libqca-qt6-2, libqca-qt6-dev, libqca-qt6-plugins, libqca2-doc,
- qca-qt5-2-utils, qca-qt6-utils,
+ libarchive-extract-perl, libarchive-peek-perl, libarchive-tar-wrapper-perl, libarchive-tools, libarchive-zip-perl,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*secret.*$) ?not(?reverse-depends(^msmtp$)) ?not(?reverse-depends(?reverse-depends(^msmtp$)))' | fmt -w132"
+ gfsecret, gir1.2-secret-1, git-secret, git-secrets, libsecret-tools, python-secretstorage-doc, python3-secretstorage, secrets,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^qca2$)' | fmt -w132"
+ libqca-qt5-2, libqca-qt5-2-plugins, libqca-qt6-2, libqca-qt6-plugins, libqca2-doc, qca-qt5-2-utils, qca-qt6-utils,
 ## Inmates MUST NOT have clandestine comms
 ## =======================================
 # Notes:
@@ -322,76 +302,62 @@ Conflicts:
 #     Other network clients should be absent.
 #     Inmate might use them to set up custom networking.
 #   • nftables → libxtables (src:iptables)
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?or(?source-package(^.*bluetooth.*$), ?source-package(^.*bluez.*$) ?not(?reverse-depends(pipewire-audio)))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(^.*bluetooth.*$), ?source-package(^.*bluez.*$) ?not(?reverse-depends(?reverse-depends(pipewire-audio))))' | fmt -w132"
  ayatana-indicator-bluetooth, bluetooth, bluez, bluez-alsa-utils, bluez-cups, bluez-firmware, bluez-hcidump,
  bluez-meshd, bluez-obexd, bluez-source, bluez-test-scripts, bluez-test-tools, bluez-tools, gir1.2-gnomebluetooth-3.0,
- gnome-bluetooth-3-common, gnome-bluetooth-sendto, go-bluetooth, golang-github-muka-go-bluetooth-dev, libasound2-plugin-bluez,
- libbluetooth-dev, libbluetooth3, libgnome-bluetooth-3.0-13, libgnome-bluetooth-3.0-dev, libgnome-bluetooth-doc,
- libgnome-bluetooth-ui-3.0-13, libgnome-bluetooth-ui-3.0-dev, libkf5bluezqt-data, libkf5bluezqt-dev, libkf5bluezqt-doc,
- libkf5bluezqt6, libkf6bluezqt-data, libkf6bluezqt-dev, libkf6bluezqt-doc, libkf6bluezqt6, libnet-bluetooth-perl,
- python3-bluetooth-adapters, python3-bluetooth-auto-recovery, python3-bluetooth-data-tools, python3-bluetooth-sensor-state-data,
- python3-bluez, python3-gardena-bluetooth, python3-habluetooth, python3-home-assistant-bluetooth, qml-module-org-kde-bluezqt,
- qml6-module-org-kde-bluezqt, ukui-bluetooth,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?or(?source-package(^.*mdns.*$), ?source-package(^.*dnssd.*$), ?source-package(^.*avahi.*)) ?not(?reverse-depends(^libcups[0-9].*)) ?not(?reverse-depends(?reverse-depends(^libcups[0-9].*)))' | fmt -w132"
+ gnome-bluetooth-3-common, gnome-bluetooth-sendto, go-bluetooth, libasound2-plugin-bluez, libgnome-bluetooth-3.0-13,
+ libgnome-bluetooth-doc, libgnome-bluetooth-ui-3.0-13, libkf5bluezqt-data, libkf5bluezqt-doc, libkf5bluezqt6, libkf6bluezqt-data,
+ libkf6bluezqt-doc, libkf6bluezqt6, libnet-bluetooth-perl, python3-bluetooth-adapters, python3-bluetooth-auto-recovery,
+ python3-bluetooth-data-tools, python3-bluetooth-sensor-state-data, python3-bluez, python3-gardena-bluetooth, python3-habluetooth,
+ python3-home-assistant-bluetooth, qml-module-org-kde-bluezqt, qml6-module-org-kde-bluezqt, ukui-bluetooth,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(^.*mdns.*$), ?source-package(^.*dnssd.*$), ?source-package(^.*avahi.*)) ?not(?reverse-depends(^libcups[0-9].*)) ?not(?reverse-depends(?reverse-depends(^libcups[0-9].*)))' | fmt -w132"
  avahi-autoipd, avahi-daemon, avahi-discover, avahi-dnsconfd, avahi-ui-utils, avahi-utils, gir1.2-avahi-0.6,
- golang-github-ensighten-udnssdk-dev, golang-github-hashicorp-mdns-dev, golang-github-pion-mdns-dev,
- golang-github-pion-mdns-v2-dev, golang-github-terra-farm-udnssdk-dev, guile-avahi, libapache2-mod-dnssd, libavahi-client-dev,
- libavahi-common-dev, libavahi-compat-libdnssd-dev, libavahi-compat-libdnssd1, libavahi-core-dev, libavahi-core7,
- libavahi-glib-dev, libavahi-glib1, libavahi-gobject-dev, libavahi-gobject0, libavahi-ui-gtk3-0, libavahi-ui-gtk3-dev,
- libjmdns-java, libjmdns-java-doc, libkf6dnssd-data, libkf6dnssd-dev, libkf6dnssd-doc, libkf6dnssd6, libmdnsd-dev,
- libmdnsd1t64, libnet-rendezvous-publish-backend-avahi-perl, libnss-mdns, librust-mdns-sd-dev, mdns-reflector, mdns-scan,
- mdnsd, python3-aiohttp-asyncmdnsresolver, python3-avahi,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?name(^wesnoth.*server$)' | fmt -w132"
+ guile-avahi, libapache2-mod-dnssd, libavahi-compat-libdnssd1, libavahi-core7, libavahi-glib1, libavahi-gobject0,
+ libavahi-ui-gtk3-0, libjmdns-java, libjmdns-java-doc, libkf6dnssd-data, libkf6dnssd-doc, libkf6dnssd6, libmdnsd1t64,
+ libnet-rendezvous-publish-backend-avahi-perl, libnss-mdns, mdns-reflector, mdns-scan, mdnsd, python3-aiohttp-asyncmdnsresolver,
+ python3-avahi,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?name(^wesnoth.*server$)' | fmt -w132"
  wesnoth-1.18-server,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(network-manager~|libnma~|ifupdown~|netplan~|resolvconf~|modem~|wireless~|broadband~|wvdial~|^iw$~|^iwd$~|modeswitch~|rfkill~|wpa~|ppp~|pptp~|wpan~|linux-atm~|bootp~|netfilter~|bridge-utils~|comitup~|aifa~|inetutils~|macchanger~|net-tools~|iscsi~|rancid~|rarpd~|tcputils~|wakeonlan~|wavemon~|whereami~|wide-dhcpv6~|dhcpy6~|wmifinfo~|wmifs~|wavelan~|xl2tpd)' | fmt -w132"
- atm-tools, bcrelay, bootp, bootparamd, bootpc, bppphyview, br2684ctl, bridge-utils, comitup, cowpatty, dhcpy6d,
- eapoltest, faifa, gir1.2-modemmanager-1.0, gir1.2-nm-1.0, gir1.2-nma-1.0, gir1.2-nma4-1.0, gir1.2-urfkill-0.5,
- golang-github-twpayne-go-pinentry-dev, golang-github-twpayne-go-shell-dev, golang-github-twpayne-go-vfs-dev,
- golang-github-twpayne-go-xdg-dev, gwakeonlan, hostapd, ifupdown, ifupdown-extra, ifupdown-multi, ifupdown-ng,
- ifupdown-ng-compat, ifupdown2, inetutils-ftp, inetutils-ftpd, inetutils-inetd, inetutils-ping, inetutils-syslogd,
- inetutils-talk, inetutils-talkd, inetutils-telnet, inetutils-telnetd, inetutils-tools, inetutils-traceroute, iscsiuio,
- iw, iwd, libatm1-dev, libatm1t64, libdevice-modem-perl, libfaifa-dev, libfaifa0t64, libiscsi-bin, libiscsi-dev, libiscsi7,
- libiw-dev, libiw30t64, libkf5modemmanagerqt-doc, libkf5modemmanagerqt6, libkf6modemmanagerqt-dev, libkf6modemmanagerqt-doc,
- libkf6modemmanagerqt6, libmm-glib-dev, libmm-glib-doc, libmm-glib0, libmodem-vgetty-perl, libmodule-build-pluggable-ppport-perl,
- libnetfilter-acct-dev, libnetfilter-acct1, libnetfilter-conntrack-dev, libnetfilter-conntrack-doc, libnetfilter-conntrack3,
- libnetfilter-cthelper-dev, libnetfilter-cthelper-doc, libnetfilter-cthelper0, libnetfilter-cttimeout-dev,
- libnetfilter-cttimeout-doc, libnetfilter-cttimeout1, libnetfilter-log-dev, libnetfilter-log-doc, libnetfilter-log1,
- libnetfilter-queue-dev, libnetfilter-queue-doc, libnetfilter-queue1, libnetplan-dev, libnetplan1, libnm-dev, libnm0,
- libnma-common, libnma-dev, libnma-doc, libnma-gtk4-0, libnma-gtk4-dev, libnma-headers, libnma0, libnmap-parser-perl,
- libopeniscsiusr, libopeniscsiusr-dev, liburfkill-glib-dev, liburfkill-glib0, liburfkill-glib0-dbg, libwhereami-dev,
- libwhereami0, libwpa-client-dev, macchanger, minimodem, mobile-broadband-provider-info, modem-cmd, modem-manager-gui,
- modem-manager-gui-help, modemmanager, modemmanager-dev, modemmanager-doc, modemmanager-qt-dev, net-tools, netplan-generator,
- netplan.io, network-manager, network-manager-applet, network-manager-config-connectivity-debian, network-manager-dev,
- network-manager-gnome, network-manager-iodine, network-manager-iodine-gnome, network-manager-iwd, network-manager-l10n,
- network-manager-l2tp, network-manager-l2tp-gnome, network-manager-openconnect, network-manager-openconnect-gnome,
- network-manager-openvpn, network-manager-openvpn-gnome, network-manager-ovs, network-manager-pptp, network-manager-pptp-gnome,
- network-manager-ssh, network-manager-ssh-gnome, network-manager-sstp, network-manager-sstp-gnome, network-manager-strongswan,
- network-manager-team, network-manager-tui, network-manager-vpnc, network-manager-vpnc-gnome, nm-connection-editor, node-zmodem.js,
- open-iscsi, planetfilter, ppp, ppp-dev, pppconfig, pppoe, pppoeconf, pptp-linux, pptpd, python-libnmap-doc, python3-libnmap,
- python3-mwparserfromhell, python3-netfilter, python3-netfilterqueue, python3-netplan, python3-phone-modem, python3-wakeonlan,
- python3-xmodem, r-cran-rcppparallel, r-cran-rcppprogress, rancid, rancid-cgi, rarpd, resolvconf, resolvconf-admin, sl-modem-dkms,
- tcputils, telnet, telnetd, urfkill, usb-modeswitch, usb-modeswitch-data, wakeonlan, wavemon, whereami, wide-dhcpv6-client,
- wide-dhcpv6-relay, wide-dhcpv6-server, wireless-regdb, wireless-tools, wmifinfo, wmifs, wmppp.app, wpagui, wpan-tools,
- wpasupplicant, wvdial, xfce4-wavelan-plugin, xl2tpd,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(network-manager~|libnma~|ifupdown~|netplan~|resolvconf~|modem~|wireless~|broadband~|wvdial~|^iw$~|^iwd$~|modeswitch~|rfkill~|wpa~|ppp~|pptp~|wpan~|linux-atm~|bootp~|netfilter~|bridge-utils~|comitup~|aifa~|inetutils~|macchanger~|net-tools~|iscsi~|rancid~|rarpd~|tcputils~|wakeonlan~|wavemon~|whereami~|wide-dhcpv6~|dhcpy6~|wmifinfo~|wmifs~|wavelan~|xl2tpd)' | fmt -w132"
+ atm-tools, bcrelay, bootp, bootparamd, bootpc, bppphyview, br2684ctl, bridge-utils, comitup, cowpatty, dhcpy6d, eapoltest,
+ faifa, gir1.2-modemmanager-1.0, gir1.2-nm-1.0, gir1.2-nma-1.0, gir1.2-nma4-1.0, gir1.2-urfkill-0.5, gwakeonlan, hostapd,
+ ifupdown, ifupdown-extra, ifupdown-multi, ifupdown-ng, ifupdown-ng-compat, ifupdown2, inetutils-ftp, inetutils-ftpd,
+ inetutils-inetd, inetutils-ping, inetutils-syslogd, inetutils-talk, inetutils-talkd, inetutils-telnet, inetutils-telnetd,
+ inetutils-tools, inetutils-traceroute, iscsiuio, iw, iwd, libatm1t64, libdevice-modem-perl, libfaifa0t64, libiscsi-bin, libiscsi7,
+ libiw30t64, libkf5modemmanagerqt-doc, libkf5modemmanagerqt6, libkf6modemmanagerqt-doc, libkf6modemmanagerqt6, libmm-glib-doc,
+ libmm-glib0, libmodem-vgetty-perl, libmodule-build-pluggable-ppport-perl, libnetfilter-acct1, libnetfilter-conntrack-doc,
+ libnetfilter-conntrack3, libnetfilter-cthelper-doc, libnetfilter-cthelper0, libnetfilter-cttimeout-doc, libnetfilter-cttimeout1,
+ libnetfilter-log-doc, libnetfilter-log1, libnetfilter-queue-doc, libnetfilter-queue1, libnetplan1, libnm0, libnma-common,
+ libnma-doc, libnma-gtk4-0, libnma-headers, libnma0, libnmap-parser-perl, libopeniscsiusr, liburfkill-glib0, liburfkill-glib0-dbg,
+ libwhereami0, macchanger, minimodem, mobile-broadband-provider-info, modem-cmd, modem-manager-gui, modem-manager-gui-help,
+ modemmanager, modemmanager-doc, net-tools, netplan-generator, netplan.io, network-manager, network-manager-applet,
+ network-manager-config-connectivity-debian, network-manager-gnome, network-manager-iodine, network-manager-iodine-gnome,
+ network-manager-iwd, network-manager-l10n, network-manager-l2tp, network-manager-l2tp-gnome, network-manager-openconnect,
+ network-manager-openconnect-gnome, network-manager-openvpn, network-manager-openvpn-gnome, network-manager-ovs,
+ network-manager-pptp, network-manager-pptp-gnome, network-manager-ssh, network-manager-ssh-gnome, network-manager-sstp,
+ network-manager-sstp-gnome, network-manager-strongswan, network-manager-team, network-manager-tui, network-manager-vpnc,
+ network-manager-vpnc-gnome, nm-connection-editor, node-zmodem.js, open-iscsi, planetfilter, ppp, pppconfig, pppoe, pppoeconf,
+ pptp-linux, pptpd, python-libnmap-doc, python3-libnmap, python3-mwparserfromhell, python3-netfilter, python3-netfilterqueue,
+ python3-netplan, python3-phone-modem, python3-wakeonlan, python3-xmodem, r-cran-rcppparallel, r-cran-rcppprogress,
+ rancid, rancid-cgi, rarpd, resolvconf, resolvconf-admin, sl-modem-dkms, tcputils, telnet, telnetd, urfkill, usb-modeswitch,
+ usb-modeswitch-data, wakeonlan, wavemon, whereami, wide-dhcpv6-client, wide-dhcpv6-relay, wide-dhcpv6-server, wireless-regdb,
+ wireless-tools, wmifinfo, wmifs, wmppp.app, wpagui, wpan-tools, wpasupplicant, wvdial, xfce4-wavelan-plugin, xl2tpd,
 # Notes:
 #   • We do not actually know if we need firmware-intel-misc.
 #     We probably do not, but it's only 5MB so we kept it.
 #   • firmware-realtek is likewise
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?or(?description(wi-?fi), ?description(wireless), ?description(supplicant)) ?not(?name(^firmware-intel-misc$)) ?not(?name(^firmware-realtek$))' | fmt -w132" --aptopt='Acquire::Languages "en"'
- aircrack-ng, alfred, anyremote, anyremote-data, anyremote-doc, ap51-flash, arduino-core-avr, asahi-wifisync,
- atmel-firmware, awesome-extra, b43-fwcutter, babeld, bettercap, binutils-xtensa-lx106, bottlerocket, broadcom-sta-common,
- broadcom-sta-dkms, broadcom-sta-source, brother-ql, cairo-dock-wifi-plug-in, calibre, cbm, ceni, cmst, collectd-core,
- comitup, conky-all, conky-std, connman, connman-dev, connman-gtk, connman-tests, connman-ui, connman-vpn, dhcpcd-base,
- dhcpcd-gtk, ecdsautils, ezurio-qcacld-2.0-dkms, fccexam, firmware-ath9k-htc, firmware-atheros, firmware-b43-installer,
- firmware-b43legacy-installer, firmware-brcm80211, firmware-carl9170, firmware-ipw2x00, firmware-iwlwifi, firmware-libertas,
- firmware-mediatek, firmware-ti-connectivity, firmware-zd1211, ganyremote, gcc-xtensa-lx106, geoclue-stumbler, gir1.2-nm-1.0,
- gir1.2-urfkill-0.5, gnome-applets, gnome-decoder, gnome-network-displays, gnuradio, golang-github-kalafut-imohash-dev,
- golang-github-mdlayher-wifi-dev, gr-limesdr, grub-ipxe, hcxdumptool, horst, hostapd, ipxe, ipxe-qemu, ipxe-qemu-amd64, iw,
- iwd, iwgtk, kannel, kannel-dev, kannel-docs, kannel-extras, kanyremote, kappanhang, libgnuradio-limesdr3.0.2, libiw-dev,
- libiw30t64, liblms7compact-dev, liblms7compact0, libnm-dev, libnm0, libopenobex2, libopenobex2-dev, libqrtr-dev, libqrtr1,
- librust-wl-nl80211-dev, liburfkill-glib-dev, liburfkill-glib0, liburfkill-glib0-dbg, libusb3380-0t64, libusb3380-dev,
- libwpa-client-dev, libxtrx-dev, libxtrx0, libxtrxdsp-dev, libxtrxdsp0, libxtrxll-dev, libxtrxll0t64, macchanger, mdk3, mdk4,
- mkchromecast, netctl, netdiscover, network-manager, network-manager-applet, network-manager-gnome, network-manager-iodine,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?description(wi-?fi), ?description(wireless), ?description(supplicant)) ?not(?name(^firmware-intel-misc$)) ?not(?name(^firmware-realtek$))' | fmt -w132" --aptopt='Acquire::Languages "en"'
+ aircrack-ng, alfred, anyremote, anyremote-data, anyremote-doc, ap51-flash, arduino-core-avr, asahi-wifisync, atmel-firmware,
+ awesome-extra, b43-fwcutter, babeld, bettercap, binutils-xtensa-lx106, bottlerocket, broadcom-sta-common, broadcom-sta-dkms,
+ broadcom-sta-source, brother-ql, cairo-dock-wifi-plug-in, calibre, cbm, ceni, cmst, collectd-core, comitup, conky-all, conky-std,
+ connman, connman-gtk, connman-tests, connman-ui, connman-vpn, dhcpcd-base, dhcpcd-gtk, ecdsautils, ezurio-qcacld-2.0-dkms,
+ fccexam, firmware-ath9k-htc, firmware-atheros, firmware-b43-installer, firmware-b43legacy-installer, firmware-brcm80211,
+ firmware-ipw2x00, firmware-iwlwifi, firmware-libertas, firmware-mediatek, firmware-ti-connectivity, firmware-zd1211, ganyremote,
+ gcc-xtensa-lx106, geoclue-stumbler, gir1.2-nm-1.0, gir1.2-urfkill-0.5, gnome-applets, gnome-decoder, gnome-network-displays,
+ gnuradio, gr-limesdr, grub-ipxe, hcxdumptool, horst, hostapd, ipxe, ipxe-qemu, ipxe-qemu-amd64, iw, iwd, iwgtk, kannel,
+ kannel-docs, kannel-extras, kanyremote, kappanhang, libgnuradio-limesdr3.0.2, libiw30t64, liblms7compact0, libnm0, libopenobex2,
+ libqrtr1, liburfkill-glib0, liburfkill-glib0-dbg, libusb3380-0t64, libxtrx0, libxtrxdsp0, libxtrxll0t64, macchanger, mdk3,
+ mdk4, mkchromecast, netctl, netdiscover, network-manager, network-manager-applet, network-manager-gnome, network-manager-iodine,
  network-manager-iodine-gnome, network-manager-iwd, network-manager-l2tp, network-manager-l2tp-gnome, network-manager-openconnect,
  network-manager-openconnect-gnome, network-manager-openvpn, network-manager-openvpn-gnome, network-manager-pptp,
  network-manager-pptp-gnome, network-manager-ssh, network-manager-ssh-gnome, network-manager-sstp, network-manager-sstp-gnome,
@@ -412,19 +378,19 @@ Conflicts:
  rtl-wmbus, soapysdr-module-xtrx, soapysdr0.8-module-xtrx, solaar, tlp, tlp-rdw, tqftpserv, urfkill, wapua, wavemon, weplab,
  wifi-qr, wifite, wireless-regdb, wireless-tools, wmbusmeters, wmwave, wpagui, wpan-tools, wpasupplicant, xfce4-goodies,
  xone-dkms, xosview, xpadneo-dkms, xtrx-dkms, xtrx-fft,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*busybox.*$) ?not(?name(^busybox$))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*busybox.*$) ?not(?name(^busybox$))' | fmt -w132"
  busybox-static, busybox-syslogd, udhcpc, udhcpd,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(^.*iptables.*$) ?not(?reverse-depends(?reverse-depends(^nftables$)))' | fmt -w132"
- arno-iptables-firewall, golang-github-coreos-go-iptables-dev, ipset-persistent, iptables, iptables-converter,
- iptables-converter-doc, iptables-persistent, libip4tc-dev, libip4tc2, libip6tc-dev, libip6tc2, libiptables-chainmgr-perl,
- libiptables-parse-perl, libiptc-dev, librust-iptables-dev, libxtables-dev, netfilter-persistent, python-iptables-doc,
- python3-iptables,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*iptables.*$) ?not(?reverse-depends(?reverse-depends(^nftables$)))' | fmt -w132"
+ arno-iptables-firewall, ipset-persistent, iptables, iptables-converter, iptables-converter-doc, iptables-persistent, libip4tc2,
+ libip6tc2, libiptables-chainmgr-perl, libiptables-parse-perl, netfilter-persistent, python-iptables-doc, python3-iptables,
+## Inmates MUST NOT have writable local media (DVD, USB)
+## =====================================================
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
 # Notes:
 #  • disc-snitch.py does not need genisoimage since 2023
 #    Block other ISO mastering things (except libburn4, used by staff).
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(cdrkit~|dvd.*tools~|cdrdao~|^bcache)' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(cdrkit~|dvd.*tools~|cdrdao~|^bcache)' | fmt -w132"
  bcache-tools, cdrdao, cdrkit-doc, dvd+rw-tools, gcdmaster, genisoimage, growisofs, icedax, wodim,
 #  • shitlist all mkfs.* packages
 #        $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search bin/mkfs.'
@@ -439,36 +405,33 @@ Conflicts:
  btrfs-progs, cpmtools, dosfstools, erofs-utils, exfatprogs, f2fs-tools, gfs2-utils, hfsprogs, jfsutils, mtd-utils, nilfs-tools,
  ocfs2-tools, s3ql, udftools, util-linux-extra, xfsprogs, zonefs-tools,
 #  • In theory an inmate could write a userland filesystem with fuse.
-#        $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG '"aptitude search --disable-columns -F ' %e %p' '?depends(^libfuse.*$~|^fuse3?$) ?not(?name(^~(gvfs-fuse~|ntfs-3g~|fuse~|fuse3~)$))'"
+#        $ mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG '"aptitude search --disable-columns -F ' %e %p' '?not(?name(-dev$)) ?depends(^libfuse.*$~|^fuse3?$) ?not(?name(^~(gvfs-fuse~|ntfs-3g~|fuse~|fuse3~)$))'"
 #    Therefore shitlist anything that depends on libfuse2 or libfuse3.
 #    Except for:
 #      gvfs-fuse / ntfs3g / fuse / fuse3 (needed for staff)
 #      qemu-guest-agent (needed for staff)
 #  • pipewire complains about missing xdg-desktop-port -- do we care? --twb, September 2023
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?depends(^.*fuse.*$) ?not(?name(^~(gvfs-fuse~|ntfs-3g~|fuse~|fuse3~)$))' | fmt -w132"
- afflib-tools, afuse, android-file-transfer, apertium-all-dev, apt-cacher-ng, archivemount, avfs, beets, bindfs, bmon, btfs,
- buildbox, ceph-fuse, ceph-osd, charliecloud-runtime, clamfs, coop-computing-tools, cryfs, cwltest, deja-dup, dirsearch,
- dislocker, disorderfs, email-reminder, erofsfuse, ewf-tools, exfat-fuse, fdroidserver, ffmpegfs, flatpak, flatpak-builder,
- flatpak-tests, fosfat, freedombox, freerdp3-dev, ftdi-eeprom, fuse-convmvfs, fuse-emulator-gtk, fuse-emulator-sdl,
- fuse-overlayfs, fuse2fs, fuseext2, fusefat, fusefile, fuseiso, genimage, glances, gnome-connections, gnome-core,
- gnome-remote-desktop, gocryptfs, golang-github-awslabs-soci-snapshotter-dev, golang-github-containerd-stargz-snapshotter-dev,
- golang-github-googlecloudplatform-cloudsql-proxy-dev, golang-github-jacobsa-bazilfuse-dev, golang-github-jacobsa-fuse-dev,
- golang-github-jacobsa-gcloud-dev, golang-github-rclone-rclone-dev, gphotofs, grub2-common, guestmount, httpdirfs, httpie,
- hugin, i3status, ifuse, inadyn, kio-fuse, lava-server, libappimage1.0abi1t64, libbde-utils, libconfuse-dev, libconfuse2,
- libfreerdp-client3-3, libfuse3-dev, libguestfs0t64, libmodi-utils, libnbd-bin, libpeony3t64, libqcow-utils, libradsec0t64,
- libsquashfuse-dev, libsquashfuse0, libucx0, libvhdi-utils, libvirt-daemon-driver-lxc, libwim15t64, lxcfs, megacmd,
- merecat, mergerfs, mhddfs, moosefs-client, nagios-check-xmppng, nemo-compare, nsca-ng-server, onedriver, open-vm-tools,
- open-vm-tools-desktop, osmocom-analog, osspd, ostree, ostree-tests, phosh-core, planetfilter, plptools, pommed, postsrsd,
- profile-sync-daemon, python3-a38, python3-async-upnp-client, python3-cairosvg, python3-didl-lite, python3-django-saml2,
- python3-exchangelib, python3-fpdf, python3-glance, python3-irodsclient, python3-jira, python3-manila, python3-miio,
- python3-nbconvert, python3-odf, python3-openid, python3-plaso, python3-plugwise, python3-py-serializable, python3-pyfuse3,
- python3-pyorbital, python3-pysaml2, python3-radicale, python3-rosmaster, python3-rxv, python3-satpy, python3-scciclient,
- python3-scrapy, python3-slidge, python3-social-auth-core, python3-sphinx, python3-sphinxcontrib.datatemplates, python3-tempest,
- python3-trollsched, python3-untangle, python3-willow, python3-zeep, qemu-system-arm, qemu-system-mips, qemu-system-misc,
- qemu-system-ppc, qemu-system-riscv, qemu-system-s390x, qemu-system-sparc, qemu-system-x86, qemu-utils, rbd-fuse, rbd-fuse-dbg,
- rdiff-backup-fs, revelation, rocm-podman-support, rshim, s3ql, sanoid, saunafs-client, scanbd, seadrive-fuse, seadrive-gui,
- selint, simplesnap, squashfuse, sshfs, tilda, tmfs, tryton-proteus, tryton-server, tup, ucx-utils, vuos-modules, wims-lti,
- winregfs, xandikos, xdg-desktop-portal, xdg-desktop-portal-kde, xmount, xrdp, zfs-fuse, zfsnap,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?depends(^.*fuse.*$) ?not(?name(^~(gvfs-fuse~|ntfs-3g~|fuse~|fuse3~)$))' | fmt -w132"
+ afflib-tools, afuse, android-file-transfer, apt-cacher-ng, archivemount, avfs, beets, bindfs, bmon, btfs, buildbox, ceph-fuse,
+ ceph-osd, charliecloud-runtime, clamfs, coop-computing-tools, cryfs, cwltest, deja-dup, dirsearch, dislocker, disorderfs,
+ email-reminder, erofsfuse, ewf-tools, exfat-fuse, fdroidserver, ffmpegfs, flatpak, flatpak-builder, flatpak-tests, fosfat,
+ freedombox, ftdi-eeprom, fuse-convmvfs, fuse-emulator-gtk, fuse-emulator-sdl, fuse-overlayfs, fuse2fs, fuseext2, fusefat,
+ fusefile, fuseiso, genimage, glances, gnome-connections, gnome-core, gnome-remote-desktop, gocryptfs, gphotofs, grub2-common,
+ guestmount, httpdirfs, httpie, hugin, i3status, ifuse, inadyn, kio-fuse, lava-server, libappimage1.0abi1t64, libbde-utils,
+ libconfuse2, libfreerdp-client3-3, libguestfs0t64, libmodi-utils, libnbd-bin, libpeony3t64, libqcow-utils, libradsec0t64,
+ libsquashfuse0, libucx0, libvhdi-utils, libvirt-daemon-driver-lxc, libwim15t64, lxcfs, megacmd, merecat, mergerfs, mhddfs,
+ moosefs-client, nagios-check-xmppng, nemo-compare, nsca-ng-server, onedriver, open-vm-tools, open-vm-tools-desktop,
+ osmocom-analog, osspd, ostree, ostree-tests, phosh-core, planetfilter, plptools, pommed, postsrsd, profile-sync-daemon,
+ python3-a38, python3-async-upnp-client, python3-cairosvg, python3-didl-lite, python3-django-saml2, python3-exchangelib,
+ python3-fpdf, python3-glance, python3-irodsclient, python3-jira, python3-manila, python3-miio, python3-nbconvert, python3-odf,
+ python3-openid, python3-plaso, python3-plugwise, python3-py-serializable, python3-pyfuse3, python3-pyorbital, python3-pysaml2,
+ python3-radicale, python3-rosmaster, python3-rxv, python3-satpy, python3-scciclient, python3-scrapy, python3-slidge,
+ python3-social-auth-core, python3-sphinx, python3-sphinxcontrib.datatemplates, python3-tempest, python3-trollsched,
+ python3-untangle, python3-willow, python3-zeep, qemu-system-arm, qemu-system-mips, qemu-system-misc, qemu-system-ppc,
+ qemu-system-riscv, qemu-system-s390x, qemu-system-sparc, qemu-system-x86, qemu-utils, rbd-fuse, rbd-fuse-dbg, rdiff-backup-fs,
+ revelation, rocm-podman-support, rshim, s3ql, sanoid, saunafs-client, scanbd, seadrive-fuse, seadrive-gui, selint, simplesnap,
+ squashfuse, sshfs, tilda, tmfs, tryton-proteus, tryton-server, tup, ucx-utils, vuos-modules, wims-lti, winregfs, xandikos,
+ xdg-desktop-portal, xdg-desktop-portal-kde, xmount, xrdp, zfs-fuse, zfsnap,
 #  • shitlist udev rules packages
 #    Block EVERYTHING doc/NNNNN-udev-audit.py finds creating custom udev rules,
 #    except for a small set of things we actually want (e.g. udev & udisks2).
@@ -530,90 +493,56 @@ Conflicts:
  xr-hardware, xrt-xocl-dkms, xserver-xorg-input-wacom, xtrx-dkms, ydotool, yubihsm-connector, zfsutils-linux,
 ## Inmates MUST NOT have containers (VMs)
 ## ======================================
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(qemu~|container~|docker~|podman~|machine~|virt~|boxes~|grub~|ipxe) ?not(?name(^qemu-guest-agent$))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(qemu~|container~|docker~|podman~|machine~|virt~|boxes~|grub~|ipxe) ?not(?name(^qemu-guest-agent$))' | fmt -w132"
  accelerated-container-image, aqemu, boxes, buildah, bypass4netns, cl-containers, cockpit-machines, cockpit-podman,
  containerd, containernetworking-plugins, containers-storage, crane, datalad-container, dh-virtualenv, docker-buildx,
  docker-clean, docker-cli, docker-compose, docker-doc, docker-registry, docker.io, drum-machine, elpa-dockerfile-mode,
  elpa-git-timemachine, elpa-helm-virtualenvwrapper, elpa-lsp-docker, elpa-virtualenvwrapper, fakemachine,
  fonts-tibetan-machine, gir1.2-govirt-1.0, gir1.2-libvirt-glib-1.0, gnome-boxes, golang-docker-credential-helpers,
- golang-github-apptainer-container-key-client-dev, golang-github-apptainer-container-library-client-dev,
- golang-github-calmh-incontainer-dev, golang-github-container-orchestrated-devices-container-device-interface-dev,
- golang-github-containerd-accelerated-container-image-dev, golang-github-containerd-btrfs-dev,
- golang-github-containerd-cgroups-dev, golang-github-containerd-console-dev, golang-github-containerd-containerd-api-dev,
- golang-github-containerd-containerd-dev, golang-github-containerd-errdefs-dev, golang-github-containerd-fifo-dev,
- golang-github-containerd-go-cni-dev, golang-github-containerd-go-runc-dev, golang-github-containerd-imgcrypt-dev,
- golang-github-containerd-log-dev, golang-github-containerd-nri-dev, golang-github-containerd-nydus-snapshotter-dev,
- golang-github-containerd-otelttrpc-dev, golang-github-containerd-platforms-dev, golang-github-containerd-plugin-dev,
- golang-github-containerd-stargz-snapshotter-dev, golang-github-containerd-typeurl-dev,
- golang-github-containernetworking-plugin-dnsname, golang-github-containernetworking-plugins-dev,
- golang-github-containers-buildah-dev, golang-github-containers-common, golang-github-containers-common-dev,
- golang-github-containers-gvisor-tap-vsocks-dev, golang-github-containers-image, golang-github-containers-image-dev,
- golang-github-containers-libtrust-dev, golang-github-containers-luksy-dev, golang-github-containers-ocicrypt-dev,
- golang-github-containers-psgo-dev, golang-github-containers-storage-dev, golang-github-crowdsecurity-machineid-dev,
- golang-github-denisbrodbeck-machineid-dev, golang-github-digitalocean-go-libvirt-dev,
- golang-github-digitalocean-go-qemu-dev, golang-github-docker-buildx-dev, golang-github-docker-cli-docs-tool-dev,
- golang-github-docker-distribution-dev, golang-github-docker-docker-credential-helpers-dev, golang-github-docker-docker-dev,
- golang-github-docker-go-connections-dev, golang-github-docker-go-dev, golang-github-docker-go-events-dev,
- golang-github-docker-go-metrics-dev, golang-github-docker-go-plugins-helpers-dev, golang-github-docker-go-units-dev,
- golang-github-docker-leadership-dev, golang-github-docker-libkv-dev, golang-github-docker-libtrust-dev,
- golang-github-docker-spdystream-dev, golang-github-fsouza-go-dockerclient-dev, golang-github-go-debos-fakemachine-dev,
- golang-github-google-go-containerregistry-dev, golang-github-heroku-docker-registry-client-dev,
- golang-github-kata-containers-govmm-dev, golang-github-kimmachinegun-automemlimit-dev, golang-github-leodido-ragel-machinery-dev,
- golang-github-libvirt-libvirt-go-dev, golang-github-libvirt-libvirt-go-xml-dev, golang-github-linuxkit-virtsock-dev,
- golang-github-machinebox-graphql-dev, golang-github-moby-docker-image-spec-dev, golang-github-mudler-docker-companion-dev,
- golang-github-opencontainers-cgroups-dev, golang-github-opencontainers-go-digest-dev, golang-github-opencontainers-image-spec-dev,
- golang-github-opencontainers-runtime-tools-dev, golang-github-opencontainers-selinux-dev, golang-github-opencontainers-specs-dev,
- golang-github-rootless-containers-bypass4netns-dev, golang-github-rootless-containers-proto-dev,
- golang-github-samalba-dockerclient-dev, golang-github-seccomp-containers-golang-dev, golang-github-virtuald-go-ordered-json-dev,
- golang-k8s-apimachinery-dev, golang-tags.cncf-container-device-interface-dev, grub-cloud-amd64, grub-common,
- grub-coreboot, grub-coreboot-bin, grub-coreboot-dbg, grub-customizer, grub-efi, grub-efi-amd64, grub-efi-amd64-bin,
- grub-efi-amd64-dbg, grub-efi-amd64-signed, grub-efi-amd64-signed-template, grub-efi-amd64-unsigned, grub-efi-ia32,
- grub-efi-ia32-bin, grub-efi-ia32-dbg, grub-efi-ia32-unsigned, grub-emu, grub-emu-dbg, grub-firmware-qemu, grub-ieee1275,
- grub-ieee1275-bin, grub-ieee1275-dbg, grub-imageboot, grub-ipxe, grub-linuxbios, grub-pc, grub-pc-bin, grub-pc-dbg,
- grub-rescue-pc, grub-theme-breeze, grub-theme-starfield, grub-xen, grub-xen-bin, grub-xen-dbg, grub-xen-host, grub2,
- grub2-common, grub2-splashimages, gvproxy, imgcrypt, imvirt, imvirt-helper, ipxe, ipxe-qemu, ipxe-qemu-amd64, kdocker,
- libclass-container-perl, libclass-virtual-perl, libcontainers-data-ocaml-dev, libcontainers-ocaml-dev, libdcontainers-dev,
- libeigen-stl-containers-dev, libfile-find-rule-filesys-virtual-perl, libfilesys-virtual-perl, libfilesys-virtual-plain-perl,
- libghc-boxes-dev, libghc-boxes-doc, libghc-boxes-prof, libghc-genvalidity-containers-dev, libghc-genvalidity-containers-doc,
- libghc-genvalidity-containers-prof, libghc-mutable-containers-dev, libghc-mutable-containers-doc, libghc-mutable-containers-prof,
- libghc-nonempty-containers-dev, libghc-nonempty-containers-doc, libghc-nonempty-containers-prof, libghc-ordered-containers-dev,
- libghc-ordered-containers-doc, libghc-ordered-containers-prof, libghc-unordered-containers-dev, libghc-unordered-containers-doc,
- libghc-unordered-containers-prof, libghc-validity-containers-dev, libghc-validity-containers-doc, libghc-validity-containers-prof,
- libgovirt-common, libgovirt-dev, libgovirt2, libimvirt-perl, libnss-libvirt, libobject-container-perl, libpicocontainer-java,
- libpicocontainer-java-doc, libpicocontainer1-java, libplexus-component-annotations-java, libplexus-component-metadata-java,
- libplexus-container-default-java, libplexus-container-default1.5-java, libqt5hunspellinputmethod5, libqt5virtualkeyboard5,
- libqt5virtualkeyboard5-dev, libqt6virtualkeyboard6, librust-astral-pubgrub-dev, librust-container-pid-dev, librust-dockerfile-dev,
- librust-is-docker-dev, librust-proptest-state-machine+std-dev, librust-proptest-state-machine-dev, librust-virtio-bindings-dev,
- librust-virtio-queue-dev, librust-virtiofsd-dev, librust-virtue-dev, libsqlite3-mod-virtualpg, libsys-virt-perl,
- libvirt-clients, libvirt-clients-qemu, libvirt-common, libvirt-daemon, libvirt-daemon-common, libvirt-daemon-config-network,
- libvirt-daemon-config-nwfilter, libvirt-daemon-driver-interface, libvirt-daemon-driver-lxc, libvirt-daemon-driver-network,
- libvirt-daemon-driver-nodedev, libvirt-daemon-driver-nwfilter, libvirt-daemon-driver-qemu, libvirt-daemon-driver-secret,
- libvirt-daemon-driver-storage, libvirt-daemon-driver-storage-disk, libvirt-daemon-driver-storage-gluster,
- libvirt-daemon-driver-storage-iscsi, libvirt-daemon-driver-storage-iscsi-direct, libvirt-daemon-driver-storage-logical,
- libvirt-daemon-driver-storage-mpath, libvirt-daemon-driver-storage-rbd, libvirt-daemon-driver-storage-scsi,
- libvirt-daemon-driver-storage-zfs, libvirt-daemon-driver-vbox, libvirt-daemon-driver-xen, libvirt-daemon-lock, libvirt-daemon-log,
- libvirt-daemon-plugin-lockd, libvirt-daemon-plugin-sanlock, libvirt-daemon-system, libvirt-daemon-system-systemd,
- libvirt-daemon-system-sysv, libvirt-dbus, libvirt-dev, libvirt-doc, libvirt-glib-1.0-0, libvirt-glib-1.0-data,
- libvirt-glib-1.0-dev, libvirt-l10n, libvirt-login-shell, libvirt-ocaml, libvirt-ocaml-dev, libvirt-sanlock, libvirt-ssh-proxy,
- libvirt-wireshark, libvirt0, libvirtodbc0, libvirtualpg-dev, libvirtualpg0t64, libweb-machine-perl, libxml-sax-machines-perl,
- luksy, machineid, munin-libvirt-plugins, node-cli-boxes, node-is-docker, nydus-snapshotter, php-psr-container, podman,
- podman-compose, podman-docker, podman-remote, podman-toolbox, prometheus-libvirt-exporter, python-sortedcontainers-doc,
- python3-django-cache-machine, python3-docker, python3-dockerpty, python3-dockerpycreds, python3-libvirt, python3-podman,
- python3-pyvirtualdisplay, python3-qemu-qmp, python3-sortedcontainers, python3-time-machine, python3-virt-firmware,
- python3-virtualbmc, python3-virtualenv, python3-virtualenv-clone, python3-virtualenvwrapper, qemu-block-extra,
- qemu-system, qemu-system-arm, qemu-system-common, qemu-system-data, qemu-system-gui, qemu-system-mips, qemu-system-misc,
- qemu-system-modules-opengl, qemu-system-modules-spice, qemu-system-ppc, qemu-system-riscv, qemu-system-s390x, qemu-system-sparc,
- qemu-system-x86, qemu-system-xen, qemu-user, qemu-user-binfmt, qemu-utils, qemu-web-desktop, qml-module-qtquick-virtualkeyboard,
- qml6-module-qtquick-virtualkeyboard, qt6-virtualkeyboard-dev, qt6-virtualkeyboard-doc, qt6-virtualkeyboard-doc-html,
- qt6-virtualkeyboard-examples, qt6-virtualkeyboard-plugin, qtvirtualkeyboard-plugin, qtvirtualkeyboard5-doc,
- qtvirtualkeyboard5-doc-html, qtvirtualkeyboard5-examples, ruby-docker-api, ruby-dry-container, ruby-eventmachine,
- ruby-fog-libvirt, ruby-google-apis-container-v1, ruby-google-apis-container-v1beta1, ruby-libvirt, ruby-state-machines,
- ruby-state-machines-activemodel, ruby-state-machines-activerecord, ruby-virtus, stargz-snapshotter, systemctl, virt-install,
- virt-manager, virt-p2v, virt-top, virt-v2v, virt-viewer, virt-what, virtinst, virtiofsd, virtme-ng, virtnbdbackup,
- virtualbmc, virtualbox-guest-additions-iso, virtualenv, virtualenvwrapper, virtualenvwrapper-doc, virtualgps, virtualjaguar,
- virtuoso-minimal, virtuoso-opensource, virtuoso-opensource-7, virtuoso-opensource-7-bin, virtuoso-opensource-7-common,
- virtuoso-server, virtuoso-vad-bpel, virtuoso-vad-conductor, virtuoso-vad-demo, virtuoso-vad-doc, virtuoso-vad-isparql,
- virtuoso-vad-rdfmappers, virtuoso-vad-sparqldemo, virtuoso-vad-syncml, virtuoso-vad-tutorial, virtuoso-vsp-startpage, wmdocker,
+ golang-github-containernetworking-plugin-dnsname, golang-github-containers-common, golang-github-containers-image,
+ grub-cloud-amd64, grub-common, grub-coreboot, grub-coreboot-bin, grub-coreboot-dbg, grub-customizer, grub-efi,
+ grub-efi-amd64, grub-efi-amd64-bin, grub-efi-amd64-dbg, grub-efi-amd64-signed, grub-efi-amd64-signed-template,
+ grub-efi-amd64-unsigned, grub-efi-ia32, grub-efi-ia32-bin, grub-efi-ia32-dbg, grub-efi-ia32-unsigned, grub-emu, grub-emu-dbg,
+ grub-firmware-qemu, grub-ieee1275, grub-ieee1275-bin, grub-ieee1275-dbg, grub-imageboot, grub-ipxe, grub-linuxbios,
+ grub-pc, grub-pc-bin, grub-pc-dbg, grub-rescue-pc, grub-theme-breeze, grub-theme-starfield, grub-xen, grub-xen-bin,
+ grub-xen-dbg, grub-xen-host, grub2, grub2-common, grub2-splashimages, gvproxy, imgcrypt, imvirt, imvirt-helper, ipxe,
+ ipxe-qemu, ipxe-qemu-amd64, kdocker, libclass-container-perl, libclass-virtual-perl, libfile-find-rule-filesys-virtual-perl,
+ libfilesys-virtual-perl, libfilesys-virtual-plain-perl, libghc-boxes-doc, libghc-boxes-prof, libghc-genvalidity-containers-doc,
+ libghc-genvalidity-containers-prof, libghc-mutable-containers-doc, libghc-mutable-containers-prof, libghc-nonempty-containers-doc,
+ libghc-nonempty-containers-prof, libghc-ordered-containers-doc, libghc-ordered-containers-prof, libghc-unordered-containers-doc,
+ libghc-unordered-containers-prof, libghc-validity-containers-doc, libghc-validity-containers-prof, libgovirt-common,
+ libgovirt2, libimvirt-perl, libnss-libvirt, libobject-container-perl, libpicocontainer-java, libpicocontainer-java-doc,
+ libpicocontainer1-java, libplexus-component-annotations-java, libplexus-component-metadata-java, libplexus-container-default-java,
+ libplexus-container-default1.5-java, libqt5hunspellinputmethod5, libqt5virtualkeyboard5, libqt6virtualkeyboard6,
+ libsqlite3-mod-virtualpg, libsys-virt-perl, libvirt-clients, libvirt-clients-qemu, libvirt-common, libvirt-daemon,
+ libvirt-daemon-common, libvirt-daemon-config-network, libvirt-daemon-config-nwfilter, libvirt-daemon-driver-interface,
+ libvirt-daemon-driver-lxc, libvirt-daemon-driver-network, libvirt-daemon-driver-nodedev, libvirt-daemon-driver-nwfilter,
+ libvirt-daemon-driver-qemu, libvirt-daemon-driver-secret, libvirt-daemon-driver-storage, libvirt-daemon-driver-storage-disk,
+ libvirt-daemon-driver-storage-gluster, libvirt-daemon-driver-storage-iscsi, libvirt-daemon-driver-storage-iscsi-direct,
+ libvirt-daemon-driver-storage-logical, libvirt-daemon-driver-storage-mpath, libvirt-daemon-driver-storage-rbd,
+ libvirt-daemon-driver-storage-scsi, libvirt-daemon-driver-storage-zfs, libvirt-daemon-driver-vbox, libvirt-daemon-driver-xen,
+ libvirt-daemon-lock, libvirt-daemon-log, libvirt-daemon-plugin-lockd, libvirt-daemon-plugin-sanlock, libvirt-daemon-system,
+ libvirt-daemon-system-systemd, libvirt-daemon-system-sysv, libvirt-dbus, libvirt-doc, libvirt-glib-1.0-0, libvirt-glib-1.0-data,
+ libvirt-l10n, libvirt-login-shell, libvirt-ocaml, libvirt-sanlock, libvirt-ssh-proxy, libvirt-wireshark, libvirt0,
+ libvirtodbc0, libvirtualpg0t64, libweb-machine-perl, libxml-sax-machines-perl, luksy, machineid, munin-libvirt-plugins,
+ node-cli-boxes, node-is-docker, nydus-snapshotter, php-psr-container, podman, podman-compose, podman-docker, podman-remote,
+ podman-toolbox, prometheus-libvirt-exporter, python-sortedcontainers-doc, python3-django-cache-machine, python3-docker,
+ python3-dockerpty, python3-dockerpycreds, python3-libvirt, python3-podman, python3-pyvirtualdisplay, python3-qemu-qmp,
+ python3-sortedcontainers, python3-time-machine, python3-virt-firmware, python3-virtualbmc, python3-virtualenv,
+ python3-virtualenv-clone, python3-virtualenvwrapper, qemu-block-extra, qemu-system, qemu-system-arm, qemu-system-common,
+ qemu-system-data, qemu-system-gui, qemu-system-mips, qemu-system-misc, qemu-system-modules-opengl, qemu-system-modules-spice,
+ qemu-system-ppc, qemu-system-riscv, qemu-system-s390x, qemu-system-sparc, qemu-system-x86, qemu-system-xen, qemu-user,
+ qemu-user-binfmt, qemu-utils, qemu-web-desktop, qml-module-qtquick-virtualkeyboard, qml6-module-qtquick-virtualkeyboard,
+ qt6-virtualkeyboard-doc, qt6-virtualkeyboard-doc-html, qt6-virtualkeyboard-examples, qt6-virtualkeyboard-plugin,
+ qtvirtualkeyboard-plugin, qtvirtualkeyboard5-doc, qtvirtualkeyboard5-doc-html, qtvirtualkeyboard5-examples, ruby-docker-api,
+ ruby-dry-container, ruby-eventmachine, ruby-fog-libvirt, ruby-google-apis-container-v1, ruby-google-apis-container-v1beta1,
+ ruby-libvirt, ruby-state-machines, ruby-state-machines-activemodel, ruby-state-machines-activerecord, ruby-virtus,
+ stargz-snapshotter, systemctl, virt-install, virt-manager, virt-p2v, virt-top, virt-v2v, virt-viewer, virt-what,
+ virtinst, virtiofsd, virtme-ng, virtnbdbackup, virtualbmc, virtualbox-guest-additions-iso, virtualenv, virtualenvwrapper,
+ virtualenvwrapper-doc, virtualgps, virtualjaguar, virtuoso-minimal, virtuoso-opensource, virtuoso-opensource-7,
+ virtuoso-opensource-7-bin, virtuoso-opensource-7-common, virtuoso-server, virtuoso-vad-bpel, virtuoso-vad-conductor,
+ virtuoso-vad-demo, virtuoso-vad-doc, virtuoso-vad-isparql, virtuoso-vad-rdfmappers, virtuoso-vad-sparqldemo, virtuoso-vad-syncml,
+ virtuoso-vad-tutorial, virtuoso-vsp-startpage, wmdocker,
 ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
 ## ===========================================================
 # Shitlist "all" terminal emulators
@@ -624,29 +553,24 @@ Conflicts:
 #  • FUCKING SIGH, xfonts-terminus provides the GOOD OpenType format of Terminus, but
 #    catalycm-dda-data → fonts-terminus (src:cool-retro-term) which is the LEGACY TrueType format of Terminus.
 #    Why is some random terminal emulator providing an independent version of Terminus font family?!!
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?description(terminal.emulator~|xterm) ?not(?essential) ?not(?name(^xfce4-terminal$)) ?not(?reverse-depends(^xfce4-terminal$)) ?not(?reverse-depends(?reverse-depends(^xfce4-terminal$))) ?not(?reverse-depends(^ucf))' | fmt -w132" --aptopt='Acquire::Languages "en"'
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?description(terminal.emulator~|xterm) ?not(?essential) ?not(?name(^xfce4-terminal$)) ?not(?reverse-depends(^xfce4-terminal$)) ?not(?reverse-depends(?reverse-depends(^xfce4-terminal$))) ?not(?reverse-depends(^ucf))' | fmt -w132" --aptopt='Acquire::Languages "en"'
  4pane, aerc, alacritty, ansifilter, ansifilter-gui, aumix, blackbox-terminal, c3270, catdvi, chiark-scripts, cmatrix-xfont,
- colortest, colortest-python, cool-retro-term, ddd, deepin-terminal, elpa-eat, elpa-vterm, emacs-libvterm, eterm, fbterm,
- fonts-atarismall, fonts-firacode, foot, foot-extra-terminfo, foot-terminfo, foot-themes, freesweep, fte-terminal,
- gambas3-gb-form-terminal, gir1.2-vte-2.91, gir1.2-vte-3.91, gmrun, gnome-console, gnome-terminal, gnome-terminal-data,
- golang-github-aybabtme-rgbterm-dev, golang-github-charmbracelet-ultraviolet-dev, golang-github-gdamore-tcell-dev,
- golang-github-gdamore-tcell.v2-dev, golang-github-hinshun-vt10x-dev, golang-github-zyedidia-tcell-dev,
- golang-github-zyedidia-terminal-dev, golang-pault-go-technicolor-dev, golang-sourcehut-rockorager-vaxis-dev, grabc, irssi-scripts,
- jupp, kildclient, kildclient-doc, kitty, kitty-doc, kitty-shell-integration, kitty-terminfo, kmscon, konsole, konsole-kpart,
- libconvert-color-xterm-perl, libghc-termonad-dev, libghc-termonad-doc, libghc-termonad-prof, libjs-term.js, libjs-xterm,
- libpugixml-dev, libpugixml1v5, libqtermwidget-dev, libqtermwidget6-2, librust-alacritty-terminal-dev, librust-vte-dev,
- librust-xterm-query-dev, libt3key-bin, libt3key-dev, libt3key1, libterm-extendedcolor-perl, libterm-readline-perl-perl,
- libtermkey1, libtermpaint-dev, libtermpaint0a, libtsm-dev, libtsm4, libtty-dev, libtty1t64, libutempter-dev, libvte-2.91-dev,
- libvte-2.91-doc, libvte-2.91-gtk4-0, libvte-2.91-gtk4-dev, libvte-2.91-gtk4-doc, libvte-common, libvte-dev, libvte9t64,
- libvted-3-0, libvted-3-dev, libvterm-bin, libvterm-dev, libvterm0, libxine2-console, libyascreen-dev, libyascreen0, lsix, luit,
- lwm, lxde, lxde-core, lxterminal, mate-terminal, mate-terminal-common, mlterm, mlterm-common, mlterm-im-fcitx, mlterm-im-ibus,
- mlterm-im-m17nlib, mlterm-im-scim, mlterm-im-skk, mlterm-im-uim, mlterm-tiny, mlterm-tools, nautilus-extension-gnome-terminal,
- node-node-pty, node-ultron, node-xterm, opencu, pterm, ptyxis, pugixml-doc, putty, python-pyte-doc, python-terminado-doc,
- python-urwid-doc, python3-colored, python3-pyqrcode, python3-pyte, python3-terminado, python3-termqt, python3-textual-image,
- python3-urwid, python3-xstatic-term.js, python3-xtermcolor, qterminal, qtermwidget-data, randomplay, rxvt-unicode, s3dvt,
- sakura, ser2net, shellinabox, singular-ui-xterm, stterm, terminal.app, terminology, terminology-data, termit, termonad,
- teseq, tilda, tilix, tilix-common, tpp, tweak, vde2, vivid, vttest, w3m-img, xfce4-goodies, xfonts-traditional, xgterm,
- xine-console, xiterm+thai, xjdic, xjed, xpaint, xterm, xtermcontrol, xtermset, xtitle, xttitle, yakuake, yeahconsole, zutty,
+ colortest, colortest-python, cool-retro-term, ddd, deepin-terminal, elpa-eat, elpa-vterm, emacs-libvterm, eterm,
+ fbterm, fonts-atarismall, fonts-firacode, foot, foot-extra-terminfo, foot-terminfo, foot-themes, freesweep, fte-terminal,
+ gambas3-gb-form-terminal, gir1.2-vte-2.91, gir1.2-vte-3.91, gmrun, gnome-console, gnome-terminal, gnome-terminal-data, grabc,
+ irssi-scripts, jupp, kildclient, kildclient-doc, kitty, kitty-doc, kitty-shell-integration, kitty-terminfo, kmscon, konsole,
+ konsole-kpart, libconvert-color-xterm-perl, libghc-termonad-doc, libghc-termonad-prof, libjs-term.js, libjs-xterm, libpugixml1v5,
+ libqtermwidget6-2, libt3key-bin, libt3key1, libterm-extendedcolor-perl, libterm-readline-perl-perl, libtermkey1, libtermpaint0a,
+ libtsm4, libtty1t64, libvte-2.91-doc, libvte-2.91-gtk4-0, libvte-2.91-gtk4-doc, libvte-common, libvte9t64, libvterm-bin,
+ libvterm0, libxine2-console, libyascreen0, lsix, luit, lwm, lxde, lxde-core, lxterminal, mate-terminal, mate-terminal-common,
+ mlterm, mlterm-common, mlterm-im-fcitx, mlterm-im-ibus, mlterm-im-m17nlib, mlterm-im-scim, mlterm-im-skk, mlterm-im-uim,
+ mlterm-tiny, mlterm-tools, nautilus-extension-gnome-terminal, node-node-pty, node-ultron, node-xterm, opencu, pterm, ptyxis,
+ pugixml-doc, putty, python-pyte-doc, python-terminado-doc, python-urwid-doc, python3-colored, python3-pyqrcode, python3-pyte,
+ python3-terminado, python3-termqt, python3-textual-image, python3-urwid, python3-xstatic-term.js, python3-xtermcolor,
+ qterminal, qtermwidget-data, randomplay, rxvt-unicode, s3dvt, sakura, ser2net, shellinabox, singular-ui-xterm, stterm,
+ terminal.app, terminology, terminology-data, termit, termonad, teseq, tilda, tpp, tweak, vde2, vivid, vttest, w3m-img,
+ xfce4-goodies, xfonts-traditional, xgterm, xine-console, xiterm+thai, xjdic, xjed, xpaint, xterm, xtermcontrol, xtermset,
+ xtitle, xttitle, yakuake, yeahconsole, zutty,
 # Manually-added shitlist not matching the above pattern
  qterm, bootterm, gtkterm, termshark, qtterminal, lua-term, terminator, amtterm, bochs-term, bogl-bterm,
  cairo-dock-terminal-plug-in, fqterm, pluma-plugin-terminal, qterm, sugar-terminal-activity, xdg-terminal-exec,
@@ -656,13 +580,11 @@ Conflicts:
 # We need do not need pkexec part of polkit
 # As at Debian 14, sudo-ldap is gone.
 # As at Debian 14, polkitd-pkla is gone.
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(sudo~|kdesu~|polkit~|policykit~|kde-cli-tools) ?not(?name(^polkitd$)) ?not(?reverse-depends(^polkitd$)) ?not(?name(sudoku))' | fmt -w132"
- gir1.2-polkit-1.0, gosa-plugins-sudo, gosa-plugins-sudo-schema, hyprpolkitagent, kde-cli-tools, kde-cli-tools-data, libkf5su-bin,
- libkf5su-data, libkf5su-dev, libkf5su-doc, libkf5su5, libkf6su-bin, libkf6su-data, libkf6su-dev, libkf6su-doc, libkf6su6,
- libnss-sudo, libpolkit-agent-1-dev, libpolkit-gobject-1-dev, libpolkit-qt5-1-1, libpolkit-qt5-1-dev, libpolkit-qt6-1-1,
- libpolkit-qt6-1-dev, librust-sudo-rs-dev, lomiri-polkit-agent, lxqt-policykit, lxqt-policykit-l10n, lxqt-sudo, lxqt-sudo-l10n,
- mate-polkit, mate-polkit-bin, mate-polkit-common, pkexec, policykit-1-doc, polkit-kde-agent-1, sudo, sudo-ldap, sudo-rs,
- xfce-polkit,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(sudo~|kdesu~|polkit~|policykit~|kde-cli-tools) ?not(?name(^polkitd$)) ?not(?reverse-depends(^polkitd$)) ?not(?name(sudoku))' | fmt -w132"
+ gir1.2-polkit-1.0, hyprpolkitagent, kde-cli-tools, kde-cli-tools-data, libkf5su-bin, libkf5su-data, libkf5su-doc, libkf5su5,
+ libkf6su-bin, libkf6su-data, libkf6su-doc, libkf6su6, libnss-sudo, libpolkit-qt5-1-1, libpolkit-qt6-1-1, lomiri-polkit-agent,
+ lxqt-policykit, lxqt-policykit-l10n, lxqt-sudo, lxqt-sudo-l10n, mate-polkit, mate-polkit-bin, mate-polkit-common, pkexec,
+ policykit-1-doc, polkit-kde-agent-1, sudo, sudo-ldap, sudo-rs, xfce-polkit,
 # Manually-added shitlist of miscellaneous other things.
 # Notes:
 #  • chromium-sandbox REDUCES security.
@@ -684,40 +606,35 @@ Conflicts:
 # Except mousepad (used by staff)
 # Except inkscape → libgtksourceview-4-0 (all users)
 # Except mousepad → libgtksourceview-4-0 (staff)
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?source-package(pluma~|juffed~|gedit~|kate~|ktexteditor~|gtksourceview~|kwrite~|retext~|featherpad~|focuswriter~|kakoune~|kilo~|ledit~|levee~|liquidsoap~|lyx~|mle~|mmm-mode~|ncurses-hexedit~|noblenote~|manuskript~|notepadqq~|poke-elf~|sml-mode~|^tea$~|texmacs~|tweak~|vigor~|textedit.app~|texstudio~|texmaker~|kile~|fritzing~|robocode~|jedit) ?not(?name(^mousepad$)) ?not(?reverse-depends(^mousepad$))' | fmt -w132"
- bibledit, bibledit-cloud, bibledit-cloud-data, bibledit-data, debugedit, dgedit, elpa-sml-mode, featherpad, featherpad-l10n,
- focuswriter, fonts-katex, fonts-kiloji, fonts-lyx, fonts-texmacs, fritzing, fritzing-data, fritzing-parts, gedit, gedit-common,
- gedit-dev, gedit-latex-plugin, gedit-plugin-bookmarks, gedit-plugin-bracket-completion, gedit-plugin-character-map,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(pluma~|juffed~|gedit~|^kate$~|ktextedit~|gtksourceview~|kwrite~|retext~|featherpad~|focuswriter~|kakoune~|kilo~|ledit~|levee~|liquidsoap~|^lyx$~|^mle$~|mmm-mode~|ncurses-hexedit~|noblenote~|manuskript~|notepadqq~|poke-elf~|sml-mode~|^tea$~|texmacs~|^tweak$~|vigor~|textedit.app~|texstudio~|texmaker~|kile~|fritzing~|robocode~|jedit) ?not(?name(^mousepad$)) ?not(?reverse-depends(^mousepad$))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(pluma~|juffed~|gedit~|^kate$~|ktextedit~|gtksourceview~|kwrite~|retext~|featherpad~|focuswriter~|kakoune~|kilo~|ledit~|levee~|liquidsoap~|^lyx$~|^mle$~|mmm-mode~|ncurses-hexedit~|noblenote~|manuskript~|notepadqq~|poke-elf~|sml-mode~|^tea$~|texmacs~|^tweak$~|vigor~|textedit.app~|texstudio~|texmaker~|kile~|fritzing~|robocode~|jedit) ?not(?name(^mousepad$)) ?not(?reverse-depends(^mousepad$))' | fmt -w132"
+ bibledit, bibledit-cloud, bibledit-cloud-data, bibledit-data, debugedit, dgedit, elpa-sml-mode, featherpad,
+ featherpad-l10n, focuswriter, fonts-kiloji, fonts-lyx, fonts-texmacs, fritzing, fritzing-data, fritzing-parts, gedit,
+ gedit-common, gedit-latex-plugin, gedit-plugin-bookmarks, gedit-plugin-bracket-completion, gedit-plugin-character-map,
  gedit-plugin-code-comment, gedit-plugin-color-picker, gedit-plugin-draw-spaces, gedit-plugin-join-lines, gedit-plugin-multi-edit,
- gedit-plugin-session-saver, gedit-plugin-smart-spaces, gedit-plugin-terminal, gedit-plugin-word-completion, gedit-plugins,
- gedit-plugins-common, gedit-source-code-browser-plugin, gir1.2-amtk-5, gir1.2-gfls-1, gir1.2-gtksource-3.0, gir1.2-gtksource-300,
- gir1.2-gtksource-4, gir1.2-gtksource-5, gir1.2-pluma-1.0, gir1.2-tepl-6, gnome-tweaks, jedit, juff-dev, juffed, juffed-plugins,
- kakoune, kate, kate-data, katex, kile, kile-doc, kile-l10n, kilo, ktexteditor-data, ktexteditor-katepart, kwrite, kwrited, ledit,
- levee, libgedit-amtk-5-0, libgedit-amtk-5-common, libgedit-amtk-dev, libgedit-gfls-1-0, libgedit-gfls-common, libgedit-gfls-dev,
- libgedit-gfls-doc, libgedit-gtksourceview-300-3, libgedit-gtksourceview-300-common, libgedit-gtksourceview-300-doc,
- libgedit-gtksourceview-dev, libgedit-tepl-6-3, libgedit-tepl-common, libgedit-tepl-dev, libghc-xml-hamlet-dev,
- libghc-xml-hamlet-doc, libghc-xml-hamlet-prof, libgtksourceview-3.0-1, libgtksourceview-3.0-common, libgtksourceview-3.0-dev,
- libgtksourceview-3.0-doc, libgtksourceview-4-0, libgtksourceview-4-common, libgtksourceview-4-dev, libgtksourceview-4-doc,
- libgtksourceview-4-tests, libgtksourceview-5-0, libgtksourceview-5-common, libgtksourceview-5-dev, libgtksourceview-5-doc,
- libgtksourceview-5-tests, libgtksourceviewmm-3.0-0v5, libgtksourceviewmm-3.0-dev, libgtksourceviewmm-3.0-doc, libjs-katex,
- libjs-xmlextras, libjuff0.10t64, libkate-dev, libkate-tools, libkate1, libkf5texteditor-bin, libkf5texteditor-dev,
- libkf5texteditor-doc, libkf5texteditor5, libkf6texteditor-bin, libkf6texteditor-data, libkf6texteditor-dev, libkf6texteditor-doc,
- libkf6texteditor-katepart, libkf6texteditor6, libledit-ocaml-dev, liboggkate-dev, liboggkate1, libreadonlyx-perl, librem5-tweaks,
- libsyntax-highlight-engine-kate-perl, libtk-objeditor-perl, libxmlenc-java, liquidsoap, liquidsoap-doc, liquidsoap-mode,
- lyx, lyx-common, manuskript, mle, mmm-mode, mobile-tweaks-common, ncurses-hexedit, noblenote, node-htmlescape,
- notepadqq, pinephone-tweaks, pinetab-tweaks, pluma, pluma-common, pluma-dev, pluma-doc, pluma-plugin-bookmarks,
+ gedit-plugin-session-saver, gedit-plugin-smart-spaces, gedit-plugin-terminal, gedit-plugin-word-completion,
+ gedit-plugins, gedit-plugins-common, gedit-source-code-browser-plugin, gir1.2-amtk-5, gir1.2-gfls-1, gir1.2-gtksource-3.0,
+ gir1.2-gtksource-300, gir1.2-gtksource-4, gir1.2-gtksource-5, gir1.2-pluma-1.0, gir1.2-tepl-6, jedit, juffed, juffed-plugins,
+ kakoune, kate, kate-data, kile, kile-doc, kile-l10n, kilo, ktexteditor-data, ktexteditor-katepart, kwrite, kwrited,
+ ledit, levee, libgedit-amtk-5-0, libgedit-amtk-5-common, libgedit-gfls-1-0, libgedit-gfls-common, libgedit-gfls-doc,
+ libgedit-gtksourceview-300-3, libgedit-gtksourceview-300-common, libgedit-gtksourceview-300-doc, libgedit-tepl-6-3,
+ libgedit-tepl-common, libgtksourceview-3.0-1, libgtksourceview-3.0-common, libgtksourceview-3.0-doc, libgtksourceview-4-0,
+ libgtksourceview-4-common, libgtksourceview-4-doc, libgtksourceview-4-tests, libgtksourceview-5-0, libgtksourceview-5-common,
+ libgtksourceview-5-doc, libgtksourceview-5-tests, libgtksourceviewmm-3.0-0v5, libgtksourceviewmm-3.0-doc, libjuff0.10t64,
+ libkf5texteditor-bin, libkf5texteditor-doc, libkf5texteditor5, libkf6texteditor-bin, libkf6texteditor-data, libkf6texteditor-doc,
+ libkf6texteditor-katepart, libkf6texteditor6, libtk-objeditor-perl, liquidsoap, liquidsoap-doc, liquidsoap-mode, lyx, lyx-common,
+ manuskript, mle, mmm-mode, ncurses-hexedit, noblenote, notepadqq, pluma, pluma-common, pluma-doc, pluma-plugin-bookmarks,
  pluma-plugin-bracketcompletion, pluma-plugin-codecomment, pluma-plugin-quickhighlight, pluma-plugin-smartspaces,
  pluma-plugin-sourcecodebrowser, pluma-plugin-synctex, pluma-plugin-terminal, pluma-plugin-wordcompletion, pluma-plugins,
- pluma-plugins-common, poke-elf, python3-django-widget-tweaks, python3-hmmlearn, qxgedit, r-cran-bbmle, retext, robocode,
- ruby-htmlentities, ruby-seamless-database-pool, sml-mode, tea, tea-data, texmacs, texmacs-base, texmacs-bin, texmacs-doc,
- texmacs-texmf, texmaker, texmaker-data, texstudio, texstudio-doc, texstudio-l10n, textedit.app, tweak, umlet, vigor,
+ pluma-plugins-common, poke-elf, qxgedit, retext, robocode, sml-mode, tea, tea-data, texmacs, texmacs-base, texmacs-bin,
+ texmacs-doc, texmacs-texmf, texmaker, texmaker-data, texstudio, texstudio-doc, texstudio-l10n, textedit.app, tweak, vigor,
 # Manually-added shitlist of mostly text editors, i.e. not a real concern.
 # Last updated for Debian 14.
 # See also this list:
 #  https://codesearch.debian.net/search?q=update-alternatives+--install+%2Fusr%2Fbin%2Feditor+editor&literal=1
  cream, dav-text, diffstat, e3, efte, elvis-tiny, fte, joe, jove, jupp, le, mc, mg, micro, nano, nano-tiny, ne, ng, ng-common,
  nedit, neovim, nvi, tilde, yi, zile, bvi, chr, emacs, emacsen, emacsen-common, dhex, dte, e-wrapper, ed, edlin, vis, poke, skim,
- vim, vim-common, vile, vile-common, yudit, yudit-common, jed, jed-common, wxhexeditor, wily
+ vim, vim-common, vile, vile-common, yudit, yudit-common, jed, jed-common, wxhexeditor, wily,
 ## Inmates SHOULD NOT have access to cron-style scheduling (#30091)
 ## ================================================================
 # https://alloc.cyber.com.au/task/task.php?taskID=30091
@@ -739,26 +656,22 @@ Conflicts:
 # Applications almost always use cups as a library (not CLI fork+exec binaries).
 # When used as a library, this spoofing is much harder (maybe impossible).
  cups-client,
+###
+### FIXME: put insecure web browser engines back in here?
+###
 # X11 does not REALLY support screen locking:
 #   https://www.jwz.org/blog/2021/01/i-told-you-so-2021-edition/
 # Rather than pretend, we simply do not let inmate lock the screen.
 # This also prevents inmate in a shared area from locking the screen and walking away, which is a sort of DOS.
 # Also do not let detainees suspend.
 # Can probably still suspend via systemd...
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?or(?source-package(screen.*saver~|power.*manager), ?name(screen.*saver~|power.*manager~|upower~|thermald~|sleepd))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(screen.*saver~|power.*manager), ?name(screen.*saver~|power.*manager~|upower~|thermald~|sleepd))' | fmt -w132"
  boinc-screensaver, cairo-dock-powermanager-plug-in, cinnamon-screensaver, cpupower-gui, gir1.2-upowerglib-1.0,
- gir1.2-upowerglib-1.0-dev, gnome-power-manager, libcpupower-dev, libcpupower1, libopengl-xscreensaver-perl,
- librust-x11rb+screensaver-dev, librust-x11rb-0+screensaver-dev, librust-x11rb-0.13+screensaver-dev,
- librust-x11rb-0.13.0+screensaver-dev, librust-x11rb-protocol+screensaver-dev, librust-x11rb-protocol-0.13+screensaver-dev,
- librust-xcb+screensaver-dev, librust-xcb-1+screensaver-dev, librust-xcb-1.6+screensaver-dev, librust-xcb-1.6.0+screensaver-dev,
- libukui-screensaverclient-dev, libukui-screensaverclient0, libupower-glib-dev, libupower-glib3, libxcb-screensaver0,
- libxcb-screensaver0-dev, linux-cpupower, mate-power-manager, mate-power-manager-common, mate-screensaver, mate-screensaver-common,
- sleepd, thermald, ukui-power-manager, ukui-screensaver, ukui-screensaverserver, unicode-screensaver, upower, upower-doc,
- upower-tests, xfce4-power-manager, xfce4-power-manager-data, xfce4-power-manager-plugins, xfce4-screensaver, xscreensaver,
- xscreensaver-data, xscreensaver-data-extra, xscreensaver-gl, xscreensaver-gl-extra, xscreensaver-screensaver-bsod,
- xscreensaver-screensaver-dizzy, xscreensaver-screensaver-webcollage,
-## FIXME: put insecure web browser engines back in here?
+ gnome-power-manager, libcpupower1, libopengl-xscreensaver-perl, libukui-screensaverclient0, libupower-glib3, libxcb-screensaver0,
+ linux-cpupower, mate-power-manager, mate-power-manager-common, mate-screensaver, mate-screensaver-common, sleepd, thermald,
+ ukui-power-manager, ukui-screensaver, ukui-screensaverserver, unicode-screensaver, upower, upower-doc, upower-tests,
+ xfce4-power-manager, xfce4-power-manager-data, xfce4-power-manager-plugins, xfce4-screensaver, xscreensaver, xscreensaver-data,
+ xscreensaver-data-extra, xscreensaver-gl, xscreensaver-gl-extra, xscreensaver-screensaver-bsod, xscreensaver-screensaver-dizzy,
+ xscreensaver-screensaver-webcollage,
 ## Inmates SHOULD NOT have development tools
 ## =========================================
-## "Fuck it, why not?" brute-force lists
-## =====================================
