@@ -10,10 +10,13 @@ Pin: version *
 Pin-Priority: -7994
 Package:
  src:xfce4-terminal
- src:vte*
- src:*terminal*
+ src:vte
+ src:vte2.91
+ src:xfce4-terminal
  src:mousepad
- src:*source*view*
+ src:gtksourceview3
+ src:gtksourceview4
+ src:gtksourceview5
  src:xfce4-screenshooter
  src:ntfs-3g
  src:libburn
@@ -22,6 +25,6 @@ Package:
  src:fuse3
  src:qemu
  src:spice-vdagent
- src:*gphoto*
+ src:gphoto2
  src:libmtp
- libavahi-glib*
+ libavahi-glib1
