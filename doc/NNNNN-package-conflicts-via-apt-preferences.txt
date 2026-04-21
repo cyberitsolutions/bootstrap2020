@@ -11,3 +11,72 @@
 10:46 <twb> Oh that's changing "2.8.4-3 500 500" to "2.8.4-3 -1 500"
 10:48 <twb> OK yeah that is working correctly.
 10:48 <twb> And the error message is reasonably clear
+
+
+# Fuck it, let's explicitly block EVERY package whose name ends in -dev!
+# $ aptitude search -F ' %p,' '?name(-dev$)'
+# UPDATE: this takes like 5 minutes of 100% CPU to run "dh binary", and
+#         over 20 minutes at 100% CPU to run "lintian".
+#         Apparently lintian does not scale to 30,000+ Conflicts lines...
+#         How about it we limit this just -dev packages that *anything* depends on?
+#         And do not themselves depend on any -dev package?
+#         That will eliminate all the golang -dev packages which have 0 dependencies and 0 reverse dependencies.
+#         That reduces the package list from ~37000 to ~2500.
+# $ aptitude search -F ' %p,' '?name(-dev$) ?reverse-depends(.) ?not(?depends(?name(-dev$)))'
+#
+# UPDATE:
+#
+# <jwilk> Couldn't you block installing packages by pinning?
+# <jwilk> "P < 0    prevents the version from being installed"
+# <twb> Offhand I'm not sure, but you might be right.
+#       I think the error message would be less clear, though.
+#       Right now I get an error message like
+#
+#           The following packages have unmet dependencies:
+#            prisonpc-bad-package-conflicts-everyone : Conflicts: fuse
+#            xfce4-terminal : Depends: libvte-2.91-0 (>= 0.51.90) but it is not installable
+#           E: Unable to correct problems, you have held broken packages.
+#
+# <twb> When I started that approach, I did not understand pinning as well as I do today.
+#       jwilk: ah I found one reason: can't "Conflicts: x-terminal-emulator" in apt preferences.
+#       Works well for *-dev, though it doesn't print the Explanation line.
+#       AND you can bypass it if you do "apt install libc6-dev/bookworm", so it's not actually 100% working.
+#
+#           root@hera:/# cat >/etc/apt/preferences.d/fuck
+#           Package: *-dev
+#           Pin: version *
+#           Pin-Priority: -1
+#
+#           root@hera:/# apt install libc6-dev
+#           Package libc6-dev is not available, but is referred to by another package.
+#           This may mean that the package is missing, has been obsoleted, or
+#           is only available from another source
+#           However the following packages replace it:
+#             rpcsvc-proto libcrypt-dev libnsl-dev
+#           E: Package 'libc6-dev' has no installation candidate
+#
+#           root@hera:/# apt install libc6-dev/stable
+#           Selected version '2.36-9+deb12u1' (Debian:12.1/stable [amd64]) for 'libc6-dev'
+#           Some packages could not be installed. This may mean that you have
+#           requested an impossible situation or if you are using the unstable
+#           distribution that some required packages have not yet been created
+#           or been moved out of Incoming.
+#           The following information may help to resolve the situation:
+#           The following packages have unmet dependencies:
+#            libc6-dev : Depends: linux-libc-dev but it is not installable
+#                        Depends: libcrypt-dev but it is not installable
+#                        Depends: libnsl-dev but it is not installable
+#           E: Unable to correct problems, you have held broken packages.
+#
+#           root@hera:/# apt install libc6-dev -t stable
+#           Package libc6-dev is not available, but is referred to by another package.
+#           This may mean that the package is missing, has been obsoleted, or
+#           is only available from another source
+#           However the following packages replace it:
+#             rpcsvc-proto libcrypt-dev libnsl-dev
+#
+#           E: Package 'libc6-dev' has no installation candidate
+#
+# This is Good Enough for the "*-dev" case, though.
+# It is also useful as defence-in-depth against libvte-1-2 becoming libvte-3-4.
+# Because we can glob in apt_preferences, we can denylist "libvte-*" easily.

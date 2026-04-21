@@ -1,4 +1,4 @@
-prisonpc-ersatz (14.17.1776244622) forky; urgency=medium
+prisonpc-ersatz (14.17.1776775048) forky; urgency=medium
 
   * Bump for Debian 14.
   * Drop ersatz e2fsprogs (now needless).
@@ -13,8 +13,13 @@ prisonpc-ersatz (14.17.1776244622) forky; urgency=medium
     you try to install a package with neatively-pinned dependencies.
     NOTE: putting Conflicts: <every *-dev> into this package makes this package take 10 MINUTES to build.
     But once built (once) it can be installed (all the time) fast.
+  * Actually we now to a mix, where
+     * seriously bad packages that are likely to be requested go here,
+     * bad packages probably not requested go into a apt_preferences directly (if static text)
+     * mildly bad packages that need a glob/regex (e.g. *dev) go into apt_preferences via a one-time expander script
+     * sections that should never be used (e.g. Section: libdevel) get shitlisted via a post-install dpkg-dev | grep.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Wed, 15 Apr 2026 19:34:37 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 21 Apr 2026 22:54:21 +1000
 
 prisonpc-ersatz (12.15) bookworm; urgency=medium
 

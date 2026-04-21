@@ -6,7 +6,6 @@ import os
 import pathlib
 import subprocess
 import tempfile
-import time
 import tomllib
 
 parser = argparse.ArgumentParser()
@@ -31,13 +30,11 @@ deb_shit_regexps: list[str] = config_dict.get('deb_shit_regexps', []) + config_d
 dsc_good_regexps: list[str] = config_dict.get('dsc_good_regexps', []) + config_dict.get('both_good_regexps', [])
 dsc_shit_regexps: list[str] = config_dict.get('dsc_shit_regexps', []) + config_dict.get('both_shit_regexps', [])
 
-then = time.time()
 os.environ['APT_CONFIG'] = os.environ['MMDEBSTRAP_APT_CONFIG']
 import apt                      # ignore E402
 
 all_debs = subprocess.check_output(['apt-cache', 'pkgnames'], text=True).split()
 all_dscs = list(set(p.candidate.source_name for p in apt.Cache() if p.candidate))
-print(f'Took {round(time.time() - then, 1)} seconds to load cache.')  # DEBUGGING
 
 def my_grep(
         inputs: list[str],
@@ -84,4 +81,5 @@ with (args.chroot_path / 'etc/apt/preferences.d/bootstrap2020-PrisonPC-1133971')
     for d in shit_dscs:
         print(f' src:{d}', file=f)
 
-print(f'Took {round(time.time() - then, 1)} seconds to think about it.')  # DEBUGGING
+# DEBUGGING
+#subprocess.check_call(['env', f'HOME={args.chroot_path / "root"}', 'aptitude', '-oaptitude::UI::Package-Display-Format=%c%a%M%S %p %e %Z %t %v %V'])

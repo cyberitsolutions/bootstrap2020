@@ -158,6 +158,8 @@ Conflicts:
 # See -everyone stanza's comments re NNNNN-udev-audit.py.
  qemu-guest-agent,
  spice-vdagent,
+# staff need sound-juicer → gstreamer1.0-plugins-good → libdv4 (libdv4t64)
+ libdv4,
 
 Package: prisonpc-bad-package-conflicts-everyone
 Depends:
@@ -791,11 +793,11 @@ Conflicts:
  khelpcenter,
  kwalletmanager,
 # Shitlist everything that provides dbus-1/services/org.kde.*
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only dbus-1/services/org.kde. | sed "s/.*/ &,/" | fmt -w132'
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only dbus-1/services/org.kde. | grep -vFx -e kio -e kio6 | sed "s/.*/ &,/" | fmt -w132'
  amarok, calindori, dolphin, elisa, kactivitymanagerd, kalendarac, kclock, kde-spectacle, kdeconnect, kded5, kded6,
- kdesvn-kio-plugins, kget, khelpcenter, kio, kio-extras, kio-fuse, kio6, kmail, knighttime, kongress, kontact, konversation,
- korganizer, kscreen, ksystemstats, kwallet6, kwalletmanager, kweather, libkscreen-bin, neochat, plasma-dialer, plasma-workspace,
- tokodon, yakuake,
+ kdesvn-kio-plugins, kget, khelpcenter, kio-extras, kio-fuse, kmail, knighttime, kongress, kontact, konversation, korganizer,
+ kscreen, ksystemstats, kwallet6, kwalletmanager, kweather, libkscreen-bin, neochat, plasma-dialer, plasma-workspace, tokodon,
+ yakuake,
 # Shitlist everything that provides /usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/
 # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only --regex /usr/lib/.*/plugins/kf[56]/kio/ | grep -vx -e kio -e kio6 | sed "s/.*/ &,/" | fmt -w132'
  baloo6, bluedevil, kamera, kate, kde-zeroconf, kdeconnect, kdepim-runtime, kio-admin, kio-audiocd, kio-extras, kio-gdrive,
@@ -959,7 +961,7 @@ Conflicts:
  cmake,
  scons,
  acr,
- soong mini-soong,
+ soong, mini-soong,
  yotta,
  pypi2deb,
  dh-make-perl,
@@ -977,6 +979,7 @@ Conflicts:
 # https://alloc.cyber.com.au/task/task.php?taskID=30713
 # Notes:
 #  • staff need xfce4-screenshoter
+#  • staff need sound-juicer → gstreamer1.0-plugins-good → libdv4 (libdv4t64)
 #  • x11-apps provides "xwd" screenshot tool
  deepin-screenshot,
  fbcat,
@@ -1002,8 +1005,7 @@ Conflicts:
  ale,
  qvidcap,
  entangle,
- libmjpegutils-2.2-0
- libdv4,
+ libmjpegutils-2.2-0,
  motion,
  recordmydesktop,
  cutycapt,

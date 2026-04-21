@@ -9,24 +9,48 @@ include = [
 ###
 ### Workaround https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1133971#10
 ###
+# Debugging: "what fucking pattern is matching my inoccuous package???"
+# python3 -c 'import pathlib, tomllib, sys, re, pprint; ps = tomllib.loads(pathlib.Path("config.toml").read_text())["both_shit_regexps"]; pprint.pprint({k: [p for p in ps if re.search(p, k)] for k in sys.argv[1:]})' linux-sysctl-defaults
 both_shit_regexps = [
     ## Inmates MUST NOT have unnecessary crypto
     ## ========================================
     "gnupg",
     "sequoia",
     "crypt",
+    "luks",
+    'fido2',
     "^libreoffice.*-nogui$",    # encrypted zip?
 
     ## Inmates MUST NOT have clandestine comms
     ## =======================================
+    'wireless',
+    'wifi',
+    'wi-fi',
+    'hamradio',
+    'modem',
+    'bluez',
+    'bluetooth',
     "^ircd",
     "^asterisk",
     "^efax",
+    '^iwd$',
+    '^iw$',
+    'avahi',
+    'mdns',
 
     ## Inmates MUST NOT have writable local media (DVD, USB)
     ## =====================================================
     ## Inmates MUST NOT have containers (VMs)
     ## ======================================
+    'virt',
+    'docker',
+    'podman',
+    'buildah',
+    'container',
+    '^lxc$',
+    '^lxd$',
+    '^incus$',
+
     ## Inmates MUST NOT have root REPL (& SHOULD NOT get any REPL)
     ## ===========================================================
     ## Inmates SHOULD NOT have a text editor
@@ -63,12 +87,14 @@ both_shit_regexps = [
     "-dbg$",
     "-test$",
     "-tests$",
+    "-compiler",
     "^libghc-.+-doc$",
     "^ros2-",
     "^binutils-",
     "cuda",                     # fuck Nvidia
     "nvidia",                   # fuck Nvidia
     "android",                  # fuck Google
+    'fdroid',
     "^gcc-defaults",
     "^gcc-.+-cross",
     "^linux-source",
@@ -90,7 +116,7 @@ both_shit_regexps = [
     "idle-python",
     "yorick",
     "-venv$",
-    # version control stuff
+    # version control stuff - not comprehensive
     "^git",
     "^mercurial",
     "^rcs",
@@ -117,9 +143,350 @@ both_shit_regexps = [
     "zope",                     # web
     "mariadb",
     "^nupkg",
+
+
+    # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only usr/src'
+    'dynare-matlab',
+    'freespace2',
+    'google-mock',
+    'googletest',
+    'linux-config-',
+    'linux-headers-',
+    'linux-kbuild-',
+    'linux-source-',
+    'matlab-gdf',
+    'matlab-zmat',
+    'paho.mqtt.c-examples',
+    'propellor',
+    'wabt',
+
+    # Leftovers from delete-bad-files KDE4 lockdown.
+    # In KDE5, we can block the packages outright.
+    'kde-config-',
+    'plasma-',
+    'kcmutils',
+    'khelpcenter',
+    'kwallet',
+
+    # Explanation:
+    #  We mostly ban packages in prisonpc-bad-package-conflicts-everyone.
+    #  This works well, and we get clear error messages.
+    #  But it cannot block by source package, and cannot glob of package names.
+    #  In here, block things that prisonpc-bad-package-conflicts-everyone cannot.
+    #  .
+    #  If you try to install a package blocked here,
+    #  the error message will be something like this:
+    #      E: Package 'libc6-dev' has no installation candidate
+    #  .
+    #  One benefit of blocking things explicitly here is that measure-install-footprints.py
+    #  will skip them before measuring them, i.e. runs faster.
+    #  .
+    #  Use an arbitrary negative number instead of -1, so
+    #  it is easier to git grep for that number across the codebase,
+    #  when you see it in apt policy output.
+    #  .
+    #  FIXME: some of this could be folded back into prisonpc-bad-package-conflicts.
+    #  NOTE: nfs-client needs src:lvm2.
+    #  NOTE: dbus-x11 (banned) is for syvinit; dbus-user-session is for systemd.
+    '^dbus-x11$',
+    #  NOTE: mbim and qmi are for 3G/LTE modems, and not linked by anything we want.
+    #  NOTE: apt needs sqv|gpg, so block sq and other sq components EXCEPT sqv, for now.
+    #  NOTE: xdm/xfce4-session need cpp
+    #  NOTE: blocking src:gnome-online-accounts blocks apps like gnome-music and geary
+    #  NOTE: udisks2 (mount/eject DVDs) needs libfdisk* and fdisk and libparted*
+    #  NOTE: gbrainy needs mono-gac and mono-runtime (src:mono)
+    #  NOTE: systemd needs libcryptsetup (src:cryptsetup)
+    #  NOTE: bash and util-linux need src:ncurses (can block ncurses6 but not ncursesw6)
+    #  NOTE: prisonpc-openttd-extras needs timidity needs libncurses6 :-(
+    #  NOTE: openssh-client (staff-only) needs src:libfido2
+    #  NOTE: libgl1-mesa needs libllvmNN (src:llvm-toolchain-NN)
+    'gambas',
+    'netboot',
+    'zip',
+    'rar',
+    'qgis',
+    'doc-rfc',
+    '^lvm2$',
+    'starpu',
+    'enlightenment',
+    'gnumach',
+    'picolibc',
+    'intel-mkl',
+    'puppet',
+    'i386',
+    'x32',
+    'multilib',
+    'switcheroo',
+    'clang',
+    'llvm',
+    'defaults',
+    'expect',
+    'mbim',
+    'qmi',
+    'legacy',
+    'online',
+    'disk-utility',
+    '^cups-filters$',
+    '^cups-ppdc$',
+    '^cups-daemon$',
+    '^libnova$',
+    '^oz$',
+    '^vagrant$',
+    'mailman',
+    '^gdb$',
+    'kwrited',
+    'squashfs',
+    'erofs',
+    '^mkosi$',
+    'backup',
+    'certbot',
+    '^mariadb-mysql-kbs$',
+    '^phpmyadmin$',
+    '^ppp$',
+    '^acme$',
+    '^uacme$',
+    '^python-acme$',
+    '^ruby-acme-client$',
+    '^acme-tiny$',
+    '^lacme$',
+    '^acmetool$',
+    '^txacme$',
+    '^ejabberd$',
+    '^boogie$',
+    '^nuget$',
+    '^sdb$',
+    '^mono-xbuild$',
+    '^monodoc-manual$',
+    '^clevis$',
+    '^tar-scripts$',
+    '^popularity-contest$',
+    '^dialog$',
+    '^newt$',
+    '^weechat$',
+    '^wyrd$',
+    '^libncurses5$',
+    '^libncursesw5$',
+    '^libtinfo5$',
+    '^man-db$',
+    '^groff$',
+    '^far2l$',
+    '^forensics-samples$',
+    '^forensics-all$',
+    '^lava$',
+    '^ubuntu-packaging-guide$',
+    '^gnumach$',
+    '^invaders$',
+    '^module-assistant$',
+    'dkms',
+    '^bilibop$',
+    '^claws-mail$',
+    '^debian-fbx$',
+    'icinga',
+    '^nut$',
+    '^chatty$',
+    '^gnome-calls$',
+    '^mmsd-tng$',
+    '^meta-phosh$',
+    '^mobile-tweaks$',
+    '^meta-plasma-mobile$',
+    '^postgresql-common$',
+    '^postgis$',
+    '^reform-tools$',
+    '^blueman$',
+    '^bmap-tools$',
+    '^vuos$',
+    '^xscreensaver$',
+    '^javahelper$',
+    '^java-propose-classpath$',
+    '^catatonit$',
+    '^conmon$',
+    '^crun$',
+    '^runc$',
+    '^golang-github-docker-docker-credential-helpers$',
+    '^node-is-docker$',
+    '^abcl$',
+    '^arduino-ctags$',
+    '^exuberant-ctags$',
+    '^universal-ctags$',
+    '^vim-addon-manager$',
+    '^alpine$',
+    '^aoeui$',
+    '^apel$',
+    '^bbe$',
+    '^beav$',
+    '^ng$',
+    '^vile$',
+    '^compiz$',
+    '^compton$',
+    '^mokutil$',
+    '^acpid$',
+    '^efibootmgr$',
+    '^etckeeper$',
+    '^corosync$',
+    '^criu$',
+    '^ncdu$',
+    '^auditd$',
+    '^logwatch$',
+    '^dbconfig-common$',
+    '^debugedit$',
+    '^rpm$',
+    '^dnf5$',
+    '^icinga2$',
+    '^adcli$',
+    '^kbd$',
+    '^console-data$',
+    '^console-setup$',
+    '^mailcap$',
+    '^mutt$',
+    '^neomutt$',
+    '^topal$',
+    '^tnef$',
+    '^ripmime$',
+    '^mc$',
+    'connectivity',
+    'crack',
+    '^debhelper$',
+    '^dwz$',
+    '^autopoint$',
+    '^gettext-doc$',
+    '^wine64-tools$',
+    '^poxml$',
+    '^gettext-el$',
+    'vpn',
+    'network-manager',
+    'wireguard',
+    '^rake$',
+    '^gem2deb$',
+    'compile',
+    'build',
+    '^ruby-did-you-mean$',
+    '^plocate$',
+    '^dlocate$',
+    '^locate$',
+    '^sysv-rc$',
+    '^cockpit$',
+    'nvidia',
+    '^redis$',
+    'open-infrastructure',
+    'open-vm',
+    '^po-debconf$',
+    'lint',
+    '^intltool-debian$',
+    '^amdgcn-tools$',
+    '^rustc$',
+    '^ghdl$',
+    '^epix$',
+    '^icecc$',
+    '^laby$',
+    '^python3-pythran$',
+    '^taopm$',
+    '^funtools$',
+    '^libinline-c-perl$',
+    'libtool',
+    '^bmagic$',
+    '^deheader$',
+    '^faust$',
+    '^faustworks$',
+    '^mm-common$',
+    '^cfortran$',
+    '^cwebx$',
+    '^bison++$',
+    '^flex$',
+    '^flex-old$',
+    '^fweb$',
+    '^ruby-inline$',
+    '^bochs$',
+    '^cpanminus$',
+    '^minilla$',
+    '^mandos$',
+    '^golang-github-containers-image$',
+    '^m4$',
+    '^bison$',
+    '^bsdowl$',
+    '^opam$',
+    '^gnulib$',
+    '^when$',
+    '^uucp$',
+    '^bsd-mailx$',
+    '^mailutils$',
+    '^bogofilter$',
+    'dovecot',
+    '^openrc$',
+    '^runit$',
+    '^startpar$',
+    '^insserv$',
+    '^installation-report$',
+    '^reportbug$',
+    '^openpace$',
+    '^haveged$',
+    '^swtpm$',
+    '^zabbix$',
+    '^net-snmp$',
+    '^aardvark-dns$',
+    '^netavark$',
+    '^ipset$',
+    '^tor$',
+    '^edk2$',
+    '^gnome-user-share$',
+    '^mate-user-share$',
+    '^gridsite$',
+    '^apache2$',
+    '^update-inetd$',
+    '^thin-provisioning-tools$',
+    '^apt-show-versions$',
+    '^libnss-nis$',
+    '^menu$',
+    '^borgbackup$',
+    '^monit$',
+    '^facter$',
+    '^cron-apt$',
+    '^ansible-core$',
+    '^apcupsd$',
+    '^acpi-fakekey$',
+    '^supervisor$',
+    '^zerofree$',
+    '^bacula$',
+    '^ansible$',
+    '^schroot$',
+    '^debootstrap$',
+    '^fxload$',
+    '^incron$',
+    '^caja-eiciel$',
+    '^minicom$',
+    '^baresip$',
+    '^binkd$',
+    '^cutecom$',
+    '^cyclades-serial-client$',
+    '^dxtool$',
+    '^gammu$',
+    '^gkermit$',
+    '^gnokii$',
+    '^gsmlib$',
+    '^hylafax$',
+    '^iaxmodem$',
+    '^ifmail$',
+    '^janus$',
+    '^jpnevulator$',
+    '^mgetty$',
+    '^microcom$',
+    '^nyx$',
+    '^picocom$',
+    '^sympathy$',
+    '^xtel$',
+    '^thunar-dropbox-plugin$',
+    '^dnsmasq$',
+    '^bind9-dnsutils$',
+    '^iodine$',
+    '^fence-agents$',
+    '^a56$',
+    'antlr',
+    '^apktool$',
+    '^build-essential$',
+    '^pkgconf$',
+    '^clojure$',
 ]
 
-
+# If we say e.g. "ban src:*foo*" but we do need *one* package from src:foobar e.g. allow libfoobar1 but continue banning libfoobar-bin and libfoobar-tests.
 deb_good_regexps = [
     "sqv",                      # apt → sqv
     "cpp",                      # xdm → cpp
@@ -129,11 +496,39 @@ deb_good_regexps = [
     "libsecret-1-0",  # msmtp-mta → libsecret-1-0 → libgcrypt20
     "libgcrypt20",    # msmtp-mta → libsecret-1-0 → libgcrypt20
     "libblockdev-crypto3",      # udisks2 → libblockdev-crypto
-    "libcryptsetup12",  # udisks2 → libblockdev-crypto → libcryptsetup
+    "libcryptsetup12", "libdevmapper1.02.1", "dmsetup", # udisks2 → libblockdev-crypto → libcryptsetup → libdevmapper → dmsetup
     "libngtcp2-crypto-.*[0-9]",  # libreoffice → libcurl → libngtcp2-crypto
     "libgssapi-krb5-2",          # libcups → src:krb5 stuff
     "libk5crypto3",              # libcups → src:krb5 stuff
     "libkrb5-3",                 # libcups → src:krb5 stuff
     "libkrb5support0",           # libcups → src:krb5 stuff
     "libmbedcrypto16",  # vlc → vlc-plugins-base → libavformat64 → librist4 → libmbedcrypto16
+    "linux-sysctl-defaults",  # linux-sysctl-defaults is manually picked (fixes fq_codel)
+    "libminizip1t64",        # chromium → libminizip1t64
+    "libltdl7",              # <many gtk apps> → libcanberra → libltdl
+    "libllvm[0-9]+",          # <every OpenGL 3d app> → mesa → libllvm
+    "keyboard-configuration",   # xserver-xorg-core → keyboard-configuration
+    "libresid-builder0c2a",     # vlc-plugin-base → libresid-builder0c2a (matches "build")
+    # FIXME: instead of installing pipewire-audio, install only the 3 parts we need and not the 1 part that wants bluetooth? --twb, April 2026
+    "libspa-0.2-bluetooth", "libbluetooth3", # pipewire-audio → libspa-0.2-bluetooth → libbluetooth3
+    "libavahi-client3",  # <everything that prints> → libcups2t64 → libavahi-client3
+
+
+    # Staff things
+    # ============
+    # We allow these here for everyone.
+    # They should then be blocked again by templtes/PrisonPC-inmates stuff.
+    # --twb, April 2026
+    # FIXME: could we put these "but allow for staff" rules ONLY in the staff template?
+    # gvfs-backends → <all of these, sigh> (goa = gnome online accounts)
+    "libavahi-glib1", "libavahi-common3", "libavahi-common-data", "libgoa-1.0-0b", "libgoa-1.0-common",
+    "libgtksourceview-4-0",  # mousepad → libmousepad0 → libgtksourceview-4-0
+    "libfido2-1",            # openssh-client → libfido2-1
+]
+
+dsc_good_regexps = [
+    # "python3", "libpython3-stdlib", "python3-minimal",  # src:python3-defaults matches "defaults"
+    "python3-defaults",
+    # "tk", "tcl",  # x11vnc → tk → tcl (src:tcltk-defaults matches "defaults")
+    "tcltk-defaults",
 ]
