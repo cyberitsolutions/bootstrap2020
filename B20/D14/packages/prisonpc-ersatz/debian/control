@@ -310,12 +310,11 @@ Conflicts:
  libkf6bluezqt-doc, libkf6bluezqt6, libnet-bluetooth-perl, python3-bluetooth-adapters, python3-bluetooth-auto-recovery,
  python3-bluetooth-data-tools, python3-bluetooth-sensor-state-data, python3-bluez, python3-gardena-bluetooth, python3-habluetooth,
  python3-home-assistant-bluetooth, qml-module-org-kde-bluezqt, qml6-module-org-kde-bluezqt, ukui-bluetooth,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(^.*mdns.*$), ?source-package(^.*dnssd.*$), ?source-package(^.*avahi.*)) ?not(?reverse-depends(^libcups[0-9].*)) ?not(?reverse-depends(?reverse-depends(^libcups[0-9].*)))' | fmt -w132"
- avahi-autoipd, avahi-daemon, avahi-discover, avahi-dnsconfd, avahi-ui-utils, avahi-utils, gir1.2-avahi-0.6,
- guile-avahi, libapache2-mod-dnssd, libavahi-compat-libdnssd1, libavahi-core7, libavahi-glib1, libavahi-gobject0,
- libavahi-ui-gtk3-0, libjmdns-java, libjmdns-java-doc, libkf6dnssd-data, libkf6dnssd-doc, libkf6dnssd6, libmdnsd1t64,
- libnet-rendezvous-publish-backend-avahi-perl, libnss-mdns, mdns-reflector, mdns-scan, mdnsd, python3-aiohttp-asyncmdnsresolver,
- python3-avahi,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?or(?source-package(^.*mdns.*$), ?source-package(^.*dnssd.*$), ?source-package(^.*avahi.*)) ?not(?reverse-depends(^libcups[0-9].*)) ?not(?reverse-depends(?reverse-depends(^libcups[0-9].*))) ?not(?reverse-depends(^gvfs-backends$))' | fmt -w132"
+ avahi-autoipd, avahi-daemon, avahi-discover, avahi-dnsconfd, avahi-ui-utils, avahi-utils, gir1.2-avahi-0.6, guile-avahi,
+ libapache2-mod-dnssd, libavahi-compat-libdnssd1, libavahi-core7, libavahi-gobject0, libavahi-ui-gtk3-0, libjmdns-java,
+ libjmdns-java-doc, libkf6dnssd-data, libkf6dnssd-doc, libkf6dnssd6, libmdnsd1t64, libnet-rendezvous-publish-backend-avahi-perl,
+ libnss-mdns, mdns-reflector, mdns-scan, mdnsd, python3-aiohttp-asyncmdnsresolver, python3-avahi,
 # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?name(^wesnoth.*server$)' | fmt -w132"
  wesnoth-1.18-server,
 # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(network-manager~|libnma~|ifupdown~|netplan~|resolvconf~|modem~|wireless~|broadband~|wvdial~|^iw$~|^iwd$~|modeswitch~|rfkill~|wpa~|ppp~|pptp~|wpan~|linux-atm~|bootp~|netfilter~|bridge-utils~|comitup~|aifa~|inetutils~|macchanger~|net-tools~|iscsi~|rancid~|rarpd~|tcputils~|wakeonlan~|wavemon~|whereami~|wide-dhcpv6~|dhcpy6~|wmifinfo~|wmifs~|wavelan~|xl2tpd)' | fmt -w132"
@@ -383,8 +382,6 @@ Conflicts:
 # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(^.*iptables.*$) ?not(?reverse-depends(?reverse-depends(^nftables$)))' | fmt -w132"
  arno-iptables-firewall, ipset-persistent, iptables, iptables-converter, iptables-converter-doc, iptables-persistent, libip4tc2,
  libip6tc2, libiptables-chainmgr-perl, libiptables-parse-perl, netfilter-persistent, python-iptables-doc, python3-iptables,
-## Inmates MUST NOT have writable local media (DVD, USB)
-## =====================================================
 ## Inmates MUST NOT have writable local media (DVD, USB)
 ## =====================================================
 # Notes:
@@ -459,37 +456,37 @@ Conflicts:
 #      dmsetup             — DO NOT WANT, but NFSv4 client Depends on it
 #      libgphoto2-6        — DO NOT WANT, but gvfs-backends Depends on it (staff-only, for sftp:// in thunar)
 #      e2fsprogs           — DO NOT WANT, but already handled as prisonpc-ersatz-e2fsprogs
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only lib/udev/rules.d/ | grep -vFx -e apt -e systemd -e udev -e console-setup-linux -e e2fsprogs -e libffado2 -e libinput-bin -e libwacom-common -e nfs-common -e pipewire-bin -e qemu-guest-agent -e spice-vdagent -e udisks2 -e upower -e xserver-xorg-core -e dmsetup -e ir-keytable | sed "s/.*/ &,/" | fmt -w132'
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only lib/udev/rules.d/ | grep -vFx -e apt -e systemd -e udev -e console-setup-linux -e e2fsprogs -e libffado2 -e libinput-bin -e libwacom-common -e nfs-common -e pipewire-bin -e qemu-guest-agent -e spice-vdagent -e udisks2 -e upower -e xserver-xorg-core -e dmsetup -e ir-keytable -e libmtp-common -e libgphoto2-6t64 | sed "s/.*/ &,/" | fmt -w132'
  0xffff, air-quality-sensor, alsa-firmware-loaders, alsa-utils, amazon-ec2-net-utils, amazon-ec2-utils, android-udev-rules,
  antimicro, antpm, aoetools, argyll, asahi-btsync, asahi-scripts, autorandr, avarice, avrdude, awesfx, azure-vm-utils,
  battery-stats, bcache-tools, beep, bilibop-rules, bilibop-udev, bluez, boinc-client, bolt, bottlerocket, bridge-utils,
  brightness-udev, btrfs-progs, bumblebee, ceph-common, ceph-osd, ckb-next, cloud-init, colord, concordance-common, consolekit,
- daxctl, ddcutil, dfu-util, direwolf, displaylink-driver, dlm-controld, dmrconfig, docker.io, dolphin-emu, drbd-utils, driverctl,
- dualsensectl, eegdev-plugins-free, eg25-manager, elogind, esptool, feedbackd, flashprog, flashrom, fpga-icestorm, g15daemon,
- g810-led, galileo, galileo-daemon, garmin-forerunner-tools, gcpegg, gfs2-utils, gnome-settings-daemon-common, gobi-loader,
- goldencheetah, gpsd, gr-funcube, guestfsd, hdparm, heimdall-flash, hexagonrpcd, hylafax-server, hyperv-daemons, i2c-tools,
- ifupdown, iio-sensor-proxy, imsprog, incus-agent, indi-armadillo-platypus, indi-dsi, indi-ffmv, indi-gphoto, indi-nightscape,
- indi-orion-ssg3, indi-sx, infnoise, initscripts, inputattach, ipheth-utils, ipp-usb, iprutils, isight-firmware-tools,
- joystick, kanata, kdump-tools, kinect-audio-setup, knxd, kpartx, laptop-mode-tools, lcdproc, ledger-wallets-udev, libacsccid1,
- libahp-gt-dev, libairspy0, libairspyhf1, libam7xxx0.1, libapogee3t64, libasi, libbladerf2, libbmusb6, libccid, libcomedi0t64,
- libdjconsole-data, libfishcamp1t64, libfli2, libfprint-2-2, libfreenect0.5t64, libgmobile-common, libgphoto2-6t64,
- libgpib-bin, libgpod-common, libgxccd, libhackrf0, libhamlib4t64, libhydrasdr0, libhydrasdr1, libifd-cyberjack6, libiio0,
- libinovasdk1, libirecovery-common, libkf5bluezqt-data, libm2k0.9.0, libmirisdr4, libmtp-common, libnfc6, libnitrokey-common,
- libnjb5, libnxt, libopenni-sensor-pointclouds0, libopenni-sensor-primesense0, libopenni2-0, libopenobex2, libosmosdr0,
- libpktriggercord0, libplayeronecamera2t64, libpsm2-2-compat, librem5-flash-image, librem5-tweaks, libricohcamerasdk, librtlsdr0,
- libsane1, libsbig4t64, libsigrok4t64, libticables2-8, libx52pro0, libxtrxll0t64, libyubikey-udev, light, limesuite-udev,
- liquidctl, lomiri-common, ltunify, lvm2, madfuload, madwimax, mate-settings-daemon-common, mdadm, mdevctl, media-player-info,
- midisport-firmware, minidisc-utils, mkosi, mobile-tweaks-common, modemmanager, moosefs-chunkserver, msi-keyboard, mspdebug, mt-st,
- mtkbabel, multipath-tools, mustang-plug, mutter-common, nbc, network-manager, nfs-kernel-server, nqc, nut-ipmi, nut-server,
- nvidia-kernel-common, nvme-cli, ocfs2-tools, ofono, open-iscsi, open-vm-tools, openfpgaloader, openocd, openrazer-driver-dkms,
- openswitcher, osspd, pcmciautils, pdudaemon, picotool, plasma-mobile-tweaks, ponyprog, printer-driver-foo2zjs, projecteur,
- prusa-slicer, pulseaudio, python3-btchip, python3-debusine, python3-elgato-streamdeck, python3-nxt, python3-usbmuxctl,
- qatlib-service, qcom-phone-utils, qdmr, qflipper, qlcplus, qthid-fcd-controller, qtile, razercfg, rdma-core, rear, reform-tools,
- rkdeveloptool, saunafs-chunkserver, scanbd, scdaemon, sd-mux-ctrl, sfp-master, sg3-utils-udev, sispmctl, solaar, speakersafetyd,
- spectools, spice-webdavd, srcpd, srptools, steam-devices, stlink-tools, sunxi-tools, swayosd, switcheroo-control, sxmo-utils,
- system-config-printer-udev, t2n, teensy-loader-cli, thunderbolt-tools, tillitis-tkey-udev, tiny-dfr, tlp, tlp-rdw, tpm-udev,
- triggerhappy, tucnak, udev-hid-bpf, udftools, uhd-host, usb-modeswitch-data, usbauth, usbmuxd, usbrelay, usbsdmux, uuu,
- uvcdynctrl, v4l2loopback-utils, vhba-dkms, voctomix-outcasts, w1retap, waagent, wireless-regdb, xfsprogs, xpadneo-dkms,
+ daxctl, ddcutil, dfu-util, direwolf, displaylink-driver, dlm-controld, dmrconfig, docker.io, dolphin-emu, drbd-utils,
+ driverctl, dualsensectl, eegdev-plugins-free, eg25-manager, elogind, esptool, feedbackd, flashprog, flashrom, fpga-icestorm,
+ g15daemon, g810-led, galileo, galileo-daemon, garmin-forerunner-tools, gcpegg, gfs2-utils, gnome-settings-daemon-common,
+ gobi-loader, goldencheetah, gpsd, gr-funcube, guestfsd, hdparm, heimdall-flash, hexagonrpcd, hylafax-server, hyperv-daemons,
+ i2c-tools, ifupdown, iio-sensor-proxy, imsprog, incus-agent, indi-armadillo-platypus, indi-dsi, indi-ffmv, indi-gphoto,
+ indi-nightscape, indi-orion-ssg3, indi-sx, infnoise, initscripts, input-remapper-daemon, inputattach, ipheth-utils,
+ iprutils, isight-firmware-tools, joystick, kanata, kdump-tools, kinect-audio-setup, knxd, kpartx, laptop-mode-tools,
+ lcdproc, ledger-wallets-udev, libacsccid1, libahp-gt-dev, libairspy0, libairspyhf1, libam7xxx0.1, libapogee3t64,
+ libasi, libbladerf2, libbmusb6, libccid, libcomedi0t64, libdjconsole-data, libfishcamp1t64, libfli2, libfprint-2-2,
+ libfreenect0.5t64, libgmobile-common, libgpib-bin, libgpod-common, libgxccd, libhackrf0, libhamlib4t64, libhydrasdr0,
+ libhydrasdr1, libifd-cyberjack6, libiio0, libinovasdk1, libirecovery-common, libkf5bluezqt-data, libm2k0.9.0, libmirisdr4,
+ libnfc6, libnitrokey-common, libnjb5, libnxt, libopenni-sensor-pointclouds0, libopenni-sensor-primesense0, libopenni2-0,
+ libopenobex2, libosmosdr0, libpktriggercord0, libplayeronecamera2t64, libpsm2-2-compat, librem5-flash-image, librem5-tweaks,
+ libricohcamerasdk, librtlsdr0, libsane1, libsbig4t64, libsigrok4t64, libticables2-8, libx52pro0, libxtrxll0t64, libyubikey-udev,
+ light, limesuite-udev, liquidctl, lomiri-common, ltunify, lvm2, madfuload, madwimax, mate-settings-daemon-common,
+ mdadm, mdevctl, media-player-info, midisport-firmware, minidisc-utils, mkosi, mobile-tweaks-common, modemmanager,
+ moosefs-chunkserver, msi-keyboard, mspdebug, mt-st, mtkbabel, multipath-tools, mustang-plug, mutter-common, nbc, network-manager,
+ nfs-kernel-server, nqc, nut-ipmi, nut-server, nvidia-kernel-common, nvme-cli, ocfs2-tools, ofono, open-iscsi, open-vm-tools,
+ openfpgaloader, openocd, openrazer-driver-dkms, openswitcher, osspd, pcmciautils, pdudaemon, plasma-mobile-tweaks, ponyprog,
+ printer-driver-foo2zjs, projecteur, prusa-slicer, pulseaudio, python3-btchip, python3-debusine, python3-elgato-streamdeck,
+ python3-nxt, python3-usbmuxctl, qatlib-service, qcom-phone-utils, qdmr, qflipper, qlcplus, qthid-fcd-controller, qtile, razercfg,
+ rdma-core, rear, rkdeveloptool, saunafs-chunkserver, scanbd, scdaemon, sd-mux-ctrl, sfp-master, sg3-utils-udev, sispmctl, solaar,
+ speakersafetyd, spectools, spice-webdavd, srcpd, srptools, steam-devices, stlink-tools, sunxi-tools, swayosd, switcheroo-control,
+ sxmo-utils, system-config-printer-udev, t2n, teensy-loader-cli, thunderbolt-tools, tillitis-tkey-udev, tiny-dfr, tlp, tlp-rdw,
+ tpm-udev, triggerhappy, tucnak, udev-hid-bpf, udftools, uhd-host, usb-modeswitch-data, usbauth, usbmuxd, usbrelay, usbsdmux,
+ uuu, uvcdynctrl, v4l2loopback-utils, vhba-dkms, voctomix-outcasts, w1retap, waagent, wireless-regdb, xfsprogs, xpadneo-dkms,
  xr-hardware, xrt-xocl-dkms, xserver-xorg-input-wacom, xtrx-dkms, ydotool, yubihsm-connector, zfsutils-linux,
 ## Inmates MUST NOT have containers (VMs)
 ## ======================================
@@ -607,7 +604,7 @@ Conflicts:
 # Except inkscape → libgtksourceview-4-0 (all users)
 # Except mousepad → libgtksourceview-4-0 (staff)
 # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(pluma~|juffed~|gedit~|^kate$~|ktextedit~|gtksourceview~|kwrite~|retext~|featherpad~|focuswriter~|kakoune~|kilo~|ledit~|levee~|liquidsoap~|^lyx$~|^mle$~|mmm-mode~|ncurses-hexedit~|noblenote~|manuskript~|notepadqq~|poke-elf~|sml-mode~|^tea$~|texmacs~|^tweak$~|vigor~|textedit.app~|texstudio~|texmaker~|kile~|fritzing~|robocode~|jedit) ?not(?name(^mousepad$)) ?not(?reverse-depends(^mousepad$))' | fmt -w132"
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(pluma~|juffed~|gedit~|^kate$~|ktextedit~|gtksourceview~|kwrite~|retext~|featherpad~|focuswriter~|kakoune~|kilo~|ledit~|levee~|liquidsoap~|^lyx$~|^mle$~|mmm-mode~|ncurses-hexedit~|noblenote~|manuskript~|notepadqq~|poke-elf~|sml-mode~|^tea$~|texmacs~|^tweak$~|vigor~|textedit.app~|texstudio~|texmaker~|kile~|fritzing~|robocode~|jedit) ?not(?name(^mousepad$)) ?not(?reverse-depends(^mousepad$))' | fmt -w132"
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(pluma~|juffed~|gedit~|^kate$~|ktextedit~|gtksourceview~|kwrite~|retext~|featherpad~|focuswriter~|kakoune~|kilo~|ledit~|levee~|liquidsoap~|^lyx$~|^mle$~|mmm-mode~|ncurses-hexedit~|noblenote~|manuskript~|notepadqq~|poke-elf~|sml-mode~|^tea$~|texmacs~|^tweak$~|vigor~|textedit.app~|texstudio~|texmaker~|kile~|fritzing~|robocode~|jedit) ?not(?source-package(^mousepad$)) ?not(?reverse-depends(?source-package(^mousepad$))) ?not(?reverse-depends(?reverse-depends(?source-package(^mousepad$))))' | fmt -w132"
  bibledit, bibledit-cloud, bibledit-cloud-data, bibledit-data, debugedit, dgedit, elpa-sml-mode, featherpad,
  featherpad-l10n, focuswriter, fonts-kiloji, fonts-lyx, fonts-texmacs, fritzing, fritzing-data, fritzing-parts, gedit,
  gedit-common, gedit-latex-plugin, gedit-plugin-bookmarks, gedit-plugin-bracket-completion, gedit-plugin-character-map,
@@ -618,16 +615,16 @@ Conflicts:
  kakoune, kate, kate-data, kile, kile-doc, kile-l10n, kilo, ktexteditor-data, ktexteditor-katepart, kwrite, kwrited,
  ledit, levee, libgedit-amtk-5-0, libgedit-amtk-5-common, libgedit-gfls-1-0, libgedit-gfls-common, libgedit-gfls-doc,
  libgedit-gtksourceview-300-3, libgedit-gtksourceview-300-common, libgedit-gtksourceview-300-doc, libgedit-tepl-6-3,
- libgedit-tepl-common, libgtksourceview-3.0-1, libgtksourceview-3.0-common, libgtksourceview-3.0-doc, libgtksourceview-4-0,
- libgtksourceview-4-common, libgtksourceview-4-doc, libgtksourceview-4-tests, libgtksourceview-5-0, libgtksourceview-5-common,
- libgtksourceview-5-doc, libgtksourceview-5-tests, libgtksourceviewmm-3.0-0v5, libgtksourceviewmm-3.0-doc, libjuff0.10t64,
- libkf5texteditor-bin, libkf5texteditor-doc, libkf5texteditor5, libkf6texteditor-bin, libkf6texteditor-data, libkf6texteditor-doc,
- libkf6texteditor-katepart, libkf6texteditor6, libtk-objeditor-perl, liquidsoap, liquidsoap-doc, liquidsoap-mode, lyx, lyx-common,
- manuskript, mle, mmm-mode, ncurses-hexedit, noblenote, notepadqq, pluma, pluma-common, pluma-doc, pluma-plugin-bookmarks,
- pluma-plugin-bracketcompletion, pluma-plugin-codecomment, pluma-plugin-quickhighlight, pluma-plugin-smartspaces,
- pluma-plugin-sourcecodebrowser, pluma-plugin-synctex, pluma-plugin-terminal, pluma-plugin-wordcompletion, pluma-plugins,
- pluma-plugins-common, poke-elf, qxgedit, retext, robocode, sml-mode, tea, tea-data, texmacs, texmacs-base, texmacs-bin,
- texmacs-doc, texmacs-texmf, texmaker, texmaker-data, texstudio, texstudio-doc, texstudio-l10n, textedit.app, tweak, vigor,
+ libgedit-tepl-common, libgtksourceview-3.0-1, libgtksourceview-3.0-common, libgtksourceview-3.0-doc, libgtksourceview-4-doc,
+ libgtksourceview-4-tests, libgtksourceview-5-0, libgtksourceview-5-common, libgtksourceview-5-doc, libgtksourceview-5-tests,
+ libgtksourceviewmm-3.0-0v5, libgtksourceviewmm-3.0-doc, libjuff0.10t64, libkf5texteditor-bin, libkf5texteditor-doc,
+ libkf5texteditor5, libkf6texteditor-bin, libkf6texteditor-data, libkf6texteditor-doc, libkf6texteditor-katepart,
+ libkf6texteditor6, libtk-objeditor-perl, liquidsoap, liquidsoap-doc, liquidsoap-mode, lyx, lyx-common, manuskript, mle, mmm-mode,
+ ncurses-hexedit, noblenote, notepadqq, pluma, pluma-common, pluma-doc, pluma-plugin-bookmarks, pluma-plugin-bracketcompletion,
+ pluma-plugin-codecomment, pluma-plugin-quickhighlight, pluma-plugin-smartspaces, pluma-plugin-sourcecodebrowser,
+ pluma-plugin-synctex, pluma-plugin-terminal, pluma-plugin-wordcompletion, pluma-plugins, pluma-plugins-common, poke-elf,
+ qxgedit, retext, robocode, sml-mode, tea, tea-data, texmacs, texmacs-base, texmacs-bin, texmacs-doc, texmacs-texmf, texmaker,
+ texmaker-data, texstudio, texstudio-doc, texstudio-l10n, textedit.app, tweak, vigor,
 # Manually-added shitlist of mostly text editors, i.e. not a real concern.
 # Last updated for Debian 14.
 # See also this list:
@@ -656,9 +653,101 @@ Conflicts:
 # Applications almost always use cups as a library (not CLI fork+exec binaries).
 # When used as a library, this spoofing is much harder (maybe impossible).
  cups-client,
-###
-### FIXME: put insecure web browser engines back in here?
-###
+# Debian 11 only provides security support for gecko (firefox-esr) and blink (chromium).
+# You should assume all other browser engines are insecure.
+# https://www.debian.org/releases/stable/arm64/release-notes/ch-information.en.html
+# NOTE: cannot rely on check-support-status due to https://bugs.debian.org/1004293
+# UPDATE: upstream has now clarified this:
+#           "The webkit2gtk and wpewebkit engines ARE covered by security support."
+# SAFE: #   ?source-package(^webkit2gtk$)
+# SAFE: gir1.2-javascriptcoregtk-4.0, gir1.2-webkit2-4.0, libjavascriptcoregtk-4.0-18,
+# SAFE: libjavascriptcoregtk-4.0-bin, libjavascriptcoregtk-4.0-dev,
+# SAFE: libwebkit2gtk-4.0-37, libwebkit2gtk-4.0-dev, libwebkit2gtk-4.0-doc,
+# SAFE: webkit2gtk-driver,
+# SAFE: #   ?source-package(webkit2-sharp)
+# SAFE:  libwebkit2-sharp-4.0-cil, libwebkit2-sharp-4.0-cil-dev,
+# SAFE:  monodoc-webkit2-sharp-4.0-manual,
+#   ?source-package(^pyqt5webengine$)
+ python3-pyqt5.qtwebengine, python3-pyqt5.qtwebengine-dbg,
+#   ?source-package(^qtwebengine-opensource-src$)
+ libqt5pdf5, libqt5pdfwidgets5, libqt5webengine-data, libqt5webengine5,
+ libqt5webenginecore5, libqt5webenginewidgets5, qml-module-qtquick-pdf,
+ qml-module-qtwebengine, qt5-image-formats-plugin-pdf, qtpdf5-dev, qtpdf5-doc,
+ qtpdf5-doc-html, qtpdf5-examples, qtwebengine5-dev, qtwebengine5-dev-tools,
+ qtwebengine5-doc, qtwebengine5-doc-html, qtwebengine5-examples,
+ qtwebengine5-private-dev,
+# SAFE: #   ?source-package(^wpewebkit$)
+# SAFE:  libwpewebkit-1.0-3, libwpewebkit-1.0-dev, libwpewebkit-1.0-doc, wpewebkit-driver,
+#   ?source-package(^tkhtml1$)
+ tk-html1,
+#   ?source-package(^khtml$)
+ libkf5khtml-bin, libkf5khtml-data, libkf5khtml-dev, libkf5khtml5,
+#   ?source-package(^kdewebkit$)
+ libkf5webkit-dev, libkf5webkit5,
+#   ?source-package(^qtwebkit-opensource-src$)
+ libqt5webkit5, libqt5webkit5-dev, qml-module-qtwebkit,
+# SAFE: #   ?source-package(^libgtk3-webkit2-perl$)
+# SAFE:  libgtk3-webkit2-perl,
+#   ?source-package(^wkhtmltopdf$)
+ wkhtmltopdf,
+#   ?source-package(^mozjs78$)
+ libmozjs-78-0, libmozjs-78-dev,
+#   ?source-package(^gjs$)
+ gjs, libgjs0g, libgjs-dev,
+#   ?source-package(^cjs$)
+ cjs, libcjs0g, libcjs-dev,
+#   ?source-package(^kjsembed$)
+ libkf5jsembed-data, libkf5jsembed-dev, libkf5jsembed5,
+# Quick-and-dirty incomplete update for Debian 12:
+ libqt6webchannel6,
+ libqt6webengine6-data,
+ libqt6webenginecore6,
+ libqt6webenginecore6-bin,
+ libqt6webenginequick6,
+ libqt6webenginequickdelegatesqml6,
+ libqt6webenginewidgets6,
+ libqt6websockets6,
+ libqt6webview6,
+ libqt6webviewquick6,
+ pyqt6-webengine-dev,
+ python3-pyqt6.qtwebchannel,
+ python3-pyqt6.qtwebengine,
+ python3-pyqt6.qtwebsockets,
+ qt6-webchannel-dev,
+ qt6-webengine-dev,
+ qt6-webengine-dev-tools,
+ qt6-webengine-private-dev,
+ qt6-websockets-dev,
+ qt6-websockets-private-dev,
+ qt6-webview-dev,
+ qt6-webview-plugins,
+# FIXME: Do the stand-alone js VMs duktape/neko/rhino/mujs get security support, or do they count as "unmaintainable web engines" ?
+# For good measure, block www-browser (except chromium/firefox-esr), too.
+# Because of the exception, we cannot LITERALLY say www-browser here.
+# $ aptitude search -F ' %p,' '?provides(www-browser) ?not(?name(^chromium$))'
+ dillo,
+ edbrowse,
+ elinks,
+ epiphany-browser,
+ falkon,
+ firefox-esr,
+ hv3,
+ konqueror,
+ links,
+ links2,
+ luakit,
+ lynx,
+ morph-browser,
+ netrik,
+ netsurf-fb,
+ netsurf-gtk,
+ qutebrowser,
+ sugar-browse-activity,
+ surf,
+ w3m,
+ xemacs21-mule,
+ xemacs21-mule-canna-wnn,
+ xemacs21-nomule,
 # X11 does not REALLY support screen locking:
 #   https://www.jwz.org/blog/2021/01/i-told-you-so-2021-edition/
 # Rather than pretend, we simply do not let inmate lock the screen.
@@ -673,5 +762,250 @@ Conflicts:
  xfce4-power-manager, xfce4-power-manager-data, xfce4-power-manager-plugins, xfce4-screensaver, xscreensaver, xscreensaver-data,
  xscreensaver-data-extra, xscreensaver-gl, xscreensaver-gl-extra, xscreensaver-screensaver-bsod, xscreensaver-screensaver-dizzy,
  xscreensaver-screensaver-webcollage,
+# Also don't let them suspend.
+# FIXME: can probably still suspend via systemd...
+ xfce4-power-manager,
+ sleepd,
+ thermald,
+ upower,
+# Fuck it, why NOT block this?
+ ftp-server,
+ httpd,
+ httpd-cgi,
+ httpd-wsgi,
+ imap-server,
+ ldap-server,
+ irc, ircd,
+# Leftovers from delete-bad-files KDE4 lockdown.
+# In KDE5, we can block the packages outright.
+ plasma-desktop,
+ plasma-framework,
+ libkf5kcmutils5,
+ kde-config-cddb,                kde-config-mobile-networking,
+ kde-config-cron,                kde-config-plymouth,
+ kde-config-fcitx,               kde-config-screenlocker,
+ kde-config-fcitx5,              kde-config-sddm,
+ kde-config-gtk-style,           kde-config-systemd,
+ kde-config-gtk-style-preview,   kde-config-tablet,
+ kde-config-mailtransport,       kde-config-telepathy-accounts,
+ khelpcenter,
+ kwalletmanager,
+# Shitlist everything that provides dbus-1/services/org.kde.*
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only dbus-1/services/org.kde. | sed "s/.*/ &,/" | fmt -w132'
+ amarok, calindori, dolphin, elisa, kactivitymanagerd, kalendarac, kclock, kde-spectacle, kdeconnect, kded5, kded6,
+ kdesvn-kio-plugins, kget, khelpcenter, kio, kio-extras, kio-fuse, kio6, kmail, knighttime, kongress, kontact, konversation,
+ korganizer, kscreen, ksystemstats, kwallet6, kwalletmanager, kweather, libkscreen-bin, neochat, plasma-dialer, plasma-workspace,
+ tokodon, yakuake,
+# Shitlist everything that provides /usr/lib/x86_64-linux-gnu/qt5/plugins/kf5/kio/
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only --regex /usr/lib/.*/plugins/kf[56]/kio/ | grep -vx -e kio -e kio6 | sed "s/.*/ &,/" | fmt -w132'
+ baloo6, bluedevil, kamera, kate, kde-zeroconf, kdeconnect, kdepim-runtime, kio-admin, kio-audiocd, kio-extras, kio-gdrive,
+ kio-gopher, kio-ldap, kio-perldoc, konq-plugins, krusader, kup-backup, libk3b-extracodecs, plasma-workspace,
+# Shitlist everything that provides polkit*kde.
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only --regex polkit.*kde | sed "s/.*/ &,/" | fmt -w132'
+ drkonqi, k3b, kalarm, kde-config-plymouth, kde-config-sddm, kde-inotify-survey, kdenetwork-filesharing, kinfocenter,
+ kio-admin, ktexteditor-data, kwalletmanager, libkf6texteditor-data, libkpmcore13, libksysguard-data, plasma-desktop-data,
+ plasma-discover-backend-snap, plasma-disks, plasma-firewall, plasma-mobile, plasma-widgets-addons, plasma-workspace-data,
+ polkit-kde-agent-1, powerdevil, smb4k,
+## Inmates SHOULD NOT have packaging tools
+## =======================================
+ dpkg-dev,
+ python3-apt,
+## Inmates SHOULD NOT have diagnostic tools
+## ========================================
+# • certutil (libnss3-tools) - manipulate who Chromium trusts.
+# • drkonqi - report crash to KDE over http
+# • xmlgui - includes ksendbugemail, which sounds undesirable
+# • iproute2 - includes super useful "ip" and "ss" debugging tools
+# • acl - rarely-used debugging "getfacl" and "setfacl"
+#   In Debian 9 systemd postinst used these.
+#   In Debian 11+, systemd-tmpfiles does this via C code (libacl1?).
+#   So we can shitlist acl.
+# UPDATE: kbounce kgeography &c → libkf6xmlgui6 (but do not need the app)
+ libnss3-tools,
+ gnutls-bin,
+ drkonqi,
+ libkxml2-java,
+ libkf5xmlgui-bin,
+ libkf5xmlgui-data,
+ libkf5xmlgui5,
+ libkf6xmlgui-data,
+ libkf6xmlgui6,
+ iproute2,
+ acl,
+ gdb, gdb-minimal, gdb-multiarch, gdb-source, gdbserver,
 ## Inmates SHOULD NOT have development tools
 ## =========================================
+# libc-dev should be enough to block most compiler stuff.
+ libc-dev, libc6-dev,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?name(-compiler$)' | fmt -w132"
+ algol68-compiler, blueprint-compiler, c++-compiler, c-compiler, c-sharp-2.0-compiler, c-sharp-3.0-compiler, c-sharp-4.0-compiler,
+ c-sharp-4.5-compiler, c-sharp-compiler, closure-compiler, cobol-compiler, d-compiler, d-v2-compiler, device-tree-compiler,
+ elm-compiler, flatbuffers-compiler, fortran-compiler, fortran77-compiler, fortran95-compiler, fp-compiler, go-compiler,
+ haskell-compiler, inform6-compiler, java-compiler, lisp-compiler, m2-compiler, mlton-compiler, node-vue-template-compiler,
+ node-webassemblyjs-helper-compiler, objc++-compiler, objc-compiler, protobuf-c-compiler, protobuf-compiler, rake-compiler,
+ ruby-ffi-compiler, rust-compiler, sludge-compiler, thrift-compiler, vkd3d-compiler,
+# Some compilers don't have a "Provides: rust-compiler" so have to be denylisted by hand.
+ rustc,
+ clang,
+ llvm,
+ llvm-19,
+ llvm-21,
+ pkgconf,
+ wx-common,
+ golang-go,
+ golang-1.24-go,
+ golang-1.25-go,
+ golang-1.26-go,
+# • Includes IDEs (not comprehensive)
+# • groovy provides groovyConsole, a basic REPL and text editor
+ geany,
+ pkgconf,
+ codelite, codelite-plugins,
+ wx-common,
+ devhelp, manuals,
+ gnome-devel,
+ d-spy, dspy-common,
+ dconf-editor,
+ gnome-builder,
+ sysprof, libsysprof-6-6, libsysprof-6-modules,
+ gtk-doc-tools,
+ meson, muon-meson,
+ wxglade,
+ gnome-api-docs,
+ eric,
+ valinor,
+ idle,
+ pyzo,
+ faustworks,
+ groovy,
+ bpython,
+ ktechlab,
+ qtcreator,
+ sbcl,
+ tkcon,
+ pforth,
+ gforth,
+ pipx,
+ python3-pip, python3-pip-whl,
+ spyder,
+ yorick,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(lazarus~|gambas~|pandas~|fpc)' | fmt -w132"
+ fp-compiler, fp-compiler-3.2.2, fp-docs, fp-docs-3.2.2, fp-ide, fp-ide-3.2.2, fp-units-base, fp-units-base-3.2.2, fp-units-db,
+ fp-units-db-3.2.2, fp-units-fcl, fp-units-fcl-3.2.2, fp-units-fv, fp-units-fv-3.2.2, fp-units-gfx, fp-units-gfx-3.2.2,
+ fp-units-gtk2, fp-units-gtk2-3.2.2, fp-units-math, fp-units-math-3.2.2, fp-units-misc, fp-units-misc-3.2.2, fp-units-multimedia,
+ fp-units-multimedia-3.2.2, fp-units-net, fp-units-net-3.2.2, fp-units-rtl, fp-units-rtl-3.2.2, fp-units-wasm, fp-units-wasm-3.2.2,
+ fp-utils, fp-utils-3.2.2, fpc, fpc-3.2.2, fpc-source, fpc-source-3.2.2, gambas3, gambas3-devel, gambas3-examples, gambas3-gb-args,
+ gambas3-gb-cairo, gambas3-gb-chart, gambas3-gb-clipper, gambas3-gb-clipper2, gambas3-gb-complex, gambas3-gb-compress,
+ gambas3-gb-compress-bzlib2, gambas3-gb-compress-zlib, gambas3-gb-compress-zstd, gambas3-gb-crypt, gambas3-gb-data, gambas3-gb-db,
+ gambas3-gb-db-form, gambas3-gb-db-mysql, gambas3-gb-db-odbc, gambas3-gb-db-postgresql, gambas3-gb-db-sqlite3, gambas3-gb-db2,
+ gambas3-gb-db2-form, gambas3-gb-db2-mysql, gambas3-gb-db2-odbc, gambas3-gb-db2-postgresql, gambas3-gb-db2-sqlite3,
+ gambas3-gb-dbus, gambas3-gb-dbus-trayicon, gambas3-gb-desktop, gambas3-gb-desktop-x11, gambas3-gb-eval-highlight,
+ gambas3-gb-form, gambas3-gb-form-dialog, gambas3-gb-form-editor, gambas3-gb-form-htmlview, gambas3-gb-form-mdi,
+ gambas3-gb-form-print, gambas3-gb-form-stock, gambas3-gb-form-terminal, gambas3-gb-gmp, gambas3-gb-gsl, gambas3-gb-gtk3,
+ gambas3-gb-gtk3-opengl, gambas3-gb-gtk3-wayland, gambas3-gb-gtk3-webview, gambas3-gb-gtk3-x11, gambas3-gb-gui, gambas3-gb-hash,
+ gambas3-gb-highlight, gambas3-gb-httpd, gambas3-gb-image, gambas3-gb-image-effect, gambas3-gb-image-imlib, gambas3-gb-image-io,
+ gambas3-gb-inotify, gambas3-gb-jit, gambas3-gb-libxml, gambas3-gb-logging, gambas3-gb-map, gambas3-gb-markdown,
+ gambas3-gb-media, gambas3-gb-media-form, gambas3-gb-memcached, gambas3-gb-mime, gambas3-gb-mysql, gambas3-gb-ncurses,
+ gambas3-gb-net, gambas3-gb-net-curl, gambas3-gb-net-pop3, gambas3-gb-net-smtp, gambas3-gb-openal, gambas3-gb-opengl,
+ gambas3-gb-opengl-glsl, gambas3-gb-opengl-glu, gambas3-gb-opengl-sge, gambas3-gb-openssl, gambas3-gb-option, gambas3-gb-pcre,
+ gambas3-gb-pdf, gambas3-gb-poppler, gambas3-gb-qt6, gambas3-gb-qt6-ext, gambas3-gb-qt6-opengl, gambas3-gb-qt6-wayland,
+ gambas3-gb-qt6-webview, gambas3-gb-qt6-x11, gambas3-gb-report, gambas3-gb-report2, gambas3-gb-scanner, gambas3-gb-sdl2,
+ gambas3-gb-sdl2-audio, gambas3-gb-settings, gambas3-gb-signal, gambas3-gb-term, gambas3-gb-term-form, gambas3-gb-util,
+ gambas3-gb-util-web, gambas3-gb-v4l, gambas3-gb-vb, gambas3-gb-web, gambas3-gb-web-feed, gambas3-gb-web-form, gambas3-gb-web-gui,
+ gambas3-gb-xml, gambas3-gb-xml-html, gambas3-gb-xml-rpc, gambas3-gb-xml-xslt, gambas3-ide, gambas3-runtime, gambas3-scripter,
+ lazarus, lazarus-4.6, lazarus-doc, lazarus-doc-4.6, lazarus-ide, lazarus-ide-4.6, lazarus-ide-gtk3, lazarus-ide-gtk3-4.6,
+ lazarus-ide-qt5, lazarus-ide-qt5-4.6, lazarus-src, lazarus-src-4.6, lcl, lcl-4.6, lcl-gtk3, lcl-gtk3-4.6, lcl-nogui,
+ lcl-nogui-4.6, lcl-qt5, lcl-qt5-4.6, lcl-units, lcl-units-4.6, lcl-utils, lcl-utils-4.6, python-pandas-doc, python3-geopandas,
+ python3-pandas, python3-pandas-flavor, python3-pandas-lib, python3-sklearn-pandas, r-cran-fpc,
+# Version control tools (not comprehensive)
+# FIXME: not updated for Debian 12.
+ git,
+ mercurial,
+ rcs,
+ svn,
+ fossil,
+ bzr,
+ brz,
+# Debuggers (not comprehensive)
+# FIXME: not updated for Debian 12.
+ god,
+# Shitlist everything that provides bin/dh_*
+# ...except python3-numpy-dev (for singularity game)
+# ...except xml-core (for polkit et al)
+# ...except perl-openssl-defaults (for gnucash)
+# AFAICT perl-openssl-defaults does two jobs:
+# 1. at install time, it just aliases libssl1.1 (as here); and
+# 2. at build time, it provides dh_perl_openssl.
+# We do not care about (2), but it is not spooky enough to bother spoofing.
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --aptopt=/etc/apt/apt.conf.d/50apt-file.conf --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG apt-file search --package-only bin/dh_  | grep -vFx -e xml-core -e perl-openssl-defaults -e python3-numpy-dev | sed "s/.*/ &,/" | fmt -w132'
+ apache2-dev, autotools-dev, bash-completion, cli-common-dev, click-dev, cme, config-package-dev, debhelper, dh-acc,
+ dh-ada-library, dh-apparmor, dh-autoreconf, dh-builtusing, dh-cmake, dh-consoledata, dh-coq, dh-cruft, dh-debputy,
+ dh-di, dh-dist-zilla, dh-dkms, dh-dlopenlibdeps, dh-doc-privacy, dh-elpa, dh-fortran, dh-golang, dh-haskell, dh-linktree,
+ dh-lisp, dh-lua, dh-make, dh-nodejs, dh-nss, dh-ocaml, dh-octave, dh-octave-autopkgtest, dh-php, dh-puppet, dh-puredata,
+ dh-python, dh-r, dh-raku, dh-rebar, dh-runit, dh-setup-copyright, dh-shell-completions, dh-strip-nondeterminism, dh-sysuser,
+ dh-user-session-migration, dh-vim-addon, dh-virtualenv, dictionaries-common-dev, doxygen, gem2deb, germinate, gnome-pkg-tools,
+ gnulib, gnustep-make, gobject-introspection-bin, haskell-devscripts-minimal, libdbi-perl, libgrantlee5-dev, libgstreamer1.0-dev,
+ libimager-perl, libva-dev, libvarnishapi-dev, libxine2-dev, mkdocs, mono-devel, nginx-dev, pdl, pidgin-dev, pkg-kde-tools,
+ pkg-php-tools, postgresql-common-dev, ppp-dev, pyppd, python3-ply, quilt, scour, sphinx-common, tex-common, uwsgi-dev,
+ vdr-dev, xserver-xorg-dev, yorick-dev, zathura-dev,
+# Shitlist make and similar replacements
+ make,
+ automake,
+ autoconf,
+ autotools-dev,
+ meson,
+ ninja-build,
+ generate-ninja,
+ cmake,
+ scons,
+ acr,
+ soong mini-soong,
+ yotta,
+ pypi2deb,
+ dh-make-perl,
+ cmake,
+# Note: ?section(shells) is now shitlisted elsewhere, in customize10-check-for-bad-debs.py
+# Note: ?section(firmware) is now shitlisted elsewhere, in customize10-check-for-bad-debs.py
+## Useless & confusing menu items SHOULD be hidden (#30257)
+## ========================================================
+## Useless & confusing "under the hood" files MAY be removed
+## =========================================================
+## sysvinit compatibility MAY be removed
+## =====================================
+## Inmates SHOULD NOT be able to make screenshots
+## ==============================================
+# https://alloc.cyber.com.au/task/task.php?taskID=30713
+# Notes:
+#  • staff need xfce4-screenshoter
+#  • x11-apps provides "xwd" screenshot tool
+ deepin-screenshot,
+ fbcat,
+ flameshot,
+ gkrellshoot,
+ gnome-screenshot,
+ grim,
+ grimshot,
+ gtk-vector-screenshot,
+ kazam,
+ kde-spectacle,
+ ksnip,
+ maim,
+ mate-utils,
+ mirage,
+ screenfetch,
+ screengrab,
+ scrot,
+ x11-apps,
+ gnome-shell-extension-screenshot-window-sizer,
+ shutter,
+ python3-pyscreeze,
+ ale,
+ qvidcap,
+ entangle,
+ libmjpegutils-2.2-0
+ libdv4,
+ motion,
+ recordmydesktop,
+ cutycapt,
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(xawtv)' | fmt -w132"
+ alevtd, fbtv, pia, radio, scantv, streamer, ttv, v4l-conf, webcam, xawtv, xawtv-plugin-qt, xawtv-plugins, xawtv-tools,
