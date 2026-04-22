@@ -2,7 +2,10 @@
 Version=1.0
 Type=Application
 Exec=alephone /usr/share/games/marathon3
-TryExec=/usr/share/games/marathon3
+# As at Debian 14, TryExec= checks is executable *and* is file.
+# There is no valid option, so give up, and show all 3 launchers, even
+# if you don't have the actual game data installed. --twb, April 2026
+#TryExec=/usr/share/games/marathon3
 Name=Marathon Infinity
 Icon=marathon
 Categories=Application;Game;ArcadeGame;
