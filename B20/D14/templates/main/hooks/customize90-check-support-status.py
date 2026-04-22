@@ -4,7 +4,15 @@ import pathlib
 import subprocess
 import sys
 
-__doc__ = """ abort build on scary check-support-status output """
+__doc__ = """ abort build on scary check-support-status output
+
+NOTE: We MUST run check-support-status from INSIDE the image.
+      The version OUTSIDE the image may be for a different Debian release.
+      The build host and built host may be different Debian releases.
+      The list of problem packages is very release-specific;
+      we KNOW the upstream team routinely removes obsolete entries, e.g.
+      https://salsa.debian.org/debian/debian-security-support/-/commit/9e52dbb79aa9742516dd96e6c693c2eba40a9038
+"""
 
 
 parser = argparse.ArgumentParser(description=__doc__)
