@@ -15,6 +15,7 @@ include = [
     # Make things work better with systemd-networkd
     'libnss-myhostname',        # replaces /etc/hostname and stub /etc/hosts
     'libnss-resolve',
+    'systemd-resolved',  # libnss-resolved → systemd-resolved is only Recommends in Debian 14+
     # NOTE: in Debian 12, "policykit-1" was split into two packages
     #       "pkexec" (not used except by attackers) and
     #       "polkitd" (used by systemd-hostnamed, udisks2, upower, &c).
