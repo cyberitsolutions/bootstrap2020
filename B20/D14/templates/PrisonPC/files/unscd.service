@@ -1,51 +1,75 @@
+# This is a drop-in file that hardens unscd, just because we can.
+
+# Here is a simple debugging test that can show if unscd is working.
+# You should get a significant speedup even on a system with only local users in /etc/passwd.
+#
+# root@desktop:~# mkdir /test
+# root@desktop:~# for i in {1..10000}; do install -o 12345 -g 54321 /bin/true /test/$i; done &
+# root@desktop:~# time find /test '(' -nouser -o -nogroup ')' -printf ''
+# 1.2s
+# root@desktop:~# systemctl stop unscd
+# root@desktop:~# time find /test '(' -nouser -o -nogroup ')' -printf ''
+# 5.2s
+
+# Hardening
 [Service]
+DynamicUser=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+PrivateDevices=yes
+ProtectClock=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+PrivateMounts=yes
+SystemCallArchitectures=native
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+ProtectHostname=yes
+LockPersonality=yes
+ProtectKernelTunables=yes
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+RestrictRealtime=yes
+ProtectSystem=strict
+ProtectProc=invisible
+ProcSubset=pid
+ProtectHome=yes
 PrivateNetwork=yes
-## We can't drop root privs before starting, because
-## it wants to bind BOTH of these:
-##
-##    define NSCD_SOCKET     "/var/run/nscd/socket"
-##    define NSCD_SOCKET_OLD "/var/run/.nscd_socket"
-##
-## Probably the latter should just be removed from unscd.c entirely, since
-## the implementations of glibc that use it are probably looooong gone.
-# User=unscd
-# DynamicUser=yes
+PrivateUsers=yes
+PrivateTmp=yes
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged
+SystemCallFilter=~@resources
+IPAddressDeny=any
+UMask=0077
+
+
+# Loosening
+[Service]
+# To do its core job, unscd has to be able to resolve users.
+PrivateUsers=no
+# As at Debian 14 / systemd v260 / linux 6.19,
+# PrivateNetwork=yes also makes AF_UNIX sockets in /run private!
+PrivateNetwork=no
+# Not sure if this is needed but I'll chuck it in anyway. --twb, April 2026
+IPAddressAllow=localhost
+# We can't drop root privs before starting, because
+# it wants to bind BOTH of these:
+#
+#    define NSCD_SOCKET     "/var/run/nscd/socket"
+#    define NSCD_SOCKET_OLD "/var/run/.nscd_socket"
+#
+# The latter should just be removed from unscd.c entirely, since
+# the implementations of glibc that use it are probably looooong gone.
+DynamicUser=no
+NoNewPrivileges=no
+CapabilityBoundingSet=CAP_SETUID CAP_SETGID
+SystemCallFilter=@setuid
+ReadWritePaths=/run
+
+# systemd-analyze security doesn't explicitly call these out, but
+# they are a minor help
+[Service]
 RuntimeDirectory=nscd
 WorkingDirectory=/run/nscd
-CapabilityBoundingSet=
-# FIXME: once we Users=unscd, tighten this up.
-CapabilityBoundingSet=CAP_SETUID CAP_SETGID
-RestrictAddressFamilies=AF_UNIX
-RestrictNamespaces=yes
-DevicePolicy=closed
-IPAddressDeny=any
-NoNewPrivileges=yes
-PrivateDevices=yes
-PrivateMounts=yes
-PrivateTmp=yes
-# FIXME: once we Users=unscd, tighten this up.
-# UPDATE: er, we probably need PrivateUsers=no anyway, because
-#         nscd's job is to see & cache users. :-)
-#PrivateUsers=yes
-ProtectClock=yes
-ProtectControlGroups=yes
-ProtectHome=yes
-ProtectKernelLogs=yes
-ProtectKernelModules=yes
-ProtectKernelTunables=yes
-ProtectProc=invisible
-ProtectSystem=strict
-# FIXME: once NSCD_SOCKET_OLD is gone, remove this.
-ReadWritePaths=/run
-RestrictSUIDSGID=yes
-SystemCallArchitectures=native
-SystemCallFilter=@system-service
-# FIXME: once we Users=unscd, tighten this up.
-#SystemCallFilter=~@privileged
-SystemCallFilter=~@resources
-RestrictRealtime=yes
-LockPersonality=yes
-MemoryDenyWriteExecute=yes
-UMask=0077
-ProtectHostname=yes
-ProcSubset=pid
