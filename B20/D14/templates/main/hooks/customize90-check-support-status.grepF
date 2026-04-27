@@ -29,6 +29,7 @@ The following packages found on this system are affected by this:
   Details: See https://www.debian.org/releases/trixie/release-notes/issues.en.html#go-and-rust-based-packages
   Affected binary package:
   - librav1e0.8:amd64 (installed version: 0.8.1-7)
+  - librav1e0.8:amd64 (installed version: 0.8.1-9)
 
 # Ignorelist rust-zram-generator (systemd-zram-generator), because
 #  * we could probably implement it ourselves, but ICBF right now
@@ -136,3 +137,17 @@ The following packages found on this system are affected by this:
   Affected binary packages:
   - libsoup-3.0-0:amd64 (installed version: 3.6.6-1)
   - libsoup-3.0-common (installed version: 3.6.6-1)
+
+
+
+###FIXME#### * Source:binutils
+###FIXME####   Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
+###FIXME####   - binutils (installed version: 2.46-3)
+###FIXME####   - binutils-common:amd64 (installed version: 2.46-3)
+###FIXME####   - binutils-x86-64-linux-gnu (installed version: 2.46-3)
+###FIXME####   - libbinutils:amd64 (installed version: 2.46-3)
+###FIXME####   - libctf-nobfd0:amd64 (installed version: 2.46-3)
+###FIXME####   - libctf0:amd64 (installed version: 2.46-3)
+###FIXME####   - libgprofng0:amd64 (installed version: 2.46-3)
+###FIXME####   - libsframe3:amd64 (installed version: 2.46-3)
+###FIXME####   - librav1e0.8:amd64 (installed version: 0.8.1-9)
