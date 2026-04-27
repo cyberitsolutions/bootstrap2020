@@ -37,6 +37,7 @@ both_shit_regexps = [
     '^iw$',
     'avahi',
     'mdns',
+    'resolvconf',  # systemd Provides resolvconf; this blocks the legacy/classic resolvconf
 
     ## Inmates MUST NOT have writable local media (DVD, USB)
     ## =====================================================

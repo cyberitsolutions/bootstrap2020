@@ -1,4 +1,4 @@
-prisonpc-ersatz (14.17.1776775048) forky; urgency=medium
+prisonpc-ersatz (14.17.1776859568) forky; urgency=medium
 
   * Bump for Debian 14.
   * Drop ersatz e2fsprogs (now needless).
@@ -19,7 +19,7 @@ prisonpc-ersatz (14.17.1776775048) forky; urgency=medium
      * mildly bad packages that need a glob/regex (e.g. *dev) go into apt_preferences via a one-time expander script
      * sections that should never be used (e.g. Section: libdevel) get shitlisted via a post-install dpkg-dev | grep.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Tue, 21 Apr 2026 22:54:21 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 22 Apr 2026 22:06:10 +1000
 
 prisonpc-ersatz (12.15) bookworm; urgency=medium
 

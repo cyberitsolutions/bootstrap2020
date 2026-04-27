@@ -319,7 +319,9 @@ Conflicts:
  libnss-mdns, mdns-reflector, mdns-scan, mdnsd, python3-aiohttp-asyncmdnsresolver, python3-avahi,
 # mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?name(^wesnoth.*server$)' | fmt -w132"
  wesnoth-1.18-server,
-# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(network-manager~|libnma~|ifupdown~|netplan~|resolvconf~|modem~|wireless~|broadband~|wvdial~|^iw$~|^iwd$~|modeswitch~|rfkill~|wpa~|ppp~|pptp~|wpan~|linux-atm~|bootp~|netfilter~|bridge-utils~|comitup~|aifa~|inetutils~|macchanger~|net-tools~|iscsi~|rancid~|rarpd~|tcputils~|wakeonlan~|wavemon~|whereami~|wide-dhcpv6~|dhcpy6~|wmifinfo~|wmifs~|wavelan~|xl2tpd)' | fmt -w132"
+# NOTE: we cannot Conflicts: resolvconf, because systemd Provides resolvconf nowadays.
+#       We CAN block the old src:resolvconf in apt_preferences(5).
+# mmdebstrap forky /dev/null http://localhost:3142/deb.debian.org/debian --components=main,contrib,non-free,non-free-firmware --quiet --customize-hook='APT_CONFIG=$MMDEBSTRAP_APT_CONFIG HOME=$1/root '"aptitude search --disable-columns -F ' %p,' '?not(?name(-dev$)) ?source-package(network-manager~|libnma~|ifupdown~|netplan~|modem~|wireless~|broadband~|wvdial~|^iw$~|^iwd$~|modeswitch~|rfkill~|wpa~|ppp~|pptp~|wpan~|linux-atm~|bootp~|netfilter~|bridge-utils~|comitup~|aifa~|inetutils~|macchanger~|net-tools~|iscsi~|rancid~|rarpd~|tcputils~|wakeonlan~|wavemon~|whereami~|wide-dhcpv6~|dhcpy6~|wmifinfo~|wmifs~|wavelan~|xl2tpd)' | fmt -w132"
  atm-tools, bcrelay, bootp, bootparamd, bootpc, bppphyview, br2684ctl, bridge-utils, comitup, cowpatty, dhcpy6d, eapoltest,
  faifa, gir1.2-modemmanager-1.0, gir1.2-nm-1.0, gir1.2-nma-1.0, gir1.2-nma4-1.0, gir1.2-urfkill-0.5, gwakeonlan, hostapd,
  ifupdown, ifupdown-extra, ifupdown-multi, ifupdown-ng, ifupdown-ng-compat, ifupdown2, inetutils-ftp, inetutils-ftpd,
@@ -339,10 +341,10 @@ Conflicts:
  network-manager-sstp-gnome, network-manager-strongswan, network-manager-team, network-manager-tui, network-manager-vpnc,
  network-manager-vpnc-gnome, nm-connection-editor, node-zmodem.js, open-iscsi, planetfilter, ppp, pppconfig, pppoe, pppoeconf,
  pptp-linux, pptpd, python-libnmap-doc, python3-libnmap, python3-mwparserfromhell, python3-netfilter, python3-netfilterqueue,
- python3-netplan, python3-phone-modem, python3-wakeonlan, python3-xmodem, r-cran-rcppparallel, r-cran-rcppprogress,
- rancid, rancid-cgi, rarpd, resolvconf, resolvconf-admin, sl-modem-dkms, tcputils, telnet, telnetd, urfkill, usb-modeswitch,
- usb-modeswitch-data, wakeonlan, wavemon, whereami, wide-dhcpv6-client, wide-dhcpv6-relay, wide-dhcpv6-server, wireless-regdb,
- wireless-tools, wmifinfo, wmifs, wmppp.app, wpagui, wpan-tools, wpasupplicant, wvdial, xfce4-wavelan-plugin, xl2tpd,
+ python3-netplan, python3-phone-modem, python3-wakeonlan, python3-xmodem, r-cran-rcppparallel, r-cran-rcppprogress, rancid,
+ rancid-cgi, rarpd, sl-modem-dkms, tcputils, telnet, telnetd, urfkill, usb-modeswitch, usb-modeswitch-data, wakeonlan,
+ wavemon, whereami, wide-dhcpv6-client, wide-dhcpv6-relay, wide-dhcpv6-server, wireless-regdb, wireless-tools, wmifinfo,
+ wmifs, wmppp.app, wpagui, wpan-tools, wpasupplicant, wvdial, xfce4-wavelan-plugin, xl2tpd,
 # Notes:
 #   • We do not actually know if we need firmware-intel-misc.
 #     We probably do not, but it's only 5MB so we kept it.
