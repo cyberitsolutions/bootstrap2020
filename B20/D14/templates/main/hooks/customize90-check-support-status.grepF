@@ -6,16 +6,30 @@ packages.
 
 The following packages found on this system are affected by this:
 
+
 # Ignorelist binutils because
 #   1. it's very hard to stop people calling "strings" (e.g. needrestart did it until I got upstream to fix it),
 #         https://bugs.debian.org/986507
 #         https://bugs.debian.org/1038621
 #   2. it's not vulnerable unless you pass a -be-shit option, and
 #   3. the completely-non-vulnerable version (llvm-strings) adds about 80MB of unwanted compiler shit.
-# Also, --template=zfs needs binutils because gcc-10 depends on it.
+# Also, --template=understudy needs binutils:
+#   zfs-dkms → dkms → gcc → gcc-15 → binutils
+# Also, --template=desktop (but not desktop-inmate/desktop-staff) needs binutils:
+#   libdvd-pkg → build-essential → gcc → gcc-15 → binutils
 # To avoid that, we'd have to move zfs-dkms (and probably linux itself) from gcc to clang/llvm.
 # That would be extremely not fun.
--
+* Source:binutils
+  Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
+  - binutils (installed version: 2.46-3)
+  - binutils-common:amd64 (installed version: 2.46-3)
+  - binutils-x86-64-linux-gnu (installed version: 2.46-3)
+  - libbinutils:amd64 (installed version: 2.46-3)
+  - libctf-nobfd0:amd64 (installed version: 2.46-3)
+  - libctf0:amd64 (installed version: 2.46-3)
+  - libgprofng0:amd64 (installed version: 2.46-3)
+  - libsframe3:amd64 (installed version: 2.46-3)
+
 
 # Ignorelist rust-rav1e because
 #
@@ -31,6 +45,7 @@ The following packages found on this system are affected by this:
   - librav1e0.8:amd64 (installed version: 0.8.1-7)
   - librav1e0.8:amd64 (installed version: 0.8.1-9)
 
+
 # Ignorelist rust-zram-generator (systemd-zram-generator), because
 #  * we could probably implement it ourselves, but ICBF right now
 #  * the detainee doesn't interact with it directly
@@ -41,49 +56,6 @@ The following packages found on this system are affected by this:
   - systemd-zram-generator (installed version: 1.2.1-2+b1)
   - systemd-zram-generator (installed version: 1.2.1-2+b2)
 
-# This is an A/V library to use hardware acceleration in Intel GPUs.
-# It first entered Debian in 2019 and was EOL'd upstream before 2025.
-# So I think it is probably used for hardware AMC actually have.
-# (Rather than super-duper old hardware.)
-#
-# It is a compile-time dependency of libav (ffmpeg).
-# This means it is required by AT LEAST vlc, mpv, and gstreamer1.0-plugins-bad.
-# i.e. we can't avoid this issue by switching from vlc to mpv.
-#
-# If you remove the library from a built system with
-#   rm -fv /usr/lib/x86_64-linux-gnu/libmfx-tracer.so.1.35 \
-#          /usr/lib/x86_64-linux-gnu/libmfx.so.1.35 \
-#          /usr/lib/x86_64-linux-gnu/libmfxhw64.so.1.35 \
-#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_h264la_hw64.so \
-#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevc_fei_hw64.so \
-#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevcd_hw64.so \
-#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_hevce_hw64.so \
-#          /usr/lib/x86_64-linux-gnu/mfx/libmfx_vp8d_hw64.so
-# ...then "vlc --help" still works, but trying to play a normal H.264 video fails.
-# Specifically, the audio still plays, but the video does not render, and
-# an error popup says «VLC could not decode the format "h264"», which
-# I think means dlopen of libav failed, and
-# (by design) no other alternative library is installed.
-#
-# I think this is because vlc is dynamically linking libav, but
-# libav is statically linking libmfx1.
-#
-# So we definitely cannot just drop libmfx1 into prisonpc-ersatz or purge-bad-packages.
-# We would have to start building ffmpeg inhouse, like we do for already vlc.
-# That is possible, but a lot of work now and
-# ongoing work every time Debian security team bumps ffmpeg, which is often:
-# https://tracker.debian.org/pkg/ffmpeg/news/
-#
-# I don't have a good feel for how much risk there is of attackers hitting libmfx1.
-# I think it would be "victim loads attackre-crafted video file" that then leads to ACE/RCE.
-# Detainees have limited access to video that isn't DVDs or FTA DVB-T TV.
-# Staff can browse youtube &c but PrisonPC is more awkward than their Windows desktops, so
-# I don't think they actually *do* that much...
-#
-# Overall I lean towards "accept (i.e. ignore) this security risk".
-# Mike agreed here: /var/log/cyber-irc-bot/ChannelLogger/#cyber/#cyber.2025-01-02.log#line=45
-# --twb, January 2025
--
 
 # FIXME: I have not yet confirmed this is safe!! --twb, January 2026
 #
@@ -137,17 +109,3 @@ The following packages found on this system are affected by this:
   Affected binary packages:
   - libsoup-3.0-0:amd64 (installed version: 3.6.6-1)
   - libsoup-3.0-common (installed version: 3.6.6-1)
-
-
-
-###FIXME#### * Source:binutils
-###FIXME####   Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
-###FIXME####   - binutils (installed version: 2.46-3)
-###FIXME####   - binutils-common:amd64 (installed version: 2.46-3)
-###FIXME####   - binutils-x86-64-linux-gnu (installed version: 2.46-3)
-###FIXME####   - libbinutils:amd64 (installed version: 2.46-3)
-###FIXME####   - libctf-nobfd0:amd64 (installed version: 2.46-3)
-###FIXME####   - libctf0:amd64 (installed version: 2.46-3)
-###FIXME####   - libgprofng0:amd64 (installed version: 2.46-3)
-###FIXME####   - libsframe3:amd64 (installed version: 2.46-3)
-###FIXME####   - librav1e0.8:amd64 (installed version: 0.8.1-9)
