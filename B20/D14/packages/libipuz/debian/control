@@ -7,11 +7,23 @@ Maintainer: Trent W. Buck <twb@cyber.com.au>
 Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 13),
  meson (>= 0.59.0),
- pkg-config,
+ pkgconf,
  python3,
  libglib2.0-dev,
  libjson-glib-dev,
- cmake,
+# cmake,
+ ninja-build,
+# rust stuff
+ cargo,
+ rustc,
+ librust-gio-dev,
+ librust-glib-dev,
+ librust-glib-sys-dev,
+ librust-libc-dev,
+ librust-nohash-hasher-dev,
+ librust-rand-dev,
+ librust-serde-dev,
+ librust-serde-json-dev,
 
 Package: libipuz-1
 Depends:

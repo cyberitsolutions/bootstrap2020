@@ -1,4 +1,42 @@
 #!/usr/bin/make -f
+
+# 23:24 <f_g> pdns-recursor might serve as some inspiration, though there might be differences that matter ;)
+# 23:25 <f_g> (also using meson to drive cargo, also has rust sources in a subdir)
+# https://sources.debian.org/src/pdns-recursor/5.4.1-1/debian/rules
+
+# NOTE: In 2026, ipuz is part-C part-rust.
+#       It is not on crates.io.
+#       So we need to ignore the "mainstream" Debian rust packaging, and
+#       instead follow these guides:
+#       https://rust-team.pages.debian.net/book/process-workspace.html
+#       https://wiki.debian.org/Gnome/Rust_Packaging
+#       https://gitlab.gnome.org/jrb/libipuz/-/blob/main/meson.options?ref_type=heads#L7-11
+
+include /usr/share/dpkg/default.mk
+include /usr/share/rustc/architecture.mk
+
+export DEB_HOST_RUST_TYPE
+export DEB_HOST_GNU_TYPE
+export PATH := /usr/share/cargo/bin:$(PATH)
+export CARGO=/usr/share/cargo/bin/cargo
+export CARGO_HOME=$(CURDIR)/debian/cargo_home
+export DEB_CARGO_CRATE=$(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM)
+execute_before_dh_auto_configure:
+	/usr/share/cargo/bin/cargo prepare-debian debian/cargo_registry --link-from-system
+execute_before_dh_auto_configure:
+	$(CARGO) prepare-debian debian/cargo_registry --link-from-system
+	truncate --size=0 libipuz/rust/Cargo.lock
+	rm -f Cargo.lock
+
+
+# Normal stuff from a C rules file
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 %:
 	dh $@
+
+# Tell meson we just want the library, no bullshit.
+# FIXME: this is **NOT WORKING**,
+# it is still downloading random rust libraries from crates.io,
+# not using the ones that Debian provides.
+override_dh_auto_configure:
+	dh_auto_configure -- -Dsandboxed=true -Ddocumentation=disabled -Dintrospection=disabled
