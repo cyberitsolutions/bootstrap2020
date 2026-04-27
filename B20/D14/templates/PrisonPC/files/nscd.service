@@ -1,15 +1,4 @@
-# This is a drop-in file that hardens unscd, just because we can.
-
-# Here is a simple debugging test that can show if unscd is working.
-# You should get a significant speedup even on a system with only local users in /etc/passwd.
-#
-# root@desktop:~# mkdir /test
-# root@desktop:~# for i in {1..10000}; do install -o 12345 -g 54321 /bin/true /test/$i; done &
-# root@desktop:~# time find /test '(' -nouser -o -nogroup ')' -printf ''
-# 1.2s
-# root@desktop:~# systemctl stop unscd
-# root@desktop:~# time find /test '(' -nouser -o -nogroup ')' -printf ''
-# 5.2s
+# This is a drop-in file that hardens nscd, just because we can.
 
 # Hardening
 [Service]
@@ -53,23 +42,15 @@ PrivateUsers=no
 # PrivateNetwork=yes also makes AF_UNIX sockets in /run private!
 PrivateNetwork=no
 # Not sure if this is needed but I'll chuck it in anyway. --twb, April 2026
-IPAddressAllow=localhost
-# We can't drop root privs before starting, because
-# it wants to bind BOTH of these:
-#
-#    define NSCD_SOCKET     "/var/run/nscd/socket"
-#    define NSCD_SOCKET_OLD "/var/run/.nscd_socket"
-#
-# The latter should just be removed from unscd.c entirely, since
-# the implementations of glibc that use it are probably looooong gone.
-DynamicUser=no
-NoNewPrivileges=no
-CapabilityBoundingSet=CAP_SETUID CAP_SETGID
-SystemCallFilter=@setuid
-ReadWritePaths=/run
+# IPAddressAllow=localhost
 
 # systemd-analyze security doesn't explicitly call these out, but
 # they are a minor help
 [Service]
-RuntimeDirectory=nscd
-WorkingDirectory=/run/nscd
+RuntimeDirectory=%p
+WorkingDirectory=/run/%p
+# This is only used if you have "persistent <table> yes" in nscd.conf.
+# It allows nscd to cache its internal cache between reboots of nscd.
+# This is on by default in Debian, but off by default in PrisonPC.
+# Always setting it here does not hurt.
+CacheDirectory=%p

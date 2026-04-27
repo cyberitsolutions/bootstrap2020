@@ -1,5 +1,5 @@
 include = [
-    "libnss-ldapd", "libpam-ldapd", "unscd",
+    "libnss-ldapd", "libpam-ldapd", "nscd",
     "nftables",
     "fonts-prisonpc",
     "prisonpc-chromium-hunspell-dictionaries",
