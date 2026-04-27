@@ -39,6 +39,33 @@ BASECFLAGS   := $(CFLAGS)
 BASECFLAGS   ?= -Wall -g -O2
 BASECFLAGS   += $(CPPFLAGS)
 
+# NOTE: building this old code on Debian 14 forky / gcc 15,
+#       I got two -Wincompatible-pointer-types warnings.
+#       Rather than fix them, I'm just disabling the check...
+#       --twb, April 2026
+#
+#       Here are the actual warnings for the record:
+#
+#           gcc -g -O2 -Werror=implicit-function-declaration -ffile-prefix-map=/X/Y=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -Wdate-time -D_FORTIFY_SOURCE=2 -c  os.c
+#           os.c: In function ‘os_signal_child_init’:
+#           os.c:433:20: error: assignment to ‘__sighandler_t’ {aka ‘void (*)(int)’} from incompatible pointer type ‘void (*)(void)’ [-Wincompatible-pointer-types]
+#             433 |     act.sa_handler = fn;
+#                 |                    ^
+#           In file included from /usr/include/x86_64-linux-gnu/sys/wait.h:36,
+#                            from lib.h:24,
+#                            from os.c:9:
+#           /usr/include/signal.h:72:16: note: ‘__sighandler_t’ declared here
+#              72 | typedef void (*__sighandler_t) (int);
+#                 |                ^~~~~~~~~~~~~~
+#           os.c: In function ‘os_signal_alarm_init’:
+#           os.c:467:20: error: assignment to ‘__sighandler_t’ {aka ‘void (*)(int)’} from incompatible pointer type ‘void (*)(void)’ [-Wincompatible-pointer-types]
+#             467 |     act.sa_handler = fn;
+#                 |                    ^
+#           /usr/include/signal.h:72:16: note: ‘__sighandler_t’ declared here
+#              72 | typedef void (*__sighandler_t) (int);
+#                 |                ^~~~~~~~~~~~~~
+BASECFLAGS   += -Wno-incompatible-pointer-types
+
 BASELDFLAGS  := $(LDFLAGS)
 BASELDFLAGS  ?= -g
 

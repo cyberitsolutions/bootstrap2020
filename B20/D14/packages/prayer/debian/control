@@ -2,9 +2,18 @@ Source: prayer
 Section: mail
 Priority: optional
 Maintainer: Magnus Holmgren <holmgren@debian.org>
-Build-Depends: debhelper (>= 9), libc-client2007e-dev | libc-client-dev,
- libldap2-dev, zlib1g-dev, libssl-dev (>= 0.9.6), libdb-dev,
- libtidy-dev
+Build-Depends:
+ debhelper-compat (= 13),
+ libc-client2007e-dev | libc-client-dev,
+ libldap2-dev,
+ zlib1g-dev,
+ libssl-dev,
+ libdb-dev,
+ libtidy-dev,
+# Don't know why this
+# is needed on Debian 14 when it
+# wasn't needed on Debian 12. --twb, April 2026
+ libcrypt-dev,
 Standards-Version: 4.2.1
 Vcs-Svn: svn://svn.kibibyte.se/prayer/trunk
 Vcs-Browser: http://svn.kibibyte.se/prayer
