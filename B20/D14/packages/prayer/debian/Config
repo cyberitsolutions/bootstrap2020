@@ -10,10 +10,10 @@
 SSL_ENABLE           = true   # SSL requires OpenSSL
 SESSION_CACHE_ENABLE = true   # SSL session cache Requires Berkeley DB 3 or 4
 GZIP_ENABLE          = true   # Enable on the fly compression of pages
-LDAP_ENABLE          = true   # Add LDAP interface
+LDAP_ENABLE          = false  # Add LDAP interface
 FENCE_ENABLE         = false  # Use Electric Fence to catch malloc problems
 MUTEX_SEMAPHORE      = true   # Use SYSV mutexes rather than file locking
-TIDY_ENABLE          = true   # Use libtidy for HTML sanitisation
+TIDY_ENABLE          = false  # Use libtidy for HTML sanitisation
 
 # Following depend on the way that you have configured c-client
 CCLIENT_SSL_ENABLE   = false  # C-client was built with SSL support

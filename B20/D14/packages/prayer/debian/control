@@ -3,13 +3,15 @@ Section: mail
 Priority: optional
 Maintainer: Magnus Holmgren <holmgren@debian.org>
 Build-Depends:
- debhelper-compat (= 13),
+# FIXME: with compat >10 debelper adds "INSTALL=install --strip-program=true"
+#        ...which has some kind of quoting problem I think?
+ debhelper-compat (= 10),
  libc-client2007e-dev | libc-client-dev,
- libldap2-dev,
+# libldap2-dev,
  zlib1g-dev,
  libssl-dev,
  libdb-dev,
- libtidy-dev,
+# libtidy-dev,
 # Don't know why this
 # is needed on Debian 14 when it
 # wasn't needed on Debian 12. --twb, April 2026

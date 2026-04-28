@@ -10,7 +10,7 @@ override_dh_auto_configure:
 	cp debian/Config .
 
 override_dh_auto_install:
-	dh_auto_install -- BROOT=$(CURDIR)/debian/tmp
+	dh_auto_install -Smakefile -- BROOT=$(CURDIR)/debian/tmp
 
 override_dh_installchangelogs:
 	dh_installchangelogs docs/DONE
