@@ -5,9 +5,14 @@
 #       But the system won't move from "booting" to "booted" until they are ALL up (bad!)
 #       Since most devices have only one wired ethernet, this is "good enough for now".
 
+
+# NOTE: In Debian 12 we used [Match] Type=ether Name=en*.
+#       In Debian 14 we copy dracut's match rules.
+#       Both should work Just Fine though.
+# https://github.com/dracut-ng/dracut-ng/blob/main/modules.d/11systemd-networkd/dracut-default.network
 [Match]
-Type=ether
-Name=en*
+Kind=!*
+Type=!loopback
 [Network]
 DHCP=yes
 
