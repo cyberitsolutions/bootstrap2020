@@ -22,21 +22,77 @@
 # If openssh-server is used, don't
 # enable BOTH up-front .service and on-demand .socket.
 # UPDATE: as at Debian 12, this is still needed.
+# UPDATE: as at Debian 14, this is still needed.
 disable ssh.socket
 
 
+# As at Debian 13, by default Debian disables this, but systemd preset enables this.
+# This generates WAY too many log events and we DO NOT WANT. --twb, April 2026
+disable systemd-journald-audit.socket
+
+
 # Some other things get enabled by preset-all.
-#
-# This search appears to show affected packages:
-#
-#     https://codesearch.debian.net/search?q=dh_.*systemd.*--no-enable&literal=0&page=2&perpkg=1
-#
 # I am 90% sure these are all harmless.
+# As at Debian 14, these are the things preset-all changes for --template=desktop:
 #
-#    /etc/systemd/system/multi-user.target.wants/msmtpd.service                           → /lib/systemd/system/msmtpd.service.
-#    /etc/systemd/system/sockets.target.wants/systemd-networkd.socket                     → /lib/systemd/system/systemd-networkd.socket.
-#    /etc/systemd/system/dbus-org.freedesktop.network1.service                            → /lib/systemd/system/systemd-networkd.service.
-#    /etc/systemd/system/multi-user.target.wants/systemd-networkd.service                 → /lib/systemd/system/systemd-networkd.service.
-#    /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service → /lib/systemd/system/systemd-networkd-wait-online.service.
-#    /etc/systemd/system/multi-user.target.wants/remote-cryptsetup.target                 → /lib/systemd/system/remote-cryptsetup.target.
-#    /etc/systemd/system/ctrl-alt-del.target                                              → /lib/systemd/system/reboot.target.
+#     (bootstrap:desktop:219651e-dirty)root@hera:/# systemctl preset-all
+#     Failed to preset all unit: Unit /usr/lib/systemd/system/nfs-common.service is masked
+#     Failed to preset all unit: Unit /usr/lib/systemd/system/x11-common.service is masked
+#     Failed to preset all unit: Unit /usr/lib/systemd/system/hwclock.service is masked
+#     Failed to preset all unit: Unit /usr/lib/systemd/system/cryptdisks.service is masked
+#     Failed to preset all unit: Unit /usr/lib/systemd/system/cryptdisks-early.service is masked
+#     Created symlink '/etc/systemd/system/msmtpd.service.requires/bootstrap2020-get-config-from-dnssd.service'  → '/etc/systemd/system/bootstrap2020-get-config-from-dnssd.service'.
+#     Created symlink '/etc/systemd/system/rsyslog.service.requires/bootstrap2020-get-config-from-dnssd.service' → '/etc/systemd/system/bootstrap2020-get-config-from-dnssd.service'.
+#     Created symlink '/etc/systemd/system/multi-user.target.wants/bootstrap2020-ethernet-speed-check.service'   → '/etc/systemd/system/bootstrap2020-ethernet-speed-check.service'.
+#     Created symlink '/etc/systemd/system/ssh.service.requires/bootstrap2020-openssh-keygen.service'            → '/etc/systemd/system/bootstrap2020-openssh-keygen.service'.
+#     Unit /etc/systemd/system/bootstrap2020-openssh-keygen.service is added as a dependency to a non-existent unit ssh.service.
+#     Unit /usr/lib/systemd/system/nfs-common.service is masked, ignoring.
+#     Created symlink '/etc/systemd/system/multi-user.target.wants/msmtpd.service'                               → '/usr/lib/systemd/system/msmtpd.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-udev-load-credentials.service'           → '/usr/lib/systemd/system/systemd-udev-load-credentials.service'.
+#     Unit /usr/lib/systemd/system/x11-common.service is masked, ignoring.
+#     Unit /usr/lib/systemd/system/hwclock.service is masked, ignoring.
+#     Unit /usr/lib/systemd/system/cryptdisks.service is masked, ignoring.
+#     Unit /usr/lib/systemd/system/cryptdisks-early.service is masked, ignoring.
+#     Created symlink '/etc/systemd/system/factory-reset.target.wants/systemd-tpm2-clear.service'                → '/usr/lib/systemd/system/systemd-tpm2-clear.service'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-sysext.socket'                           → '/usr/lib/systemd/system/systemd-sysext.socket'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-sysext.service'                          → '/usr/lib/systemd/system/systemd-sysext.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-secureboot-policy.service'       → '/usr/lib/systemd/system/systemd-pcrlock-secureboot-policy.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-secureboot-authority.service'    → '/usr/lib/systemd/system/systemd-pcrlock-secureboot-authority.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-make-policy.service'             → '/usr/lib/systemd/system/systemd-pcrlock-make-policy.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-machine-id.service'              → '/usr/lib/systemd/system/systemd-pcrlock-machine-id.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-firmware-config.service'         → '/usr/lib/systemd/system/systemd-pcrlock-firmware-config.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-firmware-code.service'           → '/usr/lib/systemd/system/systemd-pcrlock-firmware-code.service'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pcrlock-file-system.service'             → '/usr/lib/systemd/system/systemd-pcrlock-file-system.service'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-pcrextend.socket'                        → '/usr/lib/systemd/system/systemd-pcrextend.socket'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-networkd.socket'                         → '/usr/lib/systemd/system/systemd-networkd.socket'.
+#     Created symlink '/etc/systemd/system/dbus-org.freedesktop.network1.service'                                → '/usr/lib/systemd/system/systemd-networkd.service'.
+#     Created symlink '/etc/systemd/system/multi-user.target.wants/systemd-networkd.service'                     → '/usr/lib/systemd/system/systemd-networkd.service'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-networkd-varlink.socket'                 → '/usr/lib/systemd/system/systemd-networkd-varlink.socket'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-networkd-varlink-metrics.socket'         → '/usr/lib/systemd/system/systemd-networkd-varlink-metrics.socket'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-networkd-resolve-hook.socket'            → '/usr/lib/systemd/system/systemd-networkd-resolve-hook.socket'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-network-generator.service'               → '/usr/lib/systemd/system/systemd-network-generator.service'.
+#     Created symlink '/etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service'     → '/usr/lib/systemd/system/systemd-networkd-wait-online.service'.
+#     Created symlink '/etc/systemd/system/sockets.target.wants/systemd-factory-reset.socket'                    → '/usr/lib/systemd/system/systemd-factory-reset.socket'.
+#     Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-confext.service'                         → '/usr/lib/systemd/system/systemd-confext.service'.
+#     Created symlink '/etc/systemd/system/ctrl-alt-del.target'                                                  → '/usr/lib/systemd/system/reboot.target'.
+#
+#     (bootstrap:desktop:219651e-dirty)root@hera:/# systemctl --global --user preset-all
+#     /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+#     Created symlink '/root/.config/systemd/user/graphical-session-pre.target.wants/xdg-user-dirs.service' → '/usr/lib/systemd/user/xdg-user-dirs.service'.
+#     Created symlink '/root/.config/systemd/user/pipewire-session-manager.service'                         → '/usr/lib/systemd/user/wireplumber.service'.
+#     Created symlink '/root/.config/systemd/user/pipewire.service.wants/wireplumber.service'               → '/usr/lib/systemd/user/wireplumber.service'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/pipewire-pulse.socket'               → '/usr/lib/systemd/user/pipewire-pulse.socket'.
+#     Created symlink '/root/.config/systemd/user/default.target.wants/pipewire-pulse.service'              → '/usr/lib/systemd/user/pipewire-pulse.service'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/pipewire.socket'                     → '/usr/lib/systemd/user/pipewire.socket'.
+#     Created symlink '/root/.config/systemd/user/default.target.wants/pipewire.service'                    → '/usr/lib/systemd/user/pipewire.service'.
+#     Created symlink '/root/.config/systemd/user/default.target.wants/filter-chain.service'                → '/usr/lib/systemd/user/filter-chain.service'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/gpg-agent.socket'                    → '/usr/lib/systemd/user/gpg-agent.socket'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/gpg-agent-ssh.socket'                → '/usr/lib/systemd/user/gpg-agent-ssh.socket'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/gpg-agent-extra.socket'              → '/usr/lib/systemd/user/gpg-agent-extra.socket'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/gpg-agent-browser.socket'            → '/usr/lib/systemd/user/gpg-agent-browser.socket'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/keyboxd.socket'                      → '/usr/lib/systemd/user/keyboxd.socket'.
+#     Created symlink '/root/.config/systemd/user/sockets.target.wants/dirmngr.socket'                      → '/usr/lib/systemd/user/dirmngr.socket'.
+#     Created symlink '/root/.config/systemd/user/graphical-session.target.wants/spice-vdagent.service'     → '/usr/lib/systemd/user/spice-vdagent.service'.
+#     Created symlink '/root/.config/systemd/user/dbus.service'                                             → '/usr/lib/systemd/user/dbus-broker.service'.
+#     Created symlink '/root/.config/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service'        → '/usr/lib/systemd/user/systemd-tmpfiles-setup.service'.
+#     Created symlink '/root/.config/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer'         → '/usr/lib/systemd/user/systemd-tmpfiles-clean.timer'.
