@@ -85,7 +85,7 @@ devel	libsoup3	libsoup-3.0-common
 # Used when booting off SMB3 (instead of NFS4) – mainly VMs as at 2026.
 otherosfs		cifs-utils
 # Used by disc-snitch to scan DVDs
-otherosfs	libcdio \(2.2.0-4\)	libcdio-utils
+otherosfs	libcdio	libcdio-utils
 # Used by usermode for password reset (FIXME replace usermode)
 oldlibs	gtk\+2.0	libgtk2.0-0t64
 oldlibs	gtk\+2.0	libgtk2.0-common
@@ -105,9 +105,16 @@ python	numpy	python3-numpy-dev
 """.strip().splitlines()
 if s and not s.startswith('#'))
 
+# Normally you get "X\tY\tZ".
+# But if there is a binNMU, then you get "X\tY (V)\tZ".
+# We never care about this version number stuff, so remove it before matching.
+lines = [
+    '\t'.join(word.split(' ')[0]
+              for word in line.split('\t'))
+    for line in stdout.splitlines()]
 shit_matches = [
     line
-    for line in stdout.splitlines()
+    for line in lines
     if any(re.fullmatch(p, line) for p in shit_patterns)
     if not any(re.fullmatch(p, line) for p in good_patterns)]
 if shit_matches:
