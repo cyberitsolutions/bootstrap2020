@@ -269,13 +269,8 @@ def do_boot_test():
         common_boot_args = ' '.join([
             ('quiet splash'
              if template.startswith('desktop') else
-             # FIXME: in systemd v254+ change
-             #            TERM=$TERM
-             #        to both(!) of these
-             #            systemd.tty.term.console=$TERM
-             #            systemd.tty.term.ttyS0=$TERM
-             #        https://github.com/systemd/systemd/issues/29097
-             f'earlyprintk=ttyS0 console=ttyS0 TERM={os.environ["TERM"]} loglevel=1'),
+             # https://github.com/systemd/systemd/issues/29097
+             f'earlyprintk=ttyS0 console=ttyS0 systemd.tty.term.console={os.environ["TERM"]} systemd.tty.term.ttyS0={os.environ["TERM"]} loglevel=1'),
             (f'break={args.maybe_break}'
              if args.maybe_break else '')])
 
