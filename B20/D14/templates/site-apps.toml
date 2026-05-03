@@ -99,7 +99,7 @@ applications = [
     "gnome-mastermind", "opentyrian", "tyrian-data", "crawl-tiles",
     # Games Arcade
     "cutemaze", "garden-of-coloured-lights", "kobodeluxe", "ceferino", "lierolibre", "burgerspace", "epiphany",
-    "lbreakout2", "abe", "armagetronad", "bloboats", "supertransball2", "parsec47", "torus-trooper", "powermanga",
+    "lbreakouthd", "abe", "armagetronad", "bloboats", "supertransball2", "parsec47", "torus-trooper", "powermanga",
     "warmux", "dangen", "excellent-bifurcation", "maelstrom", "overgod", "rrootage", "freedroid", "gunroar", "starfighter",
     # Games Card
     "aisleriot",
@@ -144,7 +144,7 @@ applications = [
     "gnome-chess", "crafty", "fairymax", "glaurung", "gnuchess", "hoichess", "phalanx", "sjeng", "toga2",  # Games > Board > Chess
     "gnome-sudoku",             # Games > Logic > Sudoku
     "quadrapassel",             # Games > Falling Blocks > Tetris clone
-    "lbreakout2",               # Games > Other > Arkanoid (Breakout) clone
+    "lbreakouthd",               # Games > Other > Arkanoid (Breakout) clone
 #   VERY POPULAR (WEEKS PER SITE-YEAR)
     "prisonpc-openttd-extras",  # Games > Strategy > Transport Tycoon Deluxe clone
     "freedoom",                 # DOOM clone (all campaigns)
@@ -383,7 +383,7 @@ applications = [
     "torus-trooper",
     "armagetronad",
     "tworld",
-    "lbreakout2",
+    "lbreakouthd",
     "titanion",
     "warmux",
     # FIXME: ghextris not available in Debian 11 (depends on Python 2)
