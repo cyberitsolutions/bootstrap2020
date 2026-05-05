@@ -54,3 +54,14 @@ WorkingDirectory=/run/%p
 # This is on by default in Debian, but off by default in PrisonPC.
 # Always setting it here does not hurt.
 CacheDirectory=%p
+
+
+# The upstream has ExecStart=nscd ...; ExecStop=nscd --shutdown.
+# But because we run nscd as unprivileged user, we need to add an "!" (run as root) to the ExecStop.
+# Otherwise we get this:
+#   # systemctl stop nscd
+#   nscd[16109]: /usr/sbin/nscd: Only root is allowed to use this option!
+#   [stops anyway, but less gracfeully]
+[Service]
+ExecStop=
+ExecStop=!/usr/sbin/nscd --shutdown
