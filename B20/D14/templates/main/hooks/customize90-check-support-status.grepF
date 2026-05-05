@@ -44,6 +44,7 @@ The following packages found on this system are affected by this:
   Affected binary package:
   - librav1e0.8:amd64 (installed version: 0.8.1-7)
   - librav1e0.8:amd64 (installed version: 0.8.1-9)
+  - librav1e0.8:amd64 (installed version: 0.8.1-10)
 
 
 # Ignorelist rust-zram-generator (systemd-zram-generator), because
@@ -53,9 +54,9 @@ The following packages found on this system are affected by this:
 * Source:rust-zram-generator
   Details: See https://www.debian.org/releases/trixie/release-notes/issues.en.html#go-and-rust-based-packages
   Affected binary package:
+  - systemd-zram-generator (installed version: 1.2.1-2)
   - systemd-zram-generator (installed version: 1.2.1-2+b1)
   - systemd-zram-generator (installed version: 1.2.1-2+b2)
-
 
 # FIXME: I have not yet confirmed this is safe!! --twb, January 2026
 #
