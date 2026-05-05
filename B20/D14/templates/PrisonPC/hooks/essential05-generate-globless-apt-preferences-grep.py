@@ -82,4 +82,10 @@ with (args.chroot_path / 'etc/apt/preferences.d/bootstrap2020-PrisonPC-1133971')
         print(f' src:{d}', file=f)
 
 # DEBUGGING
-#subprocess.check_call(['env', f'HOME={args.chroot_path / "root"}', 'aptitude', '-oaptitude::UI::Package-Display-Format=%c%a%M%S %p %e %Z %t %v %V'])
+if False:
+    (args.chroot_path / 'var/lib/aptitude').mkdir(parents=True, exist_ok=True)
+    subprocess.check_call([
+        'env', f'HOME={args.chroot_path / "root"}',
+        'aptitude',
+        '-oDir::Aptitude::State=var/lib/aptitude',
+        '-oaptitude::UI::Package-Display-Format=%c%a%M%S %p %e %Z %t %v %V'])
