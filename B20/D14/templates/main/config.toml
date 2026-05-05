@@ -9,7 +9,13 @@ include = [
     'ca-certificates',
     'publicsuffix',
     'linux-sysctl-defaults',    # https://alloc.cyber.com.au/task/task.php?taskID=35711
-    'libnss-systemd',
+    # FIXME: for shitty reasons, PrisonPC does "getent passwd" in /lib/systemd/system-generators/.
+    #        If nsswitch.conf says "files: passwd ldap" this is fast enough.
+    #        If nsswitch.conf says "files: passwd systemd ldap" this takes an extra 45 seconds.
+    #        Since libnsswitch-systemd functionality is "nice to have", just stop installing it.
+    #        --twb, May 2026
+    #        https://alloc.cyber.com.au/task/task.php?taskID=35749
+    # 'libnss-systemd',
     'debian-security-support',  # for customize90-check-support-status.py
 
     # Make things work better with systemd-networkd
