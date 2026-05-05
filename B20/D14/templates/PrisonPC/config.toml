@@ -513,6 +513,7 @@ deb_good_regexps = [
     # FIXME: instead of installing pipewire-audio, install only the 3 parts we need and not the 1 part that wants bluetooth? --twb, April 2026
     "libspa-0.2-bluetooth", "libbluetooth3", # pipewire-audio → libspa-0.2-bluetooth → libbluetooth3
     "libavahi-client3",  # <everything that prints> → libcups2t64 → libavahi-client3
+    "adwaita-icon-theme-legacy",  # icons for XFCE4 apps menu (anything named "legacy" is blocked by default)
 
 
     # Staff things
