@@ -2,6 +2,17 @@ include = [
     "xserver-xorg-core", "xserver-xorg-input-libinput",
     "xfce4-session", "xfwm4", "xfdesktop4", "xfce4-panel", "thunar", "galculator",
     "xdm",
+    # As at Debian 14, XFCE Applications menu section icons are not in Adwaita anymore (moved to Adwaita Legacy).
+    # As long as both packages are installed, asking for Adwaita will Just Work, because
+    # /usr/share/icons/Adwaita/index.theme has Inherits=AdwaitaLegacy,hicolor.
+    # Note that file also has Hidden=true, which makes it invisible in Applications > Settings > Appearance > Icons.
+    # We have a hook to remove Hidden=true so you can switch freely between HighColor and Adwaita in Debian 14 XFCE4.
+    # --twb, May 2026
+    "adwaita-icon-theme-legacy",
+    "adwaita-icon-theme-full",
+    # the default XFCE background wallpaper for --template=desktop;
+    # adds ~22MiB and 1 font; not strictly necessary. --twb, May 2026
+    # "desktop-base",
     # https://wiki.debian.org/PipeWire#Debian_12
     # FIXME: do we need/want vlc-plugin-pipewire?
     # FIXME: do we NEED pipewire-audio, or only pipewire-pulse? --twb, April 2026
