@@ -1,0 +1,50 @@
+Description: <short summary of the patch>
+ 22:22 <twb> Can I just make a debian/patches/stfu.patch that removes the exact versions from upstream's Cargo.toml?
+ 22:23 <cjwatson> twb: https://rust-team.pages.debian.net/book/fix-problems.html
+ 22:23 <cjwatson> The Rust team has loads of "relax-deps" patches for that sort of thing
+ 22:28 <twb> cool
+ 23:28 <twb> When patching Cargo.toml dependencies, how do I say "literally any version, I don't care"?
+ 23:29 <twb> That seems easier than changing it to match the exact verson Debian happens to currently have
+Author: Trent W. Buck <trentbuck@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout https://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: (upstream|backport|vendor|other), (<patch-url>|commit:<commit-id>)
+Bug: <upstream-bugtracker-url>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: (no|not-needed|<patch-forwarded-url>)
+Applied-Upstream: <version>, (<commit-url>|commit:<commid-id>)
+Reviewed-By: <name and email of someone who approved/reviewed the patch>
+Last-Update: 2026-04-27
+
+--- libipuz-0.5.4.orig/libipuz/rust/Cargo.toml
++++ libipuz-0.5.4/libipuz/rust/Cargo.toml
+@@ -3,17 +3,17 @@ name = "ipuz_rust"
+ version = "0.1.0"
+ edition = "2021"
+ authors = ["Federico Mena Quintero <federico@gnome.org>"]
+-rust-version = "1.85.1"
++rust-version = "1.94"
+ 
+ [lib]
+ crate-type = [ "staticlib" ]
+ 
+ [dependencies]
+-gio = "0.20"
+-glib = "0.20"
+-glib-sys = "0.20"
++gio = "0.21"
++glib = "0.21"
++glib-sys = "0.21"
+ libc = "0.2"
+ nohash-hasher = "0.2.0"
+-rand = "0.9.1"
+-serde = { version = "1.0.203", features = ["derive"] }
+-serde_json = "1.0.114"
++rand = "0.10"
++serde = { version = "1.0", features = ["derive"] }
++serde_json = "1.0"
