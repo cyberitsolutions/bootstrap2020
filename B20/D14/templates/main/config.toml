@@ -50,4 +50,23 @@ include = [
     # LZ4-compressed swap.  This typically means 2GB RAM actual acts
     # like 2.4GB RAM effective.
     "systemd-zram-generator",
+
+    # Force old C cpio (not new rustlang 3cpio).
+    # As at May 2026, there are two reasons for this:
+    #
+    #  1. amd64-microcode's initramfs-tools hook specifically requires GNU cpio.
+    #
+    #         https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1136383
+    #
+    #  2. debian-security-support supports sqv, but not 3cpio;
+    #
+    #         https://salsa.debian.org/debian/debian-security-support/-/blob/1%2514+2026.05.07/security-support.deb14?ref_type=tags#L40-41
+    #
+    #         $ mmdebstrap forky /dev/null --quiet --include=linux-image-generic,debian-security-support --customize-hook='chroot $1 check-support-status' --variant=apt
+    #         [3cpio is installed; check-support-status whinges]
+    #         $ mmdebstrap forky /dev/null --quiet --include=linux-image-generic,debian-security-support --customize-hook='chroot $1 check-support-status'
+    #         [cpio is installed; no errors]
+    #
+    # FIXME: remove this once both issues are resolved.
+    "cpio",
 ]
