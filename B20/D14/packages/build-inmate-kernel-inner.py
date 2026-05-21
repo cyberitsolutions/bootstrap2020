@@ -117,6 +117,12 @@ subprocess.check_call([
     '--set-val', 'kfence_sample_interval', '100',
     '--set-val', 'kfence_num_objects', '255',
     '--set-val', 'kfence_stress_test_faults', '0',
+    # NOTE: BOOTPARAM_SOFTLOCKUP_PANIC changed from a =[y|n] to an =[integer] around Linux 7.0:
+    #       https://github.com/torvalds/linux/commit/e700f5d1560798aacf0e56fdcc70ee2c20bf56ec
+    #       Therefore we now set it here instead of in the .init.
+    #       Most places in the codebase set it to either 0 (disabled) or 1 (20 seconds).
+    #       Be a bit more laissez-faire and set it to (60 seconds).
+    '--set-val', 'bootparam_softlockup_panic', '3',
     # Only allow magic sysrq via /proc/sysrq-trigger.
     # FIXME: obsolete now that systemd handles watchdogs?
     # NOTE: this was wrongly using "magic_sysrq_enable" and

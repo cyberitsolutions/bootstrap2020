@@ -1,8 +1,47 @@
-769702b 6.19.14-1777609097 (was 6.19.13-1777287724)
-132b5a9 6.19.13-1777287724 (was 6.19.11-1776049691)
-9dab42e 6.19.11-1776049691 (was 6.19.10-1775613597)
-eee4790 6.19.10-1775613597 (was 6.19.8-1774984993)
-2be8812 6.19.8-1774984993 (was 6.12.85-1777853232)
+c663c62 7.0.7-1779352466 (was 6.19.14-1777609097)
+diff --git a/manifest.txt b/manifest.txt
+index ccb1c53..ace6b28 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -233,15 +233,12 @@ kernel/sound/soc/codecs/snd-soc-max98090.ko.zst
+ kernel/sound/soc/codecs/snd-soc-max98357a.ko.zst
+ kernel/sound/soc/codecs/snd-soc-max98373-i2c.ko.zst
+ kernel/sound/soc/codecs/snd-soc-max98373.ko.zst
+-kernel/sound/soc/codecs/snd-soc-max98390.ko.zst
+ kernel/sound/soc/codecs/snd-soc-max98927.ko.zst
+ kernel/sound/soc/codecs/snd-soc-nau8315.ko.zst
+ kernel/sound/soc/codecs/snd-soc-nau8824.ko.zst
+ kernel/sound/soc/codecs/snd-soc-nau8825.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rl6231.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rl6347a.ko.zst
+-kernel/sound/soc/codecs/snd-soc-rt1011.ko.zst
+-kernel/sound/soc/codecs/snd-soc-rt1015.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rt1015p.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rt1308.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rt286.ko.zst
+@@ -251,9 +248,6 @@ kernel/sound/soc/codecs/snd-soc-rt5645.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rt5651.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rt5663.ko.zst
+ kernel/sound/soc/codecs/snd-soc-rt5670.ko.zst
+-kernel/sound/soc/codecs/snd-soc-rt5682-i2c.ko.zst
+-kernel/sound/soc/codecs/snd-soc-rt5682.ko.zst
+-kernel/sound/soc/codecs/snd-soc-rt5682s.ko.zst
+ kernel/sound/soc/codecs/snd-soc-ssm4567.ko.zst
+ kernel/sound/soc/codecs/snd-soc-ts3a227e.ko.zst
+ kernel/sound/soc/codecs/snd-soc-wm-adsp.ko.zst
+@@ -287,7 +281,6 @@ kernel/sound/soc/intel/boards/snd-soc-skl_hda_dsp.ko.zst
+ kernel/sound/soc/intel/boards/snd-soc-sof-ssp-amp.ko.zst
+ kernel/sound/soc/intel/boards/snd-soc-sof_cs42l42.ko.zst
+ kernel/sound/soc/intel/boards/snd-soc-sof_nau8825.ko.zst
+-kernel/sound/soc/intel/boards/snd-soc-sof_rt5682.ko.zst
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-cx2072x.ko.zst
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-da7213.ko.zst
+ kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-es8316.ko.zst
+96e039e 6.19.14-1777609097 (was 6.19.13-1777287724)
+94ee462 6.19.13-1777287724 (was 6.19.11-1776049691)
+e5eedec 6.19.11-1776049691 (was 6.19.10-1775613597)
+605fe4a 6.19.10-1775613597 (was 6.19.8-1774984993)
+796c3ec 6.19.8-1774984993 (was 6.12.88-1779342089)
 diff --git a/manifest.txt b/manifest.txt
 index 2b5bf7b..ccb1c53 100644
 --- a/manifest.txt
