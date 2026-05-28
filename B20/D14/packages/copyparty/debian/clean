@@ -1,0 +1,8 @@
+# For discussion see rules_unacceptable_kludge.py
+debian/unacceptable.py
+copyparty/web/deps/__init__.py
+copyparty/web/deps/busy.mp3.gz
+copyparty/web/deps/sha512.ac.js.gz
+copyparty/web/deps/README.md
+# Not sure why this one is whinging but whatever.
+MANIFEST.in

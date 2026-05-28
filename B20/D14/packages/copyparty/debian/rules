@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+export PYBUILD_NAME=copyparty
+export PYBUILD_SYSTEM=pyproject
+%:
+	dh $@ --buildsystem=pybuild
+
+# For discussion see rules_unacceptable_kludge.py
+include /usr/share/dpkg/pkg-info.mk
+execute_after_dh_auto_clean:
+	rm -rf -- copyparty/web/deps/
+execute_before_dh_auto_configure:
+	debian/rules_unacceptable_kludge.py $(DEB_VERSION_UPSTREAM)

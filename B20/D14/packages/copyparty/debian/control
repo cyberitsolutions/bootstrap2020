@@ -1,0 +1,55 @@
+Source: copyparty
+Section: net
+Priority: optional
+Maintainer: Trent W. Buck <twb@cyber.com.au>
+Uploaders: Trent W. Buck <trentbuck@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-sequence-python3,
+ pybuild-plugin-pyproject,
+# https://salsa.debian.org/python-team/tools/dh-python/-/blob/7.20260309/README.rst?ref_type=tags#requested-interpreters
+ python3,
+Standards-Version: 4.7.4
+Rules-Requires-Root: no
+
+Package: copyparty
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Suggests:
+# password hashing
+ python3-argon2,
+# send 0mq from hooks
+ python3-zmq,
+# audio metadata
+ python3-mutagen,
+# sftp server
+ python3-paramiko,
+# ftp server
+ python3-pyftpdlib,
+# tftp server [ED: NOT IN DEBIAN 13]
+ python3-partftpy,
+# smb server -- disable Windows Defender if you REALLY need this on windows
+ python3-impacket,
+# thumbnails
+ ffmpeg | python3-pillow,
+ ffmpeg | python3-pillow-heif,
+# faster thumbnails [ED: NOT IN DEBIAN 13]
+ python3-pyvips,
+# better cleanup of stuck metadata parsers on windows
+# python3-psutil,
+# vscode tooling
+# black (>> 21.12b0~),
+# python3-click (>> 8.0.2~),
+# python3-bandit,
+# pylint,
+# python3-flake8,
+# python3-isort,
+# python3-mypy,
+# 11:23:47.450 cert could not create TLS certificates: [Errno 2] No such file or directory: 'cfssl'
+# 11:23:47.458 cert install cfssl if you want to fix this; https://github.com/cloudflare/cfssl/releases/latest  (cfssl, cfssljson, cfssl-certinfo)
+ golang-cfssl,
+Description: FIXME
+ Portable file server with accelerated resumable uploads, dedup, WebDAV, SFTP,
+ FTP, TFTP, zeroconf, media indexer, thumbnails++ all in one file

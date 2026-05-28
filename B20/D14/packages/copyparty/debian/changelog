@@ -1,0 +1,5 @@
+copyparty (1.20.14-0~PrisonPC1) forky; urgency=medium
+
+  * Initial Debianization
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 13 May 2026 10:35:56 +1000
