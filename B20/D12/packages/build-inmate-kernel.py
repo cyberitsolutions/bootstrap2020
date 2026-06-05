@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import pathlib
+import platform
 import subprocess
 import tempfile
 
@@ -235,8 +236,9 @@ with tempfile.TemporaryDirectory() as td_str:
         package_version, = [
             path.name.split('_')[1]
             for path in td.glob('linux-upstream*.changes')]
+        maybe_host = '' if platform.node() == 'heavy' else 'apt.cyber.com.au:'
         subprocess.check_call([
             'rsync', '-ai', '--info=progress2', '--protect-args',
             '--no-group',       # allow remote sgid dirs to do their thing
             f'{td}/',     # trailing suffix forces correct rsync semantics
-            f'apt.cyber.com.au:/srv/apt/PrisonPC/pool/bookworm/desktop/linux-{package_version}/'])
+            f'{maybe_host}/srv/apt/PrisonPC/pool/bookworm/desktop/linux-{package_version}/'])
