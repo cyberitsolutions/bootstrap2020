@@ -9,6 +9,6 @@
     "ProxySettings": {
         "ProxyMode": "fixed_servers",
         "ProxyServer": "PrisonPC:3128",
-        "ProxyBypassList": "http://webmail,https://PrisonPC,https://PPCAdm"
+        "ProxyBypassList": "http://webmail,https://PrisonPC,https://PPCAdm,wss://PPCAdm"
     }
 }
