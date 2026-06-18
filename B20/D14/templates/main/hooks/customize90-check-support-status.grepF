@@ -21,14 +21,14 @@ The following packages found on this system are affected by this:
 # That would be extremely not fun.
 * Source:binutils
   Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
-  - binutils (installed version: 2.46.50.20260608-1)
-  - binutils-common:amd64 (installed version: 2.46.50.20260608-1)
-  - binutils-x86-64-linux-gnu (installed version: 2.46.50.20260608-1)
-  - libbinutils:amd64 (installed version: 2.46.50.20260608-1)
-  - libctf-nobfd0:amd64 (installed version: 2.46.50.20260608-1)
-  - libctf0:amd64 (installed version: 2.46.50.20260608-1)
-  - libgprofng0:amd64 (installed version: 2.46.50.20260608-1)
-  - libsframe3:amd64 (installed version: 2.46.50.20260608-1)
+  - binutils (installed version: 2.47-2)
+  - binutils-common:amd64 (installed version: 2.47-2)
+  - binutils-x86-64-linux-gnu (installed version: 2.47-2)
+  - libbinutils:amd64 (installed version: 2.47-2)
+  - libctf0:amd64 (installed version: 2.47-2)
+  - libctf-nobfd0:amd64 (installed version: 2.47-2)
+  - libgprofng0:amd64 (installed version: 2.47-2)
+  - libsframe3:amd64 (installed version: 2.47-2)
 
 
 # Ignorelist rust-rav1e because
@@ -42,9 +42,7 @@ The following packages found on this system are affected by this:
 * Source:rust-rav1e
   Details: See https://www.debian.org/releases/trixie/release-notes/issues.en.html#go-and-rust-based-packages
   Affected binary package:
-  - librav1e0.8:amd64 (installed version: 0.8.1-7)
-  - librav1e0.8:amd64 (installed version: 0.8.1-9)
-  - librav1e0.8:amd64 (installed version: 0.8.1-10)
+  - librav1e0.8:amd64 (installed version: 0.8.1-11)
 
 
 # Ignorelist rust-zram-generator (systemd-zram-generator), because
