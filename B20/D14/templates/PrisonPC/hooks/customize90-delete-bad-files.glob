@@ -259,8 +259,11 @@
 *bin/systemd-cgls
 *bin/systemd-cgtop
 *bin/systemd-delta
-*bin/systemd-detect-virt
 *bin/systemd-path
+# systemd-zram-generator wants this:
+#     zram_generator::generator[3161]: systemd-detect-virt call failed, assuming we're not in a container: No such file or directory (os error 2)
+# Also, at this point, we run staff desktops inside VMs sometimes...
+##KEEP## *bin/systemd-detect-virt
 # From perl.
 # Note that "python3 -m ziplib" provide similar functionality, but
 # we cannot strip that without breaking some python apps.
