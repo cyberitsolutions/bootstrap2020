@@ -152,6 +152,14 @@ The following packages found on this system are affected by this:
 # PROBABLY none of the packages we currently/will use,
 # will use libsoup as a SERVER.
 # But we cannot tell at package build time whether a package is using the server parts of libsoup!
+#
+# UPDATE: as at July 2026, src:webkit2gtk in Debian 11 is EOL by Debian Security Team.
+#         Since the only thing using that is gnucash (not xfce4-screenshoter), drop gnucash.
+#         We continue to accept the risk of libsoup3, for xfce4-screenshoter & gvfs-backends.
+#risk NOT accepted# * Source:webkit2gtk
+#risk NOT accepted#   Details: Can no longer be backported to bookworm; see https://lists.debian.org/debian-security-announce/2026/msg00142.html; only for use on trusted content
+#risk NOT accepted#   - libjavascriptcoregtk-4.1-0:amd64 (installed version: 2.50.6-1~deb12u2)
+#risk NOT accepted#   - libwebkit2gtk-4.1-0:amd64 (installed version: 2.50.6-1~deb12u2)
 * Source:libsoup3
   Details: Only supported as a client, not as a server: see https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
   - libsoup-3.0-0:amd64 (installed version: 3.2.3-0+deb12u2)
