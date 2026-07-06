@@ -159,3 +159,13 @@ The following packages found on this system are affected by this:
 * Source:libsoup2.4
   - libsoup2.4-1:amd64 (installed version: 2.74.3-1+deb12u1)
   - libsoup2.4-common (installed version: 2.74.3-1+deb12u1)
+
+
+# FIXME REMOVE THIS AFTER SEPTEMBER 2027
+# In Debian 12 we ship vlc, which needs ffpmeg/libavformat, which needs vlc's librist, which needs libmbedtls.
+# In Debian 14, librist is fixed to remove the libmbedtls junk:
+# https://sources.debian.org/src/librist/0.2.18%2Bdfsg-1/debian/changelog#L36
+# We could maybe backport that or something, but for now we'll just ignore ANYTHING pulling in an unsupported TLS library (sigh)...
+* Source:mbedtls, ended on 2026-06-12 at version 2.16.9-0.1+deb11u4
+  Details: Crypto library difficult to support in the long term; see: https://bugs.debian.org/1138294
+  - libmbedcrypto7:amd64 (installed version: 2.28.3-1)
