@@ -188,7 +188,8 @@ applications = [
     "allure",                   # Games > Other > Allure of the Stars
     "dangen",                   # Games > Arcade > Dangen
     "numptyphysics",            # Games > Logic > Crayon Physics clone
-    "gnucash", "gnucash-docs",  # Office > Finance Management
+# gnucash → src:webkit2gtk, lacks Debian 12 security updates after July 2026
+#    "gnucash", "gnucash-docs",  # Office > Finance Management
     "pybik",                    # Games > Other > Rubik’s Cube
     "lightsoff",                # Games > Logic > Lights Off
     "kobodeluxe",               # Games > Arcade > Bosconian clone
@@ -236,7 +237,8 @@ applications = [
     "inkscape", "inkscape-tutorials",
     "marble-qt", "marble-plugins",
     "kgeography",
-    "gnucash", "gnucash-docs",
+# gnucash → src:webkit2gtk, lacks Debian 12 security updates after July 2026
+#    "gnucash", "gnucash-docs",  # Office > Finance Management
     "gelemental",
     "pysiogame",
     "gbrainy",
@@ -258,7 +260,8 @@ applications = [
     "gnome-mines",
     "klavaro",
     "kgeography",
-    "gnucash", "gnucash-docs",
+# gnucash → src:webkit2gtk, lacks Debian 12 security updates after July 2026
+#    "gnucash", "gnucash-docs",  # Office > Finance Management
     "pysiogame",
     "gbrainy",
 ]
@@ -293,7 +296,8 @@ applications = [
     # https://bugs.debian.org/936298
     # childsplay
     "knavalbattle",
-    "gnucash", "gnucash-docs",
+# gnucash → src:webkit2gtk, lacks Debian 12 security updates after July 2026
+#    "gnucash", "gnucash-docs",  # Office > Finance Management
     "gelemental",
     "pysiogame",
     "gbrainy",
@@ -337,7 +341,8 @@ applications = [
     # https://bugs.debian.org/936298
     # childsplay
     "knavalbattle",
-    "gnucash", "gnucash-docs",
+# gnucash → src:webkit2gtk, lacks Debian 12 security updates after July 2026
+#    "gnucash", "gnucash-docs",  # Office > Finance Management
     "gelemental",
     "pysiogame",
     "gbrainy",
@@ -443,7 +448,8 @@ applications = [
     "inkscape", "inkscape-tutorials",
     "marble-qt", "marble-plugins",
     "kgeography",
-    "gnucash", "gnucash-docs",
+# gnucash → src:webkit2gtk, lacks Debian 12 security updates after July 2026
+#    "gnucash", "gnucash-docs",  # Office > Finance Management
     "pysiogame",
     "gbrainy",
     # FIXME: tagainijisho not available in Debian 11 (depends on Qt4)
