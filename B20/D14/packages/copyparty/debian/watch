@@ -1,3 +1,9 @@
+# Old version Debian 13 understands
+# version=4
+# opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@(@ARCHIVE_EXT@)%@PACKAGE@-$1$2%" \
+#     https://github.com/9001/copyparty/tags \
+#     (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@
+#
 # https://manpages.debian.org/testing/devscripts/debian-watch.5.en.html#GitLab
 # Requires uscan 2.26 (devscripts/trixie-backports) or later.
 # uscan 2.25 (devscripts/trixie) will mis-diagnose this as a "version 1" file format.
@@ -5,10 +11,3 @@ Version: 5
 Template: GitHub
 Owner: 9001
 Project: copyparty
-
-
-# Old version Debian 13 understands
-# version=4
-# opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@(@ARCHIVE_EXT@)%@PACKAGE@-$1$2%" \
-#     https://github.com/9001/copyparty/tags \
-#     (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@

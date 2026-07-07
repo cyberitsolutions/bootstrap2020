@@ -9,6 +9,18 @@ Build-Depends:
  pybuild-plugin-pyproject,
 # https://salsa.debian.org/python-team/tools/dh-python/-/blob/7.20260309/README.rst?ref_type=tags#requested-interpreters
  python3,
+# FIXME: v1.20.14..v1.20.17 upgrade now fails like this, but
+#        I'm trying to use flit, not setuptools, and these pyproject.toml lines didn't change!
+#        So why is this failing?  Do I need to add build-depends here for no reason?
+#
+#            $ python3.13 -m build --skip-dependency-check --no-isolation --wheel --outdir /X/Y/.pybuild/cpython3_3.13_copyparty
+#            pyproject_hooks._impl.BackendUnavailable: Cannot import 'setuptools.build_meta'
+#
+#        And then after adding Build-Depends: python3-setuptools,
+#
+#            ModuleNotFoundError: No module named 'jinja2'
+ python3-setuptools,
+ python3-jinja2,
 Standards-Version: 4.7.4
 Rules-Requires-Root: no
 

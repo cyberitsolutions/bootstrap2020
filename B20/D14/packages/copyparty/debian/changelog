@@ -1,3 +1,9 @@
+copyparty (1.20.17-0~PrisonPC2) forky; urgency=medium
+
+  * Fix https://github.com/9001/copyparty/security/advisories/GHSA-x5pq-m9p8-f4vx
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 08 Jul 2026 08:30:29 +1000
+
 copyparty (1.20.14-0~PrisonPC1) forky; urgency=medium
 
   * Initial Debianization
