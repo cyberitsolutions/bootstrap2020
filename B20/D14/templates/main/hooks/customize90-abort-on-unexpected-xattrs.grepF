@@ -5,3 +5,11 @@ https://github.com/systemd/systemd/blob/v252/tmpfiles.d/systemd.conf.in#L42-L44
 # file: var/log/journal
 system.posix_acl_access=0sAgAAAAEABwD/////BAAFAP////8IAAUABAAAABAABQD/////IAAFAP////8=
 system.posix_acl_default=0sAgAAAAEABwD/////BAAFAP////8IAAUABAAAABAABQD/////IAAFAP////8=
+
+In Debian 14, there are new xattrs for tpm.
+These are coming from systemd → systemd-tpm → tpm-udev.
+This is initially a hard Depends but is expected to become a Recommends later.
+Until that happens, though, we can ignore it for the same reasons as /var/log/journal, above.
+# file: run/tpm2-tss/eventlog
+# file: var/lib/tpm2-tss/system/keystore
+system.posix_acl_default=0sAgAAAAEABwD/////BAAHAP////8IAAcA5AMAABAABwD/////IAAFAP////8=
