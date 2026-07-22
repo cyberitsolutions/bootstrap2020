@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 import argparse
 import configparser
+import csv
+import json
 import logging
 import os
 import pathlib
 import subprocess
+import sys
 import time
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--menuconfig', action='store_true')
@@ -98,15 +100,6 @@ pathlib.Path('.version').write_text(str(int(time.time())))
 subprocess.check_call(['sed', '-rsi', r's/^(CONFIG_.*[a-z].*)=m$/# \1 is not set/', '.config'])
 
 
-# NOTE: From 2016 to 2018 we did "--disable modules" and forced all =m to =y.
-#       This was done as a defense-in-depth security feature.
-#       This SOMEHOW broke DVD scanning.
-#       Discs inserted before boot were scanned.
-#       Discs inserted after boot didn't trigger CHANGE events in "udevadm monitor".
-#       The problem occurred in AT LEAST 4.13, 4.16, 4.17.
-#       --twb, Nov 2018
-#       https://alloc.cyber.com.au/task/task.php?taskID=24362
-#       https://alloc.cyber.com.au/task/task.php?taskID=32037
 subprocess.check_call([
     'scripts/config',
     '--set-str', 'build_salt', '',  # SHUT THE FUCK UP ABOUT THIS!
@@ -128,12 +121,22 @@ subprocess.check_call([
     # NOTE: this was wrongly using "magic_sysrq_enable" and
     #       therefore NEVER worked in the bootstrap/git Debian 7/8/9 era!
     '--set-val', 'magic_sysrq_default_enable', '0x0',
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L567
+    '--set-val', 'arch_mmap_rnd_bits', '32',
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L228-L236
+    # https://kspp.github.io/Recommended_Settings#:~:text=Keep%20root%20from%20altering%20kernel%20memory%20via%20loadable%20modules
+    '--set-str', 'module_sig_hash', 'sha3_512',
+    '--set-str', 'module_sig_key', 'certs/signing_key.pem',
+    '--set-str', 'module_sig_hash', 'sha3_512',
+    '--set-str', 'system_trusted_keys', '',
+    '--set-str', 'unused_ksyms_whitelist', '',
     *[arg
       for word in policy['MUST NOT'] | policy['SHOULD NOT']
       for arg in ('--disable', word)],
     *[arg
       for word in policy['MUST'] | policy['SHOULD']
       for arg in ('--enable', word)]])
+
 
 if args.menuconfig:
     subprocess.check_call(['make', 'syncconfig'])
@@ -169,6 +172,7 @@ naughty_substrings = [
 # This bits us for a very small list of LEGITIMATE things that match.
 # Add an explicit hacky workaround for that here.
 naughty_word_exact_exception_allowlist = {
+    'ASYMMETRIC_PUBLIC_KEY_SUBTYPE',  # needed for security_lockdown_lsm
     'CC_HAS_IBT', 'X86_KERNEL_IBT'}
 
 # Every MUST should match!
@@ -185,6 +189,104 @@ if enabled_naughty_words := {
                for s in naughty_substrings)
         if word not in naughty_word_exact_exception_allowlist}:
     raise RuntimeError('ERROR: VERY naughty module(s) found!', enabled_naughty_words)
+
+accepted_risks = {
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L511
+    # https://github.com/systemd/systemd/blob/v261/README#L121-L122
+    # https://github.com/cyberitsolutions/bootstrap2020/search?q=PrivateUsers=yes
+    'CONFIG_USER_NS',
+
+    # We opt out of this because it depends on parts of the cryptography system, and
+    # "no unnecessary crypto" is part of the high-level policy.
+    #   security_lockdown_lsm
+    #   --depends--> module_sig
+    #   --depends--> module_sig_format
+    #   --depends--> system_data_verification
+    #   --depends--> crypto_rsa
+    #   --depends--> crypto_manager
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L511
+    # UPDATE: we instead will try disabling CONFIG_MODULE entirely (no .ko at all).
+    # 'CONFIG_SECURITY_LOCKDOWN_LSM_EARLY',
+    # 'CONFIG_SECURITY_LOCKDOWN_LSM',
+    # 'CONFIG_MODULE_SIG_FORMAT',
+
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L41
+    # https://kspp.github.io/Recommended_Settings#:~:text=Instead%20of%20%22slub_debug=P%22
+    # I think we don't need SLUB_DEBUG because have
+    # INIT_ON_ALLOC_DEFAULT_ON and INIT_ON_FREE_DEFAULT_ON. --twb, July 2026
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/issues/226
+    'CONFIG_SLUB_DEBUG',
+
+    # https://kspp.github.io/Recommended_Settings#:~:text=CONFIG_STATIC_USERMODEHELPER
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L191
+    # Won't work on Debian until Debian has something like https://github.com/tych0/huldufolk
+    'CONFIG_STATIC_USERMODEHELPER',
+
+    # kernel-hardening-checker wants X86_INTEL_TSX_MODE_OFF (always off).
+    # I think it is reasonable to compromise on _AUTO (on iff no known exploits).
+    'CONFIG_X86_INTEL_TSX_MODE_OFF',
+
+    # Debian uses gcc not clang, so clang-only options can't be used.
+    'CONFIG_CFI_CLANG',
+    'CONFIG_CFI_PERMISSIVE',
+    'CONFIG_CFI_AUTO_DEFAULT',
+
+    # IPAddressDeny=any is a security feature used in e.g. upower.service.
+    'CONFIG_BPF_SYSCALL',
+
+    # PrisonPC inmate desktops (currently) lack TPM hardware entirely.
+    # Therefore, while HW_RANDOM_TPM *would* be desirable if we had the hardware,
+    # currently it would just pull in crypto modules for no benefit.
+    # FIXME: reconsider this in 2030, by which time PrisonPC dektops will probably have TPMs.
+    'CONFIG_HW_RANDOM_TPM',
+
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/issues/225
+    'CONFIG_LSM_MMAP_MIN_ADDR',
+
+    # systemd wants CONFIG_KCMP so it can tell if two file descriptors are owned by the same process, or something.
+    # The code comments seem to imply that there is NO REAL BENEFIT to doing this via kcmp, and the fallback is adequate.
+    # But I'm a bit paranoid that disabling kcmp (to reduce the attack surface) will inadvertently reduce systemd's hardening.
+    # Therefore, accept the risk of KCMP, for now. --twb, July 2026
+    'CONFIG_KCMP',
+
+    # I think AIO and io_uring are "modern" forms of I/O.
+    # I have not confirmed 100% that any apps on inmate desktops benefit from them, but
+    # I think it is reasonable to assume chromium at least wants them, and
+    # they are a relatively benign attack surface to include. --twb, August 2026
+    'CONFIG_AIO',
+    'CONFIG_IO_URING',
+
+    # I think rseq is a way to say "what CPU core was I on before?" efficiently, or something?
+    # I doubt we need this, but 1-socket inmate machines are still multithreaded (because hyperthreading).
+    # Since I can't be arsed digging for more info about who is using this, continue to allow it for now. --twb, August 2026
+    'CONFIG_RSEQ',
+
+    # With CONFIG_VT=n, the Debian 12 detainee SOE reboots before plymouth or xdm show up on screen.
+    # I am not sure exactly what requires CONFIG_VT but leave it in for now.
+    'CONFIG_VT',
+
+    # With CONFIG_MODULES=n, the Debian 12 detainee SOE cannot "see" when a DVD is inserted/ejected.
+    # The kernel does not issue change events for /dev/sr0.
+    'CONFIG_MODULES',
+}
+if unaccepted_risks := [
+        row for row in json.loads(subprocess.check_output([
+            'kernel-hardening-checker', '--mode=json', '--config=.config']))
+        if row["check_result_bool"] is not True       # skip non-risks
+        if row["option_name"] not in accepted_risks]:  # skip accepted risks
+    print('Unacceptable risks reported by kernel-hardening-checker! (writing /risks.tsv now)', flush=True)
+    if False:                   # FIXME: make False in prod
+        dw = csv.DictWriter(sys.stdout, dialect='excel-tab', fieldnames=unaccepted_risks[0].keys())
+        dw.writeheader()
+        dw.writerows(unaccepted_risks)
+        sys.stdout.flush()
+    else:
+        with pathlib.Path('/risks.tsv').open('wt') as f:
+            dw = csv.DictWriter(f, dialect='excel-tab', fieldnames=unaccepted_risks[0].keys())
+            dw.writeheader()
+            dw.writerows(unaccepted_risks)
+    exit(os.EX_CONFIG)
+
 
 ############################################################
 # Do the actual compile at last.

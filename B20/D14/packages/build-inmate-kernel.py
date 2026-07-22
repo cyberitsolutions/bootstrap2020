@@ -233,6 +233,7 @@ with tempfile.TemporaryDirectory() as td_str:
             '--customize-hook=chroot $1 apt source linux --quiet']),
 
          '--include=python3',
+         '--include=kernel-hardening-checker',
          '--customize-hook=copy-in build-inmate-kernel.ini /',
          '--customize-hook=copy-in build-inmate-kernel-inner.py /',
          '--customize-hook=chroot $1 env -i TERM="$TERM" PATH=/bin:/sbin python3 build-inmate-kernel-inner.py --menuconfig || chroot $1 bash'
