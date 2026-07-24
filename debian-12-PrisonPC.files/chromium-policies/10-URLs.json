@@ -47,6 +47,13 @@
         // Ron won't let me block file:// and wait for complaints. --twb, Jan 2014
         "file://*",
 
+        // Chili3D (& ppcadm in future) use blob: URLs for saving data generated in Javascript and <canvas> contents
+        // This does NOT help Chromium get more data from the internet.
+        // This only helps get in-memory data from Javascript out to Chromium internals.
+        // Most often used to "download" data already in memory,
+        // another common use is to render in-memory data to a <video> player without a custom player
+        "blob:*",
+
         // And allow http/https.  squid will manage access within these protocols.
         "http://*",
         "https://*"
