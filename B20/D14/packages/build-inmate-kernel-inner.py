@@ -136,11 +136,12 @@ subprocess.check_call([
       for arg in ('--enable', word)]])
 
 if args.menuconfig:
+    subprocess.check_call(['make', 'syncconfig'])
     subprocess.check_call(['cp', '-vT', '.config', '.config.before'])
     subprocess.check_call(['make', 'MENUCONFIG_COLOR=blackbg', 'menuconfig'])
     # Show exactly what "make menuconfig" actually changed.
     # A human can then transcribe as appropriate into the policy .ini.
-    subprocess.call(['git', 'diff', '--no-index', '--color', '-U0', '.config', '.config.before'])
+    subprocess.call(['git', 'diff', '--no-index', '--color', '-U0', '.config.before', '.config'])
     # Abort here, since this is an "investigation" build, not a "build" build.
     exit(os.EX_CONFIG)
 
