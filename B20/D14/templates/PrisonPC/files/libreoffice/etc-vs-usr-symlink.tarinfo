@@ -1,0 +1,10 @@
+# In Debian, LibreOffice 7.0 through 25.1 used /etc/libreoffice/registry/*.xcd
+# which was created at install time from templates in /usr/lib/libreoffice/share/.registry/.
+# Older versions used /usr/lib/libreoffice/share/registry/.
+# Newer versions use /usr/lib/libreoffice/share/registry/ with a symlink for main.xcd only.
+# This caused our config file to be silently ignored.
+# Therefore create a symlink of our own.
+# This should protect us if the behaviour changes again.
+# --twb, August 2026
+name = "usr/lib/libreoffice/share/registry/PrisonPC-main.xcd"
+linkpath = "/etc/libreoffice/registry/PrisonPC-main.xcd"
