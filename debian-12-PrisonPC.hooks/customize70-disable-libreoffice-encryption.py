@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import hashlib
+import itertools
 import logging
 import pathlib
 import subprocess
@@ -99,16 +100,14 @@ shit_flags = frozenset({
     'PASSWORDTOMODIFY'})
 read_write = frozenset({
     # Current MS Office formats
-    "Calc MS Excel 2007 Binary",               # xlsx
-    "Calc MS Excel 2007 VBA XML",              # xlsm?
-    "Calc MS Excel 2007 XML Template",         # xltx
-    "Calc MS Excel 2007 XML",                  # xlsx
-    "Impress MS PowerPoint 2007 XML AutoPlay",  # pptx?
-    "Impress MS PowerPoint 2007 XML Template",  # pptx?
-    "Impress MS PowerPoint 2007 XML",           # pptx
-    "MS Word 2007 XML",                         # docx
-    "MS Word 2007 XML Template",                # dotx
-    "Visio Document",                           # vsd &c
+    "Calc Office Open XML",              # xlsx xlsm
+    "Calc Office Open XML Template",     # xltx xltm
+    "Impress Office Open XML",           # pptx pptm
+    "Impress Office Open XML Template",  # potx potm
+    "Impress Office Open XML AutoPlay",  # ppsx
+    "Office Open XML Text",              # docx docm
+    "Office Open XML Text Template",     # dotx dotm
+    "Visio Document",                    # vdx vsd vsdm vsdx vstx (FIXME: is Visio still current?)
     # Current ODF formats
     "calc8",                          # ods
     "calc8_template",                 # ots
@@ -149,6 +148,17 @@ read_write = frozenset({
 read_only = frozenset({
     # OLD Microsoft formats can be read, but
     # must must Save As to current format.
+    # 2007 MS Office formats
+    "Calc MS Excel 2007 Binary",               # xlsx
+    "Calc MS Excel 2007 VBA XML",              # xlsm?
+    "Calc MS Excel 2007 XML Template",         # xltx
+    "Calc MS Excel 2007 XML",                  # xlsx
+    "Impress MS PowerPoint 2007 XML AutoPlay",  # pptx?
+    "Impress MS PowerPoint 2007 XML Template",  # pptx?
+    "Impress MS PowerPoint 2007 XML",           # pptx
+    "MS Word 2007 XML",                         # docx
+    "MS Word 2007 XML Template",                # dotx
+    # Older than 2007 MS Office formats
     "MS Excel 2003 XML Orcus",      # xlsx (old!)
     "MS Excel 97 Vorlage/Template",  # xls
     "MS Excel 97",                   # xls
@@ -190,6 +200,7 @@ def same_checksum(path1: pathlib.Path, path2: pathlib.Path) -> bool:
 
 # logging.basicConfig(level=logging.INFO)  # DEBUGGING
 
+at_least_one_meaningful_change = False
 
 # Sigh, register_namespace only helps with printing, not findall() :-(
 namespaces = {
@@ -200,14 +211,24 @@ namespaces = {
 for k, v in namespaces.items():
     xml.etree.ElementTree.register_namespace(k, v)
 
-# NOTE: libreoffice 7.0 and later use
+# NOTE: libreoffice 7.0 through 25.1 used
 #       /etc/libreoffice/registry/*.xcd
-#       which is created at install time from templates in
+#       which was created at install time from templates in
 #       /usr/lib/libreoffice/share/.registry/.
 #       Older versions used /usr/lib/libreoffice/share/registry/.
-config_root = args.chroot_path / 'etc/libreoffice/registry'
-template_root = args.chroot_path / 'usr/lib/libreoffice/share/.registry'
-for xcd_path in config_root.glob('**/*.xcd'):
+#       Newer versions use /usr/lib/libreoffice/share/registry/,
+#       with a symlink for main.xcd only.
+etc_root = args.chroot_path / 'etc/libreoffice/registry'  # main.xcd
+usr_root = args.chroot_path / 'usr/lib/libreoffice/share/registry'  # everything else
+for xcd_path in itertools.chain(etc_root.glob('**/*.xcd'),
+                                usr_root.glob('**/*.xcd')):
+
+    # If it's a symlink, skip it.
+    # This mainly applies to /usr/lib/libreoffice/share/registry/main.xcd.
+    # Don't use readlink() as we're not chroot(2)ed.
+    if xcd_path.is_symlink():
+        logging.info('Skipping symlink %s', xcd_path)
+        continue
 
     # Localization configs set
     #     org.openoffice.TypeDetection.Filter.Filters.*.UIName
@@ -218,6 +239,16 @@ for xcd_path in config_root.glob('**/*.xcd'):
         logging.info('Skipping localization file %s', xcd_path)
         continue
 
+    # As /usr/lib/libreoffice/share/.registry/
+    # no longer has an upstream backup of every file,
+    # make our own temporary one
+    # FIXME: use .copy() in Python 3.14+
+    backup_xcd_path = xcd_path.with_suffix('.xcd.~1~')
+    backup_xcd_path.write_bytes(xcd_path.read_bytes())
+
+    # NOTE: python xml.etree.ElementTree does not support XPath 1.0+ [a or b].
+    #       So as a workaround we simply have two separate xpath queries.
+    #       https://docs.python.org/3/library/xml.etree.elementtree.html#supported-xpath-syntax
     tree = xml.etree.ElementTree.parse(xcd_path)
     node_xpaths = {
         './/oor:component-data[@oor:name="Filter"]/node[@oor:name="Filters"]/node',  # odt, docx, &c
@@ -237,12 +268,14 @@ for xcd_path in config_root.glob('**/*.xcd'):
         # Remove read and/or write.
         if name not in read_write:
             new_flags -= {'EXPORT'}
-        elif name not in read_write | read_only:
+        if name not in read_write | read_only:
             new_flags -= {'IMPORT'}
         if old_flags != new_flags:
-            logging.info('%s: kill %s', name, old_flags - new_flags)
             # Commit change back to in-memory XML structure
-            flags_node.text = ' '.join(new_flags)
+            flags_node.text = ' '.join(sorted(new_flags))
+            logging.info('kill %s: %s → %s', name, sorted(old_flags - new_flags), sorted(new_flags))
+        else:
+            logging.info('keep %s: %s', name, sorted(old_flags))
 
     # Commit XML tree back to disk.
     with xcd_path.open('w') as f:
@@ -257,5 +290,9 @@ for xcd_path in config_root.glob('**/*.xcd'):
             from_file=xcd_path,
             qname_aware_attrs={f'{{{namespaces["oor"]}}}type'}))
 
-if False:                       # DEBUGGING:
-    subprocess.call(['git', '--no-pager', 'diff', '--stat', '-w', template_root, config_root])
+    if not same_checksum(xcd_path, backup_xcd_path):
+        at_least_one_meaningful_change = True
+    backup_xcd_path.unlink()
+
+if not at_least_one_meaningful_change:
+    raise RuntimeError('Failed to edit any XML files -- did the paths move again?!')

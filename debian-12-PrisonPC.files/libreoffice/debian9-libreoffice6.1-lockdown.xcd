@@ -106,7 +106,7 @@
     <node oor:name="Office">
       <node oor:name="Factories">
         <node oor:name="com.sun.star.sheet.SpreadsheetDocument" oor:op="fuse">
-          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Calc MS Excel 2007 XML</value></prop>
+          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Calc Office Open XML</value></prop>
         </node>
       </node>
     </node>
@@ -115,7 +115,7 @@
     <node oor:name="Office">
       <node oor:name="Factories">
         <node oor:name="com.sun.star.presentation.PresentationDocument" oor:op="fuse">
-          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Impress MS PowerPoint 2007 XML</value></prop>
+          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Impress Office Open XML</value></prop>
         </node>
       </node>
     </node>
@@ -124,7 +124,7 @@
     <node oor:name="Office">
       <node oor:name="Factories">
         <node oor:name="com.sun.star.text.TextDocument" oor:op="fuse">
-          <prop oor:name="ooSetupFactoryDefaultFilter"><value>MS Word 2007 XML</value></prop>
+          <prop oor:name="ooSetupFactoryDefaultFilter"><value>Office Open XML Text</value></prop>
         </node>
       </node>
     </node>
