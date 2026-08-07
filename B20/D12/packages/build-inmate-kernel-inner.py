@@ -123,6 +123,13 @@ subprocess.check_call([
     # NOTE: this was wrongly using "magic_sysrq_enable" and
     #       therefore NEVER worked in the bootstrap/git Debian 7/8/9 era!
     '--set-val', 'magic_sysrq_default_enable', '0x0',
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/blob/v0.6.17.1/kernel_hardening_checker/checks.py#L567
+    '--set-val', 'arch_mmap_rnd_bits', '32',
+    '--set-str', 'module_sig_hash', 'sha3_512',
+    '--set-str', 'module_sig_key', 'certs/signing_key.pem',
+    '--set-str', 'module_sig_hash', 'sha3_512',
+    '--set-str', 'system_trusted_keys', '',
+    '--set-str', 'unused_ksyms_whitelist', '',
     *[arg
       for word in policy['MUST NOT'] | policy['SHOULD NOT']
       for arg in ('--disable', word)],
@@ -163,6 +170,7 @@ naughty_substrings = [
 # This bits us for a very small list of LEGITIMATE things that match.
 # Add an explicit hacky workaround for that here.
 naughty_word_exact_exception_allowlist = {
+    'ASYMMETRIC_PUBLIC_KEY_SUBTYPE',  # needed for security_lockdown_lsm
     'CC_HAS_IBT', 'X86_KERNEL_IBT'}
 
 # Every MUST should match!
