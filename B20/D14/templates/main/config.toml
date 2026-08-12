@@ -1,6 +1,12 @@
 include = [
     # Vital packages
     'live-boot',
+    # update-initramfs: Generating /boot/initrd.img-7.1.7+deb14-amd64
+    # mkinitramfs: copy_file: binary '/sbin/losetup' not found
+    # $ apt-file search bin/losetup ==> klibc-utils: /usr/lib/klibc/bin/losetup; mount: /usr/sbin/losetup
+    # Prior to Debian 14, systemd--depends-->mount was keeping mount installed:
+    # "* systemd: downgrade systemd-tpm and mount to recommends." --bluca, 13 Jul 2026
+    'mount',                    # needed for live-boot now I guess???
     'init',                     # https://bugs.debian.org/993289
     'zstd',                     # for initramfs-tools-core
     'netbase',                  # https://bugs.debian.org/995343 et al
