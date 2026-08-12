@@ -228,7 +228,9 @@ def mmdebstrap_but_zstd(args):
              # Rather than piping through "mmtarfilter --pax-exclude=SCHILY.xattr.system.*",
              # just remove the one dir that has the problem.
              # UPDATE: in D14, there's a second dir.,
-             '--customize-hook=rmdir $1/var/lib/tpm2-tss/system/keystore && mkdir $1/var/lib/tpm2-tss/system/keystore',
+             # UPDATE: before D14 released, systemd --depends--> systemd-tpm was downgraded to recommend.
+             #         So this is moot again.
+             # '--customize-hook=rmdir $1/var/lib/tpm2-tss/system/keystore && mkdir $1/var/lib/tpm2-tss/system/keystore',
              '--customize-hook=rmdir $1/var/log/journal && mkdir $1/var/log/journal'],
             stdout=subprocess.PIPE) as mmdebstrap_proc:
         # https://gitlab.mister-muffin.de/josch/mmdebstrap/src/tag/1.3.7/mmdebstrap#L6096-L6102
