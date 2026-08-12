@@ -178,6 +178,7 @@ def maybe_enable_backdoor_access():
         return []
     return [
         # Let root login with no password.
+        '--include=passwd adduser',
         '--customize-hook=echo root: | chroot $1 chpasswd --crypt-method=NONE',
         # Because GUI logins (e.g. xdm) disallow root and disallow empty passwords,
         # create a user "x" with a password "x".
