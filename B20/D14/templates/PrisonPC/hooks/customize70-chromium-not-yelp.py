@@ -82,6 +82,35 @@ def packages():
             for line in stdout.splitlines()}
 
 
+# Work around a bug in sound-juicer where they ship *.docbook but not the included legal.xml file.
+stub_paths = [
+    "/usr/share/help/C/sound-juicer/legal.xml",
+    "/usr/share/help/ar/sound-juicer/legal.xml",
+    "/usr/share/help/ca/sound-juicer/legal.xml",
+    "/usr/share/help/cs/sound-juicer/legal.xml",
+    "/usr/share/help/de/sound-juicer/legal.xml",
+    "/usr/share/help/el/sound-juicer/legal.xml",
+    "/usr/share/help/en_GB/sound-juicer/legal.xml",
+    "/usr/share/help/es/sound-juicer/legal.xml",
+    "/usr/share/help/eu/sound-juicer/legal.xml",
+    "/usr/share/help/fr/sound-juicer/legal.xml",
+    "/usr/share/help/ja/sound-juicer/legal.xml",
+    "/usr/share/help/nl/sound-juicer/legal.xml",
+    "/usr/share/help/oc/sound-juicer/legal.xml",
+    "/usr/share/help/pl/sound-juicer/legal.xml",
+    "/usr/share/help/pt_BR/sound-juicer/legal.xml",
+    "/usr/share/help/ru/sound-juicer/legal.xml",
+    "/usr/share/help/sl/sound-juicer/legal.xml",
+    "/usr/share/help/sv/sound-juicer/legal.xml",
+    "/usr/share/help/uk/sound-juicer/legal.xml",
+    "/usr/share/help/zh_CN/sound-juicer/legal.xml",
+]
+for stub_path in list(map(pathlib.Path, stub_paths)):
+    if stub_path.parent.exists():
+        if not stub_path.exists():
+            stub_path.write_text('')
+
+
 # To a first approximation, /usr/share/help is ONLY used by gnome-games.
 # To a first approximation, /usr/share/doc/HTML/ is ONLY used by KDE apps.
 # FIXME: --xinclude was enough to fix docbook, but not mallard.
@@ -90,7 +119,8 @@ def packages():
 if search_dirs:
     packages_old = packages()
     subprocess.check_call([
-        'chronic', 'chroot', args.chroot_path,
+        #'chronic',
+ 'chroot', args.chroot_path,
         'apt', 'install', '--mark-auto', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
@@ -111,7 +141,7 @@ if search_dirs:
     subprocess.check_call([
         'chroot', args.chroot_path,
         'find', '-O3', *search_dirs, '-xdev',
-        '-name', 'index.docbook', '-delete',
+        '-name', 'index.docbook', '-delete', ',',
         '-name', '*.xml', '-delete', ',',
         '-name', '*.page', '-delete'])
 
@@ -128,7 +158,8 @@ if search_dirs:
     #
     # UPDATE: this happened with Recommends also -- Inkscape recommends python3-lxml now.
     subprocess.check_call([
-        'chronic', 'chroot', args.chroot_path,
+        #'chronic',
+ 'chroot', args.chroot_path,
         'apt', 'autoremove', '--assume-yes', '--purge',
         # fix autoremove
         '-o', 'APT::AutoRemove::SuggestsImportant=0',
