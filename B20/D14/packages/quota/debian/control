@@ -16,6 +16,7 @@ Build-Conflicts:
  libwrap0-dev,
 Standards-Version: 4.7.0
 Homepage: http://sourceforge.net/projects/linuxquota
+Rules-Requires-Root: no
 
 Package: quota
 Provides: nfs-client-quota

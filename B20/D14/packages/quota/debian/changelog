@@ -1,9 +1,9 @@
-quota (4.09-1+b2+PrisonPC6) forky; urgency=medium
+quota (4.11-1+PrisonPC7) forky; urgency=medium
 
   * Bump for Debian 14.
     Merge in relevant upstream changes.
 
- -- Trent W. Buck <trentbuck@gmail.com>  Wed, 08 Apr 2026 07:25:12 +1000
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 12 Aug 2026 12:44:19 +1000
 
 quota (4.06-1+b2+PrisonPC5) bookworm; urgency=medium
 
