@@ -90,6 +90,9 @@ otherosfs	libcdio	libcdio-utils
 oldlibs	gtk\+2.0	libgtk2.0-0t64
 oldlibs	gtk\+2.0	libgtk2.0-common
 oldlibs	gtk\+2.0	gtk2-engines-pixbuf
+# libcurl3 is an "oldlibs" I guess because libcurl4 API has been around for ages?
+# loupe → libgweather-4-0t64 → libgweather-4-0t64 → libsoup-3.0-0 → glib-networking → libproxy1v5 → libcurl3t64-gnutls
+oldlibs	curl	libcurl3t64-gnutls
 # Expected firmwares, see doc/firmware-policy.csv and prisonpc-ersatz for discussion
 non-free-firmware/admin		amd64-microcode
 non-free-firmware/admin		intel-microcode
@@ -102,6 +105,11 @@ non-free-firmware/kernel	firmware-sof	firmware-sof-signed
 kernel	firmware-free	firmware-linux-free
 # singularity → python3-numpy → python3-numpy-dev
 python	numpy	python3-numpy-dev
+# Only staff should get this, but we accept it here for all VMs.
+otherosfs		ntfs-3g
+# Only --boot-test and staff should get this, but we accept it here for all VMs.
+# It is used to auto-resize the guest's Xorg when the host's window SIGWINCHes.
+otherosfs	qemu	qemu-guest-agent
 """.strip().splitlines()
 if s and not s.startswith('#'))
 
