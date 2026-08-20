@@ -82,33 +82,11 @@ def packages():
             for line in stdout.splitlines()}
 
 
-# Work around a bug in sound-juicer where they ship *.docbook but not the included legal.xml file.
-stub_paths = [
-    "/usr/share/help/C/sound-juicer/legal.xml",
-    "/usr/share/help/ar/sound-juicer/legal.xml",
-    "/usr/share/help/ca/sound-juicer/legal.xml",
-    "/usr/share/help/cs/sound-juicer/legal.xml",
-    "/usr/share/help/de/sound-juicer/legal.xml",
-    "/usr/share/help/el/sound-juicer/legal.xml",
-    "/usr/share/help/en_GB/sound-juicer/legal.xml",
-    "/usr/share/help/es/sound-juicer/legal.xml",
-    "/usr/share/help/eu/sound-juicer/legal.xml",
-    "/usr/share/help/fr/sound-juicer/legal.xml",
-    "/usr/share/help/ja/sound-juicer/legal.xml",
-    "/usr/share/help/nl/sound-juicer/legal.xml",
-    "/usr/share/help/oc/sound-juicer/legal.xml",
-    "/usr/share/help/pl/sound-juicer/legal.xml",
-    "/usr/share/help/pt_BR/sound-juicer/legal.xml",
-    "/usr/share/help/ru/sound-juicer/legal.xml",
-    "/usr/share/help/sl/sound-juicer/legal.xml",
-    "/usr/share/help/sv/sound-juicer/legal.xml",
-    "/usr/share/help/uk/sound-juicer/legal.xml",
-    "/usr/share/help/zh_CN/sound-juicer/legal.xml",
-]
-for stub_path in list(map(pathlib.Path, stub_paths)):
-    if stub_path.parent.exists():
-        if not stub_path.exists():
-            stub_path.write_text('')
+# Work around https://bugs.debian.org/1144896
+for path in (args.chroot_path / 'usr/share/help').glob('**/**/sound-juicer/index.docbook'):
+    path.write_text(path.read_text()
+                    .replace('<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="legal.xml"/>', '')  # everything else
+                    .replace('<xi:include href="legal.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>', ''))  # /C/
 
 
 # To a first approximation, /usr/share/help is ONLY used by gnome-games.
