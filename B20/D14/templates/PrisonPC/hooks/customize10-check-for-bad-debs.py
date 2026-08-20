@@ -113,13 +113,17 @@ otherosfs	qemu	qemu-guest-agent
 """.strip().splitlines()
 if s and not s.startswith('#'))
 
-# Normally you get "X\tY\tZ".
-# But if there is a binNMU, then you get "X\tY (V)\tZ".
+# Normally you get "X\tY\tZ" if Y≠Z, or "X\t\tZ" if X=Y.
+# But if there is a binNMU, both become "X\tY (V)\tZ".
+# Since we never care about the version number, remove it.
 # We never care about this version number stuff, so remove it before matching.
-lines = [
-    '\t'.join(word.split(' ')[0]
-              for word in line.split('\t'))
-    for line in stdout.splitlines()]
+lines = []
+for line in stdout.splitlines():
+    section, dsc, deb = line.split('\t')
+    dsc = dsc.split(' ')[0]
+    if dsc == deb:
+        dsc = ''
+    lines.append(f'{section}\t{dsc}\t{deb}')
 shit_matches = [
     line
     for line in lines
