@@ -110,8 +110,7 @@ args = parser.parse_args()
 #         ...I think.
 if 'scripts/live' not in subprocess.check_output(['chroot', args.chroot_path, 'lsinitramfs', '/initrd.img'], text=True).split():
     raise RuntimeError('initrd is fucked up')
-# subprocess.check_call(['chroot', args.chroot_path, 'update-initramfs', '-u', '-k', 'all'])  # DEBUGGING
-# subprocess.check_call(['find', args.chroot_path / 'boot', '-ls'])  # DEBUGGING
+initrd_cksum_before = subprocess.check_output(['cksum', 'initrd.img'], text=True, cwd=args.chroot_path).strip()
 subprocess.check_call(['ln', '-nsb', '/bin/true', 'usr/sbin/update-initramfs'], cwd=args.chroot_path)
 subprocess.check_call(['ln', '-nsb', '/bin/true', 'usr/bin/dracut'], cwd=args.chroot_path)
 subprocess.check_call([
@@ -205,25 +204,6 @@ subprocess.check_call([
     # '/var/log/dpkg.log',
 ])
 
-# subprocess.check_call(['find', args.chroot_path / 'boot', '-ls'])  # DEBUGGING
-# "chroot lsinitramfs" WON'T WORK because lsinitramfs got removed!
-# We need to use the host's lsinitrd and/or lsinitramfs, or fall back to a warning if neither is present...
-try:
-    # Host system has initramfs-tools installed, supports inspecting initramfs-tools
-    if 'scripts/live' not in subprocess.check_output(['lsinitramfs', args.chroot_path / 'initrd.img'], text=True).split():
-        raise RuntimeError('initrd is fucked up')
-except FileNotFoundError:
-    # Host system has dracut-core install (not necessarily using dracut itself), supports inspecting initramfs-tools OR dracut
-    # Example dracut lines:
-    #
-    #     dracut modules:
-    #     ========================================================================
-    #     drwxr-xr-x   2 root     root            0 Aug 21 02:08 .
-    #     -rwxr-xr-x   1 root     root          572 Jul 23 18:31 scripts/init-top/udev
-    #     -rwxr-xr-x   1 root     root         1180 Aug 15  2025 scripts/live
-    #     -rw-r--r--   1 root     root         5331 May 13  2025 scripts/local
-    if 'scripts/live' not in {
-            words[-1]
-            for line in subprocess.check_output(['lsinitrd', args.chroot_path / 'initrd.img'], text=True).split()
-            for words in line.split()}:
-        raise RuntimeError('initrd is fucked up')
+initrd_cksum_after = subprocess.check_output(['cksum', 'initrd.img'], text=True, cwd=args.chroot_path).strip()
+if initrd_cksum_before != initrd_cksum_after:
+    raise RuntimeError('initrd is fucked up', initrd_cksum_before, initrd_cksum_after)
