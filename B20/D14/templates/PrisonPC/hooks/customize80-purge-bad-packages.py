@@ -105,6 +105,15 @@ args = parser.parse_args()
 # This works fine except that we temporarily install tiny-initramfs, and
 # tiny-initramfs has a postinst trigger that replaces /boot/initrd.img.
 # So as a simple hack, replace mktirfs with /bin/true, so it NOPs out.
+# UPDATE: in Debian 14, we also need to replace the *outgoing* initrd builder with /bin/true.
+#         Otherwise it rebuilds the initrd after removing live-boot but before removing itself.
+#         ...I think.
+if 'scripts/live' not in subprocess.check_output(['chroot', args.chroot_path, 'lsinitramfs', '/initrd.img'], text=True).split():
+    raise RuntimeError('initrd is fucked up')
+# subprocess.check_call(['chroot', args.chroot_path, 'update-initramfs', '-u', '-k', 'all'])  # DEBUGGING
+# subprocess.check_call(['find', args.chroot_path / 'boot', '-ls'])  # DEBUGGING
+subprocess.check_call(['ln', '-nsb', '/bin/true', 'usr/sbin/update-initramfs'], cwd=args.chroot_path)
+subprocess.check_call(['ln', '-nsb', '/bin/true', 'usr/bin/dracut'], cwd=args.chroot_path)
 subprocess.check_call([
     'chroot', args.chroot_path,
     'dpkg-divert', '--quiet', '--rename', '/usr/sbin/mktirfs'])
@@ -112,6 +121,7 @@ subprocess.check_call([
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'apt', 'purge', '--autoremove', '--assume-yes',
+    '--purge',  # autoremove should also purge (not remove)
     # These firmware blobs aren't needed now the rd is built.
     'amd64-microcode', 'intel-microcode',
     # Workaround stock kernels needing *a* linux-initramfs-tool.
@@ -122,10 +132,14 @@ subprocess.check_call([
     'initramfs-tools'])
 # Safety net: if apt got confused and kept busybox,
 # dpkg will fail (due to dependencies), aborting the build.
+# UPDATE: this is no longer true for Debian 14 where busybox is not mandatory for live-initramfs...
+# But the klibc-utils dependency will still perform this protection.
+# I have added dracut-install (used by initramfs-tools) and dracut-core (used INSTEAD of initramfs-tools) for good measure.
+# --twb, April 2026
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
-    'busybox', 'klibc-utils'])
+    'busybox', 'klibc-utils', 'dracut-install', 'dracut-core'])
 
 
 # Now that all package installs are done,
@@ -135,7 +149,10 @@ subprocess.check_call([
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'dpkg', '--purge',
-    'apt', 'gpgv', 'libapt-pkg6.0', 'debian-archive-keyring',
+    'apt',
+    'sqv', 'libapt-pkg7.0',     # Debian 14
+    'gpgv', 'libapt-pkg6.0',    # Debian 12
+    'debian-archive-keyring',
     # Debian 10+ NEVER needs apt-transport-https.
     # mmdebstrap 0.7.5 (Debian 11) needlessly installs it;
     # mmdebstrap 0.8+ (Debian 12) does not.
@@ -187,3 +204,26 @@ subprocess.check_call([
     # '/var/log/apt',
     # '/var/log/dpkg.log',
 ])
+
+# subprocess.check_call(['find', args.chroot_path / 'boot', '-ls'])  # DEBUGGING
+# "chroot lsinitramfs" WON'T WORK because lsinitramfs got removed!
+# We need to use the host's lsinitrd and/or lsinitramfs, or fall back to a warning if neither is present...
+try:
+    # Host system has initramfs-tools installed, supports inspecting initramfs-tools
+    if 'scripts/live' not in subprocess.check_output(['lsinitramfs', args.chroot_path / 'initrd.img'], text=True).split():
+        raise RuntimeError('initrd is fucked up')
+except FileNotFoundError:
+    # Host system has dracut-core install (not necessarily using dracut itself), supports inspecting initramfs-tools OR dracut
+    # Example dracut lines:
+    #
+    #     dracut modules:
+    #     ========================================================================
+    #     drwxr-xr-x   2 root     root            0 Aug 21 02:08 .
+    #     -rwxr-xr-x   1 root     root          572 Jul 23 18:31 scripts/init-top/udev
+    #     -rwxr-xr-x   1 root     root         1180 Aug 15  2025 scripts/live
+    #     -rw-r--r--   1 root     root         5331 May 13  2025 scripts/local
+    if 'scripts/live' not in {
+            words[-1]
+            for line in subprocess.check_output(['lsinitrd', args.chroot_path / 'initrd.img'], text=True).split()
+            for words in line.split()}:
+        raise RuntimeError('initrd is fucked up')
