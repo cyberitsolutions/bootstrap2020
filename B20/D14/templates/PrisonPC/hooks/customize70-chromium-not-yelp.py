@@ -38,14 +38,6 @@ for path in (args.chroot_path / 'usr/share/doc/HTML/').glob('*/*/index.docbook')
     newpath = (args.chroot_path / 'usr/share/help' / lang_gnome / app_name)
     newpath.parent.mkdir(parents=True, exist_ok=True)
     path.parent.rename(newpath)
-    # KDE5 assumes somthing like
-    # xsltproc --path=/usr/share/kf5/kdoctools/customization
-    # Bodge this so yelp-build html wrapper Just Works (I hope).
-    # This WAS compatible with yelp in Debian 9.
-    # Only tested with yelp-build/chromium in Debian 11.
-    (newpath / 'dtd').symlink_to('/usr/share/kf5/kdoctools/customization/dtd')
-    (newpath / 'entities').symlink_to('/usr/share/kf5/kdoctools/customization/entities')
-    (newpath / lang_kde).symlink_to(f'/usr/share/kf5/kdoctools/customization/{lang_kde}')
     # KDE apps create app_name/app_name.html, where
     # GNOME apps create app_name/index.html.
     # As a workaround, make a symlink in advance.
@@ -58,7 +50,7 @@ for path in (args.chroot_path / 'usr/share/gnome/help/').glob('*/*/*.xml'):
     if path.stem == app_name:
         path.rename(path.parent / 'index.docbook')
 
-build_dependencies = {'docbook-xml', 'yelp-tools', 'kdoctools5'}
+build_dependencies = {'docbook-xml', 'yelp-tools', 'kdoctools6'}
 acceptable_risks = {
     'canthappen 0.1-1',
 }
@@ -102,10 +94,21 @@ if search_dirs:
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
     # FIXME: use subprocess.check_call([..., path.name], cwd=path.parent) ?
-    docbook_command = ['yelp-build', 'html']  # will hang for minutes unless docbook-xml is installed
-    mallard_command = ['yelp-build', 'html']
+    docbook_command = [
+        'yelp-build', 'html',
+        # KDE5 assumes somthing like
+        # xsltproc --path=/usr/share/kf5/kdoctools/customization
+        # As at Debian 14, yelp-build html takes --path.
+        # UPDATE: I tested *every* package in D14 providing /usr/share/doc/HTML/**/index.docbook,
+        #         which did not conflict with prisonpc-bad-package-conflicts-everyone.
+        #         None of them errored after adding this --path, except one which was a typo, see
+        #         https://bugs.debian.org/1144995
+        #         So even though this is always KDE6 never KDE5, I think we're OK.
+        #         --twb, August 2026
+        '--path', '/usr/share/kf6/kdoctools/customization/dtd']
+    mallard_command = docbook_command
     subprocess.check_call([
-        'chroot', args.chroot_path,
+        'chronic', 'chroot', args.chroot_path,
         'find', '-O3', *search_dirs, '-xdev',
         # If you find a top-level docbook or mallard file, render it in-place to HTML.
         '(', '-name', 'index.docbook', '-execdir', *docbook_command, '{}', '+', ')', ',',
