@@ -97,8 +97,7 @@ for path in (args.chroot_path / 'usr/share/help').glob('**/**/sound-juicer/index
 if search_dirs:
     packages_old = packages()
     subprocess.check_call([
-        #'chronic',
- 'chroot', args.chroot_path,
+        'chronic', 'chroot', args.chroot_path,
         'apt', 'install', '--mark-auto', '--assume-yes', *build_dependencies])
     # xsltproc assumes we chdir()'d into the source tree before we run it.
     # For now let -execdir handle it.
@@ -136,8 +135,7 @@ if search_dirs:
     #
     # UPDATE: this happened with Recommends also -- Inkscape recommends python3-lxml now.
     subprocess.check_call([
-        #'chronic',
- 'chroot', args.chroot_path,
+        'chronic', 'chroot', args.chroot_path,
         'apt', 'autoremove', '--assume-yes', '--purge',
         # fix autoremove
         '-o', 'APT::AutoRemove::SuggestsImportant=0',
