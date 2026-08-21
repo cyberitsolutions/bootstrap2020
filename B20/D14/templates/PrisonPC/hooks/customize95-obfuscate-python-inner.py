@@ -60,6 +60,8 @@ Test command:
 parser = argparse.ArgumentParser(description=__doc__)
 args = parser.parse_args()
 
+#logging.getLogger().setLevel(logging.DEBUG)  # DEBUGGING
+
 # Undo PEP3147.
 for src in pathlib.Path('/usr/lib').glob('python3*/**/__pycache__/*.cpython-3*.pyc'):
     dst = src.parent.parent / ('.'.join(src.stem.split('.')[:-1]) + '.pyc')
@@ -106,6 +108,8 @@ def obfuscate_executable(src: pathlib.Path, shebang) -> None:
 executable_dir_paths = {
     pathlib.Path(p) for p in {
         '/etc/X11/xdm', '/lib/systemd',  # not really $PATH, but do it anyway
+        # For https://sources.debian.org/src/gsettings-desktop-schemas/51~beta-1/debian/gsettings-desktop-schemas-migrate-gtk-enable-primary-paste.py
+        '/usr/share/user-session-migration/scripts/',
 
         '/usr/local/bin', '/usr/bin', '/bin',
         '/usr/local/sbin', '/usr/sbin', '/sbin',
