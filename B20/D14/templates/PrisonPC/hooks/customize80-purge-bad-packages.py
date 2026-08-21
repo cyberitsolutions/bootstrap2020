@@ -111,12 +111,15 @@ args = parser.parse_args()
 if 'scripts/live' not in subprocess.check_output(['chroot', args.chroot_path, 'lsinitramfs', '/initrd.img'], text=True).split():
     raise RuntimeError('initrd is fucked up')
 initrd_cksum_before = subprocess.check_output(['cksum', 'initrd.img'], text=True, cwd=args.chroot_path).strip()
-subprocess.check_call(['ln', '-nsb', '/bin/true', 'usr/sbin/update-initramfs'], cwd=args.chroot_path)
-subprocess.check_call(['ln', '-nsb', '/bin/true', 'usr/bin/dracut'], cwd=args.chroot_path)
-subprocess.check_call([
-    'chroot', args.chroot_path,
-    'dpkg-divert', '--quiet', '--rename', '/usr/sbin/mktirfs'])
-(args.chroot_path / 'usr/sbin/mktirfs').symlink_to('/bin/true')
+fuckers = {
+    'usr/sbin/mktirfs',
+    'usr/sbin/update-initramfs',
+    'usr/bin/dracut'}
+for fucker in fuckers:
+    subprocess.check_call([
+        'chroot', args.chroot_path,
+        'dpkg-divert', '--quiet', '--rename', f'/{fucker}'])
+    (args.chroot_path / fucker).symlink_to('/bin/true')
 subprocess.check_call([
     'chronic', 'chroot', args.chroot_path,
     'apt', 'purge', '--autoremove', '--assume-yes',
