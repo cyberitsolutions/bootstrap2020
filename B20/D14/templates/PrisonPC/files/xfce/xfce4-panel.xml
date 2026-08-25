@@ -94,7 +94,13 @@
     <property name="plugin-70" type="string" value="systray"/>
     <property name="plugin-71" type="string" value="notification-plugin"/>
     <!-- FIXME: is power-manager interesting? -->
-    <property name="plugin-76" type="string" value="power-manager-plugin"/>
+    <!-- UPDATE: as at Debian 14, if I leave this uncommented and DO NOT install xfce4-power-manager, it crashes and the user sees an annoying popup on every login. -->
+    <!-- UPDATE: even commented out it was still causing weirdness so turn it into a separator? -->
+    <!-- <property name="plugin-76" type="string" value="power-manager-plugin"/> -->
+    <property name="plugin-76" type="string" value="separator">
+      <property name="expand" type="bool" value="false"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
     <!-- NOTE: in Debian 12, this is actually pipewire (via its pulseaudio emulation). -->
     <property name="plugin-75" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
