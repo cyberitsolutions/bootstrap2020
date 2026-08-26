@@ -1,6 +1,6 @@
-c08782b 7.0.13-1783296507 (was 7.0.10-1780662417)
-3103dfc 7.0.10-1780662417 (was 7.0.7-1779352466)
-6a2fc62 7.0.7-1779352466 (was 6.19.14-1777609097)
+1f0fa41 7.0.13-1783296507 (was 7.0.10-1780662417)
+72bc5fa 7.0.10-1780662417 (was 7.0.7-1779352466)
+1fcb584 7.0.7-1779352466 (was 6.19.14-1777609097)
 diff --git a/manifest.txt b/manifest.txt
 index ccb1c53..ace6b28 100644
 --- a/manifest.txt
@@ -39,13 +39,13 @@ index ccb1c53..ace6b28 100644
  kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-cx2072x.ko.zst
  kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-da7213.ko.zst
  kernel/sound/soc/intel/boards/snd-soc-sst-byt-cht-es8316.ko.zst
-5ba33c0 6.19.14-1777609097 (was 6.19.13-1777287724)
-44cd2f6 6.19.13-1777287724 (was 6.19.11-1776049691)
-97b3abb 6.19.11-1776049691 (was 6.19.10-1775613597)
-ffbdf37 6.19.10-1775613597 (was 6.19.8-1774984993)
-9644fae 6.19.8-1774984993 (was 6.12.94-1783296478)
+92a5424 6.19.14-1777609097 (was 6.19.13-1777287724)
+4973466 6.19.13-1777287724 (was 6.19.11-1776049691)
+425bd2e 6.19.11-1776049691 (was 6.19.10-1775613597)
+60bbc17 6.19.10-1775613597 (was 6.19.8-1774984993)
+9827167 6.19.8-1774984993 (was 6.12.95-1786073668)
 diff --git a/manifest.txt b/manifest.txt
-index 2b5bf7b..ccb1c53 100644
+index cef0a78..ccb1c53 100644
 --- a/manifest.txt
 +++ b/manifest.txt
 @@ -2,8 +2,6 @@
@@ -65,7 +65,7 @@ index 2b5bf7b..ccb1c53 100644
  kernel/drivers/acpi/video.ko.zst
  kernel/drivers/ata/
  kernel/drivers/ata/ahci.ko.zst
-@@ -65,11 +64,14 @@ kernel/drivers/firmware/efi/capsule-loader.ko.zst
+@@ -65,14 +64,16 @@ kernel/drivers/firmware/efi/capsule-loader.ko.zst
  kernel/drivers/firmware/efi/efibc.ko.zst
  kernel/drivers/gpu/
  kernel/drivers/gpu/drm/
@@ -79,8 +79,11 @@ index 2b5bf7b..ccb1c53 100644
 +kernel/drivers/gpu/drm/drm_gpusvm_helper.ko.zst
  kernel/drivers/gpu/drm/drm_gpuvm.ko.zst
  kernel/drivers/gpu/drm/drm_kms_helper.ko.zst
+-kernel/drivers/gpu/drm/drm_panel_orientation_quirks.ko.zst
  kernel/drivers/gpu/drm/drm_suballoc_helper.ko.zst
-@@ -85,6 +87,10 @@ kernel/drivers/gpu/drm/xe/xe.ko.zst
+ kernel/drivers/gpu/drm/drm_ttm_helper.ko.zst
+ kernel/drivers/gpu/drm/i915/
+@@ -86,6 +87,10 @@ kernel/drivers/gpu/drm/xe/xe.ko.zst
  kernel/drivers/hid/
  kernel/drivers/hid/hid-generic.ko.zst
  kernel/drivers/hid/hid.ko.zst
@@ -91,7 +94,7 @@ index 2b5bf7b..ccb1c53 100644
  kernel/drivers/hid/usbhid/
  kernel/drivers/hid/usbhid/usbhid.ko.zst
  kernel/drivers/leds/
-@@ -114,10 +120,11 @@ kernel/drivers/pinctrl/intel/pinctrl-intel-platform.ko.zst
+@@ -115,10 +120,11 @@ kernel/drivers/pinctrl/intel/pinctrl-intel-platform.ko.zst
  kernel/drivers/pinctrl/intel/pinctrl-meteorlake.ko.zst
  kernel/drivers/pinctrl/intel/pinctrl-meteorpoint.ko.zst
  kernel/drivers/platform/
@@ -105,7 +108,7 @@ index 2b5bf7b..ccb1c53 100644
  kernel/drivers/powercap/
  kernel/drivers/powercap/intel_rapl_common.ko.zst
  kernel/drivers/powercap/intel_rapl_msr.ko.zst
-@@ -127,6 +134,24 @@ kernel/drivers/scsi/scsi_mod.ko.zst
+@@ -128,6 +134,24 @@ kernel/drivers/scsi/scsi_mod.ko.zst
  kernel/drivers/scsi/sr_mod.ko.zst
  kernel/drivers/thermal/
  kernel/drivers/thermal/intel/
@@ -130,7 +133,26 @@ index 2b5bf7b..ccb1c53 100644
  kernel/drivers/thermal/intel/intel_pch_thermal.ko.zst
  kernel/drivers/thermal/intel/intel_powerclamp.ko.zst
  kernel/drivers/thermal/intel/intel_soc_dts_iosf.ko.zst
-@@ -158,20 +183,37 @@ kernel/sound/core/snd-pcm.ko.zst
+@@ -146,18 +170,6 @@ kernel/drivers/usb/host/ohci-pci.ko.zst
+ kernel/drivers/usb/host/uhci-hcd.ko.zst
+ kernel/drivers/usb/host/xhci-hcd.ko.zst
+ kernel/drivers/usb/host/xhci-pci.ko.zst
+-kernel/drivers/video/
+-kernel/drivers/video/fbdev/
+-kernel/drivers/video/fbdev/core/
+-kernel/drivers/video/fbdev/core/cfbcopyarea.ko.zst
+-kernel/drivers/video/fbdev/core/cfbfillrect.ko.zst
+-kernel/drivers/video/fbdev/core/cfbimgblt.ko.zst
+-kernel/drivers/video/fbdev/core/fb.ko.zst
+-kernel/drivers/video/fbdev/core/fb_io_fops.ko.zst
+-kernel/drivers/video/fbdev/core/fb_sys_fops.ko.zst
+-kernel/drivers/video/fbdev/core/syscopyarea.ko.zst
+-kernel/drivers/video/fbdev/core/sysfillrect.ko.zst
+-kernel/drivers/video/fbdev/core/sysimgblt.ko.zst
+ kernel/fs/
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko.zst
+@@ -171,20 +183,37 @@ kernel/sound/core/snd-pcm.ko.zst
  kernel/sound/core/snd-timer.ko.zst
  kernel/sound/core/snd.ko.zst
  kernel/sound/hda/
@@ -182,7 +204,7 @@ index 2b5bf7b..ccb1c53 100644
  kernel/sound/soc/
  kernel/sound/soc/codecs/
  kernel/sound/soc/codecs/snd-soc-cs35l41-i2c.ko.zst
-@@ -259,6 +301,9 @@ kernel/sound/soc/intel/catpt/
+@@ -272,6 +301,9 @@ kernel/sound/soc/intel/catpt/
  kernel/sound/soc/intel/catpt/snd-soc-catpt.ko.zst
  kernel/sound/soc/intel/common/
  kernel/sound/soc/intel/common/snd-soc-acpi-intel-match.ko.zst
@@ -192,7 +214,7 @@ index 2b5bf7b..ccb1c53 100644
  kernel/sound/soc/snd-soc-acpi.ko.zst
  kernel/sound/soc/snd-soc-core.ko.zst
  kernel/sound/soc/sof/
-@@ -273,6 +318,7 @@ kernel/sound/soc/sof/intel/snd-sof-pci-intel-cnl.ko.zst
+@@ -286,6 +318,7 @@ kernel/sound/soc/sof/intel/snd-sof-pci-intel-cnl.ko.zst
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-icl.ko.zst
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-lnl.ko.zst
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-mtl.ko.zst
@@ -200,11 +222,43 @@ index 2b5bf7b..ccb1c53 100644
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-ptl.ko.zst
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-skl.ko.zst
  kernel/sound/soc/sof/intel/snd-sof-pci-intel-tgl.ko.zst
-@@ -297,3 +343,4 @@ modules.order
+@@ -310,3 +343,4 @@ modules.order
  modules.softdep
  modules.symbols
  modules.symbols.bin
 +modules.weakdep
+73c2a5a 6.12.95-1786073668 (was 6.12.94-1783296478)
+diff --git a/manifest.txt b/manifest.txt
+index 2b5bf7b..cef0a78 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -72,6 +72,7 @@ kernel/drivers/gpu/drm/drm_buddy.ko.zst
+ kernel/drivers/gpu/drm/drm_exec.ko.zst
+ kernel/drivers/gpu/drm/drm_gpuvm.ko.zst
+ kernel/drivers/gpu/drm/drm_kms_helper.ko.zst
++kernel/drivers/gpu/drm/drm_panel_orientation_quirks.ko.zst
+ kernel/drivers/gpu/drm/drm_suballoc_helper.ko.zst
+ kernel/drivers/gpu/drm/drm_ttm_helper.ko.zst
+ kernel/drivers/gpu/drm/i915/
+@@ -145,6 +146,18 @@ kernel/drivers/usb/host/ohci-pci.ko.zst
+ kernel/drivers/usb/host/uhci-hcd.ko.zst
+ kernel/drivers/usb/host/xhci-hcd.ko.zst
+ kernel/drivers/usb/host/xhci-pci.ko.zst
++kernel/drivers/video/
++kernel/drivers/video/fbdev/
++kernel/drivers/video/fbdev/core/
++kernel/drivers/video/fbdev/core/cfbcopyarea.ko.zst
++kernel/drivers/video/fbdev/core/cfbfillrect.ko.zst
++kernel/drivers/video/fbdev/core/cfbimgblt.ko.zst
++kernel/drivers/video/fbdev/core/fb.ko.zst
++kernel/drivers/video/fbdev/core/fb_io_fops.ko.zst
++kernel/drivers/video/fbdev/core/fb_sys_fops.ko.zst
++kernel/drivers/video/fbdev/core/syscopyarea.ko.zst
++kernel/drivers/video/fbdev/core/sysfillrect.ko.zst
++kernel/drivers/video/fbdev/core/sysimgblt.ko.zst
+ kernel/fs/
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko.zst
 11514c9 6.12.94-1783296478 (was 6.12.90-1780669614)
 e684ab4 6.12.90-1780669614 (was 6.12.88-1779342089)
 92a19af 6.12.88-1779342089 (was 6.12.85-1777853232)
