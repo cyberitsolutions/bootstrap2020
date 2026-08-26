@@ -803,7 +803,6 @@ for template in args.templates:
              f'--customize-hook=download /var/lib/dpkg/status {destdir}/dpkg.status',
              f'--customize-hook=download vmlinuz {destdir}/vmlinuz',
              f'--customize-hook=download initrd.img {destdir}/initrd.img',
-             f'--customize-hook=download initrd.img {destdir}/initrd.img',
              # FIXME: fix https://bugs.debian.org/1116593 then let dracut run ukify
              '--customize-hook=chronic chroot $1 ukify build --output=boot/linuxx64.efi',
              f'--customize-hook=copy-out /boot/linuxx64.efi {destdir}',
