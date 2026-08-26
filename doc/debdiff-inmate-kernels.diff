@@ -1,3 +1,55 @@
+7cd7bb9 7.1.3-1786064256 (was 7.0.13-1783296507)
+diff --git a/manifest.txt b/manifest.txt
+index ace6b28..d5aa35e 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -7,6 +7,9 @@ kernel/arch/x86/events/intel/
+ kernel/arch/x86/events/intel/intel-cstate.ko.zst
+ kernel/arch/x86/events/intel/intel-uncore.ko.zst
+ kernel/arch/x86/events/rapl.ko.zst
++kernel/crypto/
++kernel/crypto/asymmetric_keys/
++kernel/crypto/asymmetric_keys/pkcs8_key_parser.ko.zst
+ kernel/drivers/
+ kernel/drivers/acpi/
+ kernel/drivers/acpi/ac.ko.zst
+@@ -54,7 +57,9 @@ kernel/drivers/edac/i7300_edac.ko.zst
+ kernel/drivers/edac/i7core_edac.ko.zst
+ kernel/drivers/edac/i82975x_edac.ko.zst
+ kernel/drivers/edac/ie31200_edac.ko.zst
++kernel/drivers/edac/imh_edac.ko.zst
+ kernel/drivers/edac/pnd2_edac.ko.zst
++kernel/drivers/edac/skx_edac_common.ko.zst
+ kernel/drivers/edac/x38_edac.ko.zst
+ kernel/drivers/firmware/
+ kernel/drivers/firmware/cirrus/
+@@ -74,6 +79,7 @@ kernel/drivers/gpu/drm/drm_exec.ko.zst
+ kernel/drivers/gpu/drm/drm_gpusvm_helper.ko.zst
+ kernel/drivers/gpu/drm/drm_gpuvm.ko.zst
+ kernel/drivers/gpu/drm/drm_kms_helper.ko.zst
++kernel/drivers/gpu/drm/drm_panel_orientation_quirks.ko.zst
+ kernel/drivers/gpu/drm/drm_suballoc_helper.ko.zst
+ kernel/drivers/gpu/drm/drm_ttm_helper.ko.zst
+ kernel/drivers/gpu/drm/i915/
+@@ -170,6 +176,18 @@ kernel/drivers/usb/host/ohci-pci.ko.zst
+ kernel/drivers/usb/host/uhci-hcd.ko.zst
+ kernel/drivers/usb/host/xhci-hcd.ko.zst
+ kernel/drivers/usb/host/xhci-pci.ko.zst
++kernel/drivers/video/
++kernel/drivers/video/fbdev/
++kernel/drivers/video/fbdev/core/
++kernel/drivers/video/fbdev/core/cfbcopyarea.ko.zst
++kernel/drivers/video/fbdev/core/cfbfillrect.ko.zst
++kernel/drivers/video/fbdev/core/cfbimgblt.ko.zst
++kernel/drivers/video/fbdev/core/fb.ko.zst
++kernel/drivers/video/fbdev/core/fb_io_fops.ko.zst
++kernel/drivers/video/fbdev/core/fb_sys_fops.ko.zst
++kernel/drivers/video/fbdev/core/syscopyarea.ko.zst
++kernel/drivers/video/fbdev/core/sysfillrect.ko.zst
++kernel/drivers/video/fbdev/core/sysimgblt.ko.zst
+ kernel/fs/
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko.zst
 1f0fa41 7.0.13-1783296507 (was 7.0.10-1780662417)
 72bc5fa 7.0.10-1780662417 (was 7.0.7-1779352466)
 1fcb584 7.0.7-1779352466 (was 6.19.14-1777609097)
