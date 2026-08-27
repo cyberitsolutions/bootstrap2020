@@ -1,0 +1,12 @@
+# This logo is displayed above the spinner if:
+# 1. you boot via BIOS / CSM; or
+# 2. you boot via EFI *and*
+#    your EFI firmware has no logo
+#    (see /sys/firmware/acpi/tables/BGRT)
+#
+# Does this work even if it is an SVG not a PNG?
+# UPDATE: no.  Therefore I simply did "rsvg-convert" on the svg.
+# The SVG was from xfce/PrisonPC-menu.svg which was based on
+# https://git.cyber.com.au/prisonpc/raw/25.12/doc/wordmark/24019-PrisonPC-trademark.svg
+# (I think just recolored). --twb, August 2026
+name = "usr/share/plymouth/themes/spinner/bgrt-fallback.png"
