@@ -7,7 +7,7 @@ import subprocess
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--menuconfig', action='store_true')
+parser.add_argument('--tag', default='v7.1.8')
 args = parser.parse_args()
 
 os.environ['DEB_BUILD_OPTIONS'] = 'terse nodoc noautodbgsym parallel=auto'
@@ -32,7 +32,7 @@ for k in ('MUST', 'MUST NOT', 'SHOULD', 'SHOULD NOT'):
     for v in sorted(policy[k]):
         # print(k, v, sep='\t', flush=True)
         # NOTE: some weird cases like "scripts/Kconfig.include" "kernel/Kconfig.freezer" "fs/Kconfig.binfmt" "security/Kconfig.hardening"
-        retcode = subprocess.call(['git', '-C', 'linux.git', 'grep', '-qEiw', '-e', f'^[[:space:]]*(menu)?config[[:space:]]+{v}', 'v6.9', '--', '**/Kconfig', '**/Kconfig.*'])
+        retcode = subprocess.call(['git', '-C', 'linux.git', 'grep', '-qEiw', '-e', f'^[[:space:]]*(menu)?config[[:space:]]+{v}', args.tag, '--', '**/Kconfig', '**/Kconfig.*'])
         if retcode != 0:
             logging.warning('NO MATCHES for %s %s', k, v)
 
