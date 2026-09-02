@@ -32,7 +32,14 @@ for section in config_parser.sections():
 if overlap := ((policy['MUST'] | policy['SHOULD']) &  # noqa: W504
                (policy['MUST NOT'] | policy['SHOULD NOT'])):
     logging.warning('SHOULD/MUST and SHOULD/MUST NOT overlap: %s', overlap)
-
+if comments := {v
+                for vs in policy.values()
+                for v in vs
+                if v.startswith('#')}:
+    raise RuntimeError(
+        'Comment treated as code!'
+        'You MUST NOT do "foo # bar" on the same line.',
+        *comments)
 
 ############################################################
 # Apply config & policy
