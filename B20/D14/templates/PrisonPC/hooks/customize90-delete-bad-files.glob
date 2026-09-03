@@ -31,8 +31,12 @@
 *bin/ssh-copy-id
 *bin/ssh-keyscan
 *bin/ssh-copy-id
-*/lib/openssh
+*/lib/openssh/!(sshd-*)
 */systemd/*/*ssh-agent*
+# OpenSSH 9.8+ normal operation REQUIRES /usr/lib/openssh/sshd-session.
+# OpenSSH 10.0+ normal operation REQUIRES /usr/lib/openssh/sshd-auth.
+#     sshd[2969]: /usr/lib/openssh/sshd-session does not exist or is not executable
+# Therefore we don't remove all of "*/lib/openssh" anymore.
 # From dropbear - dbclient & dropbearkey are ssh & ssh-keygen.
 *bin/dbclient
 *bin/dropbearkey
