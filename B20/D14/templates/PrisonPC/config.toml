@@ -8,6 +8,7 @@ include = [
 
 ###
 ### Workaround https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1133971#10
+### See hooks/essential05-generate-globless-apt-preferences-grep.py
 ###
 # Debugging: "what fucking pattern is matching my inoccuous package???"
 # python3 -c 'import pathlib, tomllib, sys, re, pprint; ps = tomllib.loads(pathlib.Path("config.toml").read_text())["both_shit_regexps"]; pprint.pprint({k: [p for p in ps if re.search(p, k)] for k in sys.argv[1:]})' linux-sysctl-defaults
@@ -514,6 +515,7 @@ deb_good_regexps = [
     "libspa-0.2-bluetooth", "libbluetooth3", # pipewire-audio → libspa-0.2-bluetooth → libbluetooth3
     "libavahi-client3",  # <everything that prints> → libcups2t64 → libavahi-client3
     "adwaita-icon-theme-legacy",  # icons for XFCE4 apps menu (anything named "legacy" is blocked by default)
+    "runit-helper",  # openssh-server → runit-helper; should merely Recommends; https://bugs.debian.org/938964
 
 
     # Staff things
