@@ -31,7 +31,7 @@ else:
              '--root', args.chroot_path],
             text=True)).stdout
 
-patterns_str = '''
+patterns_str = r'''
 # These ARE reproducible.
 .+ GOOD
 
@@ -42,13 +42,17 @@ INFO  debian-repro-status > Your system has .+% been reproduced.
 # Upstream things that are 'nothing we can do, sigh'
 ... cpp-.+-x86-64-linux-gnu .+ BAD
 ... libnss3 .+ BAD
-... (python3.14-minimal|libpython3.+-stdlib) .+ BAD
+... (lib)?(python3.+-(minimal|stdlib)) .+ BAD
 ... (librsvg2.+|librav1e.+) .+ BAD
 ... libzxing4 .+ BAD
 ... linux-modules-.+ .+ BAD
 ... (mesa-libgallium|mesa-vulkan-drivers) .+ BAD
-# FIXME: why do these 2 show up as "UNK[no]WN" rather than "BAD"?
+# reproduce.debian.net does not cover anything in non-free, so these are UNKNOWN not BAD
 ... (i965-va-driver-shaders|intel-media-va-driver-non-free) .+ UNKWN
+# libdvd-pkg on NON-PrisonPC --template=desktop needs a compiler and a builder package.
+... libdvd-pkg .+ UNKWN
+... (gcc|g[+][+])-.+-x86-64-linux-gnu .+ BAD
+
 
 # PrisonPC metapackages
 ... (prisonpc-ersatz.*|prisonpc-bad-package-conflicts-.+|fonts-prisonpc.*) .+ UNKWN
