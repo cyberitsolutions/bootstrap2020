@@ -21,14 +21,14 @@ The following packages found on this system are affected by this:
 # That would be extremely not fun.
 * Source:binutils
   Details: Only suitable for trusted content; see https://lists.debian.org/msgid-search/87lfqsomtg.fsf@mid.deneb.enyo.de
-  - binutils (installed version: 2.47-2)
-  - binutils-common:amd64 (installed version: 2.47-2)
-  - binutils-x86-64-linux-gnu (installed version: 2.47-2)
-  - libbinutils:amd64 (installed version: 2.47-2)
-  - libctf0:amd64 (installed version: 2.47-2)
-  - libctf-nobfd0:amd64 (installed version: 2.47-2)
-  - libgprofng0:amd64 (installed version: 2.47-2)
-  - libsframe3:amd64 (installed version: 2.47-2)
+  - binutils (installed version: 2.47-6)
+  - binutils-common:amd64 (installed version: 2.47-6)
+  - binutils-x86-64-linux-gnu (installed version: 2.47-6)
+  - libbinutils:amd64 (installed version: 2.47-6)
+  - libctf0:amd64 (installed version: 2.47-6)
+  - libctf-nobfd0:amd64 (installed version: 2.47-6)
+  - libgprofng0:amd64 (installed version: 2.47-6)
+  - libsframe3:amd64 (installed version: 2.47-6)
 
 
 # Ignorelist rust-rav1e because
