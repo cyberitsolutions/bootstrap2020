@@ -46,6 +46,7 @@ if comments := {v
 ############################################################
 os.chdir(list(pathlib.Path('/').glob('linux-*[0-9]'))[0])  # YUK
 subprocess.check_call(['apt-get', 'build-dep', '--quiet', '--assume-yes', './'])
+subprocess.check_call(['apt-get', 'clean'])  # reclaim a bit of space mid-build
 # Are we building the current kernel, or
 # are we updating from config meant for an older version?
 config_current_path = pathlib.Path('/boot/build-inmate-kernel.config-current')
@@ -275,6 +276,12 @@ accepted_risks = {
     # With CONFIG_MODULES=n, the Debian 12 detainee SOE cannot "see" when a DVD is inserted/ejected.
     # The kernel does not issue change events for /dev/sr0.
     'CONFIG_MODULES',
+
+    # SOMEHOW enabling this causes the kernel to fail to find the i915 GPU.
+    # This means that when you boot, SSH works, but plymouth and X do not come up.
+    # So on the local screen you just see iPXE's output, ending with "passing off to kernel image".
+    # --twb, September 2026
+    'CONFIG_RANDSTRUCT_FULL',
 }
 if unaccepted_risks := [
         row for row in json.loads(subprocess.check_output([

@@ -98,9 +98,13 @@ parser.add_argument(
 parser.add_argument(
     '--deb-url',
     type=http_type,
+    # 19:45 <twb> the reason why /boot/config is missing is because it's not in linux-image-X-amd64 anymore
+    # 19:46 <twb> This is the -binary thing I noticed the other day, I guess
+    # 19:48 <twb> So /boot/vmlinuz-X is in binary but config is in something else now...
     help="""Something like
     http://snapshot.debian.org/archive/debian/20211002/pool/main/l/linux-latest/linux-image-amd64_4.19+105+deb10u13_amd64.deb
     http://snapshot.debian.org/archive/debian/20210930/pool/main/l/linux/linux-image-4.19.0-16-amd64-unsigned_4.19.181-1_amd64.deb
+    http://snapshot.debian.org/archive/debian/20260426/pool/main/l/linux-signed-amd64/linux-base-amd64_6.19.14-1_amd64.deb (NOTE: it is -base now)
     use this instead of "apt install linux-image-amd64", to get an old version of /boot/config.
     The main use case for this is when you're doing a big upgrade.
     It may help to do it one step at a time, instead of all at once.""")
@@ -234,6 +238,9 @@ with tempfile.TemporaryDirectory() as td_str:
 
          '--include=python3',
          '--include=kernel-hardening-checker',
+         # RUSTC PL rust/libquote.rlib
+         # Failed to run rustfmt: No such file or directory (os error 2) (non-fatal, continuing)
+         '--include=rustfmt',
          '--customize-hook=copy-in build-inmate-kernel.ini /',
          '--customize-hook=copy-in build-inmate-kernel-inner.py /',
          '--customize-hook=chroot $1 env -i TERM="$TERM" PATH=/bin:/sbin python3 build-inmate-kernel-inner.py --menuconfig || chroot $1 bash'
