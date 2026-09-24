@@ -282,6 +282,12 @@ accepted_risks = {
     # So on the local screen you just see iPXE's output, ending with "passing off to kernel image".
     # --twb, September 2026
     'CONFIG_RANDSTRUCT_FULL',
+
+    # https://github.com/a13xp0p0v/kernel-hardening-checker/issues/229
+    # https://github.com/torvalds/linux/commit/dfdfd58cce1c3f5df8733b64595448996c08e424
+    # random_kmalloc_caches renamed to kmalloc_partition_caches in 7.2
+    # This is not known as at kernel-hardening-checker=0.6.17.1-3.
+    'CONFIG_RANDOM_KMALLOC_CACHES',
 }
 if unaccepted_risks := [
         row for row in json.loads(subprocess.check_output([
