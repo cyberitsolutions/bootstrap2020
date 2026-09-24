@@ -269,10 +269,10 @@ def do_boot_test():
     with tempfile.TemporaryDirectory(dir=destdir, prefix='boot-test-') as testdir_str:
         testdir = pathlib.Path(testdir_str)
         validate_unescaped_path_is_safe(testdir)
-        for name in {'linuxx64.efi', 'filesystem.squashfs'}:
+        for name in {'vmlinuz', 'initrd.img', 'linuxx64.efi', 'filesystem.squashfs'}:
             (testdir / name).hardlink_to(destdir / name)
         common_boot_args = ' '.join([
-            ('quiet splash'
+            ('loglevel=2 splash'
              if template.startswith('desktop') else
              # https://github.com/systemd/systemd/issues/29097
              f'earlyprintk=ttyS0 console=ttyS0 systemd.tty.term.console={os.environ["TERM"]} systemd.tty.term.ttyS0={os.environ["TERM"]} loglevel=1'),
@@ -441,7 +441,10 @@ def do_boot_test():
                    for port in {636, 2049, 443, 993, 3128, 631, 2222, 2223, 5432, 2514, 587, 465}
                    for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
                   if port_forward_bullshit else [])]),
-            '--kernel', testdir / 'linuxx64.efi',  # was vmlinuz + initrd.img
+            *(['--kernel', testdir / 'linuxx64.efi']
+              if False else  # work around https://alloc.cyber.com.au/task/task.php?taskID=35815
+              ['--kernel', testdir / 'vmlinuz',
+               '--initrd', testdir / 'initrd.img']),
             '--append', ' '.join([
                 'boot=live plainroot root=/dev/disk/by-id/virtio-filesystem.squashfs'
                 if not args.netboot_only else
