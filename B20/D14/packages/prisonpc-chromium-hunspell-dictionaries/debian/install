@@ -1,2 +1,0 @@
-debian/update-chromium-hunspell-dictionaries          usr/bin/
-debian/update-chromium-hunspell-dictionaries.desktop  etc/xdg/autostart/

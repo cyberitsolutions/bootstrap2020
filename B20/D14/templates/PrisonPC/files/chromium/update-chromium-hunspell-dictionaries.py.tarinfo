@@ -1,0 +1,6 @@
+name = "usr/bin/update-chromium-hunspell-dictionaries"
+mode = 365
+# hunspell-en-au: /usr/share/hunspell-bdic/en_AU.bdic
+# hunspell-en-gb: /usr/share/hunspell-bdic/en_GB.bdic
+# hunspell-en-us: /usr/share/hunspell-bdic/en_US.bdic
+include = ["hunspell-en-au", "hunspell-en-gb", "hunspell-en-us"]
