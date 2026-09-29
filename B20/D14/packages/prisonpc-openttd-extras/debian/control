@@ -15,7 +15,21 @@ Package: prisonpc-openttd-extras
 Depends: ${misc:Depends},
  openttd,
 # OpenTTD needs these to play music.
- timidity,
+# <twb> I want https://tracker.debian.org/pkg/timidity in D14;
+#       it's currently blocked by #1039396 which has
+#       Ubuntu patches at the bottom that I think we should just take.
+#       Debian#1039396: timidity: ships sysv-init script without systemd unit - https://bugs.debian.org/1039396
+# <twb> My actual end goal is working music in openttd
+# <twb> Looks like fluidsynth might work as a replacement for openttd specifically
+# <twb> OK so FTR: openttd can play music as long as you have libfluidsynth
+#       (pulled in by normal hard Depends) and fluid-soundfont-gs and/or fluid-soundfont-gm, and
+#       also it needs an actual .mid file
+#       which it normally downloads from bananas-cdn.openttd.org per-user.
+#       It DOES NOT need /bin/timidity nor /bin/fluidsynth.
+# <twb> I initially mis-diagnosed just because
+#       the various mixers were all set low enough
+#       I couldn't hear the music over the cooling fan.
+# NOT NEEDED: timidity,
  fluid-soundfont-gm,
 Conflicts:
  openttd-opengfx,
