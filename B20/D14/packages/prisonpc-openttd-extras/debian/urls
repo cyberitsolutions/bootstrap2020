@@ -1,6 +1,7 @@
 # -*- conf -*-
 
-# Base Graphics - total size 287MB
+
+# Base Graphics - total size 274MiB
 # NOTE: we DO NOT download OpenGFX anymore, because then the HD graphics (abase/zbase) will be opt-in, and
 #       users would find it much harder to discover.
 #       I cannot see any clean way to provide both and make HD graphics opt-out.
@@ -10,20 +11,26 @@
 # Maybe we should ship ONLY zBase and remove newGRF, so that openTTD defaults to this and not newGRF?
 # NOTE: newGRF is about 5MB.
 # NOTE: a "before and after" zbase view can be seen here: https://youtu.be/iX_vhiNZhM4
+#https://bananas-cdn.openttd.org/base-graphics/6f676678/9511dce1623cc004f84b43599e80ef7e/6f676678-OpenGFX2_Classic-0.8.1.tar.gz
+#https://bananas-cdn.openttd.org/base-graphics/4f474658/f37d3957d63e0a54523a6b405798d3e3/4f474658-OpenGFX-8.0.tar.gz
+#https://bananas-cdn.openttd.org/base-graphics/4e474658/e0194cf8f7f5ae32e9468db028bd143e/4e474658-NightGFX-1.3.0.tar.gz
 https://bananas-cdn.openttd.org/base-graphics/61423332/9ce38653534d750ea3db211797133345/61423332-abase-0.1.2.tar.gz
 
-# Base Sound Effects - total size 12MB
+
+# Base Sound Effects - total size 12MiB
 # NOTE: AltSFX is apparently proof-of-concept quality and therefore not worth grabbing.
 https://bananas-cdn.openttd.org/base-sounds/4f534658/56edd8f20cfa7413b68b2f0fb8a27be1/4f534658-OpenSFX-1.0.3.tar.gz
 
-# Base Music - total size 16MB
+
+# Base Music - total size 4MiB
+# NOTE: these are so small, I grabbed literally all of them.
+https://bananas-cdn.openttd.org/base-music/414e4d58/84f9f76aa714709292ad1809d4074010/414e4d58-Animusic_MIDI_Pack-1.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/43414e31/136cb3ddd67876976e9f34a51b78075c/43414e31-Traditional_Canadian_Tunes_v1-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/43414e32/bdb0661ab62e5e1c52b68e51cf06232b/43414e32-Traditional_Canadian_Tunes_v2-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/43414e33/70f66dafd3239259cb153fa5ffd1387c/43414e33-Traditional_Canadian_Tunes_v3-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/43414e34/bbf73a23848040b02d395982f0c4407f/43414e34-Traditional_Canadian_Tunes_v4-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/43414e35/8b8f9cbe94964141c30f4335fc75b5e6/43414e35-Traditional_Canadian_Tunes_v5-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/444f4f4d/c7b96c95ebe0b01dce8e216e4aab6f1f/444f4f4d-Doom_I_Soundtrack-1.2.tar.gz
-https://bananas-cdn.openttd.org/base-music/44534e54/af521ee9babd8990e7d91d59cbd47aea/44534e54-Descent_soundtrack-1.2.tar.gz
 https://bananas-cdn.openttd.org/base-music/454e4731/063be6b293b6835c629b0dcd69069810/454e4731-Traditional_English_Tunes_vol_1-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/454e4732/575e8a746f6ea416fae65abc4eca3edb/454e4732-Traditional_English_Tunes_vol_2-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/454e474c/a399f63a50ac0cd0527e033caf39676e/454e474c-Traditional_English_Tunes_vol_3-1.0.0.tar.gz
@@ -43,13 +50,18 @@ https://bananas-cdn.openttd.org/base-music/53434f33/41210179ebc707786788d966d314
 https://bananas-cdn.openttd.org/base-music/53434f34/bfa52eba3d9e108b67b05fcfcc176ac2/53434f34-Traditional_Scottish_Tunes_vol-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/53434f35/4a3cf95d767c7b37b2ab224b08af114b/53434f35-Traditional_Scottish_Tunes_vol-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/534a4d41/b7df2d866b8505e5363b0a4be0a7f2e2/534a4d41-Scott_Joplin_Anthology-2.0.0.tar.gz
+https://bananas-cdn.openttd.org/base-music/5448434c/e47d06e136e62c14d79aaf3041baf58b/5448434c-Touhou_Classics-24.8.tar.gz
+https://bananas-cdn.openttd.org/base-music/54485256/b7f2b7cf4e4b1f07a62606d018c5e565/54485256-Touhou_Revamped-1.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/5457484d/28871305d26a95b97d2669e4abfa70bd/5457484d-Traditional_Winter_Holiday_Musi-1.1.tar.gz
 https://bananas-cdn.openttd.org/base-music/55534131/46b38ce577332ec299d67108f98b397e/55534131-Traditional_American_Tunes_vol-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/55534132/56f870fdce269b69b6d128d5eb57f820/55534132-Traditional_American_Tunes_vol-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/57414c31/0819e43737ff291774f9b384fd250b40/57414c31-Traditional_Welsh_Tunes_vol_1-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/base-music/57414c32/ab7b6a36787da5715b9b0ff24fbf4342/57414c32-Traditional_Welsh_Tunes_vol_2-1.0.0.tar.gz
+# These ones "fail to compile", generating noise on stderr.  Therefore skip?
+#https://bananas-cdn.openttd.org/base-music/44534e54/af521ee9babd8990e7d91d59cbd47aea/44534e54-Descent_soundtrack-1.2.tar.gz
 
-# AI and AI Library - total size 3.8MB
+
+# AI and AI Library - total size 4.6MiB
 # NOTE: these are so small, I grabbed literally all of them.
 https://bananas-cdn.openttd.org/ai/41444d4c/4ccd92fb8f8f01045145be99a28e14a6/41444d4c-AdmiralAI-25.tar.gz
 https://bananas-cdn.openttd.org/ai/41494149/0d23bf1de9e0800ec99d9385d4ba85bb/41494149-AIAI-kappa97.tar.gz
@@ -57,13 +69,14 @@ https://bananas-cdn.openttd.org/ai/415f4149/d8ea3cbd4bee6515235d4107b4fe389b/415
 https://bananas-cdn.openttd.org/ai/42434142/7b5dd7884ef6c2a9234201b9cfa26fae/42434142-NoCAB_Bleeding_Edge_edition-2.2a4.tar.gz
 https://bananas-cdn.openttd.org/ai/424f524b/0573f7b72f0e24a9ceac75fb61a96a8c/424f524b-BorkAI-23.tar.gz
 https://bananas-cdn.openttd.org/ai/4348494f/c20ab0e8984c30d8c05249f4b64f6c08/4348494f-Mungo-3.tar.gz
-https://bananas-cdn.openttd.org/ai/43484f4f/98132cd03d98c74cea5128cec78b1131/43484f4f-ChooChoo-422.tar.gz
+https://bananas-cdn.openttd.org/ai/43484f4f/66b9e134a218134892a2137de2211103/43484f4f-ChooChoo-434.tar.gz
 https://bananas-cdn.openttd.org/ai/43484f50/83e0a75bb93177f12a2c261949811f4f/43484f50-Chopper-10.tar.gz
 https://bananas-cdn.openttd.org/ai/4349564c/bc48d90900ce4d466342d07c2fcc490a/4349564c-CivilAI-37.tar.gz
-https://bananas-cdn.openttd.org/ai/434c4149/b24cec149b779a95b25faa7515f007d5/434c4149-CityLifeAI-1.0.tar.gz
-https://bananas-cdn.openttd.org/ai/434c5550/208818492e91c5e27e1f04e35cc58ce3/434c5550-CluelessPlus-38.tar.gz
+https://bananas-cdn.openttd.org/ai/434c4149/bb17865ef33227876282363419b069c4/434c4149-CityLifeAI-3.0.tar.gz
+https://bananas-cdn.openttd.org/ai/434c5550/d96ef23b99cdb570d8b3083333e157d4/434c5550-CluelessPlus-41.tar.gz
 https://bananas-cdn.openttd.org/ai/434e5659/93c77990fd595107294c255aff6fab67/434e5659-Convoy-11.tar.gz
 https://bananas-cdn.openttd.org/ai/434f5644/7f2818284387049b55f2582a1e7bd15a/434f5644-CoronaAI-1.tar.gz
+https://bananas-cdn.openttd.org/ai/434f5646/a3a4401881c99b8254db785c7308eecb/434f5646-CoronaAI_Fix-4.tar.gz
 https://bananas-cdn.openttd.org/ai/43505531/6467f80eba9a51a37d190732e36c93e6/43505531-CPU-1.4.tar.gz
 https://bananas-cdn.openttd.org/ai/44435452/948f54f19ce5f72679cb7d2aac098595/44435452-DictatorAI-183.tar.gz
 https://bananas-cdn.openttd.org/ai/44555354/0aca9a534c0baca4c0dcc98670b35cb1/44555354-Denver_Rio_Grande-1.tar.gz
@@ -71,22 +84,25 @@ https://bananas-cdn.openttd.org/ai/44754149/7d06847f5ae0f35fb45bcaa846b70608/447
 https://bananas-cdn.openttd.org/ai/454d5449/7c159ed8face0501248f3367a4f0af2c/454d5449-EmotionAI-1.tar.gz
 https://bananas-cdn.openttd.org/ai/45504943/9fd91b86ab8767baecba276aef27afd1/45504943-EpicTrans-1.0.tar.gz
 https://bananas-cdn.openttd.org/ai/46505450/30645dc141f28fd99bcafb76f3497a11/46505450-FastPTPAI-4.tar.gz
-https://bananas-cdn.openttd.org/ai/46544149/5fd6c56de4107f9d68e0487f59c595a1/46544149-Trans_AI-190723.tar.gz
+https://bananas-cdn.openttd.org/ai/46544149/397d4a34bc21a80d4e31d2c2685cf950/46544149-Trans_AI-200626.tar.gz
 https://bananas-cdn.openttd.org/ai/47454c49/ab222dc0167ee9f7d0f989ee7c6c37e0/47454c49-gelignAIte-1.1.tar.gz
 https://bananas-cdn.openttd.org/ai/48454645/43cab08cc0f33ac2cdbe9c8639acfa5b/48454645-HeliFerry-4.tar.gz
-https://bananas-cdn.openttd.org/ai/484f4745/7bb074e27bc8538ba65f1e4c88c12838/484f4745-AAAHogEx-52.tar.gz
+https://bananas-cdn.openttd.org/ai/484f4745/db5fd180cdf633c1a3310c4a367052e9/484f4745-AAAHogEx-115.tar.gz
+https://bananas-cdn.openttd.org/ai/484f474e/8072849d5ca3d25b51ab34b15e850b4c/484f474e-AAAHogNet-8.tar.gz
 https://bananas-cdn.openttd.org/ai/49644d4d/ef4fc27acc5990ab317de65402445b55/49644d4d-IdleMoreMore-2.tar.gz
 https://bananas-cdn.openttd.org/ai/49646c65/2f4ef7f2fbfd61132b1986e368120832/49646c65-Idle-1.tar.gz
+https://bananas-cdn.openttd.org/ai/4b524132/03e2ea88c265e02b3fa3832ef457f4f9/4b524132-KrakenAI2-3.tar.gz
 https://bananas-cdn.openttd.org/ai/4b524149/1d4ce1826df3d43b50b93c404cbf2ac1/4b524149-KrakenAI-2.tar.gz
-https://bananas-cdn.openttd.org/ai/4c444146/4ef7b9052985b98fbe119243c268828d/4c444146-LuDiAI_AfterFix-v20.tar.gz
+https://bananas-cdn.openttd.org/ai/4c444146/db665650ff49d5d5523dd09f1c46b5ba/4c444146-LuDiAI_AfterFix-v27.tar.gz
 https://bananas-cdn.openttd.org/ai/4c444149/956549a654c1743753f2ef61d3fb9f3e/4c444149-LuDiAI-1.tar.gz
 https://bananas-cdn.openttd.org/ai/4d4f4755/ae5af73294fc9bc30eb9bfbd626ce0e9/4d4f4755-MogulAI-5900.tar.gz
 https://bananas-cdn.openttd.org/ai/4d554e47/5440ee1ac465ff8bb8c613d3151aefe4/4d554e47-Mungo-5.tar.gz
 https://bananas-cdn.openttd.org/ai/4d61696c/96b2862943f963b6ef1b5a24c3c0093b/4d61696c-MailAI-2.22.tar.gz
 https://bananas-cdn.openttd.org/ai/4d704149/dfe0db57086a59766c419703ed564f8d/4d704149-MpAI-1.tar.gz
 https://bananas-cdn.openttd.org/ai/4e434142/0fc9f3dcf160985cd1164270c7ea8aa5/4e434142-NoCAB-2.1.4.tar.gz
-https://bananas-cdn.openttd.org/ai/4e4f4e4f/96aff590f0eda8962659818d4a800226/4e4f4e4f-NoNoCAB-8.tar.gz
+https://bananas-cdn.openttd.org/ai/4e4f4e4f/319453a408d28090bf60f338f3c2ebf0/4e4f4e4f-NoNoCAB-9.tar.gz
 https://bananas-cdn.openttd.org/ai/4e504149/864b22982e17dd63c7a9c19e13f6d69e/4e504149-NotPerfectAI-1.5.tar.gz
+https://bananas-cdn.openttd.org/ai/4e6f7041/8934c664226b37b838db2b67156f8507/4e6f7041-NoOpAI-4.tar.gz
 https://bananas-cdn.openttd.org/ai/4f545649/b44af8cc5195cea6b15913e325a16942/4f545649-OtviAI-423.tar.gz
 https://bananas-cdn.openttd.org/ai/4f726441/e08f7364d582e715a4ee4f8cbbbbdef1/4f726441-Orders_Assistant_AI-9.tar.gz
 https://bananas-cdn.openttd.org/ai/5041584c/3a560e9df9bb66faa93fb709eb157311/5041584c-PAXLink-14.tar.gz
@@ -104,6 +120,7 @@ https://bananas-cdn.openttd.org/ai/534e5453/8d1daa3c17e16cfd8e2f4979bf8841d1/534
 https://bananas-cdn.openttd.org/ai/53534149/b3ed8b06c8e25d425060dd5904e3c298/53534149-SuperSimpleAI-19.tar.gz
 https://bananas-cdn.openttd.org/ai/53544149/50637f93e4165af7a1217158db96e1b2/53544149-SmallTownAI-8.tar.gz
 https://bananas-cdn.openttd.org/ai/53545452/8cf9f7ac89e67596fd575c22bb6084ac/53545452-StreetTraffic1-1.0.tar.gz
+https://bananas-cdn.openttd.org/ai/5357524d/d08b6e8c3aa75329297aede7f1319b91/5357524d-Swarm-0.9.tar.gz
 https://bananas-cdn.openttd.org/ai/536e656b/d0806515d42e7a73f6b90b0e9e285fe4/536e656b-SnakeAI-10.tar.gz
 https://bananas-cdn.openttd.org/ai/54434152/e255166fdbe70fe1d4be565d061cb0c4/54434152-TownCars-5.tar.gz
 https://bananas-cdn.openttd.org/ai/54455252/90ab500494ad76f03e0ea7e5a201278a/54455252-Terron_AI-209.tar.gz
@@ -114,11 +131,11 @@ https://bananas-cdn.openttd.org/ai/5452414d/2b88c7c9afe437bad050c85a4077b0fb/545
 https://bananas-cdn.openttd.org/ai/54524545/f8403d7cd3f567ed46d526fe1582eae3/54524545-TREE-1.0.tar.gz
 https://bananas-cdn.openttd.org/ai/54534850/f72cf368d8de0ac511b866e472b5dde5/54534850-Beginner_Tutorial_Ship_AI-17.tar.gz
 https://bananas-cdn.openttd.org/ai/54544149/ae60fb66dd977e4a3581600c074b5476/54544149-TutorialAI-5.tar.gz
-https://bananas-cdn.openttd.org/ai/574f524d/7556a69ee7dadbf0ab4e9bd228f01451/574f524d-WormAI-9.tar.gz
+https://bananas-cdn.openttd.org/ai/574f524d/15d349ed88b1ba8cf9809a48b2da9215/574f524d-WormAI-11.tar.gz
 https://bananas-cdn.openttd.org/ai/57524149/0d22fb9f11ed1a73156503eceb040c8a/57524149-WrightAI-3.tar.gz
 https://bananas-cdn.openttd.org/ai/69646d6f/0471e38a6d0482977c93d9d1ac4161a0/69646d6f-IdleMore-1.tar.gz
 https://bananas-cdn.openttd.org/ai/74724149/d1fdda359c128409d104fa8c76c00306/74724149-rocketAI-1.tar.gz
-https://bananas-cdn.openttd.org/ai/7d7d6d57/198d05ac4d191a95af5ea492a193f4fd/7d7d6d57-WmDOT-14.tar.gz
+https://bananas-cdn.openttd.org/ai/7d7d6d57/883ea82e7ae2a33ad396abca57670a88/7d7d6d57-WmDOT-16.tar.gz
 https://bananas-cdn.openttd.org/ai-library/41494245/4c4e72633da809d10533383a5ed44bec/41494245-Lib.Event-2.tar.gz
 https://bananas-cdn.openttd.org/ai-library/4149544c/affab79f105ea048eeca6abb8b253d99/4149544c-AIToyLib-1.tar.gz
 https://bananas-cdn.openttd.org/ai-library/43454e47/3d038898e8aa55ee43da5ea04352a2a9/43454e47-cEngineLib-9.tar.gz
@@ -127,31 +144,39 @@ https://bananas-cdn.openttd.org/ai-library/434c4346/e59a176aa067c3e34e1d85545629
 https://bananas-cdn.openttd.org/ai-library/434c4446/635c0514361b98b0bb60eebb443f74b4/434c4446-AILib.Direction-1.tar.gz
 https://bananas-cdn.openttd.org/ai-library/434c5346/61b8396e2065f39ad6165670af6019da/434c5346-AILib.String-2.tar.gz
 https://bananas-cdn.openttd.org/ai-library/4356524f/77416e84d3d68d513c74d5958a029623/4356524f-CivilAI_Pathfinder.Road-4.tar.gz
+https://bananas-cdn.openttd.org/ai-library/4752412a/4afad59243616532a64e8da4565a7aa7/4752412a-Graph.AyStar-4.tar.gz
 https://bananas-cdn.openttd.org/ai-library/4752412a/f385497c3c922bfd9f61e1bc33b3a4dc/4752412a-Graph.AyStar-6.tar.gz
 https://bananas-cdn.openttd.org/ai-library/4c4d6d57/a354aea12c1545c03db8e381188962a4/4c4d6d57-MinchinWeb_s_MetaLibrary-9.tar.gz
+https://bananas-cdn.openttd.org/ai-library/4c4d6d57/b009f97edbf21a7df86c1b1fb21a8b6c/4c4d6d57-MinchinWeb_s_MetaLibrary-6.tar.gz
+https://bananas-cdn.openttd.org/ai-library/4c4d6d57/f308ca069ec00d02292cc4528b4fe49f/4c4d6d57-MinchinWeb_s_MetaLibrary-11.tar.gz
 https://bananas-cdn.openttd.org/ai-library/5046524c/e6b1d198257d580e65a97ca584adb2b5/5046524c-Pathfinder.Rail-1.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5046524f/3a165326fe1bd0f32ba18a3b3df41de9/5046524f-Pathfinder.Road-3.tar.gz
 https://bananas-cdn.openttd.org/ai-library/5046524f/999de61cd3a10680b4ff91547299dc53/5046524f-Pathfinder.Road-4.tar.gz
 https://bananas-cdn.openttd.org/ai-library/51554248/8ce55e1397e9c51f8032c3a8a29e9cf5/51554248-Queue.BinaryHeap-1.tar.gz
+https://bananas-cdn.openttd.org/ai-library/51554648/1cfcb44b5b2ea788f95842716bc53c9d/51554648-Queue.FibonacciHeap-2.tar.gz
 https://bananas-cdn.openttd.org/ai-library/51554648/b234d8bd69d74bb86b6ec7fcef9c8d60/51554648-Queue.FibonacciHeap-3.tar.gz
 https://bananas-cdn.openttd.org/ai-library/51554e48/c6cf3e7cc170ad9f6e7068db864edf1a/51554e48-Queue.NativeHeap-1.tar.gz
 https://bananas-cdn.openttd.org/ai-library/51555051/e1b9a30fb79525a00496b55dead55350/51555051-Queue.PriorityQueue-2.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5155534c/757d203be838fc37067099582846733f/5155534c-Queue.SortedList-2.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5155534c/215e105b3cca1049c940e3feea8512d8/5155534c-Queue.SortedList-3.tar.gz
 https://bananas-cdn.openttd.org/ai-library/5343504c/e19402780d2a9368ead1776415d0878a/5343504c-Script_Communication_for_AI-45.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5350524c/dcdcf35cf6b922c7ca455b572ba6d6d5/5350524c-SuperLib-40.tar.gz
-https://bananas-cdn.openttd.org/ai-library/7363704e/07ecd3d8bbd9bf151b542e8a599ea237/7363704e-SCPClient_NoCarGoal-1.tar.gz
-https://bananas-cdn.openttd.org/ai-library/73637056/0bfd7cab57a03063242aa686f0e194e6/73637056-SCPClient_CompanyValueGS-1.tar.gz
-https://bananas-cdn.openttd.org/ai-library/51554648/1cfcb44b5b2ea788f95842716bc53c9d/51554648-Queue.FibonacciHeap-2.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5350524c/ca75d8b47e5d4695448a50d308599760/5350524c-SuperLib-39.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5046524f/3a165326fe1bd0f32ba18a3b3df41de9/5046524f-Pathfinder.Road-3.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5350524c/fe413a020e57c548a9c80998572e246e/5350524c-SuperLib-36.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5350524c/a72c0b640a78bea9d2778d863a412aad/5350524c-SuperLib-38.tar.gz
-https://bananas-cdn.openttd.org/ai-library/4c4d6d57/b009f97edbf21a7df86c1b1fb21a8b6c/4c4d6d57-MinchinWeb_s_MetaLibrary-6.tar.gz
-https://bananas-cdn.openttd.org/ai-library/5350524c/de01137e20a49f70fd029848607594a3/5350524c-SuperLib-6.tar.gz
 https://bananas-cdn.openttd.org/ai-library/5350524c/6804ef383ff66f6f717cf2d9d7cc3908/5350524c-SuperLib-27.tar.gz
 https://bananas-cdn.openttd.org/ai-library/5350524c/759feeabaa22bb6425654dc4d54533e3/5350524c-SuperLib-13.tar.gz
-https://bananas-cdn.openttd.org/ai-library/4752412a/4afad59243616532a64e8da4565a7aa7/4752412a-Graph.AyStar-4.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5350524c/a5313d7998158f3e2298588b542c190f/5350524c-SuperLib-41.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5350524c/a72c0b640a78bea9d2778d863a412aad/5350524c-SuperLib-38.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5350524c/ca75d8b47e5d4695448a50d308599760/5350524c-SuperLib-39.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5350524c/dcdcf35cf6b922c7ca455b572ba6d6d5/5350524c-SuperLib-40.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5350524c/de01137e20a49f70fd029848607594a3/5350524c-SuperLib-6.tar.gz
+https://bananas-cdn.openttd.org/ai-library/5350524c/fe413a020e57c548a9c80998572e246e/5350524c-SuperLib-36.tar.gz
+https://bananas-cdn.openttd.org/ai-library/544c4149/4a9ed26a0f4e0cb39bc080f8d4551eaf/544c4149-AIToyLib_v2-2.tar.gz
+https://bananas-cdn.openttd.org/ai-library/7363704e/07ecd3d8bbd9bf151b542e8a599ea237/7363704e-SCPClient_NoCarGoal-1.tar.gz
+https://bananas-cdn.openttd.org/ai-library/73637056/0bfd7cab57a03063242aa686f0e194e6/73637056-SCPClient_CompanyValueGS-1.tar.gz
+# These ones "fail to compile", generating noise on stderr.  Therefore skip?
+#https://bananas-cdn.openttd.org/ai/434d4149/735bdc8c62c2e5ae8f62c0247ff5140f/434d4149-CargoMasterAI-2.0.4.tar.gz
+#https://bananas-cdn.openttd.org/ai/4c554654/33a60fd399895f8930238df198b4d782/4c554654-Lufthansa-2.tar.gz
+#https://bananas-cdn.openttd.org/ai/4d454341/75c678ca01c11d67e5495931871642fc/4d454341-MacroEcon-v0.1_beta.tar.gz
 
-# Game Script and GS Library - total size 1.9MB
+
+# Game Script and GS Library - total size 3.3MiB
 # NOTE: these are so small, I grabbed literally all of them.
 # NOTE: I'm not sure which thing pulled in "Split-2", but it was a dependency of SOMETHING in here.
 https://bananas-cdn.openttd.org/scenario/00000875/4386a31b5061dc77997a845942e7685b/00000875-Split-2.tar.gz
@@ -161,6 +186,7 @@ https://bananas-cdn.openttd.org/game-script/41555041/551dd106619afa92cf1210e7c50
 https://bananas-cdn.openttd.org/game-script/41574453/f9eef6e677f9ab97eda4ff9177d6833a/41574453-Awards-8.tar.gz
 https://bananas-cdn.openttd.org/game-script/42424545/a3feb46e9f5a8f402c62bc134a9b9927/42424545-BusyBee-RC2M.tar.gz
 https://bananas-cdn.openttd.org/game-script/42434752/76994b17f77a4473ea32d7b77f62706f/42434752-Balanced_City_Growth-3.tar.gz
+https://bananas-cdn.openttd.org/game-script/42524546/124f6b4be75dd5639a1dedea42535256/42524546-BeeReward_2025-v6_2025_2.tar.gz
 https://bananas-cdn.openttd.org/game-script/42524557/f228f10d06bd7d17ed2eac72d0d30673/42524557-BeeReward-v6.tar.gz
 https://bananas-cdn.openttd.org/game-script/4341474f/f84bdb2703b69fef5c3e053876960130/4341474f-NoCarGoal-9.tar.gz
 https://bananas-cdn.openttd.org/game-script/43414750/c84f71afdb67626ecc3d451aa470c3b5/43414750-NoCarGoal_Pikka_Remix-4.tar.gz
@@ -168,34 +194,53 @@ https://bananas-cdn.openttd.org/game-script/43415348/56ad6fd67ed0e94461eac8121b2
 https://bananas-cdn.openttd.org/game-script/43424753/91594ad9e03aa52869c8e4ae4d6c49be/43424753-CityBuilder-117.tar.gz
 https://bananas-cdn.openttd.org/game-script/43445643/ed7a0a8fc46dd3a6d52edf6c536eb730/43445643-TransportGoals-4.tar.gz
 https://bananas-cdn.openttd.org/game-script/43464753/5fc381637444e0b2b87b08b62adf5df0/43464753-City_Founder_GS-3.tar.gz
-https://bananas-cdn.openttd.org/game-script/43544354/d3fe243f8ab50f6d78803958157451dc/43544354-City_Controller-9.tar.gz
+https://bananas-cdn.openttd.org/game-script/43535453/26f0ae76aa5c50e73982764d48303c83/43535453-Cargo_Statistics-1.0.tar.gz
+https://bananas-cdn.openttd.org/game-script/43544354/30ad05c07308aae2223a90feb3c7ff98/43544354-City_Controller-16.tar.gz
+https://bananas-cdn.openttd.org/game-script/4354524b/1b6fd5906354d4439103febe21171c04/4354524b-Cargo_Tracker_Xmas-1.11.tar.gz
 https://bananas-cdn.openttd.org/game-script/43564753/5046ce88b098dbb1c047368b37ebf7a9/43564753-Company_Value_GS-v4.tar.gz
 https://bananas-cdn.openttd.org/game-script/44555544/86c1a9475199e802ef901728ddbc8317/44555544-same_GS-2.1.tar.gz
 https://bananas-cdn.openttd.org/game-script/44565243/02203e3963848ace7bf726365a3fa104/44565243-Deliverance-2.tar.gz
-https://bananas-cdn.openttd.org/game-script/454e5054/38f10447e0c96335f14167cf94198b68/454e5054-Peaks_and_Troughs-1.0.tar.gz
+https://bananas-cdn.openttd.org/game-script/454e5054/af9f315993befaeea5a457a1e768ca78/454e5054-Peaks_and_Troughs-2.tar.gz
 https://bananas-cdn.openttd.org/game-script/46454747/ec13167d1babf28570217b9496cd8ecb/46454747-Feca_Goal_Games-8.3.tar.gz
 https://bananas-cdn.openttd.org/game-script/4753524d/2f5395e5b1f1e7451e99c7e626f90332/4753524d-Goal_and_Story_Page_Remover-1.tar.gz
 https://bananas-cdn.openttd.org/game-script/47535448/90189787f632007c99f626148167bf02/47535448-GSToyHelper-1.tar.gz
 https://bananas-cdn.openttd.org/game-script/49444c49/d5bfe22a40514b5c806c179b315a67d0/49444c49-Limitations-4.tar.gz
 https://bananas-cdn.openttd.org/game-script/49534753/ba400f608174e40f743614dba32109ef/49534753-IndustryStabilizer-6.tar.gz
+https://bananas-cdn.openttd.org/game-script/49555047/71bbc473566ea82fee4f916b2e7b549f/49555047-Industry_Upgrader-1.2.tar.gz
+https://bananas-cdn.openttd.org/game-script/4c655461/4dff7dc429edb7f09b1732f8d2cddd8f/4c655461-League_Tables-v3.tar.gz
 https://bananas-cdn.openttd.org/game-script/4d374e57/28a8d881c61b992278cea620ff90418b/4d374e57-New_World_Disorder-0.2.1.tar.gz
 https://bananas-cdn.openttd.org/game-script/4d414749/0ed3a2fda767ac508a5e5957ef6950b0/4d414749-MagicGS-1.tar.gz
-https://bananas-cdn.openttd.org/game-script/4d494752/cb161707f7cc5f0d8d432d9b19fcf37e/4d494752-Migrations-4.tar.gz
+https://bananas-cdn.openttd.org/game-script/4d484242/1ba7c8e46bf44588ceacd348c270ef3e/4d484242-Boomtown_Or_Bust-2.tar.gz
+https://bananas-cdn.openttd.org/game-script/4d484444/b1c07259be6cd12ca1017798208118cd/4d484444-Destruction_Disaster-2.tar.gz
+https://bananas-cdn.openttd.org/game-script/4d494752/b3afa02275c6c305588e3746d679742d/4d494752-Migrations-8.tar.gz
 https://bananas-cdn.openttd.org/game-script/4d494e49/0c910a67d31c5bb393098546afe015cb/4d494e49-RealGrowth-7.tar.gz
-https://bananas-cdn.openttd.org/game-script/4e434753/e8f0dbb89e6bcb85a63fa8ca198f9eea/4e434753-NewCityGrowthScript-1.1.tar.gz
 https://bananas-cdn.openttd.org/game-script/4e474252/91c26625b3b7e55c56f91cd9623b6043/4e474252-Neighbours_are_important-16.tar.gz
+https://bananas-cdn.openttd.org/game-script/4e525647/6389fee6c11f7bf205361162dd140f1a/4e525647-New_Renewed_Village_Growth-0.6.tar.gz
 https://bananas-cdn.openttd.org/game-script/4e525744/4eeae43ff750fc223441004d6790dc82/4e525744-Renewed_World_Disorder-6.tar.gz
+https://bananas-cdn.openttd.org/game-script/4f325350/9fd47035ec34a2009fa56e2308e0913d/4f325350-O2ttdScriptPack-1.6.tar.gz
+https://bananas-cdn.openttd.org/game-script/4f504753/34cf2a41cfae333d0fe1b56ade61c535/4f504753-QuartermasterGS-207.tar.gz
 https://bananas-cdn.openttd.org/game-script/4f565250/3fdc56f73f9c3ce2e4373d0f205fc645/4f565250-Overpopulation-3.tar.gz
+https://bananas-cdn.openttd.org/game-script/504c344b/c516eb72b73d54732a863a9fcf74586c/504c344b-Poland_4K_Game_Script-0.0.0.tar.gz
+https://bananas-cdn.openttd.org/game-script/50524442/5cb506c0f9ebb2c248aabe8fdab4f671/50524442-Production_Booster-10.tar.gz
 https://bananas-cdn.openttd.org/game-script/5243494e/31e7892d154c9cf98bb838370dba9744/5243494e-Rebuild_Closed_Industries-1.tar.gz
 https://bananas-cdn.openttd.org/game-script/52444943/53d5507412ec0d98bea721f457d78515/52444943-Industry_Constructor-3.tar.gz
 https://bananas-cdn.openttd.org/game-script/52454347/8fbec66c89264e8b80c50f509e34c63a/52454347-Renewed_City_Growth-5.tar.gz
-https://bananas-cdn.openttd.org/game-script/52455649/2f451b5f8774a42c51c9d4a28a342765/52455649-Renewed_Village_Growth-9.2.tar.gz
+https://bananas-cdn.openttd.org/game-script/52455649/29ee90871ccddd9edcda78464479d8bf/52455649-Renewed_Village_Growth-12.1.tar.gz
+https://bananas-cdn.openttd.org/game-script/52455649/3b496d9316599bbc6c40d94950735383/52455649-Renewed_Village_Growth-9.3.tar.gz
+https://bananas-cdn.openttd.org/game-script/52494d50/914ce184811432d6fb4ee7c22f0ff3ee/52494d50-River_Importer-0.0.1.tar.gz
 https://bananas-cdn.openttd.org/game-script/52544348/4031a64e6c515c82aa1d37d37a054f0d/52544348-Open_TTD_Route_Chartering-3.tar.gz
+https://bananas-cdn.openttd.org/game-script/52564250/22621bf9cc68a7a9e24df76ccfef73ec/52564250-RVG_byh_fork_P_T-12.3.tar.gz
+https://bananas-cdn.openttd.org/game-script/52564259/eea4b0d0c0900ef91e78e9c550459588/52564259-Renewed_Village_Growth_byh_fork-12.3.tar.gz
+https://bananas-cdn.openttd.org/game-script/52564746/9a8aacc4712e5b5535104fa2f6554d7a/52564746-Renewed_Village_Growth_FIRS5-12.2.tar.gz
+https://bananas-cdn.openttd.org/game-script/5256475f/9dd9106e7f1dc7f8d1cde565613b7a54/5256475f-RVG_fork_by_ChronosXYZ-12.2.tar.gz
+https://bananas-cdn.openttd.org/game-script/53445344/5309cd9324e10075c87cf499d3adc44e/53445344-Supply_Demand-2026_01_10.tar.gz
 https://bananas-cdn.openttd.org/game-script/53495659/8bf02f5dbec828572512b2a7c1fbd701/53495659-Silicon_Valley-3_5944.tar.gz
-https://bananas-cdn.openttd.org/game-script/534d4342/a18a911b1336b7e643854d22198bef03/534d4342-Simple_City_Builder-2021.08.25.tar.gz
+https://bananas-cdn.openttd.org/game-script/534d4342/6374dd8c8b03067eab44c1ca811acc3a/534d4342-Simple_City_Builder-2025.03.18.tar.gz
 https://bananas-cdn.openttd.org/game-script/53504345/6539b8e6c85de8f95b19676896e73568/53504345-CityDomination-11.tar.gz
 https://bananas-cdn.openttd.org/game-script/53504c49/b79f4740a956b09bdf881357b4ff0d79/53504c49-Split_scenario_GS-2.tar.gz
+https://bananas-cdn.openttd.org/game-script/5354524e/f7f8f88a5c823a7541fc4ececfdbf9a4/5354524e-STA_Station_Renamer-1.0.4.tar.gz
 https://bananas-cdn.openttd.org/game-script/53654753/23e0e87077fa5f0d782452700e69b108/53654753-ServerGS-2.tar.gz
+https://bananas-cdn.openttd.org/game-script/536d4347/1b1cce04c974b39ebf57a44df1997a61/536d4347-Schmitt_City_Growth_NEW-16.tar.gz
 https://bananas-cdn.openttd.org/game-script/53794347/8f1d992068a18f86aed32d10864be8fb/53794347-City_Growth_Limiter-6.tar.gz
 https://bananas-cdn.openttd.org/game-script/54454144/3554deeedbd2a5e10e70eb8cf62c23f1/54454144-Technology_Advancement-0.tar.gz
 https://bananas-cdn.openttd.org/game-script/5447414c/f496335259be9122cfb19d6af2c3b8b2/5447414c-Think_globally_act_locally-20.tar.gz
@@ -204,8 +249,10 @@ https://bananas-cdn.openttd.org/game-script/54475245/b454bcc5df8729dc6c75de13bbc
 https://bananas-cdn.openttd.org/game-script/544e4947/6faafdf585758390de00cabf03a65f02/544e4947-Town_and_Industry_Control-3.1.tar.gz
 https://bananas-cdn.openttd.org/game-script/544f4c4c/fab8c27522055dd4eb69daa5484e53b5/544f4c4c-HighwayToll-1.tar.gz
 https://bananas-cdn.openttd.org/game-script/5455545f/3e598fd7e1f2eb65e8f5ef8b02234acb/5455545f-Beginner_Tutorial_Game_Script-17.tar.gz
-https://bananas-cdn.openttd.org/game-script/56497356/dfba9d75a9fe76843857b7962b99afa9/56497356-Villages_Is_Villages-24.tar.gz
+https://bananas-cdn.openttd.org/game-script/56497356/63775068fa35830ac03bf26f6873d2b2/56497356-Villages_Is_Villages-26.tar.gz
+https://bananas-cdn.openttd.org/game-script/594b3734/43ec7b4fdc0e39efaa14dc7ab0d4e576/594b3734-QuartermasterGS-113.tar.gz
 https://bananas-cdn.openttd.org/game-script/676c7330/d90c33546c41104f60d39942f65e430c/676c7330-Local_Authorities_and_Trees-0.0.0.tar.gz
+https://bananas-cdn.openttd.org/game-script/69646c65/ea4fe4588d9e66d45e0e8afa640f0999/69646c65-IdleTTD-2.tar.gz
 https://bananas-cdn.openttd.org/game-script/6a667330/3a06ae2feaa1214ef28692ffffb3f8d6/6a667330-Eternal_Love-1.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/4647434d/fc4a36b3b1153d5e27c7283f7f6dc6e6/4647434d-FGCargoMonitor-4.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/46475643/ec1715cb0403d8d7b0c105d00ce7ec25/46475643-FGVersionController-2.tar.gz
@@ -214,23 +261,27 @@ https://bananas-cdn.openttd.org/game-script-library/47514248/98b83fdd02596d0c4db
 https://bananas-cdn.openttd.org/game-script-library/47514648/6d8a2b4f2df25db7dbf5bc11943b5ba7/47514648-Queue.FibonacciHeap-2.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/4753544c/4b566c099dcf01be20145b62eaf1e9b4/4753544c-GSToyLib-1.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/494e534c/77b02a873465fb74593551f3777cc5be/494e534c-IndustryStabilizeLib-1.tar.gz
-https://bananas-cdn.openttd.org/game-script-library/4c4d6d57/0bdabb2198285e08d8426074aa413c90/4c4d6d57-MinchinWeb_s_MetaLibrary_GS-9.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/4c4d6d57/ea966e8515ef32caff7bf81ab7315da1/4c4d6d57-MinchinWeb_s_MetaLibrary_GS-11.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/4c4d6d57/ed17b9c585ef0b9da9556c0791657918/4c4d6d57-MinchinWeb_s_MetaLibrary_GS-6.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5046524f/ac98ad57f8f0c70687520d4823bcc536/5046524f-Pathfinder.Road-4.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5343504c/643a5092b2c6bb3e995897d86d6eeb25/5343504c-Script_Communication_for_GS-45.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/5350524c/2b643606310b6921ab17af3f368436ab/5350524c-SuperLib_for_NoGo-19.1.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/5350524c/3a67833093eb429375f0212171b7f4d4/5350524c-SuperLib_for_NoGo-36.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5350524c/4b28bb33dc4f62771a26d901deb24fa7/5350524c-SuperLib_for_NoGo-40.tar.gz
-https://bananas-cdn.openttd.org/game-script-library/544c424c/70db7b52e91542bc399bad6b939da838/544c424c-TileLabels-1.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5350524c/559454e59b7e0413730d6d50ad9d1f07/5350524c-SuperLib_for_NoGo-27.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5350524c/70831ffe7cf07699e4fd430f2ff07586/5350524c-SuperLib_for_NoGo-35.tar.gz
-https://bananas-cdn.openttd.org/game-script-library/5350524c/fd72acd813b592719d5e6e39444211ad/5350524c-SuperLib_for_NoGo-38.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5350524c/73c82171315b8f9603c02146bf2c26ef/5350524c-SuperLib_for_NoGo-39.tar.gz
-https://bananas-cdn.openttd.org/game-script-library/5350524c/2b643606310b6921ab17af3f368436ab/5350524c-SuperLib_for_NoGo-19.1.tar.gz
-https://bananas-cdn.openttd.org/game-script-library/4c4d6d57/ed17b9c585ef0b9da9556c0791657918/4c4d6d57-MinchinWeb_s_MetaLibrary_GS-6.tar.gz
-https://bananas-cdn.openttd.org/game-script-library/5350524c/3a67833093eb429375f0212171b7f4d4/5350524c-SuperLib_for_NoGo-36.tar.gz
 https://bananas-cdn.openttd.org/game-script-library/5350524c/d2fce08033ae7bab4104a1416b52b3f8/5350524c-SuperLib_for_NoGo-24.tar.gz
-# This one is not installing properly -- just skip it.
-# https://bananas-cdn.openttd.org/game-script/4e434753/e8f0dbb89e6bcb85a63fa8ca198f9eea/4e434753-NewCityGrowthScript-1.1.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/5350524c/fd72acd813b592719d5e6e39444211ad/5350524c-SuperLib_for_NoGo-38.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/5350524c/ff7a19a94756926b0f03d9d851e8026a/5350524c-SuperLib_for_NoGo-41.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/544c424c/70db7b52e91542bc399bad6b939da838/544c424c-TileLabels-1.tar.gz
+https://bananas-cdn.openttd.org/game-script-library/544c4753/30c37814f12b7fee27fe09cdba6b967e/544c4753-GSToyLib_v2-2.tar.gz
+# These ones "fail to compile", generating noise on stderr.  Therefore skip?
+#https://bananas-cdn.openttd.org/game-script/52495652/16e5c5b4787dd601472eeaefa5db7bbe/52495652-River_Importer-0.0.3.tar.gz
+#https://bananas-cdn.openttd.org/game-script/4e434753/e8f0dbb89e6bcb85a63fa8ca198f9eea/4e434753-NewCityGrowthScript-1.1.tar.gz
 
-# Heightmaps - total size 22.1MB
+
+# Heightmaps - total size 22MiB
 # NOTE: I hand-picked a selection of these that sounded interesting.
 #       The download size is 1MB to 8MB per DLC, depending directly on the size of the play area (1024x1024 = 1MB; 8192x8192 = 8MB).
 # UPDATE: some DLCs were really small for their play area (<100KB) so I added a bunch of those also.
@@ -279,7 +330,6 @@ https://bananas-cdn.openttd.org/heightmap/00001110/c18b11049b3e5d82b434fabee6ea6
 https://bananas-cdn.openttd.org/heightmap/00001186/ae996933633ea79cf9b9095ed7c7c871/00001186-Arma_3_Altis_and_Stratis-1.tar.gz
 https://bananas-cdn.openttd.org/heightmap/000011de/6dd59b83cd655bc61ffe2d4b92e93bb7/000011de-Canada_2048x2048-1.00.tar.gz
 https://bananas-cdn.openttd.org/heightmap/0000138b/9766438d2fb3fa3d683106198bba7fb4/0000138b-Flat_Earth_Map-1.tar.gz
-https://bananas-cdn.openttd.org/heightmap/000016b9/e8eff17f0065d51c0718a18e0df5cb23/000016b9-Hudson_Valley-v0.1.tar.gz
 https://bananas-cdn.openttd.org/heightmap/00001748/b8031a83d28e2b550e5c38d96021ba5a/00001748-Tasmania_Island-1.0.tar.gz
 https://bananas-cdn.openttd.org/heightmap/00001861/e565f8e82a0b6b6cda4782ecaff8aa80/00001861-Mumbai-v1.0.tar.gz
 https://bananas-cdn.openttd.org/heightmap/0000188c/e272ca5d1ed5eac2fbdeacb93ec2eafa/0000188c-The_Antarctic_Mainland-0.1.tar.gz
@@ -290,7 +340,8 @@ https://bananas-cdn.openttd.org/heightmap/00001975/77120e1064e621528d3ac8c802e2a
 https://bananas-cdn.openttd.org/heightmap/00001981/8224d821646f5f6ff24c90445374b914/00001981-Canary_Islands-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/heightmap/00001982/23c6940e25a59a00560c0b4d269a896a/00001982-Balearic_Islands-1.0.0.tar.gz
 
-# Everything from #openttdcoop's recommended set. -- 27.7MB
+
+# Everything from #openttdcoop's recommended set. -- 26MiB
 # https://wiki.openttdcoop.org/GRF →
 # https://wiki.openttdcoop.org/GRF_Table
 # https://wiki.openttdcoop.org/GRF_Table_7.3
@@ -306,6 +357,7 @@ https://bananas-cdn.openttd.org/newgrf/414d0101/08129b7809169480e4b79db3f1195585
 https://bananas-cdn.openttd.org/newgrf/41501202/b13dd8fb0d7c34cacac2fe68bd137bb9/41501202-HEQS_Heavy_Equipment_Set-1.5.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/41533032/78a4f0e07d79001ceac38b20e1f7b370/41533032-Finnish_Town_Names-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/41570101/2d09741f074782c9b8c132a2bcd68153/41570101-2CC_Cargo_Trams-0.8r.tar.gz
+https://bananas-cdn.openttd.org/newgrf/41570101/eb6d228c579d91009ebe57f39f1c5ce1/41570101-2CC_Cargo_Trams-0.8o.tar.gz
 https://bananas-cdn.openttd.org/newgrf/41570102/f0277907e806bbb087f42727b2df8cd1/41570102-Modern_Waypoint-3.tar.gz
 https://bananas-cdn.openttd.org/newgrf/41580100/9b6682e805adc7a98986f92581bb6d29/41580100-No_Space_Planes-0.1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/415a0301/8667797182d6f6c670d7be5d677acb45/415a0301-American_Road_Replacement_Set-2.0.0.tar.gz
@@ -323,17 +375,15 @@ https://bananas-cdn.openttd.org/newgrf/435a544e/0647eeda6461378a9d242135a7303429
 https://bananas-cdn.openttd.org/newgrf/44419001/74ae46a431ebcf7ad857a8172e1cff44/44419001-Aussie_Town_Names-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44419501/12422f3f4301d08201f9ff6f3b5308bf/44419501-Crazy_Town_Names-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44424901/760dfd86df6d9eb50b2d1711bf4ee5db/44424901-Town_names_of_Allg_u-0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/44430101/71c068f7be9a402c4a7ef0d0c6265f5d/44430101-Dante_Empire_Names-0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/44440101/963b1d032890b586bffb369662b59476/44440101-Furry_Town_Names-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/44430101/f861955105bf5e9f1e35de8c77d5ee9e/44430101-Dante_Empire_Names-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/44440101/a453023a3396cff793336a190dbbcdca/44440101-Furry_Town_Names-2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44440202/4a85260db888c1f2b66ed9a3a9ba3b90/44440202-Expensive_Short_and_Slow_Bridge-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44440301/8b73d8c3f5922ad35ae6f292a7b735e6/44440301-NARS_v1-1.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/44440302/5f268de28cca8fa7fdd140ac031a5939/44440302-North_American_Renewal_Set-2.52.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44440602/3d1daa1e983e8f0188cd1e022ed8cf2c/44440602-Pikka_s_Basic_Industries-100.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44440a01/fceec76cf44ec23e7fe9c88048cf11cc/44440a01-av8_Aviators_Aircraft_Set-2.21.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44440a11/d701e3219a08351b1705a7860644a9a2/44440a11-General_av8ion-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44440a80/2f7f4bc7fbad4544ca241dfe6d5a6f39/44440a80-Av9.8-0.97.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44441000/da36131a815d2d5fc158c7a27d67b5af/44441000-UKRS2_The_UK_Railway_Set-1.05.tar.gz
-https://bananas-cdn.openttd.org/newgrf/44441001/83915879f68dd174c953868c0629a4c9/44441001-UKRS2_UK_Railway_Add_on_Set-Gobi.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44441002/6b0a40195bb5b54e6fbdf9e47a7fec1c/44441002-Faster_UKRS2_Express_Car-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44442301/d6dabf4e1803911f2bade94641a944c8/44442301-Modified_Building_Costs-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44444040/310ee1b199d5a858bb1a7fb5f52f9969/44444040-Tropic_Refurbishment_Set-0.3c.tar.gz
@@ -347,6 +397,7 @@ https://bananas-cdn.openttd.org/newgrf/444a4330/74b9c5d39045340955771a1ecdb23569
 https://bananas-cdn.openttd.org/newgrf/444b0101/a853e4bc9649f4b70c79bfbde748e462/444b0101-Lithuanian_Town_Names-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44544e32/ea20e21253a5795785e6dd2c8d1a5a1d/44544e32-Dutch_Town_Names-2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/44570101/5f07163c24061969b0415a6542f41264/44570101-Black_Country_Town_Names-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/451a0000/0a228fedfdb7bd2b5409989fb5be9e62/451a0000-Romanian_Train_Set-0.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/454e0101/0cd126d0ba6c6ccb7c73538c0926ee94/454e0101-Modern_Maglev_Trains-1.4.1.3.tar.gz
 https://bananas-cdn.openttd.org/newgrf/454e0202/4d5c1b648cc4fcd1d10d3349efbee9f1/454e0202-Maglev_Track_Set_v2-2.6.tar.gz
 https://bananas-cdn.openttd.org/newgrf/454e0e01/71939af959c59906a4c68038da0b7a54/454e0e01-Industrial_Trackset-1.5.tar.gz
@@ -378,7 +429,6 @@ https://bananas-cdn.openttd.org/newgrf/49544c4e/24b789e0809443da431eb210174a7845
 https://bananas-cdn.openttd.org/newgrf/49764202/58b1ca96a7bb760a907f25d4b835f064/49764202-German_Town_Names-0.2.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a430002/93eac5f5396584b92d4c5f0aaaf3f6c5/4a430002-Industrial_Stations_Renewal-1.0.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a448807/738b5313a3b87f1b69b01101f305db8c/4a448807-XIS_Extreme_Industry_Set-0.6.2.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4a460201/13b19f0cfe5b6e098239d83c443c0c5d/4a460201-NARS2_Override-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a4b0501/018b81283ff5710bfc102aa1fd823787/4a4b0501-Total_Bridge_Renewal_Set_UKRS-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a4d3030/c6ddfabc4d6f8b48cfc35c7c6995e3b5/4a4d3030-Western_Australia_Town_Names-1.0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a530117/ca32127c974fd70434f9ca4e0ad4a501/4a530117-ECS_FIRS_vehicle_set-2014.11.26.tar.gz
@@ -387,7 +437,6 @@ https://bananas-cdn.openttd.org/newgrf/4a530f01/35d5fb5e9c24812ee4227d7b6a482a66
 https://bananas-cdn.openttd.org/newgrf/4a544e45/8f3301887e272d775c331163f2c71ce5/4a544e45-Japanese_Town_Names_Extended-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a545000/45d8fd82bb56e1278ba8f0f4de548a72/4a545000-Midwestern_Town_Names-1.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a545001/df79ba77d4a5402c37d523e662f1ffb3/4a545001-Northeastern_Town_Names-1.2.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4a545002/abc28fc645d2eec163b4e66bdd4ab4a4/4a545002-Southeastern_Town_Names-1.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a545350/d9fe7a816a3c22390f36450dc5b390ee/4a545350-Japanese_Train_Set_Addon-1.4.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a56540e/b7819022af101ec8f8eafb99d46a88fb/4a56540e-UK_Town_Names-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4a595001/bba9f50e894d063e20773a66e15b8fad/4a595001-2CC_Bus_Set-v1_0.tar.gz
@@ -414,8 +463,10 @@ https://bananas-cdn.openttd.org/newgrf/4d435800/b5e1af484852ad59d6b9b0266e12314c
 https://bananas-cdn.openttd.org/newgrf/4d435801/31c38137e477ba140846197c9215847a/4d435801-UKRS2_Addon_Community_Bugfixe-1.06.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d470305/2e96b9ab2bea686bff94961ad433a701/4d470305-BaseCosts-5.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d470402/50d558b28d5cef39ea71497c158f9750/4d470402-SwissTownNames-r13.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4d470501/8318348ce3d1bc73aa1b7c8034bed8b5/4d470501-openttdcoop_NewGRF_package-8.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d470702/facc5ce9185fe252c38c4f3834be8d73/4d470702-French_Town_Names-r5.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d470801/ab5909e50f9afac0df4c5f66e241838a/4d470801-LumberMill-1.1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4d470802/56a6e4c9dd5e1c562ba62c40d8583640/4d470802-LumberMill_PS-2.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d470d01/f2c8664d215f534afd37052169d89706/4d470d01-Belarusian_Town_Names-r7.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d4c0100/1e2a243600434194fb100e72e507d5ef/4d4c0100-Dutch_Catenary-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d4d9910/3cd3f4d0d98ddc0db08e9ad74b88a9e2/4d4d9910-The_Lighthouse_Set-1.2.tar.gz
@@ -423,6 +474,7 @@ https://bananas-cdn.openttd.org/newgrf/4d4e0103/0727caf0b249f0d3bd08e6140657fc27
 https://bananas-cdn.openttd.org/newgrf/4d656f17/8a4f8a04256c90becf818d134c91c816/4d656f17-Long_vehicles-v4_04_Oct_2008.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f20/c4945d827a04898a9a4246079b38e2cd/4d656f20-Long_vehicles_v4._Cut_version-13_Jan_2008.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f54/aac1cbd79f701b8dce0b480ab7d83ead/4d656f54-Toyland2mars-1.8.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4d656f91/937ba8d623ec2298b8b703eb183b2587/4d656f91-ECS_Town_vector-1.1.2_19Jun2011.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f91/945efbe06b03ec2ac3598ea578b969c0/4d656f91-ECS_Town_vector-1.2_19feb2012.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f94/003905a6734b7395f2a60a977f0dd887/4d656f94-ECS_Machinery_vector-1.2_19feb2012.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f95/6f5472d7f2f3f9236aafe7a81df9ae84/4d656f95-ECS_Wood_vector-1.2_19feb2012.tar.gz
@@ -431,19 +483,17 @@ https://bananas-cdn.openttd.org/newgrf/4d656f97/b73ea6bcd8dcae4151eec0c93dbf3073
 https://bananas-cdn.openttd.org/newgrf/4d656f9c/833cd4c1c7e2c0e9aaba35fce7b6a9bb/4d656f9c-ECS_Chemical_vector_II-1.2_19feb2012.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f9d/7c6864163bb6cc6178ebdc5550f1c622/4d656f9d-ECS_Houses-1.2_19feb2012.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4d656f9f/357601291b0dd95b8fef49a6a7a7f9de/4d656f9f-ECS_Basic_vector_II-1.2_19feb2012.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4e415256/abc1f6eb17576182aec8863e751df6d5/4e415256-North_American_Road_Vehicle_Set-0.1.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e42544e/0a71750b749d6c0c56e3ec889d587389/4e42544e-New_Brunswick_Town_Names-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e43544e/882c06d7efbc0c75e34e073549676074/4e43544e-NML_CAT_TOWN_NAMES-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e440107/3af0da02ca5186f821cd0247bc1a4dca/4e440107-Dock_with_containers_and_crane-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e445902/18307d10282f5b9fd98abeecacae4ad4/4e445902-Canadian_Ghost_Town_Names-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e474c54/4fd0bbd5a15e9b6910add38b7c52833f/4e474c54-Latin_Town_Names-1.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4e474c56/b780a10427b64320ee8529ad9711868e/4e474c56-Light_Road_Vehicle_Set-0.2_beta_2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e475453/f3f2b70f1f3df0b4c79731513ab94915/4e475453-Narrow_Gauge_Track_Types-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e480101/cf99e62149311d481226d697a4782c19/4e480101-NH_Foundations-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e480201/c3bb1694aad8abf5599aadb352bee2b1/4e480201-NH_Depot-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4b4e32/2a26722b7db469c7b234b2f309b82278/4e4b4e32-DPRK_Town_Names-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d0325/dacb1f8ec7f42730f6afba6f1b0749ed/4e4d0325-2cc_Rapid_Transit_For_Me-1.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4e4d0518/b41ed859c157f372e32c4ab3749d8345/4e4d0518-NARS_Add_on_Set_2cc-2208262034.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4e4d0518/d4c3a76cd516a5fccfa0de58bb3e9c7b/4e4d0518-NARS_Add_On_Set_2cc-2401131718.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d1015/d698b0be65f9f53e2b2f206c72bff39c/4e4d1015-North_American_RV_Set-0.0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2004/755d95bf5e2f6c435a2f35ddbdade498/4e4d2004-NML_CAT2.0_TOWN_NAMES-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2005/6cdb71c352bc28c665f06b610aa41576/4e4d2005-NML_CAT2.0_GUI_MISC_TOWN_NAMES-42069.tar.gz
@@ -474,7 +524,6 @@ https://bananas-cdn.openttd.org/newgrf/50475453/439d51194851a116f1fb728826f3c551
 https://bananas-cdn.openttd.org/newgrf/504a0101/addf703de6eb7374a509202cb20b9840/504a0101-SeaplaneAirport-1.3.tar.gz
 https://bananas-cdn.openttd.org/newgrf/504a0102/29ea308a78b7740794b80a117d14bf34/504a0102-Dutch_Delta_Works-1.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/504b4b01/a76ab6aa2aa0e24e3dbb8ad0feadedd9/504b4b01-CS_Town_Names-1.0b.tar.gz
-https://bananas-cdn.openttd.org/newgrf/504c0203/e3aed08f1cd70afd62f893b9804ad766/504c0203-Polish_Town_Names-1.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/504e0001/e7781323d2b0086e2e76342daa036054/504e0001-UK_Waypoints-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/504e0002/6e6944e09ce6c3ac130df72c542ee4b1/504e0002-Generic_Buffers-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/50560006/66c1ce2308cde9995feea3e7fc2e4fa4/50560006-CSDSet_v_1.5.0-1.0.5.tar.gz
@@ -482,6 +531,7 @@ https://bananas-cdn.openttd.org/newgrf/50610101/a82e67410e238df7be356fe5a0e09aa7
 https://bananas-cdn.openttd.org/newgrf/51446501/b0a4e13f96c54ddaba95c03e3c7eb190/51446501-Dutch_Metros_As_Trams-002.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52444431/c28f7b3845ca7fcd703835c00c32ac20/52444431-Bulgarian_Town_Names-1.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52453200/a222f0b3bcf0cfe187a7868116a00c49/52453200-JapanSet_Landscape-3.2.tar.gz
+https://bananas-cdn.openttd.org/newgrf/52453200/dba84425f161e178abafbc3232509240/52453200-JapanSet_Landscape-3.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52453400/b2e27b74a3894198a00139cfcf09d011/52453400-Japanese_Buildings-3.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52455200/0e5a9c5acd2bcaf7fa0658c3f905a660/52455200-Rural_Stations-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52455300/37c0b839b13c4b18051580c81eedf427/52455300-Suburban_Stations-1.tar.gz
@@ -495,7 +545,7 @@ https://bananas-cdn.openttd.org/newgrf/52564e5a/0e24bfa66f59be10b29e8d76a54ec009
 https://bananas-cdn.openttd.org/newgrf/52564e67/476e12adf46138882e9c2906c87b27e8/52564e67-Georgian_Town_Names_Country-0.0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52570103/edb2d26f9d81423734ca12412f309cf3/52570103-Generic_Tram_Set-0.4.tar.gz
 https://bananas-cdn.openttd.org/newgrf/52571208/dc83dab2933faccb91678d4f75abccc6/52571208-Generic_Cars-0.4.tar.gz
-https://bananas-cdn.openttd.org/newgrf/526f7001/1cb4df4288e8b04843aa6a01aacab6b3/526f7001-Frenchies_Town_Names-0.1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/526f7001/551d448017494d7eb1c9936b9a434c02/526f7001-Frenchies_Town_Names-0.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/534b4601/94bde907f09ff599844a788b8bed299d/534b4601-Arabian_town_names-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/534c4001/168e26ea4dd2f1a86ed197258c95390f/534c4001-Hungarian_Town_Names-2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/53505401/a89d941564f75ae47173213d2422bcca/53505401-Spanish_Town_Names-0.1.0.tar.gz
@@ -541,32 +591,31 @@ https://bananas-cdn.openttd.org/newgrf/736c6605/cbbe38a8be3da572ec59e2f40f05c85a
 https://bananas-cdn.openttd.org/newgrf/76270101/b726eecfda36751833eaf3ba360ac11d/76270101-Famous_Town_Names-1.00.tar.gz
 https://bananas-cdn.openttd.org/newgrf/76270301/78b65c27b2b1151a98cb794e89157199/76270301-Olympic_Town_Names-4.tar.gz
 https://bananas-cdn.openttd.org/newgrf/79210502/fafe655ec51d907391c38b116b199307/79210502-Brazilian_Town_Names-2.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/ac1d0101/acd9ae0777f12599269466e6970095c0/ac1d0101-NARS_2.5_Passenger_mod-0.2a.tar.gz
 https://bananas-cdn.openttd.org/newgrf/ac1d0201/e1a68846227b3f330d17028d20661eb0/ac1d0201-French_Small_Town_Names-0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/cf6f0000/d4a07fd09ea013e83d3db388a3f2043b/cf6f0000-Ukrainian_Town_Names-1.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/f27cba84/4e2a808edbed8006154c3c919a1289b2/f27cba84-Unholyphish_puts_Names_in_Towns-1.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/f2860b74/f43004ecdbcdec79efcc5b0263953748/f2860b74-Javanese_town_names-1.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/fbfb0010/910e27fa08080a404b80ea7e9a888b95/fbfb0010-2CC_Trams-0.9c.tar.gz
 https://bananas-cdn.openttd.org/newgrf/fbfb0102/ce6b0c978c025f3477cc9a91ae9109fe/fbfb0102-Dutch_Tram_Set-2.0.2.tar.gz
 https://bananas-cdn.openttd.org/newgrf/fbfb0202/f7fa6c6ecea645ca788b88555e118f4d/fbfb0202-Transrapid_Track_Set-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/fbfb0402/d83cc84c8b92c924c5ebeee96565d194/fbfb0402-Metro_Track_Set-2.1.2.tar.gz
-https://bananas-cdn.openttd.org/newgrf/41570101/eb6d228c579d91009ebe57f39f1c5ce1/41570101-2CC_Cargo_Trams-0.8o.tar.gz
-https://bananas-cdn.openttd.org/newgrf/fbfb0010/6be95390c3dfe5863574b6dd241c793f/fbfb0010-2CC_Trams-0.9b.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4d656f91/937ba8d623ec2298b8b703eb183b2587/4d656f91-ECS_Town_vector-1.1.2_19Jun2011.tar.gz
-https://bananas-cdn.openttd.org/newgrf/44440302/439275017478c2e5e7aa25f5e191903d/44440302-North_American_Renewal_Set-2.03.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4d470802/56a6e4c9dd5e1c562ba62c40d8583640/4d470802-LumberMill_PS-2.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/4d470501/8318348ce3d1bc73aa1b7c8034bed8b5/4d470501-openttdcoop_NewGRF_package-8.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/52453200/dba84425f161e178abafbc3232509240/52453200-JapanSet_Landscape-3.1.tar.gz
-https://bananas-cdn.openttd.org/newgrf/44440302/c2a2ce006d0f3bc2e44122a9358ec999/44440302-North_American_Renewal_Set-2.51.tar.gz
 
-# Stuff that "everyone" says is super cool?
+
+# Stuff that "everyone" says is super cool? -- 18MiB
 # Also a bunch of "Australian" stuff.
 # NOTE: *not* doing YETI as that on its own is 182MB, yikes.
-https://bananas-cdn.openttd.org/newgrf/414e0101/5d665c64693a438e3046c22666f46e08/414e0101-FISH_1_Ships-0.9.2.tar.gz
+https://bananas-cdn.openttd.org/newgrf/1560b248/76be5a3ba8c66817c14cfa05177d20d9/1560b248-redFISH-0.4.tar.gz
 https://bananas-cdn.openttd.org/newgrf/414e0201/0da3a80b986bc3c17c20ca4ce9ca26aa/414e0201-Squid_Ate_FISH_FISH_2_Ships-2.0.3.tar.gz
-https://bananas-cdn.openttd.org/newgrf/52580101/d7400dacf064356088e0a13b836a52b9/52580101-FIRS_and_CHIPS_style_objects-0.1.10.tar.gz
-https://bananas-cdn.openttd.org/newgrf/f1250008/6a2e778bff67ab76437696ed1c3c780a/f1250008-FIRS_Industry_Replacement_Set_4-4.15.1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/41560103/98aa8b74926ab2a59f14ff0f49b8b80b/41560103-eGRVTS_v2.1-r240.tar.gz
+https://bananas-cdn.openttd.org/newgrf/444a5901/d4b5c202a411e43deb5f9956f530db52/444a5901-Vactrain_Set-1.0.1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4672783a/ea46c4036a1a107494926ab6a756f300/4672783a-FS_Maglev_Track-1.2.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470101/02823d1f89e36b75191a3c657de7d2b5/47470101-NSW_Railway_Town_Names-1.1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470202/b6ade3faaadaec32b759ac10637a90e0/47470202-NSW_Rail_Towns_NorthRegion-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470203/311e1c1c290274986e7e7910c29105c7/47470203-NSW_Rail_Towns_SouthRegion-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470204/efc0ffd3ddf16e4c092f0eb4db901cb8/47470204-NSW_Rail_Towns_WesternRegion-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470205/1f6f1a98d930461e03dc601a88260350/47470205-NSW_Rail_Towns_SydneyMetro-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470505/a6c033fbc29c297e134aa8584358aee3/47470505-AuzTrains_NSW-34.tar.gz
+https://bananas-cdn.openttd.org/newgrf/47470606/7da7ec460772a32146289f257a053bab/47470606-AuzTrains_Other_States-32.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4d433501/59a6b4019ac583e832da3beb12423d22/4d433501-FIRSD_Industry_Replacement-1.0.0.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e434143/b4bb5854278f4707e36509ea905c2f54/4e434143-NML_CAT_AIRCRAFT-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e434244/62bdee2136deefbc3ed0d172466e99e9/4e434244-NML_CAT_BUILDINGS-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e434755/1531c814f50b09061cc2599559c7f200/4e434755-NML_CAT_GUI-1.tar.gz
@@ -578,11 +627,14 @@ https://bananas-cdn.openttd.org/newgrf/4e434d43/c1b36a9b6ad2634aba03bc68c262e8db
 https://bananas-cdn.openttd.org/newgrf/4e434f42/8744e4664ec16e52a225f5babc048e5f/4e434f42-NML_CAT_NEWOBJECTS-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e435244/e5d978305832eb67434b9ad1332094eb/4e435244-NML_CAT_ROAD-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e435354/49774c8eeb675a83170ca1090a9a7c03/4e435354-NML_CAT_STATIONS-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4e43544e/882c06d7efbc0c75e34e073549676074/4e43544e-NML_CAT_TOWN_NAMES-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e435452/6e75dd4ed53b314ec374beb80ec81e9f/4e435452-NML_CAT_TRAINS-1.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2000/152c92bef0d23859ba663e990cb433ec/4e4d2000-NML_CAT2.0_LANDSCAPE_OBJECTS-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2001/67b4a2c70c196caa2125ba81edb39b44/4e4d2001-NML_CAT2.0_GUI-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2002/4c6ed5b6edcd6fa3536fffa518a9a83b/4e4d2002-NML_CAT2.0_MISC-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2003/c6cb1e9f6c80339f00de742613f30c9c/4e4d2003-NML_CAT2.0_GUI_MISC-42069.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4e4d2004/755d95bf5e2f6c435a2f35ddbdade498/4e4d2004-NML_CAT2.0_TOWN_NAMES-42069.tar.gz
+https://bananas-cdn.openttd.org/newgrf/4e4d2005/6cdb71c352bc28c665f06b610aa41576/4e4d2005-NML_CAT2.0_GUI_MISC_TOWN_NAMES-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2006/6e38cd593230fcd11f220732ad0c4e5a/4e4d2006-NML_CAT2.0_LANDSCAPE-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2007/08a59e628b087d8011acc180a8b52b8c/4e4d2007-NML_CAT2.0_NEW_OBJECTS-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2009/5b50c21dc1c21489d8861285a1d45746/4e4d2009-NML_CAT2.0_BUILDINGS-42069.tar.gz
@@ -593,26 +645,18 @@ https://bananas-cdn.openttd.org/newgrf/4e4d2013/89767c36a030b19afe15cf8e40437f36
 https://bananas-cdn.openttd.org/newgrf/4e4d2014/7d576d4b6c854ec61c343292d4bbbdff/4e4d2014-NML_CAT2.0_AIRCRAFT-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2015/66187df1e0539af43612c0585e89f38e/4e4d2015-NML_CAT2.0_WATERCRAFT-42069.tar.gz
 https://bananas-cdn.openttd.org/newgrf/4e4d2016/d57860a58a6e9f33aec83913256276d9/4e4d2016-NML_CAT2.0_INDUSTRIES-42069.tar.gz
+https://bananas-cdn.openttd.org/newgrf/52448472/f5b973d18b557439b84b232417559a3e/52448472-Australian_Aboriginal_Town_Name-1.0.tar.gz
+https://bananas-cdn.openttd.org/newgrf/52580101/d7400dacf064356088e0a13b836a52b9/52580101-FIRS_and_CHIPS_style_objects-0.1.10.tar.gz
+https://bananas-cdn.openttd.org/newgrf/54431588/9b9dbe44ed2dbbcc23547e16b9e746d1/54431588-NZR_Class_DE-1.2.tar.gz
+https://bananas-cdn.openttd.org/newgrf/5a4d0802/f77acae5f3c081a4d42f5b2fd8d63f1d/5a4d0802-ORP_3rd_Rail_Addon-1.tar.gz
+https://bananas-cdn.openttd.org/newgrf/66724d49/235c574c38ed0dc51023e5985768aa38/66724d49-Manual_Industries-2_r5.tar.gz
 https://bananas-cdn.openttd.org/scenario/000000ac/4bc77f9c5af56a3a40afd2bb348b5598/000000ac-Australia-1.0.tar.gz
+https://bananas-cdn.openttd.org/scenario/00000126/ababf3628ee698c9026c1a8bbb20696f/00000126-New_South_Wales_Aus-1.tar.gz
 https://bananas-cdn.openttd.org/scenario/00000594/d50521a3ee70671750b1671b8debbda2/00000594-Victoria_SE_Australia-v2.tar.gz
+https://bananas-cdn.openttd.org/scenario/0000095c/be3b1e845b3741b0723704ef7c9b68f2/0000095c-Beginner_Tutorial-17.tar.gz
 https://bananas-cdn.openttd.org/scenario/00000c38/3290073132ff4165ac11767faf3631b0/00000c38-W.A.C_World_Map-V.3.1.tar.gz
 https://bananas-cdn.openttd.org/scenario/00000ece/feaba6a968aaa67f213bd260c576b4fb/00000ece-South_East_Australia-0.1.tar.gz
-https://bananas-cdn.openttd.org/scenario/00000ed3/d3b4fdc90fdbd4228b7eba33bff87c33/00000ed3-WAC_World_with_Aus_Centered-4.2.tar.gz
 https://bananas-cdn.openttd.org/scenario/00001062/13720965650112fc7416b1f44ee3c8d7/00001062-Australia_and_Timor_v_1.1-1.1.tar.gz
 https://bananas-cdn.openttd.org/scenario/00001064/7807788d7f0d82c395a3c601aebdec25/00001064-Australia_and_Timor_in_1930-1.6.0.tar.gz
 https://bananas-cdn.openttd.org/scenario/000015c4/f437cedd2bbda029de9b34109f48e911/000015c4-Carpentarian_Australia-0.1.1.tar.gz
 https://bananas-cdn.openttd.org/scenario/000018b2/9ccab0c4afc596f22b20ae2c0cb847fe/000018b2-Dib_s_Tasmania-1.1.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/47470202/b6ade3faaadaec32b759ac10637a90e0/47470202-NSW_Rail_Towns_NorthRegion-1.tar.gz
-https://bananas-cdn.openttd.org/newgrf/47470203/311e1c1c290274986e7e7910c29105c7/47470203-NSW_Rail_Towns_SouthRegion-1.tar.gz
-https://bananas-cdn.openttd.org/newgrf/47470204/efc0ffd3ddf16e4c092f0eb4db901cb8/47470204-NSW_Rail_Towns_WesternRegion-1.tar.gz
-https://bananas-cdn.openttd.org/newgrf/47470205/1f6f1a98d930461e03dc601a88260350/47470205-NSW_Rail_Towns_SydneyMetro-1.tar.gz
-https://bananas-cdn.openttd.org/newgrf/47470505/2f29ba45d0a228fbbfdec9e61fa8eb4b/47470505-AuzTrains_NSW_Set-29.tar.gz
-https://bananas-cdn.openttd.org/newgrf/47472031/2711f43de63b84c0af0f6c13a07e8d29/47472031-Australian_Industry_AuzInd2-2.tar.gz
-https://bananas-cdn.openttd.org/newgrf/52448472/f5b973d18b557439b84b232417559a3e/52448472-Australian_Aboriginal_Town_Name-1.0.tar.gz
-https://bananas-cdn.openttd.org/newgrf/52571203/2e00a55df056e0f4bd7bbc2517514dc7/52571203-eGRVTS2-202.tar.gz
-https://bananas-cdn.openttd.org/newgrf/54431588/9b9dbe44ed2dbbcc23547e16b9e746d1/54431588-NZR_Class_DE-1.2.tar.gz
-https://bananas-cdn.openttd.org/newgrf/797a0201/15d74e6e43f83a108102bb953e0ab3fb/797a0201-World_Flags-0.1.tar.gz
-https://bananas-cdn.openttd.org/scenario/00000126/ababf3628ee698c9026c1a8bbb20696f/00000126-New_South_Wales_Aus-1.tar.gz
-https://bananas-cdn.openttd.org/scenario/0000095c/be3b1e845b3741b0723704ef7c9b68f2/0000095c-Beginner_Tutorial-17.tar.gz
-https://bananas-cdn.openttd.org/newgrf/444a5903/a6f5779ef9aacf8417d5c06956613ceb/444a5903-Vactrain_Set_1.1.FORK-1.1.3.tar.gz
-https://bananas-cdn.openttd.org/newgrf/66724d49/235c574c38ed0dc51023e5985768aa38/66724d49-Manual_Industries-2_r5.tar.gz

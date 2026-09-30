@@ -1,3 +1,10 @@
+prisonpc-openttd-extras (14.7) forky; urgency=medium
+
+  * Bump for OpenTTD 15 / Debian 14.
+  * Bump to current version of all DLCs (most are unchanged).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 30 Sep 2026 16:01:32 +1000
+
 prisonpc-openttd-extras (12.6) bookworm; urgency=medium
 
   * Bump for OpenTTD 13 / Debian 12.

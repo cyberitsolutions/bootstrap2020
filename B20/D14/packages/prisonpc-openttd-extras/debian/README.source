@@ -11,3 +11,11 @@ It emits URLs like
 08:31 <truebrain> remove `opntitle.dat` from the installation folder would do it
 
  -- Trent W. Buck <trentbuck@gmail.com>, Mon, 14 Aug 2023 08:32:38 +1000
+
+UPDATE: as at Debian 14, downloads happen over HTTP/2 with TLS on port 443, so simple wire sniffing does not work.
+Instead run openttd with debugging and you can see the URLs in the debug stream.
+This is the lowest debug level that includes the URLs:
+
+    x@desktop:~$ openttd -d net=5 |& grep https://bananas
+
+ -- Trent W. Buck <trentbuck@gmail.com>, Wed, 30 Sep 2026 13:13:59 +1000
