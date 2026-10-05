@@ -17,6 +17,8 @@
 # So "allow this but don't use it yet" doesn't require installing nfs-kernel-server! We just need a symlink "/usr/sbin/exportfs" → "/bin/true".
 #
 # NOTE: "/usr/local/sbin/exportfs" will NOT WORK; zfs is explicitly calling "/usr/sbin/exportfs".
+#
+# UPDATE: still needed in Debian 14, --twb, October 2026
 
 name = "usr/sbin/exportfs"
 linkpath = "../bin/true"

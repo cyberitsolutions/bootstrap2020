@@ -17,6 +17,33 @@ In mmdebstrap 1.5.7 (Debian 13) host, apt is not installed yet when "essential" 
    310664      0 -rw-r-----   1 root     root            0 Aug 11 06:06 /var/cache/apt/archives/lock
    304582      0 drwx------   2 _apt     root           40 Aug 11 06:06 /var/cache/apt/archives/partial
    304582      0 drwx------   2 _apt     root           40 Aug 11 06:06 /var/cache/apt/archives/partial/
+
+Here is a typical measurement with D13 host and D14 guest:
+
+    bash5$ mmdebstrap forky /dev/null http://localhost:3142/debian
+    I: success in 25.2257 seconds
+
+    bash5$ mmdebstrap forky /dev/null http://localhost:3142/debian \
+        --{essential,customize}-hook='
+            df -h $1;
+            APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" apt clean;
+            df -h $1 | sed 1d'
+    Filesystem      Size  Used Avail Use% Mounted on
+    tmpfs           7.7G  247M  7.5G   4% /tmp
+    tmpfs           7.7G  156M  7.6G   2% /tmp    <-- brief space win
+    Filesystem      Size  Used Avail Use% Mounted on
+    tmpfs           7.7G  383M  7.3G   5% /tmp
+    tmpfs           7.7G  267M  7.4G   4% /tmp    <-- brief space win
+    I: success in 26.4875 seconds                 <-- time lose
+
+Note that mmdebstrap &run_cleanup function EFFECTIVELY
+already does this after all customize hooks.
+Thus --essential-hook saves ~150MB for most of the build.
+Thus --customize-hook saves 30%-50%
+(say 500MB if you --include a lot of large game assets)
+for ONLY the duration of the other --customize-hook calls.
+It's a minor benefit but it's very cheap to do and maintain.
+--twb, October 2026
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
