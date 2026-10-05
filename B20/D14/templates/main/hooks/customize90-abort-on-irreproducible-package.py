@@ -52,6 +52,12 @@ INFO  debian-repro-status > Your system has .+% been reproduced.
 # libdvd-pkg on NON-PrisonPC --template=desktop needs a compiler and a builder package.
 ... libdvd-pkg .+ UNKWN
 ... (gcc|g[+][+])-.+-x86-64-linux-gnu .+ BAD
+# https://tests.reproducible-builds.org/debian/rb-pkg/unstable/amd64/openttd.html
+# says it's because of fluidsynth and pre-2024 gcc
+... openttd .+ BAD
+# Things in contrib and non-free are not covered (UNKNWN).
+# src:zfs-linux is contrib.
+... (zfs-(dkms|zed)|zfsutils-linux|lib(nvpair3|uutil3|zfs7|zpool7)linux) .+ UNKWN
 
 
 # PrisonPC metapackages
@@ -66,6 +72,10 @@ INFO  debian-repro-status > Your system has .+% been reproduced.
 ... (libvlc(-bin|5|core9)|vlc(-(bin|data|plugin-(base|qt|video-output)))?) .+ UNKWN
 # we compile a localyesmod-ish detainee kernel and metapackage
 ... linux-image-.*inmate .+ UNKWN
+# DLCs for Debian-packaged games, because detainees can't download them themselves
+... prisonpc-openttd-extras .+ UNKWN
+# Our thin wrapper around zfs send/recv
+... cyber-zfs-backup .+ UNKWN
 '''
 
 
