@@ -21,7 +21,49 @@ class DVDBackup:
     def __init__(self, host_application=None, src_path: pathlib.Path | None = None) -> None:
         self.host_application = host_application
         self.src_path = src_path
-        self.device = "/dev/dvd"
+        # In Debian 11 and earlier,
+        # /dev/srN was created on attaching the DRIVE, and
+        # /dev/{cdrom,dvd,dvdrw,cdrw} were created on inserting the DISC,
+        # if the disc was of that type.
+        # If you inserted a DVD then inserted a CD,
+        # the /dev/dvd -> srN symlink would not be removed.
+        #
+        # In Debian 12, /dev/cdrom was always /dev/sr0 (first optical drive), and
+        # /dev/{dvd,dvdrw,cdrw} were as above.
+        # https://salsa.debian.org/systemd-team/systemd/-/commit/792d45a0a07f59a6e1b90077c9311ff2107f0ca4/
+        #
+        # In Debian 13 and later, /dev/{dvd,dvdrw,cdrw} are completely gone.
+        # https://salsa.debian.org/systemd-team/systemd/-/commit/a66d122048b8d0d6c057c0504880f1b37e222cab/
+        # /usr/lib/udev/cdrom_id will still add ID_CDROM_DVD_R=1 &c
+        # Those attributes WILL update if you switch back to a CDDA disc.
+        # https://github.com/systemd/systemd/blob/v262/src/udev/cdrom_id/cdrom_id.c#L39-L96
+        #
+        # For now, just hard-code /dev/sr0.
+        # If prison staff attach a second optical drive, they will not be able to rip from it.
+        # In D12 SOEs, staff could rip from the first drive to have a DVD disc inserted that boot.
+        #
+        # FIXME: we **MUST** do our own check for 'is this really a DVD' now.
+        #        Otherwise the GUI will run vlc dvdsimple:// on a non-DVD,
+        #        fail to read the disc at all, but claim to the user in the GUI that it worked.
+        #        It will create a zero-byte file in /srv/tv/iptv-queue/.ripped/foo.ts
+        #        that the server side will fail to ingest properly:
+        #
+        #            Starting prisonpc-iptv-dvd2file.service
+        #            debug: end of file reached
+        #            error: no PCR found
+        #            cannot read (Success)
+        #            subprocess.CalledProcessError:
+        #            Command '['lasts', PosixPath('/srv/tv/recorded/local/CDROM.aux')]'
+        #            returned non-zero exit status 1.
+        #
+        #        This leaves further mess in (both 0-byte files):
+        #
+        #            /srv/tv/recorded/local/CDROM.aux
+        #            /srv/tv/recorded/local/CDROM.ts
+        #
+        #        It is probably sufficient to simply look at what udev cdrom_id put into
+        #        the /sys/.../sr0/attributes
+        self.device = "/dev/sr0"
         self.dvd_present = False
         self.dvd_title = None
         self.vlc_instance = vlc.Instance()
