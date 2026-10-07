@@ -1,3 +1,36 @@
 name = "usr/bin/PrisonPC-dvdrip"
 mode = 365
-include = ["python3-gi", "gir1.2-gtk-3.0", "python3-vlc"]
+include = [
+    "python3-gi",
+    "gir1.2-gtk-3.0",
+    "python3-vlc",
+
+    # Just asking for python3-vlc isn't sufficient to actually use it how we do.
+    # Minimal include, failing:
+    #
+    #     $ mmdebstrap forky /dev/null http://localhost:3142/debian --quiet \
+    #         --customize-hook='chroot $1 python3 -c "import vlc; vlc.Instance().media_player_new()"' \
+    #         --include=python3-vlc
+    #     AttributeError: 'NoneType' object has no attribute 'media_player_new'
+    #
+    # Maximal include, working:
+    #
+    #     $ mmdebstrap forky /dev/null http://localhost:3142/debian --quiet \
+    #         --customize-hook='chroot $1 python3 -c "import vlc; vlc.Instance().media_player_new()"' \
+    #         --include=python3-vlc,vlc
+    #     [000000002964a500] vlcpulse audio output error: PulseAudio server connection failure: Connection refused
+    #     [0000000029679bc0] vlcpulse audio output error: PulseAudio server connection failure: Connection refused
+    #
+    # Minimal working include, working:
+    #
+    #     $ mmdebstrap forky /dev/null http://localhost:3142/debian --quiet --customize-hook='chroot $1 python3 -c "import vlc; vlc.Instance().media_player_new()"' --include=python3-vlc,vlc-plugin-base
+    #     [0000000033519760] vlcpulse audio output error: PulseAudio server connection failure: Connection refused
+    #     [00000000336dd1a0] vlcpulse audio output error: PulseAudio server connection failure: Connection refused
+    #
+    # Since the full dvdrip script will also be writing out a video file, I'm also including video-output plugin here.
+    "vlc-plugin-base",
+    "vlc-plugin-video-output",
+
+    # To rip store-bought DVDs we need deCSS.
+    "libdvdcss2",
+]
