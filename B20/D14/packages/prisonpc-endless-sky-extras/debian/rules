@@ -5,9 +5,10 @@ E := debian/prisonpc-endless-sky-extras/tmp
 %:
 	dh $@
 override_dh_auto_install:
-	wget2 -P $E -x -i $(CURDIR)/debian/plugins.urls
+	grep ^yes -- $(CURDIR)/debian/plugins.tsv | cut -f4 | wget2 -P $E -x -i -
 	find $E -name '*.zip' -exec unzip -d $D {} \;
 	rm -rf $E
-	# Delete Hi-DPI versions of images, to save space.
-	# For example Beccas-Endless-Expansion goes from 6.2M to 1.4M.
-	find $D -name '*@2x.png' -delete
+# Delete needless Hi-DPI versions of images (@2x.png @2x.jpg @2x.jpeg), to save significant space.
+# For example Beccas-Endless-Expansion goes from 6.2M to 1.4M.
+# Also remove some metadata things (.gitattributes &c) that lintian complains about.
+	find $D -name '*@2x.*' -delete , -name '.git*' -exec rm -rf -- {} +

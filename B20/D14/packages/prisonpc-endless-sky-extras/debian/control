@@ -17,5 +17,6 @@ Depends: ${misc:Depends},
 Enhances: endless-sky
 Architecture: all
 Description: Endless Sky plugins
- There are a bunch of third-party plugins at https://endless-sky.github.io/plugins.html.
+ There are a bunch of third-party plugins at
+ https://endless-sky.github.io/plugins.html
  This package provides (some of) them pre-downloaded.

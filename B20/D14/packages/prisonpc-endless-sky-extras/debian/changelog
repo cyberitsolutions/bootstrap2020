@@ -1,3 +1,9 @@
+prisonpc-endless-sky-extras (0~0.11.2+PrisonPC3) forky; urgency=medium
+
+  * Refresh package list for endless-sky 0.11.2 on Debian 14 forky.
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 07 Oct 2026 17:06:47 +1100
+
 prisonpc-endless-sky-extras (0~0.10.10+PrisonPC2) bookworm; urgency=medium
 
   * Initial packaging.
