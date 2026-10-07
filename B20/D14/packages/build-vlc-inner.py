@@ -114,6 +114,11 @@ libxml2 libgcrypt gnutls secret kwallet update-check osx-notifications
 vdpau
 """
 
+# NOTE: as at 3.0.24, plugins/codec/{libx265,libx264,libx26410b} are encoding-only.
+#       We need H.264 and H.265 for IPTV, but only the DECODING part.
+#       Since we --disable-sout, these encoding-only plugins are not built.
+#       https://code.videolan.org/videolan/vlc/-/commit/7b0f395ac24697757e5fd773fbf3ed68dbe0d3f1
+#       --twb, September 2026
 shit_globs = """
 usr/bin/svlc
 usr/bin/nvlc
@@ -176,6 +181,9 @@ usr/lib/*/vlc/plugins/codec/librtpvideo_plugin.so
 usr/lib/*/vlc/plugins/codec/libsdl_image_plugin.so
 usr/lib/*/vlc/plugins/codec/libsvgdec_plugin.so
 usr/lib/*/vlc/plugins/codec/libt140_plugin.so
+usr/lib/*/vlc/plugins/codec/libx26410b_plugin.so
+usr/lib/*/vlc/plugins/codec/libx264_plugin.so
+usr/lib/*/vlc/plugins/codec/libx265_plugin.so
 usr/lib/*/vlc/plugins/control/liblirc_plugin.so
 usr/lib/*/vlc/plugins/gui/libncurses_plugin.so
 usr/lib/*/vlc/plugins/gui/libskins2_plugin.so
@@ -325,13 +333,14 @@ subprocess.check_call(
     env=os.environ | {'EDITOR': 'touch', 'VISUAL': 'touch'})
 os.environ['DEBFULLNAME'] = 'Trent W. Buck'  # for debchange
 os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
-for _ in range(4):
-    subprocess.check_call(
-        ['debchange',
-         '--bin-nmu',
-         'Upstream has a binNMU (+bN); synthesize one here to avoid it beating our --local=PrisonPC'],
-        cwd=source_dir)
-subprocess.check_call(['debchange', '--release', ''], cwd=source_dir)
+if False:
+    for _ in range(4):
+        subprocess.check_call(
+            ['debchange',
+             '--bin-nmu',
+             'Upstream has a binNMU (+bN); synthesize one here to avoid it beating our --local=PrisonPC'],
+            cwd=source_dir)
+    subprocess.check_call(['debchange', '--release', ''], cwd=source_dir)
 subprocess.check_call(
     ['debchange',
      '--local=PrisonPC',
