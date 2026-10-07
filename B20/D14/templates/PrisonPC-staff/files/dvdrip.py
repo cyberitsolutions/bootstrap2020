@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import json
 import logging
 import os
 import pathlib
@@ -63,7 +64,7 @@ class DVDBackup:
         #
         #        It is probably sufficient to simply look at what udev cdrom_id put into
         #        the /sys/.../sr0/attributes
-        self.device = "/dev/sr0"
+        self.dev_name = "sr0"
         self.dvd_present = False
         self.dvd_title = None
         self.vlc_instance = vlc.Instance()
@@ -73,17 +74,52 @@ class DVDBackup:
     #        We want "Dr. Who Season 2 Episodes 4-6" not "DRWHO_S2E46".
     #        This is offered to the staff user, who can change it.
     #        It ends up being (part of) the final file name.
-    def blkid_info(self):
-        blkid_response = subprocess.run(
-            ['/sbin/blkid', '--match-tag=LABEL', '--output=value', self.device],
-            text=True, capture_output=True, check=False)
-        if blkid_response.returncode == 0:
-            self.dvd_present, self.dvd_title = True, blkid_response.stdout.strip()
-        elif blkid_response.returncode == 2:
-            logging.debug('blkid cannot identify disc -- empty drive, or unlabelled disc?')
-            self.dvd_present, self.dvd_title = False, None
+    # NOTE: udev ID_FS_LABEL = blkid LABEL
+    # NOTE: udev ID_CDROM_foo means drive SUPPORTS foo
+    #       udev ID_CDROM_MEDIA_foo means the inserted disc IS a foo
+    #       Significant change in key names here:
+    #       https://github.com/systemd/systemd/commit/38f3e20883ff658935aae5c98f3792293073628d
+    def udev_info(self):
+        """set self.dvd_* if sensible dvd present, else clear
+
+        In particular, this will clear if e.g. a music CD is inserted"""
+        metadata = json.loads(
+            subprocess.check_output(
+                ['udevadm', 'info', '--json=short', '--name', self.dev_name]))
+
+        if not metadata.get('ID_CDROM_MEDIA') == '1':
+            logging.debug('drive empty')
+        elif not any(k.startswith('ID_CDROM_MEDIA_DVD') and v == '1'
+                     for k, v in metadata.items()):
+            # This one is messy because not 100% clear if
+            # all DVDs get ID_CDROM_MEDIA_DVD=1 anymore.
+            # Code says no, testing says yes.
+            # Might sometimes only get e.g. ID_CDROM_MEDIA_DVD_R=1?
+            # FIXME: in testing on a VM with first 1MB of real DVDs,
+            #        these were mis-detected as CDs (not DVDs)
+            logging.debug('wrong disc type (not DVD)')
+        elif not metadata.get('ID_FS_TYPE') == 'udf':
+            # NOTE: This will skip Debian install CD/DVD/BD.
+            #       This WILL NOT skip non-movie DVDs mastered by Windows.
+            #       I think. --twb, October 2026
+            logging.debug('wrong filesystem type (not UDF)')
+        elif not metadata.get('ID_CDROM_MEDIA_STATE') == 'complete':
+            # FIXME: in testing on a VM with first 1MB of real DVDs,
+            #        these were mis-detected as having no MEDIA STATE at all.
+            logging.debug('blank or incomplete disc')
+        elif not (metadata.get('ID_CDROM_MEDIA_SESSION_COUNT') == '1' and
+                  metadata.get('ID_CDROM_MEDIA_TRACK_COUNT') == '1' and
+                  metadata.get('ID_CDROM_MEDIA_TRACK_COUNT_DATA') == '1'):
+            logging.debug('suspicious mastering process (e.g. hidden track)')
+        elif not metadata.get('ID_FS_LABEL'):
+            logging.debug('unlabelled disc')
         else:
-            blkid_response.check_returncode()  # Raises exception if returncode != 0
+            self.dvd_present = True
+            self.dvd_title = metadata['ID_FS_LABEL']
+            return
+        self.dvd_present = False
+        self.dvd_title = None
+
 
     def vlc_rip(self, GUI_percentage, GUI_message):
         # The host_application isn't set when using --test.
@@ -113,7 +149,7 @@ class DVDBackup:
 
             vlc_media = self.vlc_instance.media_new(
                 self.src_path if self.src_path else  # rip file
-                f"dvdsimple://{self.device}")        # rip disc
+                f"dvdsimple:///dev/{self.dev_name}")  # rip disc
             # FIXME: Why is this not including the subtitles track?
             vlc_media.add_options(
                 'force-dolby-surround=off',
@@ -175,8 +211,8 @@ class DVDRipApp:
         self.doStartRescan()
 
     def we_are_ripping_a_file(self):
-        """Bypass the blkid scan stuff."""
-        self.get_object("button_rescan").set_visible(False)  # no blkid
+        """Ignore the optical drive"""
+        self.get_object("button_rescan").set_visible(False)  # no udevadm info
         self.get_object("title_bar").set_subtitle(str(self.dvdbackup.src_path))
         self.get_object("title_bar").set_title("File Ripper")  # not "DVD"
         self.get_object("progressbar").set_text("Ready to rip file")  # not "DVD"
@@ -194,7 +230,7 @@ class DVDRipApp:
         return self.dvd_scanning
 
     def rescan_thread_proc(self):
-        self.dvdbackup.blkid_info()
+        self.dvdbackup.udev_info()
         GLib.idle_add(self.doFinishRescan)
 
     def rip_thread_proc(self):
@@ -273,6 +309,8 @@ class DVDRipApp:
 
 
 if __name__ == "__main__":
+    if False:
+        logging.getLogger().setLevel(logging.DEBUG)  # DEBUGGING
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--test', action='store_true')
@@ -289,6 +327,6 @@ if __name__ == "__main__":
     else:
         # Don't bring up a GUI (or rip), just run the backend ripper's report.
         dvdbackup = DVDBackup()
-        dvdbackup.blkid_info()
+        dvdbackup.udev_info()
         print(dvdbackup.dvd_present)
         print(dvdbackup.dvd_title)
