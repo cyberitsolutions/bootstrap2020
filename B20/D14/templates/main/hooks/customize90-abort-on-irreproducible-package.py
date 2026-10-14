@@ -59,6 +59,10 @@ INFO  debian-repro-status > Your system has .+% been reproduced.
 # src:zfs-linux is contrib.
 ... (zfs-(dkms|zed)|zfsutils-linux|lib(nvpair3|uutil3|zfs7|zpool7)linux) .+ UNKWN
 
+# TEMPORARY - REMOVE AFTER 2027-01-01
+# <twb> "cannot write (No space left on device)" in https://reproduce.debian.net/amd64/api/v1/builds/296926/log
+# <jochensp> twb: yes, we know
+... linux-base-7.2..+-amd64 amd64 7.2.+ BAD
 
 # PrisonPC metapackages
 ... (prisonpc-ersatz.*|prisonpc-bad-package-conflicts-.+|fonts-prisonpc.*) .+ UNKWN
