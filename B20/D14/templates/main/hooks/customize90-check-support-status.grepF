@@ -42,7 +42,7 @@ The following packages found on this system are affected by this:
 * Source:rust-rav1e
   Details: See https://www.debian.org/releases/trixie/release-notes/issues.en.html#go-and-rust-based-packages
   Affected binary package:
-  - librav1e0.8:amd64 (installed version: 0.8.1-11)
+  - librav1e0.8:amd64 (installed version: 0.8.1-12)
 
 
 # Ignorelist rust-zram-generator (systemd-zram-generator), because
