@@ -1,3 +1,5 @@
+[Unit]
+PartOf=%p.service
 [Socket]
 # The funny IP matches the "webmail" A record in PrisonPC dnsmasq.
 # VMs booted with --boot-test get it via site.dir/hosts.

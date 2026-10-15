@@ -1,3 +1,8 @@
+[Unit]
+Requires=%p.socket
+After=%p.socket
+[Install]
+Also=%p.socket
 [Service]
 # NOTE: The mail domain is site-specific and not included in the SOE.
 #       PrisonPC 25+ adds /etc/mailname via /srv/netboot/images/X/tca.squashfs.
