@@ -13,11 +13,7 @@ http_max_body_size      = 15m
 icon_dir                = "$prefix/icons"
 static_dir              = "$prefix/static"
 bin_dir                 = /usr/sbin
-# FIXME: using /tmp is BAD JUJU.
-# It's a workaround because the default, /var/log/prayer,
-# is elided by mksquashfs.
-# UPDATE: fuck it, just use /run. --twb, Jul 2015
-log_dir                 = "$var_prefix/log"
+log_dir                 = "/var/log/prayer"
 socket_dir              = "$var_prefix/sockets"
 init_socket_name        = init
 ssl_session_dir         = "$var_prefix/ssl_scache"
