@@ -394,6 +394,8 @@ def do_boot_test():
                 '127.0.2.1 webmail\n'
                 f'{master_address} PrisonPC PrisonPC-inmate PrisonPC-staff ppc-services PPCAdm logserv mail')
             (testdir / 'site.dir/etc/mailname').write_text('tweak.prisonpc.com')
+            # Hard-codes msmtprc, so --boot-test can test msmtp (but not get-config-from-dnssd.py).
+            (testdir / 'site.dir/etc/msmtprc').write_text('account default\nsyslog LOG_MAIL\nauto_from_on\nhost PrisonPC\nport 25\n')
             if 'inmate' in template:
                 # Simulate a site-specific desktop image (typically not done for staff).
                 (testdir / 'site.dir/wallpaper.jpg').write_bytes(
@@ -438,7 +440,7 @@ def do_boot_test():
                 *([f'tftp={testdir}'] if args.netboot_only else []),
                 *([f'guestfwd=tcp:{master_address}:{port}-cmd:'
                    f'ssh cyber@tweak.prisonpc.com -F /dev/null -y -W {host}:{port}'
-                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 2223, 5432, 2514, 587, 465}
+                   for port in {636, 2049, 443, 993, 3128, 631, 2222, 2223, 5432, 2514, 587, 465, 25}
                    for host in {'prisonpc-staff.lan' if staff_network else 'prisonpc-inmate.lan'}]
                   if port_forward_bullshit else [])]),
             *(['--kernel', testdir / 'linuxx64.efi']
