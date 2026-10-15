@@ -22,10 +22,10 @@ socket_dir              = "$var_prefix/sockets"
 init_socket_name        = init
 ssl_session_dir         = "$var_prefix/ssl_scache"
 tmp_dir                 = "$var_prefix/tmp"
+# NOTE: The mail domain is site-specific and not included in the SOE.
+#       PrisonPC 25+ adds /etc/mailname via /srv/netboot/images/X/tca.squashfs.
+#       prayer-systemd-generator.py sets $ERRATA based on /etc/mailname.
 # FIXME: don't set a default domain -- have *POSTFIX* add it?
-# Otherwise this needs to match whatever /etc/mailname is set to on the prisonpc, e.g. amc.prisonpc.com
-# UPDATE: see https://kb/PrisonPC+SOEs for our kludge. --twb, Aug 2015
-# e.g. echo >/prayer.errata ERRATA=--config-option default_domain=tweak.prisonpc.com
 default_domain          = invalid
 hostname                = webmail
 http_max_servers        = 4

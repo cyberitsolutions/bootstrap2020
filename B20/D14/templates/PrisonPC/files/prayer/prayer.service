@@ -1,12 +1,8 @@
 [Service]
+# NOTE: The mail domain is site-specific and not included in the SOE.
+#       PrisonPC 25+ adds /etc/mailname via /srv/netboot/images/X/tca.squashfs.
+#       prayer-systemd-generator.py sets $ERRATA based on /etc/mailname.
 ExecStart=/usr/sbin/prayer --foreground --ports=80:0:3 $ERRATA
-# This drop-in is added by prisonpc.tca3 via tca.dir.
-# It looks like this:
-#     ERRATA=--config-option default_domain=tweak.prisonpc.com
-#
-# NOTE: prayer-systemd-generator.py replaced EnvironmentFile= in PrisonPC 25.
-#       FIXME: remove EnvironmenFile= after 2026.
-EnvironmentFile=-/prayer.errata
 RuntimeDirectory=prayer
 User=prayer
 SyslogFacility=mail
