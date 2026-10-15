@@ -1,0 +1,12 @@
+# When using XFCE under a systemd system,
+# things started from XFCE usually are children of Xsession.
+# But occasionaly they can be a child of dbus, hence systemd.
+# This can in rare cases happen for the same app, e.g. when launch an app by opening a file in thunar,
+# sometimes it will be launched by dbus.
+# This file ensures files created by such processes are not group- or world-accessible.
+# This isn't the only layer enforcing that separation, but it's one of them.
+#
+# You can check the umask of a running service with "grep -Fw Umask /proc/X/status"
+# --twb, October 2026
+[Service]
+UMask=0077
