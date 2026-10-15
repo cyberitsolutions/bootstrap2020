@@ -32,7 +32,7 @@ NOTE: if BOTH EnvironmentFile/Environment exist, i.e.
 parser = argparse.ArgumentParser()
 parser.add_argument('normal_dir', type=pathlib.Path)
 parser.add_argument('early_dir', type=pathlib.Path, nargs='?', default=pathlib.Path('/run/systemd/generator.early'))
-parser.add_argument('late_1dir', type=pathlib.Path, nargs='?', default=pathlib.Path('/run/systemd/generator.late'))
+parser.add_argument('late_dir', type=pathlib.Path, nargs='?', default=pathlib.Path('/run/systemd/generator.late'))
 args = parser.parse_args()
 
 src_path = pathlib.Path('/etc/mailname')
