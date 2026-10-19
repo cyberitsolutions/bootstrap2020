@@ -106,5 +106,5 @@ The following packages found on this system are affected by this:
 * Source:libsoup3
   Details: Only supported as a client, not as a server: see https://gitlab.gnome.org/GNOME/libsoup/-/commit/2a9d8ecc45bb814f6a81b1241e6c0c55d632aa28
   Affected binary packages:
-  - libsoup-3.0-0:amd64 (installed version: 3.6.6-1)
-  - libsoup-3.0-common (installed version: 3.6.6-1)
+  - libsoup-3.0-0:amd64 (installed version: 3.8.0-3)
+  - libsoup-3.0-common (installed version: 3.8.0-3)
