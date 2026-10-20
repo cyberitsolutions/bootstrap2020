@@ -2,6 +2,8 @@
 # https://sources.debian.org/src/ghostscript/9.56.1~dfsg-1/demos/python/gsapi.py/
 # FIXME: license
 # FIXME: description
+# Example PDF that has scanned rasters in it:
+# https://www.computerhistory.org/collections/catalog/102784979/
 
 import argparse
 import ctypes
