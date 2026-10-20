@@ -38,6 +38,62 @@ UPDATE: mmdebstrap --include=libnss-resolve will by default make /etc/resolv.con
         (This changed since Debian 11!)
 
         https://salsa.debian.org/systemd-team/systemd/-/blob/debian/bookworm/debian/systemd-resolved.postinst#L26-34
+
+This test command demonstrates the real-world use case I ran into:
+
+    $ mmdebstrap bookworm /dev/null --quiet --include=smartmontools,curl,ca-certificates,gnupg --chrooted-customize-hook=update-smart-drivedb
+    /var/lib/smartmontools/drivedb/drivedb.h 7.3/5319 updated to 7.3/6293
+
+    $ mmdebstrap bookworm /dev/null --quiet --include=systemd-resolved,smartmontools,curl,ca-certificates,gnupg --chrooted-customize-hook=update-smart-drivedb
+    /usr/sbin/update-smart-drivedb: drivedb.h: download failed (curl: exit 6)
+    [https://manpages.debian.org/trixie/curl/curl.1.en.html#EXIT_CODES exit 6 means Could not resolve host.]
+
+Fault isolation:
+
+    $ mmdebstrap bookworm /dev/null --quiet --include=systemd-resolved,curl,ca-certificates --chrooted-customize-hook='curl -sSfL https://example.com'
+    curl: (6) Could not resolve host: example.com
+
+    $ mmdebstrap bookworm /dev/null --quiet --include=systemd-resolved --chrooted-customize-hook='getent hosts example.com'umount: /tmp/mmdebstrap.jmNktUoHvH/proc: no mount point specified.
+    E: setup failed: E: command failed: getent hosts example.com
+    E: setup failed: E: chrooted hook failed with exit code 512
+
+    $ mmdebstrap bookworm /dev/null --quiet --include=systemd-resolved --customize-hook='readlink /etc/resolv.conf && grep -e^[^#] /etc/resolv.conf' --chrooted-customize-hook='readlink /etc/resolv.conf && grep -e^[^#] /etc/resolv.conf'
+    ../run/systemd/resolve/stub-resolv.conf
+    nameserver 127.0.0.53
+    options edns0 trust-ad
+    search lan cyber.com.au
+    ../run/systemd/resolve/stub-resolv.conf
+    grep: /etc/resolv.conf: No such file or directory
+
+These problems are gone in Debian 14 thanks to this patch:
+
+    https://salsa.debian.org/systemd-team/systemd/-/commit/71c3f1014c811bd9a1e0f2df4f392687935b9f95/
+
+Here is evidence the problem is gone:
+
+    bash5$ mmdebstrap forky /dev/null --quiet --include=smartmontools,curl,ca-certificates,gnupg --chrooted-customize-hook=update-smart-drivedb
+    /var/lib/smartmontools/drivedb/drivedb.h 7.5/5706 updated to 7.5/6293
+
+    bash5$ mmdebstrap forky /dev/null --quiet --include=systemd-resolved,smartmontools,curl,ca-certificates,gnupg --chrooted-customize-hook=update-smart-drivedb
+    /var/lib/smartmontools/drivedb/drivedb.h 7.5/5706 updated to 7.5/6293
+
+    bash5$ mmdebstrap forky /dev/null --quiet --include=systemd-resolved,curl,ca-certificates --chrooted-customize-hook='curl -sSfL https://example.com'
+    <!doctype html>[⋯]
+
+    bash5$ mmdebstrap forky /dev/null --quiet --include=systemd-resolved --chrooted-customize-hook='getent hosts example.com'
+    2606:4700:10::6814:179a example.com
+    2606:4700:10::ac42:93f3 example.com
+
+    bash5$ mmdebstrap forky /dev/null --quiet --include=systemd-resolved --customize-hook='readlink /etc/resolv.conf && grep -e^[^#] /etc/resolv.conf' --chrooted-customize-hook='readlink /etc/resolv.conf && grep -e^[^#] /etc/resolv.conf'
+    ../run/systemd/resolve/stub-resolv.conf
+    nameserver 127.0.0.53
+    options edns0 trust-ad
+    search lan cyber.com.au
+    ../run/systemd/resolve/stub-resolv.conf
+    nameserver 127.0.0.53
+    options edns0 trust-ad
+    search lan cyber.com.au
+
 """
 
 parser = argparse.ArgumentParser(description=__doc__)
