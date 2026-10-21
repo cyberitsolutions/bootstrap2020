@@ -15,5 +15,7 @@ parser.add_argument('chroot_path', type=pathlib.Path)
 args = parser.parse_args()
 for path in itertools.chain(
         args.chroot_path.glob('etc/dropbear/dropbear_*_host_key'),
-        args.chroot_path.glob('etc/ssh/ssh_host_*_key*')):
+        args.chroot_path.glob('etc/dropbear/dropbear_*_host_key.pub'),
+        args.chroot_path.glob('etc/ssh/ssh_host_*_key'),
+        args.chroot_path.glob('etc/ssh/ssh_host_*_key.pub')):
     path.unlink()
