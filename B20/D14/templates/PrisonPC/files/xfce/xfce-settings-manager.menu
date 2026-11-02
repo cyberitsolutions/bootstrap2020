@@ -42,7 +42,6 @@
         <Category>X-XFCE-SettingsDialog</Category>
         <Category>X-XFCE-PersonalSettings</Category>
       </And>
-      <Filename>xscreensaver-properties.desktop</Filename>
     </Include>
   </Menu>
 
@@ -67,6 +66,7 @@
         <Category>X-XFCE-SettingsDialog</Category>
         <Category>X-XFCE-SystemSettings</Category>
       </And>
+      <Filename>xfce4-about.desktop</Filename>
     </Include>
   </Menu>
 
