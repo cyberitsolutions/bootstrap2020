@@ -73,7 +73,6 @@ data_bytes = subprocess.check_output([
     # We cannot say "clear the local property iff there's already a received property".
     '-s', 'local',
     # ONLY look at quota and refquota properties.
-    # This avoids
     'quota,refquota',
     # ONLY look at a specific dataset (when debugging)
     # 'prisonpc/prisonpc/home/prisoners/ptest8',
