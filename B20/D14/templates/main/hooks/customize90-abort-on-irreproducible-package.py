@@ -70,8 +70,6 @@ INFO  debian-repro-status > Your system has .+% been reproduced.
 ... (prayer|prayer-templates-prisonpc|libc-client2007e|mlock) .+ UNKWN
 # libdvd-pkg (in Debian) creates libdvdcss2 (not in Debian).  This is fine.
 ... libdvdcss2 .+ UNKWN
-# we compile our own quota that ONLY does remote NFS quotas (not local ext4 quotas).
-... quota amd64 .+PrisonPC.+ UNKWN
 # we compile vlc for detainees without screenshot support (--disable-sout).
 ... (libvlc(-bin|5|core9)|vlc(-(bin|data|plugin-(base|qt|video-output)))?) .+ UNKWN
 # we compile a localyesmod-ish detainee kernel and metapackage

@@ -1,4 +1,0 @@
-Version: 5
-
-Source: http://sf.net/linuxquota/
-Matching-Pattern: quota-(\d\S+)\.tar\.(?:bz2|gz|xz)

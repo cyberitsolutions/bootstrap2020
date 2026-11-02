@@ -5,6 +5,7 @@ include = [
     # EXT4 -> EXT4
     # -----------
     # FIXME: remove this block once all understudies are ZFS-based.
+    #        As at 2026, divvy-understudy at AMC is md/lvm/ext4 (not ZFS)!
     'mdadm', 'lvm2', 'rsync',
     'e2fsprogs',        # no slow fsck on failover (e2scrub_all.timer)
     'quota',            # no slow quotacheck on failover
