@@ -81,7 +81,7 @@ devel		desktop-file-utils
 # Used by vlc (Australian subtitles)
 devel	zvbi	libzvbi-common
 # Used by GTK4 (sigh)
-devel	libsoup3	libsoup-3.0-common
+devel	libsoup	libsoup-3.0-common
 # Used when booting off SMB3 (instead of NFS4) – mainly VMs as at 2026.
 otherosfs		cifs-utils
 # Used by disc-snitch to scan DVDs
