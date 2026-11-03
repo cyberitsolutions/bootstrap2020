@@ -334,8 +334,8 @@ subprocess.check_call(
     env=os.environ | {'EDITOR': 'touch', 'VISUAL': 'touch'})
 os.environ['DEBFULLNAME'] = 'Trent W. Buck'  # for debchange
 os.environ['DEBEMAIL'] = 'twb@cyber.com.au'  # for debchange
-if False:
-    for _ in range(4):
+if True:
+    for _ in range(1):
         subprocess.check_call(
             ['debchange',
              '--bin-nmu',
