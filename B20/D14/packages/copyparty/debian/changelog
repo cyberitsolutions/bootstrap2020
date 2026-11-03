@@ -1,3 +1,10 @@
+copyparty (1.20.26-0~PrisonPC3) unstable; urgency=medium
+
+  * Churn to avoid known issue in xvol flag (which PrisonPC does not use).
+    https://github.com/9001/copyparty/security/advisories/GHSA-hg99-jqfp-rf76
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Tue, 03 Nov 2026 10:28:15 +1100
+
 copyparty (1.20.17-0~PrisonPC2) forky; urgency=medium
 
   * Fix https://github.com/9001/copyparty/security/advisories/GHSA-x5pq-m9p8-f4vx
