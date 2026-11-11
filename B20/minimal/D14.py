@@ -124,24 +124,24 @@ subprocess.check_call([
     # do a post-initrd config similar to dracut-network's.
     # https://github.com/dracut-ng/dracut-ng/blob/main/modules.d/11systemd-networkd/dracut-default.network
     '--include=systemd-resolved systemd-timesyncd',
-    "--customize-hook=echo '[Match]\nKind=!*\nType=!loopback\n[Network]\nDHCP=yes' >$1/etc/systemd/network/99-default.network",
-    '--customize-hook=chroot $1 systemctl enable systemd-networkd',
+    "--chrooted-customize-hook=echo '[Match]\nKind=!*\nType=!loopback\n[Network]\nDHCP=yes' >/etc/systemd/network/99-default.network",
+    '--chrooted-customize-hook=systemctl enable systemd-networkd',
     # == BOOTLOADER STUB ==
     # NOTE: boot=live is for live-config (not dracut) <https://bugs.debian.org/1128194>
     # FIXME: fix https://bugs.debian.org/1116593 then let dracut run ukify
     '--include=systemd-ukify systemd-boot-efi',
-    '--customize-hook=mkdir -p $1/boot/efi/boot',
-    "--customize-hook=echo '[UKI]\nLinux=/vmlinuz\nInitrd=/initrd.img\nCmdline=systemd.volatile=overlay boot=live' >$1/etc/systemd/ukify.conf",
-    '--customize-hook=chroot $1 ukify build --output=boot/efi/boot/bootx64.efi',
+    '--chrooted-customize-hook=mkdir -p /boot/efi/boot',
+    "--chrooted-customize-hook=echo '[UKI]\nLinux=/vmlinuz\nInitrd=/initrd.img\nCmdline=systemd.volatile=overlay boot=live' >/etc/systemd/ukify.conf",
+    '--chrooted-customize-hook=ukify build --output=/boot/efi/boot/bootx64.efi',
     # == DISK IMAGE ==
     # NOTE: this uses in-container systemd-repart and mksquashfs,
     #       rather than mmdebstrap's (better!) tar and tar2sqfs.
     '/dev/null',
     '--include=systemd-repart dosfstools mtools erofs-utils moreutils',
-    "--customize-hook=mkdir $1/etc/repart.d",
-    "--customize-hook=echo '[Partition]\nType=esp\nCopyFiles=/boot:/' >$1/etc/repart.d/50-esp.conf",
-    "--customize-hook=echo '[Partition]\nType=root\nCopyFiles=/\nFormat=erofs\nCompression=zstd\nMinimize=yes' >$1/etc/repart.d/50-root.conf",
-    '--customize-hook=chroot $1 chronic systemd-repart --offline=yes --empty=create --size=auto /tmp/live.img',
+    "--chrooted-customize-hook=mkdir /etc/repart.d",
+    "--chrooted-customize-hook=echo '[Partition]\nType=esp\nCopyFiles=/boot:/' >/etc/repart.d/50-esp.conf",
+    "--chrooted-customize-hook=echo '[Partition]\nType=root\nCopyFiles=/\nFormat=erofs\nCompression=zstd\nMinimize=yes' >/etc/repart.d/50-root.conf",
+    '--chrooted-customize-hook=chronic systemd-repart --offline=yes --empty=create --size=auto /tmp/live.img',
     '--customize-hook=copy-out /tmp/live.img .'])
 
 # Workaround https://bugs.debian.org/1129567
