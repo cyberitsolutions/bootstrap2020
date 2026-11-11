@@ -435,7 +435,7 @@ Signed-By:
 Types: deb
 URIs: http://deb.freexian.com/extended-lts
 Suites: bookworm-lts
-Components: main contrib non-free
+Components: main contrib non-free non-free-firmware
 Signed-By:
   -----BEGIN PGP PUBLIC KEY BLOCK-----
   .
