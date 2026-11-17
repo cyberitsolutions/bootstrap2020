@@ -50,7 +50,7 @@ stylesheet_str = f'''
        I'm not too worried about this because
        (unlike color) this is pretty much set-and-forget. */
     /* font: {xresources.get('xlogin.Login.face', 'Sans')}; */
-    font-family: Universalis ADF Std;
+    font-family: Adwaita Sans;
     font-size: 18pt;
 }}
 '''

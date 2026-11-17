@@ -1,3 +1,11 @@
+prisonpc-fonts (14.4) forky; urgency=medium
+
+  * Adwaita not Universalis as System-UI font.
+    This has a much higher x-height so it is more readable in most places, but
+    looks quite different at large sizes (e.g. the xdm login screen).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Wed, 18 Nov 2026 08:49:18 +1100
+
 prisonpc-fonts (14.3) forky; urgency=medium
 
   * Bump for Debian 14.

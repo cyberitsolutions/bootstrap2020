@@ -26,8 +26,11 @@ Description: core PrisonPC fonts
  SOE, then try to print it on a Work SOE.
 Depends:
  ${misc:Depends},
-# UI font family — Futura (and Noto)
- fonts-adf-universalis,
+# UI font family — Inter (and Noto)
+# Adwaita is https://rsms.me/inter/ with a trivial tweak to cv05.
+# https://gitlab.gnome.org/GNOME/adwaita-fonts/-/blob/main/sans/update-fonts.sh
+# FIXME: make Adwaita explicitly provides/conflicts/replaces Inter? (below & in .links)
+ fonts-adwaita,
 # Color Emoji family — Noto Color Emoji
  fonts-noto-color-emoji,
 # Print font family — Liberation (2.x)
