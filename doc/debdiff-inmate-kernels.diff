@@ -1,3 +1,17 @@
+30b6eb3 7.3.4-1794953302 (was 7.2.15-1794385729)
+diff --git a/manifest.txt b/manifest.txt
+index df9ce51..982338a 100644
+--- a/manifest.txt
++++ b/manifest.txt
+@@ -181,6 +181,8 @@ kernel/drivers/video/fbdev/core/fb_sys_fops.ko.zst
+ kernel/drivers/video/fbdev/core/syscopyarea.ko.zst
+ kernel/drivers/video/fbdev/core/sysfillrect.ko.zst
+ kernel/drivers/video/fbdev/core/sysimgblt.ko.zst
++kernel/drivers/watchdog/
++kernel/drivers/watchdog/intel_oc_wdt.ko.zst
+ kernel/fs/
+ kernel/fs/nls/
+ kernel/fs/nls/nls_ascii.ko.zst
 0879bc2 7.2.15-1794385729 (was 7.2.12-1792998003)
 d6e363c 7.2.12-1792998003 (was 7.2.11-1792460249)
 0352127 7.2.11-1792460249 (was 7.2.9-1792007298)
