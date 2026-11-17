@@ -1,0 +1,11 @@
+modules:
+  - load: omrelp
+
+rulesets:
+  - name: RSYSLOG_DefaultRuleset
+    actions:
+      - type: omrelp
+        port: 2514
+        target: logserv
+        template: RSYSLOG_SyslogProtocol23Format
+        tls: "on"

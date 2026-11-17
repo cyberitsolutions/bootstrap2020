@@ -1,0 +1,5 @@
+global:
+  compatibility.defaults.secure: "strict"
+
+include:
+  - path: "/etc/rsyslog.d/*.yaml"
