@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+# FIXME: This is broken -- it his github rate-limiting, and so you only get (say) maps up to 4p, losing all 5p through 9p.
+#        Worse, wget2 fails to correctly exit non-zero when this happens.  So the deb builds but is missing content.
+#        Instead of this approach, I think we want to git clone the parent repos https://github.com/Warzone2100/maps-{1,2,3,⋯,10}p
+#        then just zip up each dir in maps, e.g. https://github.com/Warzone2100/maps-2p/tree/main/maps/Ng-WaveChall becomes 2p-Ng-WaveChall.wz.
+#        The hashes probably will not match upstream's but we only allow local play, so we do not care. --twb, November 2026
+#
+#        <twb> Remind me, is there a trick to having multiple upstream source tarballs that get merged together
+#        <twb> Oh wait that won't work because they'll have different release tags.
+#        <twb> I wanted a single .deb that was built from https://github.com/Warzone2100/maps-{1,2,3,⋯,10}p
+import json
+import os
+import subprocess
+quiet_args = (
+    ['-q']
+    if 'terse' in os.environ.get('DEB_BUILD_OPTIONS', '') else
+    [])
+proc = subprocess.run(
+    ['wget2', '-O-', *quiet_args,
+     'https://maps.wz2100.net/api/v1/full.json'],
+    check=True,
+    text=False,
+    stdout=subprocess.PIPE)
+full = json.loads(proc.stdout)
+map_urls = sorted(
+    f'https://github.com/Warzone2100/maps-{d["repo"]}/releases/download/{d["path"]}'
+    for m in full['maps']
+    for d in [m['download']])
+subprocess.run(
+    ['wget2', '-i-', *quiet_args],
+    check=True,
+    text=True,
+    input='\n'.join(map_urls))

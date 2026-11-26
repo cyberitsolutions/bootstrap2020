@@ -7,4 +7,4 @@ override_dh_auto_install:
 	# Workaround https://bugs.debian.org/1005865
 	# (--content-disposition breaks -P in wget2 <2.0.1; Debian 12 still has wget2 1.99.1-2.2)
 	install -d $D/maps
-	env --chdir=$D/maps wget2 -i $(CURDIR)/debian/maps.urls --content-disposition
+	env --chdir=$D/maps python3 $(CURDIR)/debian/rules.py

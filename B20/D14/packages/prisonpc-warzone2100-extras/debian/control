@@ -1,4 +1,4 @@
-Source: prisonpc-warzone2100-addons
+Source: prisonpc-warzone2100-extras
 Section: games
 Priority: optional
 Standards-Version: 4.3.0
@@ -8,9 +8,10 @@ Rules-Requires-Root: no
 Build-Depends:
  ca-certificates,
  debhelper-compat (= 13),
- wget2,
+ git,
+ python3,
 
-Package: prisonpc-warzone2100-addons
+Package: prisonpc-warzone2100-extras
 # NOTE: P-D (not D) ∵ postinst edits warzone2100.desktop.
 # NOTE: the versioned dependency is due to ARmod (artrev2100):
 #
@@ -18,18 +19,22 @@ Package: prisonpc-warzone2100-addons
 #           ARmod_3.3.0.wz: works with WZ2100 3.3.0-3.4.1.
 #           NOTE! to get it works with 3.4.1, open mod by zip archiver and delete "palette.txt" file
 Pre-Depends:
- warzone2100 (>= 4~),
+ warzone2100 (>= 4.3~),
 Depends: ${misc:Depends},
  python3,
  warzone2100-music,
 Enhances: warzone2100
+# prisonpc-warzone2100-addons was the old name in PrisonPC SOEs based on Debian 9/11/12.
+Replaces: prisonpc-warzone2100-addons
+Provides: prisonpc-warzone2100-addons
+Conflicts: prisonpc-warzone2100-addons
 Architecture: all
-Description: Warzone2100 addons
- There are a bunch of third-party addons at https://addons.wz2100.net/.
+Description: Warzone2100 extras
+ There are a bunch of third-party extras at https://maps.wz2100.net/.
  This package provides them pre-downloaded.
- We used to also include better textures from
-  https://sourceforge.net/projects/artrev2100/, but
- warzone2100 4.4.0-beta1 and later reads mods with "no follow symlinks" mode, so
- there is no longer even a SNEAKY way to make the game read that mod from /usr instead of $HOME.
- Installing 100MB of texture mods into each user's home is unacceptable, so
- the texture pack is no longer an option in warzone2100 4 / Debian 12.
+# We used to also include better textures from
+#  https://sourceforge.net/projects/artrev2100/, but
+# warzone2100 4.4.0-beta1 and later reads mods with "no follow symlinks" mode, so
+# there is no longer even a SNEAKY way to make the game read that mod from /usr instead of $HOME.
+# Installing 100MB of texture mods into each user's home is unacceptable, so
+# the texture pack is no longer an option in warzone2100 4 / Debian 12.

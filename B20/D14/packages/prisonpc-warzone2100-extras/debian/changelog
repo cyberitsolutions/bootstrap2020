@@ -1,3 +1,12 @@
+prisonpc-warzone2100-addons (14.4) forky; urgency=medium
+
+  * New upstream database; new script to handle it.
+  * Instead of curating a list, download everything (<100MB total).
+  * Drop obsolete hack warzone2100-addon-fix.
+  * Name .deb consistently with other packages (-addons not -extras).
+
+ -- Trent W. Buck <trentbuck@gmail.com>  Thu, 26 Nov 2026 19:51:47 +1100
+
 prisonpc-warzone2100-addons (12.3) bookworm; urgency=medium
 
   * Due to https://github.com/Warzone2100/warzone2100/commit/11b4c086263b451d4f38b6869fa6da42f565a903

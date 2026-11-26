@@ -88,7 +88,7 @@ applications = [
 [desktop-inmate-blackgate]
 applications = [
     # Huge bloated time-wasting motherfuckers
-    "prisonpc-wesnoth-addons", "prisonpc-warzone2100-addons", "prisonpc-openttd-extras", "marathon-trilogy",
+    "prisonpc-wesnoth-addons", "prisonpc-warzone2100-extras", "prisonpc-openttd-extras", "marathon-trilogy",
     # Education stuff
     "nucleus", "gjiten", "marble-qt", "marble-plugins", "kgeography", "gimp", "gimp-help-en", "dia", "dia-shapes", "klavaro", "kwordquiz", "gnome-metronome", "pysiogame", "lybniz",
     # FIXME: "inkscape", "inkscape-tutorials",
@@ -138,7 +138,7 @@ applications = [
     "prisonpc-endless-sky-extras",              # Games > Other > Endless Sky
     "xmoto",                    # Games > Sports > Elastomania clone
     "prisonpc-wesnoth-addons",  # Games > Strategy > The Battle for Wesnoth
-    "prisonpc-warzone2100-addons",  # Games > Strategy > Warzone 2100
+    "prisonpc-warzone2100-extras",  # Games > Strategy > Warzone 2100
     "gnome-mahjongg",           # Games > Board > Mahjong Solitaire
     "crawl-tiles",              # Games > Adventure > Dungeon Crawl
     "supertuxkart",             # Games > Arcade > Mario Kart clone
@@ -403,7 +403,7 @@ applications = [
     # supertuxkart
     # Broken as at 2019-06-06
     # marathon-trilogy
-    # warzone2100 prisonpc-warzone2100-addons
+    # warzone2100 prisonpc-warzone2100-extras
     # blobwars
     "opentyrian", "tyrian-data",
     # FIXME: pynagram not available in Debian 11 (depends on Qt4)
@@ -421,7 +421,7 @@ applications = [
     "gnome-klotski",
     "iagno",
     "marathon-trilogy",
-    "prisonpc-warzone2100-addons",
+    "prisonpc-warzone2100-extras",
     "supertuxkart",
     "prisonpc-openttd-extras",
     "blobwars",
